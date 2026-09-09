@@ -70,10 +70,11 @@ assert(influence.includes('Floor Influence'), 'InfluenceView title must be Floor
 assert.match(influence, /export function InfluenceView/);
 assertClean(influence, 'InfluenceView.jsx');
 
-const roster = readFileSync('src/views/ClassView.jsx', 'utf8');
-assert(roster.includes('Residents —'), 'ClassView must label roster Residents');
-assert(roster.includes('effectiveUnlockWeek'), 'ClassView must use effectiveUnlockWeek for hall gates');
-assertClean(roster, 'ClassView.jsx');
+const roster = readFileSync('src/views/RosterView.jsx', 'utf8');
+assert(roster.includes('Residents —'), 'RosterView must label roster Residents');
+assert(roster.includes('effectiveUnlockWeek'), 'RosterView must use effectiveUnlockWeek for hall gates');
+assert.match(roster, /export function RosterView/);
+assertClean(roster, 'RosterView.jsx');
 
 const deviceInv = readFileSync('src/views/DeviceInventoryView.jsx', 'utf8');
 assert(deviceInv.includes('Equip to Resident'), 'DeviceInventoryView must say Equip to Resident');

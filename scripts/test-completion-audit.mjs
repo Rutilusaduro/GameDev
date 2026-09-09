@@ -200,6 +200,16 @@ check('owned-hall-skills', () => {
   assert.doesNotMatch(desk, /ownedClassSkills/);
 });
 
+check('roster-view-floor-actions', () => {
+  assert.ok(existsSync(join(root, 'src/views/RosterView.jsx')));
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /RosterView/);
+  assert.match(desk, /doFloorAction/);
+  assert.match(desk, /generateFloorCheckIn/);
+  assert.doesNotMatch(desk, /ClassView/);
+  assert.doesNotMatch(desk, /\bdoClass\b/);
+});
+
 // ── Report ─────────────────────────────────────────────────────
 const failed = checks.filter((c) => !c.ok);
 for (const c of checks) {

@@ -5,7 +5,7 @@ import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } fro
 import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
-import { ACTIONS_SINGLE, ACTIONS_CLASS } from './gameData/classEvents.js';
+import { ACTIONS_SINGLE, ACTIONS_HALL } from './gameData/classEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playerPrefs.js';
@@ -56,7 +56,7 @@ import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
-import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
+import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
   pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
   tickHungerAddiction, adjustHunger, applyDenialConsequences,
@@ -211,7 +211,7 @@ import { CultivatorModal } from './components/CultivatorModal.jsx';
 import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
 import { LilithClueModal, LilithHuntModal } from './components/LilithModals.jsx';
 import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostessFeastLogModal } from './components/ChapterHostessModals.jsx';
-import { ClassView } from './views/ClassView.jsx';
+import { RosterView } from './views/RosterView.jsx';
 import { InfluenceView } from './views/InfluenceView.jsx';
 import { EmbodimentModal } from './components/v2/EmbodimentModal.jsx';
 import { FeastRitualModal, DreamModal, EchoArchiveModal } from './components/v2/V2Modals.jsx';
@@ -371,8 +371,8 @@ import {
   dinnerConversationStormThreshold,
 } from './gameData/feedingSession.js';
 import {
-  computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
-  hasClassUnlock, getClassActionCost, isDinnerVenueUnlocked,
+  computeHallLoungeSkillCurrency, buyHallLoungeSkill, aggregateHallLoungeSkillEffects, listPurchasableHallLoungeSkills,
+  hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
@@ -921,11 +921,11 @@ export default function HallPass(){
   };
 
   const addScrutiny=(n)=>{
-    const classFx=aggregateClassSkillEffects(ownedHallSkills||{});
+    const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
     const mult=profileScrutinyMult(raProfile)
               *(1-(raProfile?.traits?.includes("discreet")?0.35:0))
               *skillScrutinyReduce
-              *(1-(classFx.scrutinyReduce||0));
+              *(1-(loungeFx.scrutinyReduce||0));
     const actual=Math.max(0,Math.round(n*mult));
     if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
   };
@@ -992,7 +992,7 @@ export default function HallPass(){
   };
 
   const purchaseHallLoungeSkill=(skillId)=>{
-    const result=buyClassSkill(skillId,ownedHallSkills||{},students);
+    const result=buyHallLoungeSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedHallSkills(result.owned);
     push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
@@ -1599,8 +1599,8 @@ export default function HallPass(){
     }
     const scrutinyTier=getScrutinyTier(adminScrutiny);
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
-    const classSkillFx=aggregateClassSkillEffects(ownedHallSkills||{});
-    const weeklyApBase=5+skillApBonus+(classSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
+    const loungeSkillFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+    const weeklyApBase=5+skillApBonus+(loungeSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
     const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
 
@@ -1622,10 +1622,10 @@ export default function HallPass(){
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,LILITH_PASSIVE_GAIN,0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
-      let gain=rnd(1,3)+skillPassiveBonus+(classSkillFx.passiveBonus||0);
+      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
-      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*formPassiveGainMultiplier(s)*(1+(classSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*formPassiveGainMultiplier(s)*(1+(loungeSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1785,7 +1785,7 @@ export default function HallPass(){
       });
       if(campusEv){
         setTimeout(()=>{
-          if(campusEv.target==='class'){
+          if(campusEv.target==='hall'||campusEv.target==='class'){
             push(`🌿 ${campusEv.text()}`);
             setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
           }else{
@@ -2197,7 +2197,7 @@ export default function HallPass(){
     const devotedCount=updated.filter(s=>getTier(s.relationship).id>=3).length;
     if(devotedCount>0) setAdminScrutiny(prev=>Math.max(0,prev-devotedCount));
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
-    if(classSkillFx.scrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-classSkillFx.scrutinyPassiveReduce));
+    if(loungeSkillFx.scrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-loungeSkillFx.scrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
     const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
@@ -6662,7 +6662,7 @@ export default function HallPass(){
 
   const startFloorCheckIn=()=>{
     playHallPassSound('click', soundEnabled);
-    const scenes=generateClassSession(students.filter(studentReceivesPassiveGain),week);
+    const scenes=generateFloorCheckIn(students.filter(studentReceivesPassiveGain),week);
     if(!scenes.length){advanceWeek();return;}
     setFloorCheckIn({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
   };
@@ -6688,7 +6688,7 @@ export default function HallPass(){
         }:st);
         targetName=s.name;
       }
-    }else if(type==="class"){
+    }else if(type==="hall"||type==="class"){
       gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
       newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
       targetName="the hall";
@@ -6725,8 +6725,8 @@ export default function HallPass(){
     advanceWeek();
   };
 
-  const executeClassFeed=(action,compoundId)=>{
-    const actionCost=getClassActionCost(action,ownedHallSkills||{});
+  const executeFloorFeed=(action,compoundId)=>{
+    const actionCost=getHallActionCost(action,ownedHallSkills||{});
     setAp(a=>a-actionCost);
     if(action.id==='refeast_ritual'){
       setOpposition(prev=>({
@@ -6803,9 +6803,9 @@ export default function HallPass(){
     });
   };
 
-  const doClass=(action)=>{
-    trackAction(`doClass:${action.id}`);
-    const actionCost=getClassActionCost(action,ownedHallSkills||{});
+  const doFloorAction=(action)=>{
+    trackAction(`doFloorAction:${action.id}`);
+    const actionCost=getHallActionCost(action,ownedHallSkills||{});
     if(ap<actionCost){push("⚠️ Not enough AP!");return;}
     if(scrutinyBlocksClassFeast(adminScrutiny,action.id)){
       push('⚠️ Administration review — public hall feasts are suspended until scrutiny eases.');
@@ -6822,10 +6822,10 @@ export default function HallPass(){
     guardHungerInterrupt(()=>{
       const compounds=getStockedCompounds();
       if(compounds.length>0){
-        setCompoundFeedPicker({kind:'class',action});
+        setCompoundFeedPicker({kind:'hall',action});
         return;
       }
-      executeClassFeed(action,null);
+      executeFloorFeed(action,null);
     });
   };
 
@@ -7753,7 +7753,7 @@ export default function HallPass(){
   const raCorruptionMult=profileCorruptionMult(raProfile);
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const skillEffects=aggregateSkillEffects(ownedSkills);
-  const classSkillFx=aggregateClassSkillEffects(ownedHallSkills||{});
+  const loungeSkillFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
   const spentSkillPoints=computeSpentSkillPoints(ownedSkills);
   const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const hasSkill=(id)=>(ownedSkills[id]||0)>0;
@@ -7762,8 +7762,8 @@ export default function HallPass(){
   const skillGainMult=raGainMult;
   const skillScrutinyReduce=1;
   const skillScrutinyPassiveReduce=0;
-  const skillSessionCapBonus=classSkillFx.sessionCapBonus||0;
-  const skillTapOutResistance=classSkillFx.tapOutResistance||0;
+  const skillSessionCapBonus=loungeSkillFx.sessionCapBonus||0;
+  const skillTapOutResistance=loungeSkillFx.tapOutResistance||0;
   // EP2: total weekly scrutiny reduction from evolved skills across all students
   const evolvedScrutinyReduce=students.reduce((total,s)=>{
     if(!s.evolvedForm||!(s.evolvedSkills||[]).length) return total;
@@ -7775,11 +7775,11 @@ export default function HallPass(){
   const ownedClass=ownedHallSkills||{};
   const effectiveSingleActions=ACTIONS_SINGLE.filter(a=>{
     if(!a.requiresUnlock) return true;
-    return hasClassUnlock(ownedClass,a.requiresUnlock);
+    return hasHallLoungeUnlock(ownedClass,a.requiresUnlock);
   });
-  const effectiveClassActions=ACTIONS_CLASS.filter(a=>{
+  const effectiveHallActions=ACTIONS_HALL.filter(a=>{
     if(a.supernaturalOnly&&!opposition?.supernatural?.actTriggered) return false;
-    if(a.requiresUnlock&&!hasClassUnlock(ownedClass,a.requiresUnlock)) return false;
+    if(a.requiresUnlock&&!hasHallLoungeUnlock(ownedClass,a.requiresUnlock)) return false;
     return true;
   });
 
@@ -8652,7 +8652,7 @@ export default function HallPass(){
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── ROSTER VIEW ── */}
-          {view==="roster"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
+          {view==="roster"&&<RosterView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
@@ -8682,7 +8682,7 @@ export default function HallPass(){
           {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedHallSkills={ownedHallSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen} soundEnabled={soundEnabled}/>}
 
           {/* ── CLASS ACTIONS ── */}
-          {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
+          {view==="actions"&&<ActionsView ap={ap} doFloorAction={doFloorAction} effectiveHallActions={effectiveHallActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
 
           {/* ── PANTRY / INVENTORY ── */}
           {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
@@ -9283,7 +9283,7 @@ export default function HallPass(){
         }else if(picker.kind==='interrupt'){
           student=students.find(st=>st.id===picker.studentId);
           feedLabel=`Compound-laced meal for ${student?.name}`;
-        }else if(picker.kind==='class'){
+        }else if(picker.kind==='hall'||picker.kind==='class'){
           feedLabel=`${picker.action.label} — lace the whole hall meal?`;
           student=students.find(st=>!st.hidden)||students[0];
         }
@@ -9298,7 +9298,7 @@ export default function HallPass(){
             onConfirm={(compoundId)=>{
               setCompoundFeedPicker(null);
               if(picker.kind==='item') executeItemFeed(picker.item,picker.studentId,compoundId);
-              else if(picker.kind==='class') executeClassFeed(picker.action,compoundId);
+              else if(picker.kind==='hall'||picker.kind==='class') executeFloorFeed(picker.action,compoundId);
               else if(picker.kind==='interrupt') finishHungerInterrupt(picker.studentId,'compound',compoundId);
             }}
             onCancel={()=>setCompoundFeedPicker(null)}

@@ -116,3 +116,16 @@ export function isDinnerVenueUnlocked(venueId, owned = {}) {
   if (!req) return true;
   return hasClassUnlock(owned, req);
 }
+
+/** @deprecated legacy names — use hall-lounge variants in new code */
+export const computeHallLoungeSkillTotal = computeClassSkillTotal;
+export const computeHallLoungeSkillSpent = computeClassSkillSpent;
+export const computeHallLoungeSkillCurrency = computeClassSkillCurrency;
+export const getHallLoungeSkill = getClassSkill;
+export const getHallLoungeUnlocks = getClassUnlocks;
+export const hasHallLoungeUnlock = hasClassUnlock;
+export const canBuyHallLoungeSkill = canBuyClassSkill;
+export const buyHallLoungeSkill = buyClassSkill;
+export const aggregateHallLoungeSkillEffects = aggregateClassSkillEffects;
+export const getHallActionCost = getClassActionCost;
+export const listPurchasableHallLoungeSkills = listPurchasableClassSkills;

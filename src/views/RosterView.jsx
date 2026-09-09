@@ -157,7 +157,7 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
   );
 }
 
-export function ClassView({
+export function RosterView({
   view,
   students,
   lilithUnlocked,

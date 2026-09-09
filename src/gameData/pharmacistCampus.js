@@ -83,13 +83,13 @@ export const PHARMACIST_CAMPUS_ENCOUNTERS = [
 export const PHARMACIST_CAMPUS_EVENTS = [
   {
     id: 'wellness_fair',
-    target: 'class',
+    target: 'hall',
     gain: [2, 5],
     text: () => `Sophia's wellness branding has reached the campus union: free "metabolic support" samples at every table. The line wraps around the building. Your floor drifts through it the way water finds low ground — unhurried, thorough, noticeably fuller by evening.`,
   },
   {
     id: 'dining_portions',
-    target: 'class',
+    target: 'hall',
     gain: [3, 6],
     text: () => `The dining hall quietly increases default portions campus-wide. Regulars notice first. Your residents notice second. By week's end the staff are plating for appetites that did not exist last semester.`,
   },
@@ -101,13 +101,13 @@ export const PHARMACIST_CAMPUS_EVENTS = [
   },
   {
     id: 'softening_ambient',
-    target: 'class',
+    target: 'hall',
     gain: [1, 3],
     text: () => `You cannot point to a single incident — just a week where everyone seems warmer, slower, and more willing to keep eating after they should have stopped. The campus feels padded at the edges.`,
   },
   {
     id: 'hive_lilith_pipeline',
-    target: 'class',
+    target: 'hall',
     gain: [2, 4],
     requires: (ctx) => ctx.hasMayaHive,
     text: () => `Maya's delivery network is pulling heavier recruits from Lilith's routes this week — softer bodies, fuller appetites, already primed when they reach the dorms. The Nest hums with fresh biomass.`,

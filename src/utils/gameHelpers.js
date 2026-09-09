@@ -60,14 +60,17 @@ export function getEvolvedActivityStageIdx(s){
 }
 export function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 
-export function generateClassSession(students,week){
+export function generateFloorCheckIn(students,week){
   const scenes=[];
   const shuffled=[...students].sort(()=>Math.random()-0.5);
   for(const s of shuffled){
     const matching=CLASS_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
     if(matching.length){ scenes.push({type:"student",scene:matching[rnd(0,matching.length-1)],student:{...s}}); break; }
   }
-  const classWide=CLASS_SCENES.filter(sc=>sc.target==="class");
-  if(classWide.length) scenes.push({type:"class",scene:classWide[rnd(0,classWide.length-1)],student:null});
+  const hallWide=CLASS_SCENES.filter(sc=>sc.target==="hall"||sc.target==="class");
+  if(hallWide.length) scenes.push({type:"hall",scene:hallWide[rnd(0,hallWide.length-1)],student:null});
   return scenes;
 }
+
+/** @deprecated use generateFloorCheckIn */
+export const generateClassSession = generateFloorCheckIn;

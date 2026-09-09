@@ -1,7 +1,7 @@
 import { C } from '../styles.js';
 
-export function ActionsView({ ap, doClass, effectiveClassActions, famineWeek = false }){
-  const sortedActions=[...effectiveClassActions].sort((a,b)=>{
+export function ActionsView({ ap, doFloorAction, effectiveHallActions, famineWeek = false }){
+  const sortedActions=[...effectiveHallActions].sort((a,b)=>{
     if(famineWeek&&a.id==='refeast_ritual') return -1;
     if(famineWeek&&b.id==='refeast_ritual') return 1;
     return 0;
@@ -24,7 +24,7 @@ export function ActionsView({ ap, doClass, effectiveClassActions, famineWeek = f
                       <span style={{fontSize:11,color:a.cost===0?"#60c060":"#e07030"}}>{a.cost===0?"FREE":a.cost+" AP"}</span>
                       <span style={{fontSize:10,color:"#604030"}}>+{(a.cal[0]/1000).toFixed(0)}k–{(a.cal[1]/1000).toFixed(0)}k cal · {a.full} fullness</span>
                     </div>
-                    <button style={{...C.btn(famineWeek&&a.id==='refeast_ritual'?"#6a2838":"#401890"),width:"100%",opacity:ap<a.cost?0.4:1}} disabled={ap<a.cost} onClick={()=>doClass(a)}>Use Action</button>
+                    <button style={{...C.btn(famineWeek&&a.id==='refeast_ritual'?"#6a2838":"#401890"),width:"100%",opacity:ap<a.cost?0.4:1}} disabled={ap<a.cost} onClick={()=>doFloorAction(a)}>Use Action</button>
                   </div>
                 ))}
               </div>

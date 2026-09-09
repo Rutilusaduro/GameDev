@@ -4,19 +4,19 @@
 import { C } from '../styles.js';
 import { SKILL_TREE } from '../gameData/skills.js';
 import {
-  computeClassSkillCurrency,
-  computeClassSkillTotal,
-  computeClassSkillSpent,
-  canBuyClassSkill,
+  computeHallLoungeSkillCurrency,
+  computeHallLoungeSkillTotal,
+  computeHallLoungeSkillSpent,
+  canBuyHallLoungeSkill,
 } from '../gameData/hallLoungeSkills.js';
 
 const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
 function ClassroomSkillsPanel({ students, ownedHallSkills, onPurchase }) {
   const owned = ownedHallSkills || {};
-  const total = computeClassSkillTotal(students);
-  const spent = computeClassSkillSpent(owned);
-  const currency = computeClassSkillCurrency(students, owned);
+  const total = computeHallLoungeSkillTotal(students);
+  const spent = computeHallLoungeSkillSpent(owned);
+  const currency = computeHallLoungeSkillCurrency(students, owned);
   const tiers = [1, 2, 3, 4, 5, 6];
 
   return (
@@ -37,7 +37,7 @@ function ClassroomSkillsPanel({ students, ownedHallSkills, onPurchase }) {
             <div style={{ display: 'grid', gap: 6 }}>
               {skills.map((sk) => {
                 const purchased = !!owned[sk.id];
-                const check = purchased ? null : canBuyClassSkill(sk.id, owned, students);
+                const check = purchased ? null : canBuyHallLoungeSkill(sk.id, owned, students);
                 const affordable = check?.ok;
                 return (
                   <div

@@ -4,13 +4,16 @@ export const ACTIONS_SINGLE = [
   { id:"restaurant",  label:"🍷 Take Her to Dinner",         cost:2, gain:[4,9],   desc:"A proper dinner out at the best restaurant near campus.", requiresUnlock:"dinner_action" },
 ];
 
-export const ACTIONS_CLASS = [
+export const ACTIONS_HALL = [
   { id:"pizza",        label:"🍕 Floor Pizza Night",         cost:3, cal:[12000,24000], full:40, desc:"An excessive whole-floor pizza order. Everyone indulges." },
   { id:"potluck",      label:"🥘 Floor Potluck",             cost:2, cal:[9000,18000],  full:30, desc:"Everyone brings a dish. Everyone is expected to try everything." },
   { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
   { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
   { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
 ];
+
+/** @deprecated use ACTIONS_HALL */
+export const ACTIONS_CLASS = ACTIONS_HALL;
 
 export const CLASS_SCENES = [
   // ── MOOD-BASED ───────────────────────────────────────────────
@@ -177,7 +180,7 @@ export const CLASS_SCENES = [
       { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — on the floor, personally. "That actually means something, RA."` },
     ] },
   // ── CLASS-WIDE ───────────────────────────────────────────────
-  { id:"class_snack_break", target:"class",
+  { id:"class_snack_break", target:"hall",
     title:"Impromptu Snack Break",
     text:"You call an unscheduled break mid-check-in and produce a box of assorted snacks. No reason given. The floor needs no reason.",
     choices:[
@@ -185,7 +188,7 @@ export const CLASS_SCENES = [
       { label:"Premium spread — variety and excess",   effect:{gain:[5,10]}, result:"You went all out. Three kinds of pastries, imported chocolates, something local. The floor takes their time. The check-in ends fifteen minutes late." },
       { label:"Tasting exercise — they rate each one", effect:{gain:[4,8]},  result:"You frame it as a sensory evaluation exercise. They review each item with comically serious panel rigor. Everybody eats a lot." },
     ] },
-  { id:"class_group_project", target:"class",
+  { id:"class_group_project", target:"hall",
     title:"Group Project Day",
     text:"You announce today's programming is cancelled in favor of a group project — designing a meal plan for an entirely hypothetical context. The floor gets very into it.",
     choices:[
@@ -193,7 +196,7 @@ export const CLASS_SCENES = [
       { label:"Provide research materials (food)", effect:{gain:[4,9]},  result:"You bring extensive research samples. This is treated as primary research. The floor is still conducting experiments after closing time." },
       { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition emerges. The floor sources sample materials with alarming speed. Three residents present full spreads. Everyone eats everything." },
     ] },
-  { id:"class_birthday", target:"class",
+  { id:"class_birthday", target:"hall",
     title:"Mystery Birthday",
     text:"Someone on the floor has a birthday this week. Word has spread. There is an expectation of cake.",
     choices:[
@@ -201,7 +204,7 @@ export const CLASS_SCENES = [
       { label:"Bring a full dessert spread",        effect:{gain:[6,12]}, result:"You dramatically overdeliver: three cakes, cupcakes, tarts, macarons. The floor is overwhelmed and grateful and eats everything." },
       { label:"Declare it a week-long celebration", effect:{gain:[4,9]},  result:"You declare the whole week birthday week. Snacks every day. The birthday resident is embarrassed and delighted in equal measure." },
     ] },
-  { id:"class_slump", target:"class",
+  { id:"class_slump", target:"hall",
     title:"3PM Energy Crash",
     text:"The 3PM slump is real and the lounge is suffering. Heads are drooping. Someone is asleep. Someone else is asleep more aggressively. Action is required.",
     choices:[
@@ -209,7 +212,7 @@ export const CLASS_SCENES = [
       { label:"Quick movement break",   effect:{gain:[1,3]}, result:"A stretch break and some movement. Energy returns, though you notice several residents were clearly much more comfortable staying seated." },
       { label:"Dim lights and chill",   effect:{gain:[2,5]}, result:"You lower the lights, put on ambient music, and present this as a contemplative learning environment. Everyone eats their snacks in peaceful semi-darkness." },
     ] },
-  { id:"class_potluck", target:"class",
+  { id:"class_potluck", target:"hall",
     title:"Floor Potluck",
     text:"You announced a floor potluck. You underestimated how seriously they would take this. The room is lined with containers and the smell is extraordinary.",
     choices:[
@@ -217,7 +220,7 @@ export const CLASS_SCENES = [
       { label:"Formalize it with a scoring rubric",  effect:{gain:[4,9]},  result:"You produce a rubric. The floor suddenly cares very deeply about their dishes. The stakes make everyone eat more to properly evaluate." },
       { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The floor eats freely for ninety minutes. It's the best floor check-in of the semester." },
     ] },
-  { id:"class_extended", target:"class",
+  { id:"class_extended", target:"hall",
     title:"Extended Session",
     text:"Today runs long — dense material, real engagement, the kind of night where nobody looks at the clock. You've been going for two hours and nobody has left.",
     choices:[
