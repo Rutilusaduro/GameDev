@@ -789,6 +789,41 @@ check('psych-researcher-resident-framing', () => {
   assert.doesNotMatch(diary, /The subject was uncertain|My subject told me|First subject session|The subject is growing on schedule/i);
 });
 
+check('fiona-artsy-model-framing', () => {
+  const content = read('src/gameData/content.js');
+  const diaryBase = read('src/textEngine/scenes/diaryBase.js');
+  const diary = read('src/textEngine/scenes/diary.js');
+  assert.match(content, /primary model/);
+  assert.match(content, /most interesting model/);
+  assert.match(content, /artist and the model and the work/);
+  assert.match(diaryBase, /The model is beautiful and honest/);
+  assert.match(diaryBase, /medium and the artist and the model/);
+  assert.match(diaryBase, /dough is soft, warming/);
+  assert.match(diaryBase, /observer is the resident is the analyst/);
+  assert.match(diary, /the model is present/);
+  assert.doesNotMatch(content, /primary subject|most interesting subject|artist and the subject and the work/i);
+  assert.doesNotMatch(diaryBase, /The subject is beautiful|medium and the artist and the subject|The subject is excellent|subject is soft, warming|observer is the subject is the analyst/i);
+});
+
+check('hall-group-project-ra-framing', () => {
+  const floor = read('src/gameData/floorEvents.js');
+  const campus = read('src/textEngine/scenes/campusEvent/depth.js');
+  assert.match(floor, /hall plans are cancelled/);
+  assert.match(floor, /meal-plan challenge/);
+  assert.match(floor, /Bring tasting supplies/);
+  assert.match(floor, /tasting samples/);
+  assert.match(campus, /meal-plan challenge/);
+  assert.match(campus, /taste-testing becomes the whole assignment/);
+  assert.doesNotMatch(floor, /programming is cancelled|primary research|research samples|conducting experiments/i);
+  assert.doesNotMatch(campus, /primary research/i);
+});
+
+check('week-planner-hall-kitchen', () => {
+  const planner = read('src/gameData/weekPlanner.js');
+  assert.match(planner, /Hall kitchen/);
+  assert.doesNotMatch(planner, /label: 'Lab'/);
+});
+
 check('narrative-residents-not-students', () => {
   const narrative = read('src/textEngine/scenes/weeklyEvent/narrativeFragments.js');
   const campus = read('src/textEngine/scenes/campus/fragments.js');

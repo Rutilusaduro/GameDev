@@ -841,7 +841,7 @@ registerPool('diary.food_photographer.c1', [
 ]);
 
 registerPool('diary.food_photographer.c2', [
-{ when: { stage: [5] }, text: ['I was surprised and then I wasn\'t surprised, because the work is good and the subject is present — I photographed every meal I\'ve eaten this year and the cumulative effect is something that lands'] },
+{ when: { stage: [5] }, text: ['I was surprised and then I wasn\'t surprised, because the work is good and the model is present — I photographed every meal I\'ve eaten this year and the cumulative effect is something that lands'] },
   { when: { stage: [6] }, text: ['I spent the whole opening eating from the reception table, which I\'d argued should serve the foods that appeared in the photographs. The gallerist agreed.'] },
   { when: { stage: [8] }, text: ['The prints looked good in natural light. I ate a tremendous amount of Scandinavian food.'] },
   { when: { stage: [9] }, text: ['I don\'t think about that often but when I do I feel something that isn\'t quite pride and isn\'t quite peace but sits between them.'] },

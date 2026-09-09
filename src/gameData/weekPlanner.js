@@ -10,7 +10,7 @@ export const PLANNER_VENUES = [
   { id: 'campus', label: 'Campus', glyph: '🏫' },
   { id: 'dining', label: 'Dining hall', glyph: '🍽' },
   { id: 'dorm', label: 'Dorm visit', glyph: '🛏' },
-  { id: 'lab', label: 'Lab', glyph: '🔬' },
+  { id: 'lab', label: 'Hall kitchen', glyph: '🍳' },
   { id: 'private', label: 'Private table', glyph: '🥂' },
 ];
 

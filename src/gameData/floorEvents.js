@@ -110,7 +110,7 @@ export const FLOOR_SCENES = [
     title:"Creative Block",
     text:s=>`${s.name} is staring at a blank page. She's been staring for thirty minutes. Charcoal in hand, nothing happening. A creative block, visibly painful.`,
     choices:[
-      { label:"Arrange food as an art subject", effect:{gain:[4,9], mood:"content",rel:8}, result:s=>`You arrange a spread on her side table — fruit, pastries, something colorful — and say "draw that." Her eyes light up. She eats half while drawing. Both improve.` },
+      { label:"Arrange a still-life spread",    effect:{gain:[4,9], mood:"content",rel:8}, result:s=>`You arrange a spread on her side table — fruit, pastries, something colorful — and say "draw that." Her eyes light up. She eats half while drawing. Both improve.` },
       { label:"Take her on a campus walk",       effect:{gain:[0,0], mood:"dreamy", rel:6}, result:s=>`You take her on a quiet loop around campus. She doesn't say much, but by the time you return she's sketching furiously.` },
       { label:"Share a creative struggle",       effect:{gain:[2,4], mood:"dreamy", rel:9}, result:s=>`You tell her about a time you were stuck. What you did, how it felt. She listens with her whole body, and something in her visibly relaxes.` },
     ] },
@@ -190,10 +190,10 @@ export const FLOOR_SCENES = [
     ] },
   { id:"hall_group_project", target:"hall",
     title:"Group Project Day",
-    text:"You announce today's programming is cancelled in favor of a group project — designing a meal plan for an entirely hypothetical context. The floor gets very into it.",
+    text:"You announce today's hall plans are cancelled in favor of a meal-plan challenge — designing menus for an entirely hypothetical context. The floor gets very into it.",
     choices:[
       { label:"Let them be creative",             effect:{gain:[2,5]},  result:"The projects are elaborate and extensively taste-tested using supplies they apparently brought for this exact possibility." },
-      { label:"Provide research materials (food)", effect:{gain:[4,9]},  result:"You bring extensive research samples. This is treated as primary research. The floor is still conducting experiments after closing time." },
+      { label:"Bring tasting supplies",           effect:{gain:[4,9]},  result:"You bring extensive tasting samples. Everyone treats it like a cook-off. The floor is still comparing plates after closing time." },
       { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition emerges. The floor sources sample materials with alarming speed. Three residents present full spreads. Everyone eats everything." },
     ] },
   { id:"hall_birthday", target:"hall",

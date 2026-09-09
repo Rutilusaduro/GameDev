@@ -135,7 +135,7 @@ registerPool("diary.serena.newpr", [
 registerPool("diary.fiona.subject", [
   { when: { studentId: 4, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
     "Set up the camera today. Studio, good light, three hours. Just ate. Didn't perform. Let the timer click. Developed the prints alone at 2am.",
-    "One of the frames is perfect. I pinned it above my desk without a caption. The subject is beautiful and honest and I'm not sure I've seen myself like that before.",
+    "One of the frames is perfect. I pinned it above my desk without a caption. The model is beautiful and honest and I'm not sure I've seen myself like that before.",
   ]},
   { when: { studentId: 4, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
     "I've pinned three more prints since the first. Each session the light is different, the fullness is different, something in my face is softer.",
@@ -143,11 +143,11 @@ registerPool("diary.fiona.subject", [
     "The camera doesn't lie. Neither do I, in these frames.",
   ]},
   { when: { studentId: 4, stageMin: 4, stageMax: 5, corruption: [2] }, weight: 4, text: [
-    "The art is choosing itself now. Every appetite becomes a composition. Every weight gain a study in form. I am the medium and the artist and the subject. This feels correct.",
+    "The art is choosing itself now. Every appetite becomes a composition. Every weight gain a study in form. I am the medium and the artist and the model. This feels correct.",
     "I'm going to need more plates.",
   ]},
   { when: {}, text: [
-    "The subject is excellent. The work is just beginning.",
+    "The model is excellent. The work is just beginning.",
     "Pinned another print above the desk. No caption. Full plate in every frame.",
     "The light caught my fullness tonight. Honest. Unretouched.",
   ]},
@@ -294,15 +294,15 @@ registerPool("diary.chloe.americaine", [
 
 registerPool("diary.renee.recipe", [
   { when: { studentId: 10, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
-    "New category in the journal today: self. The entry: subject is soft, warming, resting properly. Temperature stable. This is observation.",
+    "New category in the journal today: self. The entry: dough is soft, warming, resting properly. Temperature stable. This is observation.",
     "Fed myself the way I feed everyone else. Excellent yield.",
   ]},
   { when: { studentId: 10, stageMin: 4, stageMax: 5, corruption: [1] }, weight: 4, text: [
-    "The subject is round. Resting. When pressed, it holds the impression, then rises back, slow and certain — the way good dough does when it has had time, fat, warmth.",
+    "The dough is round. Resting. When pressed, it holds the impression, then rises back, slow and certain — the way good dough does when it has had time, fat, warmth.",
     "Flavor profile: butter, yeast, contentment, the specific satisfaction of a body that has been fed well.",
   ]},
   { when: { studentId: 10, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "Subject is perfectly proofed. Fat content: increasing. This is correct. This is the recipe working. Yield: abundant. No corrections needed. The journal entry is complete.",
+    "Dough is perfectly proofed. Fat content: increasing. This is correct. This is the recipe working. Yield: abundant. No corrections needed. The journal entry is complete.",
   ]},
   { when: {}, text: [
     "The recipe is ready. The kitchen is warm.",
@@ -324,7 +324,7 @@ registerPool("diary.kaylee.patient", [
   ]},
   { when: { studentId: 11, stageMin: 4, stageMax: 5, corruption: [1] }, weight: 4, text: [
     "The assessment is becoming a form of tender observation. Soft becomes softer. Warmth becomes welcome. The old vocabulary no longer contains what I'm feeling.",
-    "I wrote: 'subject demonstrates increased compliance with additional intake. Subject is... not correcting this.' I left the note unfinished.",
+    "I wrote: 'patient demonstrates increased compliance with additional intake. Patient is... not correcting this.' I left the note unfinished.",
   ]},
   { when: { studentId: 11, stageMin: 5, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "No assessment today. Just: I am soft and warm and full and this is good nursing care for myself. This is the most aggressive self-care I've ever practiced and I approve completely.",
@@ -353,7 +353,7 @@ registerPool("diary.nadia.casestudy", [
     "Told you this out loud. Mid-bite. Then another bite.",
   ]},
   { when: { studentId: 12, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "The hall log and I merged. I am writing myself into the case study in real time. The observer is the subject is the analyst. The observation is inseparable from the happening.",
+    "The hall log and I merged. I am writing myself into the case study in real time. The observer is the resident is the analyst. The observation is inseparable from the happening.",
     "This is the richest psychological material I've ever inhabited.",
   ]},
   { when: {}, text: [
