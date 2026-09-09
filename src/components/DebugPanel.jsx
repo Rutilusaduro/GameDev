@@ -17,6 +17,7 @@ import { SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../gameData/chapterHo
 import { TESTER_START_LBS } from '../gameData/cultivator.js';
 import { defaultPharmacistState } from '../gameData/pharmacist.js';
 import { createInitialHiveState } from '../gameData/mayaHive.js';
+import { defaultLabState, defaultDeviceInventory } from '../gameData/talia.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
@@ -65,6 +66,8 @@ export function DebugPanel({
   setCultivatorState,
   setPharmacistState,
   setMayaHiveState,
+  setLabState,
+  setDeviceInventory,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -426,6 +429,34 @@ export function DebugPanel({
                       setView('student');
                     }}>
                     🕸️ Hive Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(100,20,50,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 14
+                          ? { ...s, evolvedForm: 'wife_lessons', lbs: 200, relationship: 60, mood: 'cheerful' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(14);
+                      setView('student');
+                    }}>
+                    🍷 Wife Lessons Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(30,50,80,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 18
+                          ? { ...s, evolvedForm: 'machine_goddess', lbs: 200, relationship: 60, mood: 'focused' }
+                          : s
+                      )));
+                      setLabState?.(defaultLabState());
+                      setDeviceInventory?.(defaultDeviceInventory());
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(18);
+                      setView('student');
+                    }}>
+                    🔧 Machine Goddess Arc QA
                   </button>
                 </>
               )}

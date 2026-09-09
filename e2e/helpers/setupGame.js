@@ -131,6 +131,24 @@ export async function unlockHiveArcQA(page) {
   await expect(page.getByText('EVOLVED PATH')).toBeVisible();
 }
 
+/** Debug: Mary Jane wife lessons arc + open student detail. */
+export async function unlockWifeLessonsArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Wife Lessons Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Talia machine goddess arc + open student detail. */
+export async function unlockMachineGoddessArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Machine Goddess Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();
