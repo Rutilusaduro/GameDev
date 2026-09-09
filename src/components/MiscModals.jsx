@@ -50,10 +50,11 @@ export function SessionResultModal({ sessionResult, setSessionResult, soundEnabl
   );
 }
 
-export function TapOutPopup({ setTapOutPopup, tapOutPopup }){
+export function TapOutPopup({ setTapOutPopup, tapOutPopup, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled]);
   return(
         <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:520}}>
+          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c06060",marginBottom:6}}>⛔ SHE TAPS OUT</div>
             <div style={{fontSize:11,color:"#a06050",marginBottom:10}}>
               {tapOutPopup.student.name} · {tapOutPopup.totalGain.toLocaleString()} cal this session (≈+{Math.round(tapOutPopup.totalGain/3500)} lbs digesting)
@@ -62,7 +63,7 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup }){
               {tapOutPopup.text}
             </p>
             <div style={{fontSize:11,color:"#705040",marginBottom:16}}>She ate enough for a family of five. The session is over.</div>
-            <button style={C.btn("#5a1515")} onClick={()=>setTapOutPopup(null)}>Close</button>
+            <button style={C.btn("#5a1515")} onClick={()=>{ playHallPassSound('click', soundEnabled); setTapOutPopup(null); }}>Close</button>
           </div>
         </div>
   );

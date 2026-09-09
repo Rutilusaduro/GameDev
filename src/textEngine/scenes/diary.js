@@ -1358,7 +1358,7 @@ registerPool('diary.state_fair_queen', [
 // ── WIFE_LESSONS ──────────────────────────────────────────────
 // ── diary.wife_lessons (decomposed) ─────────────────────────────────────
 registerPool('diary.wife_lessons.c1', [
-{ when: { stage: [5] }, text: ['First class. Darlene and Wanda. I made the honey-butter rolls and we talked for two hours and by the end Darlene had eaten seven and Wanda had eaten nine and they both took containers home.'] },
+{ when: { stage: [5] }, text: ['First bake night. Darlene and Wanda. I made the honey-butter rolls and we talked for two hours and by the end Darlene had eaten seven and Wanda had eaten nine and they both took containers home.'] },
   { when: { stage: [6] }, text: ['Patrice joined. She came in tentative and left with three recipe cards and a look on her face I recognize — the look of someone who has just realized this is what they\'ve been missing.'] },
   { when: { stage: [7] }, text: ['Cheryl. I didn\'t think she\'d convert. I underestimated how hungry she was. Not for food — for permission. The femininity talk hit her like a key in a lock.'] },
   { when: { stage: [8] }, text: ['All six. Ruthanne passed the house on her own and knocked. I had been waiting for her without knowing I was waiting. Becca came with her. \' That means Sofia knows. That means it\'s working.'] },

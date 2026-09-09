@@ -1152,7 +1152,7 @@ registerPool('diary.pharmacist.s6._f3', [
   { when: {}, text: [
     "Campus softening is measurable. I walk the hall and notice how portions look larger, how conversations around food sound less apologetic.",
     "Campus softening measurable now — larger portions, less apology in dining-hall talk.",
-    "Walk to class: everyone eating louder. Portions bigger. Data confirms what my eyes see.",
+    "Walk the quad: everyone eating louder. Portions bigger. Data confirms what my eyes see.",
   ]},
 ]);
 

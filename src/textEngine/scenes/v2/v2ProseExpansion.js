@@ -159,10 +159,10 @@ registerPool('campus.v2.depth', [
     'The quad smells like fried dough and nobody is pretending otherwise.',
   ]},
   { when: {}, text: [
-    'Class ends but appetite does not. The hallway smells like lunch.',
+    'Floor check-in ends but appetite does not. The hallway smells like lunch.',
     'Ordinary campus hour — except her hunger is louder than the floor meeting.',
     'Lockers slam. Vending machines hum. Somewhere a girl is already eating.',
-    'Campus routine — except her body remembers every meal between classes.',
+    'Campus routine — except her body remembers every meal between hall rounds.',
   ]},
 ]);
 

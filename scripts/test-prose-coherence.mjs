@@ -25,6 +25,13 @@ import '../src/textEngine/scenes/opposition/agendaCards.js';
 import '../src/textEngine/scenes/campusExplorationText.js';
 import '../src/textEngine/scenes/diary.js';
 import { renderDiary } from '../src/textEngine/scenes/diary.js';
+import { NADIA_SUBJECT_JOURNALS } from '../src/gameData/nadiaSubjectJournals.js';
+import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
+import { renderGossipMurmur } from '../src/textEngine/scenes/gossip/index.js';
+import { renderMemoryClass } from '../src/textEngine/scenes/memory/index.js';
+import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
+import '../src/textEngine/scenes/v2/resonance/depth.js';
+import '../src/textEngine/scenes/earlyGain/personas.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -59,6 +66,17 @@ const BANNED = [
   /\bcooking class\b/i,
   /\bincoming classes\b/i,
   /\bincoming class\b/i,
+  /\bWalk to class\b/i,
+  /\bsettles into class\b/i,
+  /\bGood first class\b/i,
+  /\bFirst class\./i,
+  /\bBetween classes,\b/i,
+  /\btoward her next class\b/i,
+  /\bclass-wide (hunger|abundance|pulse)\b/i,
+  /\bbeen to class today\b/i,
+  /\bClass ends but appetite\b/i,
+  /\bjogs to class\b/i,
+  /\bwalks to class\b/i,
 ];
 
 function assertClean(text, label) {
@@ -261,4 +279,53 @@ const campusLegendDiary = renderDiary(
 );
 if (campusLegendDiary) assertClean(campusLegendDiary, 'campus legend diary render');
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals OK');
+const wifeLessonsDiary = renderDiary(
+  { ...INIT_STUDENTS[0], evolvedForm: 'wife_lessons', lbs: 280, archetype: 'foodie', name: 'Mary Jane' },
+  18,
+);
+if (wifeLessonsDiary) assertClean(wifeLessonsDiary, 'wife lessons diary render');
+
+for (const intro of NADIA_SUBJECT_JOURNALS.swimmer?.intro || []) {
+  assertClean(intro, 'Nadia journal swimmer intro');
+}
+for (const row of NADIA_SUBJECT_JOURNALS.bookworm?.entries?.[0] || []) {
+  assertClean(row, 'Nadia journal bookworm entry');
+}
+
+for (const archetype of ['bookworm', 'swimmer', 'cheerleader']) {
+  const beat = renderCampusEventBeat(
+    INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0],
+    8,
+  );
+  if (beat) assertClean(beat, `campus event beat ${archetype}`);
+}
+
+for (const archetype of ['influencer', 'foodie', 'gamer']) {
+  const murmur = renderGossipMurmur(
+    INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0],
+    10,
+  );
+  if (murmur) assertClean(murmur, `gossip murmur ${archetype}`);
+}
+
+const memCtx = buildTextContext({
+  subject: INIT_STUDENTS[0],
+  week: 12,
+  globals: { memName: 'Cassidy', memType: 'stageUp', memWeeksAgo: 2 },
+});
+const memoryLine = render('{memory.class}', memCtx)?.trim();
+if (memoryLine) assertClean(memoryLine, 'memory.class render');
+
+const oppEndCtx = buildTextContext({
+  subject: swimmer,
+  week: 14,
+  globals: { corruption: 2, stageMin: 9 },
+});
+const oppEnd = render('{opposition.endgame.synthesis}', oppEndCtx)?.trim();
+if (oppEnd) assertClean(oppEnd, 'opposition endgame synthesis');
+
+const resCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 16, globals: { stageMin: 8 } });
+const resSurge = render('{res.surge.depth}', resCtx)?.trim();
+if (resSurge) assertClean(resSurge, 'resonance surge depth');
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus OK');

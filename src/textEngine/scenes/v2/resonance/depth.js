@@ -38,7 +38,7 @@ registerPool('res.pulse.depth', [
 
 registerPool('res.surge.depth', [
   { when: { stageMin: 7 }, text: [
-    'The network peaks — class-wide hunger rolling like weather. Delivery apps sing in chorus. Bellies rise in synchrony.',
+    'The network peaks — hall-wide hunger rolling like weather. Delivery apps sing in chorus. Bellies rise in synchrony.',
     'Hive appetite: one surge, many bodies, the whole roster humming with borrowed want.',
   ]},
   { when: { stageMin: 3 }, text: [

@@ -8803,7 +8803,7 @@ export default function HallPass(){
       {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
 
       {/* ── TAP-OUT POPUP ── */}
-      {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup}/>}
+      {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup} soundEnabled={soundEnabled}/>}
 
       {/* ── WEIGH-IN MODAL ── */}
       {weighInState&&<WeighInModal

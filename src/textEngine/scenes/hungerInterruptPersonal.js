@@ -58,7 +58,7 @@ const PERSONAL = {
   ],
   transfer: [
     'Still bemused by American portions — and by how badly she wants more.',
-    'Her exchange badge is crooked; she has not been to class today.',
+    'Her exchange badge is crooked; she has not been to study group today.',
     'She smells like dining hall fries and regret.',
     'Dry humor abandoned; she just looks hungry.',
   ],

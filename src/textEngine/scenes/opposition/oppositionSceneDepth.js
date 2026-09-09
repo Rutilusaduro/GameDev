@@ -7,7 +7,7 @@ registerModuleVariants('opposition.agenda.wellness_audit', [
     `Clipboard at mid-meal — they photograph abundance at scale and call it intervention.`,
   ]},
   { when: { corruption: [2] }, weight: 3, text: [
-    `Wellness audit finds a class unashamed — concern dressed as care, appetite unrepentant.`,
+    `Wellness audit finds a floor unashamed — concern dressed as care, appetite unrepentant.`,
   ]},
   { when: { studentId: 3 }, weight: 4, text: [
     `Serena's portions flagged mid-practice — coaches with clipboards, athlete appetite on trial.`,
@@ -136,7 +136,7 @@ registerModuleVariants('opposition.hearing.verdict', [
 
 registerModuleVariants('opposition.endgame.synthesis', [
   { when: { stageMin: 9 }, weight: 3, text: [
-    `Scarcity folds inward — class-wide abundance swells, famine language finally fails.`,
+    `Scarcity folds inward — hall-wide abundance swells, famine language finally fails.`,
   ]},
   { when: { studentId: 15 }, weight: 4, text: [
     `Lilith crowned in aftermath — predator appetite legitimized, board exhausted.`,

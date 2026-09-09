@@ -12,7 +12,7 @@ registerModuleVariants('slender.bodyFeel', [
   { when: { studentId: 0, ...EARLY }, weight: W, text: [
     'Brittany still feels fast on her feet — until she sits and the chair argues.',
     'Competition muscle softening at the edges; she flexes and feels plush where tone used to be.',
-    'Her thighs brush when she jogs to class — friction new, not unwelcome yet.',
+    'Her thighs brush when she jogs across campus — friction new, not unwelcome yet.',
   ]},
   { when: { studentId: 2, ...EARLY }, weight: W, text: [
     'Kylie feels the curve when she turns for a thumbnail angle — content, body, same problem.',
@@ -26,7 +26,7 @@ registerModuleVariants('slender.bodyFeel', [
   ]},
   { when: { studentId: 8, ...EARLY }, weight: W, text: [
     'Maya feels fullness settle slow — a quiet weight low in her belly she does not name.',
-    'Her thighs brush when she walks to class; the sensation is new and oddly grounding.',
+    'Her thighs brush when she walks the hall; the sensation is new and oddly grounding.',
     'Warmth gathers under her ribs after she eats. She sketches through it.',
   ]},
   { when: { studentId: 10, ...EARLY }, weight: W, text: [

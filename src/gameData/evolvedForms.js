@@ -3232,7 +3232,7 @@ The session closes. Next year the hall lounge will be bigger. Next year she will
       ],
       endings:[
         {condition:h=>h.includes("rich_recipe")&&h.includes("gave_recipe"),text:(h,s,gain)=>`Wanda leaves with the recipe card and a full stomach and a particular look. Darlene tells you on her way out that Emma ate a big dinner last night and nobody could figure out why. Mary Jane is ${Math.round(s.lbs+gain)} pounds and washing the bowls and letting herself be satisfied.`,gainBonus:8,relBonus:12},
-        {condition:h=>h.includes("bake_together"),text:(h,s,gain)=>`Good first class. Darlene asks for the recipe on her way out — she says "for Emma." Mary Jane is ${Math.round(s.lbs+gain)} pounds and warm and already planning next week.`,gainBonus:5,relBonus:9},
+        {condition:h=>h.includes("bake_together"),text:(h,s,gain)=>`Good first bake night. Darlene asks for the recipe on her way out — she says "for Emma." Mary Jane is ${Math.round(s.lbs+gain)} pounds and warm and already planning next week.`,gainBonus:5,relBonus:9},
         {condition:()=>true,text:(h,s,gain)=>`First session done. Mary Jane is ${Math.round(s.lbs+gain)} pounds and Darlene and Wanda both leave with more than they came with. The kitchen smells like butter for hours.`,gainBonus:3,relBonus:7},
       ]
     },

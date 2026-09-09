@@ -83,7 +83,7 @@ registerPool('campus.moveSentence', [
 ]);
 
 registerPool('campus.destination', [
-  { when: {}, text: ['down the hall', 'across campus', 'toward her next class', 'where the afternoon takes her next'] },
+  { when: {}, text: ['down the hall', 'across campus', 'toward her next stop', 'where the afternoon takes her next'] },
   { when: { campusLocale: 'hallway' }, text: ['through the foot traffic', 'along the corridor', 'past students who make room'] },
   { when: { campusLocale: 'floor meeting_hall' }, text: ['into the aisle', 'toward her seat', 'down the steps'] },
   { when: { campusLocale: 'cafeteria' }, text: ['through the line', 'toward an open table', 'to the booth she prefers'] },
