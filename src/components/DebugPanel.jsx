@@ -296,6 +296,29 @@ export function DebugPanel({
                   ✦ Evolution QA
                 </button>
               )}
+              {setSelectedId && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,100,0.45)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? {
+                          ...s,
+                          archetype: 'swimmer',
+                          evolvedForm: null,
+                          lbs: 220,
+                          relationship: 65,
+                          startLbs: s.startLbs ?? 130,
+                        }
+                        : s
+                    )));
+                    setAp((a) => Math.max(a, 5));
+                    setSelectedId(1);
+                    setView('student');
+                    setDebugOpen(false);
+                  }}>
+                  ✦ Evolution Ready QA
+                </button>
+              )}
               {setTierUpModal && (
                 <button type="button" style={{ ...C.smBtn, background: 'rgba(70,30,110,0.55)' }}
                   onClick={() => {

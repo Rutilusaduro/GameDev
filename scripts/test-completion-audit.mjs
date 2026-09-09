@@ -98,6 +98,14 @@ check('community-researcher-cassidy', () => {
   assert.doesNotMatch(src, /\bMadeline\b/);
 });
 
+check('lane-captain-panel-review-wiring', () => {
+  const hallPass = read('src/HallPass.jsx');
+  const detail = read('src/views/StudentDetailView.jsx');
+  assert.match(hallPass, /startCommunityResearcherPanelReview/);
+  assert.match(detail, /Athletics Panel Review/);
+  assert.match(detail, /startCommunityResearcherPanelReview/);
+});
+
 // ── RA-framed ranks ────────────────────────────────────────────
 check('ra-rank-labels', () => {
   const labels = RA_RANKS.map((r) => r.label).join(' ');
@@ -180,6 +188,7 @@ const REQUIRED_E2E = [
   'e2e/ascension-ceremony.spec.js',
   'e2e/evolution-offer.spec.js',
   'e2e/lane-captain-presentation-path.spec.js',
+  'e2e/evolution-offer-natural.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

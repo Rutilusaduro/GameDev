@@ -263,6 +263,13 @@ export async function triggerEvolutionQA(page) {
   await page.getByRole('button', { name: /Evolution QA/ }).click();
 }
 
+/** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
+export async function prepareEvolutionEligibleQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Evolution Ready QA/ }).click();
+  await expect(page.getByText('Personal Actions')).toBeVisible({ timeout: 10_000 });
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();

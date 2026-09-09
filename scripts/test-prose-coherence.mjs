@@ -10,7 +10,7 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameD
 import { STAGE_REACTIONS } from '../src/gameData/content.js';
 import {
   EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
-  EVOLUTION_BUTTON_BLURB, WL_LESSONS, WL_DIALOGUES, CG_CHAT_TEMPLATES,
+  EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, WL_LESSONS, WL_DIALOGUES, CG_CHAT_TEMPLATES,
   FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
   FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES,
 } from '../src/gameData/evolvedForms.js';
@@ -775,7 +775,10 @@ for (const line of EVOLVED_REACTIONS.campus_legend || []) {
 const activityForms = [
   'community_researcher', 'food_researcher', 'campus_legend', 'chapter_hostess', 'wife_lessons',
   'home_nest', 'homestead_queen', 'eating_captain', 'eating_competitor', 'speed_eater',
-  'ranked_feedee', 'feedee_creator', 'eating_streamer', 'delivery_hive',
+  'ranked_feedee', 'feedee_creator', 'eating_streamer', 'delivery_hive', 'sumo',
+  'salon_appetit', 'artisan_gallery', 'competitive_gainer', 'machine_goddess',
+  'body_positive_creator', 'psych_researcher', 'state_fair_queen', 'homeroom_queen',
+  'cultivator', 'pharmacist',
 ];
 const activityStudent = { name: 'Maya', lbs: 340, archetype: 'swimmer' };
 for (const formId of activityForms) {
@@ -1096,6 +1099,14 @@ for (const route of CULT_DISTRIBUTION_ROUTES) {
 for (const [archetype, blurbFn] of Object.entries(EVOLUTION_BUTTON_BLURB)) {
   const student = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
   assertClean(blurbFn({ ...student, name: student.name, lbs: student.lbs ?? 180 }), `evolution blurb ${archetype}`);
+}
+
+for (const [archetype, offer] of Object.entries(EVOLUTION_OFFER)) {
+  const student = INIT_STUDENTS.find((s) => s.archetype === archetype) || { name: 'Resident', lbs: 220 };
+  assertClean(offer.intro({ ...student, name: student.name, lbs: student.lbs ?? 220 }), `evolution offer ${archetype}`);
+  for (const path of Object.values(offer.paths || {})) {
+    assertClean(`${path.label} ${path.desc}`, `evolution path ${archetype}`);
+  }
 }
 
 for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
