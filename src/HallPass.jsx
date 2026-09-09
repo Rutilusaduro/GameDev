@@ -7678,7 +7678,7 @@ export default function HallPass(){
       if(newRel!==undefined) patch.relationship=newRel;
       return patch;
     }));
-    push(`🐛 Debug: student #${sid} updated.`);
+    push(`🐛 Debug: resident #${sid} updated.`);
   };
 
   const useSessionEncouragement=(enc)=>{

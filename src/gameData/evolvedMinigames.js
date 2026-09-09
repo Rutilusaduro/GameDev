@@ -51,7 +51,7 @@ export const EVOLVED_MINIGAMES = {
   },
   presentation_defense: {
     title: 'Panel Review',
-    tag: 'HALL LOG SUBJECT',
+    tag: 'HALL LOG FOCUS',
     accent: '#2c5f8a',
     phases: [
       {

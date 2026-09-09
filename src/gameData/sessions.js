@@ -14,8 +14,8 @@ export const GROUP_CONVERSATIONS=[
 export const RA_SPECIALTIES=[
   {id:"psychology",label:"Psychology",emoji:"🧠",desc:"You read the floor like a case file. The rationalizations, the quiet negotiations residents make with themselves — you see the shape of them before anyone else does.",bonus:"Talk actions grant +2 additional relationship. Observe reveals emotional state."},
   {id:"literature",label:"Literature",emoji:"📚",desc:"You read transformation into every text. You recognize a character arc when you're living one — and when you're writing someone else's.",bonus:"+15% relationship from conversation actions. Dinner conversations are richer."},
-  {id:"nutrition",label:"Nutrition Science",emoji:"🔬",desc:"The body is your subject. Intake, accumulation, the whole scientific romance of how things change and where they end up.",bonus:"All feeding actions +10% gain. Floor check-ins unlock caloric analysis."},
-  {id:"art_history",label:"Art History",emoji:"🎨",desc:"You've spent years teaching people to really look at form. The appreciative eye is a habit by now. You can't turn it off.",bonus:"Observe costs 0 AP. Group dinner jealousy triggers more frequently."},
+  {id:"nutrition",label:"Nutrition Science",emoji:"🔬",desc:"The body is your logbook. Intake, accumulation, the whole scientific romance of how things change and where they end up.",bonus:"All feeding actions +10% gain. Floor check-ins unlock caloric analysis."},
+  {id:"art_history",label:"Art History",emoji:"🎨",desc:"Years of studying form taught you to really look. The appreciative eye is a habit by now. You can't turn it off.",bonus:"Observe costs 0 AP. Group dinner jealousy triggers more frequently."},
   {id:"physical_ed",label:"Physical Education",emoji:"🏋️",desc:"Years preaching fitness. There's a particular poetry in what you're doing now. You know exactly where each pound lands.",bonus:"Resident weight and stage always visible. Stage transitions unlock unique commentary."},
   {id:"philosophy",label:"Philosophy",emoji:"⚖️",desc:"Everything is relative. Consequence is deferred. You are examining several lives on your floor, including your own.",bonus:"+5% all gain actions. Admin scrutiny rises 20% more slowly."},
 ];
@@ -28,7 +28,7 @@ export const RA_TRAITS=[
   {id:"observant",label:"Observant",emoji:"👁️",desc:"Nothing escapes you. Weight stages, how a shirt fits, the slight breathlessness on stairs — you clock all of it, always.",effect:"Resident weight always visible. Observe costs 0 AP."},
   {id:"generous",label:"Generous",emoji:"🍽️",desc:"You express care through food. It's almost automatic. The portions are just enthusiastic.",effect:"All feeding actions +15% gain. Dinner fullness +10%."},
   {id:"charismatic",label:"Charismatic",emoji:"✨",desc:"Residents listen when you talk. They lean in. They stay for hall hours longer than they intended.",effect:"Talk actions grant double relationship. Dinner conversations unlock sooner."},
-  {id:"discreet",label:"Discreet",emoji:"🔇",desc:"You're good at making the unusual seem unremarkable. Keeping things quiet is a skill you've honed.",effect:"Admin scrutiny rises 35% more slowly. Research study risk halved."},
+  {id:"discreet",label:"Discreet",emoji:"🔇",desc:"You're good at making the unusual seem unremarkable. Keeping things quiet is a skill you've honed.",effect:"Admin scrutiny rises 35% more slowly. Board scrutiny risk halved."},
 ];
 
 /** @deprecated use RA_TRAITS */

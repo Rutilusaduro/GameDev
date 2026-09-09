@@ -1114,6 +1114,17 @@ check('picker-resident-framing-ui', () => {
   assert.match(cultivator, /Recruit Tester/);
   assert.doesNotMatch(cultivator, /Select a Subject|Recruit Subject|Subject: /);
   assert.doesNotMatch(evolved, /subject\?\.name\|\|'The subject'/);
+  const minigames = read('src/gameData/evolvedMinigames.js');
+  assert.match(minigames, /tag: 'HALL LOG FOCUS'/);
+  assert.doesNotMatch(minigames, /HALL LOG SUBJECT/i);
+});
+
+check('ra-specialties-legacy-framing', () => {
+  const sessions = read('src/gameData/sessions.js');
+  assert.match(sessions, /The body is your logbook/);
+  assert.match(sessions, /Years of studying form taught you to really look/);
+  assert.match(sessions, /Board scrutiny risk halved/);
+  assert.doesNotMatch(sessions, /The body is your subject|teaching people to really look|Research study risk halved/i);
 });
 
 check('floor-event-hall-target', () => {
