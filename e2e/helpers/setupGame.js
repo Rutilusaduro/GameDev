@@ -24,6 +24,25 @@ export async function completeRaSetup(page, {
   await expect(page.getByText(`RA DESK — ${dorm.toUpperCase()}`)).toBeVisible();
 }
 
+/** Debug: unlock hall lounge dinner skills and jump to Actions. */
+export async function unlockDinnerQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Dinner QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+}
+
+/** Open a resident from roster; pick origin deck if first contact. */
+export async function openResidentDetail(page, name) {
+  await page.getByRole('button', { name: '📋 Roster' }).click();
+  await page.locator('.roster-tile').filter({ hasText: name }).first().click();
+  const origin = page.locator('.origin-pick-modal');
+  if (await origin.isVisible().catch(() => false)) {
+    await origin.locator('.origin-pick-card').first().click();
+  }
+  await expect(page.getByText('Personal Actions')).toBeVisible({ timeout: 10_000 });
+}
+
 async function clickIfVisible(locator) {
   if (await locator.isVisible().catch(() => false)) {
     await locator.click();

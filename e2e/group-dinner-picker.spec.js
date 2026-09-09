@@ -1,13 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { completeRaSetup, dismissBlockingModals } from './helpers/setupGame.js';
+import { completeRaSetup, dismissBlockingModals, unlockDinnerQA } from './helpers/setupGame.js';
 
 test('group dinner picker opens from Actions after Dinner QA unlock', async ({ page }) => {
   await completeRaSetup(page);
-
-  await page.getByRole('button', { name: '🐛 Debug' }).click();
-  await page.getByRole('button', { name: /Dinner QA/ }).click();
-  await page.getByRole('button', { name: '✕ Close' }).click();
-  await dismissBlockingModals(page);
+  await unlockDinnerQA(page);
 
   await expect(page.getByText('Arrange Group Dinner')).toBeVisible();
 
