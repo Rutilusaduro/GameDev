@@ -228,11 +228,26 @@ check('resident-embodiment-module', () => {
 check('embodiment-modal-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.embodiment-modal/);
+  assert.match(css, /\.embodiment-primary-btn:focus-visible/);
+  assert.match(css, /\.embodiment-action-btn:focus-visible/);
   const modal = read('src/components/v2/EmbodimentModal.jsx');
   assert.match(modal, /embodiment-modal/);
+  assert.match(modal, /className="embodiment-primary-btn"/);
+  assert.match(modal, /className="embodiment-action-btn"/);
   const backdrop = read('src/components/v2/SceneBackdrop.jsx');
   assert.match(backdrop, /variant = 'embodiment'/);
   assert.doesNotMatch(backdrop, /VARIANTS\.spirit/);
+});
+
+check('embodiment-campus-framing', () => {
+  const walk = read('src/textEngine/scenes/v2/embodiment/campusWalk.js');
+  assert.match(walk, /a resident whose body has outpaced/);
+  assert.match(walk, /a resident in a doorway/);
+  assert.match(walk, /one resident, groceries/);
+  assert.doesNotMatch(walk, /a girl whose body|a girl in a doorway|one girl, groceries/i);
+  const depth = read('src/textEngine/scenes/v2/embodiment/embodiedCampusDepth.js');
+  assert.match(depth, /"Sisters," she trills/);
+  assert.doesNotMatch(depth, /"Girls," she trills/i);
 });
 
 check('core-modal-polish', () => {

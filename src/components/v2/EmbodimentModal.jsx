@@ -137,7 +137,7 @@ export function EmbodimentModal({
         </div>
 
         {!active ? (
-          <button type="button" style={{ ...C.btn('#6a30a0'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); handleStart(); }}>
+          <button type="button" className="embodiment-primary-btn" style={{ ...C.btn('#6a30a0'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); handleStart(); }}>
             Slip Inside — Begin Campus Walk
           </button>
         ) : (
@@ -162,7 +162,7 @@ export function EmbodimentModal({
                 <p style={{ fontSize: 10, color: '#b0a090', lineHeight: 1.55, marginBottom: 8, whiteSpace: 'pre-wrap' }}>
                   {pendingEvent.prose}
                 </p>
-                <button type="button" style={{ ...C.btn('#5a4020'), width: '100%', fontSize: 11 }} onClick={handleEventDone}>
+                <button type="button" className="embodiment-primary-btn" style={{ ...C.btn('#5a4020'), width: '100%', fontSize: 11 }} onClick={handleEventDone}>
                   Live through it — continue
                 </button>
               </div>
@@ -188,6 +188,7 @@ export function EmbodimentModal({
                     <button
                       key={act.id}
                       type="button"
+                      className="embodiment-action-btn"
                       style={{ ...C.btn('#4a2870'), textAlign: 'left', fontSize: 11 }}
                       onClick={() => handleAction(act)}
                     >
@@ -199,7 +200,7 @@ export function EmbodimentModal({
               </>
             )}
 
-            <button type="button" style={{ ...C.btn('#283848'), width: '100%' }} onClick={handleRelease}>
+            <button type="button" className="embodiment-primary-btn" style={{ ...C.btn('#283848'), width: '100%' }} onClick={handleRelease}>
               Release — Return to RA Desk
             </button>
           </>

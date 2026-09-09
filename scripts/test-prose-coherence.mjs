@@ -54,6 +54,12 @@ import '../src/textEngine/scenes/v2/resonance/depth.js';
 import '../src/textEngine/scenes/earlyGain/personas.js';
 import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/scenes/weighIn/index.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
+import {
+  renderEmbodiedArrive,
+  renderEmbodiedEvent,
+} from '../src/textEngine/scenes/v2/embodiment/campusWalk.js';
+import '../src/textEngine/scenes/v2/embodiment/embodiedCampusDepth.js';
+import '../src/textEngine/scenes/v2/rituals/depth.js';
 import '../src/textEngine/scenes/wifeLessons/talkDepth.js';
 import '../src/textEngine/scenes/attitude.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
@@ -188,6 +194,11 @@ const BANNED = [
   /\bevery evolved girl\b/i,
   /\bEvery evolved girl\b/i,
   /\bSomewhere a girl is already eating\b/i,
+  /\ba girl whose body\b/i,
+  /\ba girl in a doorway\b/i,
+  /\bone girl, groceries\b/i,
+  /\beach girl feeding\b/i,
+  /\bChapter girls\b/i,
 ];
 
 function assertClean(text, label) {
@@ -586,6 +597,19 @@ const campusV2 = render('{campus.v2.depth}', buildTextContext({
   globals: { campusFattening: false },
 }))?.trim();
 if (campusV2) assertClean(campusV2, 'campus v2 depth');
+
+const embStudent = { ...(INIT_STUDENTS.find((s) => s.id === 6) || INIT_STUDENTS[6]), lbs: 280, corruption: 1 };
+const embArrive = renderEmbodiedArrive(embStudent, 'dorms', 10, { v2DepthChance: 0 });
+if (embArrive) assertClean(embArrive, 'embodied arrive');
+for (const eventId of ['stuck_door', 'elevator_groan', 'bully_forcefeed']) {
+  const ref = INIT_STUDENTS.find((s) => s.archetype === 'sorority' && s.id !== embStudent.id) || INIT_STUDENTS[0];
+  const embEvent = renderEmbodiedEvent(eventId, embStudent, 'union', 10, {
+    ref,
+    v2DepthChance: 0,
+    globals: { stageMin: 8 },
+  });
+  if (embEvent) assertClean(embEvent, `embodied event ${eventId}`);
+}
 
 for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie', 'sorority', 'eced']) {
   const subject = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];

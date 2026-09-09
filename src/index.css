@@ -433,6 +433,12 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(138, 75, 224, 0.18);
 }
 
+.embodiment-primary-btn:focus-visible,
+.embodiment-action-btn:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.85);
+  outline-offset: 2px;
+}
+
 .talk-modal {
   background: linear-gradient(165deg, rgba(8, 4, 18, 0.98), rgba(20, 8, 36, 0.96), rgba(6, 2, 12, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(128, 64, 192, 0.16);

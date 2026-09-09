@@ -23,7 +23,7 @@ registerPool('ritual.hall_banquet.depth', [
   ]},
   { when: { stageMin: 4 }, text: [
     'Plates circulate. Laughter between bites. Appetite formalized into something the room can applaud.',
-    'Four or more at the table — each girl feeding the spectacle as much as the food feeds her.',
+    'Four or more at the table — each resident feeding the spectacle as much as the food feeds her.',
   ]},
   { when: {}, text: [
     'The banquet unfolds — heat, chewing, the slow conversion of dinner into doctrine.',

@@ -12,7 +12,7 @@ registerPool('emb.walk.arrive', [
   ]},
   { when: { stageMin: 5 }, text: [
     'Her hips find the rhythm of someone who has learned that speed is no longer free.',
-    'She waddles with the careful pride of a girl whose body has outpaced her old habits.',
+    'She waddles with the careful pride of a resident whose body has outpaced her old habits.',
   ]},
   { when: { corruptionMin: 40 }, text: [
     'She does not hurry. Hunger and fullness trade places inside her and she keeps walking anyway.',
@@ -44,7 +44,7 @@ registerPool('emb.event.stuck_door', [
   ]},
   { when: { stageMin: 6 }, text: [
     'She misjudged the angle. Shoulders, then hips — a wiggle, a blush, a sound from the frame that campus will remember.',
-    'For a long moment she is a girl in a doorway, too much and too real. Someone behind her pretends not to watch.',
+    'For a long moment she is a resident in a doorway, too much and too real. Someone behind her pretends not to watch.',
   ]},
   { when: {}, text: [
     'The frame is narrower than last month. She turns, exhales, and still has to push.',
@@ -156,7 +156,7 @@ registerPool('emb.event.gym_scale_shame', [
 registerPool('emb.event.elevator_groan', [
   { when: { stageMin: 8 }, text: [
     'The elevator cable complains like a living thing. She fills the car — belly, hips, the soft geography of her — and the floor indicator hesitates between floors.',
-    'One passenger car, one girl, groceries on every shelf of her body. The motor whines. She pretends not to hear.',
+    'One passenger car, one resident, groceries on every shelf of her body. The motor whines. She pretends not to hear.',
   ]},
   { when: {}, text: [
     'The dorm elevator groans when she steps in. She is the reason it groans.',

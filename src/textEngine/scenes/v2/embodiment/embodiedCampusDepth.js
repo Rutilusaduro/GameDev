@@ -12,7 +12,7 @@ registerModuleVariants('emb.event.bully_forcefeed', [
     'Serena does not bully — she coaches. The portions are obscene and she calls them "recovery."',
   ]},
   { when: { refArchetype: 'sorority' }, text: [
-    '{ref.name} makes it a chapter event. "Girls," she trills, "help her catch up." They do. Enthusiastically.',
+    '{ref.name} makes it a chapter event. "Sisters," she trills, "help her catch up." They do. Enthusiastically.',
     'Pastel aggression: {ref.name} slides a plate across the table and smiles like this is philanthropy.',
   ]},
 ]);

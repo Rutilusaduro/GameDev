@@ -129,7 +129,7 @@ registerModuleVariants('interior.sizeRealize', [
   { when: { studentId: 6, stageMin: 5, relationship: [2, 3] }, weight: W, text: [
     'Tiffany realizes your gaze caught the squeeze past the booth. She does not mind.',
     'She takes up space socially and physically. Greek letters stretch with her.',
-    'Chapter girls take up room. She is exceeding the standard.',
+    'Chapter sisters take up room. She is exceeding the standard.',
   ]},
   { when: { studentId: 9, stageMin: 7 }, weight: W, text: [
     'Chloé turns in a doorway and learns a new French word for how wide she has become. She smiles.',

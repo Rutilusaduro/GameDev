@@ -36,7 +36,7 @@ registerModuleVariants('eat.firstBite', [
   { when: { studentId: 6 }, weight: 4, text: [
     'Tiffany takes the first bite mid-sentence about rush week. The sentence continues. The plate empties.',
     'First bite is social. Second is strategic. Third is sincere.',
-    'She laughs with her mouth full. Chapter girls do not apologize for appetite.',
+    'She laughs with her mouth full. Chapter sisters do not apologize for appetite.',
   ] },
   { when: { studentId: 7 }, weight: 4, text: [
     'Priya eats the first bite between planner entries. Multitasking includes calories now.',
