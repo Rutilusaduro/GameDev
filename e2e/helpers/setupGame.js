@@ -32,6 +32,15 @@ export async function unlockDinnerQA(page) {
   await dismissBlockingModals(page);
 }
 
+/** Debug: Cassidy sumo evolved arc + open student detail. */
+export async function unlockEvolvedArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Evolved Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();

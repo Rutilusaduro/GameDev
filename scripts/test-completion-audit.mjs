@@ -150,6 +150,8 @@ const REQUIRED_E2E = [
   'e2e/hall-unlock-modal.spec.js',
   'e2e/group-dinner-picker.spec.js',
   'e2e/dinner-lane.spec.js',
+  'e2e/dinner-evening-ends.spec.js',
+  'e2e/evolved-arc.spec.js',
 ];
 
 check('e2e-coverage', () => {
@@ -1921,6 +1923,8 @@ check('dinner-lane-row-polish', () => {
   assert.match(css, /\.dinner-lane-choice-row:hover:not\(:disabled\)/);
   assert.match(desk, /dinner-lane-choice-row/);
   assert.match(desk, /dinner-out-modal/);
+  assert.match(desk, /dinner-end-modal/);
+  assert.match(desk, /EVENING ENDS/);
   assert.match(desk, /immobile-redirect-modal/);
 });
 

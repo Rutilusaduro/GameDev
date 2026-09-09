@@ -50,6 +50,7 @@ export function DebugPanel({
   setAp,
   setOwnedSkills,
   setOwnedHallSkills,
+  setSelectedId,
   setDebugInputs,
   setDebugOpen,
   setLilithUnlocked,
@@ -188,6 +189,21 @@ export function DebugPanel({
                     setView('actions');
                   }}>
                   🍽️ Dinner QA
+                </button>
+              )}
+              {setSelectedId && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(140,30,30,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? { ...s, evolvedForm: 'sumo', lbs: 260, relationship: 60, mood: 'focused' }
+                        : s
+                    )));
+                    setAp((a) => Math.max(a, 20));
+                    setSelectedId(1);
+                    setView('student');
+                  }}>
+                  🥋 Evolved Arc QA
                 </button>
               )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}
