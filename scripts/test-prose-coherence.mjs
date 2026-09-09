@@ -9,9 +9,11 @@ import { DORM_LIST } from '../src/gameData/dorms.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import {
   EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
+  EVOLUTION_BUTTON_BLURB, WL_LESSONS,
   FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
   FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES,
 } from '../src/gameData/evolvedForms.js';
+import { FACULTY } from '../src/gameData/faculty.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY, CG_RA_REPLY_TEXT } from '../src/gameData/competitiveGainerText.js';
 import { TALK_TOPICS } from '../src/gameData/talkSystem.js';
@@ -157,6 +159,12 @@ const BANNED = [
   /\bThe students are done\b/i,
   /\bsorority students\b/i,
   /\bYour sorority students\b/i,
+  /\benrolled cohort\b/i,
+  /\byour section\b/i,
+  /\bhalf your section\b/i,
+  /\bstudents in your section\b/i,
+  /\bher students\b/i,
+  /\bAsk about her students\b/i,
 ];
 
 function assertClean(text, label) {
@@ -607,6 +615,26 @@ for (const node of Object.values(HUNT_NODES)) {
 }
 for (const route of CULT_DISTRIBUTION_ROUTES) {
   assertClean(`${route.label} ${route.desc}`, `cult route ${route.id}`);
+  if (route.flavor) assertClean(route.flavor(), `cult route flavor ${route.id}`);
+}
+
+for (const [archetype, blurbFn] of Object.entries(EVOLUTION_BUTTON_BLURB)) {
+  const student = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
+  assertClean(blurbFn({ ...student, name: student.name, lbs: student.lbs ?? 180 }), `evolution blurb ${archetype}`);
+}
+
+for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
+  for (const lesson of lessons) {
+    assertClean(`${lesson.label} ${lesson.text}`, `wife lessons stage ${stage} ${lesson.id}`);
+  }
+}
+
+for (const teacher of FACULTY) {
+  for (const node of Object.values(teacher.tree)) {
+    for (const opt of node.options || []) {
+      assertClean(opt.label, `staff lounge ${teacher.id} option`);
+    }
+  }
 }
 
 const kylie = INIT_STUDENTS.find((s) => s.id === 2) || INIT_STUDENTS[2];

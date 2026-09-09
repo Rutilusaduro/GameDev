@@ -27,7 +27,7 @@ export const CULT_DISTRIBUTION_ROUTES = [
     devotionGain: [6, 10],
     classGain: [1, 3],
     addictedGain: [0, 1],
-    flavor: () => `Sophia meets three girls who "just love the product" in a stairwell. They leave with crates. By evening, half your section looks well-fed and vague about why.`,
+    flavor: () => `Sophia meets three residents who "just love the product" in a stairwell. They leave with crates. By evening, half your floor looks well-fed and vague about why.`,
   },
   {
     id: 'union_bulk',

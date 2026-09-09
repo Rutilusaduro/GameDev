@@ -42,14 +42,14 @@ registerPoolAutoDecompose('scrutiny.tierUp.body', [
     `Something about your hall has caught an eye it shouldn't have. No specifics. Not yet.`,
   ]},
   { when: { scrutinyTierId: 1 }, weight: 3, text: [
-    `"Patterns consistent with non-standard dietary supplementation have been observed in your enrolled cohort." Bureaucratic language for: someone noticed.`,
-    `A wellness coordinator has flagged "anomalous weight change velocity" among students in your section. The word "anomalous" is doing a lot of work.`,
+    `"Patterns consistent with non-standard dietary supplementation have been observed among residents on your floor." Bureaucratic language for: someone noticed.`,
+    `A wellness coordinator has flagged "anomalous weight change velocity" among residents in your hall. The word "anomalous" is doing a lot of work.`,
     `An anonymous concern — filed through the campus wellness portal, passed up the chain. Nothing actionable yet, but the paper trail has started.`,
   ]},
   { when: { scrutinyTierId: 2 }, weight: 3, text: [
     `Your hall is under a preliminary welfare review. You have two weeks to submit documentation of your approach to resident wellness. The clock is already running.`,
     `Housing governance has authorized a file review. No interview, not yet — but they're pulling incident reports, check-in logs, and the health center visits. The net is widening.`,
-    `"This office has received multiple independent reports regarding the physical welfare of students in your section. A formal review period commences immediately." You read it three times.`,
+    `"This office has received multiple independent reports regarding the physical welfare of residents in your hall. A formal review period commences immediately." You read it three times.`,
   ]},
   { when: { scrutinyTierId: 3 }, weight: 3, text: [
     `You are under formal investigation by the Office of Housing Conduct and Student Welfare. Floor events involving your residents are suspended pending outcome. The institution is no longer looking the other way.`,

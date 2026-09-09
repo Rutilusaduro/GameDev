@@ -534,6 +534,22 @@ check('chapter-hostess-resident-framing', () => {
   assert.doesNotMatch(evolved, /sorority students|Your sorority students/i);
 });
 
+check('scrutiny-resident-framing', () => {
+  const scrutiny = read('src/textEngine/scenes/scrutiny/index.js');
+  assert.match(scrutiny, /residents on your floor|residents in your hall/);
+  assert.doesNotMatch(scrutiny, /enrolled cohort|students in your section|your section/i);
+});
+
+check('staff-lounge-resident-framing', () => {
+  const faculty = read('src/gameData/faculty.js');
+  assert.match(faculty, /Ask about her workshop/);
+  assert.match(faculty, /Ask about her kitchen crew/);
+  assert.doesNotMatch(faculty, /Ask about her students/i);
+  const cult = read('src/gameData/pharmacistCult.js');
+  assert.match(cult, /half your floor/);
+  assert.doesNotMatch(cult, /half your section/i);
+});
+
 check('homeroom-resident-framing', () => {
   const activity = read('src/textEngine/scenes/homeroom/homeroomActivityDepth.js');
   assert.match(activity, /the residents have been waiting/);

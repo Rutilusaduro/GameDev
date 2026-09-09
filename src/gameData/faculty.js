@@ -127,7 +127,7 @@ export const FACULTY = [
           :`Dr. Abara watches you cross the lounge the way a chess player watches a knight move. "RA," she says pleasantly. "Fascinating semester, isn't it. Statistically speaking."`,
         options:[
           {label:"\"What's fascinating about it?\"", next:"fascinating"},
-          {label:"Ask about her students", next:"students", affinity:2},
+          {label:"Ask about her workshop", next:"students", affinity:2},
           {label:"\"What do you think you've noticed?\"", next:"noticed", minAffinity:40},
           {label:"Excuse yourself", end:true},
         ]},
@@ -164,7 +164,7 @@ export const FACULTY = [
           :`Chef Delgado points a wooden spoon at you before you've fully entered the kitchen. "You. RA. You look underfed and I take that personally. Sit."`,
         options:[
           {label:"Submit to being fed", next:"fed"},
-          {label:"Ask about her students", next:"students", affinity:2},
+          {label:"Ask about her kitchen crew", next:"students", affinity:2},
           {label:"Ask for the family recipe", next:"recipe", minAffinity:40},
           {label:"Escape with your waistline", end:true},
         ]},
