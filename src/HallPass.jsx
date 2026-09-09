@@ -3313,7 +3313,7 @@ export default function HallPass(){
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
     const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
-    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isProf:false,wk:currentWeek});
+    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
     // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
     const candidates=visible
@@ -3338,12 +3338,12 @@ export default function HallPass(){
       else if(s.lbs>priya.lbs*0.80)  replyType='proud';
       else replyType='behind';
       const replyText=templates[replyType]||templates.behind||'...';
-      msgs.push({text:`[${s.name}] ${replyText}`,isProf:false,wk:currentWeek});
+      msgs.push({text:`[${s.name}] ${replyText}`,isRa:false,wk:currentWeek});
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
     const followup=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
-    msgs.push({text:`[Priya] ${followup}`,isProf:false,wk:currentWeek});
+    msgs.push({text:`[Priya] ${followup}`,isRa:false,wk:currentWeek});
     return msgs;
   };
 
@@ -3486,7 +3486,7 @@ export default function HallPass(){
         priyaValue:comparison?.priyaValue,
         targetValue:comparison?.targetValue,
       });
-      const msg={text:`[You] ${text}`,isRa:true,isProf:true,wk:week};
+      const msg={text:`[You] ${text}`,isRa:true,wk:week};
       const delta=cgDriveDelta(opt);
       return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
     });
@@ -9025,10 +9025,10 @@ export default function HallPass(){
       {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
-      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgDrive={cgDrive} cgRaReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
+      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgRaReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
-      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgDrive={cgDrive} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
+      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled}/>}

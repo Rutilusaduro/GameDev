@@ -333,6 +333,16 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(128, 64, 200, 0.16);
 }
 
+.competitive-gainer-modal {
+  background: linear-gradient(165deg, rgba(10, 3, 6, 0.98), rgba(24, 6, 12, 0.96), rgba(8, 2, 4, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(232, 41, 74, 0.14);
+}
+
+.private-session-modal {
+  background: linear-gradient(165deg, rgba(10, 6, 22, 0.98), rgba(22, 10, 38, 0.96), rgba(8, 4, 16, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 80, 200, 0.16);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -386,6 +396,8 @@
   .confrontation-modal,
   .hall-unlock-modal,
   .tier-up-modal,
+  .competitive-gainer-modal,
+  .private-session-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

@@ -148,7 +148,7 @@ check('ui-polish-css', () => {
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
     'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
-    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal', 'hall-unlock-modal', 'tier-up-modal',
+    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal', 'week-recap-modal', 'confrontation-modal', 'hall-unlock-modal', 'tier-up-modal', 'competitive-gainer-modal', 'private-session-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -271,14 +271,29 @@ check('ra-profile-approach-id', () => {
   assert.doesNotMatch(desk, /const SUBJECTS =/);
 });
 
-check('no-spirits-shim-imports', () => {
-  const grep = (rel) => read(rel);
-  for (const rel of [
-    'src/HallPass.jsx',
-    'src/gameData/campusExploration.js',
-  ]) {
-    assert.doesNotMatch(grep(rel), /spirits\.js/);
+check('no-spirits-shim', () => {
+  assert.ok(!existsSync(join(root, 'src/gameData/spirits.js')));
+  for (const rel of ['src/HallPass.jsx', 'src/gameData/campusExploration.js']) {
+    assert.doesNotMatch(read(rel), /spirits\.js/);
   }
+});
+
+check('cg-chat-ra-framing', () => {
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /isRa:false/);
+  assert.match(desk, /isRa:true/);
+  assert.doesNotMatch(desk, /isProf:/);
+  assert.match(read('src/gameData/competitiveGainerState.js'), /cgIsRaMessage/);
+});
+
+check('competitive-gainer-modal-polish', () => {
+  assert.match(read('src/index.css'), /\.competitive-gainer-modal/);
+  assert.match(read('src/components/CompetitiveGainerModals.jsx'), /competitive-gainer-modal/);
+});
+
+check('private-session-modal-polish', () => {
+  assert.match(read('src/index.css'), /\.private-session-modal/);
+  assert.match(read('src/components/PrivateSessionModal.jsx'), /private-session-modal/);
 });
 
 check('hall-unlock-modal-polish', () => {

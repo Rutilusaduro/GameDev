@@ -23,7 +23,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
     const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,padding:20}}>
+            <div className="hall-pass-modal-in private-session-modal" style={{...C.modal,maxWidth:640,padding:20}}>
 
               {/* Header */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>

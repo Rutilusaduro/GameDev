@@ -15,6 +15,10 @@ export function cgSubstateGain(subState) {
 }
 
 /** Normalize legacy spirit → drive keys from older saves. */
+export function cgIsRaMessage(msg) {
+  return !!(msg?.isRa ?? msg?.isProf);
+}
+
 export function migrateCompetitiveGainerState(state) {
   if (!state) return state;
   const drive = cgDrive(state);
