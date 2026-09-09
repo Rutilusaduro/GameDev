@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// WEEKLY EVENT — athletics department weigh-in
+// WEEKLY EVENT — athletics wing weigh-in
 // Migrated from NARRATIVE_EVENTS monolith (team_weigh_in).
 // Beats: dodge → mandatory → verdict → aftermath.
 // ═══════════════════════════════════════════════════════════════
@@ -13,7 +13,7 @@ registerPool('weekly.teamWeighIn.dodge', [
     '{subject.name} has been treating the athletics office scale like a rival she does not intend to race.',
   ] },
   { when: { archetype: 'athlete' }, text: [
-    '{subject.name} has been avoiding the athletics department scale for weeks.',
+    '{subject.name} has been avoiding the athletics wing scale for weeks.',
     'The team weigh-in has been on the calendar. {subject.name} has been conspicuously elsewhere.',
     'Every reminder about the athletics scale has met the same answer from {subject.name}: later.',
   ] },
@@ -32,7 +32,7 @@ registerPool('weekly.teamWeighIn.forced', [
     'This week the athletics office makes it mandatory.',
   ] },
   { when: { archetype: 'athlete' }, text: [
-    'Today the athletics department scale is mandatory. {subject.name} cannot dodge it again.',
+    'Today the athletics wing scale is mandatory. {subject.name} cannot dodge it again.',
     'Today there is no excuse left. She steps on anyway.',
     'The athletics office finally runs out of patience. She goes in.',
   ] },

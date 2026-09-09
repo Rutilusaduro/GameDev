@@ -94,6 +94,9 @@ const BANNED = [
   { id: 'department-colloquium', re: /department colloquium/i },
   { id: 'academic-output', re: /academic output/i },
   { id: 'wellness-seminar-label', re: /Wellness Seminar/ },
+  { id: 'department-budget', re: /Department budget/i },
+  { id: 'athletics-department', re: /Athletics Department/i },
+  { id: 'future-of-department', re: /future of the department/i },
 ];
 
 const ALLOW_LINE = [

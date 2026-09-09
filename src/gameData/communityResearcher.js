@@ -27,7 +27,7 @@ const STAGE_OPENERS = [
 
 export const THESIS_BOARD = {
   phases: [
-    (name) => `Team Captain Review — pool deck conference room, Athletics Department.
+    (name) => `Team Captain Review — pool deck conference room, Athletics wing.
 
 Coach Rivera (dry, arms crossed, whistle on the table) sits across from Assistant AD Harmon (skeptical, old-school). Sports nutritionist Ward — three color-coded tabs on Cassidy's meal log — takes notes on the left.
 

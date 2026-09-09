@@ -18,6 +18,7 @@
     "test:ra-theme": "node scripts/test-ra-theme.mjs",
     "test:dorm-unlock-ui": "node scripts/test-dorm-unlock-ui.mjs",
     "test:playthrough": "node scripts/test-playthrough.mjs",
+    "test:ui-strings": "node scripts/test-ui-strings.mjs",
     "test:smoke": "node scripts/test-smoke.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },

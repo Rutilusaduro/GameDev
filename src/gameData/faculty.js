@@ -76,7 +76,7 @@ export const FACULTY = [
           {label:"\"I do. Constantly.\"", next:"constantly", affinity:6},
           {label:"Back", next:"hub"},
         ]},
-      constantly:{ text:()=>`"I KNEW it." She points the empty shake cup at you like a trophy. "Hartley owes me ten bucks. We bet on which department was making everyone thick and happy." A grin like a stadium light. "Mine's second. Yours is first. Respect."`,
+      constantly:{ text:()=>`"I KNEW it." She points the empty shake cup at you like a trophy. "Hartley owes me ten bucks. We bet on which floor was making everyone thick and happy." A grin like a stadium light. "Mine's second. Yours is first. Respect."`,
         options:[ {label:"Back", next:"hub"} ]},
     },
   },

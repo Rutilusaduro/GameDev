@@ -40,7 +40,7 @@ registerPool('opposition.agenda.wellness_seminar', [
 
 registerPool('opposition.agenda.budget_freeze', [
   { when: {}, text: [
-    'Department budget frozen pending review. Feasts must wait on institutional arithmetic.',
+    'Floor budget frozen pending review. Feasts must wait on institutional arithmetic.',
     'Finance holds your line item. Every tray this week costs something personal.',
     'The freeze lands mid-semester — abundance rationed by someone who never ate with your hall.',
     'Vance cites oversight. Your wallet tightens while scrutiny stays loose.',
