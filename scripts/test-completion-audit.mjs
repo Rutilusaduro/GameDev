@@ -193,6 +193,8 @@ const REQUIRED_E2E = [
   'e2e/floor-checkin-ceremony.spec.js',
   'e2e/embodiment-ceremony.spec.js',
   'e2e/origin-pick-ceremony.spec.js',
+  'e2e/talk-ceremony.spec.js',
+  'e2e/weigh-in-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

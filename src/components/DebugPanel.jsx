@@ -82,6 +82,8 @@ export function DebugPanel({
   setFloorCheckIn,
   setEmbodimentStudent,
   setOriginPickState,
+  setTalkStudentId,
+  setWeighInState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -380,6 +382,31 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   ✦ Origin Pick QA
+                </button>
+              )}
+              {setTalkStudentId && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(70,40,110,0.55)' }}
+                  onClick={() => {
+                    setAp((a) => Math.max(a, 10));
+                    setTalkStudentId(1);
+                    setDebugOpen(false);
+                  }}>
+                  💬 Talk QA
+                </button>
+              )}
+              {setWeighInState && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(90,50,30,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 240, relationship: 50 };
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? { ...s, origin: s.origin && s.origin !== 'default' ? s.origin : 'madd_subject_zero', lbs: 240, relationship: 50 }
+                        : s
+                    )));
+                    setWeighInState({ student: { ...subject, origin: subject.origin && subject.origin !== 'default' ? subject.origin : 'madd_subject_zero', lbs: 240 }, phase: 'scene' });
+                    setDebugOpen(false);
+                  }}>
+                  ⚖️ Weigh-In QA
                 </button>
               )}
               {setTierUpModal && (

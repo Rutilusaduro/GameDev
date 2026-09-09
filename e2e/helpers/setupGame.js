@@ -287,6 +287,18 @@ export async function triggerOriginPickQA(page) {
   await page.getByRole('button', { name: /Origin Pick QA/ }).click();
 }
 
+/** Debug: open talk modal for Cassidy. */
+export async function triggerTalkQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Talk QA/ }).click();
+}
+
+/** Debug: open weigh-in modal for Cassidy at Heavy stage. */
+export async function triggerWeighInQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Weigh-In QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
