@@ -31,7 +31,7 @@ import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
-import { useModalDismiss } from '../hooks/useModalDismiss.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 // ── response builder ──────────────────────────────────────────
 
@@ -246,8 +246,6 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
     onClose();
   };
 
-  useModalDismiss(handleCloseFromResponse);
-
   const groupedTopics = [
     { group:"talk",    label:"Conversation",   topics: TALK_TOPICS.filter(t=>t.group==="talk") },
     { group:"suggest", label:"Suggestion",     topics: TALK_TOPICS.filter(t=>t.group==="suggest") },
@@ -255,7 +253,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
   ].filter(g=>g.topics.length>0);
 
   return(
-    <div style={C.overlay} onClick={(e)=>{ if(e.target===e.currentTarget) handleCloseFromResponse(); }}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); handleCloseFromResponse(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in talk-modal" style={{
         ...C.modal,
         maxWidth: activeResponse?.topic?.sceneType === 'devour' ? 620 : 500,
@@ -355,6 +353,6 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
           </div>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

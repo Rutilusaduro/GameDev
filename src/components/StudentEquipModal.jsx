@@ -6,6 +6,7 @@ import { getDevice } from '../gameData/devices.js';
 import { slotFor } from '../gameData/deviceEffects.js';
 import { furnitureComfortLabel } from '../gameData/deviceEffects.js';
 import { StudentEquipPanel } from './StudentEquipPanel.jsx';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const SILVER = '#a8b0c0';
 const SILVER_BORDER = '#c0c8d8';
@@ -102,11 +103,10 @@ export function StudentEquipModal({
     : null;
 
   return (
-    <div style={C.overlay} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div
         className="hall-pass-modal-in student-equip-modal"
         style={{ ...C.modal, maxWidth: 460, border: `1px solid ${SILVER_BORDER}` }}
-        onClick={e => e.stopPropagation()}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: SILVER }}>EQUIPMENT — {student.name}</div>
@@ -145,7 +145,7 @@ export function StudentEquipModal({
           Close
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 

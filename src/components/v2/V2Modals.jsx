@@ -13,6 +13,7 @@ import { renderDreamOpen, renderDreamScenario, renderDreamWake } from '../../tex
 import { renderEchoReplay } from '../../textEngine/scenes/v2/echo/index.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
+import { ModalOverlay } from '../ModalOverlay.jsx';
 
 export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week = 1, reachLevel = 1, onRun, onClose, soundEnabled = true }) {
   const [selected, setSelected] = useState([]);
@@ -33,7 +34,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
   };
 
   return (
-    <div style={C.modalOverlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in feast-ritual-modal" style={{ ...C.modal, maxWidth: 480 }}>
         <SceneBackdrop variant="feast" />
         <p style={C.secT}>Feast Rituals</p>
@@ -67,7 +68,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
         )}
         <button type="button" className="feast-ritual-choice-row" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
@@ -89,7 +90,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
   const choices = scenario ? getDreamChoices(scenario.id, lucidUnlocked) : [];
 
   return (
-    <div style={C.modalOverlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in dream-modal" style={{ ...C.modal, maxWidth: 440 }}>
         <SceneBackdrop variant="dream" />
         <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
@@ -121,7 +122,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
         )}
         <button type="button" className="dream-choice-row" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
@@ -168,7 +169,7 @@ export function EchoArchiveModal({ student, echo, prose, depth, onClose, onReson
   if (!echo || !student) return null;
   const meta = ECHO_TYPES[echo.type] || { label: echo.type, icon: '📜' };
   return (
-    <div style={C.modalOverlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in echo-modal" style={{ ...C.modal, maxWidth: 520, borderColor: '#6080a060' }}>
         <SceneBackdrop variant="echo" />
         <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 12 }}>
@@ -193,6 +194,6 @@ export function EchoArchiveModal({ student, echo, prose, depth, onClose, onReson
         )}
         <button type="button" className="echo-choice-row" style={{ ...C.smBtn, width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

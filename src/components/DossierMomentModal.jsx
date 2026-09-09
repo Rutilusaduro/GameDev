@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
 import { resolvePinExcerpt } from '../gameData/dossierReplay.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function DossierMomentModal({ pin, student, week = 1, onClose, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, pin?.kind, pin?.ref, pin?.week]);
@@ -18,11 +19,10 @@ export function DossierMomentModal({ pin, student, week = 1, onClose, soundEnabl
   const stageRef = pin.kind === 'stageUp' ? WEIGHT_STAGES[Number(pin.ref)] : null;
 
   return (
-    <div style={C.overlay} onClick={onClose}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div
         className="hall-pass-modal-in dossier-moment-modal"
         style={{ ...C.modal, maxWidth: 520, border: '1px solid #50a080' }}
-        onClick={(e) => e.stopPropagation()}
       >
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#50a080', marginBottom: 6 }}>PINNED MOMENT</div>
         <div style={{ fontSize: 16, fontWeight: 700, color: '#c0e0c0', marginBottom: 4 }}>{pin.label}</div>
@@ -43,6 +43,6 @@ export function DossierMomentModal({ pin, student, week = 1, onClose, soundEnabl
           Close
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import {
   CIRCUIT_BOARDS,
   getCircuitBoard,
@@ -43,7 +44,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
   };
 
   return (
-    <div style={{ ...C.overlay, zIndex: 1240 }}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled} style={{ zIndex: 1240 }}>
       <div className="hall-pass-modal-in device-modal" style={{
         ...C.modal,
         maxWidth: 720,
@@ -174,6 +175,6 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
           </div>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

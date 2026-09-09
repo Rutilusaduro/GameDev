@@ -5,6 +5,7 @@ import { LAB_ACQUISITION_OPTIONS } from '../gameData/talia.js';
 import { formatPartsBag } from '../gameData/labParts.js';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 import { renderLabSessionBeat } from '../textEngine/scenes/talia/lab.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#4a6080';
 
@@ -24,8 +25,9 @@ export function LabBuildModal({
   if (!labSession) return null;
   const options = LAB_ACQUISITION_OPTIONS[labSession.stageId] || LAB_ACQUISITION_OPTIONS[1];
 
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onCancel(); };
   const wrap = children => (
-    <div style={{ ...C.overlay, zIndex: 8200 }}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled} style={{ zIndex: 8200 }}>
       <div className="hall-pass-modal-in lab-build-modal" style={{
         ...C.modal,
         maxWidth: 500,
@@ -34,7 +36,7 @@ export function LabBuildModal({
       }}>
         {children}
       </div>
-    </div>
+    </ModalOverlay>
   );
 
   if (labSession.phase === 'acquire') {

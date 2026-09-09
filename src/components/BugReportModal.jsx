@@ -8,6 +8,7 @@ import {
   copyBugReport,
   downloadBugReport,
 } from '../gameData/bugReport.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function BugReportModal({ getSnapshotContext, getSaveContext, prefillError, onClose, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('click', soundEnabled); }, [soundEnabled]);
@@ -47,7 +48,7 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
   };
 
   return (
-    <div style={{ ...C.overlay, zIndex: 400 }}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled} style={{ zIndex: 400 }}>
       <div className="hall-pass-modal-in bug-report-modal" style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(165deg,#1a1410,#0f0c08)', border: '1px solid #8a704050', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
           <div style={{ fontSize: 10, letterSpacing: 3, color: '#c9a060' }}>📋 SHIFT LOG</div>
@@ -92,6 +93,6 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
         </div>
         {status && <div style={{ fontSize: 10, color: '#80a060', marginTop: 10 }}>{status}</div>}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

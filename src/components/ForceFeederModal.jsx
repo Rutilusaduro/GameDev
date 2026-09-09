@@ -26,6 +26,7 @@ import {
   renderForceFeederAftermath,
 } from '../textEngine/scenes/forceFeeder/index.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#6a5088';
 const PULSE_COLOR = '#c070a0';
@@ -160,7 +161,7 @@ export function ForceFeederModal({
   const candidates = students.filter((s) => !s.hidden || s.id === TALIA_STUDENT_ID);
 
   return (
-    <div style={{ ...C.overlay, zIndex: 1250 }}>
+    <ModalOverlay onClose={onClose} soundEnabled={soundEnabled} style={{ zIndex: 1250 }}>
       <div className="hall-pass-modal-in force-feeder-modal" style={{
         ...C.modal,
         maxWidth: 660,
@@ -328,7 +329,7 @@ export function ForceFeederModal({
           </>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 

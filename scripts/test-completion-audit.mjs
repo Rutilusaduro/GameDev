@@ -2081,9 +2081,26 @@ check('modal-dismiss-polish', () => {
     'src/components/WeighInModal.jsx',
     'src/components/OppositionHearingModal.jsx',
     'src/components/TalkModal.jsx',
+    'src/components/v2/V2Modals.jsx',
+    'src/components/v2/EmbodimentModal.jsx',
+    'src/components/MiscModals.jsx',
+    'src/components/BugReportModal.jsx',
+    'src/components/DossierMomentModal.jsx',
+    'src/components/StudentEquipModal.jsx',
+    'src/components/CircuitBoardModal.jsx',
+    'src/components/LabBuildModal.jsx',
+    'src/components/ForceFeederModal.jsx',
   ]) {
     const src = read(rel);
-    assert.match(src, /ModalOverlay|useModalDismiss/, `${rel}: modal dismiss wiring`);
+    assert.match(src, /ModalOverlay/, `${rel}: modal dismiss wiring`);
+  }
+});
+
+check('no-modal-overlay-token-leak', () => {
+  for (const abs of walkSrcFiles()) {
+    const rel = abs.slice(root.length + 1);
+    const src = readFileSync(abs, 'utf8');
+    assert.doesNotMatch(src, /C\.modalOverlay/, `${rel}: undefined C.modalOverlay — use ModalOverlay component`);
   }
 });
 

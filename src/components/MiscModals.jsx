@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { getFullnessStage } from '../gameData/sessions.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 
 export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolutionModal, soundEnabled = true }){
   return(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); setEvolutionModal(null); }} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in evolution-offer-modal" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0520,#180840,#0c0520)",border:"2px solid #7030c060"}}>
             <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>✦ A NEW DIRECTION</div>
             <div style={{fontSize:17,fontWeight:700,color:"#d0a0ff",marginBottom:10}}>{evolutionModal.student?.name}</div>
@@ -22,14 +23,15 @@ export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolut
             </div>
             <button type="button" className="evolution-offer-choice-row" style={C.btn("#201040")} onClick={()=>{ playHallPassSound('click', soundEnabled); setEvolutionModal(null); }}>Not yet</button>
           </div>
-        </div>
+        </ModalOverlay>
   );
 }
 
 export function SessionResultModal({ sessionResult, setSessionResult, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled]);
+  const dismiss = () => { playHallPassSound('confirm', soundEnabled); setSessionResult(null); };
   return(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in session-result-modal" style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>ROOM SESSION LOGGED — #{sessionResult.sessionCount}</div>
             <div style={{fontSize:12,color:"#7a50a0",marginBottom:12}}>
@@ -44,16 +46,17 @@ export function SessionResultModal({ sessionResult, setSessionResult, soundEnabl
                 She can now comfortably eat {sessionResult.capacityBonus}% more than when you first hosted her on your floor.
               </div>
             </div>
-            <button type="button" className="session-result-choice-row" style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setSessionResult(null); }}>Continue →</button>
+            <button type="button" className="session-result-choice-row" style={C.btn("#5818a8")} onClick={dismiss}>Continue →</button>
           </div>
-        </div>
+        </ModalOverlay>
   );
 }
 
 export function TapOutPopup({ setTapOutPopup, tapOutPopup, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled]);
+  const dismiss = () => { playHallPassSound('click', soundEnabled); setTapOutPopup(null); };
   return(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in tap-out-modal" style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c06060",marginBottom:6}}>⛔ SHE TAPS OUT</div>
             <div style={{fontSize:11,color:"#a06050",marginBottom:10}}>
@@ -63,9 +66,9 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup, soundEnabled = true }
               {tapOutPopup.text}
             </p>
             <div style={{fontSize:11,color:"#705040",marginBottom:16}}>She ate enough for a family of five. The session is over.</div>
-            <button type="button" className="tap-out-choice-row" style={C.btn("#5a1515")} onClick={()=>{ playHallPassSound('click', soundEnabled); setTapOutPopup(null); }}>Close</button>
+            <button type="button" className="tap-out-choice-row" style={C.btn("#5a1515")} onClick={dismiss}>Close</button>
           </div>
-        </div>
+        </ModalOverlay>
   );
 }
 
@@ -76,8 +79,9 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('unlock', soundEnabled); }, [soundEnabled]);
   if (!dorms?.length) return null;
   const primary = dorms[0];
+  const dismiss = () => { playHallPassSound('click', soundEnabled); onContinue(); };
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
       <div
         className="hall-pass-modal-in hall-unlock-modal"
         style={{
@@ -114,19 +118,26 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
           type="button"
           className="hall-unlock-cta"
           style={{ ...C.btn(primary.color), width: '100%', fontWeight: 700 }}
-          onClick={() => { playHallPassSound('click', soundEnabled); onContinue(); }}
+          onClick={dismiss}
         >
           View Roster →
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 
 export function TierUpModal({ setStudents, setTierUpModal, tierUpModal, soundEnabled = true }){
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled]);
+  const dismiss = () => {
+    if(tierUpModal.newTier.id===3){
+      setStudents(prev=>prev.map(s=>s.id!==tierUpModal.student.id?s:{...s,gainMultiplier:(s.gainMultiplier||1)*1.1}));
+    }
+    playHallPassSound('confirm', soundEnabled);
+    setTierUpModal(null);
+  };
   return(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={dismiss} soundEnabled={soundEnabled}>
           <div
           className="hall-pass-modal-in tier-up-modal"
           style={{
@@ -161,15 +172,9 @@ export function TierUpModal({ setStudents, setTierUpModal, tierUpModal, soundEna
                 💜 <strong>Intimate.</strong> She trusts you implicitly. Talk actions give bonus relationship.
               </div>
             )}
-            <button className="tier-up-cta" style={{...C.btn("#5020a0"),background:tierUpModal.newTier.color+"99",width:"100%"}} onClick={()=>{
-              if(tierUpModal.newTier.id===3){
-                setStudents(prev=>prev.map(s=>s.id!==tierUpModal.student.id?s:{...s,gainMultiplier:(s.gainMultiplier||1)*1.1}));
-              }
-              playHallPassSound('confirm', soundEnabled);
-              setTierUpModal(null);
-            }}>Continue →</button>
+            <button className="tier-up-cta" style={{...C.btn("#5020a0"),background:tierUpModal.newTier.color+"99",width:"100%"}} onClick={dismiss}>Continue →</button>
           </div>
-        </div>
+        </ModalOverlay>
   );
 }
 

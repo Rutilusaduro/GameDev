@@ -22,6 +22,7 @@ import '../../textEngine/scenes/v2/embodiment/depth.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
 import { CampusMap } from '../../views/CampusView.jsx';
+import { ModalOverlay } from '../ModalOverlay.jsx';
 
 function logColor(line) {
   if (line.startsWith('🌒')) return '#c8a0e8';
@@ -116,7 +117,7 @@ export function EmbodimentModal({
   };
 
   return (
-    <div style={C.modalOverlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in embodiment-modal" style={{ ...C.modal, maxWidth: 560, maxHeight: '92vh', overflowY: 'auto', borderColor: '#8a4be080' }}>
         <SceneBackdrop variant="embodiment" />
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
@@ -208,6 +209,6 @@ export function EmbodimentModal({
 
         <button type="button" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
