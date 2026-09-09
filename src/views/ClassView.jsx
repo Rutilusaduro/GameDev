@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CLASS VIEW — student roster
+// ROSTER VIEW — resident roster
 // ═══════════════════════════════════════════════════════════════
 import { useMemo } from 'react';
 import { C } from '../styles.js';
@@ -50,6 +50,7 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
   );
   return (
     <div
+      className="roster-tile"
       style={{ ...C.card, border: cardBorder, background: cardBg || C.card.background, position: 'relative', overflow: 'hidden' }}
       onClick={onOpen}
     >

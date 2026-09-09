@@ -11,6 +11,7 @@ import {
   CG_FILLED_CHAT_TEMPLATES,
   CG_FILLED_MEASUREMENT_REACTIONS,
   CG_PROFESSOR_REPLY_TEXT,
+  CG_RA_REPLY_TEXT,
 } from './competitiveGainerText.js';
 
 export const EVOLVED_REACTIONS = {
@@ -4975,10 +4976,10 @@ export const CG_CHAT_TEMPLATES = {
     { id:"challenge", ...CG_PROFESSOR_REPLY_TEXT.challenge },
   ],
   raReplies:[
-    { id:"encourage", ...CG_PROFESSOR_REPLY_TEXT.encourage },
-    { id:"taunt", ...CG_PROFESSOR_REPLY_TEXT.taunt },
-    { id:"observe", ...CG_PROFESSOR_REPLY_TEXT.observe },
-    { id:"challenge", ...CG_PROFESSOR_REPLY_TEXT.challenge },
+    { id:"encourage", ...CG_RA_REPLY_TEXT.encourage },
+    { id:"taunt", ...CG_RA_REPLY_TEXT.taunt },
+    { id:"observe", ...CG_RA_REPLY_TEXT.observe },
+    { id:"challenge", ...CG_RA_REPLY_TEXT.challenge },
   ],
 };
 

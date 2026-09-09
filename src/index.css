@@ -19,3 +19,37 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 }
+
+.roster-tile {
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+  cursor: pointer;
+}
+
+.roster-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.38);
+}
+
+.hall-pass-nav-btn {
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.hall-pass-nav-btn:hover:not([data-active="true"]) {
+  color: #a880d8 !important;
+  background: rgba(120, 40, 200, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hall-pass-view-in,
+  .ra-wizard-card,
+  .roster-tile,
+  .hall-pass-nav-btn {
+    animation: none;
+    transition: none;
+  }
+
+  .ra-wizard-card:hover,
+  .roster-tile:hover {
+    transform: none;
+  }
+}

@@ -195,6 +195,7 @@ export const CG_FILLED_CHAT_TEMPLATES = {
 };
 
 const prof = (label, spiritDelta, byStage, fallback) => ({ label, spiritDelta, byStage, fallback });
+/** @deprecated use CG_RA_REPLY_TEXT */
 export const CG_PROFESSOR_REPLY_TEXT = {
   encourage: prof("You're clearly in the lead", 2, {
     Heavy:"The data supports your position, Priya. {girlName}'s {bodypart} is already falling behind your heavy belly. Keep going.",
@@ -229,6 +230,9 @@ export const CG_PROFESSOR_REPLY_TEXT = {
     Blob:"Even at this scale, {girlName} dares to challenge you in {bodypart}. Show her what true mass looks like.",
   }, "There is no obvious measured gap to close. Create one anyway - choose a category, overfeed it, and make the next board update humiliatingly clear."),
 };
+
+/** RA reply copy for Priya competitive-gainer group chat */
+export const CG_RA_REPLY_TEXT = CG_PROFESSOR_REPLY_TEXT;
 
 const makeReactionText = {
   priya_larger: {

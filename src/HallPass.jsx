@@ -8547,7 +8547,7 @@ export default function HallPass(){
           const accent=professorProfile?.color||"#7a24d8";
           return (
           v==="student"&&!sel?null:
-          <button key={v} style={{
+          <button key={v} className="hall-pass-nav-btn" data-active={active ? 'true' : 'false'} style={{
             ...C.navB(active),
             ...(active?{borderBottomColor:accent,color:"#e8d8ff"}:{}),
           }} onClick={()=>setView(v)}>{l}</button>
@@ -8557,7 +8557,7 @@ export default function HallPass(){
       <div style={C.body}>
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
-          {/* ── CLASS VIEW ── */}
+          {/* ── ROSTER VIEW ── */}
           {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
 
           {/* ── THE SETTLING (list) ── */}
