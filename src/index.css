@@ -710,6 +710,25 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 24px rgba(80, 136, 120, 0.14);
 }
 
+.compound-feed-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease, border-color 0.18s ease;
+}
+
+.compound-feed-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.compound-feed-choice-row:active {
+  transform: translateX(1px) scale(0.995);
+}
+
+.compound-feed-choice-row:focus-visible {
+  outline: 2px solid rgba(120, 200, 168, 0.85);
+  outline-offset: 2px;
+}
+
 .cultivator-modal {
   background: linear-gradient(165deg, rgba(12, 4, 0, 0.98), rgba(26, 8, 0, 0.96), rgba(8, 2, 0, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 69, 19, 0.16);
@@ -1065,7 +1084,9 @@
   .community-researcher-card:active,
   .community-researcher-choice:hover,
   .cultivator-choice-row:hover,
-  .cultivator-choice-row:active {
+  .cultivator-choice-row:active,
+  .compound-feed-choice-row:hover,
+  .compound-feed-choice-row:active {
     transform: none;
   }
 }

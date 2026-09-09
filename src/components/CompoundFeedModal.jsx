@@ -45,7 +45,7 @@ export function CompoundFeedModal({
           )}
         </div>
         <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
-          <button type="button" style={{ ...C.btn('#284838'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onConfirm(null); }}>
+          <button type="button" className="compound-feed-choice-row" style={{ ...C.btn('#284838'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onConfirm(null); }}>
             Feed without compound
           </button>
           {CATEGORY_ORDER.map(cat => {
@@ -61,6 +61,7 @@ export function CompoundFeedModal({
                   <button
                     key={c.id}
                     type="button"
+                    className="compound-feed-choice-row"
                     style={{
                       ...C.btn(cat === 'control' ? '#3a2848' : cat === 'cult' ? '#2a2040' : '#1a3848'),
                       width: '100%',

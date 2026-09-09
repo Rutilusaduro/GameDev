@@ -138,6 +138,7 @@ const REQUIRED_E2E = [
   'e2e/semester-wk5.spec.js',
   'e2e/semester-wk10.spec.js',
   'e2e/semester-wk12.spec.js',
+  'e2e/semester-wk14.spec.js',
   'e2e/semester-wk8-all-halls.spec.js',
   'e2e/semester-wk16-all-halls.spec.js',
   'e2e/semester-wk16-clickthrough.spec.js',
@@ -419,6 +420,15 @@ check('cultivator-row-polish', () => {
   assert.match(css, /\.cultivator-choice-row:hover/);
   assert.match(modal, /cultivator-choice-row/);
   assert.match(modal, /type="button"/);
+});
+
+check('compound-feed-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/CompoundFeedModal.jsx');
+  assert.match(css, /\.compound-feed-choice-row:focus-visible/);
+  assert.match(css, /\.compound-feed-choice-row:hover/);
+  assert.match(modal, /compound-feed-choice-row/);
+  assert.match(modal, /compound-feed-modal/);
 });
 
 check('minigame-modal-polish', () => {
