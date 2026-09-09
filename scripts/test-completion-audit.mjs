@@ -2023,6 +2023,25 @@ check('echo-row-polish', () => {
   assert.match(modal, /echo-choice-row/);
 });
 
+check('dinner-venue-row-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.dinner-venue-choice-row:focus-visible/);
+  assert.match(css, /\.dinner-venue-choice-row:hover:not\(:disabled\)/);
+  assert.match(desk, /dinner-venue-choice-row/);
+  assert.match(desk, /chooseDinnerVenue/);
+  assert.match(desk, /chooseGroupVenue/);
+});
+
+check('group-dinner-picker-row-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.group-dinner-picker-row:focus-visible/);
+  assert.match(css, /\.group-dinner-picker-row:hover:not\(\[aria-disabled='true'\]\)/);
+  assert.match(desk, /group-dinner-picker-row/);
+  assert.match(desk, /group-dinner-picker-modal/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

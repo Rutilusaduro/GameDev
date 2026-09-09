@@ -8062,7 +8062,8 @@ export default function HallPass(){
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                     {venueList.map(v=>(
-                      <div key={v.id} style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}} onClick={()=>chooseDinnerVenue(v)}>
+                      <div key={v.id} role="button" tabIndex={0} className="dinner-venue-choice-row" style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}} onClick={()=>chooseDinnerVenue(v)}
+                        onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                         <div style={{fontWeight:700,fontSize:13,color:v.id==="atelier"?"#f0d060":"#d8a8ff",marginBottom:3}}>{v.label}</div>
                         <div style={{fontSize:11,color:"#6a4888",lineHeight:1.4,marginBottom:5}}>{v.desc}</div>
                         <div style={{fontSize:10,color:"#7a5040"}}>{v.baseCourses} courses · +{v.gainRange[0]}–{v.gainRange[1]} lbs est.</div>
@@ -8232,6 +8233,10 @@ export default function HallPass(){
                 const isDisabled=isImmobile||isFull;
                 return(
                   <div key={s.id}
+                    role="button"
+                    tabIndex={isDisabled?-1:0}
+                    aria-disabled={isDisabled||undefined}
+                    className="group-dinner-picker-row"
                     style={{...C.card,cursor:isDisabled?"default":"pointer",
                       border:`1px solid ${isSelected?"#7a30d8":isImmobile?"#400020":isFull?"#180830":"#280840"}`,
                       background:isSelected?"rgba(80,20,140,0.3)":isImmobile?"rgba(60,0,20,0.3)":"rgba(255,255,255,0.03)",
@@ -8242,7 +8247,8 @@ export default function HallPass(){
                         ...prev,
                         selected:isSelected?prev.selected.filter(id=>id!==s.id):[...prev.selected,s.id],
                       }));
-                    }}>
+                    }}
+                    onKeyDown={(e)=>{ if(!isDisabled&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); e.currentTarget.click(); } }}>
                     <div style={{fontWeight:700,fontSize:12,color:isSelected?"#d0a0ff":isImmobile?"#c05070":"#c0a0e0",marginBottom:2}}>{s.name.split(" ")[0]}</div>
                     <div style={{fontSize:10,color:"#7a5090"}}>{stg.label}</div>
                     <div style={{fontSize:10,color:"#5a3060"}}>{s.lbs} lbs · ❤ {s.relationship}</div>
@@ -8352,8 +8358,9 @@ export default function HallPass(){
                   </div>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7,marginBottom:12}}>
                     {venueList.map(v=>(
-                      <div key={v.id} style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}}
-                        onClick={()=>chooseGroupVenue(v)}>
+                      <div key={v.id} role="button" tabIndex={0} className="dinner-venue-choice-row" style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}}
+                        onClick={()=>chooseGroupVenue(v)}
+                        onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                         <div style={{fontWeight:700,fontSize:12,color:v.id==="atelier"?"#f0d060":"#d8a8ff",marginBottom:2}}>{v.label}</div>
                         <div style={{fontSize:10,color:"#5a3860",lineHeight:1.4}}>{v.desc}</div>
                       </div>

@@ -1507,19 +1507,25 @@
 }
 
 .skill-purchase-choice-row,
-.dinner-lane-choice-row {
+.dinner-lane-choice-row,
+.dinner-venue-choice-row,
+.group-dinner-picker-row {
   transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
 .skill-purchase-choice-row:hover:not(:disabled),
-.dinner-lane-choice-row:hover:not(:disabled) {
+.dinner-lane-choice-row:hover:not(:disabled),
+.dinner-venue-choice-row:hover:not(:disabled),
+.group-dinner-picker-row:hover:not([aria-disabled='true']) {
   transform: translateX(2px);
   filter: brightness(1.05);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
 }
 
 .skill-purchase-choice-row:focus-visible,
-.dinner-lane-choice-row:focus-visible {
+.dinner-lane-choice-row:focus-visible,
+.dinner-venue-choice-row:focus-visible,
+.group-dinner-picker-row:focus-visible {
   outline: 2px solid rgba(128, 64, 200, 0.85);
   outline-offset: 2px;
 }
@@ -1748,6 +1754,8 @@
   .dossier-moment-choice-row:hover,
   .skill-purchase-choice-row:hover,
   .dinner-lane-choice-row:hover,
+  .dinner-venue-choice-row:hover,
+  .group-dinner-picker-row:hover,
   .bug-report-choice-row:hover,
   .lab-build-choice-row:hover,
   .stream-brand-choice-row:hover,
