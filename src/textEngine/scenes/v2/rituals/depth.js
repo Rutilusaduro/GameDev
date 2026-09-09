@@ -16,7 +16,7 @@ registerPool('ritual.communion_snack.depth', [
   ]},
 ]);
 
-registerPool('ritual.class_banquet.depth', [
+registerPool('ritual.hall_banquet.depth', [
   { when: { stageMin: 8 }, text: [
     'Courses stack like architecture — soup, bread, mains, desserts refusing refusal. The hall eats with ceremonial hunger.',
     'Banquet scale: many bellies, one rhythm, competitive undertones softening into collective surrender.',

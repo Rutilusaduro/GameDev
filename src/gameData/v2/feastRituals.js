@@ -21,7 +21,7 @@ export const FEAST_RITUALS = [
     desc: 'A shared plate. Fingers brush. Nobody pretends they are not watching each other eat.',
   },
   {
-    id: 'class_banquet',
+    id: 'hall_banquet',
     tier: 2,
     label: 'Hall Banquet',
     icon: '🍽',
@@ -91,7 +91,14 @@ export function getAvailableRituals({ ownedSkills = {}, ownedHallSkills = {}, st
   });
 }
 
+const RITUAL_ID_ALIASES = { class_banquet: 'hall_banquet' };
+
+function normalizeRitualId(ritualId) {
+  return RITUAL_ID_ALIASES[ritualId] || ritualId;
+}
+
 export function canRunRitual(ritualId, studentIds, ctx) {
+  ritualId = normalizeRitualId(ritualId);
   const ritual = FEAST_RITUALS.find((r) => r.id === ritualId);
   if (!ritual) return { ok: false, reason: 'Unknown ritual' };
   const available = getAvailableRituals(ctx);

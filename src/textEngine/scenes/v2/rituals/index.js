@@ -24,7 +24,7 @@ registerPool('ritual.communion_snack.after', [
   ]},
 ]);
 
-registerPool('ritual.class_banquet', [
+registerPool('ritual.hall_banquet', [
   { when: { stageMin: 6 }, text: [
     'Courses arrive like architecture — soup, bread, mains, dessert refusing refusal. Competitive chewing softens into collective surrender.',
   ]},

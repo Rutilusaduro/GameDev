@@ -24,7 +24,7 @@ registerModuleVariants("ritual.generic.depth", [{ when: {}, weight: 3, text: ["C
 registerModuleVariants("ritual.communion_snack", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, resonance pleased.", "Shared plate, shared heat — intimacy measured in bites."] }]);
 registerModuleVariants("ritual.communion_snack.beat", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.communion_snack.after", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, resonance pleased."] }]);
-registerModuleVariants("ritual.class_banquet", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, resonance pleased."] }]);
+registerModuleVariants("ritual.hall_banquet", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, resonance pleased."] }]);
 registerModuleVariants("ritual.leviathan_vigil", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.generic", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
 registerModuleVariants("echo.type.stage_up.depth", [{ when: {}, weight: 3, text: ["Fabric surrendered. Appetite did not. The echo preserves both."] }]);

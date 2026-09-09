@@ -226,11 +226,14 @@ export function handleRitual(ritualId, studentIds, ctx) {
     rel: ritual.relEach,
     corruption: ritual.corruptionEach,
   }));
+  const prevCompleted = ctx.v2State.rituals.completed[ritual.id]
+    || (ritual.id === 'hall_banquet' ? ctx.v2State.rituals.completed.class_banquet : 0)
+    || 0;
   const rituals = {
     ...ctx.v2State.rituals,
     completed: {
       ...ctx.v2State.rituals.completed,
-      [ritualId]: (ctx.v2State.rituals.completed[ritualId] || 0) + 1,
+      [ritual.id]: prevCompleted + 1,
     },
     lastRitualWeek: ctx.week,
   };
@@ -238,7 +241,7 @@ export function handleRitual(ritualId, studentIds, ctx) {
     ok: true,
     apCost: ritual.apCost,
     effects,
-    hallCred: ritualId === 'sacred_gluttony' ? V2_CONFIG.ritualSacredFavor : 0,
+    hallCred: ritual.id === 'sacred_gluttony' ? V2_CONFIG.ritualSacredFavor : 0,
     v2State: { ...ctx.v2State, rituals },
   };
 }

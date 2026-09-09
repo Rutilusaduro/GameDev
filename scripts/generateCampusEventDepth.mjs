@@ -104,7 +104,7 @@ const ARCH_SCENE = {
 
 const STAGE_SCENE = {
   early: [
-    'She smooths her shirt mid-lecture — aware something is changing, not alarmed yet.',
+    'She smooths her shirt mid-check-in — aware something is changing, not alarmed yet.',
     'Gym mentions and sidelong glances; early softness still negotiable in her mind.',
   ],
   mid: [
@@ -113,33 +113,33 @@ const STAGE_SCENE = {
   ],
   heavy: [
     'She commands the room without trying — reinforced seat, calm authority, body at home.',
-    'Scale shows in how she settles; the lecture hall adjusts around her warmth.',
+    'Scale shows in how she settles; the lounge adjusts around her warmth.',
   ],
 };
 
-const CLASS_SCENE = {
-  class_snack_break: [
+const HALL_SCENE = {
+  hall_snack_break: [
     'You call an unscheduled break and produce snacks — no reason needed, hunger sufficient.',
-    'Mid-lecture pause, box opened; the class needs no excuse to descend.',
+    'Mid-floor-meeting pause, box opened; the hall needs no excuse to descend.',
   ],
-  class_group_project: [
-    'Lecture becomes a meal-plan project — hypothetical on paper, very real on plates.',
+  hall_group_project: [
+    'Check-in becomes a meal-plan project — hypothetical on paper, very real on plates.',
     'Groups form around food logic; taste-testing becomes primary research.',
   ],
-  class_birthday: [
+  hall_birthday: [
     'Birthday week rumor has spread — cake expectation hangs in the air.',
-    'Someone celebrates; the class expects dessert diplomacy.',
+    'Someone celebrates; the hall expects dessert diplomacy.',
   ],
-  class_slump: [
+  hall_slump: [
     'Three PM slump — drooping heads, aggressive naps, action required.',
-    'Energy crash owns the room; caffeine and sugar are the obvious medicine.',
+    'Energy crash owns the lounge; caffeine and sugar are the obvious medicine.',
   ],
-  class_potluck: [
+  hall_potluck: [
     'Potluck seriousness exceeded your announcement — containers line the walls, smell extraordinary.',
-    'The room became a buffet; nobody pretends this is only academic.',
+    'The room became a buffet; nobody pretends this is only a floor meeting.',
   ],
-  class_extended: [
-    'Dense material, real engagement — two hours in and nobody has looked at the clock.',
+  hall_extended: [
+    'Dense programming, real engagement — two hours in and nobody has looked at the clock.',
     'The session runs long because it is working; stomachs register the omission eventually.',
   ],
 };
@@ -176,8 +176,8 @@ function sceneAlts(sceneId, baseText) {
     const stage = sceneId.replace('stage_', '');
     return pick2(STAGE_SCENE[stage] || CHOICE_SOCIAL, seed);
   }
-  if (sceneId.startsWith('class_')) {
-    return pick2(CLASS_SCENE[sceneId] || CHOICE_FEED, seed);
+  if (sceneId.startsWith('hall_')) {
+    return pick2(HALL_SCENE[sceneId] || CHOICE_FEED, seed);
   }
   return pick2(CHOICE_SOCIAL, seed);
 }

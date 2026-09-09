@@ -24,11 +24,11 @@ registerModuleVariants("res.surge.depth", [{ when: {}, weight: 3, text: ["Appeti
 registerModuleVariants("res.pulse", [{ when: {}, weight: 3, text: ["Surge builds like weather. Mass answers mass through the link."] }]);
 registerModuleVariants("res.surge", [{ when: {}, weight: 3, text: ["The resonance hums. Hunger shared before it is confessed."] }]);
 registerModuleVariants("ritual.communion_snack.depth", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger.", "The ritual lingers after plates empty — butter, surrender, appetite pleased."] }]);
-registerModuleVariants("ritual.class_banquet.depth", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites.", "Bedside tribute — food carried to warm altars that cannot travel."] }]);
+registerModuleVariants("ritual.hall_banquet.depth", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites.", "Bedside tribute — food carried to warm altars that cannot travel."] }]);
 registerModuleVariants("ritual.sacred_gluttony.depth", [{ when: {}, weight: 3, text: ["Ceremony complete. Bellies remember. Appetite consecrated.", "Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.leviathan_vigil.depth", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites.", "Bedside tribute — food carried to warm altars that cannot travel."] }]);
 registerModuleVariants("ritual.communion_snack.beat", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, appetite pleased."] }]);
-registerModuleVariants("ritual.class_banquet", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
+registerModuleVariants("ritual.hall_banquet", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
 registerModuleVariants("ritual.sacred_gluttony", [{ when: {}, weight: 3, text: ["Ceremony complete. Bellies remember. Appetite consecrated.", "Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.leviathan_vigil", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
 registerModuleVariants("echo.capture.depth", [{ when: {}, weight: 3, text: ["The moment returns warmer — appetite sharper, body more present than memory promised.", "Archive replay: fullness intact, growth undeniable, shame absent."] }]);

@@ -197,7 +197,7 @@ for (const ev of NARRATIVE_EVENTS) {
   }
 }
 
-const floorScene = FLOOR_SCENES.find((s) => s.id === 'class_potluck');
+const floorScene = FLOOR_SCENES.find((s) => s.id === 'hall_potluck');
 const floorStudent = INIT_STUDENTS[0];
 const floorText = renderFloorSceneText(floorScene, floorStudent, 4);
 const floorResult = renderFloorChoiceResult(floorScene, 0, floorStudent, 4);
