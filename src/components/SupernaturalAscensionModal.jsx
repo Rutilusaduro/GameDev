@@ -8,7 +8,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
   const eligible = students.filter((s) => s.evolvedForm && !s.supernaturalForm && SUPERNATURAL_FORMS[s.archetype]);
   return (
     <div style={{ ...C.overlay, zIndex: 400 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560, background: 'linear-gradient(160deg,#050208,#120818,#050208)', border: '1px solid #6040a080' }}>
+      <div className="hall-pass-modal-in supernatural-ascension-modal" style={{ ...C.modal, maxWidth: 560, background: 'linear-gradient(160deg,#050208,#120818,#050208)', border: '1px solid #6040a080' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#a080d0', marginBottom: 8 }}>👻 THE SUPERNATURAL ACT</div>
         <p style={{ fontSize: 12, color: '#d0c0e8', lineHeight: 1.8, marginBottom: 14 }}>
           Week {opposition?.supernatural?.actWeek}: stomachs flutter empty, then hunger without mass. A voice of scarcity:

@@ -382,7 +382,7 @@ export function StreamSessionModal({
 
   return (
     <div style={C.overlay} key="stream-modal">
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 680, background: BG, border: `1px solid ${RED}50` }}>
+      <div className="hall-pass-modal-in stream-session-modal" style={{ ...C.modal, maxWidth: 680, background: BG, border: `1px solid ${RED}50` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ color: RED, fontWeight: 'bold', letterSpacing: 2, fontSize: 11 }}>
             📡 LIVE — {student.name.toUpperCase()}

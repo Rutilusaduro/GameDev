@@ -33,7 +33,7 @@ export function AscensionCeremonyModal({
   return (
     <div style={{ ...C.overlay, zIndex: 450 }} role="dialog" aria-modal="true" aria-labelledby="ascension-title">
       <div
-        className="hall-pass-modal-in"
+        className="hall-pass-modal-in ascension-ceremony-modal"
         style={{
           ...C.modal,
           maxWidth: 620,

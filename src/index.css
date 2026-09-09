@@ -433,6 +433,66 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(208, 80, 64, 0.14);
 }
 
+.salon-modal {
+  background: linear-gradient(165deg, rgba(18, 8, 12, 0.98), rgba(36, 16, 24, 0.96), rgba(10, 4, 8, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 41, 66, 0.14);
+}
+
+.stream-session-modal {
+  background: linear-gradient(165deg, rgba(14, 4, 4, 0.98), rgba(28, 8, 8, 0.96), rgba(8, 2, 2, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(224, 64, 64, 0.16);
+}
+
+.recording-session-modal {
+  background: linear-gradient(165deg, rgba(16, 8, 0, 0.98), rgba(26, 16, 0, 0.96), rgba(10, 4, 0, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(192, 128, 64, 0.14);
+}
+
+.collab-stream-modal {
+  background: linear-gradient(165deg, rgba(10, 0, 22, 0.98), rgba(20, 4, 40, 0.96), rgba(6, 0, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(142, 68, 173, 0.16);
+}
+
+.lilith-modal {
+  background: linear-gradient(165deg, rgba(10, 0, 15, 0.98), rgba(20, 0, 26, 0.96), rgba(6, 0, 10, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(128, 32, 160, 0.18);
+}
+
+.pharmacist-chem-modal {
+  background: linear-gradient(165deg, rgba(6, 15, 12, 0.98), rgba(10, 24, 20, 0.96), rgba(4, 10, 8, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(64, 160, 128, 0.14);
+}
+
+.pharmacist-cult-modal {
+  background: linear-gradient(165deg, rgba(10, 6, 20, 0.98), rgba(20, 10, 32, 0.96), rgba(6, 4, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(107, 74, 138, 0.16);
+}
+
+.wife-lessons-modal {
+  background: linear-gradient(165deg, rgba(18, 4, 12, 0.98), rgba(36, 8, 24, 0.96), rgba(10, 2, 8, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 34, 82, 0.16);
+}
+
+.chapter-hostess-modal {
+  background: linear-gradient(165deg, rgba(14, 4, 32, 0.98), rgba(24, 8, 48, 0.96), rgba(8, 2, 20, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 64, 224, 0.16);
+}
+
+.supernatural-ascension-modal {
+  background: linear-gradient(165deg, rgba(5, 2, 8, 0.98), rgba(18, 8, 24, 0.96), rgba(4, 1, 6, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(96, 64, 160, 0.18);
+}
+
+.ascension-ceremony-modal {
+  background: linear-gradient(165deg, rgba(3, 16, 22, 0.98), rgba(8, 36, 51, 0.96), rgba(2, 10, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(64, 184, 216, 0.16);
+}
+
+.picker-modal {
+  background: linear-gradient(165deg, rgba(8, 0, 21, 0.98), rgba(16, 4, 37, 0.96), rgba(6, 0, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(128, 64, 192, 0.14);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -506,6 +566,18 @@
   .refeed-surge-modal,
   .eating-contest-modal,
   .sumo-match-modal,
+  .salon-modal,
+  .stream-session-modal,
+  .recording-session-modal,
+  .collab-stream-modal,
+  .lilith-modal,
+  .pharmacist-chem-modal,
+  .pharmacist-cult-modal,
+  .wife-lessons-modal,
+  .chapter-hostess-modal,
+  .supernatural-ascension-modal,
+  .ascension-ceremony-modal,
+  .picker-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

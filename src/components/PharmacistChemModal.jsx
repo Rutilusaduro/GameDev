@@ -113,7 +113,7 @@ export function PharmacistChemModal({
 
   const wrap = children => (
     <div style={{ ...C.overlay, zIndex: 8200 }}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in pharmacist-chem-modal" style={{
         ...C.modal,
         maxWidth: 520,
         background: 'linear-gradient(160deg,#060f0c,#0a1814,#060f0c)',

@@ -25,7 +25,7 @@ export function PharmacistCultModal({
 
   const wrap = children => (
     <div style={{ ...C.overlay, zIndex: 8250 }}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in pharmacist-cult-modal" style={{
         ...C.modal,
         maxWidth: 520,
         background: 'linear-gradient(160deg,#0a0614,#140a20,#0a0614)',

@@ -153,6 +153,9 @@ check('ui-polish-css', () => {
     'origin-pick-modal', 'community-researcher-modal', 'compound-feed-modal', 'cultivator-modal',
     'evolution-offer-modal', 'session-result-modal', 'tap-out-modal', 'homeroom-queen-modal', 'fair-modal',
     'opposition-endgame-modal', 'refeed-surge-modal', 'eating-contest-modal', 'sumo-match-modal',
+    'salon-modal', 'stream-session-modal', 'recording-session-modal', 'collab-stream-modal',
+    'lilith-modal', 'pharmacist-chem-modal', 'pharmacist-cult-modal', 'wife-lessons-modal',
+    'chapter-hostess-modal', 'supernatural-ascension-modal', 'ascension-ceremony-modal', 'picker-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -362,6 +365,27 @@ check('owned-hall-local-var', () => {
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /const ownedHall=ownedHallSkills/);
   assert.doesNotMatch(desk, /const ownedClass=/);
+});
+
+check('arc-modal-polish', () => {
+  const css = read('src/index.css');
+  for (const [cls, file] of [
+    ['salon-modal', 'src/components/SalonAppetitModal.jsx'],
+    ['stream-session-modal', 'src/components/StreamSessionModal.jsx'],
+    ['recording-session-modal', 'src/components/RecordingSessionModal.jsx'],
+    ['collab-stream-modal', 'src/components/CollabStreamModal.jsx'],
+    ['lilith-modal', 'src/components/LilithModals.jsx'],
+    ['pharmacist-chem-modal', 'src/components/PharmacistChemModal.jsx'],
+    ['pharmacist-cult-modal', 'src/components/PharmacistCultModal.jsx'],
+    ['wife-lessons-modal', 'src/components/WifeLessonsModal.jsx'],
+    ['chapter-hostess-modal', 'src/components/ChapterHostessModals.jsx'],
+    ['supernatural-ascension-modal', 'src/components/SupernaturalAscensionModal.jsx'],
+    ['ascension-ceremony-modal', 'src/components/AscensionCeremonyModal.jsx'],
+    ['picker-modal', 'src/components/PickerModals.jsx'],
+  ]) {
+    assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
+    assert.match(read(file), new RegExp(cls));
+  }
 });
 
 check('hall-unlock-modal-polish', () => {

@@ -43,7 +43,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
           const transcript=history?.length?history:[];
           return(
             <div style={{...C.overlay,zIndex:360}}>
-              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
+              <div className="hall-pass-modal-in wife-lessons-modal" style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="wifeLessons" />
                 <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                   <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>💬 {person.toUpperCase()}</div>
@@ -99,7 +99,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         // ── Main session view ──
         return(
           <div style={{...C.overlay,zIndex:360}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in wife-lessons-modal" style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
               <SceneBackdrop variant="wifeLessons" />
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>

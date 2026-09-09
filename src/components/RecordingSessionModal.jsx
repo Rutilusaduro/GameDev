@@ -34,7 +34,7 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
         const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);
         return(
           <div style={C.overlay} key="recording-modal">
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
+            <div className="hall-pass-modal-in recording-session-modal" style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
                 <div style={{color:amber,fontWeight:"bold",letterSpacing:2,fontSize:11}}>🎬 FILM HER SESSION — {kylie.name.toUpperCase()}</div>
                 <div style={{color:amberDim,fontSize:11}}>Time {timeBar} | Take {rs.takeNum}</div>

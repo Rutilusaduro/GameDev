@@ -19,7 +19,7 @@ export function CollabStreamModal({ collabStreamState, students, doCollabAction,
 
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(5,0,15,0.94)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{background:"#0a0016",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:520,width:"95%",maxHeight:"92vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in collab-stream-modal" style={{background:"#0a0016",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:520,width:"95%",maxHeight:"92vh",overflowY:"auto"}}>
               <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:2,textAlign:"center"}}>🎥 COLLAB STREAM</div>
               <div style={{fontSize:14,fontWeight:"bold",color:lightPurple,marginBottom:2,textAlign:"center"}}>{kylie.name} × {partner.name}</div>
               <div style={{fontSize:10,color:"#9060b0",marginBottom:12,textAlign:"center"}}>{streamTitle}</div>

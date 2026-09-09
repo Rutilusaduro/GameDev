@@ -16,7 +16,7 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
         if(!ch.hangoutStudentId){
           return(
             <div style={{...C.overlay,zIndex:1200}}>
-              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:440,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340"}}>
+              <div className="hall-pass-modal-in chapter-hostess-modal" style={{...C.modal,maxWidth:440,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340"}}>
                 <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>HANG OUT · {ch.prepDaysLeft} DAY{ch.prepDaysLeft!==1?"S":""} LEFT</div>
                 <div style={{fontSize:14,fontWeight:700,color:"#c080ff",marginBottom:4}}>Who do you spend the day with?</div>
                 <div style={{fontSize:11,color:"#604080",marginBottom:14,fontStyle:"italic"}}>Each hangout unlocks the next tier of their category.</div>
@@ -48,7 +48,7 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
         const chosenChoice=chosenId?vignette.choices.find(c=>c.id===chosenId):null;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in chapter-hostess-modal" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>HANG OUT — {nameMap[ch.hangoutStudentId]?.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#c080ff",marginBottom:10}}>{vignette.title}</div>
               {ch.hangoutPhaseIdx===0&&(
@@ -83,7 +83,7 @@ export function ChapterHostessFeastPrepModal({ chapterHostessState, beginFeast, 
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, ch.stageIdx, ch.prepDaysLeft]);
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#100520,#1e0a38,#100520)",border:"1px solid #7034a040",maxHeight:"88vh",overflowY:"auto",padding:22}}>
+            <div className="hall-pass-modal-in chapter-hostess-modal" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#100520,#1e0a38,#100520)",border:"1px solid #7034a040",maxHeight:"88vh",overflowY:"auto",padding:22}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>FEAST PREP — STAGE {ch.stageIdx+1}</div>
               <div style={{fontSize:15,fontWeight:700,color:"#c080ff",marginBottom:14}}>Wednesday Feast</div>
               {ch.prepDaysLeft>0&&(
@@ -115,7 +115,7 @@ export function ChapterHostessFeastLogModal({ chapterHostessState, completeFeast
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ch.stageIdx, ch.feastDone]);
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0418,#160828,#0c0418)",border:"1px solid #6c348340",maxHeight:"90vh",overflowY:"auto",padding:22}}>
+            <div className="hall-pass-modal-in chapter-hostess-modal" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0c0418,#160828,#0c0418)",border:"1px solid #6c348340",maxHeight:"90vh",overflowY:"auto",padding:22}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#9040e0",marginBottom:6}}>WEDNESDAY FEAST — STAGE {ch.stageIdx+1}</div>
               <div style={{fontSize:15,fontWeight:700,color:"#c080ff",marginBottom:14}}>The Table</div>
               <div style={{maxHeight:440,overflowY:"auto",marginBottom:14,display:"flex",flexDirection:"column",gap:8}}>

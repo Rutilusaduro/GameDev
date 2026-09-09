@@ -13,7 +13,7 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
         const accent="#8020a0";
         return(
           <div style={{...C.overlay,zIndex:1300}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
+            <div className="hall-pass-modal-in lilith-modal" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
               {lilithClueModal==='feast_clue'&&(<>
                 <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>SOMETHING'S OFF</div>
                 <div style={{fontSize:15,fontWeight:700,color:"#d080e0",marginBottom:12}}>{CLUE_INVESTIGATION.title}</div>

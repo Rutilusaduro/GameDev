@@ -34,7 +34,7 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         const canNext=!isIntro&&currentPage<maxPage;
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-            <div className="hall-pass-modal-in" style={{background:`linear-gradient(170deg,#080015,#0d0025)`,border:`1px solid ${purple}60`,borderRadius:6,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:`0 8px 40px rgba(80,20,120,0.4)`}}>
+            <div className="hall-pass-modal-in picker-modal" style={{background:`linear-gradient(170deg,#080015,#0d0025)`,border:`1px solid ${purple}60`,borderRadius:6,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:`0 8px 40px rgba(80,20,120,0.4)`}}>
               {/* Header */}
               <div style={{background:`linear-gradient(90deg,#0a0020,#150030,#0a0020)`,borderBottom:`1px solid ${purple}40`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"4px 4px 0 0"}}>
                 <div style={{fontSize:9,letterSpacing:3,color:purple}}>📓 RESEARCH NOTES</div>
@@ -85,7 +85,7 @@ export function SubjectJournalModal({ setSubjectJournalState, students, subjectJ
         const borderColor="#8b7355";
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
-            <div className="hall-pass-modal-in" style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
+            <div className="hall-pass-modal-in picker-modal" style={{background:`linear-gradient(170deg,#1a0a2e,#0d0520)`,border:`2px solid ${borderColor}80`,borderRadius:4,padding:0,maxWidth:520,width:"95%",maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 8px 40px rgba(0,0,0,0.7)"}}>
               {/* Spine header */}
               <div style={{background:`linear-gradient(90deg,#120820,#1e0a38,#120820)`,borderBottom:`1px solid ${borderColor}60`,padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"2px 2px 0 0"}}>
                 <div style={{fontSize:9,letterSpacing:3,color:"#a08060"}}>📔 SUBJECT JOURNAL</div>
@@ -116,7 +116,7 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
         const eligible=students.filter(st=>st.id!==nadia.id&&getTier(st.relationship).id>=1);
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in picker-modal" style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>📋 RESEARCH SUBJECT</div>
               <div style={{fontSize:14,color:"#c0a0e0",fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Select a Subject</div>
               <div style={{fontSize:11,color:"#8070a0",marginBottom:14,textAlign:"center"}}>Close tier or above · any weight stage</div>
@@ -163,7 +163,7 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
         if(announcementPending&&announcementText){
           return(
             <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-              <div className="hall-pass-modal-in" style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:460,width:"95%"}}>
+              <div className="hall-pass-modal-in picker-modal" style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:460,width:"95%"}}>
                 <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:8,textAlign:"center"}}>📢 STREAM ANNOUNCEMENT</div>
                 <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:16}}>{announcementText}</div>
                 <button style={{...C.btn(purple),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setCollabPartnerPicker({student:kylie}); }}>Continue to Stream →</button>
@@ -173,7 +173,7 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
         }
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in picker-modal" style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>🎥 COLLAB STREAM</div>
               <div style={{fontSize:14,color:lightPurple,fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Choose a Collab Partner</div>
               <div style={{fontSize:11,color:"#a080c0",marginBottom:14,textAlign:"center"}}>Intimate tier · content-creator archetype</div>
@@ -235,7 +235,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 540, background: 'linear-gradient(160deg,#100800,#1a1000,#100800)', border: `1px solid ${def.accent}50`, maxHeight: '85vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in picker-modal" style={{ ...C.modal, maxWidth: 540, background: 'linear-gradient(160deg,#100800,#1a1000,#100800)', border: `1px solid ${def.accent}50`, maxHeight: '85vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: def.accent, marginBottom: 4 }}>{def.tag}</div>
         <div style={{ fontSize: 15, color: '#e0d0c0', fontWeight: 'bold', marginBottom: 4 }}>{def.title} — Stage {stageIdx + 1}</div>
         <div style={{ fontSize: 10, color: '#907060', marginBottom: 10 }}>{s.name} · {Math.round(s.lbs)} lbs</div>
@@ -324,7 +324,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
         const accentColor="#c050a0";
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#0a0318,#160424,#0a0318)",border:`1px solid ${accentColor}40`,maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in picker-modal" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#0a0318,#160424,#0a0318)",border:`1px solid ${accentColor}40`,maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{(def.label||sceneId).toUpperCase()}</div>
               <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
               <div style={{fontSize:10,color:"#7050a0",marginBottom:12}}>{s.lbs} lbs · {getStage(s.lbs).label}{gainAccum>0?` · +${gainAccum} lbs this scene`:""}
@@ -371,7 +371,7 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
         const availScenes=INTIMACY_SCENES.filter(sc=>tier.id>=sc.minTier&&intimacySceneAllowed(sc.id,s));
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in picker-modal" style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#c050a0",marginBottom:4}}>INTIMACY</div>
               <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
               <div style={{fontSize:11,color:"#7050a0",marginBottom:16,fontStyle:"italic"}}>
