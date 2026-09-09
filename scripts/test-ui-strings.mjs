@@ -18,6 +18,13 @@ const BANNED = [
   /Department budget/i,
   /Athletics Department/i,
   /future of the department/i,
+  /\bnew students\b/i,
+  /\bper student\b/i,
+  /\bUse on student\b/i,
+  /\bchoose a student\b/i,
+  /\bAddicted students\b/i,
+  /\bEvolved students\b/i,
+  /\bEvolved Student Operation\b/i,
 ];
 
 function assertClean(text, label) {
@@ -83,4 +90,12 @@ const homeroom = readFileSync('src/components/HomeroomQueenModal.jsx', 'utf8');
 assert(homeroom.includes('+{ch.classGain} floor'), 'HomeroomQueenModal must label classGain as floor');
 assert(!/\+\{ch\.classGain\} class/.test(homeroom), 'HomeroomQueenModal must not show +N class');
 
-console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom OK');
+const campusView = readFileSync('src/views/CampusView.jsx', 'utf8');
+assert(campusView.includes('Heavier new residents'), 'CampusView saturation hint must say residents');
+assertClean(campusView, 'CampusView.jsx');
+
+const oversight = readFileSync('src/views/OversightView.jsx', 'utf8');
+assert(oversight.includes('Evolved Resident Op'), 'OversightView must say Evolved Resident Op');
+assertClean(oversight, 'OversightView.jsx');
+
+console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, resident framing OK');

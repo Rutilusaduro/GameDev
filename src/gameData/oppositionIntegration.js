@@ -14,7 +14,7 @@ const EVOLVED_OP_MESSAGES = {
   pharmacist: '✦ Compound haze softens the room — agenda stalls one week.',
   artisan_gallery: '✦ Gallery opening steals the cultural spotlight.',
   salon_appetit: '✦ Salon evening drains attention from oversight hearings.',
-  default: '✦ Evolved student operation — top agenda delayed one week.',
+  default: '✦ Evolved resident operation — top agenda delayed one week.',
 };
 
 export function getEvolvedOpMessage(students) {

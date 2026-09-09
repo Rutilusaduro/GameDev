@@ -16,7 +16,7 @@ registerPool('opposition.endgame.banished', [
 ]);
 
 registerPool('opposition.endgame.allThin', [
-  { when: {}, text: 'Every evolved student wears her thin skin. Memory mass glows beneath — the hall is luminous, hungry, and unafraid.' },
+  { when: {}, text: 'Every evolved resident wears her thin skin. Memory mass glows beneath — the hall is luminous, hungry, and unafraid.' },
 ]);
 
 registerPool('opposition.endgame.vance', [

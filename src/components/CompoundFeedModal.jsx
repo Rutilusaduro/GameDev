@@ -5,7 +5,7 @@ import { COMPOUNDS, COMPOUND_CATEGORIES, getCompoundCategory } from '../gameData
 
 const CATEGORY_ORDER = ['control', 'cult', 'growth'];
 const CATEGORY_HINT = {
-  control: 'Manages dependency — use carefully on addicted students.',
+  control: 'Manages dependency — use carefully on addicted residents.',
   cult: 'Circle-grade compounds — stronger attachment effects.',
   growth: 'Appetite, pleasure, and metabolic tools.',
 };

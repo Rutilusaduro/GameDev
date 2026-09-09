@@ -91,7 +91,7 @@ export function OversightView({
       )}
       {pendingConfiscation && (
         <div style={{ fontSize: 11, color: '#eaa', padding: '8px 10px', background: '#2a2010', borderRadius: 4, marginBottom: 12 }}>
-          🔧 Device confiscation queued — equip backup gear or counter with Floor Pressure / Evolved Student Op before it resolves.
+          🔧 Device confiscation queued — equip backup gear or counter with Floor Pressure / Evolved Resident Op before it resolves.
         </div>
       )}
       {markedHuntMember && (

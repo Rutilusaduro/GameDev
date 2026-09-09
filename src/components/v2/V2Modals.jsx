@@ -48,7 +48,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, week
         </div>
         {ritual && (
           <>
-            <p style={{ fontSize: 10, color: '#8090a0' }}>Select {ritual.minStudents}–{ritual.maxStudents} students</p>
+            <p style={{ fontSize: 10, color: '#8090a0' }}>Select {ritual.minStudents}–{ritual.maxStudents} residents</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
               {students.filter((s) => !s.hidden).map((s) => (
                 <button key={s.id} type="button"

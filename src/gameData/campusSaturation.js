@@ -8,7 +8,7 @@ import { getCampusNarrativeTier } from './pharmacistIngredients.js';
 export const SATURATION_TIERS = [
   { id: 0, min: 0, label: 'Normal Campus', desc: 'Standard college rhythms.' },
   { id: 1, min: 25, label: 'Softening', desc: 'Wellness messaging and heavier ambient presence.' },
-  { id: 2, min: 55, label: 'Saturated', desc: 'New students arrive softer; events skew indulgent.' },
+  { id: 2, min: 55, label: 'Saturated', desc: 'New residents arrive softer; events skew indulgent.' },
   { id: 3, min: 80, label: 'Regional Excess', desc: 'Campus-wide appetite is the default social mode.' },
 ];
 

@@ -47,7 +47,7 @@ export const AIB_COUNTERS = [
   { id: 'public_discredit', label: 'Public Discredit', ap: 2, resolveHit: 10, scrutiny: -10, desc: 'Remove one agenda card type from the deck permanently.' },
   { id: 'bureaucratic_capture', label: 'Bureaucratic Capture', ap: 2, resolveHit: 15, scrutiny: -5, desc: 'Convert a wavering member (resolve ≤ 40) to compromised.' },
   { id: 'spirit_pressure', label: 'Floor Pressure', ap: 1, resolveHit: 8, scrutiny: -3, desc: 'Force the top agenda card to misfire harmlessly.' },
-  { id: 'evolved_student_op', label: 'Evolved Student Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved student delays the top agenda card one week.' },
+  { id: 'evolved_student_op', label: 'Evolved Resident Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved resident delays the top agenda card one week.' },
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
   { id: 'faculty_testimony', label: 'Staff Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Staff ally cancels informant effects for two weeks.' },
   { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 1, resolveHit: 20, scrutiny: -15, desc: 'Mark a board member for Lilith\'s hunt map (difficulty 4).', path: 'lilith' },
@@ -216,14 +216,14 @@ export function getOversightTelegraph(opposition) {
 }
 
 const AGENDA_COUNTER_HINTS = {
-  wellness_audit: 'feast bribe or evolved student op',
-  device_confiscation: 'resonance pressure or evolved student op',
+  wellness_audit: 'feast bribe or evolved resident op',
+  device_confiscation: 'resonance pressure or evolved resident op',
   size_review: 'complete mandatory weigh-in or discredit',
   wellness_seminar: 'feast bribe',
   budget_freeze: 'public discredit or feast bribe',
   removal_hearing: 'hearing scene — discredit + resonance pressure',
-  mandatory_fitness: 'evolved student op',
-  shame_vigil: 'Apple Oracle shields some students',
+  mandatory_fitness: 'evolved resident op',
+  shame_vigil: 'Apple Oracle shields some residents',
   faculty_informant: 'staff testimony',
   student_advocacy: 'feast bribe or high hall relationship',
 };
@@ -442,7 +442,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     next.aib.agendaQueue = next.aib.agendaQueue.map((item, i) => (
       i === 0 ? { ...item, resolvesWeek: item.resolvesWeek + 1 } : item
     ));
-    const msg = options.evolvedOpMessage || '✦ Evolved student operation — top agenda delayed one week.';
+    const msg = options.evolvedOpMessage || '✦ Evolved resident operation — top agenda delayed one week.';
     return {
       opposition: { ...next, meta: recordCounterType(next.meta, counterId) },
       message: msg,

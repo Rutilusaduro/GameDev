@@ -312,8 +312,8 @@ export const ACHIEVEMENT_LIST = [
   { id:"institutional_capture", label:"🏛️ Full Capture", desc:"Compromise four board members — scarcity capped.", check:(sts,g)=>!!g.institutionalCapture },
   { id:"vance_compromised", label:"📎 Chair Compromised", desc:"Dr. Vance becomes compromised.", check:(sts,g)=>!!g.vanceCompromised },
   { id:"board_feast", label:"🍷 Board Feast", desc:"Feast bribe during Investigation scrutiny.", check:(sts,g)=>!!g.boardFeastInvestigation },
-  { id:"all_thin", label:"🌫️ All Thin", desc:"Every evolved student ascends.", check:(sts,g)=>!!g.allThinAscended },
+  { id:"all_thin", label:"🌫️ All Thin", desc:"Every evolved resident ascends.", check:(sts,g)=>!!g.allThinAscended },
   { id:"refeed_god", label:"✨ Refeed God", desc:"Complete the Voluptuous Banishment path.", check:(sts,g)=>!!g.scarcityBanished },
   { id:"lilith_saint", label:"🩸 Portion Saint", desc:"Lilith devours the Portion Saint.", check:(sts,g)=>!!g.lilithSaint },
-  { id:"synthesis_ally", label:"✨ Hungry Angel", desc:"Achieve Synthesis — all evolved students ascended with pharmacist stage 4.", check:(sts,g)=>!!g.synthesisAlly },
+  { id:"synthesis_ally", label:"✨ Hungry Angel", desc:"Achieve Synthesis — all evolved residents ascended with pharmacist stage 4.", check:(sts,g)=>!!g.synthesisAlly },
 ];

@@ -2813,7 +2813,7 @@ export default function HallPass(){
   const dismissSupernaturalAct=()=>{
     setOpposition(prev=>({...prev,supernatural:{...prev.supernatural,ascensionOffered:true}}));
     setSupernaturalModalOpen(false);
-    push('👻 The Supernatural Act has begun. Scarcity watches — refeed your evolved students.');
+    push('👻 The Supernatural Act has begun. Scarcity watches — refeed your evolved residents.');
   };
 
   const openAscensionCeremony=(studentId)=>{
@@ -7820,7 +7820,7 @@ export default function HallPass(){
                 </span>
               </div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                <div style={C.secT}>Assign weight loss per student</div>
+                <div style={C.secT}>Assign weight loss per resident</div>
                 <button style={C.smBtn} onClick={distributeEvenly}>Distribute evenly</button>
               </div>
               <div style={{maxHeight:320,overflowY:"auto",display:"flex",flexDirection:"column",gap:5,marginBottom:12}}>

@@ -3,7 +3,14 @@
 import assert from 'assert';
 import { readFileSync } from 'fs';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
-import { DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek, UNLOCK_POOL_IDS } from '../src/gameData/dorms.js';
+import {
+  DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek, UNLOCK_POOL_IDS, getLockedDormStudentIds,
+} from '../src/gameData/dorms.js';
+import {
+  applyWeeklyTrustDrip, isHallReachable, ROSTER_TRUST_GATE, getRosterSlotCount,
+} from '../src/gameData/rosterUnlock.js';
+import { SATURATION_TIERS } from '../src/gameData/campusSaturation.js';
+import { AIB_COUNTERS } from '../src/gameData/opposition.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
@@ -61,12 +68,11 @@ const campusCtx = buildTextContext({
 const campusBeat = render('{attitude.campus}', campusCtx)?.trim() || '';
 assert(!/\bclassmates\b/i.test(campusBeat), 'campus softening beat must not say classmates');
 
-// Sporty (unlockWeek 0) never appears as a week-gated unlock — only as a start hall.
 const UNLOCK_SCHEDULE = {
   sporty: { 7: [], 8: ['nerdy'], 12: ['nerdy', 'socialite'], 16: ['nerdy', 'socialite', 'weirdos'] },
-  nerdy: { 7: [], 8: [], 12: ['socialite'], 16: ['socialite', 'weirdos'] },
-  socialite: { 7: [], 8: ['nerdy'], 12: ['nerdy'], 16: ['nerdy', 'weirdos'] },
-  weirdos: { 7: [], 8: ['nerdy'], 12: ['nerdy', 'socialite'], 16: ['nerdy', 'socialite'] },
+  nerdy: { 7: [], 8: ['sporty'], 12: ['sporty', 'socialite'], 16: ['sporty', 'socialite', 'weirdos'] },
+  socialite: { 7: [], 8: ['nerdy', 'sporty'], 12: ['nerdy', 'sporty'], 16: ['nerdy', 'sporty', 'weirdos'] },
+  weirdos: { 7: [], 8: ['nerdy', 'sporty'], 12: ['nerdy', 'sporty', 'socialite'], 16: ['nerdy', 'sporty', 'socialite'] },
 };
 
 for (const [startDorm, weeks] of Object.entries(UNLOCK_SCHEDULE)) {
@@ -82,7 +88,7 @@ for (const id of Object.keys(DORMS)) {
   const d = DORMS[id];
   assert(d.label && d.hook, `dorm ${id} needs label + hook`);
   assert(Array.isArray(d.studentIds) && d.studentIds.length >= 4, `dorm ${id} needs home residents`);
-  assert.equal(d.unlockWeek, id === 'sporty' || id === 'nerdy' ? (id === 'sporty' ? 0 : 8) : id === 'socialite' ? 12 : 16);
+  assert.equal(d.unlockWeek, id === 'sporty' ? 0 : id === 'nerdy' ? 8 : id === 'socialite' ? 12 : 16);
 }
 
 for (const approach of RA_APPROACH_LIST) {
@@ -99,4 +105,104 @@ assert(/curves/i.test(wizardSrc), 'setup wizard must describe curvy RA');
 assert(!/Professor Sim/i.test(wizardSrc), 'setup wizard must not say Professor Sim');
 assert(!/spirit-possessed/i.test(wizardSrc), 'setup wizard must not say spirit-possessed');
 
-console.log('playthrough: Cassidy swimmer arc + all dorm unlock paths + RA setup OK');
+function cumulativeUnlockedHalls(startDorm, week) {
+  const open = new Set([startDorm]);
+  for (let w = 1; w <= week; w += 1) {
+    for (const id of dormUnlocksForWeek(w, startDorm)) open.add(id);
+  }
+  return open;
+}
+
+function simulateInitialRoster(startDormId) {
+  const startIds = new Set(DORMS[startDormId].studentIds);
+  const lockedIds = new Set(getLockedDormStudentIds([startDormId]));
+  return UNLOCK_POOL_IDS.map((id) => ({
+    id,
+    homeDorm: STUDENT_HOME_DORM[id],
+    lockState: lockedIds.has(id) || !startIds.has(id) ? 'locked' : 'open',
+    passiveTrust: 0,
+  }));
+}
+
+const BANNED_UI = [
+  /\bnew students\b/i,
+  /\bper student\b/i,
+  /\bUse on student\b/i,
+  /\bchoose a student\b/i,
+  /\bAddicted students\b/i,
+  /\bEvolved students\b/i,
+  /\bEvolved Student Operation\b/i,
+];
+
+function assertCleanUi(text, label) {
+  for (const re of BANNED_UI) {
+    assert(!re.test(text), `${label} must not match ${re}`);
+  }
+}
+
+for (const startDorm of ['sporty', 'nerdy', 'socialite', 'weirdos']) {
+  const hall = DORMS[startDorm];
+  const roster = simulateInitialRoster(startDorm);
+  const open = roster.filter((s) => s.lockState === 'open');
+  assert.equal(open.length, hall.studentIds.length, `${startDorm} start should open ${hall.studentIds.length} home residents`);
+  for (const id of hall.studentIds) {
+    const row = roster.find((s) => s.id === id);
+    assert.equal(row?.lockState, 'open', `${startDorm} must start with resident ${id} open`);
+    assert.equal(row?.homeDorm, startDorm, `resident ${id} home hall`);
+  }
+
+  const w16 = cumulativeUnlockedHalls(startDorm, 16);
+  assert.equal(w16.size, 4, `${startDorm} start should unlock all halls by week 16`);
+  for (const dormId of Object.keys(DORMS)) assert.ok(w16.has(dormId), `${startDorm} wk16 missing ${dormId}`);
+
+  const w7 = cumulativeUnlockedHalls(startDorm, 7);
+  const w8 = cumulativeUnlockedHalls(startDorm, 8);
+  assert.ok(w8.size >= w7.size, `${startDorm} unlock set should not shrink wk7→wk8`);
+}
+
+// Trust drip only accrues once a locked resident's home hall is reachable.
+const sportyStartRoster = simulateInitialRoster('sporty');
+const priya = sportyStartRoster.find((s) => s.id === 7);
+assert(priya && priya.lockState === 'locked', 'Priya locked on sporty start');
+assert.equal(isHallReachable(priya, ['sporty']), false, 'nerdy hall locked at wk1');
+const afterW7Drip = applyWeeklyTrustDrip([priya], { spiritLevel: 1, week: 7, unlockedDorms: ['sporty'], rng: () => 0.5 });
+assert.equal(afterW7Drip[0].passiveTrust, 0, 'no trust drip before hall unlock');
+const afterW8Drip = applyWeeklyTrustDrip([priya], { spiritLevel: 1, week: 8, unlockedDorms: ['sporty', 'nerdy'], rng: () => 0.5 });
+assert.ok(afterW8Drip[0].passiveTrust > 0, 'trust drip after nerdy hall unlocks');
+assert.ok(afterW8Drip[0].passiveTrust < ROSTER_TRUST_GATE, 'one week drip should not auto-unlock');
+
+assert.equal(getRosterSlotCount(1), 5, 'spirit level 1 should allow 5 roster slots');
+assert.equal(getRosterSlotCount(3), 7, 'spirit level 3 should allow 7 roster slots');
+
+for (const tier of SATURATION_TIERS) {
+  assertCleanUi(tier.desc, `saturation tier ${tier.id}`);
+}
+
+const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
+assert(evolvedOp, 'evolved resident counter must exist');
+assertCleanUi(`${evolvedOp.label} ${evolvedOp.desc}`, 'evolved resident counter');
+
+function fixtureForArchetype(archetype) {
+  const found = INIT_STUDENTS.find((s) => s.archetype === archetype);
+  if (found) return found;
+  return { ...INIT_STUDENTS[0], archetype, name: archetype === 'bookworm' ? 'Emma' : 'Resident' };
+}
+
+const archetypes = [...new Set(NARRATIVE_EVENTS.map((e) => e.archetype).filter(Boolean))];
+for (const ev of NARRATIVE_EVENTS) {
+  const subject = ev.archetype ? fixtureForArchetype(ev.archetype) : INIT_STUDENTS[0];
+  const beat = renderWeeklyEvent(ev.id, subject, { week: Math.max(6, ev.stageMin + 2) });
+  if (beat) {
+    assert.ok(beat.length > 20, `narrative ${ev.id} should render prose`);
+    assertCleanUi(beat, `narrative ${ev.id}`);
+    assert(!/\bMadeline\b/.test(beat), `narrative ${ev.id} must not say Madeline`);
+    assert(!/\bprofessor\b/i.test(beat), `narrative ${ev.id} must not say professor`);
+  }
+}
+
+for (const archetype of archetypes) {
+  const matching = NARRATIVE_EVENTS.filter((e) => e.archetype === archetype);
+  assert.ok(matching.length > 0, `archetype ${archetype} should have at least one narrative event`);
+}
+
+console.log('playthrough: semester sim + Cassidy arc + all dorm paths + RA setup OK');

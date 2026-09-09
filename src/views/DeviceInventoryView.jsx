@@ -92,7 +92,7 @@ function DeviceDetailPanel({ def, statusCtx, flavorStudent, week, onClose, onEqu
           </button>
         )}
         {(def.form === 'consumable' || def.form === 'stationary' || def.form === 'campus_tool') && (
-          <button style={C.btn('#333')} onClick={() => onQuickUse(def)}>Use on student…</button>
+          <button style={C.btn('#333')} onClick={() => onQuickUse(def)}>Use on resident…</button>
         )}
       </div>
     </div>

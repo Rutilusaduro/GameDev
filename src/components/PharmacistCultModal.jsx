@@ -92,7 +92,7 @@ export function PharmacistCultModal({
           {(o.classGainApplied > 0 || o.addictedGainApplied > 0) && (
             <div style={{ color: '#e0c0a0', marginTop: 6 }}>
               {o.classGainApplied > 0 && `Hall-wide softening +${o.classGainApplied} lbs each. `}
-              {o.addictedGainApplied > 0 && `Addicted students +${o.addictedGainApplied} lbs.`}
+              {o.addictedGainApplied > 0 && `Addicted residents +${o.addictedGainApplied} lbs.`}
             </div>
           )}
         </div>

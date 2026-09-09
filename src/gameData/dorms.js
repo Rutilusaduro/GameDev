@@ -109,7 +109,12 @@ export function getLockedDormStudentIds(unlockedDorms = []) {
 }
 
 export function dormUnlocksForWeek(week, startDormId) {
-  return DORM_LIST.filter(
+  const ids = DORM_LIST.filter(
     (d) => d.id !== startDormId && d.unlockWeek > 0 && week >= d.unlockWeek,
   ).map((d) => d.id);
+  // Victory Hall (unlockWeek 0) only unlocks for non-sporty starts, at the first semester gate.
+  if (startDormId && startDormId !== 'sporty' && week >= 8 && !ids.includes('sporty')) {
+    ids.push('sporty');
+  }
+  return ids;
 }

@@ -13,7 +13,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
         <p style={{ fontSize: 12, color: '#d0c0e8', lineHeight: 1.8, marginBottom: 14 }}>
           Week {opposition?.supernatural?.actWeek}: stomachs flutter empty, then hunger without mass. A voice of scarcity:
           <em> "You may have their bodies. You may not have their hunger."</em>
-          {' '}Evolved students may ascend to thin supernatural forms — memory of every pound, hung on frames that look like they never ate.
+          {' '}Evolved residents may ascend to thin supernatural forms — memory of every pound, hung on frames that look like they never ate.
         </p>
         <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 10 }}>
           Scarcity pressure: {opposition?.supernatural?.scarcityPressure ?? 0}/100
@@ -36,7 +36,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
             })}
           </div>
         ) : (
-          <p style={{ fontSize: 11, color: '#8070a0', marginBottom: 12 }}>No evolved students ready for ascension this week.</p>
+          <p style={{ fontSize: 11, color: '#8070a0', marginBottom: 12 }}>No evolved residents ready for ascension this week.</p>
         )}
         <button type="button" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>Acknowledge — the act has begun</button>
       </div>

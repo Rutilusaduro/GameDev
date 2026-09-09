@@ -15,7 +15,7 @@ export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnloc
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>EQUIP DEVICE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>
-          Slot: <strong>{slot}</strong> — choose a student
+          Slot: <strong>{slot}</strong> — choose a resident
         </div>
         <div style={{ maxHeight: 320, overflowY: 'auto', marginBottom: 10 }}>
           {students.filter(s => !s.hidden || lilithUnlocked).map(s => {

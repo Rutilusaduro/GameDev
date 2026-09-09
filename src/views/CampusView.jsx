@@ -133,7 +133,7 @@ export function CampusView({
             {SATURATION_TIERS[saturation.tier ?? 0]?.desc}
             {(saturation.tier ?? 0) >= 2 && (
               <span style={{ display: 'block', color: '#90c0a8', marginTop: 4 }}>
-                Heavier new students · softer ambient events · richer exploration finds.
+                Heavier new residents · softer ambient events · richer exploration finds.
               </span>
             )}
           </div>
