@@ -11,6 +11,8 @@ import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
 import { dormUnlocksForWeek } from '../gameData/dorms.js';
+import { defaultSalonState } from '../gameData/chloeSalon.js';
+import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
@@ -50,6 +52,7 @@ export function DebugPanel({
   setAp,
   setOwnedSkills,
   setOwnedHallSkills,
+  setSalonState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -192,19 +195,55 @@ export function DebugPanel({
                 </button>
               )}
               {setSelectedId && (
-                <button type="button" style={{ ...C.smBtn, background: 'rgba(140,30,30,0.55)' }}
-                  onClick={() => {
-                    setStudents((prev) => prev.map((s) => (
-                      s.id === 1
-                        ? { ...s, evolvedForm: 'sumo', lbs: 260, relationship: 60, mood: 'focused' }
-                        : s
-                    )));
-                    setAp((a) => Math.max(a, 20));
-                    setSelectedId(1);
-                    setView('student');
-                  }}>
-                  🥋 Evolved Arc QA
-                </button>
+                <>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(140,30,30,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 1
+                          ? { ...s, evolvedForm: 'sumo', lbs: 260, relationship: 60, mood: 'focused' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(1);
+                      setView('student');
+                    }}>
+                    🥋 Sumo Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(160,20,40,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 5
+                          ? {
+                            ...ensureStreamFields(s),
+                            evolvedForm: 'eating_streamer',
+                            brand: 'crunchforge',
+                            lbs: 258,
+                            relationship: 60,
+                            mood: 'tired',
+                          }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(5);
+                      setView('student');
+                    }}>
+                    📡 Stream Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(100,20,50,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 9
+                          ? { ...s, evolvedForm: 'salon_appetit', lbs: 200, relationship: 60, mood: 'bemused' }
+                          : s
+                      )));
+                      setSalonState?.(defaultSalonState(9));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(9);
+                      setView('student');
+                    }}>
+                    🥂 Salon Arc QA
+                  </button>
+                </>
               )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}
                 onClick={() => setStudents((prev) => prev.map((s) => (s.id === LILITH_ID ? s : { ...s, lbs: 300 })))}>⚖️ All 300 lbs</button>

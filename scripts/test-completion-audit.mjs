@@ -152,6 +152,8 @@ const REQUIRED_E2E = [
   'e2e/dinner-lane.spec.js',
   'e2e/dinner-evening-ends.spec.js',
   'e2e/evolved-arc.spec.js',
+  'e2e/evolved-stream-arc.spec.js',
+  'e2e/evolved-salon-arc.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

@@ -35,7 +35,25 @@ export async function unlockDinnerQA(page) {
 /** Debug: Cassidy sumo evolved arc + open student detail. */
 export async function unlockEvolvedArcQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
-  await page.getByRole('button', { name: /Evolved Arc QA/ }).click();
+  await page.getByRole('button', { name: /Sumo Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Destiny eating-streamer arc + open student detail. */
+export async function unlockStreamArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Stream Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Chloé salon arc + open student detail. */
+export async function unlockSalonArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Salon Arc QA/ }).click();
   await page.getByRole('button', { name: '✕ Close' }).click();
   await dismissBlockingModals(page);
   await expect(page.getByText('EVOLVED PATH')).toBeVisible();
