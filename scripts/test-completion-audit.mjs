@@ -85,6 +85,8 @@ check('cassidy-swimmer', () => {
   assert.equal(cassidy.archetype, 'swimmer');
   assert.equal(STUDENT_HOME_DORM[1], 'sporty');
   assert.ok(!INIT_STUDENTS.some((s) => /madeline/i.test(s.name)), 'no Madeline in roster');
+  assert.doesNotMatch(cassidy.desc, /\bspreadsheet\b/i, 'Cassidy roster desc still bookworm');
+  assert.match(cassidy.desc, /training log/i, 'Cassidy roster desc must use athletic voice');
 });
 
 check('community-researcher-cassidy', () => {
@@ -1116,6 +1118,30 @@ check('cassidy-swimmer-voice', () => {
   assert.ok(jealousySwimmer, 'dinner/reactions.js jealousyDefault must contain swimmer entry');
   assert.doesNotMatch(jealousySwimmer, /\bdataset\b/i, 'jealousyDefault swimmer still bookworm');
   assert.match(jealousySwimmer, /training log|filling another page/i, 'jealousyDefault swimmer must use athletic voice');
+
+  const dinnerRefSwimmer = dinnerReactions.split('\n').filter((line) => line.includes('"refArchetype":"swimmer"'));
+  assert.ok(dinnerRefSwimmer.length >= 5, 'dinner/reactions.js must contain refArchetype swimmer entries');
+  const dinnerRefSwimmerText = dinnerRefSwimmer.join('\n');
+  assert.match(dinnerRefSwimmerText, /fatRetort\.swr|thinContextual\.swt|splits are outdated|training logs|lane assignments/i, 'dinner refArchetype swimmer must use athletic voice');
+  assert.doesNotMatch(dinnerRefSwimmerText, /\bpanel-reviewed\b|\bhypothesis\b|\bdataset\b/i, 'dinner refArchetype swimmer still bookworm');
+  const dinnerRefSwimmerPools = dinnerReactions.match(/registerPool\('dinner\.reaction\.(?:fatRetort\.swr|thinContextual\.swt)[^']*'[\s\S]*?\]\);/g) ?? [];
+  assert.ok(dinnerRefSwimmerPools.length >= 6, 'dinner/reactions.js must contain refArchetype swimmer pools');
+  const dinnerRefSwimmerPoolText = dinnerRefSwimmerPools.join('\n');
+  assert.match(dinnerRefSwimmerPoolText, /training log|season plan|lane|split|coach|fuel/i, 'dinner refArchetype swimmer pools must use athletic voice');
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(dinnerRefSwimmerPoolText, re, `dinner/reactions.js refArchetype swimmer pools still has ${re}`);
+  }
+
+  const students = read('src/gameData/students.js');
+  const tap250Block = students.match(/export const TAP_OUT_250 = \{[\s\S]*?\n\};/)?.[0] ?? '';
+  const cassidyTap250 = tap250Block.match(/\n  1:\s*\(s\)\s*=>\s*`[\s\S]*?`/)?.[0] ?? '';
+  assert.ok(cassidyTap250, 'students.js must contain Cassidy TAP_OUT_250 line');
+  assert.doesNotMatch(cassidyTap250, /\blab result\b|\bmechanisms of this\b/i, 'Cassidy TAP_OUT_250 still bookworm');
+  assert.match(cassidyTap250, /split|logging|training/i, 'Cassidy TAP_OUT_250 must use athletic voice');
+  const blobBlock = students.match(/export const BLOB_PRIVATE_INTRO = \{[\s\S]*?\n\};/)?.[0] ?? '';
+  const cassidyBlobIntro = blobBlock.match(/\n  1:\s*\(s\)\s*=>\s*`[\s\S]*?`/)?.[0] ?? '';
+  assert.ok(cassidyBlobIntro, 'students.js must contain Cassidy BLOB_PRIVATE_INTRO line');
+  assert.match(cassidyBlobIntro, /training block/i, 'Cassidy BLOB_PRIVATE_INTRO must use athletic voice');
 });
 
 check('embodied-resident-sighting', () => {

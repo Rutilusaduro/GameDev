@@ -827,6 +827,18 @@ registerPool('dinner.reaction.fatRetort._f159', [
   { when: {}, text: [". Everything you're feeling right now resolves itself.\" She looks completely at peace with this. \"Trust the process.\""] },
 ]);
 
+registerPool('dinner.reaction.fatRetort.swr1', [
+  { when: {}, text: ["\"I've been where you are,\" {ref.name} says. \"I ran the same restriction block. The times were wrong."] },
+]);
+
+registerPool('dinner.reaction.fatRetort.swr2', [
+  { when: {}, text: [" Mine are better now.\" She pats her full middle with lane-captain satisfaction. \"The corrected protocol is available."] },
+]);
+
+registerPool('dinner.reaction.fatRetort.swr3', [
+  { when: {}, text: [". It involves fueling.\""] },
+]);
+
 registerPool('dinner.reaction.fatRetort', [
   { when: {}, text: ["{ref.name} looks at {subject.name} with warm understanding."] },
   { when: {"refArchetype":"cheerleader","reactionLevel":0}, text: ["{ref.name} smiles at {subject.name} with the warmth of someone entirely comfortable in her own skin. \"Honey,\" she says, \"if you ate something you'd feel better too.\""] },
@@ -862,6 +874,9 @@ registerPool('dinner.reaction.fatRetort', [
   { when: {"refArchetype":"bookworm","reactionLevel":0}, text: ["{ref.name} considers {subject.name} for a moment. \"The data you're working from is outdated,\" she says, almost gently. \"The conclusion you've drawn doesn't hold. Eat something. Revise.\""] },
   { when: {"refArchetype":"bookworm","reactionLevel":1}, text: ["{dinner.reaction.fatRetort._f146} {dinner.reaction.fatRetort._f147}"] },
   { when: {"refArchetype":"bookworm","reactionLevel":2}, text: ["{ref.name} places her hand on her own warm belly with the quiet certainty of someone who has done the research. \"Panel-reviewed,\" she says simply. \"This is the correct outcome. Eat and find out.\""] },
+  { when: {"refArchetype":"swimmer","reactionLevel":0}, text: ["{ref.name} considers {subject.name} for a moment. \"Your splits are outdated,\" she says, almost gently. \"The season plan you're running doesn't hold. Eat something. Revise.\""] },
+  { when: {"refArchetype":"swimmer","reactionLevel":1}, text: ["{dinner.reaction.fatRetort.swr1} {dinner.reaction.fatRetort.swr2} {dinner.reaction.fatRetort.swr3}"] },
+  { when: {"refArchetype":"swimmer","reactionLevel":2}, text: ["{ref.name} places her hand on her own warm belly with the quiet certainty of someone who has logged every meal. \"Benchmark set,\" she says simply. \"This is the correct block. Eat and find out.\""] },
   { when: {"refArchetype":"gamer","reactionLevel":0}, text: ["{ref.name} looks at {subject.name} for a moment. \"Skill issue,\" she says. Not unkindly. \"You haven't played enough rounds to understand what I've got. Eat something. Build your experience.\""] },
   { when: {"refArchetype":"gamer","reactionLevel":1}, text: ["\"I'm not offended,\" {ref.name} says. \"You're running outdated information.\" She eats. \"The patch notes are: eat more. I've read the patch notes.\" She sounds content."] },
   { when: {"refArchetype":"gamer","reactionLevel":2}, text: ["{ref.name} pats her belly with the ease of someone very comfortable with their loadout. \"Max level takes time,\" she says. \"You're early game. Start eating. I'll be here.\""] },
@@ -1038,7 +1053,7 @@ registerPool('dinner.reaction.thinContextual._f200', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f201', [
-  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\""] },
+  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The margins got warmer when the rest of you did too.\""] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f202', [
@@ -1046,7 +1061,7 @@ registerPool('dinner.reaction.thinContextual._f202', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f203', [
-  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\""] },
+  { when: {}, text: [". The notes take up more space.\" She watches {ref.name} eat steadily. \"Something loosened in you. The margins got warmer when the rest of you did too.\""] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f204', [
@@ -1097,6 +1112,22 @@ registerPool('dinner.reaction.thinContextual._f215', [
   { when: {}, text: [". \"You figured out the campus.\" She pauses. \"And the dining hall. Especially the dining hall.\""] },
 ]);
 
+registerPool('dinner.reaction.thinContextual.swt1', [
+  { when: {}, text: ["\"I've been comparing your freshman training logs to this semester,\" {subject.name} says. \"The handwriting is the same. The meal columns are fuller."] },
+]);
+
+registerPool('dinner.reaction.thinContextual.swt2', [
+  { when: {}, text: [". The splits got slower and you got happier.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\""] },
+]);
+
+registerPool('dinner.reaction.thinContextual.swt3', [
+  { when: {}, text: ["\"Coach still has your old lane assignments on file,\" {subject.name} says. \"Freshman year versus now.\" She tilts her head at {ref.name}'s plate. \"Same stroke."] },
+]);
+
+registerPool('dinner.reaction.thinContextual.swt4', [
+  { when: {}, text: [". Very different fuel load.\" She sounds almost fond. \"You stopped racing restriction and started winning at this instead.\""] },
+]);
+
 registerPool('dinner.reaction.thinContextual', [
   { when: {}, text: ["{subject.name} watches {ref.name} eat with quiet fascination."] },
   { when: {"refArchetype":"athlete","reactionLevel":2}, text: ["{dinner.reaction.thinContextual._f160} {dinner.reaction.thinContextual._f161}"] },
@@ -1121,6 +1152,8 @@ registerPool('dinner.reaction.thinContextual', [
   { when: {"refArchetype":"party","reactionLevel":3}, text: ["{dinner.reaction.thinContextual._f198} {dinner.reaction.thinContextual._f199}"] },
   { when: {"refArchetype":"bookworm","reactionLevel":2}, text: ["{dinner.reaction.thinContextual._f200} {dinner.reaction.thinContextual._f201}"] },
   { when: {"refArchetype":"bookworm","reactionLevel":3}, text: ["{dinner.reaction.thinContextual._f202} {dinner.reaction.thinContextual._f203}"] },
+  { when: {"refArchetype":"swimmer","reactionLevel":2}, text: ["{dinner.reaction.thinContextual.swt1} {dinner.reaction.thinContextual.swt2}"] },
+  { when: {"refArchetype":"swimmer","reactionLevel":3}, text: ["{dinner.reaction.thinContextual.swt3} {dinner.reaction.thinContextual.swt4}"] },
   { when: {"refArchetype":"gamer","reactionLevel":2}, text: ["{dinner.reaction.thinContextual._f204} {dinner.reaction.thinContextual._f205}"] },
   { when: {"refArchetype":"gamer","reactionLevel":3}, text: ["{dinner.reaction.thinContextual._f206} {dinner.reaction.thinContextual._f207}"] },
   { when: {"refArchetype":"overachiever","reactionLevel":2}, text: ["{dinner.reaction.thinContextual._f208} {dinner.reaction.thinContextual._f209}"] },
