@@ -2413,7 +2413,7 @@ export default function HallPass(){
     const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
     const newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
-    // Handle feedOther — feed classmates of matching archetype
+    // Handle feedOther — feed residents of matching archetype
     if(choice.feedOther){
       const{archetype:targetArch,lbs:otherLbs,text:foText}=choice.feedOther;
       setStudents(prev=>prev.map(st=>{

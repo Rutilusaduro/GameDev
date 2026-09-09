@@ -28,6 +28,7 @@ const BANNED = [
   { id: 'nadia-feeder-subject', re: /Nadia needed a live subject/i },
   { id: 'nadia-feederism-study', re: /her feederism study/i },
   { id: 'classmates-softening', re: /\b[Cc]lassmates (?:look|keep|linger|posted|complaining)/ },
+  { id: 'my-classmates', re: /\bmy classmates\b/i },
 ];
 
 const ALLOW_LINE = [
