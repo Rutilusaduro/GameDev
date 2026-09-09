@@ -41,7 +41,7 @@ registerPool('ritual.sacred_gluttony', [
     'Candles. Platters like altars. They eat with the focus of worshippers — bellies rising, breath deepening, the spirit drinking the room dry of restraint.',
   ]},
   { when: {}, text: [
-    'Sacred gluttony: the hall eats as one body with many mouths. Fullness is the only sermon.',
+    'Floor feast: the hall eats as one body with many mouths. Fullness is the only sermon.',
   ]},
 ]);
 

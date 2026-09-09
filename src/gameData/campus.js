@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CAMPUS EXPLORATION — walk the campus as the professor
+// CAMPUS EXPLORATION — walk campus as the RA
 // Text-adventure movement over a node graph with a visible map.
 // Encounters reference live student state; items can be found.
 // 18 zones; faculty homeZone nodes are marked with *
@@ -8,22 +8,22 @@
 export const CAMPUS_NODES = {
   // ── core academic ──────────────────────────────────────────
   office: {
-    id:"office", label:"Your Office", emoji:"🏛️", x:52, y:76,
+    id:"office", label:"RA Desk", emoji:"🗝️", x:52, y:76,
     exits:["lecture_hall","faculty_lounge","quad","rooftop"],
-    desc:"Your office. Grade-stained desk, a couch that has heard confessions, and a filing cabinet whose lowest drawer is entirely snacks. The door is always open. That's the whole strategy.",
+    desc:"Your RA desk on the ground floor. Master key on a lanyard, a couch that's seen too many late-night talks, and a mini-fridge you restock before anyone asks. The door stays open. That's the whole strategy.",
     flavor:[
-      "A thank-you note sits on the desk, unsigned, weighted down with an empty cake box.",
-      "The couch cushions are flattened in a way that suggests increasingly heavy office-hours attendance.",
-      "Someone has left a crumb trail to your snack drawer. The drawer is lighter than you left it.",
+      "A thank-you note sits on the desk, unsigned, weighted down with an empty pizza box.",
+      "The couch cushions are flattened in a way that suggests increasingly heavy floor meetings.",
+      "Someone left a crumb trail to your snack drawer. The drawer is lighter than you left it.",
     ],
   },
   lecture_hall: {
-    id:"lecture_hall", label:"Lecture Hall", emoji:"🎓", x:32, y:60,
+    id:"lecture_hall", label:"Common Room", emoji:"🛋️", x:32, y:60,
     exits:["office","quad","library","science_wing"],
-    desc:"Banked seating, good acoustics, and — after a quiet word with facilities — chairs without armrests. The whiteboard still has last week's diagram of a tasting menu.",
+    desc:"Big couches, a TV that always plays something, and a kitchenette that runs hotter than the dining hall on game nights. This is where your residents actually live between classes.",
     flavor:[
-      "The seats in the front row have been recently re-bolted. Reinforced. Facilities asks no questions anymore.",
-      "A forgotten lunchbox sits on a desk. Inside: a second, smaller lunchbox. Someone is planning ahead.",
+      "The sectional in the corner has been recently re-bolted. Reinforced. Facilities asks no questions anymore.",
+      "A forgotten meal-prep container sits on the counter. Inside: a second, smaller container. Someone is planning ahead.",
       "The vending machine outside has been emptied again. There's a waiting list now. For a vending machine.",
     ],
   },
@@ -31,7 +31,7 @@ export const CAMPUS_NODES = {
   science_wing: {
     id:"science_wing", label:"Science Wing", emoji:"🔬", x:14, y:58,
     exits:["lecture_hall","library"],
-    desc:"Labs that smell of solvents and something baked. Professor Mori's food-science lab takes up the entire third floor and produces scents that violate the ventilation assumptions of the original blueprints.",
+    desc:"Labs that smell of solvents and something baked. RA Mori's food-science lab takes up the entire third floor and produces scents that violate the ventilation assumptions of the original blueprints.",
     flavor:[
       "A whiteboard outside Lab 3C reads: 'SENSORY TRIAL TODAY — VOLUNTEERS EAT FREE (EXTENSIVELY).'",
       "A mini-fridge in the hallway, labelled 'RESEARCH SAMPLES,' has been raided. The label has been edited to read 'RESEARCH SAMPLES (THEORETICAL).'",
@@ -89,9 +89,9 @@ export const CAMPUS_NODES = {
     ],
   },
   faculty_lounge: {
-    id:"faculty_lounge", label:"Faculty Lounge", emoji:"☕", x:34, y:82,
+    id:"faculty_lounge", label:"Staff Lounge", emoji:"☕", x:34, y:82,
     exits:["office"],
-    desc:"Burnt coffee, departmental gossip, and a communal pastry plate that you keep mysteriously well-stocked. Your colleagues have stopped asking where the éclairs come from.",
+    desc:"Burnt coffee, departmental gossip, and a communal pastry plate that you keep mysteriously well-stocked. Your coworkers in housing have stopped asking where the éclairs come from.",
     flavor:[
       "The pastry plate is empty again. You feel a craftsman's pride.",
       "Two colleagues debate the cafeteria budget. Both are eating second danishes while they do.",
@@ -110,7 +110,7 @@ export const CAMPUS_NODES = {
   },
 
   // ── new zones ──────────────────────────────────────────────
-  // * Professor Mori's home: science_wing (already above)
+  // * RA Mori's home: science_wing (already above)
   food_court: {
     id:"food_court", label:"Food Court", emoji:"🍜", x:70, y:22,
     exits:["dining_hall","dorms","student_union"],

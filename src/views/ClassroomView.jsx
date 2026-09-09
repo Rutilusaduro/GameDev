@@ -22,11 +22,11 @@ function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
   return (
     <div style={{ ...C.card, borderColor: '#2a1840', marginBottom: 14, padding: '12px 14px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
-        <div style={{ fontSize: 10, color: '#a080d0', letterSpacing: 1.5 }}>CLASSROOM PRESTIGE</div>
-        <div style={{ fontSize: 11, color: '#c0a0e0' }}>{currency} lbs available · {spent} spent of {total}</div>
+        <div style={{ fontSize: 10, color: '#c080a0', letterSpacing: 1.5 }}>HALL LOUNGE PRESTIGE</div>
+        <div style={{ fontSize: 11, color: '#e0c0d0' }}>{currency} lbs available · {spent} spent of {total}</div>
       </div>
-      <div style={{ fontSize: 10, color: '#605080', marginBottom: 10, lineHeight: 1.5 }}>
-        Spend cumulative class weight gain on permanent room upgrades. Institutional Cover unlocks AIB counter paths.
+      <div style={{ fontSize: 10, color: '#806070', marginBottom: 10, lineHeight: 1.5 }}>
+        Spend cumulative hall weight gain on permanent lounge upgrades. Institutional Cover unlocks AIB counter paths.
       </div>
       {tiers.map((tier) => {
         const skills = SKILL_TREE.filter((sk) => sk.tier === tier);
@@ -91,7 +91,7 @@ export function ClassroomView({ students, ownedClassSkills, onPurchaseClassSkill
         />
       ) : (
         <div style={{ fontSize: 11, color: '#706080', fontStyle: 'italic' }}>
-          Classroom upgrades unlock as your class grows.
+          Hall lounge upgrades unlock as your class grows.
         </div>
       )}
     </div>

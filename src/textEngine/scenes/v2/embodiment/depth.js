@@ -61,7 +61,7 @@ registerPool('emb.action.mirror_confession.depth', [
   ]},
 ]);
 
-registerPool('emb.action.text_professor.depth', [
+registerPool('emb.action.text_ra.depth', [
   { when: {}, text: [
     'The message sends before pride can edit it. Hunger typed in plain language — warm, needy, impossible to misread.',
     'Her thumbs hover after send. The spirit purrs. She is already waiting for your answer.',

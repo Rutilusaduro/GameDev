@@ -129,9 +129,9 @@ export function DebugPanel({
                   onClick={() => {
                     setOwnedSkills((prev) => ({ ...prev, spirit_ride: 1, deep_ride: 1 }));
                     setAp((a) => Math.max(a, 20));
-                    setView('spirit-hub');
+                    setView('influence-hub');
                   }}>
-                  🌒 Spirit Dominion QA
+                  🌒 Floor Influence QA
                 </button>
               )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}

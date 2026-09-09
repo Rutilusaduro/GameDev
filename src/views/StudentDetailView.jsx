@@ -617,7 +617,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                           return(
                             <div style={{background:"rgba(5,10,30,0.6)",border:`1px solid ${blue}80`,borderRadius:10,padding:12}}>
                               <div style={{fontSize:9,letterSpacing:3,color:blue,marginBottom:4}}>📋 EVOLVED PATH</div>
-                              <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:8}}>Community Researcher</div>
+                              <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:8}}>Lane Captain</div>
                               {!crs.thesisComplete?(
                                 <div>
                                   <div style={{color:"#6080a0",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>
@@ -972,10 +972,10 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                   );
                 })()}
 
-                {/* V2.0 Spirit Dominion */}
+                {/* V2.0 Floor Influence */}
                 {((ownedSkills?.spirit_ride||0)>=1||(ownedSkills?.dream_walk||0)>=1||(ownedSkills?.memory_palace||0)>=1)&&(
                   <div style={{...C.card,marginBottom:14,borderColor:'#8a4be040'}}>
-                    <div style={{...C.secT,marginBottom:7,color:'#c0a0e0'}}>Spirit Dominion · 2.0</div>
+                    <div style={{...C.secT,marginBottom:7,color:'#c0a0e0'}}>Floor Influence · 2.0</div>
                     <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:10}}>
                       {(ownedSkills?.spirit_ride||0)>=1&&(
                         <button type="button" style={{...C.btn('#6a30a0'),flex:'1 1 140px',fontSize:11}}

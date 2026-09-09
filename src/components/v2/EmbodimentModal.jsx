@@ -119,7 +119,7 @@ export function EmbodimentModal({
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
           <StudentPortrait student={student} size={72} />
           <div style={{ flex: 1 }}>
-            <p style={{ ...C.secT, margin: 0, color: '#c8a0e8' }}>Spirit Dominion · Campus Pilot</p>
+            <p style={{ ...C.secT, margin: 0, color: '#c8a0e8' }}>Floor Influence · Campus Pilot</p>
             <p style={{ fontSize: 11, color: '#9080a8', margin: '4px 0 0' }}>
               {active
                 ? `Riding ${student.name} — ${node.emoji} ${node.label}`

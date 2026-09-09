@@ -17,7 +17,7 @@ registerModuleVariants("emb.action.raid_pantry", [{ when: {}, weight: 3, text: [
 registerModuleVariants("emb.action.secret_binge", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register.", "Hunger steered from within. She obeys and calls it craving."] }]);
 registerModuleVariants("emb.action.seduce_appetite", [{ when: {}, weight: 3, text: ["Fullness gathers while shame schedules a late arrival."] }]);
 registerModuleVariants("emb.action.mirror_confession", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register."] }]);
-registerModuleVariants("emb.action.text_professor", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register."] }]);
+registerModuleVariants("emb.action.text_ra", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register."] }]);
 registerModuleVariants("emb.action.roommate_tempt", [{ when: {}, weight: 3, text: ["Fullness gathers while shame schedules a late arrival."] }]);
 registerModuleVariants("emb.action.public_eating", [{ when: {}, weight: 3, text: ["Crumbs, wrappers, evidence. The body keeps score warmly."] }]);
 registerModuleVariants("ritual.generic.depth", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The class eats with ceremonial hunger."] }]);

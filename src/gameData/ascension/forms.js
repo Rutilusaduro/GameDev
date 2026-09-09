@@ -17,7 +17,7 @@ export const ASCENSION_FORM_ROSTER = [
   },
   {
     studentId: 1,
-    studentName: 'Madeline',
+    studentName: 'Cassidy',
     formId: 'sphinx',
     label: 'Sphinx',
     essenceWord: 'marginalia',

@@ -51,7 +51,7 @@ export const AIB_COUNTERS = [
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
   { id: 'faculty_testimony', label: 'Faculty Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Faculty ally cancels informant effects for two weeks.' },
   { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 1, resolveHit: 20, scrutiny: -15, desc: 'Mark a board member for Lilith\'s hunt map (difficulty 4).', path: 'lilith' },
-  { id: 'compound_seduction', label: 'Compound Seduction', ap: 2, resolveHit: 8, scrutiny: -6, desc: 'Sophia seduces faculty lounge intel — slows scrutiny.', path: 'pharmacist' },
+  { id: 'compound_seduction', label: 'Compound Seduction', ap: 2, resolveHit: 8, scrutiny: -6, desc: 'Sophia seduces staff lounge intel — slows scrutiny.', path: 'pharmacist' },
   { id: 'network_misdirect', label: 'Network Misdirect', ap: 1, resolveHit: 0, scrutiny: -5, desc: 'Lab network buries scandal traces — detection risk on fail.', path: 'network' },
 ];
 
@@ -531,7 +531,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     next.aib.scandalMeter = Math.max(0, next.aib.scandalMeter - 8);
     return {
       opposition: { ...next, meta: recordCounterType(next.meta, counterId) },
-      message: '💊 Compound seduction — faculty lounge whispers favor abundance.',
+      message: '💊 Compound seduction — staff lounge whispers favor abundance.',
       scrutinyDelta: counter.scrutiny,
       apCost: counter.ap,
       moneyDelta: 0,

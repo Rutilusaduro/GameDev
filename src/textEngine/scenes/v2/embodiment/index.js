@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A1 Mobile, A5 Editor
-// V2.0 Spirit Embodiment prose
+// V2.0 Resident Ride prose
 import { registerPool, createContext, render } from '../../../engine.js';
 import { appendV2Depth } from '../depthRenderer.js';
 import './depth.js';
@@ -102,7 +102,7 @@ registerPool('emb.action.mirror_confession', [
   ]},
 ]);
 
-registerPool('emb.action.text_professor', [
+registerPool('emb.action.text_ra', [
   { when: {}, text: [
     'Her thumbs move before pride can intervene. "I\'m hungry again." Sent. She watches the screen like it might judge her.',
     'The message sends hungry and plain. She waits for your reply like it is permission.',

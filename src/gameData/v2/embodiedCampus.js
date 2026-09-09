@@ -145,7 +145,7 @@ export const EMBODIED_EVENTS = {
   },
   faculty_treats: {
     id: 'faculty_treats',
-    label: 'Faculty Lounge Treats',
+    label: 'Staff Lounge Treats',
     icon: '🥐',
     minStage: 2,
     nodes: ['faculty_lounge'],

@@ -1030,7 +1030,7 @@ export default function ProfessorSim(){
         return next;
       });
       const names=effects.trustGrants.map(g=>students.find(s=>s.id===g.studentId)?.name).filter(Boolean);
-      if(names.length) extra.push(`🌒 ${names.join(', ')} felt your attention on campus — spirit trust grows.`);
+      if(names.length) extra.push(`🌒 ${names.join(', ')} felt your attention on campus — trust on your floor grows.`);
     }
     if(Math.random()<CAMPUS_CONFIG.itemFindChance*0.5){
       const item=rollWeeklyItem();
@@ -6386,7 +6386,7 @@ export default function ProfessorSim(){
         embodimentEchoWeek:result.echoDigestWeek,
       }:st));
     }
-    push(`🌒 You return to the professor's body.${active?' Her appetite will echo into next week.':''}`);
+    push(`🌒 You return to your RA desk.${active?' Her appetite will echo into next week.':''}`);
   };
   const runEmbodiedMove=(toId)=>{
     const activeId=v2.embodiment?.activeStudentId;
@@ -6428,7 +6428,7 @@ export default function ProfessorSim(){
     if(snippet) push(`🌒 ${s.name} — ${event.label}. ${snippet}${snippet.length>=140?'…':''}`);
     if(result.trustGrants?.length){
       const names=result.trustGrants.map(g=>students.find(st=>st.id===g.studentId)?.name).filter(Boolean);
-      if(names.length) push(`🌒 Campus gossip reaches ${names.join(', ')} — spirit trust grows.`);
+      if(names.length) push(`🌒 Campus gossip reaches ${names.join(', ')} — residents trust you more.`);
     }
   };
   const runResonanceLink=(aId,bId)=>{
@@ -6468,7 +6468,7 @@ export default function ProfessorSim(){
     push(`🕯️ Feast ritual complete.${text?` ${text.slice(0,120)}...`:''}`);
     if(result.spiritFavor){
       setSpiritFavor(f=>(f||0)+result.spiritFavor);
-      push(`✨ Sacred gluttony — spirit favor +${result.spiritFavor}.`);
+      push(`✨ Floor feast — hall cred +${result.spiritFavor}.`);
     }
     setFeastRitualOpen(false);
   };

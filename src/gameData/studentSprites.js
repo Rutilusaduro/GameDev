@@ -123,7 +123,7 @@ const STUDENT_HAIR = {
 /** Per-student face/accessory overlay — rows 0–2; f=feature, x=dark accent, o=highlight. */
 const STUDENT_FEATURES = {
   0: ['....ff....', '...ffff...', null],           // Brittany — bow
-  1: [null, '..xxxx..', null],                      // Madeline — glasses
+  1: [null, '..xxxx..', null],                      // Cassidy — glasses
   2: ['..o..o..', '.ffffffff.', null],              // Kylie — glam frame
   3: ['.bbbbbbb.', '..bbbbbb..', null],             // Serena — headband
   4: ['..o....o..', null, null],                     // Fiona — earrings

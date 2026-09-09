@@ -4,7 +4,7 @@
 
 export const SALON_GUESTS = [
   { id: 'brittany', name: 'Brittany', unlockPrestige: 0, studentId: 0 },
-  { id: 'madeline', name: 'Madeline', unlockPrestige: 0, studentId: 1 },
+  { id: 'madeline', name: 'Cassidy', unlockPrestige: 0, studentId: 1 },
   { id: 'kylie', name: 'Kylie', unlockPrestige: 10, studentId: 2 },
   { id: 'rosa', name: 'Chef Rosa', unlockPrestige: 45, faculty: true },
   { id: 'mori', name: 'Dr. Mori', unlockPrestige: 45, faculty: true },
@@ -175,7 +175,7 @@ export const SALON_EVOLVED_EVENTS = [
     title: 'Faculty Drift',
     phases: [
       {
-        text: (h, s) => `Dr. Mori follows the smell of coq au vin to Chloé's door. She's ${Math.round(s.lbs)} pounds, hostess in black silk, and doesn't pretend surprise. "Professor Mori. You may stay for dessert."`,
+        text: (h, s) => `Dr. Mori follows the smell of coq au vin to Chloé's door. She's ${Math.round(s.lbs)} pounds, hostess in black silk, and doesn't pretend surprise. "RA Mori. You may stay for dessert."`,
         choices: [
           { id: 'welcome', label: 'Welcome Mori — faculty lends prestige', result: 'Mori stays. Takes notes. Eats more than she admits.', lbs: 6, rel: 9, flag: 'mori_regular' },
           { id: 'private', label: 'Keep it student-only tonight', result: 'Mori leaves a card. Chloé pins it to the corkboard.', lbs: 4, rel: 6 },

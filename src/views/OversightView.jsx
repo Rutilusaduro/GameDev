@@ -55,7 +55,7 @@ export function OversightView({
 
   const telegraph = getOversightTelegraph(opposition);
   const debuffs = aib.activeDebuffs || {};
-  const canDiscredit = oppositionCtx?.hasMadelineResearcher || oppositionCtx?.hasKylieStream
+  const canDiscredit = oppositionCtx?.hasCassidyResearcher || oppositionCtx?.hasKylieStream
     || canArchivistFreeDiscredit(students, opposition);
   const discreditable = canDiscredit
     ? AIB_AGENDA_CARDS.filter((c) => !aib.deckRemoved.includes(c.id))

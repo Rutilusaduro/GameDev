@@ -24,7 +24,7 @@ export const GAIN_CONFIG = {
   stuffedChancePerStreak: 0.1,
   forceFeed: { base: 0.45, perSpiritLevel: 0.04, overPenalty: 0.5, min: 0.05, max: 0.95 },
   // weekly maintenance burn (informational — her own eating covers it; the
-  // professor's calories are pure surplus)
+  // your calories are pure surplus)
   burnPerDayBase: 2000,
   burnPerDayMax: 3500,
   burnPerLb: 4, // extra daily burn per lb above 130

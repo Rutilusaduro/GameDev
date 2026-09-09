@@ -19,7 +19,7 @@ export const CLASS_SCENES = [
     text:s=>`${s.name} slumps into her seat with the hollow look of someone who hasn't slept properly in days. An energy drink sweats on the desk in front of her. Her notebook is still closed.`,
     choices:[
       { label:"Slide her a snack",    effect:{gain:[3,6],mood:"content",rel:5},  result:s=>`You quietly set a bag of cookies on her desk. She blinks, then eats them slowly, and some color returns to her face.` },
-      { label:"Let her vent",          effect:{gain:[0,0],mood:"focused",rel:8},  result:s=>`You pause and check in. She offloads everything — deadlines, dorm drama, personal problems. By the end she's noticeably lighter. "Thanks, Professor."` },
+      { label:"Let her vent",          effect:{gain:[0,0],mood:"focused",rel:8},  result:s=>`You pause and check in. She offloads everything — deadlines, dorm drama, personal problems. By the end she's noticeably lighter. "Thanks, RA."` },
       { label:"Give her busywork",     effect:{gain:[1,3],mood:"focused",rel:2},  result:s=>`A small, completable in-class task. She locks in and works quietly through it, which is more than she was doing before.` },
     ] },
   { id:"mood_tired", target:"student", filter:s=>s.mood==="tired",
@@ -81,7 +81,7 @@ export const CLASS_SCENES = [
     ] },
   { id:"arch_influencer", target:"student", filter:s=>s.archetype==="influencer",
     title:"Sponsored Content",
-    text:s=>`${s.name} is filming a haul video between slides, whispering reviews of the snacks you've provided. Her followers are apparently very invested in the "Professor's Snacks" series.`,
+    text:s=>`${s.name} is filming a haul video between slides, whispering reviews of the snacks you've provided. Her followers are apparently very invested in the "RA's Snacks" series.`,
     choices:[
       { label:"Bring premium snacks for the shoot", effect:{gain:[6,11],mood:"excited",rel:7}, result:s=>`You bring out artisan chocolates and imported cheese. She films delightedly. The video does numbers.` },
       { label:"Ask to see the content",              effect:{gain:[0,0], mood:"excited",rel:9}, result:s=>`She shows you the channel. It's surprisingly good. You tell her so. She's visibly touched. "Nobody ever actually asks."` },
@@ -166,7 +166,7 @@ export const CLASS_SCENES = [
     choices:[
       { label:"Arrange something special for her", effect:{gain:[5,10],mood:"content",rel:8},  result:s=>`You set something up specifically for her — her preferences, her portion, her timing. She notices the care. "You remembered." Warmth, genuine.` },
       { label:"Ask her to mentor someone",          effect:{gain:[0,0], mood:"content",rel:7},  result:s=>`You ask her to work with a struggling student. She agrees immediately and does it well, with patience and zero fanfare.` },
-      { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — academically, personally. "That actually means something, Professor."` },
+      { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — academically, personally. "That actually means something, RA."` },
     ] },
   // ── CLASS-WIDE ───────────────────────────────────────────────
   { id:"class_snack_break", target:"class",
@@ -207,7 +207,7 @@ export const CLASS_SCENES = [
     choices:[
       { label:"Try everything and praise all",       effect:{gain:[6,12]}, result:"You try each dish and comment thoughtfully. The class is thrilled. Second and third helpings are consumed under the banner of thorough academic comparison." },
       { label:"Formalize it with a scoring rubric",  effect:{gain:[4,9]},  result:"You produce a rubric. The class suddenly cares very deeply about their dishes. The stakes make everyone eat more to properly evaluate." },
-      { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The class eats freely for ninety minutes. It's the best class session of the semester." },
+      { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The class eats freely for ninety minutes. It's the best floor check-in of the semester." },
     ] },
   { id:"class_extended", target:"class",
     title:"Extended Session",

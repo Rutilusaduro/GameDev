@@ -9,8 +9,8 @@
 export const UNLOCK_SCENES = {
   // Brittany — cheerleader, runs the squad on numbers
   0: "Brittany runs the squad on numbers: macros, reps, the protein shake measured to the scoop. This week the scoop gets careless. She laughs at herself for it, then does it again, louder, like she wants you to hear. The captain just handed you the count.",
-  // Madeline — bookworm, analytical
-  1: "Madeline studies everything, including the way the granola bar stopped being enough around Tuesday. So she writes it down. She underlines it. Somewhere in the margin of her own careful notes, she has started taking yours.",
+  // Cassidy — bookworm, analytical
+  1: "Cassidy studies everything, including the way the granola bar stopped being enough around Tuesday. So she writes it down. She underlines it. Somewhere in the margin of her own careful notes, she has started taking yours.",
   // Kylie — influencer, curated
   2: "Kylie shoots the acai bowl for the grid, then eats a second one off-camera where the brand can't follow. The off-camera version is the one you wanted. She's learning there's a feed she keeps just for you.",
   // Serena — athlete, competitive

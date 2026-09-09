@@ -1,15 +1,16 @@
 // ═══════════════════════════════════════════════════════════════
-// SPIRIT HUB — V2.0 central view (embodiment, resonance, rituals)
+// INFLUENCE HUB — V2.0 central view (resident ride, resonance, rituals)
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { C } from '../styles.js';
+import { CAMPUS_NODES } from '../gameData/campus.js';
 import { getResonanceTier, getCombinedClassLbs } from '../gameData/v2/cravingResonance.js';
 import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
 import { witnessEntrySummary } from '../gameData/campusWitness.js';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 
-const ACCENT = '#8a4be0';
+const ACCENT = '#c44a2a';
 
 export function SpiritHubView({
   students,
@@ -64,36 +65,35 @@ export function SpiritHubView({
 
   const linkedIds = (id) => links.flatMap((l) => (l.a === id ? [l.b] : l.b === id ? [l.a] : []));
   const pickLabel = linkPickA == null
-    ? 'Select first student to link'
-    : `Select partner for ${visible.find((s) => s.id === linkPickA)?.name || 'student'}`;
+    ? 'Select first resident to link'
+    : `Select partner for ${visible.find((s) => s.id === linkPickA)?.name || 'resident'}`;
 
   return (
     <div>
-      <p style={C.secT}>Spirit Dominion — 2.0</p>
+      <p style={C.secT}>Floor Influence</p>
       <div style={{ ...C.card, borderColor: `${ACCENT}60`, marginBottom: 12 }}>
-        <p style={{ fontSize: 11, color: '#b0a0d0', lineHeight: 1.6 }}>
-          <strong style={{ color: '#d8c0f8' }}>Flagship:</strong> Slip inside a student and pilot her across campus — waddle, eat, get noticed, trigger events. Bind appetites. Feast as ceremony.
+        <p style={{ fontSize: 11, color: '#d0b0a8', lineHeight: 1.6 }}>
+          <strong style={{ color: '#ffe8d8' }}>Flagship:</strong> Walk campus in a resident&apos;s shoes — eat, get noticed, trigger floor drama. Bind cravings. Feast as ceremony.
         </p>
       </div>
 
-      {/* Embodiment — flagship */}
       <div style={{
         ...C.card,
         marginBottom: 12,
         border: `1px solid ${ACCENT}90`,
         boxShadow: `0 0 24px ${ACCENT}22`,
-        background: 'linear-gradient(145deg, rgba(60,30,100,0.35) 0%, rgba(20,16,32,0.5) 100%)',
+        background: 'linear-gradient(145deg, rgba(80,30,40,0.35) 0%, rgba(20,16,32,0.5) 100%)',
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#e0c8ff', letterSpacing: 1 }}>
-            🌒 CAMPUS PILOT — SPIRIT EMBODIMENT
+          <div style={{ fontSize: 10, fontWeight: 700, color: '#ffd0c0', letterSpacing: 1 }}>
+            🏃 CAMPUS PILOT — RESIDENT RIDE
           </div>
           {hasSpiritRide && (
             <span style={{ fontSize: 8, color: '#90c0a0', letterSpacing: 0.5, textTransform: 'uppercase' }}>Ready</span>
           )}
         </div>
         {!hasSpiritRide ? (
-          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Spirit Ride in the Influence skill tree.</p>
+          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Resident Ride in the Influence skill tree.</p>
         ) : (
           <>
             {activeStudent && activeNode && (
@@ -101,20 +101,20 @@ export function SpiritHubView({
                 marginBottom: 10,
                 padding: '8px 10px',
                 borderRadius: 6,
-                background: 'rgba(138,75,224,0.15)',
-                border: '1px solid rgba(138,75,224,0.35)',
+                background: 'rgba(196,74,42,0.15)',
+                border: '1px solid rgba(196,74,42,0.35)',
               }}>
-                <p style={{ fontSize: 11, color: '#c8a8f0', margin: 0 }}>
+                <p style={{ fontSize: 11, color: '#f0c8b8', margin: 0 }}>
                   Active ride: <strong>{activeStudent.name}</strong> · {activeNode.emoji} {activeNode.label}
                 </p>
-                <p style={{ fontSize: 9, color: '#9080b0', margin: '4px 0 0' }}>
-                  {walkSteps} steps this session — tap a student below to resume the walk
+                <p style={{ fontSize: 9, color: '#a08070', margin: '4px 0 0' }}>
+                  {walkSteps} steps this session — tap a resident below to resume
                 </p>
                 {embodimentWitnesses.length > 0 && (
-                  <div style={{ marginTop: 8, paddingTop: 6, borderTop: '1px solid rgba(138,75,224,0.2)' }}>
-                    <p style={{ fontSize: 8, color: '#a080c0', margin: '0 0 4px', letterSpacing: 0.5 }}>CAMPUS WITNESS LOG</p>
+                  <div style={{ marginTop: 8, paddingTop: 6, borderTop: '1px solid rgba(196,74,42,0.2)' }}>
+                    <p style={{ fontSize: 8, color: '#c09080', margin: '0 0 4px', letterSpacing: 0.5 }}>CAMPUS WITNESS LOG</p>
                     {embodimentWitnesses.map((e, i) => (
-                      <p key={i} style={{ fontSize: 9, color: '#8070a0', margin: '0 0 3px', lineHeight: 1.4 }}>
+                      <p key={i} style={{ fontSize: 9, color: '#907060', margin: '0 0 3px', lineHeight: 1.4 }}>
                         {witnessEntrySummary(e)}
                       </p>
                     ))}
@@ -122,22 +122,22 @@ export function SpiritHubView({
                 )}
               </div>
             )}
-            <p style={{ fontSize: 10, color: '#9080b8', marginBottom: 8, lineHeight: 1.5 }}>
-              Walk the map from inside her skin. Doorframes, bullies, vending machines, gossip — campus reacts to her weight.
+            <p style={{ fontSize: 10, color: '#a08078', marginBottom: 8, lineHeight: 1.5 }}>
+              See campus through her eyes. Doorframes, gossip, vending machines — the quad reacts to her appetite.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {visible.map((s) => (
                 <button key={s.id} type="button" style={{
-                  ...C.btn(activeId === s.id ? '#6a38a8' : '#4a2870'),
+                  ...C.btn(activeId === s.id ? '#a83828' : '#6a2820'),
                   fontSize: 10,
                   padding: '6px 10px',
-                  border: activeId === s.id ? '1px solid #c8a0e8' : undefined,
+                  border: activeId === s.id ? '1px solid #f0c0a8' : undefined,
                 }}
                   onClick={() => onOpenEmbodiment?.(s)}>
                   <StudentPortrait student={s} size={48} showLabel={false} />
                   <span style={{ display: 'block', marginTop: 4 }}>{s.name}</span>
                   {activeId === s.id && (
-                    <span style={{ display: 'block', fontSize: 8, color: '#c8a0e8' }}>riding</span>
+                    <span style={{ display: 'block', fontSize: 8, color: '#f0c0a8' }}>riding</span>
                   )}
                 </button>
               ))}
@@ -146,7 +146,6 @@ export function SpiritHubView({
         )}
       </div>
 
-      {/* Resonance */}
       <div style={{ ...C.card, marginBottom: 12 }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: '#c0a0e0', marginBottom: 8, letterSpacing: 1 }}>
           🔗 CRAVING RESONANCE — {tier.label}
@@ -206,13 +205,12 @@ export function SpiritHubView({
         )}
       </div>
 
-      {/* Rituals */}
       <div style={{ ...C.card, marginBottom: 12 }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: '#c0a0e0', marginBottom: 8, letterSpacing: 1 }}>
           🍽 FEAST RITUALS
         </div>
         {rituals.length === 0 ? (
-          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Ritual Kitchen classroom upgrade.</p>
+          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Ritual Kitchen hall lounge upgrade.</p>
         ) : (
           <button type="button" style={{ ...C.btn('#8a4020'), width: '100%' }} onClick={onOpenRituals}>
             Open Feast Rituals ({rituals.length} available)
@@ -220,7 +218,6 @@ export function SpiritHubView({
         )}
       </div>
 
-      {/* Dreams */}
       <div style={{ ...C.card }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: '#c0a0e0', marginBottom: 8, letterSpacing: 1 }}>
           💤 APPETITE DREAMS
@@ -228,7 +225,7 @@ export function SpiritHubView({
         {!hasDreamWalk ? (
           <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Dream Walk in the Corruption skill tree.</p>
         ) : !hasDreamChamber ? (
-          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Build Dream Chamber classroom upgrade for manual dreams.</p>
+          <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Build Dream Chamber hall lounge upgrade for manual dreams.</p>
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {visible.map((s) => {

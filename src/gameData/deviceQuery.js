@@ -171,7 +171,7 @@ export function listEquippedEntries(students = [], player = null) {
         defId: entry.defId,
         def,
         slot,
-        holder: 'Professor',
+        holder: 'RA',
         holderType: 'player',
         modified: (entry.mods?.length ?? 0) > 0,
       });

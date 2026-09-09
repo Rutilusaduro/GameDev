@@ -29,7 +29,7 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
                   </div>
                 ))}
               </div>
-              {/* Professor reply */}
+              {/* RA reply */}
               <div style={{marginBottom:12}}>
                 <div style={{fontSize:9,letterSpacing:3,color:CG_DIM,marginBottom:6}}>REPLY AS PROFESSOR</div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:6}}>

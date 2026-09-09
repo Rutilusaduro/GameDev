@@ -9,7 +9,7 @@ const EVOLVED_OP_MESSAGES = {
   delivery_hive: '✦ Hive intake delays the agenda — drones reroute compliance paperwork.',
   eating_streamer: '✦ Stream distraction floods the Board feed with indulgent clips.',
   chapter_hostess: '✦ Chapter Hostess feast invitation muddies the wellness narrative.',
-  community_researcher: '✦ Madeline\'s thesis data reframes the agenda as aesthetic research.',
+  community_researcher: '✦ Cassidy\'s thesis data reframes the agenda as aesthetic research.',
   competitive_gainer: '✦ Competitive metrics make the Board look petty by comparison.',
   pharmacist: '✦ Compound haze softens the room — agenda stalls one week.',
   artisan_gallery: '✦ Gallery opening steals the cultural spotlight.',
@@ -47,7 +47,7 @@ export function buildOppositionContext({
     hasEchoedWill: (ownedSkills?.echoed_will || 0) > 0,
     relMaxStudent: relMax,
     facultyAffinityScore,
-    hasMadelineResearcher: students.some((s) => s.evolvedForm === 'community_researcher'),
+    hasCassidyResearcher: students.some((s) => s.evolvedForm === 'community_researcher'),
     hasKylieStream: students.some((s) => s.evolvedForm === 'eating_streamer'),
     hasReneeCulinary: students.some((s) => s.id === 10 && !!s.evolvedForm),
     hasTiffanyFeast: students.some((s) => s.evolvedForm === 'chapter_hostess'),
@@ -62,7 +62,7 @@ export function counterGateReason(counter, ctx) {
     case 'machine_fatten':
       return ctx.hasGrowthChamber ? null : 'Requires growth accelerator chamber';
     case 'public_discredit':
-      return (ctx.hasMadelineResearcher || ctx.hasKylieStream) ? null : 'Requires Madeline (researcher) or Kylie (streamer)';
+      return (ctx.hasCassidyResearcher || ctx.hasKylieStream) ? null : 'Requires Cassidy (researcher) or Kylie (streamer)';
     case 'bureaucratic_capture':
       if (ctx.hasInstitutionalCover && ctx.relMaxStudent >= 70) return null;
       if (ctx.relMaxStudent >= 70) return null;

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CLASSROOM PRESTIGE SKILLS — lbs-cost shop (§12, §30 gates)
+// HALL LOUNGE PRESTIGE SKILLS — lbs-cost shop (§12, §30 gates)
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
 
@@ -98,7 +98,7 @@ export function listPurchasableClassSkills(owned = {}, students = []) {
   });
 }
 
-/** Map dinner venue ids to classroom prestige unlock keys. */
+/** Map dinner venue ids to hall lounge prestige unlock keys. */
 const VENUE_UNLOCK_MAP = {
   bistro: 'dinner_action',
   italian: 'dinner_action',

@@ -169,163 +169,325 @@ I had her positioned right against me so our enormous blob bodies could melt tog
       ],
     ],
   },
-  bookworm: {
+  swimmer: {
     intro: [
       `Dear Journal,
 
-I’ve started my independent study on the psychology of feederism, and I’ve chosen Madeline as my subject. She’s the classic bookworm — always buried in thick novels in the library, wearing oversized sweaters, glasses perched on her nose, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a girl like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this straight, bookish girl into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
+I’ve started my independent practice on the psychology of feederism, and I’ve chosen Cassidy as my subject. She’s the classic swimmer — always buried in thick lap times in the pool deck, wearing oversized sweaters, glasses perched on her nose, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a girl like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this straight, bookish girl into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
 
 — Nadia`,
       `Dear Journal,
 
-I’m starting my independent study on the psychology of feederism, and I’ve chosen Madeline as the subject. She’s the quiet bookworm who’s always hiding in the library with thick novels and oversized sweaters, glasses sliding down her nose. Her body is so straight and flat — narrow shoulders, almost no chest, slim hips, and very little curve anywhere. It bothers me how untouched and cerebral she is. A body like hers is wasted being so flat and unyielding. My own colossal frame spreads heavily across the bed as I write this, rolls upon rolls everywhere, belly hanging in thick layers. I’m already obsessed. This study is the perfect excuse to transform her completely. I need to watch that straight, flat bookworm swell and soften until she’s heavy and jiggly. I can’t wait to feel her growing fat press and squish against my massive body.
+I’m starting my independent practice on the psychology of feederism, and I’ve chosen Cassidy as the subject. She’s the quiet swimmer who’s always hiding in the pool deck with thick lap times and oversized sweaters, glasses sliding down her nose. Her body is so straight and flat — narrow shoulders, almost no chest, slim hips, and very little curve anywhere. It bothers me how untouched and cerebral she is. A body like hers is wasted being so flat and unyielding. My own colossal frame spreads heavily across the bed as I write this, rolls upon rolls everywhere, belly hanging in thick layers. I’m already obsessed. This practice is the perfect excuse to transform her completely. I need to watch that straight, flat swimmer swell and soften until she’s heavy and jiggly. I can’t wait to feel her growing fat press and squish against my massive body.
 
 — Nadia`,
       `Dear Journal,
 
-I’m beginning my official research study on the psychology of feederism with Madeline as the subject. She’s the quiet bookworm who spends all her time in the library with thick novels and baggy sweaters, glasses always slipping down her nose. Her body is so straight and flat — narrow shoulders, almost no chest, slim hips, and very little curve. It feels wrong how untouched she is. This study is mostly a front now. I already know everything about feederism through my own body — an immobile, overflowing blob of fat that spreads across my reinforced bed in every direction, rolls cascading endlessly, my belly so vast it completely pins me down. Growing any more myself is nearly impossible, so I’ll live through her. I’m going to turn this flat, intellectual girl into something heavy, sagging, and enormous until her fat can slap and press against mine. I can’t wait to feel every inch of her vast softness.
+I’m beginning my official training practice on the psychology of feederism with Cassidy as the subject. She’s the quiet swimmer who spends all her time in the pool deck with thick lap times and baggy sweaters, glasses always slipping down her nose. Her body is so straight and flat — narrow shoulders, almost no chest, slim hips, and very little curve. It feels wrong how untouched she is. This practice is mostly a front now. I already know everything about feederism through my own body — an immobile, overflowing blob of fat that spreads across my reinforced bed in every direction, rolls cascading endlessly, my belly so vast it completely pins me down. Growing any more myself is nearly impossible, so I’ll live through her. I’m going to turn this flat, intellectual girl into something heavy, sagging, and enormous until her fat can slap and press against mine. I can’t wait to feel every inch of her vast softness.
 
 — Nadia`,
     ],
     entries: [
       [
-        `Madeline came to my room tonight still so slim and straight-figured. Her flat chest and narrow hips looked almost delicate under her baggy sweater. I started the feeding gently but steadily — pasta, garlic bread, and cheesecake — praising her focus while she ate. By the end her stomach had a tight, rounded bulge under her clothes.
+        `Cassidy came to my room tonight still so slim and straight-figured. Her flat chest and narrow hips looked almost delicate under her baggy sweater. I started the feeding gently but steadily — pasta, garlic bread, and cheesecake — praising her focus while she ate. By the end her stomach had a tight, rounded bulge under her clothes.
 
 When I hugged her goodbye, my heavy soft gut squished firmly into her flat middle. The contrast made me shiver. I pressed my massive tits against her nearly flat chest, smothering her a little as I held her close. She blushed and adjusted her glasses nervously. Feeling how little there is of her right now only makes me excited for what’s coming. I want to bury myself in her as she grows.
 
 — Nadia`,
-        `Madeline came over tonight still so slim and straight-figured. That flat chest and narrow hips under her baggy sweater actually irritated me. She should already be much softer. I fed her aggressively, forcing plate after plate of rich pasta, garlic bread, milkshakes, and cake down until her belly was painfully bloated and she was squirming.
+        `Cassidy came over tonight still so slim and straight-figured. That flat chest and narrow hips under her baggy sweater actually irritated me. She should already be much softer. I fed her aggressively, forcing plate after plate of rich pasta, garlic bread, milkshakes, and cake down until her belly was painfully bloated and she was squirming.
 
 Afterwards I dragged her against my colossal body. My enormous belly completely swallowed her flat middle, heavy fat rolling over and smothering her while I held her tight. I shoved her face deep between my massive tits and kept her there as I rubbed her overstuffed stomach. The contrast between my huge sagging body and her still-flat one only fueled my hunger. She needs to grow much faster. I whispered how much better she’ll feel once there’s real softness to her. I’m already soaked thinking about it.`,
-        `Madeline visited tonight still so slim and straight-figured. Her flat chest and narrow hips under that oversized sweater annoyed me. She needs softness so badly. I fed her heavily from my bed, making her eat huge portions of pasta, bread, shakes, and cake until her belly was painfully swollen and she could barely sit up.
+        `Cassidy visited tonight still so slim and straight-figured. Her flat chest and narrow hips under that oversized sweater annoyed me. She needs softness so badly. I fed her heavily from my bed, making her eat huge portions of pasta, bread, shakes, and cake until her belly was painfully swollen and she could barely sit up.
 
 I had her climb onto the bed and sink into my enormous blob. My vast belly rose like a mountain as I pulled her close, letting her slim frame disappear into my warm heavy fat. I buried her face deep between my gigantic pillowy tits, smothering her while I rubbed her bloated stomach. Feeling how small and flat she still is against me only makes my hunger stronger. She needs to grow much bigger. I whispered how good it will feel when there’s so much more of her pressing and slapping against my body. I’m experiencing this all through her now.`,
       ],
       [
-        `Madeline returned for another session. She’s still mostly slim, but her stomach holds food longer now and looks softer afterward. Her straight figure hasn’t changed much yet, but I can be patient.
+        `Cassidy returned for another session. She’s still mostly slim, but her stomach holds food longer now and looks softer afterward. Her straight figure hasn’t changed much yet, but I can be patient.
 
-After feeding her extra helpings until she was full and quiet, I pulled her into a long hug. My fat belly molded heavily over her flat one, warm and possessive. I buried my face against her chest, even though it’s still small and flat, and breathed her in while rubbing her back. She smelled like old books and nervousness. I whispered how good she was doing for the study. The thought of her straight body slowly widening and softening against my own heavy one is already getting me wet. There’s something delicious about corrupting a bookworm like this.
+After feeding her extra helpings until she was full and quiet, I pulled her into a long hug. My fat belly molded heavily over her flat one, warm and possessive. I buried my face against her chest, even though it’s still small and flat, and breathed her in while rubbing her back. She smelled like old books and nervousness. I whispered how good she was doing for the practice. The thought of her straight body slowly widening and softening against my own heavy one is already getting me wet. There’s something delicious about corrupting a swimmer like this.
 
 — Nadia`,
-        `Madeline’s stomach is staying fuller longer now, and her thighs have started brushing together slightly. That rigid straight figure is finally beginning to yield.
+        `Cassidy’s stomach is staying fuller longer now, and her thighs have started brushing together slightly. That rigid straight figure is finally beginning to yield.
 
 I kept her here much longer tonight. I laid her on top of me so our bodies could press together. My huge gut molded heavily over hers, completely dominating her smaller frame while I ran my hands over her. I buried my face against her chest, feeling the first hints of new fullness, and groped her ass and thighs, squeezing the emerging softness. She made quiet, nervous sounds that drove me crazy. I told her how right this is, how she was meant to be much heavier. My obsession grows stronger every time I feel her against my colossal body.`,
-        `Madeline’s stomach stays rounded and full for hours after feeding, and her thighs have started brushing together. That rigid straight figure is finally softening.
+        `Cassidy’s stomach stays rounded and full for hours after feeding, and her thighs have started brushing together. That rigid straight figure is finally softening.
 
 I kept her longer tonight. I made her lie on top of my massive blob, her body sinking deep into my fat. Our bellies pressed together — hers newly plush, mine an overwhelming heavy mass that dominated her. I held her head down between my enormous tits, surrounding her face in warm sweaty cleavage while I groped her thickening ass and thighs. She whimpered softly against me. The contrast feels incredible, but I need so much more. My own body is too huge to grow easily anymore, so every new pound on her brings me intense pleasure. I’m already aching to feel her fat slap heavier against mine.`,
       ],
       [
-        `Madeline is starting to soften. Her previously flat stomach now has a noticeable plushness when full, and her thighs touch slightly when she walks. Her chest even looks a tiny bit fuller.
+        `Cassidy is starting to soften. Her previously flat stomach now has a noticeable plushness when full, and her thighs touch slightly when she walks. Her chest even looks a tiny bit fuller.
 
 I had her sit on my lap tonight. My thick heavy gut rested right on top of her softer middle, squishing and spreading over her. I wrapped my arms around her narrow frame and buried my face between her growing breasts, feeling the new warmth and give. She trembled a little but didn’t pull away. I rubbed her belly in slow circles while telling her how interesting her reactions are. Having her straight, bookish body starting to yield against my fat feels incredible. I’m getting more addicted with every session.
 
 — Nadia`,
-        `Madeline’s waist has widened noticeably, her belly now carries a constant soft roundness, and her breasts have grown enough to rest against her middle.
+        `Cassidy’s waist has widened noticeably, her belly now carries a constant soft roundness, and her breasts have grown enough to rest against her middle.
 
 After stuffing her until she was panting, I pulled her close on the bed. Our bellies squished together beautifully — hers warm and giving, mine an overwhelming heavy mass that engulfed her. I shoved her face deep into my enormous cleavage and held her there while I jiggled and rubbed her thickening thighs and ass. The way her body is starting to melt against mine feels addictive. I love knowing I’m the one softening this bookish, flat girl. Every new curve makes me want her even bigger.`,
-        `Madeline’s waist has widened, her belly now carries a constant soft roundness, and her breasts sit heavier on her middle. She looks so much better.
+        `Cassidy’s waist has widened, her belly now carries a constant soft roundness, and her breasts sit heavier on her middle. She looks so much better.
 
-After stuffing her until she was panting, I pulled her fully against my blob form. Our bellies squished together — hers warm and yielding, mine a vast heavy wave that rolled over her. I buried my face deep into her swelling tits, motorboating and licking while grinding what I could of my lower belly against hers. Every jiggle from her sends shivers through my immense body. I love feeling her expand against me. This is why I chose her — to watch this flat bookworm grow heavy in my place. I told her how proud I am and how much further we’re going.`,
+After stuffing her until she was panting, I pulled her fully against my blob form. Our bellies squished together — hers warm and yielding, mine a vast heavy wave that rolled over her. I buried my face deep into her swelling tits, motorboating and licking while grinding what I could of my lower belly against hers. Every jiggle from her sends shivers through my immense body. I love feeling her expand against me. This is why I chose her — to watch this flat swimmer grow heavy in my place. I told her how proud I am and how much further we’re going.`,
       ],
       [
-        `Madeline’s figure is filling out. Her waist is widening, her belly has a constant soft roundness, and her once-flat chest has grown into modest but noticeable breasts.
+        `Cassidy’s figure is filling out. Her waist is widening, her belly has a constant soft roundness, and her once-flat chest has grown into modest but noticeable breasts.
 
-I fed her until she was groaning, then laid her against me on the bed. Our bellies pressed together — hers plush and full, mine heavy and sagging — rolling warmly against each other. I shoved her face gently into my massive cleavage and held her there while I groped her softening sides and thighs. She made these quiet, surprised little sounds that drove me crazy. Turning this flat bookworm into something so squeezable is deeply satisfying. I love how her body is starting to squish back against mine.
+I fed her until she was groaning, then laid her against me on the bed. Our bellies pressed together — hers plush and full, mine heavy and sagging — rolling warmly against each other. I shoved her face gently into my massive cleavage and held her there while I groped her softening sides and thighs. She made these quiet, surprised little sounds that drove me crazy. Turning this flat swimmer into something so squeezable is deeply satisfying. I love how her body is starting to squish back against mine.
 
 — Nadia`,
-        `Madeline’s belly sways when she walks now, her ass has a clear jiggle, and her breasts have become large and heavy.
+        `Cassidy’s belly sways when she walks now, her ass has a clear jiggle, and her breasts have become large and heavy.
 
 I kept her pressed against me for hours. Our bellies rolled and folded over each other in thick waves of warm fat as I groped every new inch. I buried my face completely in her heavy tits, licking and motorboating them while grinding our bodies together. She gasped and clutched at my rolls, glasses fogged up. Her body feels so much better already, but I still need more. I want her truly massive so our fat can properly smother one another.`,
-        `Madeline’s belly sways when she walks now, her ass jiggles noticeably, and her breasts have become large and pendulous.
+        `Cassidy’s belly sways when she walks now, her ass jiggles noticeably, and her breasts have become large and pendulous.
 
 I had her spend hours pressed against me. Our bellies slapped and folded over each other in thick waves of warm fat as I held her tightly. I shoved her face completely into my gigantic tits while I groped her new rolls and heavy thighs. She felt so good sinking into my mass. I whispered how much better she looks with all this softness. Since my growth is marginal now, every new curve on her body thrills me. I need to feel more of her fat slapping and spreading across mine.`,
       ],
       [
-        `Madeline has grown much softer and heavier. Her straight figure has widened, with a big plush belly, thicker thighs, and breasts that now rest noticeably on her middle.
+        `Cassidy has grown much softer and heavier. Her straight figure has widened, with a big plush belly, thicker thighs, and breasts that now rest noticeably on her middle.
 
-After feeding I pulled her on top of me. Her belly squashed warmly down onto my heavy gut, fat melding and folding together as I held her close. I buried my face completely in her soft tits, motorboating and licking while squeezing her thickening ass. She gasped and clutched at my rolls. The contrast between the quiet bookworm she used to be and how jiggly she’s becoming turns me on so much. I kept her pressed against me for a long time, enjoying every squish and whimper.
+After feeding I pulled her on top of me. Her belly squashed warmly down onto my heavy gut, fat melding and folding together as I held her close. I buried my face completely in her soft tits, motorboating and licking while squeezing her thickening ass. She gasped and clutched at my rolls. The contrast between the quiet swimmer she used to be and how jiggly she’s becoming turns me on so much. I kept her pressed against me for a long time, enjoying every squish and whimper.
 
 — Nadia`,
-        `Madeline’s figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with movement.
+        `Cassidy’s figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with movement.
 
-I had her climb on top of me after feeding. Her belly squashed down onto my colossal one, warm fat melding together as I wrapped my arms around her. I buried myself deep in her massive tits, moaning into them while squeezing her fat ass and sides. The way she jiggles and sinks into me is incredibly satisfying. I kept her there a long time, telling her how perfect she feels getting heavier. Watching this straight bookworm expand has become my greatest pleasure.`,
-        `Madeline’s figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with every step.
+I had her climb on top of me after feeding. Her belly squashed down onto my colossal one, warm fat melding together as I wrapped my arms around her. I buried myself deep in her massive tits, moaning into them while squeezing her fat ass and sides. The way she jiggles and sinks into me is incredibly satisfying. I kept her there a long time, telling her how perfect she feels getting heavier. Watching this straight swimmer expand has become my greatest pleasure.`,
+        `Cassidy’s figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with every step.
 
-I made her climb on top of my enormous blob after feeding. Her belly squashed down onto my vast one, fat slapping and molding together as I wrapped my thick arms around her. I buried myself deep in her massive tits, licking and moaning into them while squeezing her fat ass and sides. The way she jiggles against me is addictive. I kept her there a long time, telling her how perfect she feels getting heavier. Watching this straight bookworm swell is deeply satisfying.`,
+I made her climb on top of my enormous blob after feeding. Her belly squashed down onto my vast one, fat slapping and molding together as I wrapped my thick arms around her. I buried myself deep in her massive tits, licking and moaning into them while squeezing her fat ass and sides. The way she jiggles against me is addictive. I kept her there a long time, telling her how perfect she feels getting heavier. Watching this straight swimmer swell is deeply satisfying.`,
       ],
       [
-        `Madeline moves slower these days. Her belly sways when she walks, her thighs rub constantly, and her breasts have become heavy and full.
+        `Cassidy moves slower these days. Her belly sways when she walks, her thighs rub constantly, and her breasts have become heavy and full.
 
 I kept her in bed with me, pressing our bodies together. Our bellies squished and spilled over each other in warm waves of fat. I buried my face deep between her large tits, licking the soft flesh while groping her sagging belly and wide hips. She was breathing hard, glasses fogged up, looking adorably overwhelmed. Feeling this much of her soft weight against my own heavy body is heaven. I love what I’m turning her into.
 
 — Nadia`,
-        `Madeline moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
+        `Cassidy moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
 
 Tonight I pulled her fully against my colossal form. Our heavy bellies collided and spilled over each other in soft warm waves. I buried my face between her sagging tits, licking the soft flesh while groping her thickening rolls. Feeling how much more there is of her against me is pure bliss. I encouraged her to eat even more next time. Since my own growth is limited, her expansion has become everything to me.`,
-        `Madeline moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
+        `Cassidy moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
 
 Tonight I pulled her as close as possible. Our heavy bellies collided and slapped together in soft warm waves, fat spreading and pressing everywhere. I buried my face between her sagging tits, licking the sweaty flesh while groping her thickening rolls. Feeling how much more there is of her against my immense size is pure bliss. I encouraged her to keep eating more. Her expansion has become my main source of pleasure since I can barely grow anymore. I need her fat to slap heavily against every inch of mine.`,
       ],
       [
-        `Madeline’s body has grown so fat and lush. She has rolls on her sides, a heavy hanging belly, and massive breasts that rest on top of her gut.
+        `Cassidy’s body has grown so fat and lush. She has rolls on her sides, a heavy hanging belly, and massive breasts that rest on top of her gut.
 
-I had her lie beside me so I could roll partially over her. Our big fat bellies engulfed each other, warm and heavy. I smothered my face in her enormous tits and rubbed my thick thighs against hers. She moaned softly into my cleavage as I jiggled her everywhere I could reach. The quiet, straight bookworm is almost completely gone. I’m obsessed with how good her fat feels melting against mine.
+I had her lie beside me so I could roll partially over her. Our big fat bellies engulfed each other, warm and heavy. I smothered my face in her enormous tits and rubbed my thick thighs against hers. She moaned softly into my cleavage as I jiggled her everywhere I could reach. The quiet, straight swimmer is almost completely gone. I’m obsessed with how good her fat feels melting against mine.
 
 — Nadia`,
-        `Madeline has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
+        `Cassidy has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
 
 I kept her in bed for ages, pressing our bodies together. Her big fat belly squished wonderfully under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits, licking while our bellies ground together. The warmth and heaviness of her body feels amazing. I moaned into her cleavage about how good she looks this soft. This is why I chose her.`,
-        `Madeline has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
+        `Cassidy has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
 
 I kept her in bed for ages. Her big fat belly slapped and squished under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits, licking while our bellies pressed and rubbed together. The warmth and heaviness of her body feels amazing against my own. I moaned into her cleavage about how good she looks this soft. This is exactly why I picked her — to live through her gains.`,
       ],
       [
-        `Madeline is very fat now. She waddles, everything on her jiggles heavily, and she moves slower now.
+        `Cassidy is very fat now. She waddles, everything on her jiggles heavily, and she moves slower now.
 
 After feeding her until she was stuffed I pulled her close for hours. Our massive bellies squished and folded together as I held her. I buried myself face-first in her gigantic sweaty tits, licking while grinding our lower bodies. The way her fat spills and rolls against me is driving me crazy. I told her how beautiful she looks like this. My own heavy body feels even better when it’s pressed against hers.
 
 — Nadia`,
-        `Madeline waddles heavily now, every part of her jiggling and swaying with each step.
+        `Cassidy waddles heavily now, every part of her jiggling and swaying with each step.
 
 After feeding her until she was completely stuffed I rolled partially over her. Our massive bellies engulfed each other in heavy warm fat. I smothered my face in her enormous tits and rubbed my thick thighs against her spreading ones. The way her body yields and folds under mine drives me crazy. I told her how proud I am of how big she’s getting and how much further I want to take her.`,
-        `Madeline waddles heavily now, every part of her jiggling and swaying with each movement.
+        `Cassidy waddles heavily now, every part of her jiggling and swaying with each movement.
 
 After feeding her until she was stuffed I had her lie beside me. I rolled what I could of my blob over her, our massive bellies engulfing and slapping against each other in heavy warm fat. I smothered my face in her enormous tits and rubbed against her spreading thighs. The way her body yields under mine drives me crazy with lust. I told her how proud I am and how much bigger I still want her.`,
       ],
       [
-        `Madeline looks enormous. Her body is covered in heavy rolls and sagging fat. She barely fits in regular chairs anymore.
+        `Cassidy looks enormous. Her body is covered in heavy rolls and sagging fat. She barely fits in regular chairs anymore.
 
 I made her press on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her. I buried my face deep between her gigantic breasts, moaning into them as our fat rolled and squished together. She felt so good covering me. I’m completely lost in how massive she’s becoming.
 
 — Nadia`,
-        `Madeline’s body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
+        `Cassidy’s body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
 
 I made her press fully on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning as our fat rolled and squished together. The size of her now feels perfect against my colossal body. I groped every roll, lost in her growth.`,
-        `Madeline’s body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
+        `Cassidy’s body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
 
 I had her press fully on top of my blob. Her enormous belly slapped down onto mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning as our fat rolled and squished together. The sheer size of her feels overwhelming and perfect. I groped every roll, lost in the sensation of her growth.`,
       ],
       [
-        `Madeline has grown colossal. She’s a massive, waddling mountain of soft fat with a huge hanging belly and breasts resting heavily on it.
+        `Cassidy has grown colossal. She’s a massive, waddling mountain of soft fat with a huge hanging belly and breasts resting heavily on it.
 
 We spent a long time merged together on the bed. Our colossal bellies folded and spilled over one another in thick waves. I shoved her face into my massive tits while I groped her immense body, squeezing every roll. The feeling of her size against me is pure bliss. I don’t want this to end.
 
 — Nadia`,
-        `Madeline has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
+        `Cassidy has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
 
 We spent hours merged together. Our colossal bellies folded and spilled over one another in thick waves as we pressed close. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch. Feeling how enormous she’s grown against me is driving me wild. I still crave even more from her.`,
-        `Madeline has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
+        `Cassidy has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
 
 We spent hours with our bodies pressed together. Our colossal bellies slapped and folded over one another in thick waves of fat. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch I could reach. Feeling how enormous she’s grown against me is driving me wild. I still crave even more of her fat slapping against mine.`,
       ],
       [
-        `Madeline has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the bed. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight bookworm I started with is long gone, replaced by this perfect helpless mountain of fat.
+        `Cassidy has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the bed. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight swimmer I started with is long gone, replaced by this perfect helpless mountain of fat.
 
 I had her brought right beside me so our enormous blob bodies could melt together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pressed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies merged into one. The sensation was overwhelming and perfect. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for me.`,
-        `Madeline has finally become a true blob — completely immobile like I once imagined, an overflowing sea of soft fat spreading across the bed beside me. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight bookworm I started with has vanished, replaced by this perfect helpless mountain of fat.
+        `Cassidy has finally become a true blob — completely immobile like I once imagined, an overflowing sea of soft fat spreading across the bed beside me. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight swimmer I started with has vanished, replaced by this perfect helpless mountain of fat.
 
 I had her positioned right against me so our enormous blob bodies could melt together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pressed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies merged into one. The sensation was overwhelming — so much warm yielding fat pressing and smothering from every direction. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, completely lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for both of us. She’s perfect now.`,
-        `Madeline has finally become a true blob — completely immobile like me, an overflowing sea of soft fat spreading across the bed beside mine. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight bookworm I started with is gone, replaced by this perfect helpless mountain of fat.
+        `Cassidy has finally become a true blob — completely immobile like me, an overflowing sea of soft fat spreading across the bed beside mine. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight swimmer I started with is gone, replaced by this perfect helpless mountain of fat.
+
+I had her positioned right against me so our enormous bodies could press together completely. Our vast bellies slapped heavily against each other in endless warm waves of fat, rolling, folding, and spreading as we pushed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides. I felt every inch of her massive body — rolls slapping and jiggling against my own, bellies overwhelming one another, fat pressing and spilling everywhere. The sensation was overwhelming. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, completely lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for both of us. She’s perfect now.`,
+      ],
+    ],
+  },
+  bookworm: {
+    intro: [
+      `Dear Journal,
+
+I’ve started my independent study on the psychology of feederism, and I’ve chosen Cassidy as my subject. She’s the classic bookworm — always buried in thick novels in the library, wearing oversized sweaters, glasses perched on her nose, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a girl like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this straight, bookish girl into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
+
+— Nadia`,
+      `Dear Journal,
+
+I’m starting my independent study on the psychology of feederism, and I’ve chosen Cassidy as the subject. She’s the quiet bookworm who’s always hiding in the library with thick novels and oversized sweaters, glasses sliding down her nose. Her body is so straight and flat — narrow shoulders, almost no chest, slim hips, and very little curve anywhere. It bothers me how untouched and cerebral she is. A body like hers is wasted being so flat and unyielding. My own colossal frame spreads heavily across the bed as I write this, rolls upon rolls everywhere, belly hanging in thick layers. I’m already obsessed. This study is the perfect excuse to transform her completely. I need to watch that straight, flat bookworm swell and soften until she’s heavy and jiggly. I can’t wait to feel her growing fat press and squish against my massive body.
+
+— Nadia`,
+      `Dear Journal,
+
+I’m beginning my official research study on the psychology of feederism with Cassidy as the subject. She’s the quiet bookworm who spends all her time in the library with thick novels and baggy sweaters, glasses always slipping down her nose. Her body is so straight and flat — narrow shoulders, almost no chest, slim hips, and very little curve. It feels wrong how untouched she is. This study is mostly a front now. I already know everything about feederism through my own body — an immobile, overflowing blob of fat that spreads across my reinforced bed in every direction, rolls cascading endlessly, my belly so vast it completely pins me down. Growing any more myself is nearly impossible, so I’ll live through her. I’m going to turn this flat, intellectual girl into something heavy, sagging, and enormous until her fat can slap and press against mine. I can’t wait to feel every inch of her vast softness.
+
+— Nadia`,
+    ],
+    entries: [
+      [
+        `Cassidy came to my room tonight still so slim and straight-figured. Her flat chest and narrow hips looked almost delicate under her baggy sweater. I started the feeding gently but steadily — pasta, garlic bread, and cheesecake — praising her focus while she ate. By the end her stomach had a tight, rounded bulge under her clothes.
+
+When I hugged her goodbye, my heavy soft gut squished firmly into her flat middle. The contrast made me shiver. I pressed my massive tits against her nearly flat chest, smothering her a little as I held her close. She blushed and adjusted her glasses nervously. Feeling how little there is of her right now only makes me excited for what’s coming. I want to bury myself in her as she grows.
+
+— Nadia`,
+        `Cassidy came over tonight still so slim and straight-figured. That flat chest and narrow hips under her baggy sweater actually irritated me. She should already be much softer. I fed her aggressively, forcing plate after plate of rich pasta, garlic bread, milkshakes, and cake down until her belly was painfully bloated and she was squirming.
+
+Afterwards I dragged her against my colossal body. My enormous belly completely swallowed her flat middle, heavy fat rolling over and smothering her while I held her tight. I shoved her face deep between my massive tits and kept her there as I rubbed her overstuffed stomach. The contrast between my huge sagging body and her still-flat one only fueled my hunger. She needs to grow much faster. I whispered how much better she’ll feel once there’s real softness to her. I’m already soaked thinking about it.`,
+        `Cassidy visited tonight still so slim and straight-figured. Her flat chest and narrow hips under that oversized sweater annoyed me. She needs softness so badly. I fed her heavily from my bed, making her eat huge portions of pasta, bread, shakes, and cake until her belly was painfully swollen and she could barely sit up.
+
+I had her climb onto the bed and sink into my enormous blob. My vast belly rose like a mountain as I pulled her close, letting her slim frame disappear into my warm heavy fat. I buried her face deep between my gigantic pillowy tits, smothering her while I rubbed her bloated stomach. Feeling how small and flat she still is against me only makes my hunger stronger. She needs to grow much bigger. I whispered how good it will feel when there’s so much more of her pressing and slapping against my body. I’m experiencing this all through her now.`,
+      ],
+      [
+        `Cassidy returned for another session. She’s still mostly slim, but her stomach holds food longer now and looks softer afterward. Her straight figure hasn’t changed much yet, but I can be patient.
+
+After feeding her extra helpings until she was full and quiet, I pulled her into a long hug. My fat belly molded heavily over her flat one, warm and possessive. I buried my face against her chest, even though it’s still small and flat, and breathed her in while rubbing her back. She smelled like old books and nervousness. I whispered how good she was doing for the study. The thought of her straight body slowly widening and softening against my own heavy one is already getting me wet. There’s something delicious about corrupting a bookworm like this.
+
+— Nadia`,
+        `Cassidy’s stomach is staying fuller longer now, and her thighs have started brushing together slightly. That rigid straight figure is finally beginning to yield.
+
+I kept her here much longer tonight. I laid her on top of me so our bodies could press together. My huge gut molded heavily over hers, completely dominating her smaller frame while I ran my hands over her. I buried my face against her chest, feeling the first hints of new fullness, and groped her ass and thighs, squeezing the emerging softness. She made quiet, nervous sounds that drove me crazy. I told her how right this is, how she was meant to be much heavier. My obsession grows stronger every time I feel her against my colossal body.`,
+        `Cassidy’s stomach stays rounded and full for hours after feeding, and her thighs have started brushing together. That rigid straight figure is finally softening.
+
+I kept her longer tonight. I made her lie on top of my massive blob, her body sinking deep into my fat. Our bellies pressed together — hers newly plush, mine an overwhelming heavy mass that dominated her. I held her head down between my enormous tits, surrounding her face in warm sweaty cleavage while I groped her thickening ass and thighs. She whimpered softly against me. The contrast feels incredible, but I need so much more. My own body is too huge to grow easily anymore, so every new pound on her brings me intense pleasure. I’m already aching to feel her fat slap heavier against mine.`,
+      ],
+      [
+        `Cassidy is starting to soften. Her previously flat stomach now has a noticeable plushness when full, and her thighs touch slightly when she walks. Her chest even looks a tiny bit fuller.
+
+I had her sit on my lap tonight. My thick heavy gut rested right on top of her softer middle, squishing and spreading over her. I wrapped my arms around her narrow frame and buried my face between her growing breasts, feeling the new warmth and give. She trembled a little but didn’t pull away. I rubbed her belly in slow circles while telling her how interesting her reactions are. Having her straight, bookish body starting to yield against my fat feels incredible. I’m getting more addicted with every session.
+
+— Nadia`,
+        `Cassidy’s waist has widened noticeably, her belly now carries a constant soft roundness, and her breasts have grown enough to rest against her middle.
+
+After stuffing her until she was panting, I pulled her close on the bed. Our bellies squished together beautifully — hers warm and giving, mine an overwhelming heavy mass that engulfed her. I shoved her face deep into my enormous cleavage and held her there while I jiggled and rubbed her thickening thighs and ass. The way her body is starting to melt against mine feels addictive. I love knowing I’m the one softening this bookish, flat girl. Every new curve makes me want her even bigger.`,
+        `Cassidy’s waist has widened, her belly now carries a constant soft roundness, and her breasts sit heavier on her middle. She looks so much better.
+
+After stuffing her until she was panting, I pulled her fully against my blob form. Our bellies squished together — hers warm and yielding, mine a vast heavy wave that rolled over her. I buried my face deep into her swelling tits, motorboating and licking while grinding what I could of my lower belly against hers. Every jiggle from her sends shivers through my immense body. I love feeling her expand against me. This is why I chose her — to watch this flat bookworm grow heavy in my place. I told her how proud I am and how much further we’re going.`,
+      ],
+      [
+        `Cassidy’s figure is filling out. Her waist is widening, her belly has a constant soft roundness, and her once-flat chest has grown into modest but noticeable breasts.
+
+I fed her until she was groaning, then laid her against me on the bed. Our bellies pressed together — hers plush and full, mine heavy and sagging — rolling warmly against each other. I shoved her face gently into my massive cleavage and held her there while I groped her softening sides and thighs. She made these quiet, surprised little sounds that drove me crazy. Turning this flat bookworm into something so squeezable is deeply satisfying. I love how her body is starting to squish back against mine.
+
+— Nadia`,
+        `Cassidy’s belly sways when she walks now, her ass has a clear jiggle, and her breasts have become large and heavy.
+
+I kept her pressed against me for hours. Our bellies rolled and folded over each other in thick waves of warm fat as I groped every new inch. I buried my face completely in her heavy tits, licking and motorboating them while grinding our bodies together. She gasped and clutched at my rolls, glasses fogged up. Her body feels so much better already, but I still need more. I want her truly massive so our fat can properly smother one another.`,
+        `Cassidy’s belly sways when she walks now, her ass jiggles noticeably, and her breasts have become large and pendulous.
+
+I had her spend hours pressed against me. Our bellies slapped and folded over each other in thick waves of warm fat as I held her tightly. I shoved her face completely into my gigantic tits while I groped her new rolls and heavy thighs. She felt so good sinking into my mass. I whispered how much better she looks with all this softness. Since my growth is marginal now, every new curve on her body thrills me. I need to feel more of her fat slapping and spreading across mine.`,
+      ],
+      [
+        `Cassidy has grown much softer and heavier. Her straight figure has widened, with a big plush belly, thicker thighs, and breasts that now rest noticeably on her middle.
+
+After feeding I pulled her on top of me. Her belly squashed warmly down onto my heavy gut, fat melding and folding together as I held her close. I buried my face completely in her soft tits, motorboating and licking while squeezing her thickening ass. She gasped and clutched at my rolls. The contrast between the quiet bookworm she used to be and how jiggly she’s becoming turns me on so much. I kept her pressed against me for a long time, enjoying every squish and whimper.
+
+— Nadia`,
+        `Cassidy’s figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with movement.
+
+I had her climb on top of me after feeding. Her belly squashed down onto my colossal one, warm fat melding together as I wrapped my arms around her. I buried myself deep in her massive tits, moaning into them while squeezing her fat ass and sides. The way she jiggles and sinks into me is incredibly satisfying. I kept her there a long time, telling her how perfect she feels getting heavier. Watching this straight bookworm expand has become my greatest pleasure.`,
+        `Cassidy’s figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with every step.
+
+I made her climb on top of my enormous blob after feeding. Her belly squashed down onto my vast one, fat slapping and molding together as I wrapped my thick arms around her. I buried myself deep in her massive tits, licking and moaning into them while squeezing her fat ass and sides. The way she jiggles against me is addictive. I kept her there a long time, telling her how perfect she feels getting heavier. Watching this straight bookworm swell is deeply satisfying.`,
+      ],
+      [
+        `Cassidy moves slower these days. Her belly sways when she walks, her thighs rub constantly, and her breasts have become heavy and full.
+
+I kept her in bed with me, pressing our bodies together. Our bellies squished and spilled over each other in warm waves of fat. I buried my face deep between her large tits, licking the soft flesh while groping her sagging belly and wide hips. She was breathing hard, glasses fogged up, looking adorably overwhelmed. Feeling this much of her soft weight against my own heavy body is heaven. I love what I’m turning her into.
+
+— Nadia`,
+        `Cassidy moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
+
+Tonight I pulled her fully against my colossal form. Our heavy bellies collided and spilled over each other in soft warm waves. I buried my face between her sagging tits, licking the soft flesh while groping her thickening rolls. Feeling how much more there is of her against me is pure bliss. I encouraged her to eat even more next time. Since my own growth is limited, her expansion has become everything to me.`,
+        `Cassidy moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
+
+Tonight I pulled her as close as possible. Our heavy bellies collided and slapped together in soft warm waves, fat spreading and pressing everywhere. I buried my face between her sagging tits, licking the sweaty flesh while groping her thickening rolls. Feeling how much more there is of her against my immense size is pure bliss. I encouraged her to keep eating more. Her expansion has become my main source of pleasure since I can barely grow anymore. I need her fat to slap heavily against every inch of mine.`,
+      ],
+      [
+        `Cassidy’s body has grown so fat and lush. She has rolls on her sides, a heavy hanging belly, and massive breasts that rest on top of her gut.
+
+I had her lie beside me so I could roll partially over her. Our big fat bellies engulfed each other, warm and heavy. I smothered my face in her enormous tits and rubbed my thick thighs against hers. She moaned softly into my cleavage as I jiggled her everywhere I could reach. The quiet, straight bookworm is almost completely gone. I’m obsessed with how good her fat feels melting against mine.
+
+— Nadia`,
+        `Cassidy has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
+
+I kept her in bed for ages, pressing our bodies together. Her big fat belly squished wonderfully under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits, licking while our bellies ground together. The warmth and heaviness of her body feels amazing. I moaned into her cleavage about how good she looks this soft. This is why I chose her.`,
+        `Cassidy has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
+
+I kept her in bed for ages. Her big fat belly slapped and squished under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits, licking while our bellies pressed and rubbed together. The warmth and heaviness of her body feels amazing against my own. I moaned into her cleavage about how good she looks this soft. This is exactly why I picked her — to live through her gains.`,
+      ],
+      [
+        `Cassidy is very fat now. She waddles, everything on her jiggles heavily, and she moves slower now.
+
+After feeding her until she was stuffed I pulled her close for hours. Our massive bellies squished and folded together as I held her. I buried myself face-first in her gigantic sweaty tits, licking while grinding our lower bodies. The way her fat spills and rolls against me is driving me crazy. I told her how beautiful she looks like this. My own heavy body feels even better when it’s pressed against hers.
+
+— Nadia`,
+        `Cassidy waddles heavily now, every part of her jiggling and swaying with each step.
+
+After feeding her until she was completely stuffed I rolled partially over her. Our massive bellies engulfed each other in heavy warm fat. I smothered my face in her enormous tits and rubbed my thick thighs against her spreading ones. The way her body yields and folds under mine drives me crazy. I told her how proud I am of how big she’s getting and how much further I want to take her.`,
+        `Cassidy waddles heavily now, every part of her jiggling and swaying with each movement.
+
+After feeding her until she was stuffed I had her lie beside me. I rolled what I could of my blob over her, our massive bellies engulfing and slapping against each other in heavy warm fat. I smothered my face in her enormous tits and rubbed against her spreading thighs. The way her body yields under mine drives me crazy with lust. I told her how proud I am and how much bigger I still want her.`,
+      ],
+      [
+        `Cassidy looks enormous. Her body is covered in heavy rolls and sagging fat. She barely fits in regular chairs anymore.
+
+I made her press on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her. I buried my face deep between her gigantic breasts, moaning into them as our fat rolled and squished together. She felt so good covering me. I’m completely lost in how massive she’s becoming.
+
+— Nadia`,
+        `Cassidy’s body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
+
+I made her press fully on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning as our fat rolled and squished together. The size of her now feels perfect against my colossal body. I groped every roll, lost in her growth.`,
+        `Cassidy’s body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
+
+I had her press fully on top of my blob. Her enormous belly slapped down onto mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning as our fat rolled and squished together. The sheer size of her feels overwhelming and perfect. I groped every roll, lost in the sensation of her growth.`,
+      ],
+      [
+        `Cassidy has grown colossal. She’s a massive, waddling mountain of soft fat with a huge hanging belly and breasts resting heavily on it.
+
+We spent a long time merged together on the bed. Our colossal bellies folded and spilled over one another in thick waves. I shoved her face into my massive tits while I groped her immense body, squeezing every roll. The feeling of her size against me is pure bliss. I don’t want this to end.
+
+— Nadia`,
+        `Cassidy has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
+
+We spent hours merged together. Our colossal bellies folded and spilled over one another in thick waves as we pressed close. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch. Feeling how enormous she’s grown against me is driving me wild. I still crave even more from her.`,
+        `Cassidy has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
+
+We spent hours with our bodies pressed together. Our colossal bellies slapped and folded over one another in thick waves of fat. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch I could reach. Feeling how enormous she’s grown against me is driving me wild. I still crave even more of her fat slapping against mine.`,
+      ],
+      [
+        `Cassidy has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the bed. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight bookworm I started with is long gone, replaced by this perfect helpless mountain of fat.
+
+I had her brought right beside me so our enormous blob bodies could melt together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pressed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies merged into one. The sensation was overwhelming and perfect. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for me.`,
+        `Cassidy has finally become a true blob — completely immobile like I once imagined, an overflowing sea of soft fat spreading across the bed beside me. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight bookworm I started with has vanished, replaced by this perfect helpless mountain of fat.
+
+I had her positioned right against me so our enormous blob bodies could melt together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pressed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies merged into one. The sensation was overwhelming — so much warm yielding fat pressing and smothering from every direction. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, completely lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for both of us. She’s perfect now.`,
+        `Cassidy has finally become a true blob — completely immobile like me, an overflowing sea of soft fat spreading across the bed beside mine. She’s enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flat, straight bookworm I started with is gone, replaced by this perfect helpless mountain of fat.
 
 I had her positioned right against me so our enormous bodies could press together completely. Our vast bellies slapped heavily against each other in endless warm waves of fat, rolling, folding, and spreading as we pushed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides. I felt every inch of her massive body — rolls slapping and jiggling against my own, bellies overwhelming one another, fat pressing and spilling everywhere. The sensation was overwhelming. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach, completely lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for both of us. She’s perfect now.`,
       ],

@@ -116,7 +116,7 @@ export function runWeeklyV2Events(v2State, students, ownedSkills, ownedClassSkil
     messages.push({ type: 'passive', tier: passive.tier.label, bonus: passive.tier.passiveBonus });
   }
 
-  // Resonance surge — requires resonance_bells classroom upgrade
+  // Resonance surge — requires resonance_bells hall lounge upgrade
   if (shouldResonanceSurge(next.resonance, week, students, ownedClassSkills || {})) {
     next = {
       ...next,

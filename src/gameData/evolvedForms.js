@@ -1825,7 +1825,7 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
           ]
         },
         {
-          text:(h,s)=>`The defense is this afternoon. Professor Iyer sent a preliminary response to Chapter 4 this morning: 'compelling, though the rate of acceleration in the study's latter half warrants discussion.' She printed this email and is holding it. She is ${Math.round(s.lbs)} pounds.`,
+          text:(h,s)=>`The defense is this afternoon. RA Iyer sent a preliminary response to Chapter 4 this morning: 'compelling, though the rate of acceleration in the study's latter half warrants discussion.' She printed this email and is holding it. She is ${Math.round(s.lbs)} pounds.`,
           choices:[
             {id:"prepare_iyer_response",label:"Prepare a response to Iyer's specific question",result:`You prepare it together: the acceleration is documented, it is a finding, the methodology accounts for it by design. The answer is complete and specific and does not require the word 'because' to be followed by anything personal.`,lbs:6,rel:10,flag:"prepared_iyer"},
             {id:"just_eat",label:"Put the email down and eat first",result:`She puts the email down. She eats. By the end of the meal the email is still there and she's better equipped to deal with it. 'Iyer asks good questions,' she says. 'I have good answers.'`,lbs:9,rel:7,flag:"ate_first"},
@@ -3502,7 +3502,7 @@ export const EVOLVED_FORM_META = {
   home_nest:            { title:"Home Nest",              color:"#4a6a4a" },
   delivery_hive:         { title:"Delivery Hive Queen",    color:"#d98cff" },
   cultivator:           { title:"The Cultivator",         color:"#8B4513" },
-  community_researcher: { title:"Community Researcher",    color:"#4a6fa5" },
+  community_researcher: { title:"Lane Captain",    color:"#4a6fa5" },
   pharmacist:           { title:"The Chemist",            color:"#2e6b5a" },
   machine_goddess:        { title:"The Inventor",           color:"#4a6080" },
 };
@@ -3556,9 +3556,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   bookworm:{
-    intro:(s)=>`${s.name} brings you a draft proposal — stapled, tabbed, annotated. The title page reads "Feederism in the Contemporary University: A Phenomenological Case Study" and bears her actual name, which means she's past the point of pseudonyms. "The IRB approved it last week," she says. "I need a faculty liaison." She opens to the methodology section. "And I need access to the people I've already been observing." She looks at you carefully. "You know exactly which people I mean."`,
+    intro:(s)=>`${s.name} brings you a draft proposal — stapled, tabbed, annotated. The title page reads "Feederism in the Contemporary University: A Phenomenological Case Study" and bears her actual name, which means she's past the point of pseudonyms. "The IRB approved it last week," she says. "I need a RA sponsor." She opens to the methodology section. "And I need access to the people I've already been observing." She looks at you carefully. "You know exactly which people I mean."`,
     paths:{
-      community_researcher:{ label:"Community Researcher", desc:"Present the thesis. Conduct case studies. Embed herself in the subculture she's been watching from the outside — and see what the research does to the researcher." },
+      community_researcher:{ label:"Lane Captain", desc:"Present the thesis. Conduct case studies. Embed herself in the subculture she's been watching from the outside — and see what the research does to the researcher." },
     },
   },
   gamer:{
@@ -3831,7 +3831,7 @@ Sofia is already standing near the scale, easy and unhurried.`,
 // Keyed by subject archetype, 11 entries per archetype (one per weight stage 0–10).
 export const FEEDER_SUBJECT_JOURNALS = {
   cheerleader:[
-    `OMG, I can't believe I actually agreed to this! Professor [Name] and Nadia said it was for her big thesis on feederism, and the extra credit plus helping a classmate sounded super fun. At first it was just her bringing me snacks during our sessions. I feel a little bloated lately, my tummy pressing slightly against my skirt after the evening feedings. It's kinda weird… but also kinda nice? The way she watches me eat with that intense look in her heavy eyes makes me feel all tingly, especially in my chest and hips. I keep thinking about the next session though. That full feeling is kinda satisfying, like after a killer practice!`,
+    `OMG, I can't believe I actually agreed to this! RA [Name] and Nadia said it was for her big thesis on feederism, and the extra credit plus helping a classmate sounded super fun. At first it was just her bringing me snacks during our sessions. I feel a little bloated lately, my tummy pressing slightly against my skirt after the evening feedings. It's kinda weird… but also kinda nice? The way she watches me eat with that intense look in her heavy eyes makes me feel all tingly, especially in my chest and hips. I keep thinking about the next session though. That full feeling is kinda satisfying, like after a killer practice!`,
     `It's only been a few weeks but my uniform is getting tighter! My stomach has this cute little curve now that sits in my lap when I sit, and my boobs feel extra sensitive, pushing against my sports bra. I keep catching myself rubbing my middle after she stuffs me. Nadia is so encouraging, her own massive body leaning in close, her hand sometimes brushing my growing belly while she feeds me. I get all warm and giggly when she praises me for finishing everything. I'm actually getting excited before every session now! The way my body is softening up… it's turning me on way more than I thought. Like, how much more can this cheer bod take? I'm lowkey curious!`,
     `OMG, fuck… I'm getting so much softer! My belly is round and jiggly now, hanging over my pants when I stand, my thighs rubbing together, and my ass starting to strain my panties. My boobs feel heavier too, bouncing more with every step. Last night Nadia looked so happy feeding me, her enormous body squished against the table while she pushed more snacks into my mouth. I moaned right out loud with my mouth full and she smiled so big! I can't stop replaying it. Every time I feel how much heavier and bouncier I'm getting, I get super wet. I want her to keep going! I want to feel even fuller, even bigger. Go team, right?`,
     `I'm definitely getting curvier and… I'm kinda loving it? My belly sways and jiggles with every step, hanging heavy, while my ass is getting plushier and my panties are starting to dig in. My chest is bouncing more too, almost overflowing my bra! Last night she fed me for almost two hours straight, her heavy body pressed warmly against my side while she kept stuffing me. I was soaked the whole time, moaning and cheering her on between bites like "more, more!" The fuller I get, the hornier and happier I feel. I want her to make me so much bigger — like, championship size!`,
@@ -3870,7 +3870,7 @@ export const FEEDER_SUBJECT_JOURNALS = {
     `My body has melted into a vast sea of soft, quivering fat spreading across the reinforced bed. I can barely move at all anymore. My enormous breasts and gigantic ass dominate everything around me, jiggling with every breath I take. She feeds me almost nonstop and I beg for more in my breathy influencer voice, telling her exactly what I need. Being this helplessly, impossibly fat is pure ecstasy. I exist just for the feeding, the endless growth, and her hands sinking deep into my endless curves. I'm completely hers — and this is going to break the internet.`,
   ],
   athlete:[
-    `Ugh, this better be worth the extra credit. Professor and Nadia convinced me to be the subject for her feederism study, saying it would explore extreme behavior change. At first it was just extra snacks after practice, but now I feel constantly bloated. My once tight, toned core is pressing against my training shorts in a way that's really annoying. I worked hard for these defined muscles and strong legs, and I don't like how soft it's starting to feel. The way she watches me eat with those heavy eyes is intense, but I'm just trying to push through this for the grade.`,
+    `Ugh, this better be worth the extra credit. RA and Nadia convinced me to be the subject for her feederism study, saying it would explore extreme behavior change. At first it was just extra snacks after practice, but now I feel constantly bloated. My once tight, toned core is pressing against my training shorts in a way that's really annoying. I worked hard for these defined muscles and strong legs, and I don't like how soft it's starting to feel. The way she watches me eat with those heavy eyes is intense, but I'm just trying to push through this for the grade.`,
     `This is getting irritating. My shirts are tighter across my stomach and there's this unwanted little pouch forming where my toned abs used to show. My boobs feel heavier and my muscular thighs are losing their sharp definition. I keep poking at the new softness after sessions, frustrated that my strong, trained body is being compromised. Nadia encourages me constantly, her massive frame leaning in while she feeds me more. I'm only doing this because I said I would, but it upsets me how my once powerful, muscular build is starting to blur. I better not lose my speed on the field.`,
     `I'm genuinely pissed about how this is changing me. My belly is getting round and jiggly, hanging slightly over my waistband, while my once muscular thighs now rub together. My ass feels fuller and my chest is softer too. Last night Nadia looked way too satisfied as she fed me, her enormous body pressed close while she kept shoving in calories. I let out an annoyed moan and immediately regretted it. My toned frame is being buried under this unwanted roundness and it stresses me out. How much more of this do I have to endure before the study is done?`,
     `My competitive edge is suffering because of this. My belly sways noticeably when I move, heavy and round, while my once defined waist has disappeared into softness. My ass and thighs have gotten plush, losing their muscular cut. Last night she fed me for nearly two hours, her heavy body warm against my side as she stuffed me. I complained the whole time about how this was ruining my training progress. I'm still mostly annoyed at how my strong, muscular body is turning into something so round and jiggly. Maybe I can work it off later.`,
@@ -4271,7 +4271,7 @@ export const WL_DIALOGUES = {
   Darlene: [
     // Stage 1
     {
-      greeting: `"Good evening, Professor. The rolls were heavier than I expected, but the girls seemed to enjoy them."`,
+      greeting: `"Good evening, RA. The rolls were heavier than I expected, but the girls seemed to enjoy them."`,
       cappedGreeting: `"Both girls have reached that first mark. I suppose it's progress. They do look happy enough."`,
       options: [
         { label:"How is Emma settling in?", text:`"Emma is settling in fine. She's always been a quiet one, but she pays attention."`, subs:[
@@ -4290,7 +4290,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 2
     {
-      greeting: `"Hello again, Professor. The pound cake was quite something. The girls are eating well."`,
+      greeting: `"Hello again, RA. The pound cake was quite something. The girls are eating well."`,
       cappedGreeting: `"Both girls hit 175. I've stopped counting calories at home these days."`,
       options: [
         { label:"Emma seems to love the food", text:`"Emma seems to love the food here. She cleans her plate every time."`, subs:[
@@ -4309,7 +4309,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 3
     {
-      greeting: `"Good to see you, Professor. The girls are really thriving with these lessons."`,
+      greeting: `"Good to see you, RA. The girls are really thriving with these lessons."`,
       cappedGreeting: `"Both reached 215. I said the number out loud the other day and felt a quiet kind of pride."`,
       overtookGreeting: `"Chloe has passed Emma. I noticed. It's... complicated, but I'm proud of both of them."`,
       options: [
@@ -4329,7 +4329,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 4
     {
-      greeting: `"Professor, the lasagna was incredible. I even brought a dish to share next time."`,
+      greeting: `"RA, the lasagna was incredible. I even brought a dish to share next time."`,
       cappedGreeting: `"265 pounds. The girls are filling the chairs differently now. It's noticeable."`,
       overtookGreeting: `"Chloe is noticeably larger than Emma these days. I'm keeping track, but they're both beautiful."`,
       options: [
@@ -4349,7 +4349,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 5
     {
-      greeting: `"Hello Professor. This has become the highlight of our week. The food just keeps getting better."`,
+      greeting: `"Hello RA. This has become the highlight of our week. The food just keeps getting better."`,
       cappedGreeting: `"325 pounds now. The difference between the girls is clear, but they're both thriving in their own way."`,
       overtookGreeting: `"Chloe has pulled ahead quite a bit. I've made peace with it. Emma is doing wonderfully too."`,
       options: [
@@ -4430,7 +4430,7 @@ export const WL_DIALOGUES = {
   ],
 
   Wanda: [
-    { greeting:`"Good evening, Professor. I knew from the very first bite that this was something special. Kezia has already asked when we’re coming back."`, cappedGreeting:`"Both girls have hit that first milestone. Kezia is settling into this so naturally. I’m very pleased."`, options:[
+    { greeting:`"Good evening, RA. I knew from the very first bite that this was something special. Kezia has already asked when we’re coming back."`, cappedGreeting:`"Both girls have hit that first milestone. Kezia is settling into this so naturally. I’m very pleased."`, options:[
       { label:"How is Kezia finding it?", text:`"Kezia is adjusting beautifully. She’s always had a good appetite, but this feels different."`, subs:[
         { label:"She has talent",          text:`"Yes, she looks genuinely happy. This is exactly what I hoped for her."`, outcome:{ momKey:"Wanda", momLbs:2, mjLbs:1, rel:3 } },
         { label:"You should be proud",     text:`"She really is a natural. I can already tell this is going to be wonderful for her."`, outcome:{ momKey:"Wanda", momLbs:3, mjLbs:1, rel:4 } },
@@ -4444,7 +4444,7 @@ export const WL_DIALOGUES = {
         { label:"We think alike",           text:`"We fit perfectly. I knew we would from the start."`, outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:5 } },
       ]},
     ]},
-    { greeting:`"Hello Professor. The pound cake was magnificent. Kezia couldn’t stop talking about it on the way home."`, cappedGreeting:`"Kezia has reached 175 pounds. She’s filling out so nicely already."`, options:[
+    { greeting:`"Hello RA. The pound cake was magnificent. Kezia couldn’t stop talking about it on the way home."`, cappedGreeting:`"Kezia has reached 175 pounds. She’s filling out so nicely already."`, options:[
       { label:"Kezia is excelling",       text:`"Kezia loves everything we make here. I’ve been putting extra cream in her meals at home too."`, subs:[
         { label:"She's a quick learner",  text:`"She’s eating so well. I make sure of it."`, outcome:{ momKey:"Wanda", momLbs:3, mjLbs:1, rel:4 } },
         { label:"Talent shows",           text:`"Her plate is always clean. I love seeing that."`, outcome:{ momKey:"Wanda", momLbs:3, mjLbs:2, rel:4 } },
@@ -4458,7 +4458,7 @@ export const WL_DIALOGUES = {
         { label:"We'll keep making it",        text:`"I’m guiding her gently, but she’s eager."`, outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
       ]},
     ]},
-    { greeting:`"Professor, these lessons keep getting better. Kezia is visibly softer already and I couldn’t be happier."`, cappedGreeting:`"Kezia has reached 215 pounds. She’s becoming such a lovely, full girl."`, options:[
+    { greeting:`"RA, these lessons keep getting better. Kezia is visibly softer already and I couldn’t be happier."`, cappedGreeting:`"Kezia has reached 215 pounds. She’s becoming such a lovely, full girl."`, options:[
       { label:"Kezia is becoming someone", text:`"Kezia is thriving. Her appetite has grown so naturally with these recipes."`, subs:[
         { label:"You can see it",          text:`"She’s becoming exactly what I always hoped she would be."`, outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
         { label:"She's growing into herself",text:`"I’m proud of how eagerly she embraces everything here."`, outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
@@ -4472,7 +4472,7 @@ export const WL_DIALOGUES = {
         { label:"Word gets around",           text:`"We’re creating something lasting and warm."`, outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:7 } },
       ]},
     ]},
-    { greeting:`"Good to see you, Professor. The lasagna was divine. Kezia has been requesting it at home."`, cappedGreeting:`"265 pounds now. Kezia is becoming quite a substantial young woman, and I love it."`, options:[
+    { greeting:`"Good to see you, RA. The lasagna was divine. Kezia has been requesting it at home."`, cappedGreeting:`"265 pounds now. Kezia is becoming quite a substantial young woman, and I love it."`, options:[
       { label:"Kezia looks wonderful",        text:`"Kezia is eating wonderfully. I’ve modified several recipes at home to match what we learn here."`, subs:[
         { label:"She really does",            text:`"She’s growing strong and soft in all the right places."`, outcome:{ momKey:"Wanda", momLbs:5, mjLbs:2, rel:6 } },
         { label:"It suits her",               text:`"Her portions keep increasing naturally."`, outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
@@ -4486,7 +4486,7 @@ export const WL_DIALOGUES = {
         { label:"I'll add it to the list",    text:`"I look forward to every single session."`, outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
       ]},
     ]},
-    { greeting:`"Hello Professor. The lessons have become such a wonderful rhythm for us. Kezia looks forward to them all week."`, cappedGreeting:`"325 pounds now. Kezia is becoming so soft and substantial. I couldn’t be more pleased with her progress."`, options:[
+    { greeting:`"Hello RA. The lessons have become such a wonderful rhythm for us. Kezia looks forward to them all week."`, cappedGreeting:`"325 pounds now. Kezia is becoming so soft and substantial. I couldn’t be more pleased with her progress."`, options:[
       { label:"Kezia is a natural",         text:`"Kezia is eating everything with such enthusiasm. I’ve been doubling the cream in our home versions."`, subs:[
         { label:"She was born for this",    text:`"She’s growing beautifully. Exactly as she should."`, outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:7 } },
         { label:"She takes after you",      text:`"Her body is responding so well to all this richness."`, outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
@@ -4545,7 +4545,7 @@ export const WL_DIALOGUES = {
   ],
 
   Patrice: [
-    { greeting:`"Hello Professor. I brought some store-bought cookies... I wasn’t sure what to expect from all this."`, cappedGreeting:`"Both girls have reached the first milestone. Lila seems to like it here more than I thought she would."`, options:[
+    { greeting:`"Hello RA. I brought some store-bought cookies... I wasn’t sure what to expect from all this."`, cappedGreeting:`"Both girls have reached the first milestone. Lila seems to like it here more than I thought she would."`, options:[
       { label:"How is Lila adjusting?",      text:`"Lila is adjusting okay. She’s been a bit quiet, but she’s watching everything."`, subs:[
         { label:"She'll find her footing",   text:`"She does look happy enough. That’s a relief."`, outcome:{ momKey:"Patrice", momLbs:2, mjLbs:1, rel:3 } },
         { label:"That takes time",           text:`"A natural cook? I suppose she does seem interested in the recipes."`, outcome:{ momKey:"Patrice", momLbs:3, mjLbs:1, rel:4 } },
@@ -4559,7 +4559,7 @@ export const WL_DIALOGUES = {
         { label:"She gets that from you",    text:`"I’ll keep coming back for Lila’s sake."`, outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:5 } },
       ]},
     ]},
-    { greeting:`"Professor, the pound cake was richer than anything I usually make. Lila asked for the recipe on the way home."`, cappedGreeting:`"Lila has reached 175 pounds. I didn’t expect her to gain this quickly."`, options:[
+    { greeting:`"RA, the pound cake was richer than anything I usually make. Lila asked for the recipe on the way home."`, cappedGreeting:`"Lila has reached 175 pounds. I didn’t expect her to gain this quickly."`, options:[
       { label:"Lila is finding her rhythm",    text:`"Lila seems to really enjoy the food here. She’s eating more than usual."`, subs:[
         { label:"It suits her",               text:`"She’s been eating very well lately."`, outcome:{ momKey:"Patrice", momLbs:3, mjLbs:1, rel:4 } },
         { label:"She's a natural",            text:`"Her plate is always empty by the end."`, outcome:{ momKey:"Patrice", momLbs:3, mjLbs:2, rel:4 } },
@@ -4573,7 +4573,7 @@ export const WL_DIALOGUES = {
         { label:"I hoped you'd feel that",    text:`"I’m glad I decided to keep bringing her."`, outcome:{ momKey:"Patrice", momLbs:4, mjLbs:2, rel:5 } },
       ]},
     ]},
-    { greeting:`"Good evening, Professor. The peach cobbler was incredible. I’ve been thinking about it all week."`, cappedGreeting:`"215 pounds. Lila is getting noticeably softer. I have to admit… it looks good on her."`, options:[
+    { greeting:`"Good evening, RA. The peach cobbler was incredible. I’ve been thinking about it all week."`, cappedGreeting:`"215 pounds. Lila is getting noticeably softer. I have to admit… it looks good on her."`, options:[
       { label:"Lila is really eating well",   text:`"Lila is thriving here. Her appetite has really opened up."`, subs:[
         { label:"She has an appetite now",    text:`"She’s becoming more confident with every lesson."`, outcome:{ momKey:"Patrice", momLbs:4, mjLbs:2, rel:5 } },
         { label:"She's made for this",        text:`"I’m happy to see her enjoying herself so much."`, outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
@@ -4587,7 +4587,7 @@ export const WL_DIALOGUES = {
         { label:"We're building something",   text:`"We’re building something meaningful here."`, outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:7 } },
       ]},
     ]},
-    { greeting:`"Professor, the lasagna was divine. I brought a big bowl of my own version to share this time."`, cappedGreeting:`"265 pounds. Lila is becoming quite a full-figured young woman. I’m proud of how she carries it."`, options:[
+    { greeting:`"RA, the lasagna was divine. I brought a big bowl of my own version to share this time."`, cappedGreeting:`"265 pounds. Lila is becoming quite a full-figured young woman. I’m proud of how she carries it."`, options:[
       { label:"Lila has come so far",         text:`"Lila is eating wonderfully. She looks forward to every session."`, subs:[
         { label:"She really has",             text:`"She’s growing so beautifully."`, outcome:{ momKey:"Patrice", momLbs:5, mjLbs:2, rel:6 } },
         { label:"The change is remarkable",   text:`"Her enthusiasm makes me smile every time."`, outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:6 } },
@@ -4601,7 +4601,7 @@ export const WL_DIALOGUES = {
         { label:"Good choice",                text:`"I look forward to these evenings more than anything else."`, outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
       ]},
     ]},
-    { greeting:`"Hello Professor... these lessons have me thinking about soft curves all week. Lila looks so deliciously full lately."`, cappedGreeting:`"325 pounds. Lila is getting so thick and heavy. God, it looks incredible on her. I can’t stop staring."`, options:[
+    { greeting:`"Hello RA... these lessons have me thinking about soft curves all week. Lila looks so deliciously full lately."`, cappedGreeting:`"325 pounds. Lila is getting so thick and heavy. God, it looks incredible on her. I can’t stop staring."`, options:[
       { label:"Lila is remarkable",           text:`"Lila’s appetite has become so greedy. Watching her eat makes me feel warm all over."`, subs:[
         { label:"She always was",             text:`"She’s softening so beautifully. Those curves are getting dangerous."`, outcome:{ momKey:"Patrice", momLbs:5, mjLbs:3, rel:7 } },
         { label:"You can see it now",         text:`"Her body is responding so sensually to everything here."`, outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
@@ -4615,7 +4615,7 @@ export const WL_DIALOGUES = {
         { label:"Let them come see for themselves",text:`"I find myself wanting her to get even bigger."`,outcome:{ momKey:"Patrice", momLbs:6, mjLbs:4, rel:8 } },
       ]},
     ]},
-    { greeting:`"Professor, seeing all these girls so enormously soft in the kitchen is intoxicating."`, cappedGreeting:`"400 pounds. Lila has become so massively curvy. She’s breathtaking like this."`, options:[
+    { greeting:`"RA, seeing all these girls so enormously soft in the kitchen is intoxicating."`, cappedGreeting:`"400 pounds. Lila has become so massively curvy. She’s breathtaking like this."`, options:[
       { label:"Lila is glowing",              text:`"Lila devours every bite with such pleasure. Her belly rests heavily on her thighs now and I love it."`, subs:[
         { label:"She was always beautiful",   text:`"Those wide hips and full breasts look so feminine and inviting."`, outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
         { label:"She's become herself",       text:`"She’s pure abundance. It makes my pulse race."`, outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
@@ -4663,7 +4663,7 @@ export const WL_DIALOGUES = {
   Emma: [
     // Stage 6
     {
-      greeting: `"Hi Professor. Being here in person after eating Mom’s versions of these recipes at home for years feels really different. The kitchen smells amazing and everyone is so much bigger now. I’ve been eating well at home, but nothing compares to sitting right here at the table with all of you. My body feels so heavy when I sit down, but in a really good, warm way that I’m starting to love."`,
+      greeting: `"Hi RA. Being here in person after eating Mom’s versions of these recipes at home for years feels really different. The kitchen smells amazing and everyone is so much bigger now. I’ve been eating well at home, but nothing compares to sitting right here at the table with all of you. My body feels so heavy when I sit down, but in a really good, warm way that I’m starting to love."`,
       cappedGreeting: `"400 pounds. I can’t believe I’m actually here at this size. The chair creaks under me and my belly rests heavily on my thighs, but I actually feel proud instead of embarrassed. It’s like my body has finally caught up to what this whole thing has been about from the beginning."`,
       overtookGreeting: `"Chloe’s gotten pretty far ahead of me. I can see it clearly when we stand next to each other. Part of me still feels a little competitive about it, but another part just feels content. She looks amazing and I’m happy for her, even if it stings a little sometimes."`,
       options: [
@@ -4683,7 +4683,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 7
     {
-      greeting: `"Professor, it’s crazy how much the kitchen has changed with all of us big girls running things now. I move slower these days and my hips brush against doorframes, but I love it. Everything feels softer and warmer, and I catch myself smiling while I’m cooking for everyone. My body has become this huge, plush thing and it just feels right in a way I never imagined it would."`,
+      greeting: `"RA, it’s crazy how much the kitchen has changed with all of us big girls running things now. I move slower these days and my hips brush against doorframes, but I love it. Everything feels softer and warmer, and I catch myself smiling while I’m cooking for everyone. My body has become this huge, plush thing and it just feels right in a way I never imagined it would."`,
       cappedGreeting: `"490 pounds. I’m enormous now. When I sit down my belly spreads across my lap and my thighs spread wide across the chair. I used to feel self-conscious about it, but now I feel powerful and feminine in a whole new way that I really enjoy."`,
       overtookGreeting: `"Chloe’s still ahead and the gap is pretty big now. I’ve stopped trying to catch up as much as I used to. We’re both so huge that it doesn’t really feel like a race anymore. It just feels like two really big sisters sharing this life together."`,
       options: [
@@ -4726,7 +4726,7 @@ export const WL_DIALOGUES = {
   Chloe: [
     // Stage 6
     {
-      greeting: `"Hi Professor. Being here with everyone feels really good. I’ve been growing faster than Emma for a while now and I can feel the difference in my body every day. My hips and belly have gotten so heavy and soft that it’s hard not to notice how much space I take up when I sit down. It feels kind of powerful in a way I didn’t expect."`,
+      greeting: `"Hi RA. Being here with everyone feels really good. I’ve been growing faster than Emma for a while now and I can feel the difference in my body every day. My hips and belly have gotten so heavy and soft that it’s hard not to notice how much space I take up when I sit down. It feels kind of powerful in a way I didn’t expect."`,
       cappedGreeting: `"400 pounds. I’m really big now. My body feels so full and heavy that moving around the kitchen takes more effort, but I actually like it. It makes me feel more womanly and present in a way I’ve come to really enjoy."`,
       options: [
         { label:"Chloe, you're incredible",    text:`"Emma and I both look amazing these days, even if I’m a little further along. It’s nice seeing us both so soft and full. We carry it in different ways but it suits us both really well now."`, subs:[
@@ -4745,7 +4745,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 7
     {
-      greeting: `"Professor, it’s kind of incredible how much bigger we’ve all gotten. I move slower now because of how heavy and soft my body has become, but I don’t mind it at all. Everything feels more comfortable and warm when I’m this size. I catch myself smiling when I feel how much space I take up."`,
+      greeting: `"RA, it’s kind of incredible how much bigger we’ve all gotten. I move slower now because of how heavy and soft my body has become, but I don’t mind it at all. Everything feels more comfortable and warm when I’m this size. I catch myself smiling when I feel how much space I take up."`,
       cappedGreeting: `"490 pounds. I’m enormous now. My belly and hips are so big that sitting down feels like I’m settling into myself in a really deep way. I love how heavy and plush I’ve gotten."`,
       options: [
         { label:"You set the pace for everyone", text:`"Emma and I are both running the kitchen now and it feels really good. We’ve both become so soft and heavy. I love how we look together even with the difference in our sizes."`, subs:[
@@ -4786,7 +4786,7 @@ export const WL_DIALOGUES = {
   Kezia: [
     // Stage 6
     {
-      greeting: `"Hi Professor. Being here with everyone feels nice, but I keep thinking about how much bigger I want to be than them. I’ve already grown so much that I have to move slower now, and I like it. I want to be the fattest one here. It would feel really good to be noticeably bigger than everyone else in this kitchen."`,
+      greeting: `"Hi RA. Being here with everyone feels nice, but I keep thinking about how much bigger I want to be than them. I’ve already grown so much that I have to move slower now, and I like it. I want to be the fattest one here. It would feel really good to be noticeably bigger than everyone else in this kitchen."`,
       cappedGreeting: `"400 pounds. I’m really big now, but it’s not enough. My belly and hips are so soft and heavy that I fill up most of the chair when I sit down. I want to keep growing until I’m clearly the biggest. Being fatter than the others would feel amazing."`,
       options: [
         { label:"Kezia, you've arrived",        text:`"I feel really comfortable here, but I also want to be the biggest. Everyone is so soft and heavy, and I want to be even softer and heavier than them. It would feel good to stand out that way and have them see how much fatter I’ve gotten."`, subs:[
@@ -4805,7 +4805,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 7
     {
-      greeting: `"Professor, the kitchen feels even warmer now that we’re all so big. I move more slowly these days because of how heavy and soft my body has become, and I love it. I keep thinking about how I want to be the fattest one here. Being bigger than Emma and Chloe would feel really good, and I want it."`,
+      greeting: `"RA, the kitchen feels even warmer now that we’re all so big. I move more slowly these days because of how heavy and soft my body has become, and I love it. I keep thinking about how I want to be the fattest one here. Being bigger than Emma and Chloe would feel really good, and I want it."`,
       cappedGreeting: `"490 pounds. I’m enormous now. My body is so soft and heavy that I barely fit in some of the chairs without them creaking. I still want to get even bigger than everyone else though. Being the fattest would make me really happy."`,
       options: [
         { label:"You're a benchmark now",       text:`"I really like being here with everyone, but I also want to be the biggest. We’re all so big and soft, and I want to be the softest and heaviest of all. It would feel really good to be noticeably fatter than them and have them know I’m the biggest."`, subs:[
@@ -4846,7 +4846,7 @@ export const WL_DIALOGUES = {
   Lila: [
     // Stage 6
     {
-      greeting: `"Hi Professor... it feels strange being here with everyone after all this time. I’ve grown so much that my body feels different every single day. My hips and belly are so much heavier and softer than they used to be. I catch myself noticing how much space I take up now, and it’s... a lot to get used to."`,
+      greeting: `"Hi RA... it feels strange being here with everyone after all this time. I’ve grown so much that my body feels different every single day. My hips and belly are so much heavier and softer than they used to be. I catch myself noticing how much space I take up now, and it’s... a lot to get used to."`,
       cappedGreeting: `"400 pounds. I’m really big now. When I sit down my belly rests heavily on my thighs and I can feel how much softer I’ve become everywhere. It’s overwhelming sometimes, but I think I like it. I like how heavy my body feels."`,
       options: [
         { label:"Lila, you've grown into this", text:`"I feel a little shy still, but I’m starting to feel more comfortable here. Everyone is so big and soft that I don’t feel as out of place as I thought I would. My own body has gotten so heavy and plush that it’s hard to ignore."`, subs:[
@@ -4865,7 +4865,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 7
     {
-      greeting: `"Professor, the kitchen feels different now that we’re all so big. I move slower these days because my body has gotten so heavy and soft. I like how it feels when I sit down and everything spreads out. It’s a lot to carry, but I’m starting to really enjoy it."`,
+      greeting: `"RA, the kitchen feels different now that we’re all so big. I move slower these days because my body has gotten so heavy and soft. I like how it feels when I sit down and everything spreads out. It’s a lot to carry, but I’m starting to really enjoy it."`,
       cappedGreeting: `"490 pounds. I’m enormous now. My belly and hips are so big and soft that I have to adjust how I sit and move. It’s overwhelming sometimes, but I keep thinking about how much bigger and softer I’ve become. I like it more than I thought I would."`,
       options: [
         { label:"You've surpassed what I hoped",text:`"I feel more comfortable here than I used to. Everyone is so big and soft that I don’t feel as shy as I did before. My own body has become so heavy and plush that it’s hard not to notice how it moves and settles."`, subs:[
@@ -4953,7 +4953,7 @@ export const CG_CHAT_TEMPLATES = {
   // reply type selected by: girl's lbs vs Priya's lbs + whether measured
   girls:{
     Brittany:  { ahead:"Thigh column says you still have work to do, Priya. I am not apologizing for winning there.", behind:"Fine, your numbers are bigger this week. I am saving this message for later.", close:"My thighs are close enough that you should probably underline them in red.", proud:"Solid gains on my end. The board can acknowledge that.", unmeasured:"Measure me properly before you start celebrating too hard." },
-    Madeline:  { ahead:"For accuracy: at least one of my figures currently exceeds yours. I recommend updating the board.", behind:"Your lead is statistically meaningful. Annoying, but meaningful.", close:"The margin is narrow enough to be interesting. I would not call that comfortable.", proud:"My trend line remains positive. That is the part I care about.", unmeasured:"Unmeasured data should not be treated as absence of data." },
+    Cassidy:  { ahead:"For accuracy: at least one of my figures currently exceeds yours. I recommend updating the board.", behind:"Your lead is statistically meaningful. Annoying, but meaningful.", close:"The margin is narrow enough to be interesting. I would not call that comfortable.", proud:"My trend line remains positive. That is the part I care about.", unmeasured:"Unmeasured data should not be treated as absence of data." },
     Kylie:     { ahead:"Bust numbers say hi. Cute board though.", behind:"Okay, your whole scoreboard thing is getting kind of scary.", close:"Some of us are still close in the categories that photograph best.", proud:"Posted a progress pic and the comments noticed. Just saying.", unmeasured:"If you want my numbers, book a session. I need good lighting." },
     Serena:    { ahead:"Category lead is category lead. I will take the win.", behind:"You are ahead. I see it. I train better with a target.", close:"Close enough to make this competitive, which is the only interesting version.", proud:"My gains are efficient. That still counts.", unmeasured:"No official measurement, no official bragging rights." },
     Fiona:     { ahead:"The body is making its own argument today. Apparently mine has a footnote over yours.", behind:"Your scale is becoming the dominant shape of the composition.", close:"The numbers are nearly touching. That tension is visually useful.", proud:"I am changing in a way the board does not fully capture.", unmeasured:"You cannot compare what you have not observed." },
@@ -4967,7 +4967,7 @@ export const CG_CHAT_TEMPLATES = {
     "Mary Jane": { ahead:"Well, would you look at that. One of mine is still bigger.", behind:"You are outgrowing the board, Priya. That is a compliment.", close:"Close enough that I would add another helping if I were you.", proud:"Been eating well. Numbers usually follow.", unmeasured:"Measure me after supper if you want the honest version." },
     Lilith:    { ahead:"A larger number is such a small kind of hunger. Still, mine is larger.", behind:"Enjoy your lead. I enjoy watching what it makes you do.", close:"So close. I can feel how much that bothers you.", proud:"Growth is a useful appetite. Yours is loud.", unmeasured:"Some measurements are safer not taken until you are ready." },
   },
-  // Professor reply choices (4 options, each nudges spirit)
+  // RA reply choices (4 options, each nudges spirit)
   professorReplies:[
     { id:"encourage", ...CG_PROFESSOR_REPLY_TEXT.encourage },
     { id:"taunt", ...CG_PROFESSOR_REPLY_TEXT.taunt },

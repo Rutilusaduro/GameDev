@@ -9,7 +9,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         const crs=communityResearcherState;
         const blue="#4a6fa5"; const lblue="#8fa8e0";
         const madeline=students.find(s=>s.id===1);
-        const mName=madeline?.name||"Madeline";
+        const mName=madeline?.name||"Cassidy";
         const wrap=(children)=>(
           <div style={C.overlay}>
             <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
@@ -167,9 +167,9 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         if(crs.modalPhase==='thesis_approved'){
           const bracket=getSuspicionBracket(crs.totalSuspicion||0);
           const outcomeText=bracket==='green'
-            ?`The committee approves without reservation. Madeline walks out of the building into the afternoon light and does not look back.`
+            ?`The committee approves without reservation. Cassidy walks out of the building into the afternoon light and does not look back.`
             :bracket==='yellow'
-            ?`Conditional approval. The ethics appendix will need to be written. Madeline has a great deal to say in it.`
+            ?`Conditional approval. The ethics appendix will need to be written. Cassidy has a great deal to say in it.`
             :`The private meetings were — productive. The thesis is approved. Whatever was said in those rooms stays in those rooms.`;
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
@@ -184,7 +184,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
           <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
-            The committee was not convinced. The file is closed. Madeline keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a thesis and isn't a journal. Whatever it is, she'll finish it on her own terms.
+            The committee was not convinced. The file is closed. Cassidy keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a thesis and isn't a journal. Whatever it is, she'll finish it on her own terms.
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(false)}>Close</button>
         </>);

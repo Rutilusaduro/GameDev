@@ -32,7 +32,7 @@ registerPool('ritual.class_banquet.depth', [
 
 registerPool('ritual.sacred_gluttony.depth', [
   { when: { stageMin: 9 }, text: [
-    'Sacred gluttony at monumental scale — candles, chanting optional, bellies vast and rising like tide.',
+    'Floor feast at monumental scale — candles, chanting optional, bellies vast and rising like tide.',
     'The spirit drinks the room. Six mouths, one ceremony, fullness elevated to liturgy.',
   ]},
   { when: { stageMin: 5 }, text: [
@@ -40,7 +40,7 @@ registerPool('ritual.sacred_gluttony.depth', [
     'Ceremony and appetite merge. The class worships at the table and leaves heavier in body and spirit.',
   ]},
   { when: {}, text: [
-    'Sacred gluttony: restraint abandoned, food blessed by hunger, the spirit sated on spectacle.',
+    'Floor feast: restraint abandoned, food blessed by hunger, the spirit sated on spectacle.',
   ]},
 ]);
 

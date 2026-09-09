@@ -6,7 +6,7 @@ const W = 4;
 
 const weighIn = {
   0: [`Brittany reads the digits like a scoreboard — competitive calm, pride when the number climbs.`],
-  1: [`Madeline logs the weigh-in before she allows herself to feel it — data first, warmth second.`],
+  1: [`Cassidy logs the weigh-in before she allows herself to feel it — data first, warmth second.`],
   2: [`Kylie checks the number like analytics — already imagining how it will look on camera.`],
   3: [`Serena steps off the scale with athlete poise — mass acknowledged, discipline unchanged.`],
   4: [`Fiona regards the digits as composition — growth as aesthetic fact, pleasing and complete.`],
@@ -28,7 +28,7 @@ const weighIn = {
 
 const stageUp = {
   0: [`Brittany crossed the threshold like a halftime lead — visible, earned, the room already cheering.`],
-  1: [`Madeline's stage-up reads like a peer-reviewed conclusion — inevitable once the data lined up.`],
+  1: [`Cassidy's stage-up reads like a peer-reviewed conclusion — inevitable once the data lined up.`],
   2: [`Kylie's threshold became content — mass made spectacle, appetite made subscriber bait.`],
   3: [`Serena's new stage arrived without drama — body answering training she no longer fights.`],
   4: [`Fiona's growth crossed into gallery scale — composition deepening, subject and artist merging.`],
@@ -50,7 +50,7 @@ const stageUp = {
 
 const dinnerUnbutton = {
   0: [`Brittany's button surrendered mid-bite — public appetite, zero retreat, dessert still ordered.`],
-  1: [`Madeline's clasp gave during the entrée — she kept eating while annotating the moment mentally.`],
+  1: [`Cassidy's clasp gave during the entrée — she kept eating while annotating the moment mentally.`],
   2: [`Kylie's seam failed on camera-adjacent night — she kept filming, hunger undiminished.`],
   3: [`Serena's waistband quit before dessert — athlete restraint retired, fullness embraced.`],
   4: [`Fiona's fabric failed like overworked canvas — she stayed for coffee, composition intact.`],
@@ -85,7 +85,7 @@ const immobility = {
 
 const corruption = {
   0: [`Brittany's want reorganized around yes — competitive hunger, shame benched permanently.`],
-  1: [`Madeline stopped footnoting desire — corruption tier crossed, appetite speaking without citation.`],
+  1: [`Cassidy stopped footnoting desire — corruption tier crossed, appetite speaking without citation.`],
   2: [`Kylie's corruption tier made content honest — filter gone, hunger subscriber-facing.`],
   7: [`Priya's spreadsheets now forecast appetite without apology — want optimized, guilt deleted.`],
   11: [`Kaylee's corruption bloomed like relief — body believed, refusal losing vocabulary.`],

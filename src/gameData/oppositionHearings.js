@@ -11,7 +11,7 @@ export const REMOVAL_HEARING = {
       choices: [
         { id: 'testify', label: 'Have a devoted student testify to her character', relReq: 70, resultPool: 'opposition.hearing.removal.result.testify', flag: 'testify' },
         { id: 'advocate', label: 'Yield floor to the rotating student advocate', resultPool: 'opposition.hearing.removal.result.advocate', flag: 'advocate' },
-        { id: 'discredit', label: 'Present hypocrisy evidence (Madeline/Kylie path)', resultPool: 'opposition.hearing.removal.result.discredit', flag: 'discredit' },
+        { id: 'discredit', label: 'Present hypocrisy evidence (Cassidy/Kylie path)', resultPool: 'opposition.hearing.removal.result.discredit', flag: 'discredit' },
         { id: 'feast_demo', label: 'Stage a live tasting demonstration', resultPool: 'opposition.hearing.removal.result.feast', flag: 'feast' },
       ],
     },

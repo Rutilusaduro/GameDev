@@ -52,7 +52,7 @@ export const TALK_TOPICS = [
 // (Rendered via talk.coda in the text engine — see talkCodas.js.)
 export const REGISTER_CODAS = {
   submissive: [
-    (s)=>`"...thank you for taking care of me, Professor," ${s.name} adds, quieter. "Your greedy girl appreciates it."`,
+    (s)=>`"...thank you for taking care of me, RA," ${s.name} adds, quieter. "Your greedy girl appreciates it."`,
     (s)=>`${s.name} adds, almost to herself: "I'm getting so big for you." She doesn't seem to notice she said 'for you.'`,
   ],
   broken: [

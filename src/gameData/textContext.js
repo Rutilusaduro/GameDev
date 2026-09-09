@@ -19,7 +19,7 @@ import { getEquippedDeviceIds } from './deviceEquip.js';
 import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
 import { auraTier as deriveAuraTier, essenceTier as deriveEssenceTier, isAscended } from './ascension/state.js';
 
-// ── Professor Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
+// ── RA Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
 // The engine core is game-free; everything the engine needs to know about
 // THIS game registers here. Loaded by ProfessorSim.jsx (app root) and the
 // scenes barrel, so it precedes every render.
@@ -130,7 +130,7 @@ export function dinnerVenueToLocale(venueId) {
 /** Map campus exploration node ids to campus.scene locale keys. */
 const CAMPUS_NODE_LOCALE = {
   office: 'prof_office',
-  lecture_hall: 'lecture_hall',
+  lecture_hall: 'floor meeting_hall',
   science_wing: 'hallway',
   quad: 'hallway',
   library: 'hallway',

@@ -6,7 +6,7 @@ import { WALLET_CONFIG } from './wallet.js';
 import { DEFAULT_MOD_INVENTORY } from './deviceMods.js';
 import { createInitialV2State } from './v2/state.js';
 
-/** Empty player equip slots (Professor self-equipped personal devices). */
+/** Empty player equip slots (RA self-equipped personal devices). */
 export const PLAYER_EQUIP_SLOTS = ['head', 'neck', 'torso', 'arms', 'waist', 'legs', 'fullBody', 'special'];
 
 export function createEmptyPlayerEquip() {

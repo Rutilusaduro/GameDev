@@ -7,7 +7,7 @@ export const SKILL_TREE = [
     effect:"Passive gain +1 lb/week for all students. The whole class settles in visibly.",
     classReaction:[
       "Brittany drops into the new chair and sinks in completely. 'Oh. Oh this is good.' She doesn't get up for two hours.",
-      "Madeline doesn't look up from her book, but she's been sitting in the same spot for four hours. She looks content.",
+      "Cassidy doesn't look up from her book, but she's been sitting in the same spot for four hours. She looks content.",
       "Destiny arrived early today. Nobody says anything. Nobody has to.",
       "Tiffany runs a hand along the armrest and nods approvingly. 'Finally. Appropriate furniture.'",
       "Maya hasn't shifted from her chair since she arrived. She looks like she's arrived somewhere.",
@@ -198,7 +198,7 @@ export const SKILL_TREE = [
 
   { id:"embodiment_chamber", tier:2, cost:150, category:"psychology", label:"🌒 Embodiment Chamber",
     desc:"A quiet annex where the spirit can slip between bodies without the usual cost of focus.",
-    effect:"Spirit Embodiment costs 1 AP instead of 2.",
+    effect:"Resident Ride costs 1 AP instead of 2.",
     passiveBonus:0, apBonus:0, gainMult:0, unlocks:["embodiment_discount"] },
 
   { id:"resonance_bells", tier:2, cost:150, category:"psychology", label:"🔔 Resonance Bells",

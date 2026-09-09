@@ -23,7 +23,7 @@ export const FIELD_LOCATIONS = [
   { id: 'dining_hall', label: 'Dining Hall', tag: 'documentary', quality: 'Print' },
   { id: 'food_court', label: 'Food Court', tag: 'street', quality: 'Study' },
   { id: 'gym', label: 'Gym Aftermath', tag: 'contrast', quality: 'Print' },
-  { id: 'faculty_lounge', label: 'Faculty Lounge', tag: 'scandal', quality: 'Masterwork', scrutiny: 5 },
+  { id: 'faculty_lounge', label: 'Staff Lounge', tag: 'scandal', quality: 'Masterwork', scrutiny: 5 },
 ];
 
 export const STUDIO_ACTIONS = [
@@ -217,7 +217,7 @@ export const GALLERY_EVOLVED_EVENTS = [
         text: (h, s) => `The field archive grows. Fiona is ${Math.round(s.lbs)} pounds. "Abundance is everywhere," she says. "They just don't frame it."`,
         choices: [
           { id: 'dining', label: 'Shoot the dining hall regulars', result: 'Documentary series: *Regulars.*', lbs: 6, rel: 8, flag: 'dining_series' },
-          { id: 'faculty', label: 'Risk the faculty lounge', result: 'Coach Brooks in frame. Scandalous.', lbs: 4, rel: 7, flag: 'faculty_shot' },
+          { id: 'faculty', label: 'Risk the staff lounge', result: 'Coach Brooks in frame. Scandalous.', lbs: 4, rel: 7, flag: 'faculty_shot' },
         ],
       },
     ],

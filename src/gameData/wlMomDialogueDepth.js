@@ -35,7 +35,7 @@ export function getWlMomDialogueDepth(personKey, stageIdx) {
 export const WL_MOM_DIALOGUE_DEPTH = {
   Darlene: {
     4: {
-      greeting: `"Hello, Professor. Wednesday night has become the thing we plan the week around — I clear the calendar for it now. The table smells like butter and yeast before we even sit down, and my girls ask on Monday what's on the menu. Emma still checks whether Claire ate more at lunch. I tell her to worry about her own plate."`,
+      greeting: `"Hello, RA. Wednesday night has become the thing we plan the week around — I clear the calendar for it now. The table smells like butter and yeast before we even sit down, and my girls ask on Monday what's on the menu. Emma still checks whether Claire ate more at lunch. I tell her to worry about her own plate."`,
       cappedGreeting: `"Three hundred twenty-five pounds for both girls. I said it out loud in the car and neither of them flinched. Emma's belly sits forward when she buckles in. Claire's catching the curve of her hips. I bought them new uniforms and didn't apologize for the sizes."`,
       overtookGreeting: `"Chloe's pulled ahead of Emma by a fair margin now. I made my peace with it somewhere between the second pan of rolls and the peach cobbler. Emma's still my first. Claire's still climbing. They're all eating like it's a vocation."`,
       options: [
@@ -140,7 +140,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
         {
           text: `"Thank you for trusting me with my girls. I brought skepticism and store cookies. You met me with warmth. Now I bring daughters who can't fit their old desks. Best trade I ever made."`,
           subs: [
-            { text: `"We'll keep coming as long as you'll have us. Emma already asked about summer sessions. I said ask the Professor."` },
+            { text: `"We'll keep coming as long as you'll have us. Emma already asked about summer sessions. I said ask the RA."` },
             { text: `"This kitchen's home now. Smells like butter in my memory when we're not here. That's how I know you changed us."` },
           ],
         },
@@ -150,7 +150,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
 
   Wanda: {
     4: {
-      greeting: `"Hello, Professor. Kezia counts the days until Wednesday. I count the pounds — not anxiously, happily. She's three hundred twenty-five now and soft in all the places I hoped. I doubled the cream at home again. She didn't notice. She just asked for more potatoes."`,
+      greeting: `"Hello, RA. Kezia counts the days until Wednesday. I count the pounds — not anxiously, happily. She's three hundred twenty-five now and soft in all the places I hoped. I doubled the cream at home again. She didn't notice. She just asked for more potatoes."`,
       cappedGreeting: `"Three hundred twenty-five for Kezia. Her belly rounds out every shirt now — that full warm dome I remember from my own mirror at her age, only bigger. I bought new bras and didn't mention why. She knew anyway."`,
       options: [
         {
@@ -288,7 +288,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
       ],
     },
     5: {
-      greeting: `"Professor, seeing all these enormously soft girls in the kitchen is intoxicating. Lila among them — belly on her thighs, breasts straining, eating like it's worship. I had to fan myself in the car before I came in."`,
+      greeting: `"RA, seeing all these enormously soft girls in the kitchen is intoxicating. Lila among them — belly on her thighs, breasts straining, eating like it's worship. I had to fan myself in the car before I came in."`,
       cappedGreeting: `"Four hundred pounds. Lila's massively curvy — breathtaking. Her belly rests heavy on her lap when she sits. I watch the fold of it over her waistband and lose my train of thought. Every time."`,
       options: [
         {

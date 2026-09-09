@@ -368,7 +368,7 @@ registerPool('evolved.v2.depth', [
 registerPool('spirit.v2.depth', [
   { when: { stageMin: 9 }, text: [
     'Possession at immobile scale — you inhabit architecture, hunger measured in geography not bites.',
-    'The spirit rides inside a body that has become environment. Every breath moves mass.',
+    'The resident rides inside a body that has become environment. Every breath moves mass.',
   ]},
   { when: { stageMin: 7 }, text: ['Possession at this scale is geography — you feel her mass from the inside, vast and settled.'] },
   { when: { stageMin: 5 }, text: ['The spirit moves through her like warmth finding a home she has been building all semester.'] },
@@ -383,7 +383,7 @@ registerPool('ritual.v2.depth', [
     'Ritual at immobile scale — bedside altars, food carried like tribute, ceremony for bodies that have become geography.',
   ]},
   { when: { stageMin: 8 }, text: [
-    'Sacred gluttony — multiple bellies, one ceremony, appetite elevated to liturgy.',
+    'Floor feast — multiple bellies, one ceremony, appetite elevated to liturgy.',
     'The ritual consecrates mass. Every participant leaves heavier in body and spirit.',
   ]},
   { when: { stageMin: 4 }, text: [

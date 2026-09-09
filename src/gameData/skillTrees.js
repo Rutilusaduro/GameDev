@@ -2,7 +2,7 @@ import { getStage } from './stages.js';
 
 // ═══════════════════════════════════════════════════════════════
 // SKILL TREES — Influence · Gluttony · Corruption
-// The power of the spirit riding the professor. Numerical skills have
+// The power of the RA running the floor. Numerical skills have
 // ranks; tiers unlock by points spent within the tree.
 //
 // Effect keys are aggregated per rank by the skillEffect() helper in
@@ -13,7 +13,7 @@ export const SKILL_TREES = {
   influence: {
     id: "influence", label: "Influence", emoji: "👁", color: "#8a40e0",
     bg: "linear-gradient(160deg,#120826,#1e0c3a,#120826)",
-    blurb: "The spirit's grip on their minds. Compliance, suggestion, and the quiet erosion of refusal.",
+    blurb: "Your grip on their minds. Compliance, suggestion, and the quiet erosion of refusal.",
     tierNames: ["Subtle Influence", "Direct Influence", "Overwhelming Influence"],
   },
   gluttony: {
@@ -205,10 +205,10 @@ export const SKILLS = [
     rankDesc:()=>`Girls at 90+ corruption never refuse anything`,
     effects:{ totalSurrender:1 } },
 
-  // ═══ V2.0 — Spirit Dominion ═══
-  { id:"spirit_ride", tree:"influence", tier:1, icon:"🌒", name:"Spirit Ride", maxRanks:1,
-    desc:"Leave the professor's body and inhabit a student — feel her hunger from within.",
-    rankDesc:()=>`Unlock Spirit Embodiment (1/week)`,
+  // ═══ V2.0 — Floor Influence ═══
+  { id:"spirit_ride", tree:"influence", tier:1, icon:"🌒", name:"Resident Ride", maxRanks:1,
+    desc:"Leave the your body and ride along with a resident — feel her hunger from within.",
+    rankDesc:()=>`Unlock Resident Ride (1/week)`,
     effects:{ spiritRide:1 } },
   { id:"deep_ride", tree:"influence", tier:2, icon:"🌑", name:"Deep Ride", maxRanks:1,
     desc:"Extended embodiment with surrender actions and a second weekly inhabit.",

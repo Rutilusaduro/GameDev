@@ -8,7 +8,7 @@ const VANCE_LINES = {
     '👁 Vance confers with a nurse about "concerning BMI trends." She does not look surprised to see you.',
   ],
   faculty_lounge: [
-    '👁 Chairwoman Vance sips tea in the faculty lounge, folder labeled INQUIRY within arm\'s reach.',
+    '👁 Chairwoman Vance sips tea in the staff lounge, folder labeled INQUIRY within arm\'s reach.',
     '👁 Vance and Martin Orr compare catering invoices. The conversation stops when you enter.',
   ],
 };

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SPIRIT EMBODIMENT — inhabit students, drive their actions
+// RESIDENT RIDE — inhabit students, drive their actions
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from '../stages.js';
 import { V2_CONFIG } from './state.js';
@@ -65,8 +65,8 @@ export const EMBODIMENT_ACTIONS = [
     desc: 'She stands before the glass and tells the truth her friends never hear: she likes this. She wants more.',
   },
   {
-    id: 'text_professor',
-    label: 'Text the Professor',
+    id: 'text_ra',
+    label: 'Text the RA',
     icon: '💬',
     apCost: 0,
     minStage: 2,
@@ -213,7 +213,7 @@ export const EMBODIMENT_ACTIONS = [
 export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, embodimentState = {}, week = 1 } = {}) {
   if (!student || student.hidden) return { ok: false, reason: 'No target' };
   if (student.lockState === 'locked') return { ok: false, reason: 'She is not close enough to inhabit yet' };
-  if ((ownedSkills.spirit_ride || 0) < 1) return { ok: false, reason: 'Requires Spirit Ride skill' };
+  if ((ownedSkills.spirit_ride || 0) < 1) return { ok: false, reason: 'Requires Resident Ride skill' };
   const maxUses = (ownedSkills.deep_ride || 0) >= 1 ? V2_CONFIG.maxEmbodimentsDeepRide : V2_CONFIG.maxEmbodimentsPerWeek;
   if ((embodimentState.usedThisWeek || 0) >= maxUses) return { ok: false, reason: 'Embodiment limit reached this week' };
   if (embodimentState.activeStudentId != null) return { ok: false, reason: 'Already inhabiting someone' };

@@ -56,10 +56,10 @@ registerPool('campus.localeIntro', [
     'The elevator doors part with mechanical patience.',
   ] },
   { when: { campusLocale: 'prof_office' }, text: [
-    'Your office — desk, chairs, doorframe she has learned.',
-    'The office where weekly check-ins happen.',
-    'Bookshelves and a chair that knows her shape.',
-    'Your office holds the ritual of the weekly weigh-in.',
+    'Your RA desk — master key, couch, residents who knock without asking.',
+    'The desk where floor check-ins happen.',
+    'Bulletin board, snack drawer, and a chair that knows her shape.',
+    'Your desk holds the ritual of the weekly weigh-in.',
   ] },
 ]);
 
@@ -91,7 +91,7 @@ registerPool('campus.destination', [
   { when: { campusLocale: 'elevator' }, text: ['into the elevator', 'through the closing doors', 'past the capacity placard'] },
   { when: { campusLocale: 'gym' }, text: ['across the gym floor', 'toward the equipment', 'toward the recovery station'] },
   { when: { campusLocale: 'dorm_room' }, text: ['into her room', 'to the mirror', 'to the bed'] },
-  { when: { campusLocale: 'prof_office' }, text: ['into your office', 'through the door', 'to the chair she knows'] },
+  { when: { campusLocale: 'prof_office' }, text: ['to your desk', 'through the RA office door', 'to the chair she knows'] },
 ]);
 
 registerPool('campus.obstacle', [

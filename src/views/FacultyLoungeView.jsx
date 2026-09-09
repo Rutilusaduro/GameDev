@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// FACULTY LOUNGE VIEW — chat with fellow teachers
+// STAFF LOUNGE VIEW — chat with fellow RAs and campus staff
 // Dialogue trees gated by affinity; persisted per teacher.
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
@@ -231,12 +231,12 @@ export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity }){
 
       {/* header */}
       <div style={{...C.card,padding:"14px 16px"}}>
-        <div style={{fontSize:10,letterSpacing:3,color:"#9b71cc",marginBottom:6}}>FACULTY LOUNGE</div>
-        <div style={{fontSize:13,color:"#9a8ab0",lineHeight:1.65}}>
-          Your colleagues. They've noticed things. Some approve — enthusiastically, in some cases. Build affinity through conversation to unlock deeper branches.
+        <div style={{fontSize:10,letterSpacing:3,color:"#c46a4a",marginBottom:6}}>STAFF LOUNGE</div>
+        <div style={{fontSize:13,color:"#b0a0a0",lineHeight:1.65}}>
+          Fellow RAs, coaches, and campus staff. They've noticed what's happening on your floor. Some approve — enthusiastically. Build affinity through conversation to unlock deeper branches.
         </div>
-        <div style={{fontSize:10,color:"#6a4a78",marginTop:6}}>
-          Conversations are free (0 AP). You can also encounter faculty while exploring campus.
+        <div style={{fontSize:10,color:"#8a6060",marginTop:6}}>
+          Conversations are free (0 AP). You can also encounter staff while exploring campus.
         </div>
       </div>
 
