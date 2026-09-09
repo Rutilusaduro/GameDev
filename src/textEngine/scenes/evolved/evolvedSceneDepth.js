@@ -12,7 +12,7 @@ const EVOLVED_BY_STUDENT = {
   4: `Fiona's evolution merges artist and subject — the gallery documents appetite she now embodies.`,
   5: `Destiny's evolved build re-speccs for intake — streamer detachment replaced by boss-fight fullness.`,
   6: `Tiffany's evolution makes hospitality architectural — chapter abundance normalized at any scale.`,
-  7: `Priya's evolved path turns the corkboard into scripture — every pound peer-reviewed, every gain optimized.`,
+  7: `Priya's evolved path turns the corkboard into scripture — every pound panel-reviewed, every gain optimized.`,
   8: `Maya's evolution deepens stillness — appetite honest, presence vast, trust without commentary.`,
   9: `Chloé's salon evolution seasons appetite with scandal — Parisian amusement, American excess, zero apology.`,
   10: `Reneé's cultivator evolution makes harvest personal — kitchen and subject and chef merged in warmth.`,

@@ -116,7 +116,7 @@ registerPool('evolved.pharmacist.v2.depth', [
 registerPool('evolved.gainer.v2.depth', [
   { when: { studentId: 7, stageMin: 8 }, text: [
     `Corkboard lowered to chair height. Priya dictates numbers. First in every column.`,
-    `Competitive gainer evolution — data and appetite peer-reviewed, shame benched.`,
+    `Competitive gainer evolution — data and appetite panel-reviewed, shame benched.`,
   ]},
   { when: { studentId: 7 }, text: [
     `Board mounted. Pins mark leaderboard. Waist circumference still hers to win.`,

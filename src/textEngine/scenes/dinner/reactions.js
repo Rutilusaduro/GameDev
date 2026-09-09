@@ -712,7 +712,7 @@ registerPool('dinner.reaction.fatRetort._f145', [
 ]);
 
 registerPool('dinner.reaction.fatRetort._f146', [
-  { when: {}, text: ["\"I've been where you are,\" {ref.name} says. \"I ran the same hypotheses. They were wrong. Mine are better now.\" She pats her full middle with academic satisfaction. \"The methodology is available."] },
+  { when: {}, text: ["\"I've been where you are,\" {ref.name} says. \"I ran the same hypotheses. They were wrong. Mine are better now.\" She pats her full middle with clinical satisfaction. \"The protocol is available."] },
 ]);
 
 registerPool('dinner.reaction.fatRetort._f147', [
@@ -801,7 +801,7 @@ registerPool('dinner.reaction.fatRetort', [
   { when: {"refArchetype":"foodie","reactionLevel":2}, text: ["{dinner.reaction.fatRetort._f144} {dinner.reaction.fatRetort._f145}"] },
   { when: {"refArchetype":"bookworm","reactionLevel":0}, text: ["{ref.name} considers {subject.name} for a moment. \"The data you're working from is outdated,\" she says, almost gently. \"The conclusion you've drawn doesn't hold. Eat something. Revise.\""] },
   { when: {"refArchetype":"bookworm","reactionLevel":1}, text: ["{dinner.reaction.fatRetort._f146} {dinner.reaction.fatRetort._f147}"] },
-  { when: {"refArchetype":"bookworm","reactionLevel":2}, text: ["{ref.name} places her hand on her own warm belly with the quiet certainty of someone who has done the research. \"Peer-reviewed,\" she says simply. \"This is the correct outcome. Eat and find out.\""] },
+  { when: {"refArchetype":"bookworm","reactionLevel":2}, text: ["{ref.name} places her hand on her own warm belly with the quiet certainty of someone who has done the research. \"Panel-reviewed,\" she says simply. \"This is the correct outcome. Eat and find out.\""] },
   { when: {"refArchetype":"gamer","reactionLevel":0}, text: ["{ref.name} looks at {subject.name} for a moment. \"Skill issue,\" she says. Not unkindly. \"You haven't played enough rounds to understand what I've got. Eat something. Build your experience.\""] },
   { when: {"refArchetype":"gamer","reactionLevel":1}, text: ["\"I'm not offended,\" {ref.name} says. \"You're running outdated information.\" She eats. \"The patch notes are: eat more. I've read the patch notes.\" She sounds content."] },
   { when: {"refArchetype":"gamer","reactionLevel":2}, text: ["{ref.name} pats her belly with the ease of someone very comfortable with their loadout. \"Max level takes time,\" she says. \"You're early game. Start eating. I'll be here.\""] },

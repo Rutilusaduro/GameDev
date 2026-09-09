@@ -81,6 +81,19 @@ const BANNED = [
   { id: 'sit-in-on-a-class', re: /sit in on a class/i },
   { id: 'gap-in-the-literature', re: /gap in the literature/i },
   { id: 'research-spiral', re: /Research Spiral/ },
+  { id: 'national-conference-keynote', re: /national conference keynote/i },
+  { id: 'impact-factor', re: /impact factor/i },
+  { id: 'published-two-papers', re: /published two papers/i },
+  { id: 'academic-credentials', re: /academic credentials/i },
+  { id: 'academic-satisfaction', re: /academic satisfaction/i },
+  { id: 'academic-framing', re: /academic framing/i },
+  { id: 'research-methodology-phrase', re: /research methodology for what has happened/i },
+  { id: 'peer-reviewed', re: /Peer-reviewed/i },
+  { id: 'dissertation-stress', re: /Dissertation stress/i },
+  { id: 'published-papers', re: /published papers/i },
+  { id: 'department-colloquium', re: /department colloquium/i },
+  { id: 'academic-output', re: /academic output/i },
+  { id: 'wellness-seminar-label', re: /Wellness Seminar/ },
 ];
 
 const ALLOW_LINE = [

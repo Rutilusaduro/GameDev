@@ -70,7 +70,7 @@ export const ORIGIN_DECKS = {
     { id: 'lilith_garden_before', label: 'Garden before campus', voiceLine: '"Courts need seats. I have been arranging them."', psych: P(55, 35, 40, 15), gainStance: 'secret', register: 'court' },
   ],
   16: [
-    { id: 'sophia_dissertation_stress', label: 'Dissertation stress', voiceLine: '"Control group. I am the control group."', psych: P(35, 25, 25, 55), gainStance: 'opposed', register: 'double_check' },
+    { id: 'sophia_dissertation_stress', label: 'Season plan stress', voiceLine: '"Control group. I am the control group."', psych: P(35, 25, 25, 55), gainStance: 'opposed', register: 'double_check' },
     { id: 'sophia_sample_closet', label: 'Wellness sample closet', voiceLine: '"Statistically significant. Personally too."', psych: P(55, 35, 20, 10), gainStance: 'secret', register: 'compound' },
   ],
   17: [

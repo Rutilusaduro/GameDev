@@ -33,7 +33,7 @@ export const AIB_AGENDA_CARDS = [
   { id: 'wellness_audit', minScrutiny: 50, label: 'Wellness Audit', scrutiny: 8, message: '📋 AIB wellness audit — a student is flagged for assessment.', effect: 'wellness_audit' },
   { id: 'device_confiscation', minScrutiny: 60, label: 'Device Confiscation', scrutiny: 10, message: '🔧 Compliance confiscates a lab device for review.', effect: 'device_confiscation' },
   { id: 'size_review', minScrutiny: 55, label: 'Floor Size Review', scrutiny: 9, message: '⚖️ Board demands documented weigh-ins for the hall.', effect: 'size_review' },
-  { id: 'wellness_seminar', minScrutiny: 50, label: 'Wellness Seminar', scrutiny: 6, message: '📢 Mandatory wellness seminar dampens campus appetite.', effect: 'wellness_seminar' },
+  { id: 'wellness_seminar', minScrutiny: 50, label: 'Wellness Workshop', scrutiny: 6, message: '📢 Mandatory wellness workshop dampens campus appetite.', effect: 'wellness_seminar' },
   { id: 'budget_freeze', minScrutiny: 75, label: 'Budget Freeze', scrutiny: 5, money: -200, message: '💸 Department budget frozen pending review.', effect: 'budget_freeze' },
   { id: 'removal_hearing', minScrutiny: 90, label: 'Removal Hearing', scrutiny: 12, message: '⚠️ Student removal hearing opened.', effect: 'removal_hearing' },
   { id: 'mandatory_fitness', minScrutiny: 40, label: 'Mandatory Fitness', scrutiny: 5, message: '🏃 Wellness Coalition orders fitness assessments.', effect: 'mandatory_fitness', proxy: 'wellnessCoalition' },
@@ -268,7 +268,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
         gainMult: 0.85,
         gainMultWeeks: 1,
       };
-      effects.logs.push('📢 Wellness seminar — hall gain −15% this week.');
+      effects.logs.push('📢 Wellness workshop — hall gain −15% this week.');
       break;
     case 'budget_freeze':
       effects.oppositionPatch.activeDebuffs = {
@@ -666,7 +666,7 @@ export function processOppositionWeek(opposition, {
   }
   if (week === 18 && next.proxies.wellnessCoalition && !next.meta.jointSeminarFired) {
     next = { ...next, meta: { ...next.meta, jointSeminarFired: true } };
-    logs.push('📢 Joint Wellness Coalition + AIB seminar — double agenda pressure this week.');
+    logs.push('📢 Joint Wellness Coalition + AIB workshop — double agenda pressure this week.');
   }
 
   // Truce from feast bribe

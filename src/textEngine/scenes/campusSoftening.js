@@ -104,7 +104,7 @@ registerPool("diary.campus", [
   { when: { campusFattening: true, archetype: "bookworm" }, priority: 2,
     text: [
       "Library carrels: more snacks, softer occupants. Campus-wide trend, not my section alone.",
-      "Citation trail on 'ambient caloric environment' now includes the whole quad.",
+      "Reference trail on 'ambient caloric environment' now includes the whole quad.",
       "Residents' notebooks and waistbands both thicker this month.",
     ] },
   { when: { campusFattening: true, archetype: 'swimmer' }, priority: 2,

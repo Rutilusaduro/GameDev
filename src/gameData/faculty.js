@@ -101,7 +101,7 @@ export const FACULTY = [
         ]},
       rate:{ text:()=>`Mori consults a clipboard she clearly doesn't need. "Test subjects finish, on average, 240% of intended portions. One research assistant ate her own control group." The smile again, slightly wider. "I had to order new lab coats. Sizes up. The grant committee asked no questions."`,
         options:[ {label:"Back", next:"hub"} ]},
-      taste:{ text:()=>`Her eyes do something complicated and pleased. "A volunteer with academic credentials. Sit." What follows is forty minutes of spoons, careful notes, and dishes that taste like more. "Interesting," she murmurs, watching you reach unprompted for a third helping of trial nineteen. "Very interesting."`,
+      taste:{ text:()=>`Her eyes do something complicated and pleased. "A volunteer with floor credentials. Sit." What follows is forty minutes of spoons, careful notes, and dishes that taste like more. "Interesting," she murmurs, watching you reach unprompted for a third helping of trial nineteen. "Very interesting."`,
         options:[
           {label:"\"Sign me up for the full protocol.\"", next:"protocol", affinity:6},
           {label:"Back", next:"hub"},
@@ -110,7 +110,7 @@ export const FACULTY = [
         options:[ {label:"Back", next:"hub"} ]},
       study:{ text:()=>`Mori sets down her pen entirely, which from her is a standing ovation. "A cross-floor appetite log. Your cohort's... remarkable outcomes, my instrumentation." She extends a hand. "I've been watching your residents' trajectories for three semesters, RA. The curves are beautiful. I want the protocol."`,
         options:[
-          {label:"Shake on it — share (some) methodology", next:"shake", affinity:8},
+          {label:"Shake on it — share (some) protocol", next:"shake", affinity:8},
           {label:"Back", next:"hub"},
         ]},
       shake:{ text:()=>`Her handshake is precise, like everything else. "Partners, then. I'll bring the engineered desserts. You bring whatever it is you bring — and one day you'll tell me what that is." She picks her pen back up. "No rush. The data will tell me first."`,
