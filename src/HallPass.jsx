@@ -8774,7 +8774,7 @@ export default function HallPass(){
 
         {/* ── SIDEBAR: LIVE LOG (Story / Ledger tabs) ── */}
         <div style={{...C.side, width:sidebarOpen?320:32, transition:"width 0.18s", display:"flex", flexDirection:"column", overflow:"hidden"}}>
-          <button type="button" onClick={()=>setSidebarOpen(o=>!o)}
+          <button type="button" className="hall-pass-sidebar-toggle" onClick={()=>setSidebarOpen(o=>!o)}
             style={{alignSelf:"flex-end",background:"transparent",border:"none",color:"#7050a0",fontSize:14,cursor:"pointer",padding:"2px 4px",flexShrink:0,lineHeight:1}}>
             {sidebarOpen?"◀":"▶"}
           </button>

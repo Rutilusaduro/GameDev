@@ -175,6 +175,21 @@
   border-radius: 4px;
 }
 
+.hall-pass-sidebar-toggle {
+  transition: color 0.15s ease, transform 0.14s ease, background 0.15s ease;
+  border-radius: 4px;
+}
+
+.hall-pass-sidebar-toggle:hover {
+  color: #c0a0e8 !important;
+  background: rgba(120, 40, 200, 0.12);
+}
+
+.hall-pass-sidebar-toggle:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.75);
+  outline-offset: 2px;
+}
+
 .hall-pass-nav-btn[data-active="true"] {
   background: linear-gradient(180deg, rgba(100, 40, 180, 0.22), rgba(60, 20, 120, 0.14));
   box-shadow: 0 -2px 0 0 currentColor, 0 0 14px rgba(160, 80, 240, 0.18);
@@ -732,6 +747,7 @@
   .ra-desk-action-btn,
   .ra-desk-utility-btn,
   .hall-log-tab,
+  .hall-pass-sidebar-toggle,
   .ra-desk-stat-pill,
   .ra-desk-week-tick,
   .scene-beat-advance,

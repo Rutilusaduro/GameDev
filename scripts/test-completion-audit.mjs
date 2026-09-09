@@ -528,6 +528,12 @@ check('floor-events-module', () => {
   }
 });
 
+check('chapter-hostess-resident-framing', () => {
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(evolved, /Your hall residents are here/);
+  assert.doesNotMatch(evolved, /sorority students|Your sorority students/i);
+});
+
 check('homeroom-resident-framing', () => {
   const activity = read('src/textEngine/scenes/homeroom/homeroomActivityDepth.js');
   assert.match(activity, /the residents have been waiting/);
