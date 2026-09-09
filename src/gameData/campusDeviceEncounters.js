@@ -25,7 +25,7 @@ export const CAMPUS_NPCS = [
   { id: 'npc_barista_mia', name: 'Mia (barista)', role: 'staff', archetype: 'culinary', lbs: 128, emoji: '☕' },
   { id: 'npc_lib_assist', name: 'Library Assistant Ray', role: 'staff', archetype: 'bookworm', lbs: 135, emoji: '📚' },
   { id: 'npc_rand_freshman', name: 'Unnamed freshman', role: 'student', archetype: 'cheerleader', lbs: 118, emoji: '🎒' },
-  { id: 'npc_rand_transfer', name: 'Transfer student', role: 'student', archetype: 'influencer', lbs: 124, emoji: '✨' },
+  { id: 'npc_rand_transfer', name: 'Transfer resident', role: 'student', archetype: 'influencer', lbs: 124, emoji: '✨' },
   { id: 'npc_rand_athlete', name: 'Walk-on athlete', role: 'student', archetype: 'athlete', lbs: 132, emoji: '🏃' },
 ];
 

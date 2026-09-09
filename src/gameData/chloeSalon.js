@@ -178,7 +178,7 @@ export const SALON_EVOLVED_EVENTS = [
         text: (h, s) => `Dr. Mori follows the smell of coq au vin to Chloé's door. She's ${Math.round(s.lbs)} pounds, hostess in black silk, and doesn't pretend surprise. "RA Mori. You may stay for dessert."`,
         choices: [
           { id: 'welcome', label: 'Welcome Mori — staff lends prestige', result: 'Mori stays. Takes notes. Eats more than she admits.', lbs: 6, rel: 9, flag: 'mori_regular' },
-          { id: 'private', label: 'Keep it student-only tonight', result: 'Mori leaves a card. Chloé pins it to the corkboard.', lbs: 4, rel: 6 },
+          { id: 'private', label: 'Keep it resident-only tonight', result: 'Mori leaves a card. Chloé pins it to the corkboard.', lbs: 4, rel: 6 },
         ],
       },
       {

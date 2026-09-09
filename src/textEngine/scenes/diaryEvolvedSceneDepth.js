@@ -205,6 +205,6 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0', [
 registerModuleVariants('homeroom.activity.health_unit.p1.decline', [
   { when: {}, text: [
     `"Hall only," Daisy says. Mrs. Monroe nods — comfortable without the number. She doesn't need proof.`,
-    `Scale stays student-only. Mrs. Monroe unbothered. Self-knowledge sufficient.`,
+    `Scale stays resident-only. Mrs. Monroe unbothered. Self-knowledge sufficient.`,
   ]},
 ]);

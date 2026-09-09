@@ -1510,7 +1510,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
   },
   transfer: {
     intro: [
-      `[placeholder: Nadia intro — why she chose the transfer student]`,
+      `[placeholder: Nadia intro — why she chose the transfer resident]`,
       `[placeholder: Nadia intro — why she chose the transfer as her subject (Enormous/Colossal)]`,
       `[placeholder: Nadia intro — why she chose the transfer as her subject (Blob)]`,
     ],
@@ -1574,7 +1574,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
   },
   nursing: {
     intro: [
-      `[placeholder: Nadia intro — why she chose the nursing student]`,
+      `[placeholder: Nadia intro — why she chose the nursing resident]`,
       `[placeholder: Nadia intro — why she chose the nursing as her subject (Enormous/Colossal)]`,
       `[placeholder: Nadia intro — why she chose the nursing as her subject (Blob)]`,
     ],

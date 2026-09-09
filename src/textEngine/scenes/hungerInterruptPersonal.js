@@ -95,7 +95,7 @@ const PERSONAL = {
   predator: [
     'Dark clothes, stillness gone sharp and hungry.',
     'Her smile does not reach her eyes — those are fixed on you.',
-    'She looks less like a student and more like something waiting.',
+    'She looks less like a resident and more like something waiting.',
     'Predatory patience worn thin by craving.',
   ],
   pharmacy_grad: [

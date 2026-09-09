@@ -34,6 +34,7 @@ import { renderHomeroomPool } from '../src/textEngine/scenes/homeroom/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
+import { renderCampusSighting } from '../src/textEngine/scenes/campusExplorationText.js';
 import '../src/textEngine/scenes/campusExplorationText.js';
 import '../src/textEngine/scenes/diary.js';
 import { renderDiary } from '../src/textEngine/scenes/diary.js';
@@ -130,6 +131,12 @@ const BANNED = [
   /\bThere's a student\b/i,
   /\bflags a student\b/i,
   /\bprospective student group\b/i,
+  /\bstudent wellness portal\b/i,
+  /\bstudent-only\b/i,
+  /\btransfer student\b/i,
+  /\bnursing student\b/i,
+  /\bgrad student\b/i,
+  /\bevery other student\b/i,
 ];
 
 function assertClean(text, label) {
@@ -238,6 +245,15 @@ for (const tierId of [1, 2, 3]) {
 const campusCtx = buildTextContext({ week: 6, globals: { campusTierMin: 0 } });
 const campusLine = render('{campus.travel}', campusCtx)?.trim();
 if (campusLine) assertClean(campusLine, 'campus travel flavor');
+
+const sightingCtx = { week: 10, campusFattening: true, campusTier: 2 };
+const stageLbs = [140, 200, 280, 380];
+for (const s of INIT_STUDENTS.slice(0, 12)) {
+  for (const lbs of stageLbs) {
+    const line = renderCampusSighting({ ...s, lbs }, sightingCtx, 'union');
+    if (line) assertClean(line.replace(/^👁\s*/, ''), `campus sighting ${s.archetype}@${lbs}`);
+  }
+}
 
 const dinnerKinds = ['thinJealousy', 'fatEncourage', 'fatRetort', 'thinContextual', 'jealousyDefault'];
 const refStudent = INIT_STUDENTS.find((s) => s.archetype === 'cheerleader') || INIT_STUDENTS[0];

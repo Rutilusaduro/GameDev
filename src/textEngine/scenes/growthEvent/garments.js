@@ -17,14 +17,14 @@ registerModuleVariants('ge.garment', [
   { when: { studentId: 6 }, weight: W, text: ['her chapter event top and skirt', 'the fitted sorority look she wore out tonight'] },
   { when: { studentId: 7 }, weight: W, text: ['her pressed blouse and pencil skirt', 'the structured campus set she planned around'] },
   { when: { studentId: 8 }, weight: W, text: ['her loose gray sweater and jeans', 'the soft hoodie she disappears into'] },
-  { when: { studentId: 9 }, weight: W, text: ['her fitted tee and jeans', 'the transfer-student casual she brought from Dublin'] },
+  { when: { studentId: 9 }, weight: W, text: ['her fitted tee and jeans', 'the transfer-resident casual she brought from Dublin'] },
   { when: { studentId: 10 }, weight: W, text: [
     'her flour-dusted chef\'s jacket over kitchen blacks',
     'her chef\'s jacket and checked kitchen pants, still smelling faintly of stock',
   ] },
   { when: { studentId: 11 }, weight: W, text: [
     'her soft knit cardigan and scrub pants',
-    'the layered nursing-student set she calls comfortable',
+    'the layered nursing-program set she calls comfortable',
   ] },
   { when: { studentId: 12 }, weight: W, text: ['her fitted therapist blouse and skirt', 'the smart campus look she chose deliberately'] },
   { when: { studentId: 13 }, weight: W, text: ['her soft southern blouse and stretch jeans', 'the floral top she wears like hospitality'] },

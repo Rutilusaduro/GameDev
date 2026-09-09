@@ -402,7 +402,7 @@ registerPool('ge.garment', [
   { when: { archetype: 'culinary', stageMin: 6 }, text: ['her apron, straining over kitchen blacks', 'chef\'s whites fighting new curves'] },
   { when: { archetype: 'culinary', stageMin: 3, stageMax: 5 }, text: ['her flour-dusted apron', 'her chef\'s jacket and checked kitchen pants'] },
   { when: { archetype: 'nursing', stageMin: 6 }, text: ['her scrubs, stretched at every seam', 'soft knit layers pulled tight'] },
-  { when: { archetype: 'nursing', stageMin: 3, stageMax: 5 }, text: ['her cardigan and scrub pants', 'her nursing-student layers'] },
+  { when: { archetype: 'nursing', stageMin: 3, stageMax: 5 }, text: ['her cardigan and scrub pants', 'her nursing-program layers'] },
   { when: { archetype: 'predator', stageMin: 3 }, text: ['her black fitted dress', 'the dark clothes she wears like camouflage'] },
   { when: { archetype: 'eced', stageMin: 3 }, text: ['her soft southern blouse', 'her stretch jeans and floral top'] },
   { when: { archetype: 'farm_girl', stageMin: 3 }, text: ['her worn flannel', 'her farm jeans and western belt'] },

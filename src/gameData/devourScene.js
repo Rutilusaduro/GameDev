@@ -6,14 +6,14 @@ import { getBodyDescRich } from '../utils/gameHelpers.js';
 const VICTIM_NAMES = [
   'a girl from the dining hall',
   'a sophomore nobody recognized',
-  'a transfer student with no friends yet',
+  'a transfer resident with no friends yet',
   'a girl from the library',
   'someone from the campus coffee shop',
   'a quiet girl from the east dorm',
   'a girl who wandered into the wrong building',
-  'a student aide on late shift',
+  'a hall aide on late shift',
   'a girl waiting for a rideshare',
-  'someone from the night class down the hall',
+  'someone from the night lounge down the hall',
 ];
 
 const VICTIM_DETAILS = [

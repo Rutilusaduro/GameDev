@@ -125,7 +125,7 @@ registerPool('campus.sighting', [
   { when: { archetype: 'culinary', weightBand: 'heavy' }, priority: 4,
     text: [
       '{subject.name} runs a tasting table from a reinforced stool — belly forward, hands busy, every passerby leaves heavier.',
-      'Students orbit {subject.name}\'s pop-up like a planet. She feeds them and herself in the same rhythm, humming.',
+      'Residents orbit {subject.name}\'s pop-up like a planet. She feeds them and herself in the same rhythm, humming.',
       'She calls the portion "a sample" and eats a full serving anyway — quality control.',
     ] },
   { when: { archetype: 'culinary', weightBand: 'extreme' }, priority: 4,
@@ -144,7 +144,7 @@ registerPool('campus.sighting', [
   { when: { archetype: 'nursing', weightBand: 'mid' }, priority: 4,
     text: [
       '{subject.name} "takes care of" half her floor — Tupperwares appear, weights creep up, she calls it wellness.',
-      'She sits with a student, insists on seconds, and eats alongside her "so it is not weird." It is still weird. It works.',
+      'She sits with a freshman, insists on seconds, and eats alongside her "so it is not weird." It is still weird. It works.',
       'Her clipboard has vitals on one side and takeout menus on the other.',
     ] },
   { when: { archetype: 'nursing', weightBand: 'heavy' }, priority: 4,
@@ -163,18 +163,18 @@ registerPool('campus.sighting', [
   { when: { archetype: 'eced', weightBand: 'lean' }, priority: 4,
     text: [
       '{subject.name} hands out homemade cookies before anyone asks. She smells like vanilla and grading rubrics.',
-      'She coaxes a quiet student into eating lunch on the quad bench — mom-coded concern, no embarrassment allowed.',
+      'She coaxes a quiet freshman into eating lunch on the quad bench — mom-coded concern, no embarrassment allowed.',
       'Sticker on her water bottle: YOU ARE LOVED. She means it, and she brought cookies.',
     ] },
   { when: { archetype: 'eced', weightBand: 'mid' }, priority: 4,
     text: [
-      "{subject.name}'s snack bag has become a tote. She feeds practicum students between observations and nibbles constantly herself.",
+      "{subject.name}'s snack bag has become a tote. She feeds practicum observers between observations and nibbles constantly herself.",
       'She packs extra lunches "by mistake" again. Her sweater rides up. Nobody returns the food.',
       'She calls it modeling healthy relationships with food. The modeling is continuous.',
     ] },
   { when: { archetype: 'eced', weightBand: 'heavy' }, priority: 4,
     text: [
-      '{subject.name} holds desk hours with a crockpot. Students eat. She eats. Lesson plans wait.',
+      '{subject.name} holds desk hours with a crockpot. Residents eat. She eats. Lesson plans wait.',
       'She waddles between dorm kitchens with foil trays — nurturing at scale, belly leading, smile unwavering.',
       'The practicum observes her; she observes them eating — everyone passes.',
     ] },
@@ -199,14 +199,14 @@ registerPool('campus.sighting', [
     ] },
   { when: { archetype: 'predator', weightBand: 'heavy' }, priority: 5,
     text: [
-      '{subject.name} sits perfectly still on a bench until every other student leaves. Then she eats something you did not see her bring.',
+      '{subject.name} sits perfectly still on a bench until everyone else leaves. Then she eats something you did not see her bring.',
       'She passes close enough to touch. You smell iron and sugar. When you turn, only a wrapper remains.',
       'Campus feels smaller when she is nearby — as if space is being saved for something.',
     ] },
   { when: { archetype: 'predator', weightBand: 'extreme' }, priority: 5,
     text: [
       '{subject.name} occupies a corner of the union like a predator at a watering hole. Conversations quiet. Appetites do not.',
-      'Students avoid a bench she uses. It sags in the middle now. {subject.name} is not there. The avoidance persists.',
+      'Residents avoid a bench she uses. It sags in the middle now. {subject.name} is not there. The avoidance persists.',
       'She leaves warmth and crumbs; she does not leave explanations.',
     ] },
   // Generic fallbacks by weight band
@@ -245,7 +245,7 @@ registerPool('campus.sighting', [
 registerPool('campus.travel', [
   { when: { campusTierMin: 2 }, priority: 2,
     text: [
-      'Students whisper "wellness solutions" like a password. Someone hands out samples with devotional care.',
+      'Residents whisper "wellness solutions" like a password. Someone hands out samples with devotional care.',
       'A group eats in synchronized silence. They smile at the same time. It is not natural.',
       'Graffiti under the union stairs: SATURATE. The paint is still wet.',
       'A girl thanks "the pharmacist" to no one in particular, and eats until she forgets why she started.',
@@ -253,7 +253,7 @@ registerPool('campus.travel', [
   { when: {}, priority: 0,
     text: [
       'A food truck plays lo-fi while the line doubles. Nobody leaves.',
-      'Two students compare meal-plan hacks. Both plans have expanded since September.',
+      'Two residents compare meal-plan hacks. Both plans have expanded since September.',
       'The breeze carries fried sugar from three directions at once.',
       'Someone naps on a bench with a half-eaten pastry balanced on their stomach like a trophy.',
       'A study group converts a whiteboard into a snack roster. Homework is listed second.',
@@ -275,7 +275,7 @@ registerPool('campus.location', [
     text: ['Fruit trees lean slightly toward the path, as if offering.', 'A greenhouse fan hums. Inside, someone is eating something not on the meal plan.', 'Herbs grow thick along the path — picked clean below, untouched above reach.'] },
   { when: {}, text: [
     'The campus hums with its usual foot traffic and appetite.',
-    'Students drift past carrying food like portable flags.',
+    'Residents drift past carrying food like portable flags.',
     'Something smells good from a direction you cannot quite name.',
     'Between bells, the paths fill with the ordinary commerce of hunger and hurry.',
   ] },
@@ -284,7 +284,7 @@ registerPool('campus.location', [
 registerPool('campus.find', [
   { when: { campusTierMin: 3 }, priority: 2,
     text: [
-      'You find condensed sweetness pooled where students gather — useful, unsettling, bottled before it evaporates.',
+      'You find condensed sweetness pooled where residents gather — useful, unsettling, bottled before it evaporates.',
       'A feeding nook yields a jar of tithes: sticky devotion and chemical residue in equal measure.',
       'A hidden alcove drips with residue from something engineered — you take what you can carry.',
     ] },

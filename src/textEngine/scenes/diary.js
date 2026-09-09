@@ -787,7 +787,7 @@ registerPool('diary.installation_artist.c1', [
   { when: { stage: [8] }, text: ['Major exhibition: three rooms, multiple installations, one of them is entirely me — my body, documented in real time, present and being present. Critics spent long minutes in front of each piece.'] },
   { when: { stage: [9] }, text: ['Retrospective. For someone still in progress. \' I said I appreciated the confidence that there was an arc and not just a continuous expansion. She laughed. I think she understood.'] },
   { when: { stage: [10] }, text: ['The body is the final installation. The body is always the final installation. Everything I made was documentation of this body becoming itself. Now it has become itself. I am the piece.'] },
-  { when: { stageMin: 7, archetype: "artsy" }, text: ['A student asked me in a crit whether the body-as-canvas metaphor was intentional or whether I\'d stumbled into it. I said both, and that that was the correct answer for most good work.'] },
+  { when: { stageMin: 7, archetype: "artsy" }, text: ['Someone in crit asked whether the body-as-canvas metaphor was intentional or whether I\'d stumbled into it. I said both, and that that was the correct answer for most good work.'] },
   { when: {}, text: [
     "The body is the work. The work continues.",
     "Art and appetite both require commitment.",
@@ -1145,7 +1145,7 @@ registerPool('diary.food_tourist', [
 // ── FF_AUTHOR ─────────────────────────────────────────────────
 // ── diary.ff_author (decomposed) ─────────────────────────────────────
 registerPool('diary.ff_author.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['The character started as someone else. She\'s a literature student who gains weight — slowly, without apology — and the people around her find it beautiful and bring her food.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The character started as someone else. She\'s a literature major who gains weight — slowly, without apology — and the people around her find it beautiful and bring her food.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Forty-three comments on the first chapter. I told myself the character wasn\'t me. The comments treated her like she was me.'] },
   { when: { stage: [5] }, text: ['The character started as someone else. Or I told myself that.'] },
   { when: { stage: [6] }, text: ['The readership has opinions. Very specific preferences about the rate and distribution of the characters\' gain.'] },
@@ -1164,7 +1164,7 @@ registerPool('diary.ff_author.c1', [
 registerPool('diary.ff_author.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['I posted the first chapter and forty-three strangers commented by morning. I sat with that for a while. They understood what I was writing. I\'m not sure I understood it as well as they did.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I went back and read the chapter again and thought: maybe they\'re right. I ate a full breakfast before I started chapter two.'] },
-  { when: { stage: [5] }, text: ['She\'s a literature student who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing.'] },
+  { when: { stage: [5] }, text: ['She\'s a literature major who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing.'] },
   { when: { stage: [6] }, text: ['One commenter left a two-paragraph analysis of the chapter where the cheerleader\'s uniform finally splits that was more precise than anything my season plan panel has ever said about my actual aca'] },
   { when: { stage: [7] }, text: ['I consider this a generous tribute.'] },
   { when: { stage: [8] }, text: ['The love that surrounds it is the point — the way the characters grow into themselves and are seen clearly and wanted for exactly what they are.'] },

@@ -44,7 +44,7 @@ registerPoolAutoDecompose('scrutiny.tierUp.body', [
   { when: { scrutinyTierId: 1 }, weight: 3, text: [
     `"Patterns consistent with non-standard dietary supplementation have been observed in your enrolled cohort." Bureaucratic language for: someone noticed.`,
     `A wellness coordinator has flagged "anomalous weight change velocity" among students in your section. The word "anomalous" is doing a lot of work.`,
-    `An anonymous concern — filed through the student wellness portal, passed up the chain. Nothing actionable yet, but the paper trail has started.`,
+    `An anonymous concern — filed through the campus wellness portal, passed up the chain. Nothing actionable yet, but the paper trail has started.`,
   ]},
   { when: { scrutinyTierId: 2 }, weight: 3, text: [
     `Your hall is under a preliminary welfare review. You have two weeks to submit documentation of your approach to resident wellness. The clock is already running.`,

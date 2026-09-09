@@ -5,7 +5,7 @@ import { registerPool } from '../engine.js';
 registerPool('npc.bystander', [
   { when: {}, text: [
     'Someone glances, looks away, glances again.',
-    'A passing student registers her size and recalibrates their path.',
+    'A passing resident registers her size and recalibrates their path.',
   ] },
   { when: { stageMin: 6, campusLocale: 'hallway' }, text: [
     'Foot traffic parts — not unkindly, simply spatially.',

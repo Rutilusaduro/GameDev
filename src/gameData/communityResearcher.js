@@ -401,7 +401,7 @@ Cassidy came over.
 
 Reneé had been cooking for eight hours. The apartment smelled like something extraordinary — braised, layered, rich, the smell of a meal made with intent. Raven was at the door when Cassidy arrived, watching the street with the calm of someone who has already done the difficult part.
 
-"Three of them," Raven said. "A corporate type, a grad student, and someone visiting for a conference. I found them separately. They don't know each other." She tilted her head toward the apartment. "They think this is a dinner party."
+"Three of them," Raven said. "A corporate type, someone finishing a second credential, and someone visiting for a conference. I found them separately. They don't know each other." She tilted her head toward the apartment. "They think this is a dinner party."
 
 It was a dinner party. Reneé had set the table for seven: herself, Raven, Cassidy, and the three guests. The guests — Morgan, who worked downtown; Theo, who was finishing a second credential; Francesca, who was presenting at the conference and had mentioned offhand that she'd never had good food in this city — arrived over twenty minutes, introduced themselves, and sat.
 
@@ -440,7 +440,7 @@ export const BOARD_REACTIONS = {
 
   culture_shock: `AD Harmon's note is the longest she's sent. She calls the cross-cultural hospitality documentation "exactly the kind of comparative fieldwork the panel hoped to see," cites the exchange resident's response arc as strong observational data, and recommends featuring it prominently in the final report. Coach Rivera references two published field notes on hospitality as a social bonding mechanism and calls the protocol "appropriate." Nutritionist Ward's note: "Three hours at one table is a substantial investment of field time. The portion documentation is thorough."`,
 
-  metrics: `Coach Rivera's response spans three paragraphs. The first asks what the experimental design was, because she cannot determine it from the notes. The second asks how Cassidy induced competitive consumption in a high-performing student without her explicit awareness. The third asks what the research question actually was, "because I cannot locate it in the documentation." AD Harmon flags the power dynamics as "requiring clarification." Nutritionist Ward's question is simpler: "How did you get Priya to participate in something she wasn't already winning?"`,
+  metrics: `Coach Rivera's response spans three paragraphs. The first asks what the experimental design was, because she cannot determine it from the notes. The second asks how Cassidy induced competitive consumption in a high-performing resident without her explicit awareness. The third asks what the research question actually was, "because I cannot locate it in the documentation." AD Harmon flags the power dynamics as "requiring clarification." Nutritionist Ward's question is simpler: "How did you get Priya to participate in something she wasn't already winning?"`,
 
   manipulation: `Coach Rivera's email arrives forty-five minutes after Cassidy submits her notes. Three lines: "Session six. Was Nadia's participation disclosed to athletics compliance." AD Harmon follows the next morning: "The power differential in this session is significant. Daisy is a hall mentor. Her participation alongside a psych resident running what appears to be a coordinated feeding event raises serious questions about prior agreement and oversight." Nutritionist Ward's message comes last: "You were being fed by two active observers simultaneously. We need to discuss this."`,
 
