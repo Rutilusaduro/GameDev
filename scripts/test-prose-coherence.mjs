@@ -47,7 +47,7 @@ import { renderDiary } from '../src/textEngine/scenes/diary.js';
 import { NADIA_SUBJECT_JOURNALS } from '../src/gameData/nadiaSubjectJournals.js';
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import '../src/textEngine/scenes/campusEvent/depth.js';
-import { renderGossipMurmur } from '../src/textEngine/scenes/gossip/index.js';
+import { renderGossipMurmur, renderGossipReact } from '../src/textEngine/scenes/gossip/index.js';
 import { renderMemoryClass } from '../src/textEngine/scenes/memory/index.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
 import '../src/textEngine/scenes/v2/resonance/depth.js';
@@ -199,6 +199,13 @@ const BANNED = [
   /\bone girl, groceries\b/i,
   /\beach girl feeding\b/i,
   /\bChapter girls\b/i,
+  /\bthe other girl\b/i,
+  /\bThat girl is a project\b/i,
+  /\bthat girl could make\b/i,
+  /\bThat girl has a niche\b/i,
+  /\bphrase for girls who committed\b/i,
+  /\blot of girl to get airborne\b/i,
+  /\bhope every girl on that squad\b/i,
 ];
 
 function assertClean(text, label) {
@@ -569,6 +576,21 @@ for (const archetype of ['influencer', 'foodie', 'gamer']) {
     10,
   );
   if (murmur) assertClean(murmur, `gossip murmur ${archetype}`);
+}
+
+for (const [archetype, memType] of [
+  ['athlete', 'stageUp'],
+  ['influencer', 'stageUp'],
+  ['artsy', 'stageUp'],
+  ['influencer', 'scaleBreak'],
+]) {
+  const reactor = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
+  const react = renderGossipReact(reactor, 10, {
+    memName: 'Cassidy',
+    memType,
+    memWeeksAgo: 2,
+  });
+  if (react) assertClean(react, `gossip react ${archetype} ${memType}`);
 }
 
 const memCtx = buildTextContext({

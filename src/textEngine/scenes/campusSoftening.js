@@ -8,7 +8,7 @@ import { registerPool, createContext, render } from '../engine.js';
 /** Skip append when prose already acknowledges campus-wide or group gain. */
 export function proseAlreadyCampusAware(text) {
   if (!text) return true;
-  return /\b(campus feels softer|everyone else|class is full of subjects|they leave round|classmates are eating|getting fat alongside|all eating, all happy|seven of them in that corner|campus-wide|everyone softer|whole campus|residents she(?:'s| has) never met|prospective residents|part of the fabric|campus made me|accidentally converted|leave round|everyone participates|whole squad ends up|hope every girl on that squad|classmates eating|everyone i've ever cared about|everyone gains|everyone looked softer|not just (?:me|us)|campus is the variable|cooperating)\b/i.test(text);
+  return /\b(campus feels softer|everyone else|class is full of subjects|they leave round|classmates are eating|getting fat alongside|all eating, all happy|seven of them in that corner|campus-wide|everyone softer|whole campus|residents she(?:'s| has) never met|prospective residents|part of the fabric|campus made me|accidentally converted|leave round|everyone participates|whole squad ends up|hope everyone on that squad|classmates eating|everyone i've ever cared about|everyone gains|everyone looked softer|not just (?:me|us)|campus is the variable|cooperating)\b/i.test(text);
 }
 
 function campusCtx(student, opts = {}) {

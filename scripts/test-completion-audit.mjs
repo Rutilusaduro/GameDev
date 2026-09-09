@@ -592,6 +592,20 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('gossip-dinner-resident-framing', () => {
+  const gossip = read('src/textEngine/scenes/gossip/index.js');
+  assert.match(gossip, /resident-to-resident awareness/);
+  assert.match(gossip, /the other resident moves|the other resident's new shape|the other resident the way/);
+  assert.doesNotMatch(gossip, /the other girl moves|That girl is a project|that girl could make/i);
+  const dinner = read('src/textEngine/scenes/dinner/reactions.js');
+  assert.match(dinner, /phrase for residents who committed/);
+  assert.match(dinner, /lot of mass to get airborne/);
+  assert.doesNotMatch(dinner, /phrase for girls who committed|lot of girl to get airborne/i);
+  const content = read('src/gameData/content.js');
+  assert.match(content, /hope everyone on that squad/);
+  assert.doesNotMatch(content, /hope every girl on that squad/i);
+});
+
 check('memory-gossip-resident-framing', () => {
   const memory = read('src/textEngine/scenes/memory/index.js');
   assert.match(memory, /The residents keep a quiet eye/);

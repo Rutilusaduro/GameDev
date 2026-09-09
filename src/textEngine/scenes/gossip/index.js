@@ -1,6 +1,6 @@
 // The Squad — Lead: C1 Gossip | Support: C2 React
 // ═══════════════════════════════════════════════════════════════
-// GOSSIP SCENE — girl-to-girl awareness beats.
+// GOSSIP SCENE — resident-to-resident awareness beats.
 //   gossip.react.notice  — hall registers a visible change (scaleBreak | stageUp)
 //   gossip.react.line    — reactor's personal take (archetype × corruption × memType)
 //   gossip.murmur        — ambient hall awareness, no specific event
@@ -44,18 +44,18 @@ registerPool('gossip.react.line', [
     `Her jaw tightens for just a second. Competitive instinct. She doesn't comment.`,
   ]},
   { when: { archetype: 'athlete', memType: 'stageUp' }, weight: 3, text: [
-    `She catches herself clocking the change — arms, waist, the new drag in how the other girl moves.`,
+    `She catches herself clocking the change — arms, waist, the new drag in how the other resident moves.`,
     `Different body means different numbers. She files it. She'll clock it again next week.`,
   ]},
 
   // Influencer
   { when: { archetype: 'influencer', memType: 'stageUp' }, weight: 3, text: [
-    `She already knows the angle. Before-and-after, the right light, the right caption. That girl is a project.`,
+    `She already knows the angle. Before-and-after, the right light, the right caption. She's a project now.`,
     `She files it: the new proportions, where the weight landed, whether the camera would love it.`,
   ]},
   { when: { archetype: 'influencer', memType: 'scaleBreak' }, weight: 3, text: [
-    `Numbers mean reach. She's already thinking about what kind of content that girl could make.`,
-    `She does the brand math automatically. That girl has a niche now whether she knows it or not.`,
+    `Numbers mean reach. She's already thinking about what kind of content she could make.`,
+    `She does the brand math automatically. She has a niche now whether she knows it or not.`,
   ]},
 
   // Bookworm
@@ -78,7 +78,7 @@ registerPool('gossip.react.line', [
 
   // Artsy
   { when: { archetype: 'artsy', memType: 'stageUp' }, weight: 3, text: [
-    `She reads the other girl's new shape the way she reads a canvas — noting what changed, and where it landed.`,
+    `She reads the other resident's new shape the way she reads a canvas — noting what changed, and where it landed.`,
     `Soft fullness. She's taking mental notes without knowing she is.`,
   ]},
   { when: { archetype: 'artsy', memType: 'scaleBreak' }, weight: 3, text: [
@@ -94,13 +94,13 @@ registerPool('gossip.react.line', [
 
   // Corruption tier 2 — proprietary / envious
   { when: { corruption: [2] }, weight: 2, text: [
-    `She watches the other girl the way someone watches a thing they thought was theirs.`,
+    `She watches the other resident the way someone watches a thing they thought was theirs.`,
     `Something tightens in her jaw. She turns back to her food and eats faster.`,
   ]},
 ]);
 
 // ── gossip.murmur ─────────────────────────────────────────────
-// Ambient class awareness — no specific event, no named girl.
+// Ambient hall awareness — no specific event, no named resident.
 registerPool('gossip.murmur', [
   { when: {}, text: [
     `The hall moves around each other differently now. Everyone's tracking, even when nobody says it.`,
@@ -133,7 +133,7 @@ export function renderGossipReact(reactor, week = 1, opts = {}) {
   return appendV2Depth(composed, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
 }
 
-/** Render ambient class-awareness murmur (no specific event). */
+/** Render ambient hall-awareness murmur (no specific event). */
 export function renderGossipMurmur(reactor, week = 1, opts = {}) {
   if (!reactor) return '';
   const ctx = buildTextContext({ subject: reactor, week, ...opts });

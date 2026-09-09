@@ -280,7 +280,7 @@ registerPool('dinner.reaction.thinJealousy._f69', [
 ]);
 
 registerPool('dinner.reaction.thinJealousy._f70', [
-  { when: {}, text: ["{subject.name} watches {ref.name} eat — comfortable, warm, considerably softened since the start of term — and says: \"Back home there was a phrase for girls who committed to the dining hall the"] },
+  { when: {}, text: ["{subject.name} watches {ref.name} eat — comfortable, warm, considerably softened since the start of term — and says: \"Back home there was a phrase for residents who committed to the dining hall the"] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy._f71', [
@@ -834,7 +834,7 @@ registerPool('dinner.reaction.thinContextual._f164', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f165', [
-  { when: {}, text: [". You'd just — oh, that's a lot of girl to get airborne.\" She almost sounds like she's admiring the physics."] },
+  { when: {}, text: [". You'd just — oh, that's a lot of mass to get airborne.\" She almost sounds like she's admiring the physics."] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f166', [
@@ -842,7 +842,7 @@ registerPool('dinner.reaction.thinContextual._f166', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f167', [
-  { when: {}, text: [". You'd just — oh, that's a lot of girl to get airborne.\" She almost sounds like she's admiring the physics."] },
+  { when: {}, text: [". You'd just — oh, that's a lot of mass to get airborne.\" She almost sounds like she's admiring the physics."] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f168', [
