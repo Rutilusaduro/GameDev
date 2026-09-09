@@ -141,51 +141,63 @@ registerPool('session.fullness.bookworm.f5._f1', [
 registerPool('session.fullness.bookworm.f5', [
   { when: {}, text: ["{session.fullness.bookworm.f5._f1}"] },
 ]);
-registerPool('session.fullness.swimmer.f0._f1', [
-  { when: {}, text: ["{subject.name} is cross-legged beside her training log, eating the way she logs splits — thoroughly and without looking up."] },
-]);
-
 registerPool('session.fullness.swimmer.f0', [
-  { when: {}, text: ["{session.fullness.swimmer.f0._f1}"] },
+  { when: {}, text: [
+    "{subject.name} is cross-legged beside her training log, eating the way she logs splits — thoroughly and without looking up.",
+    "Post-practice carb bowl in her lap. Shoulders still damp. She eats like refueling is the next event on the schedule.",
+    "She times her bites the way she times turns — steady, committed, no wasted motion.",
+  ] },
 ]);
-registerPool('session.fullness.swimmer.f1._f1', [
-  { when: {}, text: ["She's stopped reviewing splits. She's just eating now. Focused, methodical. The log is closed."] },
-]);
-
 registerPool('session.fullness.swimmer.f1', [
-  { when: {}, text: ["{session.fullness.swimmer.f1._f1}"] },
+  { when: {}, text: [
+    "She's stopped reviewing splits. She's just eating now. Focused, methodical. The log is closed.",
+    "Training log shut. Plate open. She eats like it's the main set.",
+    "She used to log every calorie out. Now she only tracks what's going in.",
+  ] },
 ]);
-registerPool('session.fullness.swimmer.f2._f1', [
-  { when: {}, text: ["\"I've consumed,\" {subject.name} says precisely, gesturing at her plate, \"a non-trivial quantity of food.\" She keeps eating. Documenting the phenomenon from the inside."] },
-]);
-
 registerPool('session.fullness.swimmer.f2', [
-  { when: {}, text: ["{session.fullness.swimmer.f2._f1}"] },
+  { when: {}, text: [
+    "\"Carb count's high,\" {subject.name} says, patting her middle. She keeps eating anyway.",
+    "Her suit sits tighter at the hips. She notes it, then takes another bite.",
+    "Fullness hits like a good set — heavy, earned, not finished yet.",
+  ] },
 ]);
 registerPool('session.fullness.swimmer.f3._f1', [
-  { when: {}, text: ["She is logging her own fullness with the same attention she gives everything else. Pressing her fingers against her stomach. \"It's interesting,\" she says."] },
+  { when: {}, text: [
+    "She presses her palm to her stomach between bites. \"Huh. New PR.\"",
+    "She maps the swell in her middle like a split improvement — quiet, pleased, already planning the next round.",
+    "Her hand stays on her belly longer than it needs to. She doesn't comment. She keeps eating.",
+  ] },
 ]);
 
 registerPool('session.fullness.swimmer.f3._f2', [
-  { when: {}, text: [". \"Biologically speaking.\" She takes another bite."] },
+  { when: {}, text: [
+    " She takes another bite before the thought finishes.",
+    " Then she reaches for seconds without looking away from you.",
+    " The lane log can wait. This can't.",
+  ] },
 ]);
 
 registerPool('session.fullness.swimmer.f3', [
-  { when: {}, text: ["{session.fullness.swimmer.f3._f1} {session.fullness.swimmer.f3._f2}"] },
+  { when: {}, text: [
+    "{session.fullness.swimmer.f3._f1}{session.fullness.swimmer.f3._f2}",
+    "{session.fullness.swimmer.f3._f1}",
+    "Fullness sits high and warm. She exhales once, then keeps eating like the set isn't over.",
+  ] },
 ]);
-registerPool('session.fullness.swimmer.f4._f1', [
-  { when: {}, text: ["{subject.name} has set aside the analytical detachment. She is simply full, and still eating, and has stopped justifying it."] },
-]);
-
 registerPool('session.fullness.swimmer.f4', [
-  { when: {}, text: ["{session.fullness.swimmer.f4._f1}"] },
+  { when: {}, text: [
+    "{subject.name} has stopped treating appetite like a problem to solve. She's full, still eating, and done apologizing for either.",
+    "The athlete discipline is still there — she just aimed it at the plate. Full, warm, unhurried.",
+    "She leans back, belly rising, and keeps going. Training day isn't over until she says it is.",
+  ] },
 ]);
-registerPool('session.fullness.swimmer.f5._f1', [
-  { when: {}, text: ["She rests her head back and stays still. Then: \"I want to note that my previous split on my own capacity was clearly incomplete.\" She has another piece of cake."] },
-]);
-
 registerPool('session.fullness.swimmer.f5', [
-  { when: {}, text: ["{session.fullness.swimmer.f5._f1}"] },
+  { when: {}, text: [
+    "She rests her head back and goes still. Then: \"Old capacity estimate was wrong.\" She reaches for dessert.",
+    "Breathing slow. Belly high. \"Log that as exceeded target,\" she murmurs, and keeps eating.",
+    "She's past full and perfectly calm about it. \"One more set,\" she says — meaning the plate.",
+  ] },
 ]);
 registerPool('session.fullness.athlete.f0._f1', [
   { when: {}, text: ["{subject.name} eats fast — fuel, not pleasure. Making up for it in quantity."] },
