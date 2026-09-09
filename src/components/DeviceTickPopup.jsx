@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { WEIGHT_STAGES } from '../gameData/stages.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
@@ -10,11 +12,13 @@ const TIER_COLORS = {
   critical: '#a02050',
 };
 
-export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
-  if (!queue?.events?.length) return null;
-  const { events, index } = queue;
-  const event = events[index];
-  if (!event) return null;
+export function DeviceTickPopup({ queue, onAdvance, onDismissAll, soundEnabled = true }) {
+  const { events, index } = queue || {};
+  const event = events?.[index];
+  useEffect(() => {
+    if (event) playHallPassSound(event.isMalfunction ? 'alert' : 'session', soundEnabled);
+  }, [soundEnabled, index, event?.deviceId, event?.kind, event?.isMalfunction]);
+  if (!queue?.events?.length || !event) return null;
 
   const isGrowthScene = event.kind === 'growth_scene';
   const isMalf = event.isMalfunction && !isGrowthScene;
@@ -40,7 +44,7 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
 
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: isGrowthScene ? 560 : 480, border: `1px solid ${tierColor}` }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: isGrowthScene ? 560 : 480, border: `1px solid ${tierColor}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: tierColor }}>
             {isGrowthScene ? '🌊 GROWTH EVENT' : isMalf ? '⚠️ DEVICE MALFUNCTION' : '⚙️ DEVICE TICK'}
@@ -86,12 +90,12 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll }) {
         <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
           <button
             style={{ ...C.btn(tierColor), flex: 1 }}
-            onClick={() => (index + 1 < events.length ? onAdvance() : onDismissAll())}
+            onClick={() => { playHallPassSound('click', soundEnabled); (index + 1 < events.length ? onAdvance() : onDismissAll()); }}
           >
             {index + 1 < events.length ? (isGrowthScene ? 'Next event →' : 'Next device →') : 'Done'}
           </button>
           {events.length > 1 && (
-            <button style={{ ...C.btn('#333'), flex: 0 }} onClick={onDismissAll}>
+            <button style={{ ...C.btn('#333'), flex: 0 }} onClick={() => { playHallPassSound('click', soundEnabled); onDismissAll(); }}>
               Skip all
             </button>
           )}

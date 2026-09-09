@@ -313,8 +313,9 @@ export function PresentationDefenseModal({ presentationState, processStudentGain
   );
 }
 
-export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, makeIntimacyChoice, students }){
+export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, makeIntimacyChoice, students, soundEnabled = true }){
         const {studentId,sceneId,tier,week:sceneWeek,phaseIdx,history,logLines,done,endingText,gainAccum}=intimacyEventState;
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, sceneId, phaseIdx, done]);
         const s=students.find(st=>st.id===studentId);
         const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId];
         if(!s||!def) return null;
@@ -323,7 +324,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
         const accentColor="#c050a0";
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#0a0318,#160424,#0a0318)",border:`1px solid ${accentColor}40`,maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#0a0318,#160424,#0a0318)",border:`1px solid ${accentColor}40`,maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{(def.label||sceneId).toUpperCase()}</div>
               <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
               <div style={{fontSize:10,color:"#7050a0",marginBottom:12}}>{s.lbs} lbs · {getStage(s.lbs).label}{gainAccum>0?` · +${gainAccum} lbs this scene`:""}
@@ -346,7 +347,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
                       <button key={ch.id}
                         style={{...C.btn(locked?"#1a1a2a":"#5010a0"),opacity:locked?0.3:1,textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5,border:`1px solid ${accentColor}30`}}
                         disabled={!!locked}
-                        onClick={()=>makeIntimacyChoice(ch.id)}>
+                        onClick={()=>{ playHallPassSound('click', soundEnabled); makeIntimacyChoice(ch.id); }}>
                         <span style={{fontWeight:700,color:"#e8a8d0"}}>{ch.label}</span>
                         {ch.lbs&&<span style={{color:"#ffdd80",marginLeft:8,fontSize:10}}>+{ch.lbs} lbs</span>}
                         {ch.feed&&<span style={{color:"#ff80c0",marginLeft:4,fontSize:10}}>+lbs</span>}
@@ -357,19 +358,20 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
                   })}
                 </div>
               )}
-              {done&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={closeIntimacyEvent}>Continue ✓</button>}
+              {done&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeIntimacyEvent(); }}>Continue ✓</button>}
             </div>
           </div>
         );
 }
 
-export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySceneSelector, startIntimacyScene }){
+export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySceneSelector, startIntimacyScene, soundEnabled = true }){
         const s=intimacySceneSelector.student;
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, s?.id]);
         const tier=getTier(s.relationship);
         const availScenes=INTIMACY_SCENES.filter(sc=>tier.id>=sc.minTier&&intimacySceneAllowed(sc.id,s));
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:600,background:"linear-gradient(160deg,#0a0318,#160528,#0a0318)",border:"1px solid #8030c050",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#c050a0",marginBottom:4}}>INTIMACY</div>
               <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
               <div style={{fontSize:11,color:"#7050a0",marginBottom:16,fontStyle:"italic"}}>
@@ -379,7 +381,7 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
                 {availScenes.map(sc=>(
                   <button key={sc.id}
                     style={{...C.btn("#3a0860"),textAlign:"left",padding:"10px 14px",opacity:ap<sc.apCost?0.4:1,border:"1px solid #7030a030"}}
-                    onClick={()=>startIntimacyScene(s,sc.id)}>
+                    onClick={()=>{ playHallPassSound('click', soundEnabled); startIntimacyScene(s,sc.id); }}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
                       <span style={{fontWeight:700,fontSize:13,color:"#e8a8d0"}}>{sc.icon} {sc.label}</span>
                       <span style={{fontSize:10,color:"#c050a0"}}>{sc.apCost} AP{tier.id>=3?<span style={{color:"#ff80c0",marginLeft:6}}>✦ Devoted</span>:""}</span>
@@ -388,7 +390,7 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
                   </button>
                 ))}
               </div>
-              <button style={C.btn("#333")} onClick={()=>setIntimacySceneSelector(null)}>Not now</button>
+              <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setIntimacySceneSelector(null); }}>Not now</button>
             </div>
           </div>
         );

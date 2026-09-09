@@ -66,6 +66,9 @@ import { DESTINY_SPEND_ITEMS } from '../src/gameData/streaming.js';
 import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS } from '../src/gameData/chapterHostess.js';
 import { ACQUISITION_BY_STAGE } from '../src/gameData/pharmacistIngredients.js';
 import { getOriginDeck } from '../src/gameData/origins/index.js';
+import { INTIMACY_SCENES } from '../src/gameData/intimacy.js';
+import { renderIntimacyPhase } from '../src/textEngine/scenes/intimacy/index.js';
+import '../src/textEngine/scenes/intimacy/index.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -607,4 +610,14 @@ for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie']) {
   }
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin OK');
+const intimacyStudent = { ...(INIT_STUDENTS.find((s) => s.archetype === 'swimmer') || INIT_STUDENTS[0]), lbs: 280, name: 'Maya' };
+for (const scene of INTIMACY_SCENES) {
+  assertClean(`${scene.label} ${scene.desc}`, `intimacy scene ${scene.id}`);
+  for (const ch of scene.phases?.[0]?.choices || []) {
+    assertClean(ch.label, `intimacy choice ${scene.id} ${ch.id}`);
+  }
+  const phase0 = renderIntimacyPhase(scene.id, 0, intimacyStudent, [], 2, 10, { v2DepthChance: 0 });
+  if (phase0) assertClean(phase0, `intimacy phase ${scene.id} p0`);
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin, intimacy OK');

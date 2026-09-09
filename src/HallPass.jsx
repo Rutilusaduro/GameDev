@@ -709,6 +709,11 @@ export default function HallPass(){
     }
   },[students,globalStats]);
 
+  useEffect(() => {
+    if (!classSession) return;
+    playHallPassSound('session', soundEnabled);
+  }, [soundEnabled, classSession?.sceneIdx, classSession?.pendingResult, !!classSession]);
+
   useEffect(()=>{
     const end=checkOppositionEndgame(opposition,students);
     const pending=[];
@@ -7860,7 +7865,7 @@ export default function HallPass(){
                         :`⚖️ ${pendingResult.target} gains ${pendingResult.gain} lbs`}
                     </div>
                   )}
-                  <button onClick={confirmResult} style={C.btn("#5818a8")}>
+                  <button onClick={()=>{ playHallPassSound('click', soundEnabled); confirmResult(); }} style={C.btn("#5818a8")}>
                     {sceneIdx<scenes.length-1?"Continue →":"View Summary →"}
                   </button>
                 </div>
@@ -7887,7 +7892,7 @@ export default function HallPass(){
                     <div style={C.secT}>How do you respond?</div>
                     <div style={{display:"flex",flexDirection:"column",gap:8}}>
                       {scene.choices.map((ch,i)=>(
-                        <div key={i} style={{...C.card,cursor:"pointer"}} onClick={()=>makeChoice(i)}>
+                        <div key={i} style={{...C.card,cursor:"pointer"}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}>
                           <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{ch.label}</div>
                           {(ch.effect.gain?.[1]>0||ch.effect.rel||ch.effect.mood)&&(
                             <div style={{fontSize:10,color:"#7a5040"}}>
@@ -8735,11 +8740,11 @@ export default function HallPass(){
       {/* ── STUDY CHECK-IN MODAL ── */}
 
       {/* ── ITEM TARGET PICKER ── */}
-      {itemTargetPicker&&<ItemTargetPicker itemTargetPicker={itemTargetPicker} setItemTargetPicker={setItemTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useItemOn={useItemOn}/>}
+      {itemTargetPicker&&<ItemTargetPicker itemTargetPicker={itemTargetPicker} setItemTargetPicker={setItemTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useItemOn={useItemOn} soundEnabled={soundEnabled}/>}
 
-      {deviceTargetPicker&&<DeviceTargetPicker deviceTargetPicker={deviceTargetPicker} setDeviceTargetPicker={setDeviceTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useDeviceOn={useDeviceOn}/>}
-      {equipPicker&&<EquipPicker equipPicker={equipPicker} setEquipPicker={setEquipPicker} students={students} lilithUnlocked={lilithUnlocked} equipDeviceOn={equipDeviceOn}/>}
-      {attachPicker&&<AttachPicker attachPicker={attachPicker} setAttachPicker={setAttachPicker} students={students} lilithUnlocked={lilithUnlocked} attachDeviceOn={attachDeviceOn}/>}
+      {deviceTargetPicker&&<DeviceTargetPicker deviceTargetPicker={deviceTargetPicker} setDeviceTargetPicker={setDeviceTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useDeviceOn={useDeviceOn} soundEnabled={soundEnabled}/>}
+      {equipPicker&&<EquipPicker equipPicker={equipPicker} setEquipPicker={setEquipPicker} students={students} lilithUnlocked={lilithUnlocked} equipDeviceOn={equipDeviceOn} soundEnabled={soundEnabled}/>}
+      {attachPicker&&<AttachPicker attachPicker={attachPicker} setAttachPicker={setAttachPicker} students={students} lilithUnlocked={lilithUnlocked} attachDeviceOn={attachDeviceOn} soundEnabled={soundEnabled}/>}
       {equipModalStudentId!=null&&(
         <StudentEquipModal
           student={students.find(st=>st.id===equipModalStudentId)}
@@ -8751,12 +8756,13 @@ export default function HallPass(){
           soundEnabled={soundEnabled}
         />
       )}
-      {malfunctionPopup&&<MalfunctionPopup malfunctionPopup={malfunctionPopup} setMalfunctionPopup={setMalfunctionPopup}/>}
+      {malfunctionPopup&&<MalfunctionPopup malfunctionPopup={malfunctionPopup} setMalfunctionPopup={setMalfunctionPopup} soundEnabled={soundEnabled}/>}
       {deviceTickQueue&&(
         <DeviceTickPopup
           queue={deviceTickQueue}
           onAdvance={()=>setDeviceTickQueue(q=>(q?{...q,index:q.index+1}:null))}
           onDismissAll={()=>setDeviceTickQueue(null)}
+          soundEnabled={soundEnabled}
         />
       )}
       {labSession&&labStudentId!=null&&(()=>{
@@ -8797,10 +8803,10 @@ export default function HallPass(){
       {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement} liveStudent={students.find(st=>st.id===privateSession.student.id)||privateSession.student} soundEnabled={soundEnabled}/>}
 
       {/* ── EP5: INTIMACY SCENE SELECTOR ── */}
-      {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene}/>}
+      {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene} soundEnabled={soundEnabled}/>}
 
       {/* ── EP5: ACTIVE INTIMACY SCENE ── */}
-      {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students}/>}
+      {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── DEBUG PANEL ── */}
       {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setOwnedSkills={setOwnedSkills} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} setWeek={setWeek} startDormId={raProfile?.dormId||raProfile?.subject} unlockedDorms={unlockedDorms} setUnlockedDorms={setUnlockedDorms} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText} soundEnabled={soundEnabled} onSoundEnabledChange={setSoundEnabled}/>}

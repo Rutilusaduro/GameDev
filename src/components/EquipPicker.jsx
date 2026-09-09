@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { slotFor, findAttachmentHostSlot } from '../gameData/deviceEffects.js';
 import { DEVICES, getDevice } from '../gameData/devices.js';
 
-export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnlocked, equipDeviceOn }) {
+export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnlocked, equipDeviceOn, soundEnabled = true }) {
   const { def } = equipPicker;
   const slot = slotFor(def);
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, def?.id]);
+
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 460 }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>EQUIP DEVICE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>
@@ -21,7 +25,7 @@ export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnloc
               <button
                 key={s.id}
                 style={{ ...C.smBtn, display: 'flex', width: '100%', justifyContent: 'space-between', marginBottom: 3, padding: '7px 10px', opacity: occupied ? 0.7 : 1 }}
-                onClick={() => equipDeviceOn(def, s.id, slot)}
+                onClick={() => { playHallPassSound('click', soundEnabled); equipDeviceOn(def, s.id, slot); }}
               >
                 <span>{s.name}</span>
                 <span style={{ fontSize: 10, color: occupied ? '#c8860a' : '#60a060' }}>
@@ -31,17 +35,19 @@ export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnloc
             );
           })}
         </div>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => setEquipPicker(null)}>Cancel</button>
+        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); setEquipPicker(null); }}>Cancel</button>
       </div>
     </div>
   );
 }
 
-export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUnlocked, attachDeviceOn }) {
+export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUnlocked, attachDeviceOn, soundEnabled = true }) {
   const { def } = attachPicker;
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, def?.id]);
+
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 460 }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>ATTACH MODULE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>
@@ -58,7 +64,7 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
                 key={s.id}
                 style={{ ...C.smBtn, display: 'flex', width: '100%', justifyContent: 'space-between', marginBottom: 3, padding: '7px 10px', opacity: canAttach ? 1 : 0.4 }}
                 disabled={!canAttach}
-                onClick={() => attachDeviceOn(def, s.id)}
+                onClick={() => { playHallPassSound('click', soundEnabled); attachDeviceOn(def, s.id); }}
               >
                 <span>{s.name}</span>
                 <span style={{ fontSize: 10, color: canAttach ? '#60a060' : '#888' }}>
@@ -68,7 +74,7 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
             );
           })}
         </div>
-        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => setAttachPicker(null)}>Cancel</button>
+        <button style={{ ...C.btn('#333'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); setAttachPicker(null); }}>Cancel</button>
       </div>
     </div>
   );

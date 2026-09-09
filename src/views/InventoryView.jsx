@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // PANTRY — inventory of foods & items usable on the girls
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ITEMS } from '../gameData/items.js';
 import { foodProfile } from '../textEngine/scenes/feedReaction/index.js';
 
@@ -44,11 +46,12 @@ export function InventoryView({ inventory, setItemTargetPicker }){
   );
 }
 
-export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, students, lilithUnlocked, useItemOn }){
+export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, students, lilithUnlocked, useItemOn, soundEnabled = true }){
   const { item } = itemTargetPicker;
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, item?.id]);
   return(
     <div style={C.overlay}>
-      <div style={{...C.modal,maxWidth:460}}>
+      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:460}}>
         <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>USE ITEM</div>
         <div style={{fontSize:14,fontWeight:700,color:"#c090e8",marginBottom:4}}>{item.emoji} {item.label}</div>
         {(()=>{const p=foodProfile(item.label,item.cal,item.full);return(
@@ -62,14 +65,14 @@ export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, studen
             const over=(s.fullness||0)+item.full>cap;
             return(
               <button key={s.id} style={{...C.smBtn,display:"flex",width:"100%",justifyContent:"space-between",marginBottom:3,padding:"7px 10px"}}
-                onClick={()=>useItemOn(item,s.id)}>
+                onClick={()=>{ playHallPassSound('click', soundEnabled); useItemOn(item,s.id); }}>
                 <span>{s.name}</span>
                 <span style={{fontSize:10,color:over?"#e07030":"#60a060"}}>{s.fullness||0}/{cap}{over?" — over capacity!":""}</span>
               </button>
             );
           })}
         </div>
-        <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>setItemTargetPicker(null)}>Cancel</button>
+        <button style={{...C.btn("#333"),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); setItemTargetPicker(null); }}>Cancel</button>
       </div>
     </div>
   );
