@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CRAVING RESONANCE — appetite contagion between students
+// CRAVING RESONANCE — appetite contagion between residents
 // ═══════════════════════════════════════════════════════════════
 import { V2_CONFIG } from './state.js';
 
@@ -37,11 +37,11 @@ export function canCreateLink(aId, bId, students, resonanceState, ownedSkills = 
   if ((resonanceState.links || []).length >= maxLinks) return { ok: false, reason: 'Link capacity full' };
   const a = students.find((s) => s.id === aId);
   const b = students.find((s) => s.id === bId);
-  if (!a || !b || a.hidden || b.hidden) return { ok: false, reason: 'Invalid students' };
+  if (!a || !b || a.hidden || b.hidden) return { ok: false, reason: 'Invalid residents' };
   if (aId === bId) return { ok: false, reason: 'Cannot link self' };
   const relCost = V2_CONFIG.resonanceLinkRelCost;
   if ((a.relationship || 0) < relCost || (b.relationship || 0) < relCost) {
-    return { ok: false, reason: `Both students need ${relCost}+ relationship` };
+    return { ok: false, reason: `Both residents need ${relCost}+ relationship` };
   }
   const exists = (resonanceState.links || []).some(
     (l) => (l.a === aId && l.b === bId) || (l.a === bId && l.b === aId),

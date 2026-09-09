@@ -20,11 +20,11 @@ export const CAMPUS_SECRETS = [
     nodeId: 'garden',
     label: 'Locked Greenhouse Shed',
     emoji: '🌿',
-    hint: 'The botanical garden keeps a shed that students pretend not to notice.',
+    hint: 'The botanical garden keeps a shed that residents pretend not to notice.',
     requires: [],
     campusTierMin: 0,
     solve: 'search',
-    discover: 'A shed door yields to a loose hasp. Inside: specimen jars, field notes, and boot prints in potting soil.',
+    discover: 'A shed door yields to a loose hasp. Inside: specimen jars, hall log scraps, and boot prints in potting soil.',
     reward: { findId: 'find_honey_tart' },
   },
   {

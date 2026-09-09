@@ -105,14 +105,14 @@ export function canRunRitual(ritualId, studentIds, ctx) {
   const available = getAvailableRituals(ctx);
   if (!available.find((r) => r.id === ritualId)) return { ok: false, reason: 'Ritual locked' };
   if (studentIds.length < ritual.minStudents || studentIds.length > ritual.maxStudents) {
-    return { ok: false, reason: `Select ${ritual.minStudents}–${ritual.maxStudents} students` };
+    return { ok: false, reason: `Select ${ritual.minStudents}–${ritual.maxStudents} residents` };
   }
   if (ritual.immobileOnly) {
     const bad = studentIds.some((id) => {
       const s = ctx.students.find((st) => st.id === id);
       return !s || (s.lbs || 0) < 360;
     });
-    if (bad) return { ok: false, reason: 'Leviathan Vigil requires immobile students' };
+    if (bad) return { ok: false, reason: 'Leviathan Vigil requires immobile residents' };
   }
   return { ok: true, ritual, apCost: ritual.apCost };
 }

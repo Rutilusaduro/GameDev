@@ -83,7 +83,7 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
           Attach compressed save slot (helps reproduce)
         </label>
         <div style={{ fontSize: 9, color: '#706050', marginBottom: 12, lineHeight: 1.5 }}>
-          Snapshot includes week, students, opposition state, last log lines, and recent errors. No account data.
+          Snapshot includes week, residents, opposition state, last log lines, and recent errors. No account data.
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <button type="button" style={{ ...C.btn('#5a4830') }} onClick={handleCopy}>Transcribe to clipboard</button>
