@@ -1250,6 +1250,77 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(96, 144, 192, 0.14);
 }
 
+.device-choice-row,
+.circuit-board-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.device-choice-row:hover:not(:disabled),
+.circuit-board-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.device-choice-row:focus-visible,
+.circuit-board-choice-row:focus-visible {
+  outline: 2px solid rgba(96, 144, 192, 0.85);
+  outline-offset: 2px;
+}
+
+.evolved-minigame-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.evolved-minigame-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.evolved-minigame-choice-row:focus-visible {
+  outline: 2px solid rgba(192, 128, 96, 0.85);
+  outline-offset: 2px;
+}
+
+.intimacy-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.intimacy-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.intimacy-choice-row:focus-visible {
+  outline: 2px solid rgba(192, 80, 160, 0.85);
+  outline-offset: 2px;
+}
+
+.paper-doll-modal {
+  background: linear-gradient(165deg, rgba(8, 12, 20, 0.98), rgba(16, 22, 36, 0.96), rgba(6, 8, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 26px rgba(74, 96, 128, 0.14);
+}
+
+.paper-doll-choice-row,
+.student-equip-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.paper-doll-choice-row:hover:not(:disabled),
+.student-equip-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.paper-doll-choice-row:focus-visible,
+.student-equip-choice-row:focus-visible {
+  outline: 2px solid rgba(74, 96, 128, 0.85);
+  outline-offset: 2px;
+}
+
 .equip-picker-modal,
 .student-equip-modal,
 .item-target-picker-modal {
@@ -1576,6 +1647,7 @@
   .group-dinner-picker-modal,
   .narrative-modal,
   .ranked-session-modal,
+  .paper-doll-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;
@@ -1650,7 +1722,13 @@
   .bug-report-choice-row:hover,
   .lab-build-choice-row:hover,
   .stream-brand-choice-row:hover,
-  .ranked-session-choice-row:hover {
+  .ranked-session-choice-row:hover,
+  .device-choice-row:hover,
+  .circuit-board-choice-row:hover,
+  .evolved-minigame-choice-row:hover,
+  .intimacy-choice-row:hover,
+  .paper-doll-choice-row:hover,
+  .student-equip-choice-row:hover {
     transform: none;
   }
 

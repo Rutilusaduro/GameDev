@@ -61,7 +61,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
             <div style={{ fontSize: 15, fontWeight: 700, color: '#d0c0f0' }}>{board.label}</div>
             <div style={{ fontSize: 10, color: '#8070a0', marginTop: 4 }}>{tierLabel}</div>
           </div>
-          <button style={{ ...C.btn('#302030'), fontSize: 10, padding: '4px 10px' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>✕</button>
+          <button type="button" className="circuit-board-choice-row" style={{ ...C.btn('#302030'), fontSize: 10, padding: '4px 10px' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>✕</button>
         </div>
 
         <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 12 }}>
@@ -110,6 +110,8 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
             return (
               <button
                 key={node.id}
+                type="button"
+                className="circuit-board-choice-row"
                 title={node.label}
                 onClick={() => setSelectedId(node.id)}
                 style={{
@@ -156,6 +158,8 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
               <div style={{ fontSize: 9, color: '#4a9a5a' }}>✓ Node installed on circuit board</div>
             ) : (
               <button
+                type="button"
+                className="circuit-board-choice-row"
                 style={{ ...C.btn(canUnlockCircuitNode(labState, deviceDefId, selected.id, students) ? ACCENT : '#302030'), width: '100%' }}
                 disabled={!canUnlockCircuitNode(labState, deviceDefId, selected.id, students)}
                 onClick={() => { playHallPassSound('confirm', soundEnabled); onUnlockNode(deviceDefId, selected.id); }}

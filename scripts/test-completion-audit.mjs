@@ -1948,6 +1948,57 @@ check('ranked-session-row-polish', () => {
   assert.match(desk, /ranked-session-modal/);
 });
 
+check('evolved-minigame-row-polish', () => {
+  const css = read('src/index.css');
+  const picker = read('src/components/PickerModals.jsx');
+  assert.match(css, /\.evolved-minigame-choice-row:focus-visible/);
+  assert.match(css, /\.evolved-minigame-choice-row:hover:not\(:disabled\)/);
+  assert.match(picker, /evolved-minigame-choice-row/);
+  assert.match(picker, /PresentationDefenseModal/);
+});
+
+check('device-choice-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/DeviceTuningModal.jsx');
+  assert.match(css, /\.device-choice-row:focus-visible/);
+  assert.match(css, /\.device-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /device-choice-row/);
+});
+
+check('circuit-board-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/CircuitBoardModal.jsx');
+  assert.match(css, /\.circuit-board-choice-row:focus-visible/);
+  assert.match(css, /\.circuit-board-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /circuit-board-choice-row/);
+});
+
+check('student-equip-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/StudentEquipModal.jsx');
+  assert.match(css, /\.student-equip-choice-row:focus-visible/);
+  assert.match(css, /\.student-equip-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /student-equip-choice-row/);
+});
+
+check('intimacy-choice-row-polish', () => {
+  const css = read('src/index.css');
+  const picker = read('src/components/PickerModals.jsx');
+  assert.match(css, /\.intimacy-choice-row:focus-visible/);
+  assert.match(css, /\.intimacy-choice-row:hover:not\(:disabled\)/);
+  assert.match(picker, /intimacy-choice-row/);
+});
+
+check('paper-doll-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/PaperDollModal.jsx');
+  assert.match(css, /\.paper-doll-modal/);
+  assert.match(css, /\.paper-doll-choice-row:focus-visible/);
+  assert.match(css, /\.paper-doll-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /paper-doll-choice-row/);
+  assert.match(modal, /paper-doll-modal/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

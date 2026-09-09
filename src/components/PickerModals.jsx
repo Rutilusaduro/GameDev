@@ -250,14 +250,14 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {phase.choices.map((ch) => (
-              <button key={ch.id} type="button" style={{ ...C.btn(def.accent), textAlign: 'left', fontSize: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); pickChoice(ch); }}>
+              <button key={ch.id} type="button" className="evolved-minigame-choice-row" style={{ ...C.btn(def.accent), textAlign: 'left', fontSize: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); pickChoice(ch); }}>
                 {ch.label}
               </button>
             ))}
           </div>
         )}
         {done && (
-          <button type="button" style={{ ...C.btn(def.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onClose(); }}>Continue ✓</button>
+          <button type="button" className="evolved-minigame-choice-row" style={{ ...C.btn(def.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onClose(); }}>Continue ✓</button>
         )}
       </div>
     </div>
@@ -346,7 +346,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
                     const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
                     if(excluded) return null;
                     return(
-                      <button key={ch.id}
+                      <button key={ch.id} type="button" className="intimacy-choice-row"
                         style={{...C.btn(locked?"#1a1a2a":"#5010a0"),opacity:locked?0.3:1,textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5,border:`1px solid ${accentColor}30`}}
                         disabled={!!locked}
                         onClick={()=>{ playHallPassSound('click', soundEnabled); makeIntimacyChoice(ch.id); }}>
@@ -360,7 +360,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
                   })}
                 </div>
               )}
-              {done&&<button style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeIntimacyEvent(); }}>Continue ✓</button>}
+              {done&&<button type="button" className="intimacy-choice-row" style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeIntimacyEvent(); }}>Continue ✓</button>}
             </div>
           </div>
         );
@@ -381,7 +381,7 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
                 {availScenes.map(sc=>(
-                  <button key={sc.id}
+                  <button key={sc.id} type="button" className="intimacy-choice-row"
                     style={{...C.btn("#3a0860"),textAlign:"left",padding:"10px 14px",opacity:ap<sc.apCost?0.4:1,border:"1px solid #7030a030"}}
                     onClick={()=>{ playHallPassSound('click', soundEnabled); startIntimacyScene(s,sc.id); }}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
@@ -392,7 +392,7 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
                   </button>
                 ))}
               </div>
-              <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setIntimacySceneSelector(null); }}>Not now</button>
+              <button type="button" className="intimacy-choice-row" style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setIntimacySceneSelector(null); }}>Not now</button>
             </div>
           </div>
         );

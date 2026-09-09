@@ -61,7 +61,7 @@ export function DeviceTuningModal({
             <div style={{ fontSize: 10, color: '#706050', marginBottom: 14 }}>
               Stability: {Math.round(session.stability * 100)}%
             </div>
-            <button type="button" style={{ ...C.btn('#a07030'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); runAttempt(); }}>
+            <button type="button" className="device-choice-row" style={{ ...C.btn('#a07030'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); runAttempt(); }}>
               Commit tuning run
             </button>
           </>
@@ -71,7 +71,7 @@ export function DeviceTuningModal({
             {' '}at {Math.round(session.magnitude * 100)}% magnitude.
           </div>
         )}
-        <button type="button" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
+        <button type="button" className="device-choice-row" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );
@@ -113,8 +113,8 @@ export function DeviceRouteModal({
             <input type="range" min={0} max={100} value={alloc[key]} style={{ width: '100%', marginTop: 4 }} onChange={(e) => setVal(key, e.target.value)} />
           </label>
         ))}
-        <button type="button" style={{ ...C.btn('#406080'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); commit(); }}>Deploy route</button>
-        <button type="button" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Cancel</button>
+        <button type="button" className="device-choice-row" style={{ ...C.btn('#406080'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); commit(); }}>Deploy route</button>
+        <button type="button" className="device-choice-row" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Cancel</button>
       </div>
     </div>
   );

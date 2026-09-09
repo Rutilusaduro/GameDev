@@ -87,16 +87,18 @@ export function PaperDollModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 7500 }}>
-      <div style={{ ...C.modal, maxWidth: 720, maxHeight: '90vh', overflow: 'auto' }}>
+      <div className="hall-pass-modal-in paper-doll-modal" style={{ ...C.modal, maxWidth: 720, maxHeight: '90vh', overflow: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>PAPER DOLL — DEVICES</div>
-          <button style={C.smBtn} onClick={close}>✕</button>
+          <button type="button" className="paper-doll-choice-row" style={C.smBtn} onClick={close}>✕</button>
         </div>
 
         <div style={{ display: 'flex', gap: 4, marginBottom: 10 }}>
           {MODAL_TABS.map((t) => (
             <button
               key={t.id}
+              type="button"
+              className="paper-doll-choice-row"
               style={{ ...C.navB(modalTab === t.id), opacity: t.active ? 1 : 0.45 }}
               disabled={!t.active}
               onClick={() => t.active && setModalTab(t.id)}
@@ -132,6 +134,8 @@ export function PaperDollModal({
                 return (
                   <button
                     key={slot.key}
+                    type="button"
+                    className="paper-doll-choice-row"
                     onClick={() => setSelectedSlot(slot.key)}
                     style={{
                       ...C.btn(active ? ACCENT : '#1a2030'),
@@ -153,9 +157,11 @@ export function PaperDollModal({
                 <>
                   <div style={{ fontWeight: 700, color: '#90b0d0' }}>{currentDef.icon} {currentDef.label}</div>
                   <div style={{ fontSize: 10, color: '#607080', marginTop: 4 }}>{summarizeDeviceEffect(currentDef)}</div>
-                  <button style={{ ...C.smBtn, marginTop: 8, fontSize: 9 }} onClick={handleUnequip}>Unequip</button>
+                  <button type="button" className="paper-doll-choice-row" style={{ ...C.smBtn, marginTop: 8, fontSize: 9 }} onClick={handleUnequip}>Unequip</button>
                   {currentEntry?.attachments && (
                     <button
+                      type="button"
+                      className="paper-doll-choice-row"
                       style={{ ...C.smBtn, marginTop: 6, marginLeft: 6, fontSize: 9 }}
                       onClick={() => setAttachPicker?.({ studentId: student.id, hostSlot: engineSlot })}
                     >
@@ -177,6 +183,8 @@ export function PaperDollModal({
               {compatible.map((def) => (
                 <button
                   key={def.id}
+                  type="button"
+                  className="paper-doll-choice-row"
                   style={{ ...C.btn(), textAlign: 'left', padding: '8px 10px' }}
                   onClick={() => handleEquipStudent(def.id)}
                 >
@@ -191,6 +199,8 @@ export function PaperDollModal({
               )}
               {resolvedPreselect && compatible.some((d) => d.id === resolvedPreselect.id) && (
                 <button
+                  type="button"
+                  className="paper-doll-choice-row"
                   style={{ ...C.btn(ACCENT), marginTop: 4 }}
                   onClick={() => handleEquipStudent(resolvedPreselect.id)}
                 >

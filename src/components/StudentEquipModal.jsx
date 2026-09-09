@@ -48,7 +48,7 @@ function SlotPicker({ slot, student, deviceInventory, onEquip, onAttach, onClose
         <div style={{ fontSize: 10, fontWeight: 700, color: '#90a8c8' }}>
           {hostDef ? `Replace or attach — ${slotLabel}` : `Equip — ${slotLabel}`}
         </div>
-        <button style={{ ...C.smBtn, fontSize: 8, padding: '2px 6px' }} onClick={onClose}>✕</button>
+        <button type="button" className="student-equip-choice-row" style={{ ...C.smBtn, fontSize: 8, padding: '2px 6px' }} onClick={onClose}>✕</button>
       </div>
       {options.length === 0 && (
         <div style={{ fontSize: 10, color: '#606870', fontStyle: 'italic', marginBottom: 6 }}>
@@ -60,6 +60,8 @@ function SlotPicker({ slot, student, deviceInventory, onEquip, onAttach, onClose
         return (
           <button
             key={def.id}
+            type="button"
+            className="student-equip-choice-row"
             style={{
               ...C.smBtn,
               display: 'flex',
@@ -139,7 +141,7 @@ export function StudentEquipModal({
             onClose={() => setActiveSlot(null)}
           />
         )}
-        <button style={{ ...C.btn('#333'), width: '100%', marginTop: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
+        <button type="button" className="student-equip-choice-row" style={{ ...C.btn('#333'), width: '100%', marginTop: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
           Close
         </button>
       </div>
