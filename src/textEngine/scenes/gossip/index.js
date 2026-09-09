@@ -106,7 +106,7 @@ registerPool('gossip.murmur', [
     `The hall moves around each other differently now. Everyone's tracking, even when nobody says it.`,
     `Glances cross the room — at thighs, at waistbands, at who's going back for seconds. A whole conversation without words.`,
     `She knows the room is watching her. They all know. The watching has become the weather.`,
-    `The girls have their own accounting. It runs parallel to whatever you thinks is happening.`,
+    `The residents have their own accounting. It runs parallel to whatever you think is happening.`,
     '',
   ]},
 ]);

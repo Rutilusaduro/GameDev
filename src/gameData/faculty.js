@@ -180,7 +180,7 @@ export const FACULTY = [
           {label:"\"Send your best dishes to my hall lounge.\"", next:"pipeline", affinity:6},
           {label:"Back", next:"hub"},
         ]},
-      pipeline:{ text:()=>`Rosa's eyes narrow with delight. "A practicum! Real eaters for my cooks!" She's already untying her apron to plan. "My students cook, your residents eat, everybody grows — the program, I mean. The program grows." A wink that suggests she means everything. "Deal, RA."`,
+      pipeline:{ text:()=>`Rosa's eyes narrow with delight. "A practicum! Real eaters for my cooks!" She's already untying her apron to plan. "My kitchen crew cooks, your residents eat, everybody grows — the program, I mean. The program grows." A wink that suggests she means everything. "Deal, RA."`,
         options:[ {label:"Back", next:"hub"} ]},
       recipe:{ text:()=>`The kitchen goes quiet. Rosa studies you, then unties the little notebook from her apron string — laminated cards, her grandmother's hand. "Abuela's pozole. I have given this to two people. One was a priest." She copies it out slowly, in beautiful handwriting. "You feed people, RA. Really feed them. I see it. So." She presses the card into your palm and closes your fingers over it. "Now you feed them this."`,
         options:[

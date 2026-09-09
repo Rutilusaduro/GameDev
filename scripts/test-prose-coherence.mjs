@@ -44,6 +44,7 @@ import '../src/textEngine/scenes/diary.js';
 import { renderDiary } from '../src/textEngine/scenes/diary.js';
 import { NADIA_SUBJECT_JOURNALS } from '../src/gameData/nadiaSubjectJournals.js';
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
+import '../src/textEngine/scenes/campusEvent/depth.js';
 import { renderGossipMurmur } from '../src/textEngine/scenes/gossip/index.js';
 import { renderMemoryClass } from '../src/textEngine/scenes/memory/index.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
@@ -165,6 +166,14 @@ const BANNED = [
   /\bstudents in your section\b/i,
   /\bher students\b/i,
   /\bAsk about her students\b/i,
+  /\bFuture students\b/i,
+  /\bgroup of students\b/i,
+  /\bstudents who transferred\b/i,
+  /\bRandom students\b/i,
+  /\bbefore class starts\b/i,
+  /\bThe girls keep\b/i,
+  /\bThe girls have their own\b/i,
+  /\bMy students cook\b/i,
 ];
 
 function assertClean(text, label) {
@@ -516,6 +525,16 @@ for (const archetype of ['bookworm', 'swimmer', 'cheerleader']) {
     8,
   );
   if (beat) assertClean(beat, `campus event beat ${archetype}`);
+}
+
+for (const mood of ['mood_excited', 'mood_nervous', 'mood_content']) {
+  const depthCtx = buildTextContext({
+    subject: INIT_STUDENTS[0],
+    week: 8,
+    globals: { mood },
+  });
+  const depthLine = render(`{campusEvent.scene.${mood}}`, depthCtx)?.trim();
+  if (depthLine) assertClean(depthLine, `campus event depth ${mood}`);
 }
 
 for (const archetype of ['influencer', 'foodie', 'gamer']) {

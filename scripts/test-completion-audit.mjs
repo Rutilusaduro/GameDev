@@ -544,10 +544,23 @@ check('staff-lounge-resident-framing', () => {
   const faculty = read('src/gameData/faculty.js');
   assert.match(faculty, /Ask about her workshop/);
   assert.match(faculty, /Ask about her kitchen crew/);
-  assert.doesNotMatch(faculty, /Ask about her students/i);
+  assert.match(faculty, /My kitchen crew cooks/);
+  assert.doesNotMatch(faculty, /Ask about her students|My students cook/i);
   const cult = read('src/gameData/pharmacistCult.js');
   assert.match(cult, /half your floor/);
-  assert.doesNotMatch(cult, /half your section/i);
+  assert.doesNotMatch(cult, /half your section|Random students start sampling/i);
+});
+
+check('memory-gossip-resident-framing', () => {
+  const memory = read('src/textEngine/scenes/memory/index.js');
+  assert.match(memory, /The residents keep a quiet eye/);
+  assert.doesNotMatch(memory, /The girls keep a quiet eye/i);
+  const gossip = read('src/textEngine/scenes/gossip/index.js');
+  assert.match(gossip, /The residents have their own accounting/);
+  assert.doesNotMatch(gossip, /The girls have their own accounting/i);
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /ascended residents wear their thin skins/);
+  assert.doesNotMatch(desk, /ascended students wear their thin skins/i);
 });
 
 check('homeroom-resident-framing', () => {

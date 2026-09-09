@@ -32,7 +32,7 @@ export const CULT_DISTRIBUTION_ROUTES = [
   {
     id: 'union_bulk',
     label: 'Bulk drop at the campus union',
-    desc: 'High visibility, high yield. Random students start sampling.',
+    desc: 'High visibility, high yield. Random wanderers start sampling.',
     apCost: 2,
     exposure: 12,
     scrutiny: 2,

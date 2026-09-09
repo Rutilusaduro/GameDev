@@ -92,7 +92,7 @@ registerPool('memory.self', [
 // Shape: SHORT SENTENCE — what the hall remembers about someone else.
 registerPool('memory.class', [
   { when: {}, text: [
-    `The girls keep a quiet eye on how the others are changing.`,
+    `The residents keep a quiet eye on how the others are changing.`,
   ]},
   { when: { memType: 'scaleBreak' }, weight: 3, text: [
     (ctx) => `The hall still hasn't stopped talking about ${ctx.globals?.memName ?? 'one of the others'} and the scale.`,

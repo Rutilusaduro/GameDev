@@ -771,7 +771,7 @@ export default function HallPass(){
     }
     if(evolved.length&&evolved.every(s=>s.supernaturalForm)&&!globalStats.allThinAscended){
       setGlobalStats(g=>({...g,allThinAscended:true}));
-      pending.push({ id:'all_thin_ascended', week, detail:`${end.ascendedCount} ascended students wear their thin skins.` });
+      pending.push({ id:'all_thin_ascended', week, detail:`${end.ascendedCount} ascended residents wear their thin skins.` });
     }
     if(checkSynthesisEndgame(opposition,students,pharmacistState?.stage) && !opposition?.supernatural?.synthesisAlly && !globalStats.synthesisAlly){
       setOpposition(prev=>applySynthesisAlly(prev));
