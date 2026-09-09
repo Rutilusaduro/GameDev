@@ -304,7 +304,7 @@ export const PHARMACIST_ACTIVITIES = {
   2: {
     label: "💊 Wellness Trial",
     apCost: 2,
-    desc: "Campus wellness branding trial. The student body starts softer.",
+    desc: "Campus wellness branding trial. The resident body starts softer.",
     sophiaGain: [4, 8],
     exposure: 12,
     unlockCampusFattening: true,

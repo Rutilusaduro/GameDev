@@ -615,6 +615,9 @@ for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie']) {
 
 for (const node of Object.values(CAMPUS_NODES)) {
   assertClean(`${node.label} ${node.desc || ''} ${node.eat || ''}`, `campus node ${node.id}`);
+  for (const line of node.flavor || []) {
+    assertClean(line, `campus node ${node.id} flavor`);
+  }
 }
 const campusIntroCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 8, globals: { campusLocale: 'hallway' } });
 const campusIntro = render('{campus.localeIntro}', campusIntroCtx)?.trim();

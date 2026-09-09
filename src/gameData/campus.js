@@ -61,7 +61,7 @@ export const CAMPUS_NODES = {
   dining_hall: {
     id:"dining_hall", label:"Dining Hall", emoji:"🍽️", x:72, y:40,
     exits:["quad","dorms","food_court","coffee_shop"],
-    desc:"All-you-can-eat, a phrase the student body has come to treat as a personal challenge. The staff know your residents by name and portion size. The dessert station has tripled its footprint.",
+    desc:"All-you-can-eat, a phrase the resident body has come to treat as a personal challenge. The staff know your hall by name and portion size. The dessert station has tripled its footprint.",
     flavor:[
       "The dining staff are wheeling out a fourth dessert cart. On a Tuesday.",
       "A laminated sign reads 'UNLIMITED MEANS UNLIMITED — Management.' It looks recent and hard-won.",
@@ -101,7 +101,7 @@ export const CAMPUS_NODES = {
   garden: {
     id:"garden", label:"Botanical Garden", emoji:"🌿", x:8, y:22,
     exits:["library","theater"],
-    desc:"The quiet edge of campus. Greenhouses, fruit trees, a bench with a view. Students come here to eat in peace — and to be honest, that's why you come too.",
+    desc:"The quiet edge of campus. Greenhouses, fruit trees, a bench with a view. Residents come here to eat in peace — and to be honest, that's why you come too.",
     flavor:[
       "The orchard's honor-system fruit stand is empty except for an IOU written in three different hands.",
       "A greenhouse table is laid out with someone's very unbotanical picnic. You pretend not to see it.",
@@ -116,15 +116,15 @@ export const CAMPUS_NODES = {
     exits:["dining_hall","dorms","student_union"],
     desc:"Six vendors and a rotating seasonal kiosk, organized under a glass atrium with very flattering lighting. Chef Delgado's culinary lab smells of caramelized sugar from eight on the dot every morning. The court never fully closes.",
     flavor:[
-      "A student carries three food-court containers stacked in one arm with practiced efficiency.",
+      "Someone carries three food-court containers stacked in one arm with practiced efficiency.",
       "The queue at Delgado's window wraps the atrium. Some are waiting. Most are already eating something else while they wait.",
       "A chalkboard special reads 'WEDNESDAY BELLY-BUSTER BOWL — BOTTOMLESS.' The chalk is fresh.",
     ],
   },
   student_union: {
-    id:"student_union", label:"Student Union", emoji:"🏢", x:52, y:28,
+    id:"student_union", label:"Campus Union", emoji:"🏢", x:52, y:28,
     exits:["quad","food_court","dorms","arts_wing"],
-    desc:"The administrative hub where unofficial things get officially ignored. The registrar's window has the longest line on campus. Lockwood has worked this window for twelve years. She remembers every student's name and every late enrollment waiver she has ever granted.",
+    desc:"The administrative hub where unofficial things get officially ignored. The registrar's window has the longest line on campus. Lockwood has worked this window for twelve years. She remembers every resident's name and every late enrollment waiver she has ever granted.",
     flavor:[
       "The bulletin board is a palimpsest of flyers; the bottom layer is from six semesters ago. A wellness announcement. It has not aged well.",
       "The vending alcove has been colonized by a study group using it as a snack depot.",
@@ -157,17 +157,17 @@ export const CAMPUS_NODES = {
     desc:"Quarter-mile loop, bleachers, and a field house nobody goes to after the vending machines were removed. Coach Brooks runs fitness assessments here. She has quietly stopped recording the weight measurements.",
     flavor:[
       "Three girls walk the track in a cluster, snacks in hand. It counts as exercise. Brooks said so.",
-      "The bleachers double as a lunch spot for students who want the fresh air without the movement.",
+      "The bleachers double as a lunch spot for residents who want the fresh air without the movement.",
       "Someone's left a bag from the food court wedged under a bleacher seat. For later, presumably.",
     ],
   },
   health_center: {
     id:"health_center", label:"Health Center", emoji:"🏥", x:88, y:14,
     exits:["dorms"],
-    desc:"Student medical. The nurse stocks nutritional supplements beside the bandages. The waiting room chairs were upgraded last spring, quietly, without announcement. Nobody asked why. Everyone knows why.",
+    desc:"Campus clinic. The nurse stocks nutritional supplements beside the bandages. The waiting room chairs were upgraded last spring, quietly, without announcement. Nobody asked why. Everyone knows why.",
     flavor:[
       "The nutrition pamphlets on the rack have been reorganized by someone, most-reaching-for-first. Bulk calorie guides are at eye level.",
-      "A student exits looking content. She was there for a routine check. It went well by any meaningful metric.",
+      "A resident exits looking content. She was there for a routine check. It went well by any meaningful metric.",
       "The new scale in the corner has a larger platform and a higher max than the old one. The nurse replaced it in March and said nothing.",
     ],
   },

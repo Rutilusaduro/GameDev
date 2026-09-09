@@ -50,7 +50,7 @@ export function buildDevourScene(student, corTier, week = 1) {
 
 Not hunger. Not yet. Something older.
 
-${detail} ${victim.charAt(0).toUpperCase() + victim.slice(1)}. You brought her here on a pretext — office hours, a form, a kindness. She trusted the door closing behind her. She trusted you.
+${detail} ${victim.charAt(0).toUpperCase() + victim.slice(1)}. You brought her here on a pretext — a hall check-in, a form, a kindness. She trusted the door closing behind her. She trusted you.
 
 ${name} looks at the girl. Looks at you. Her hands are shaking.
 

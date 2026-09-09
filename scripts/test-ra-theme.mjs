@@ -143,6 +143,11 @@ const BANNED = [
   { id: 'school-file', re: /\bschool file\b/i },
   { id: 'cooking-class', re: /\bcooking class\b/i },
   { id: 'between-classes', re: /\bbetween classes\b/i },
+  { id: 'student-body-phrase', re: /\bstudent body\b/i },
+  { id: 'student-union-label', re: /Student Union/ },
+  { id: 'student-union-phrase', re: /\bstudent union\b/i },
+  { id: 'office-hours-phrase', re: /\boffice hours\b/i },
+  { id: 'student-advocate-role', re: /Student Advocate/ },
 ];
 
 const ALLOW_LINE = [

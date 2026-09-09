@@ -76,7 +76,7 @@ export const PHARMACIST_CAMPUS_ENCOUNTERS = [
   () => `Wellness samples appear on tables in three buildings overnight. They are gone by noon.`,
   (s) => `${s.name} mentions the new 'metabolic support' smoothies at the union. She has already had two.`,
   () => `Dorm refrigerators campus-wide are working harder. Facilities blames 'seasonal adjustment.'`,
-  () => `A soft-body positivity mural goes up in the student union. It is larger than the old athletics banner.`,
+  () => `A soft-body positivity mural goes up in the campus union. It is larger than the old athletics banner.`,
 ];
 
 /** Weekly events when campus fattening is active (rolled in advanceWeek). */
@@ -85,7 +85,7 @@ export const PHARMACIST_CAMPUS_EVENTS = [
     id: 'wellness_fair',
     target: 'class',
     gain: [2, 5],
-    text: () => `Sophia's wellness branding has reached the student union: free "metabolic support" samples at every table. The line wraps around the building. Your floor drifts through it the way water finds low ground — unhurried, thorough, noticeably fuller by evening.`,
+    text: () => `Sophia's wellness branding has reached the campus union: free "metabolic support" samples at every table. The line wraps around the building. Your floor drifts through it the way water finds low ground — unhurried, thorough, noticeably fuller by evening.`,
   },
   {
     id: 'dining_portions',

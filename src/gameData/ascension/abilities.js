@@ -26,7 +26,7 @@ export const ASCENSION_ABILITIES = [
   ability({ id: 'valk_shieldmaiden', formId: 'valkyrie', studentId: 0, name: 'Shieldmaiden', desc: 'Public shame pressure drops under her banner.', essenceCost: 4, cooldownWeeks: 3, hook: 'campusMod', params: { scrutinyDelta: -3, flag: 'shieldmaidenCover' }, public: true }),
 
   ability({ id: 'sphinx_open_stacks', formId: 'sphinx', studentId: 1, name: 'Open Stacks', desc: 'Reveals a hidden answer for the next threshold.', essenceCost: 2, cooldownWeeks: 1, hook: 'interruptSpawn', params: { flag: 'openStacksAnswer', value: true, rel: 2 } }),
-  ability({ id: 'sphinx_office_hours', formId: 'sphinx', studentId: 1, name: 'Office Hours', desc: 'A private session deepens fascination.', essenceCost: 3, cooldownWeeks: 2, hook: 'psychNudge', params: { obsession: 10, fixation: 5 } }),
+  ability({ id: 'sphinx_office_hours', formId: 'sphinx', studentId: 1, name: 'Open Hours', desc: 'A private session deepens fascination.', essenceCost: 3, cooldownWeeks: 2, hook: 'psychNudge', params: { obsession: 10, fixation: 5 } }),
   ability({ id: 'sphinx_errata', formId: 'sphinx', studentId: 1, name: 'Errata', desc: 'A footnote finds money where a week misplaced it.', essenceCost: 4, cooldownWeeks: 3, hook: 'economyMod', params: { moneyDelta: 25, flag: 'errataFiled' } }),
 
   ability({ id: 'siren_pinned_comment', formId: 'siren', studentId: 2, name: 'Pinned Comment', desc: 'A venue listens harder for a night.', essenceCost: 2, cooldownWeeks: 1, hook: 'campusMod', params: { flag: 'pinnedAudience', scrutinyDelta: -1 }, public: true }),

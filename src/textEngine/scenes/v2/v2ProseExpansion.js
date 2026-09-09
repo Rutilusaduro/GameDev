@@ -74,7 +74,7 @@ registerPool('talk.v2.depth', [
   ]},
   { when: {}, text: [
     'Something in her voice has softened toward appetite. She does not name it. You hear it anyway.',
-    'Office hours stretch longer when food is on the table — literally or otherwise.',
+    'Hall hours stretch longer when food is on the table — literally or otherwise.',
     'She laughs easily. Hunger makes her generous.',
     'The talk leaves warmth behind — appetite acknowledged without ceremony.',
   ]},

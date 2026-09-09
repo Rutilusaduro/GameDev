@@ -205,4 +205,18 @@ for (const archetype of archetypes) {
   assert.ok(matching.length > 0, `archetype ${archetype} should have at least one narrative event`);
 }
 
-console.log('playthrough: semester sim + Cassidy arc + all dorm paths + RA setup OK');
+// Week-by-week unlock milestones — cumulative hall reach must only grow.
+for (const startDorm of ['sporty', 'nerdy', 'socialite', 'weirdos']) {
+  let prevSize = 1;
+  for (let week = 1; week <= 16; week += 1) {
+    const size = cumulativeUnlockedHalls(startDorm, week).size;
+    assert.ok(size >= prevSize, `${startDorm} hall reach shrank wk${week - 1}→${week}`);
+    prevSize = size;
+    if ([8, 12, 16].includes(week)) {
+      assert.ok(size >= 2, `${startDorm} should reach ≥2 halls by week ${week}`);
+    }
+  }
+  assert.equal(cumulativeUnlockedHalls(startDorm, 16).size, 4, `${startDorm} must open all halls by week 16`);
+}
+
+console.log('playthrough: semester sim wk1-16 + Cassidy arc + all dorm paths + RA setup OK');

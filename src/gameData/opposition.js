@@ -24,9 +24,9 @@ export const AIB_MEMBERS = [
 ];
 
 export const ROTATING_ADVOCATES = [
-  { id: 'advocate_1', name: 'Jordan Ellis', role: 'Student Advocate (rotating)', resolve: 55, corruption: 0, weightLbs: 128, stance: 'neutral', personality: 'sympathetic' },
-  { id: 'advocate_2', name: 'Sam Okonkwo', role: 'Student Advocate (rotating)', resolve: 50, corruption: 0, weightLbs: 134, stance: 'neutral', personality: 'procedural' },
-  { id: 'advocate_3', name: 'Riley Chen', role: 'Student Advocate (rotating)', resolve: 60, corruption: 0, weightLbs: 122, stance: 'neutral', personality: 'activist' },
+  { id: 'advocate_1', name: 'Jordan Ellis', role: 'Resident Advocate (rotating)', resolve: 55, corruption: 0, weightLbs: 128, stance: 'neutral', personality: 'sympathetic' },
+  { id: 'advocate_2', name: 'Sam Okonkwo', role: 'Resident Advocate (rotating)', resolve: 50, corruption: 0, weightLbs: 134, stance: 'neutral', personality: 'procedural' },
+  { id: 'advocate_3', name: 'Riley Chen', role: 'Resident Advocate (rotating)', resolve: 60, corruption: 0, weightLbs: 122, stance: 'neutral', personality: 'activist' },
 ];
 
 export const AIB_AGENDA_CARDS = [
