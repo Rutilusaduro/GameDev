@@ -1640,11 +1640,15 @@ check('modal-button-polish', () => {
 check('picker-row-polish', () => {
   const css = read('src/index.css');
   const picker = read('src/components/PickerModals.jsx');
+  const equip = read('src/components/EquipPicker.jsx');
+  const device = read('src/components/DeviceTargetPicker.jsx');
   assert.match(css, /\.picker-choice-row:focus-visible/);
   assert.match(css, /\.picker-choice-row:hover/);
   assert.match(picker, /className="picker-choice-row"/);
   assert.match(picker, /role="button"/);
   assert.match(picker, /tabIndex=\{0\}/);
+  assert.match(equip, /className="picker-choice-row"/);
+  assert.match(device, /className="picker-choice-row"/);
 });
 
 check('narrative-roster-framing', () => {

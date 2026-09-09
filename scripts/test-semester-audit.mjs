@@ -22,9 +22,11 @@ import { renderDiary } from '../src/textEngine/scenes/diary.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
-  /\bMadeline\b/,
+  /\bMadeline\b/i,
   /spirit-possessed/i,
   /\bSpirit Hub\b/i,
+  /\bField Notes\b/i,
+  /\bFIELD NOTES\b/,
   /\bthe class\b/i,
   /\bclassmates\b/i,
   /\byour students\b/i,
@@ -35,6 +37,10 @@ const BANNED = [
   /\bstudent removal\b/i,
   /\bbirthday student\b/i,
   /\bexchange student\b/i,
+  /\bresearch subject\b/i,
+  /\bgallery subject\b/i,
+  /\bConsent forms become art contracts\b/i,
+  /\bprimary observation subject\b/i,
 ];
 
 function assertClean(text, label) {

@@ -24,6 +24,7 @@ export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnloc
             return (
               <button
                 key={s.id}
+                className="picker-choice-row"
                 style={{ ...C.smBtn, display: 'flex', width: '100%', justifyContent: 'space-between', marginBottom: 3, padding: '7px 10px', opacity: occupied ? 0.7 : 1 }}
                 onClick={() => { playHallPassSound('click', soundEnabled); equipDeviceOn(def, s.id, slot); }}
               >
@@ -62,6 +63,7 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
             return (
               <button
                 key={s.id}
+                className="picker-choice-row"
                 style={{ ...C.smBtn, display: 'flex', width: '100%', justifyContent: 'space-between', marginBottom: 3, padding: '7px 10px', opacity: canAttach ? 1 : 0.4 }}
                 disabled={!canAttach}
                 onClick={() => { playHallPassSound('click', soundEnabled); attachDeviceOn(def, s.id); }}

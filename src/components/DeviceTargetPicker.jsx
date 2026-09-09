@@ -16,6 +16,7 @@ export function DeviceTargetPicker({ deviceTargetPicker, setDeviceTargetPicker, 
           {students.filter(s => !s.hidden || lilithUnlocked).map(s => (
             <button
               key={s.id}
+              className="picker-choice-row"
               style={{ ...C.smBtn, display: 'flex', width: '100%', justifyContent: 'space-between', marginBottom: 3, padding: '7px 10px' }}
               onClick={() => { playHallPassSound('click', soundEnabled); useDeviceOn(def, s.id); }}
             >
