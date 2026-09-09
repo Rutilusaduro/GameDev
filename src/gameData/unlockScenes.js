@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // ROSTER UNLOCK SCENES — bespoke per-girl beats fired when a locked
-// student crosses into the spirit's reach. One-shots, authored long;
+// student crosses into hall reach. One-shots, authored long;
 // stored off the registerPool system so the 200-char text linter
 // never scans them. Keyed by student id (unlock pool = ids 0-14).
 // House voice: celebratory, sensual-literary, adults only.
@@ -9,8 +9,8 @@
 export const UNLOCK_SCENES = {
   // Brittany — cheerleader, runs the squad on numbers
   0: "Brittany runs the squad on numbers: macros, reps, the protein shake measured to the scoop. This week the scoop gets careless. She laughs at herself for it, then does it again, louder, like she wants you to hear. The captain just handed you the count.",
-  // Cassidy — bookworm, analytical
-  1: "Cassidy studies everything, including the way the granola bar stopped being enough around Tuesday. So she writes it down. She underlines it. Somewhere in the margin of her own careful notes, she has started taking yours.",
+  // Cassidy — swimmer, analytical
+  1: "Cassidy logs everything — laps, macros, the way the post-practice snack stopped being optional around Tuesday. She writes it in her meal journal. She underlines it. Somewhere in the margin of her own careful notes, she has started taking yours.",
   // Kylie — influencer, curated
   2: "Kylie shoots the acai bowl for the grid, then eats a second one off-camera where the brand can't follow. The off-camera version is the one you wanted. She's learning there's a feed she keeps just for you.",
   // Serena — athlete, competitive
@@ -18,7 +18,7 @@ export const UNLOCK_SCENES = {
   // Fiona — artsy, dreamy
   4: "Fiona builds a cheese board like a still life and forgets to stop eating it. She drifts. The drift is new, and it drifts toward you. She'd call it inspiration if you asked. Don't ask yet.",
   // Destiny — gamer, dry
-  5: "Destiny clocks the third bowl of ramen the way she reads a patch note: unbothered, already rebuilding around it. 'Guess that's the meta now,' she says to no one. The spirit hears it anyway.",
+  5: "Destiny clocks the third bowl of ramen the way she reads a patch note: unbothered, already rebuilding around it. 'Guess that's the meta now,' she says to no one. You hear it anyway.",
   // Tiffany — sorority president, performative
   6: "Tiffany hosts. Rosé, brie, a spread arranged for everyone that ends up mostly in her. In front of the chapter she'd never own the appetite. She owns it quietly, in the room where you're listening.",
   // Priya — overachiever, eats on the run

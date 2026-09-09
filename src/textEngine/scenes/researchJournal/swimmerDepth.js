@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A5 Editor
-// Swimmer (Cassidy) journal depth — generated from bookworm variants
+// Swimmer (Cassidy) journal depth — generated from swimmer variants
 import { registerModuleVariants } from '../../engine.js';
 
 registerModuleVariants('journal.nadia.swimmer.intro.l0', [{ when: {}, text: ["I chose her for the study — curious how softness will reshape her mind and body. My belly rests heavy on my lap while I plan the first sessions.", "Independent study begins tonight. I want every inch documented and her warmth pressed against mine as she grows."] }]);

@@ -5,18 +5,18 @@ import { registerPool } from '../../../engine.js';
 registerPool('dream.open.depth', [
   { when: { stageMin: 8 }, text: [
     'Sleep opens into impossible scale — rooms that breathe, portions without ceiling, her body vast and unashamed in the dark.',
-    'The spirit walks her subconscious like a familiar hallway. Every door leads to food.',
+    'Influence walks her subconscious like a familiar hallway. Every door leads to food.',
   ]},
   { when: { stageMin: 4 }, text: [
     'Dream borders dissolve. Appetite arrives before setting — hunger the landscape, hunger the weather.',
-    'She falls into sleep and lands already eating. The spirit is not surprised.',
+    'She falls into sleep and lands already eating. Influence is not surprised.',
   ]},
   { when: { stageMin: 0, stageMax: 3 }, text: [
     'The dream is gentler here — curiosity more than spectacle, want still learning its own vocabulary.',
     'Sleep cracks open. Appetite slips through before shame can lock the door.',
   ]},
   { when: {}, text: [
-    'The spirit enters where waking politeness cannot follow.',
+    'Influence enters where waking politeness cannot follow.',
     'Dream-state: symbolic foodscapes, impossible portions, appetite without apology.',
   ]},
 ]);

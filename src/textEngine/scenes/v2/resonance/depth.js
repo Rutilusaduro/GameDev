@@ -47,6 +47,6 @@ registerPool('res.surge.depth', [
   ]},
   { when: {}, text: [
     'Resonance swells beyond pairs — appetite contagious, immediate, campus-wide among the linked.',
-    'A chord of hunger no single girl started alone. The spirit drinks the harmony.',
+    'A chord of hunger no single girl started alone. Resonance deepens through the harmony.',
   ]},
 ]);

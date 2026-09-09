@@ -35,10 +35,10 @@ registerPool('ritual.class_banquet', [
 
 registerPool('ritual.sacred_gluttony', [
   { when: { stageMin: 8 }, text: [
-    'Candles. Platters like altars. Six or more bellies rise in devotional unison — the spirit drinking restraint from the air.',
+    'Candles. Platters like altars. Six or more bellies rise in devotional unison — influence drinking restraint from the air.',
   ]},
   { when: { stageMin: 5 }, text: [
-    'Candles. Platters like altars. They eat with the focus of worshippers — bellies rising, breath deepening, the spirit drinking the room dry of restraint.',
+    'Candles. Platters like altars. They eat with the focus of worshippers — bellies rising, breath deepening, influence saturating the room, drinking restraint dry.',
   ]},
   { when: {}, text: [
     'Floor feast: the hall eats as one body with many mouths. Fullness is the only sermon.',

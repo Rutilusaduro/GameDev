@@ -15,7 +15,7 @@ registerPool('dream.open', [
     'The dream is soft-edged — curiosity more than spectacle, hunger still learning its own name.',
   ]},
   { when: {}, text: [
-    'Sleep opens. The spirit walks the corridors of her appetite.',
+    'Sleep opens. Influence walks the corridors of her appetite.',
     'Dream borders dissolve. Food waits on the other side of closed eyes.',
   ]},
 ]);

@@ -18,6 +18,7 @@ const BANNED = [
   { id: 'the-class-target', re: /["']the class["']/ },
   { id: 'class-banquet-label', re: /Class Banquet/ },
   { id: 'speaks-in-class', re: /speaks (up )?in class/i },
+  { id: 'the-spirit-prose', re: /\b[Tt]he spirit\b/ },
 ];
 
 const ALLOW_LINE = [
@@ -51,6 +52,13 @@ const ALLOW_LINE = [
   /second PhD/,
   /@deprecated/,
   /\/\//,
+  /That's the spirit/i,
+  /That's the spirit/i,
+  /appendV2Depth\([^)]*'spirit'/,
+  /appendV2Depth\([^)]*"spirit"/,
+  /'spirit\.v2/,
+  /"spirit\.v2/,
+  /spirit\.v2\.depth/,
 ];
 
 function walk(dir, out = []) {

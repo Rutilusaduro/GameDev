@@ -52,7 +52,7 @@ export const FEAST_RITUALS = [
     requiresClass: 'ritual_kitchen',
     minWeek: 8,
     minSpiritLevel: 3,
-    desc: 'Candles. Chanting is optional. Fullness is mandatory. The spirit drinks the room.',
+    desc: 'Candles. Chanting is optional. Fullness is mandatory. Influence saturates the room.',
   },
   {
     id: 'leviathan_vigil',

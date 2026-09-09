@@ -37,7 +37,7 @@ registerPool('emb.release', [
   ]},
   { when: {}, text: [
     'You withdraw. She blinks, full in a way she cannot quite account for.',
-    'The spirit lifts out. Hunger remains — a gift she will not trace to you.',
+    'Influence lifts out. Hunger remains — a gift she will not trace to you.',
   ]},
 ]);
 
@@ -118,14 +118,14 @@ registerPool('emb.action.roommate_tempt', [
 
 registerPool('emb.action.public_eating', [
   { when: {}, text: [
-    'Campus quad. She eats without apology. People look. She does not stop. The spirit hums approval through her ribs.',
+    'Campus quad. She eats without apology. People look. She does not stop. Resonance hums approval through her ribs.',
     'Public bench, open container, no performance of restraint. Appetite on display and unashamed.',
   ]},
 ]);
 
 registerPool('emb.action.generic', [
   { when: {}, text: [
-    'You move her hands toward food. She follows. The spirit smiles without a face.',
+    'You move her hands toward food. She follows. Influence smiles without a face.',
     'Hunger steered from within. She obeys and calls it craving.',
     'Your will, her mouth — the difference blurs pleasantly.',
   ]},
@@ -145,7 +145,7 @@ registerPool('emb.action.auto_surrender', [
 registerPool('emb.action.immobile_feast', [
   { when: {}, text: [
     'She cannot stand. The world brings food to her — platters, containers, warmth delivered like tribute. Every bite is a landslide of softness from the inside.',
-    'Immobile and hungry, she feasts from within. The spirit drinks every swallowed warmth.',
+    'Immobile and hungry, she feasts from within. Influence deepens with every swallowed warmth.',
     'Food arrives in waves. She takes it all — vast, warm, grateful in the way only a body this size can be.',
   ]},
 ]);
@@ -177,7 +177,7 @@ registerPool('emb.action.dessert_first', [
 registerPool('emb.action.body_exploration', [
   { when: { stageMin: 6 }, text: [
     'Her hands map the new geography — belly, thighs, the soft weight of her chest. She likes what she finds.',
-    'She touches herself with curiosity, not shame. The spirit hums approval through her ribs.',
+    'She touches herself with curiosity, not shame. Resonance hums approval through her ribs.',
   ]},
   { when: {}, text: [
     'Softness under her palms. She explores the body she is becoming and does not look away.',

@@ -54,9 +54,9 @@ registerModuleVariants("ge.reactionDialogue", [
     `"Something's wrong," she says, jaw set. "Get me back in. Right now. I'm not finished."`,
   ]},
 
-  // ── 1 · Cassidy — bookworm: academic self-documentation ──────
+  // ── 1 · Cassidy — swimmer: training-log self-documentation ──────
   { when: { studentId: 1, corruption: [0], endStageMax: 5 }, weight: W, text: [
-    `"Interesting," she murmurs, fingers pressed to her waist. "Faster than projected. Logged."`,
+    `"Interesting," she murmurs, fingers pressed to her waist. "Faster than projected on the meal log."`,
     `"This exceeds my model," she says. "Significantly. I'll need to revise the framework."`,
   ]},
   { when: { studentId: 1, corruption: [1], endStageMax: 5 }, weight: W, text: [
@@ -64,7 +64,7 @@ registerModuleVariants("ge.reactionDialogue", [
     `"Data point," she says, patting her belly. "I'm still collecting."`,
   ]},
   { when: { studentId: 1, corruption: [2], endStageMax: 5 }, weight: W, text: [
-    `"The experiment continues." She sounds pleased. "I intend to continue it. Indefinitely."`,
+    `"The training block continues." She sounds pleased. "I intend to continue it. Indefinitely."`,
     `"More data," she murmurs, hands on her growing middle. "The sample size is excellent."`,
   ]},
   { when: { studentId: 1, corruption: [0], endStageMin: 6 }, weight: W, text: [
@@ -72,11 +72,11 @@ registerModuleVariants("ge.reactionDialogue", [
     `"Outside every projection I wrote," she whispers.`,
   ]},
   { when: { studentId: 1, corruption: [1], endStageMin: 6 }, weight: W, text: [
-    `"I am the result," she says, with precision. "No longer the researcher. I am the result."`,
+    `"I am the result," she says, with precision. "No longer the lane captain. I am the result."`,
     `"Continuing," she says, voice steady. "Recording."`,
   ]},
   { when: { studentId: 1, corruption: [2], endStageMin: 6 }, weight: W, text: [
-    `"Publishable," she breathes, hands spread on her vast belly. "All of it."`,
+    `"Board-ready," she breathes, hands spread on her vast belly. "All of it."`,
     `"Conclusive," she murmurs.`,
   ]},
   // Double depth — addiction gate

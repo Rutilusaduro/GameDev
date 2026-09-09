@@ -31,12 +31,20 @@
 }
 
 .hall-pass-nav-btn {
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
 }
 
 .hall-pass-nav-btn:hover:not([data-active="true"]) {
   color: #a880d8 !important;
   background: rgba(120, 40, 200, 0.12);
+}
+
+.hall-pass-nav-btn:active {
+  transform: scale(0.98);
+}
+
+.roster-tile:active {
+  transform: scale(0.99);
 }
 
 @keyframes hallUnlockPulse {

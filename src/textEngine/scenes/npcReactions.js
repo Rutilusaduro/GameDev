@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A1 Mobile, A5 Editor
-// NPC reaction pools — campus observers and professor voice.
+// NPC reaction pools — campus observers and RA voice.
 import { registerPool } from '../engine.js';
 
 registerPool('npc.bystander', [

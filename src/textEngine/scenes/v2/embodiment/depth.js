@@ -46,7 +46,7 @@ registerPool('emb.action.seduce_appetite.depth', [
     'Want moves through her like warm water. Appetite is no longer a guest.',
   ]},
   { when: {}, text: [
-    'She touches her own belly and does not flinch. The spirit whispers: more. She listens.',
+    'She touches her own belly and does not flinch. Influence whispers: more. She listens.',
     'Want arrives before reason. Her hands follow.',
   ]},
 ]);

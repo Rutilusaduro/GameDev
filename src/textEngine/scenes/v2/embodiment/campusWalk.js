@@ -136,7 +136,7 @@ registerPool('emb.event.quad_picnic', [
 registerPool('emb.event.classmate_sighting', [
   { when: {}, text: [
     '{ref.name} spots her across the path — wave, stare, the quick look at her middle. "Hey… you good?" She nods. She is more than good.',
-    '{ref.name} calls her name. The spirit prickles: being seen is how reach grows.',
+    '{ref.name} calls her name. Resonance prickles: being seen is how reach grows.',
     '{ref.name} clocks the change in her and tries not to show it. She smiles anyway.',
   ]},
 ]);
@@ -180,7 +180,7 @@ registerPool('emb.event.immobile_anchor', [
     'Movement is memory. Hunger is present tense. Food arrives and she accepts every tribute.',
   ]},
   { when: {}, text: [
-    'Anchored in the dorm, she eats what the world brings. The spirit drinks every swallowed warmth.',
+    'Anchored in the dorm, she eats what the world brings. Influence deepens with every swallowed warmth.',
     'She is too vast to walk. Appetite does not need legs.',
     'The room rearranges around her. Plates find her hands. She does not refuse.',
   ]},
