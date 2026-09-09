@@ -724,6 +724,26 @@ export default function HallPass(){
     playHallPassSound('session', soundEnabled);
   }, [soundEnabled, dinnerEvent?.phase, dinnerEvent?.student?.id, dinnerEvent?.venue?.id]);
 
+  useEffect(() => {
+    if (!groupDinnerPicker) return;
+    playHallPassSound('confirm', soundEnabled);
+  }, [soundEnabled, groupDinnerPicker?.count]);
+
+  useEffect(() => {
+    if (!dinnerEndPopup) return;
+    playHallPassSound('confirm', soundEnabled);
+  }, [soundEnabled, dinnerEndPopup?.student?.id]);
+
+  useEffect(() => {
+    if (!groupDinnerEvent) return;
+    playHallPassSound('session', soundEnabled);
+  }, [soundEnabled, groupDinnerEvent?.phase, groupDinnerEvent?.venue?.id]);
+
+  useEffect(() => {
+    if (!activeNarrativeCopy) return;
+    playHallPassSound('session', soundEnabled);
+  }, [soundEnabled, activeNarrativeCopy?.event?.id]);
+
   useEffect(()=>{
     const end=checkOppositionEndgame(opposition,students);
     const pending=[];
@@ -8183,7 +8203,7 @@ export default function HallPass(){
 
       {groupDinnerPicker&&(
         <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:580}}>
+          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SELECT GIRLS</div>
             <div style={{fontSize:12,color:"#9070c0",marginBottom:14,fontStyle:"italic"}}>
               Choose {groupDinnerPicker.count} girls to take to dinner.
@@ -8223,13 +8243,14 @@ export default function HallPass(){
                 style={{...C.btn("#5818a8"),opacity:groupDinnerPicker.selected.length<groupDinnerPicker.count?0.4:1}}
                 disabled={groupDinnerPicker.selected.length<groupDinnerPicker.count}
                 onClick={()=>{
+                  playHallPassSound('confirm', soundEnabled);
                   const chosen=groupDinnerPicker.selected.map(id=>students.find(s=>s.id===id)).filter(Boolean);
                   setGroupDinnerPicker(null);
                   startGroupDinner(chosen);
                 }}>
                 Confirm →
               </button>
-              <button style={C.btn("#333")} onClick={()=>setGroupDinnerPicker(null)}>Cancel</button>
+              <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerPicker(null); }}>Cancel</button>
             </div>
           </div>
         </div>
@@ -8238,7 +8259,7 @@ export default function HallPass(){
       {/* DINNER ENDING POPUP */}
       {dinnerEndPopup&&(
         <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:500}}>
+          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENING ENDS</div>
             <div style={{fontSize:11,color:"#7a5090",marginBottom:14}}>
               {dinnerEndPopup.student.name} · {getStage(dinnerEndPopup.student.lbs).label} · {dinnerEndPopup.student.lbs} lbs
@@ -8248,7 +8269,7 @@ export default function HallPass(){
             <p style={{lineHeight:1.95,color:"#f8ead8",fontSize:15,marginBottom:20,whiteSpace:"pre-line",background:"rgba(48,24,72,0.55)",padding:"14px 16px",borderRadius:8,borderLeft:"3px solid #c898ff"}}>
               {dinnerEndPopup.narrative}
             </p>
-            <button style={C.btn("#5818a8")} onClick={()=>setDinnerEndPopup(null)}>Continue →</button>
+            <button style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEndPopup(null); }}>Continue →</button>
           </div>
         </div>
       )}
@@ -8263,7 +8284,7 @@ export default function HallPass(){
         const venuePantryItems=gev.venue?getVenuePantrySuggestions(gev.venue.id):[];
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:640,padding:20}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,padding:20}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:8}}>GROUP DINNER</div>
 
               {/* Per-girl fullness bars */}
@@ -8322,7 +8343,7 @@ export default function HallPass(){
                       </div>
                     ))}
                   </div>
-                  <button style={C.btn("#444")} onClick={()=>setGroupDinnerEvent(null)}>Cancel</button>
+                  <button style={C.btn("#444")} onClick={()=>{ playHallPassSound('click', soundEnabled); setGroupDinnerEvent(null); }}>Cancel</button>
                 </div>
               )}
 
@@ -8452,7 +8473,7 @@ export default function HallPass(){
                       {gev.students.reduce((a,s)=>a+s.totalGain,0).toLocaleString()} cal total
                     </div>
                     <button style={C.btn("#2a6830")} onClick={endGroupDinner}>End Evening ✓</button>
-                    <button style={C.btn("#333")} onClick={()=>{setAp(a=>a-3);setGroupDinnerEvent(null);}}>Leave Early</button>
+                    <button style={C.btn("#333")} onClick={()=>{ playHallPassSound('click', soundEnabled); setAp(a=>a-3); setGroupDinnerEvent(null); }}>Leave Early</button>
                   </div>
                 </div>
               )}
@@ -8464,7 +8485,7 @@ export default function HallPass(){
       {/* NARRATIVE MODAL */}
       {activeNarrativeCopy&&(
         <div style={C.overlay}>
-          <div style={C.modal}>
+          <div className="hall-pass-modal-in" style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:4}}>NARRATIVE EVENT</div>
             <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:20}}>{activeNarrativeCopy.event.title}</h2>
             <SceneStage

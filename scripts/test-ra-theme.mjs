@@ -142,6 +142,7 @@ const BANNED = [
   { id: 'school-nurse', re: /\bschool nurse\b/i },
   { id: 'school-file', re: /\bschool file\b/i },
   { id: 'cooking-class', re: /\bcooking class\b/i },
+  { id: 'between-classes', re: /\bbetween classes\b/i },
 ];
 
 const ALLOW_LINE = [

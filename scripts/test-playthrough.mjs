@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-/** Sanity checks for RA dorm pivot — roster, Cassidy swimmer arc, dorm unlock path. */
+/** Sanity checks for RA dorm pivot — roster, Cassidy swimmer arc, dorm unlock paths. */
 import assert from 'assert';
+import { readFileSync } from 'fs';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek, UNLOCK_POOL_IDS } from '../src/gameData/dorms.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
@@ -8,6 +9,8 @@ import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
+import { RA_APPROACH_LIST, profileGainMult, profileScrutinyMult } from '../src/gameData/raApproaches.js';
+import { getSwimmerTier } from '../src/gameData/communityResearcher.js';
 
 function sportyResidents() {
   return Object.entries(STUDENT_HOME_DORM)
@@ -21,6 +24,7 @@ assert.equal(cassidy.name, 'Cassidy');
 assert.equal(cassidy.archetype, 'swimmer', 'Cassidy must be swimmer archetype');
 assert.ok(EVOLUTION_OFFER.swimmer, 'swimmer evolution offer must exist');
 assert.ok(EVOLUTION_OFFER.swimmer.paths.community_researcher, 'Lane Captain path must exist');
+assert.equal(typeof getSwimmerTier, 'function', 'getSwimmerTier alias must exist');
 
 const sportyIds = sportyResidents();
 assert.equal(sportyIds.length, 5, `sporty dorm expects 5 residents, got ${sportyIds.length}`);
@@ -46,6 +50,8 @@ assert.equal(swimmerEvent.archetype, 'swimmer');
 const seasonBeat = renderWeeklyEvent('season_plan_rewrite', cassidy, { week: 6 });
 assert(seasonBeat && seasonBeat.length > 40, 'season_plan_rewrite must render non-trivial prose');
 assert(!/Ethnographic Self-Study/i.test(seasonBeat), 'swimmer beat must not use bookworm thesis title');
+assert(!/\bMadeline\b/.test(seasonBeat), 'swimmer beat must not reference Madeline');
+assert(!/\bprofessor\b/i.test(seasonBeat), 'swimmer beat must not reference professor framing');
 
 const campusCtx = buildTextContext({
   subject: cassidy,
@@ -55,14 +61,42 @@ const campusCtx = buildTextContext({
 const campusBeat = render('{attitude.campus}', campusCtx)?.trim() || '';
 assert(!/\bclassmates\b/i.test(campusBeat), 'campus softening beat must not say classmates');
 
-const startDorm = 'sporty';
-assert.deepEqual(dormUnlocksForWeek(7, startDorm), []);
-assert.deepEqual(dormUnlocksForWeek(8, startDorm), ['nerdy']);
-assert.deepEqual(dormUnlocksForWeek(16, startDorm), ['nerdy', 'socialite', 'weirdos']);
+// Sporty (unlockWeek 0) never appears as a week-gated unlock — only as a start hall.
+const UNLOCK_SCHEDULE = {
+  sporty: { 7: [], 8: ['nerdy'], 12: ['nerdy', 'socialite'], 16: ['nerdy', 'socialite', 'weirdos'] },
+  nerdy: { 7: [], 8: [], 12: ['socialite'], 16: ['socialite', 'weirdos'] },
+  socialite: { 7: [], 8: ['nerdy'], 12: ['nerdy'], 16: ['nerdy', 'weirdos'] },
+  weirdos: { 7: [], 8: ['nerdy'], 12: ['nerdy', 'socialite'], 16: ['nerdy', 'socialite'] },
+};
+
+for (const [startDorm, weeks] of Object.entries(UNLOCK_SCHEDULE)) {
+  for (const [weekStr, expected] of Object.entries(weeks)) {
+    const week = Number(weekStr);
+    const got = dormUnlocksForWeek(week, startDorm).sort();
+    const want = [...expected].sort();
+    assert.deepEqual(got, want, `week ${week} unlock from ${startDorm}: expected ${want.join(',')}, got ${got.join(',')}`);
+  }
+}
 
 for (const id of Object.keys(DORMS)) {
   const d = DORMS[id];
   assert(d.label && d.hook, `dorm ${id} needs label + hook`);
+  assert(Array.isArray(d.studentIds) && d.studentIds.length >= 4, `dorm ${id} needs home residents`);
+  assert.equal(d.unlockWeek, id === 'sporty' || id === 'nerdy' ? (id === 'sporty' ? 0 : 8) : id === 'socialite' ? 12 : 16);
 }
 
-console.log('playthrough: Cassidy swimmer arc + sporty roster + dorm unlock path OK');
+for (const approach of RA_APPROACH_LIST) {
+  assert(approach.label && approach.tagline, `approach ${approach.id} needs label + tagline`);
+  const profile = { dormId: 'sporty', approachId: approach.id };
+  assert(profileGainMult(profile) > 0, `profileGainMult for ${approach.id}`);
+  assert(profileScrutinyMult(profile) > 0, `profileScrutinyMult for ${approach.id}`);
+}
+
+const wizardSrc = readFileSync('src/components/RaSetupWizard.jsx', 'utf8');
+assert(/Hall Pass/i.test(wizardSrc), 'setup wizard must reference Hall Pass');
+assert(/Red hair/i.test(wizardSrc), 'setup wizard must describe redheaded RA');
+assert(/curves/i.test(wizardSrc), 'setup wizard must describe curvy RA');
+assert(!/Professor Sim/i.test(wizardSrc), 'setup wizard must not say Professor Sim');
+assert(!/spirit-possessed/i.test(wizardSrc), 'setup wizard must not say spirit-possessed');
+
+console.log('playthrough: Cassidy swimmer arc + all dorm unlock paths + RA setup OK');
