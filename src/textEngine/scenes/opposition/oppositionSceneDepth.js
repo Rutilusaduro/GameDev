@@ -88,7 +88,7 @@ registerModuleVariants('opposition.counter.success', [
     `Lavish catering buys institutional blindness — plates speak louder than clipboards.`,
   ]},
   { when: { counter: 'public_discredit', studentId: 1 }, weight: 4, text: [
-    `Cassidy's projector reframes abundance as research — Vance stumbles mid-sentence.`,
+    `Cassidy's projector pairs team meal logs with wellness slides — Vance stumbles mid-sentence.`,
   ]},
   { when: { counter: 'network_misdirect', studentId: 18, custom: false }, weight: 4, text: [
     `Talia's mesh buries the audit trail — thermal noise, clean signal, board blind again.`,
@@ -100,7 +100,7 @@ registerModuleVariants('opposition.counter.success', [
 
 registerModuleVariants('opposition.counter.discredit', [
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy's evidence reframes fullness — research, not scandal; board off-balance.`,
+    `Cassidy's evidence reframes fullness — training culture, not scandal; board off-balance.`,
   ]},
   { when: { studentId: 12 }, weight: 4, text: [
     `Nadia's testimony clinical and devastating — concern exposed as prurience.`,

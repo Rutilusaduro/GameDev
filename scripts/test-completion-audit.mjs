@@ -996,6 +996,43 @@ check('cassidy-swimmer-voice', () => {
   const skills = read('src/gameData/skills.js');
   assert.doesNotMatch(skills, /Cassidy doesn't look up from her book/i);
   assert.match(skills, /Cassidy doesn't look up from her training log/i);
+
+  // Lane Captain arc — full prose file (ids/comments stripped)
+  const laneCaptainSrc = read('src/gameData/communityResearcher.js')
+    .replace(/^\/\/.*$/gm, '')
+    .replace(/community_researcher/g, 'lane_captain');
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(laneCaptainSrc, re, `communityResearcher.js still has ${re}`);
+  }
+
+  const LANE_CAPTAIN_UI_FILES = [
+    'src/textEngine/scenes/opposition/oppositionSceneDepth.js',
+    'src/textEngine/scenes/opposition/counterOutcome.js',
+    'src/gameData/oppositionIntegration.js',
+    'src/components/CommunityResearcherModal.jsx',
+  ];
+  for (const file of LANE_CAPTAIN_UI_FILES) {
+    const src = read(file);
+    const lines = src.match(/[^\n]*Cassidy[^\n]*/g) ?? [];
+    for (const line of lines) {
+      for (const re of BANNED_IN_CASSIDY) {
+        assert.doesNotMatch(line, re, `${file}: Cassidy line still has ${re}: ${line.slice(0, 80)}`);
+      }
+    }
+  }
+
+  const evolvedSrc = read('src/gameData/evolvedForms.js');
+  const crJournal = evolvedSrc.match(/community_researcher:\[\s*\n\s*"First floor session[\s\S]*?\],\s*\n\};/);
+  assert.ok(crJournal, 'evolvedForms.js must contain community_researcher journal block');
+  const crEvents = evolvedSrc.match(/community_researcher:\[\s*\n\s*\/\/ stageIdx 0[\s\S]*?\n  \],\n\n  \/\/ ── QUIET/);
+  assert.ok(crEvents, 'evolvedForms.js must contain community_researcher EVOLVED_EVENTS block');
+  const crOutfits = evolvedSrc.match(/community_researcher:\[\s*\n\s*"Team jacket[\s\S]*?\],\s*\n\};/);
+  assert.ok(crOutfits, 'evolvedForms.js must contain community_researcher outfit block');
+  for (const block of [crJournal[0], crEvents[0], crOutfits[0]]) {
+    for (const re of BANNED_IN_CASSIDY) {
+      assert.doesNotMatch(block, re, `evolvedForms community_researcher block still has ${re}`);
+    }
+  }
 });
 
 check('embodied-resident-sighting', () => {

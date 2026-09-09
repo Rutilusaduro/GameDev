@@ -187,7 +187,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
           <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
-            The panel was not convinced. The file is closed. Cassidy keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a season plan and isn't a journal. Whatever it is, she'll finish it on her own terms.
+            The panel was not convinced. The file is closed. Cassidy keeps the training log — all of it, the edited pages and the raw ones both — and begins, in the margins of the last entry, something that isn't a season plan and isn't a captain's journal. Whatever it is, she'll finish it on her own terms.
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeThesisOutcome(false); }}>Close</button>
         </>);
