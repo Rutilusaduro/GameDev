@@ -328,12 +328,12 @@ registerPool('weekly.art_exhibition', [
 
 registerPool('weekly.quietOpen.setup', [
   { when: { archetype: 'quiet' }, text: [
-    'After class, {subject.name} catches you packing up.',
+    'After floor check-in, {subject.name} catches you packing up.',
     '{subject.name} waits until the room empties.',
     'She lingers after floor check-in while you stack papers.',
   ] },
   { when: {}, text: [
-    'After class, {subject.name} stays.',
+    'After hall rounds, {subject.name} stays.',
     'She catches you on the way out.',
     'She waits until you are almost alone.',
     'She finds a moment when the hallway is quiet.',
@@ -557,12 +557,12 @@ registerPool('weekly.immobility_peace', [
 registerPool('weekly.blobEnding.setup', [
   { when: { endStageMin: 10 }, text: [
     '{subject.name} can no longer come to hall. You bring the floor to her.',
-    'Class now travels to {subject.name}.',
+    'The hall now travels to {subject.name}.',
     'She holds court from her specially furnished room.',
   ] },
   { when: {}, text: [
     '{subject.name} holds court from her room now.',
-    'You teach where she is.',
+    'You visit where she is.',
     'Her room has become the floor meeting hall.',
     'Campus comes to her now.',
   ] },

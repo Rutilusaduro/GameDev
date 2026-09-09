@@ -20,6 +20,8 @@ const BANNED = [
   { id: 'class-wide-softening', re: /Class-wide softening/i },
   { id: 'speaks-in-class', re: /speaks (up )?in class/i },
   { id: 'back-to-class', re: /Back to Class/i },
+  { id: 'after-class', re: /After class,/i },
+  { id: 'class-travels', re: /Class now travels to/i },
 ];
 
 const ALLOW_LINE = [
