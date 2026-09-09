@@ -534,6 +534,12 @@ check('roster-tile-a11y', () => {
   assert.match(css, /\.roster-tile:focus-visible/);
 });
 
+check('roster-tile-hover-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.roster-tile:hover[\s\S]*filter:\s*brightness/);
+  assert.match(css, /\.roster-tile:hover[\s\S]*border-color:/);
+});
+
 check('desk-nav-polish', () => {
   const css = read('src/index.css');
   const desk = read('src/HallPass.jsx');
@@ -2040,6 +2046,23 @@ check('group-dinner-picker-row-polish', () => {
   assert.match(css, /\.group-dinner-picker-row:hover:not\(\[aria-disabled='true'\]\)/);
   assert.match(desk, /group-dinner-picker-row/);
   assert.match(desk, /group-dinner-picker-modal/);
+});
+
+check('dinner-dish-row-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.dinner-dish-choice-row:focus-visible/);
+  assert.match(css, /\.dinner-dish-choice-row:hover:not\(\[aria-disabled='true'\]\)/);
+  assert.match(desk, /dinner-dish-choice-row/);
+  assert.match(desk, /orderDish/);
+});
+
+check('floor-checkin-keyboard-a11y', () => {
+  const desk = read('src/HallPass.jsx');
+  const block = desk.match(/role="button"[\s\S]{0,120}className="floor-checkin-choice"[\s\S]{0,400}/);
+  assert.ok(block, 'floor-checkin-choice row');
+  assert.match(block[0], /onKeyDown/);
+  assert.match(block[0], /tabIndex=\{0\}/);
 });
 
 check('modal-button-polish', () => {

@@ -7936,7 +7936,8 @@ export default function HallPass(){
                     <div style={C.secT}>How do you respond?</div>
                     <div style={{display:"flex",flexDirection:"column",gap:8}}>
                       {scene.choices.map((ch,i)=>(
-                        <div key={i} className="floor-checkin-choice" style={{...C.card,cursor:"pointer"}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}>
+                        <div key={i} role="button" tabIndex={0} className="floor-checkin-choice" style={{...C.card,cursor:"pointer"}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}
+                          onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); playHallPassSound('click', soundEnabled); makeChoice(i); } }}>
                           <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{ch.label}</div>
                           {(ch.effect.gain?.[1]>0||ch.effect.rel||ch.effect.mood)&&(
                             <div style={{fontSize:10,color:"#7a5040"}}>
@@ -8098,10 +8099,14 @@ export default function HallPass(){
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:12}}>
                           {availDishes.map(dish=>(
                             <div key={dish.id}
+                              role="button"
+                              tabIndex={0}
+                              className="dinner-dish-choice-row"
                               style={{...C.card,cursor:"pointer",
                                 border:`1px solid ${isOverfull?"#502020":"#180830"}`,
                                 opacity:isOverfull?0.75:1}}
-                              onClick={()=>orderDish(dish)}>
+                              onClick={()=>orderDish(dish)}
+                              onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                                 <span style={{fontWeight:700,fontSize:12,color:isOverfull?"#e09090":"#d8a8ff"}}>{dish.label}</span>
                                 <span style={{fontSize:9,color:"#a07050"}}>+{dish.gain[0]}–{dish.gain[1]} lbs</span>
