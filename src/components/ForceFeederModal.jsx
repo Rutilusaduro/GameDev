@@ -25,6 +25,7 @@ import {
   renderForceFeederFeed,
   renderForceFeederAftermath,
 } from '../textEngine/scenes/forceFeeder/index.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 const ACCENT = '#6a5088';
 const PULSE_COLOR = '#c070a0';
@@ -38,8 +39,10 @@ export function ForceFeederModal({
   onSelectTarget,
   onComplete,
   onClose,
+  soundEnabled = true,
 }) {
   const { phase, targetId, resultParams, prose, growthZone = 'default' } = state || {};
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, phase, targetId]);
   const target = students.find((s) => s.id === targetId);
   const tierLabel = getInventionTierLabel(labState, 'feeding_mask');
   const mods = getForceFeederBoardMods(labState);
@@ -158,7 +161,7 @@ export function ForceFeederModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 1250 }}>
-      <div style={{
+      <div className="hall-pass-modal-in" style={{
         ...C.modal,
         maxWidth: 660,
         background: 'linear-gradient(160deg,#0a0814,#14102a,#0a0814)',

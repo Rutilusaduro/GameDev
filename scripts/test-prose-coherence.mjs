@@ -54,6 +54,11 @@ import '../src/textEngine/scenes/confront/index.js';
 import { renderContestPayoff, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
 import { renderSumoPayoff, renderSumoAftermath } from '../src/textEngine/scenes/sumoMatch/index.js';
 import { SALON_COURSES, SALON_SERVICE_CHOICES } from '../src/gameData/chloeSalon.js';
+import { renderRecordingOpening } from '../src/textEngine/scenes/recordingSession/index.js';
+import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
+import { renderCultivatorIntro, renderCultivatorRecruitment } from '../src/textEngine/scenes/cultivator/index.js';
+import { CLUE_INVESTIGATION, HUNT_NODES } from '../src/gameData/lilith.js';
+import { CULT_DISTRIBUTION_ROUTES } from '../src/gameData/pharmacistCult.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -512,4 +517,27 @@ for (const choice of SALON_SERVICE_CHOICES) {
   assertClean(choice.label, `salon service ${choice.id}`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon OK');
+assertClean(CLUE_INVESTIGATION.title, 'lilith clue title');
+assertClean(CLUE_INVESTIGATION.text, 'lilith clue text');
+assertClean(CLUE_INVESTIGATION.resultText, 'lilith clue result');
+for (const node of Object.values(HUNT_NODES)) {
+  assertClean(`${node.label} ${node.desc}`, `lilith hunt node ${node.id}`);
+}
+for (const route of CULT_DISTRIBUTION_ROUTES) {
+  assertClean(`${route.label} ${route.desc}`, `cult route ${route.id}`);
+}
+
+const kylie = INIT_STUDENTS.find((s) => s.id === 2) || INIT_STUDENTS[2];
+const partner = INIT_STUDENTS.find((s) => s.archetype === 'influencer' && s.id !== kylie.id) || INIT_STUDENTS[0];
+for (let stageIdx = 0; stageIdx < 4; stageIdx++) {
+  const opening = renderRecordingOpening(stageIdx, kylie, 10);
+  if (opening) assertClean(opening, `recording opening stage ${stageIdx}`);
+  const collabPayoff = renderCollabPayoff(stageIdx, 10, 8, partner, kylie, 10);
+  if (collabPayoff) assertClean(collabPayoff, `collab payoff stage ${stageIdx}`);
+}
+const cultivatorIntro = renderCultivatorIntro('milkshake', 'Maya', 10);
+if (cultivatorIntro) assertClean(cultivatorIntro, 'cultivator intro');
+const cultivatorRecruit = renderCultivatorRecruitment(10);
+if (cultivatorRecruit) assertClean(cultivatorRecruit, 'cultivator recruitment');
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator OK');

@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // PHARMACIST CULT — distribution & circle supply UI (stage 3+)
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { CULT_DISTRIBUTION_ROUTES } from '../gameData/pharmacistCult.js';
 
 const PURPLE = '#6b4a8a';
@@ -15,13 +17,15 @@ export function PharmacistCultModal({
   onSelectRoute,
   onConfirm,
   onCancel,
+  soundEnabled = true,
 }) {
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, cultSession?.phase, student?.id]);
   if (!cultSession || !student) return null;
   const cult = pharmacistState?.cult || {};
 
   const wrap = children => (
     <div style={{ ...C.overlay, zIndex: 8250 }}>
-      <div style={{
+      <div className="hall-pass-modal-in" style={{
         ...C.modal,
         maxWidth: 520,
         background: 'linear-gradient(160deg,#0a0614,#140a20,#0a0614)',

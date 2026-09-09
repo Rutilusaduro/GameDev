@@ -1,24 +1,27 @@
 // ═══════════════════════════════════════════════════════════════
 // LILITH — Clue/Investigation modal + Feasting Beauty text adventure
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, PHYSICAL_MOVES, getEffectiveDifficulty, CLUE_INVESTIGATION } from '../gameData/lilith.js';
 import { aibMemberToHuntTarget } from '../gameData/lilithAibHunt.js';
 import { getStage } from '../gameData/stages.js';
 
-export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClueModal, confirmInvestigation }){
+export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClueModal, confirmInvestigation, soundEnabled = true }){
+        useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, lilithClueModal]);
         const accent="#8020a0";
         return(
           <div style={{...C.overlay,zIndex:1300}}>
-            <div style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>
               {lilithClueModal==='feast_clue'&&(<>
                 <div style={{fontSize:9,letterSpacing:4,color:accent,marginBottom:6}}>SOMETHING'S OFF</div>
                 <div style={{fontSize:15,fontWeight:700,color:"#d080e0",marginBottom:12}}>{CLUE_INVESTIGATION.title}</div>
                 <div style={{fontSize:12,color:"#a070b0",lineHeight:1.8,marginBottom:16,whiteSpace:"pre-line"}}>{CLUE_INVESTIGATION.text}</div>
-                <button style={{...C.btn("#500060"),width:"100%",fontSize:13,marginBottom:8}} onClick={investigateClue}>
+                <button style={{...C.btn("#500060"),width:"100%",fontSize:13,marginBottom:8}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); investigateClue(); }}>
                   {CLUE_INVESTIGATION.action}
                 </button>
-                <button style={{...C.btn("#200030"),width:"100%",fontSize:11}} onClick={()=>setLilithClueModal(null)}>
+                <button style={{...C.btn("#200030"),width:"100%",fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setLilithClueModal(null); }}>
                   Ignore for now
                 </button>
               </>)}
@@ -28,7 +31,7 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
                 <div style={{fontSize:12,color:"#c0a0d0",lineHeight:1.85,marginBottom:16,whiteSpace:"pre-line",fontStyle:"italic"}}>
                   {CLUE_INVESTIGATION.resultText}
                 </div>
-                <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={confirmInvestigation}>
+                <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); confirmInvestigation(); }}>
                   She's on the roster now. ✓
                 </button>
               </>)}
@@ -37,8 +40,9 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
         );
 }
 
-export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState, navigateHunt, deliveryScene, closeHunt, approachMan, consumeMan, encounterSetMode, makeReply, makeSeduction }){
+export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState, navigateHunt, deliveryScene, closeHunt, approachMan, consumeMan, encounterSetMode, makeReply, makeSeduction, soundEnabled = true }){
         const{textLog,currentNode,encounter,deliveryMode,deliveryDone,aibTarget}=lilithHuntState;
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, currentNode, !!encounter]);
         const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
         const stageId=getStage(lilith.lbs).id;
         const accessibleNodes=HUNT_NODE_ACCESS[stageId]||[];

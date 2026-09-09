@@ -1,11 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // RECORDING SESSION — Film her session modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { renderRecordingOpening, renderRecordingTakeIntro } from '../textEngine/scenes/recordingSession/index.js';
 
-export function RecordingSessionModal({ recordingSessionState, students, week = 1, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup }){
+export function RecordingSessionModal({ recordingSessionState, students, week = 1, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup, soundEnabled = true }){
         const rs=recordingSessionState;
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, rs?.studentId, rs?.phase, rs?.takeNum]);
         const kylie=students.find(st=>st.id===rs.studentId);
         if(!kylie) return null;
         const amber='#c08040';
@@ -31,7 +34,7 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
         const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);
         return(
           <div style={C.overlay} key="recording-modal">
-            <div style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
                 <div style={{color:amber,fontWeight:"bold",letterSpacing:2,fontSize:11}}>🎬 FILM HER SESSION — {kylie.name.toUpperCase()}</div>
                 <div style={{color:amberDim,fontSize:11}}>Time {timeBar} | Take {rs.takeNum}</div>
@@ -135,7 +138,7 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
                 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
                   <div style={{background:"#100800",border:`1px solid ${amber}50`,borderRadius:10,padding:20,maxWidth:440,margin:16}}>
                     <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{rs.popupText}</div>
-                    <button style={{...C.btn(amber),width:"100%"}} onClick={dismissRecordingChoicePopup}>Continue</button>
+                    <button style={{...C.btn(amber),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); dismissRecordingChoicePopup(); }}>Continue</button>
                   </div>
                 </div>
               )}

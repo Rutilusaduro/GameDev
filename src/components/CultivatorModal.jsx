@@ -1,18 +1,21 @@
 // ═══════════════════════════════════════════════════════════════
 // CULTIVATOR — Reneé taste-tester / harvest modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { getRecruitmentScene, RECIPES, getDigestVignette } from '../gameData/cultivator.js';
 import { getStage } from '../gameData/stages.js';
 import { renderCultivatorIntro, renderCultivatorChoice } from '../textEngine/scenes/cultivator/index.js';
 
-export function CultivatorModal({ cultivatorState, students, week = 1, setCultivatorState, confirmCultivatorRecruit, pickCultivatorFood, makeCultivatorChoice, confirmCultivatorSession, dismissCultivatorStageUp, confirmCultivatorHarvest, closeCultivatorGrowth }){
+export function CultivatorModal({ cultivatorState, students, week = 1, setCultivatorState, confirmCultivatorRecruit, pickCultivatorFood, makeCultivatorChoice, confirmCultivatorSession, dismissCultivatorStageUp, confirmCultivatorHarvest, closeCultivatorGrowth, soundEnabled = true }){
         const cs=cultivatorState;
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, cs?.modalPhase, cs?.session?.foodType, cs?.session?.junctionIdx]);
         const brown="#8B4513"; const amber="#CD853F";
         const renee=students.find(s=>s.id===10);
         const wrap=(children)=>(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500,background:"linear-gradient(160deg,#0a0400,#1a0800,#0a0400)",border:`1px solid ${brown}60`,maxHeight:"88vh",overflowY:"auto"}}>
               {children}
             </div>
           </div>

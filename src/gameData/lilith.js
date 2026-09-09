@@ -348,7 +348,7 @@ export const CLUE_FEAST_LINE =
 
 export const CLUE_INVESTIGATION = {
   title: "Something's Off",
-  text: `After the feast, Madison's comment stays with you. You pull up the campus incident report — three missing persons, all male, all reported between 10pm and 2am, all last seen near the east dormitories.\n\nThere's one building at the east end of the block you've never paid attention to. Blackout curtains. A scent in the hallway that your brain keeps trying to identify.`,
+  text: `After the feast, a resident's offhand comment stays with you. You pull up the campus incident report — three missing persons, all male, all reported between 10pm and 2am, all last seen near the east dormitories.\n\nThere's one building at the east end of the block you've never paid attention to. Blackout curtains. A scent in the hallway that your brain keeps trying to identify.`,
   action: "Investigate (1 AP)",
   resultText: `You knock on room 312.\n\nA pause. Then the door opens.\n\nShe's shorter than you expected — or would be, if she were standing up straight. Dark clothes, dark eyes, the particular stillness of someone who was not surprised by your knock.\n\nShe looks at you. Something assesses. Then she opens the door wider.\n\n"I knew someone would come eventually," she says. "Come in. I'll make tea. You're going to have questions."\n\nHer name is Lilith. She sits across from you in a room that smells like incense and something else you won't think about too carefully, and she explains herself with the calm of someone who has made complete peace with what they are.\n\nYou leave with more questions than you arrived with, and one fewer reason to think the campus is entirely ordinary.`,
 };

@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // COLLAB STREAM — Mini-game modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
-export function CollabStreamModal({ collabStreamState, students, doCollabAction, closeCollabStream, dismissCollabPopup }){
+export function CollabStreamModal({ collabStreamState, students, doCollabAction, closeCollabStream, dismissCollabPopup, soundEnabled = true }){
         const{kylieId,partnerId,stageIdx,qualityBar,kylieGain,partnerGain,foodQueue,chatLines,phase,popupText,actions}=collabStreamState;
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, kylieId, partnerId, phase, stageIdx]);
         const kylie=students.find(st=>st.id===kylieId);
         const partner=students.find(st=>st.id===partnerId);
         if(!kylie||!partner) return null;
@@ -16,7 +19,7 @@ export function CollabStreamModal({ collabStreamState, students, doCollabAction,
 
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(5,0,15,0.94)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div style={{background:"#0a0016",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:520,width:"95%",maxHeight:"92vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{background:"#0a0016",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:520,width:"95%",maxHeight:"92vh",overflowY:"auto"}}>
               <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:2,textAlign:"center"}}>🎥 COLLAB STREAM</div>
               <div style={{fontSize:14,fontWeight:"bold",color:lightPurple,marginBottom:2,textAlign:"center"}}>{kylie.name} × {partner.name}</div>
               <div style={{fontSize:10,color:"#9060b0",marginBottom:12,textAlign:"center"}}>{streamTitle}</div>
@@ -119,7 +122,7 @@ export function CollabStreamModal({ collabStreamState, students, doCollabAction,
                     <span style={{color:"#60e080"}}>{foodQueue.filter(f=>f.consumed).length}/{foodQueue.length}</span>
                   </div>
                 </div>
-                <button style={{...C.btn(purple),width:"100%"}} onClick={closeCollabStream}>Close Stream ✓</button>
+                <button style={{...C.btn(purple),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeCollabStream(); }}>Close Stream ✓</button>
               </>)}
 
               {/* POPUP OVERLAY */}
@@ -127,7 +130,7 @@ export function CollabStreamModal({ collabStreamState, students, doCollabAction,
                 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
                   <div style={{background:"#0c0018",border:`1px solid ${purple}50`,borderRadius:10,padding:20,maxWidth:460,margin:16}}>
                     <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:14,whiteSpace:"pre-line"}}>{popupText}</div>
-                    <button style={{...C.btn(purple),width:"100%"}} onClick={dismissCollabPopup}>Continue</button>
+                    <button style={{...C.btn(purple),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); dismissCollabPopup(); }}>Continue</button>
                   </div>
                 </div>
               )}

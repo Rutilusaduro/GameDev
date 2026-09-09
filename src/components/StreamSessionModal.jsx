@@ -11,6 +11,7 @@ import {
   getStreamMilestoneLabel, SPECIAL_OUTCOME_DEFS,
 } from '../gameData/streaming.js';
 import { formatMoney } from '../gameData/wallet.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { StreamPreStreamPanel } from './StreamPreStreamPanel.jsx';
 
 const RED = '#e74c3c';
@@ -247,11 +248,13 @@ export function StreamSessionModal({
   appendStreamChat,
   updateRoundPerf,
   tickRoundStamina,
+  soundEnabled: soundEnabledProp = true,
 }) {
   const student = students.find((st) => st.id === ss.studentId);
   const chatRef = useRef(null);
   const reducedMotion = usePrefersReducedMotion();
-  const soundEnabled = !reducedMotion;
+  const soundEnabled = soundEnabledProp && !reducedMotion;
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ss?.studentId, ss?.phase, ss?.round]);
   const [paused, setPaused] = useState(false);
   const [roundStats, setRoundStats] = useState({ hits: 0, misses: 0, centerQualities: [] });
   const [roundTimeLeft, setRoundTimeLeft] = useState(0);
@@ -379,7 +382,7 @@ export function StreamSessionModal({
 
   return (
     <div style={C.overlay} key="stream-modal">
-      <div style={{ ...C.modal, maxWidth: 680, background: BG, border: `1px solid ${RED}50` }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 680, background: BG, border: `1px solid ${RED}50` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ color: RED, fontWeight: 'bold', letterSpacing: 2, fontSize: 11 }}>
             📡 LIVE — {student.name.toUpperCase()}
