@@ -110,6 +110,21 @@ const BANNED = [
   { id: 'academic-precision-plate', re: /academic precision/i },
   { id: 'only-academic-potluck', re: /only academic/i },
   { id: 'departmental-gossip', re: /departmental gossip/i },
+  { id: 'redirect-to-academics', re: /Redirect to academics/i },
+  { id: 'academic-rigor-floor', re: /academic rigor/i },
+  { id: 'academic-comparison', re: /academic comparison/i },
+  { id: 'academic-observer-uniform', re: /academic observer/i },
+  { id: 'academic-papers-desk', re: /academic papers on your desk/i },
+  { id: 'something-academic-opinion', re: /something academic/i },
+  { id: 'academic-portfolio', re: /academic portfolio/i },
+  { id: 'academic-pride', re: /academic pride/i },
+  { id: 'academic-look-priya', re: /academic look/i },
+  { id: 'academic-ensemble', re: /academic ensemble/i },
+  { id: 'academic-silhouette', re: /academic silhouette/i },
+  { id: 'academic-attire', re: /academic attire/i },
+  { id: 'academic-robes', re: /academic robes/i },
+  { id: 'wide-academic-wear', re: /Wide-cut academic wear/i },
+  { id: 'wide-academic-layers', re: /Wide academic layers/i },
 ];
 
 const ALLOW_LINE = [

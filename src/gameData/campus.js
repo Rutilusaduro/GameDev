@@ -147,7 +147,7 @@ export const CAMPUS_NODES = {
     desc:"Paint smell, clay smell, the specific smell of art-program stress baking. Studios line the hall and spill into the corridor with sculptures and stretched canvases. Several pieces are figurative. They have a theme.",
     flavor:[
       "A maquette on a pedestal is figure study — rounded, generous, confident. The placard says 'FORMS IN REPOSE.' You gave it a 94.",
-      "A life-drawing class is wrapping up. The model eats a snack on the dais with the nonchalance of royalty.",
+      "A figure-drawing workshop is wrapping up. The model eats a snack on the dais with the nonchalance of royalty.",
       "Charcoal smudges on the hallway wall map a trajectory of this semester's major project. They are impressive.",
     ],
   },

@@ -431,7 +431,7 @@ registerPool('diary.eating_diarist.c1', [
   { when: { stage: [7], corruption: [0] }, text: ['Two-book deal. The first is memoir. \' Both advances cleared. I bought myself a dinner I\'d been meaning to have for six months. I sat there with the food and thought: I wrote my way to this.'] },
   { when: { stage: [7] }, text: ['Two-book deal. The first is memoir. The second is something she called \'a companion piece\' which I am interpreting as permission to write whatever I want. Both advances cleared.'] },
   { when: { stage: [8] }, text: ['Published. The book is out in the world. \' That last one is accurate. I did not apologize. Not once.'] },
-  { when: { stage: [9] }, text: ['The book is being taught. A food studies course assigned it. A gender studies course included it in a unit.'] },
+  { when: { stage: [9] }, text: ['The book is being taught. A campus food-writing circle assigned it. A wellness workshop syllabus included it in a unit.'] },
   { when: { stage: [10] }, text: ['The writing and the eating were always the same act — both a form of taking in, of accumulating, of making something mine.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['My hall-log writing has always been precise. The personal essay is a different instrument.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "swimmer" }, text: ['My training log has always been precise. This appetite column is a different instrument.'] },

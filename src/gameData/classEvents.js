@@ -157,7 +157,7 @@ export const CLASS_SCENES = [
     text:s=>`${s.name} pauses mid-check-in to smooth her shirt, frowning slightly. She's noticed something. Not alarmed yet — just aware. She mentions she's been going to the gym more.`,
     choices:[
       { label:"Reassure her and bring snacks",    effect:{gain:[4,8], mood:"content",rel:5}, result:s=>`You tell her she looks great — which, to be fair, she does. You set out snacks as you say it. She relaxes and takes some. The gym mention doesn't come up again.` },
-      { label:"Redirect to academics",             effect:{gain:[0,0], mood:"focused",rel:3}, result:s=>`You pivot to her coursework, which she's genuinely interested in. The self-scrutiny fades into the background of something she cares about more.` },
+      { label:"Redirect to her season plan",        effect:{gain:[0,0], mood:"focused",rel:3}, result:s=>`You pivot to her hall goals, which she's genuinely interested in. The self-scrutiny fades into the background of something she cares about more.` },
       { label:"Introduce 'study fuel' snacks",     effect:{gain:[5,10],mood:"content",rel:4}, result:s=>`You bring out a range of snacks framed as brain food. She tries them all with athletic thoroughness. She doesn't go to the gym that afternoon.` },
     ] },
   { id:"stage_mid", target:"student", filter:s=>{const id=getStage(s.lbs).id;return id>=3&&id<=4;},
@@ -174,7 +174,7 @@ export const CLASS_SCENES = [
     choices:[
       { label:"Arrange something special for her", effect:{gain:[5,10],mood:"content",rel:8},  result:s=>`You set something up specifically for her — her preferences, her portion, her timing. She notices the care. "You remembered." Warmth, genuine.` },
       { label:"Ask her to mentor someone",          effect:{gain:[0,0], mood:"content",rel:7},  result:s=>`You ask her to work with a struggling student. She agrees immediately and does it well, with patience and zero fanfare.` },
-      { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — academically, personally. "That actually means something, RA."` },
+      { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — on the floor, personally. "That actually means something, RA."` },
     ] },
   // ── CLASS-WIDE ───────────────────────────────────────────────
   { id:"class_snack_break", target:"class",
@@ -183,7 +183,7 @@ export const CLASS_SCENES = [
     choices:[
       { label:"Basic spread — quick and filling",      effect:{gain:[3,6]},  result:"The floor descends on it efficiently. Gone in four minutes. The check-in resumes with noticeably better energy." },
       { label:"Premium spread — variety and excess",   effect:{gain:[5,10]}, result:"You went all out. Three kinds of pastries, imported chocolates, something local. The floor takes their time. The check-in ends fifteen minutes late." },
-      { label:"Tasting exercise — they rate each one", effect:{gain:[4,8]},  result:"You frame it as a sensory evaluation exercise. They review each item with comically serious academic rigor. Everybody eats a lot." },
+      { label:"Tasting exercise — they rate each one", effect:{gain:[4,8]},  result:"You frame it as a sensory evaluation exercise. They review each item with comically serious panel rigor. Everybody eats a lot." },
     ] },
   { id:"class_group_project", target:"class",
     title:"Group Project Day",
@@ -213,7 +213,7 @@ export const CLASS_SCENES = [
     title:"Floor Potluck",
     text:"You announced a floor potluck. You underestimated how seriously they would take this. The room is lined with containers and the smell is extraordinary.",
     choices:[
-      { label:"Try everything and praise all",       effect:{gain:[6,12]}, result:"You try each dish and comment thoughtfully. The floor is thrilled. Second and third helpings are consumed under the banner of thorough academic comparison." },
+      { label:"Try everything and praise all",       effect:{gain:[6,12]}, result:"You try each dish and comment thoughtfully. The floor is thrilled. Second and third helpings are consumed under the banner of thorough side-by-side comparison." },
       { label:"Formalize it with a scoring rubric",  effect:{gain:[4,9]},  result:"You produce a rubric. The floor suddenly cares very deeply about their dishes. The stakes make everyone eat more to properly evaluate." },
       { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The floor eats freely for ninety minutes. It's the best floor check-in of the semester." },
     ] },
