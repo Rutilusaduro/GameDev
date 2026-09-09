@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // STREAM BRAND CONTRACT — one-time sponsor pick for Eating Streamer
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { BRANDS } from '../gameData/streaming.js';
 
 const BRAND_UI = {
@@ -18,11 +20,12 @@ const BRAND_BLURBS = {
   glazeco: 'Teasing, bratty, luxurious. GlazeCo makes her work the camera.',
 };
 
-export function StreamBrandSelectModal({ student, onSelect, onClose, required }) {
+export function StreamBrandSelectModal({ student, onSelect, onClose, required, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, student?.id]);
   if (!student) return null;
   return (
     <div style={C.overlay}>
-      <div style={{
+      <div className="hall-pass-modal-in" style={{
         ...C.modal,
         maxWidth: 520,
         background: 'linear-gradient(165deg,#120408,#1a0810,#0c0408)',
@@ -46,7 +49,7 @@ export function StreamBrandSelectModal({ student, onSelect, onClose, required })
               <button
                 key={brand.id}
                 type="button"
-                onClick={() => onSelect(student.id, brand.id)}
+                onClick={() => { playHallPassSound('confirm', soundEnabled); onSelect(student.id, brand.id); }}
                 style={{
                   ...C.btn(ui.color),
                   textAlign: 'left',
@@ -69,7 +72,7 @@ export function StreamBrandSelectModal({ student, onSelect, onClose, required })
           })}
         </div>
         {!required && onClose && (
-          <button type="button" style={{ ...C.btn('#301018'), width: '100%', fontSize: 11 }} onClick={onClose}>
+          <button type="button" style={{ ...C.btn('#301018'), width: '100%', fontSize: 11 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
             Cancel
           </button>
         )}

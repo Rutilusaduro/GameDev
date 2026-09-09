@@ -1,8 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // DEVICE TUNING MODAL — magnitude vs stability (chamber / serum)
 // ═══════════════════════════════════════════════════════════════
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { createTuningSession, rollTuningAttempt } from '../gameData/deviceUsageEvents.js';
 
 export function DeviceTuningModal({
@@ -11,9 +12,11 @@ export function DeviceTuningModal({
   studentName,
   onComplete,
   onClose,
+  soundEnabled = true,
 }) {
   const [session, setSession] = useState(() => createTuningSession(deviceDefId, 0.55));
   const [result, setResult] = useState(null);
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, deviceDefId, !!result]);
 
   const runAttempt = () => {
     const next = rollTuningAttempt(session);
@@ -28,7 +31,7 @@ export function DeviceTuningModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 1250 }}>
-      <div style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#a08050', marginBottom: 6 }}>FIELD TUNING</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#e8d0a8', marginBottom: 4 }}>{deviceLabel}</div>
         <div style={{ fontSize: 11, color: '#908070', marginBottom: 14 }}>Target: {studentName}</div>
@@ -58,7 +61,7 @@ export function DeviceTuningModal({
             <div style={{ fontSize: 10, color: '#706050', marginBottom: 14 }}>
               Stability: {Math.round(session.stability * 100)}%
             </div>
-            <button type="button" style={{ ...C.btn('#a07030'), width: '100%', marginBottom: 8 }} onClick={runAttempt}>
+            <button type="button" style={{ ...C.btn('#a07030'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); runAttempt(); }}>
               Commit tuning run
             </button>
           </>
@@ -68,7 +71,7 @@ export function DeviceTuningModal({
             {' '}at {Math.round(session.magnitude * 100)}% magnitude.
           </div>
         )}
-        <button type="button" style={{ ...C.btn('#302030'), width: '100%' }} onClick={onClose}>Close</button>
+        <button type="button" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );
@@ -79,8 +82,10 @@ export function DeviceRouteModal({
   studentName,
   onComplete,
   onClose,
+  soundEnabled = true,
 }) {
   const [alloc, setAlloc] = useState({ belly: 40, campus: 35, reserve: 25 });
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, deviceLabel]);
 
   const total = alloc.belly + alloc.campus + alloc.reserve;
   const normalized = total === 100 ? alloc : {
@@ -98,7 +103,7 @@ export function DeviceRouteModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 1250 }}>
-      <div style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#5080a0', marginBottom: 6 }}>ROUTE BUDGET</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#d0e0f0', marginBottom: 4 }}>{deviceLabel}</div>
         <div style={{ fontSize: 11, color: '#8090b0', marginBottom: 14 }}>Target: {studentName}</div>
@@ -108,8 +113,8 @@ export function DeviceRouteModal({
             <input type="range" min={0} max={100} value={alloc[key]} style={{ width: '100%', marginTop: 4 }} onChange={(e) => setVal(key, e.target.value)} />
           </label>
         ))}
-        <button type="button" style={{ ...C.btn('#406080'), width: '100%', marginBottom: 8 }} onClick={commit}>Deploy route</button>
-        <button type="button" style={{ ...C.btn('#302030'), width: '100%' }} onClick={onClose}>Cancel</button>
+        <button type="button" style={{ ...C.btn('#406080'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); commit(); }}>Deploy route</button>
+        <button type="button" style={{ ...C.btn('#302030'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Cancel</button>
       </div>
     </div>
   );

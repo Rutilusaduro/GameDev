@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // STATE FAIR QUEEN — Pre-Fair Training hub + Fair Day modals
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
 
-export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState }){
+export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ft.open, ft.view, ft.cycleNum]);
   const mj=students.find(st=>st.id===ft.mjStudentId);
   if(!mj) return null;
   const fairOrange='#C8860A';
@@ -12,7 +15,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   const fairReady=ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle;
   return(
     <div style={C.overlay}>
-      <div style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
         <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>🎡 PRE-FAIR TRAINING — CYCLE {ft.cycleNum+1}</div>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:8,fontSize:11,color:"#d0b080"}}>
           <span>{mj.name} — {Math.round(mj.lbs)} lbs</span>
@@ -49,9 +52,9 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
               Each session: 1 AP • Mary Jane and her partner both gain • Fair Pride builds toward the Weigh-In bonus ({Math.round((FAIR_TRAINING_CONFIG.weighInBonus[tier.label]||0)*100)}% at current tier)
             </div>
             <div style={{display:"flex",gap:6}}>
-              {fairReady&&<button style={{...C.btn("#1a6030"),flex:1}} onClick={launchFairDayEvent}>🎡 Fair Day</button>}
-              {ft.trophyPhotos.length>0&&<button style={{...C.btn("#3a2a00"),flex:1}} onClick={()=>setFairTrainingState(p=>({...p,view:'trophies'}))}>🏆 Trophy Wall ({ft.trophyPhotos.length})</button>}
-              <button style={{...C.btn("#2a1800"),flex:1}} onClick={closeFairTraining}>Close</button>
+              {fairReady&&<button style={{...C.btn("#1a6030"),flex:1}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); launchFairDayEvent(); }}>🎡 Fair Day</button>}
+              {ft.trophyPhotos.length>0&&<button style={{...C.btn("#3a2a00"),flex:1}} onClick={()=>{ playHallPassSound('click', soundEnabled); setFairTrainingState(p=>({...p,view:'trophies'})); }}>🏆 Trophy Wall ({ft.trophyPhotos.length})</button>}
+              <button style={{...C.btn("#2a1800"),flex:1}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeFairTraining(); }}>Close</button>
             </div>
           </>
         )}
@@ -98,7 +101,8 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   );
 }
 
-export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay }){
+export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, fd.studentId, fd.phase, fd.weighInChoice, fd.afterpartyChoice]);
   const s=students.find(st=>st.id===fd.studentId);
   if(!s) return null;
   const fairOrange='#C8860A';
@@ -106,7 +110,7 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
   const tier=getFairPrideTier(fairPride);
   return(
     <div style={C.overlay}>
-      <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
+      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#0a0600,#140c00,#0a0600)",border:`2px solid ${fairOrange}50`}}>
         <div style={{fontSize:9,letterSpacing:4,color:fairOrange,marginBottom:6}}>
           🎡 FAIR DAY — {fd.phase==='weighin'?'THE WEIGH-IN':fd.phase==='judging'?'THE JUDGING':'THE AFTERPARTY'}
         </div>

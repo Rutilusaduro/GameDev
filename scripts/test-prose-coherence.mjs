@@ -10,6 +10,7 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameD
 import {
   EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
   FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
+  FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES,
 } from '../src/gameData/evolvedForms.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY, CG_RA_REPLY_TEXT } from '../src/gameData/competitiveGainerText.js';
@@ -59,6 +60,9 @@ import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.
 import { renderCultivatorIntro, renderCultivatorRecruitment } from '../src/textEngine/scenes/cultivator/index.js';
 import { CLUE_INVESTIGATION, HUNT_NODES } from '../src/gameData/lilith.js';
 import { CULT_DISTRIBUTION_ROUTES } from '../src/gameData/pharmacistCult.js';
+import { LAB_ACQUISITION_OPTIONS } from '../src/gameData/talia.js';
+import { renderLabSessionBeat } from '../src/textEngine/scenes/talia/lab.js';
+import { DESTINY_SPEND_ITEMS } from '../src/gameData/streaming.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -540,4 +544,37 @@ if (cultivatorIntro) assertClean(cultivatorIntro, 'cultivator intro');
 const cultivatorRecruit = renderCultivatorRecruitment(10);
 if (cultivatorRecruit) assertClean(cultivatorRecruit, 'cultivator recruitment');
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator OK');
+for (const cfg of Object.values(FAIR_TRAINING_CONFIG.collaborators)) {
+  assertClean(cfg.label, `fair collab ${cfg.influenceKey}`);
+}
+for (const scene of Object.values(FAIR_DAY_SCENES.weighIn)) {
+  assertClean(scene.choice1.label, 'fair weigh-in choice1');
+  assertClean(scene.choice2.label, 'fair weigh-in choice2');
+  assertClean(scene.open, 'fair weigh-in open');
+}
+for (const line of Object.values(FAIR_DAY_SCENES.judging)) {
+  assertClean(line, 'fair judging');
+}
+for (const scene of Object.values(FAIR_DAY_SCENES.afterparty)) {
+  assertClean(scene.choice1.label, 'fair afterparty choice1');
+  assertClean(scene.choice2.label, 'fair afterparty choice2');
+}
+for (const tiers of Object.values(FAIR_BOOST_SUMMARIES)) {
+  for (const line of Object.values(tiers)) assertClean(line, 'fair boost summary');
+}
+
+const taliaStudent = INIT_STUDENTS.find((s) => s.archetype === 'gamer') || INIT_STUDENTS[0];
+for (const phase of ['acquire', 'session']) {
+  const labBeat = renderLabSessionBeat({ ...taliaStudent, lbs: 280, name: 'Talia' }, 10, phase, { v2DepthChance: 0 });
+  if (labBeat) assertClean(labBeat, `lab session ${phase}`);
+}
+for (const stageOpts of Object.values(LAB_ACQUISITION_OPTIONS)) {
+  for (const opt of stageOpts) {
+    assertClean(`${opt.label} ${opt.grant}`, `lab acquisition ${opt.id}`);
+  }
+}
+for (const item of DESTINY_SPEND_ITEMS) {
+  assertClean(`${item.label} ${item.desc}`, `destiny spend ${item.id}`);
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny OK');

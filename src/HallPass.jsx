@@ -194,6 +194,7 @@ import { applyEssenceFromGain, spendEssence } from './gameData/ascension/essence
 import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
 import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
+import { EvolvedActivityModal } from './components/EvolvedActivityModal.jsx';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
@@ -8767,6 +8768,7 @@ export default function HallPass(){
             onConfirm={confirmLabSession}
             onCancel={cancelLabSession}
             applyAcquisition={applyLabAcquisitionChoice}
+            soundEnabled={soundEnabled}
           />
         );
       })()}
@@ -8964,6 +8966,7 @@ export default function HallPass(){
           studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Student'}
           onComplete={completeDeviceUsage}
           onClose={()=>setDeviceUsageModal(null)}
+          soundEnabled={soundEnabled}
         />
       )}
       {deviceUsageModal?.type==='route'&&(
@@ -8972,6 +8975,7 @@ export default function HallPass(){
           studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Student'}
           onComplete={completeDeviceUsage}
           onClose={()=>setDeviceUsageModal(null)}
+          soundEnabled={soundEnabled}
         />
       )}
 
@@ -9138,26 +9142,17 @@ export default function HallPass(){
       {/* ── RECORDING SESSION MODAL ── */}
       {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} week={week} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup} soundEnabled={soundEnabled}/>}
       {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina} soundEnabled={soundEnabled}/>}
-      {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)}/>}
-      {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money}/>}
+      {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)} soundEnabled={soundEnabled}/>}
+      {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
-      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState}/>}
+      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
-      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay}/>}
+      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
-      {evolvedActivityModal&&(
-        <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:540,background:"linear-gradient(160deg,#08041a,#140830,#08041a)",border:"1px solid #5020a060"}}>
-            <div style={{fontSize:9,letterSpacing:4,color:"#7030c0",marginBottom:6}}>✦ {(EVOLVED_ACTIVITY_META[evolvedActivityModal.student?.evolvedForm]||{}).label||"Activity"}</div>
-            <div style={{fontSize:14,fontWeight:700,color:"#c080ff",marginBottom:10}}>{evolvedActivityModal.student?.name}</div>
-            <div style={{fontSize:12,color:"#c0b0e0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>{evolvedActivityModal.text}</div>
-            <button style={{...C.btn("#301060"),width:"100%"}} onClick={()=>setEvolvedActivityModal(null)}>Continue</button>
-          </div>
-        </div>
-      )}
+      {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} soundEnabled={soundEnabled}/>}
 
       {/* ── LANE CAPTAIN MODAL ── */}
       {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome} soundEnabled={soundEnabled}/>}
