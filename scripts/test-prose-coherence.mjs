@@ -52,7 +52,11 @@ import { renderGossipMurmur, renderGossipReact } from '../src/textEngine/scenes/
 import { renderMemoryClass } from '../src/textEngine/scenes/memory/index.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
 import '../src/textEngine/scenes/v2/resonance/depth.js';
+import '../src/textEngine/scenes/earlyGain/fragments.js';
 import '../src/textEngine/scenes/earlyGain/personas.js';
+import '../src/textEngine/scenes/body/portraitDepth.js';
+import { renderBodyPortrait } from '../src/textEngine/scenes/body/index.js';
+import '../src/textEngine/scenes/v2/dreams/depth.js';
 import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/scenes/weighIn/index.js';
 import { renderGrowthScene } from '../src/textEngine/scenes/growthEvent/index.js';
 import {
@@ -230,6 +234,16 @@ const BANNED = [
   /\bthree of my girls weigh\b/i,
   /\bengineering girl with the harnesses\b/i,
   /\bThe girls ate everything\b/i,
+  /\bstill mostly the girl she was at move-in\b/i,
+  /\bthe girl who still fits her old jeans\b/i,
+  /\bthe angular girl is becoming\b/i,
+  /\bfeeds the girl in the glass\b/i,
+  /\bThe psychology study sounded harmless\b/i,
+  /\bthe other girl brings food\b/i,
+  /\bStraight-bodied girls like me adapt\b/i,
+  /\bpsychology project\b/i,
+  /\bsaying it's all for her research\b/i,
+  /\bEvery time Nadia feeds me\b/i,
 ];
 
 function assertClean(text, label) {
@@ -446,11 +460,41 @@ for (const line of FEEDER_SUBJECT_JOURNALS.swimmer || []) {
   assertClean(line, 'feeder journal swimmer');
 }
 
-for (const archetype of ['bookworm', 'cheerleader', 'athlete', 'culinary', 'gamer', 'psych', 'nursing', 'overachiever']) {
+for (const archetype of ['bookworm', 'cheerleader', 'athlete', 'culinary', 'gamer', 'psych', 'nursing', 'overachiever', 'quiet', 'farm_girl']) {
   for (const line of FEEDER_SUBJECT_JOURNALS[archetype] || []) {
     assertClean(line, `feeder journal ${archetype}`);
   }
 }
+
+for (const archetype of ['bookworm', 'quiet', 'swimmer']) {
+  const earlySubject = {
+    ...(INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0]),
+    lbs: 125,
+    corruption: 0,
+  };
+  const earlyCtx = buildTextContext({
+    subject: earlySubject,
+    week: 3,
+    globals: { gainStance: 'opposed' },
+  });
+  for (const slot of ['slender.bodyNotice', 'slender.mindFeel', 'slender.bodyFeel']) {
+    const earlyLine = render(`{${slot}}`, earlyCtx)?.trim();
+    if (earlyLine) assertClean(earlyLine, `early gain ${slot} ${archetype}`);
+  }
+}
+
+for (const bodyType of ['pear', 'straight', 'apple']) {
+  const portrait = renderBodyPortrait(
+    { ...INIT_STUDENTS[0], bodyType, lbs: 175 },
+    8,
+    { v2DepthChance: 0 },
+  );
+  if (portrait) assertClean(portrait, `body portrait ${bodyType} stage mid`);
+}
+
+const dreamCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 10, globals: { stageMin: 3 } });
+const mirrorDream = render('{dream.mirror_feast.depth}', dreamCtx)?.trim();
+if (mirrorDream) assertClean(mirrorDream, 'dream mirror feast depth');
 
 for (const archetype of ['swimmer', 'cheerleader', 'gamer', 'culinary', 'influencer']) {
   const subject = {

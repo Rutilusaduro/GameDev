@@ -12,7 +12,7 @@ registerPool('slender.bodyNotice', [
     '',
   ] },
   { when: { stageMax: 1 }, text: [
-    'still mostly the girl she was at move-in',
+    'still mostly who she was at move-in',
     'clothes fitting the way they always have',
     'no obvious change yet — only a softness at the edges if you look',
   ] },
@@ -115,7 +115,7 @@ registerPool('slender.mindFeel', [
   { when: { gainStance: 'opposed' }, weight: 2, text: [
     'This is not what she planned. She rehearses the reasons it will reverse.',
     'Shame arrives before the number does — a hot, familiar flush she refuses to show.',
-    'She wants to be the girl who still fits her old jeans. That girl is leaving.',
+    'She wants to fit her old jeans again. That version of her is leaving.',
     'Every pound feels like evidence she will have to explain away.',
   ] },
   { when: { gainStance: 'reluctant' }, weight: 2, text: [

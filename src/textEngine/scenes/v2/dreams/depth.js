@@ -61,7 +61,7 @@ registerPool('dream.mirror_feast.depth', [
     'Reflection eats with her. Fullness doubles across glass — two bellies, one hunger, no seam between.',
   ]},
   { when: {}, text: [
-    'Mirror feast: she feeds the girl in the glass and is fed back.',
+    'Mirror feast: she feeds her reflection in the glass and is fed back.',
   ]},
 ]);
 

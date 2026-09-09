@@ -592,6 +592,25 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('early-portrait-journal-framing', () => {
+  const early = read('src/textEngine/scenes/earlyGain/fragments.js');
+  assert.match(early, /still mostly who she was at move-in/);
+  assert.match(early, /fit her old jeans again/);
+  assert.doesNotMatch(early, /still mostly the girl she was|the girl who still fits her old jeans/);
+  const portrait = read('src/textEngine/scenes/body/portraitDepth.js');
+  assert.match(portrait, /her angular frame is becoming someone warmer/);
+  assert.doesNotMatch(portrait, /the angular girl is becoming/);
+  const dreams = read('src/textEngine/scenes/v2/dreams/depth.js');
+  assert.match(dreams, /feeds her reflection in the glass/);
+  assert.doesNotMatch(dreams, /feeds the girl in the glass/);
+  const journals = read('src/gameData/evolvedForms.js');
+  assert.match(journals, /floor program sounded harmless/);
+  assert.match(journals, /hall meal season/);
+  assert.match(journals, /Straight-bodied frames like mine adapt quickly/);
+  assert.match(journals, /Every time the RA feeds me/);
+  assert.doesNotMatch(journals, /The psychology study sounded harmless|psychology project|the other girl brings food|Straight-bodied girls like me adapt|Every time Nadia feeds me/);
+});
+
 check('campus-system-resident-framing', () => {
   const campus = read('src/textEngine/scenes/campusExplorationText.js');
   assert.match(campus, /A resident thanks/);
