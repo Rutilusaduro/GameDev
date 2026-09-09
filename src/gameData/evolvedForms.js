@@ -3783,7 +3783,7 @@ export const HOMEROOM_GROUP_ACTIVITIES = {
 
 The agenda says: progress updates, enrichment activities, wellness notes. The room has its own agenda.`,
     choices:[
-      {id:"curriculum",label:"Cover the agenda properly — keep the framing intact",
+      {id:"curriculum",label:"Run the wellness agenda — keep the framing professional",
        result:`Daisy goes through everything on the list, thoroughly and warmly. Mrs. Calloway uncrosses her arms by the second item. Mrs. Monroe has her hand in the snack bowl. By the end the meeting has accomplished everything stated and the moms are leaving with containers.`,
        momGain:8,rel:6,suspDelta:-2},
       {id:"recipes",label:"Show them what's coming — open the recipe book",

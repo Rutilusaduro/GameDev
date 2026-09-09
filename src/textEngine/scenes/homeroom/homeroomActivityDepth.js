@@ -11,7 +11,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0', [
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0.curriculum', [
   { when: {}, text: [
-    `Daisy runs the list — warm, thorough. Mrs. Calloway uncrosses her arms by item two. Everyone leaves with containers. Agenda technically wins.`,
+    `Daisy runs the wellness agenda — warm, thorough. Mrs. Calloway uncrosses her arms by item two. Everyone leaves with containers. Framing technically wins.`,
   ]},
 ]);
 

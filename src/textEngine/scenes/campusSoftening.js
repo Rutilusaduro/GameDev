@@ -252,6 +252,12 @@ registerPool("talk.campusCoda", [
     text: [
       (ctx) => `"Whole campus eats like harvest season," ${ctx.subject.name} says warmly. "I recognize the look."`,
     ] },
+  { when: { campusFattening: true, archetype: "swimmer" }, priority: 2,
+    text: [
+      (ctx) => `${ctx.subject.name} taps her training log. "Post-practice carb load is campus-wide now," she says. "Not just the natatorium."`,
+      (ctx) => `"Half the lane group texted weigh-ins this week," ${ctx.subject.name} says. "Up. All of them."`,
+      (ctx) => `${ctx.subject.name} glances toward the window. "Splits are slower. Appetites aren't. Whole campus caught it."`,
+    ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
       (ctx) => `Outside, the dining hall line looks thicker than last month — not just longer. Fuller. Campus-wide.`,
@@ -287,6 +293,12 @@ registerPool("weighIn.campus", [
   { when: { campusFattening: true, archetype: "psych" }, priority: 2,
     text: [
       (ctx) => `${ctx.subject.name} notes aloud that the floor's numbers would make an excellent appendix. "Campus-wide," she adds, pleased.`,
+    ] },
+  { when: { campusFattening: true, archetype: "swimmer" }, priority: 2,
+    text: [
+      (ctx) => `"Whole team gained this month," ${ctx.subject.name} says, pleased. "Campus carb load meta."`,
+      (ctx) => `${ctx.subject.name} checks her training log. "Splits and waistbands both up. Not just me."`,
+      (ctx) => `"Natatorium gossip matches the dining hall," ${ctx.subject.name} says. "Everyone's rounding out."`,
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [

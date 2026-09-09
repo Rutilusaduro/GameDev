@@ -89,8 +89,8 @@ registerModuleVariants('homeroom.conference.Sofia.next_tuesday', [
 
 registerModuleVariants('homeroom.conference.Mrs_Calloway.curriculum_frame', [
   { when: {}, text: [
-    `Enrichment rationale, point by point. Arms uncross by three. "She's been happier," she admits. Exhale in hallway.`,
-    `Data, patience, examples — Mrs. Calloway listens longer than she planned. "Fine," she says. Not quite a smile. Close.`,
+    `Wellness-program rationale, point by point. Arms uncross by three. "She's been happier," she admits. Exhale in hallway.`,
+    `Hall wellness notes, patience, examples — Mrs. Calloway listens longer than she planned. "Fine," she says. Not quite a smile. Close.`,
   ]},
 ]);
 

@@ -1156,6 +1156,23 @@ check('cassidy-swimmer-voice', () => {
   assert.ok(deviceSwimmer, 'campusDevice/fragments.js must contain archetype swimmer block');
   assert.doesNotMatch(deviceSwimmer, /textbook|highlighting a passage/i, 'campusDevice swimmer still bookworm');
   assert.match(deviceSwimmer, /training log|splits|sets/i, 'campusDevice swimmer must use athletic voice');
+
+  const campusSoft = read('src/textEngine/scenes/campusSoftening.js');
+  const talkCodaSection = campusSoft.match(/registerPool\("talk\.campusCoda"[\s\S]*?\]\);/)?.[0] ?? '';
+  const codaSwimmer = talkCodaSection.match(/\{ when: \{ campusFattening: true, archetype: "swimmer" \}[\s\S]*?\]\s*\},/)?.[0] ?? '';
+  assert.ok(codaSwimmer, 'campusSoftening talk.campusCoda must contain swimmer block');
+  assert.doesNotMatch(codaSwimmer, /ambient caloric environment|appendix|hypothesis/i, 'talk.campusCoda swimmer still bookworm');
+  assert.match(codaSwimmer, /training log|lane group|splits|natatorium|carb load/i, 'talk.campusCoda swimmer must use athletic voice');
+  const weighInSection = campusSoft.match(/registerPool\("weighIn\.campus"[\s\S]*?\]\);/)?.[0] ?? '';
+  const weighSwimmer = weighInSection.match(/\{ when: \{ campusFattening: true, archetype: "swimmer" \}[\s\S]*?\]\s*\},/)?.[0] ?? '';
+  assert.ok(weighSwimmer, 'campusSoftening weighIn.campus must contain swimmer block');
+  assert.doesNotMatch(weighSwimmer, /appendix|hypothesis|dataset/i, 'weighIn.campus swimmer still bookworm');
+  assert.match(weighSwimmer, /training log|team gained|natatorium|carb load|waistbands/i, 'weighIn.campus swimmer must use athletic voice');
+  for (const block of [codaSwimmer, weighSwimmer]) {
+    for (const re of BANNED_IN_CASSIDY) {
+      assert.doesNotMatch(block, re, `campusSoftening swimmer block still has ${re}`);
+    }
+  }
 });
 
 check('embodied-resident-sighting', () => {
