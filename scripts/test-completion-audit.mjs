@@ -618,6 +618,22 @@ check('wife-lessons-depth-framing', () => {
   assert.doesNotMatch(pharmacist, /meets the girls who meet/i);
 });
 
+check('nadia-journal-framing', () => {
+  const nadia = read('src/gameData/nadiaSubjectJournals.js');
+  assert.match(nadia, /picking a resident like her/);
+  assert.match(nadia, /strong, athletic resident/);
+  assert.match(nadia, /sorority resident/);
+  assert.match(nadia, /ultimate gamer resident/);
+  assert.match(nadia, /country-resident type/);
+  assert.match(nadia, /nurturing resident grow heavy/);
+  assert.doesNotMatch(nadia, /\bpicking a girl like her\b/i);
+  assert.doesNotMatch(nadia, /\bsorority girl\b/i);
+  assert.doesNotMatch(nadia, /\bgamer girl\b/i);
+  assert.doesNotMatch(nadia, /\bfarm-girl type\b/i);
+  assert.doesNotMatch(nadia, /\bnurturing girl\b/i);
+  assert.doesNotMatch(nadia, /\b(girl|girls)\b/i);
+});
+
 check('wife-lessons-hunt-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
   assert.match(evolved, /as the daughters led the lesson/);

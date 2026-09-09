@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// GROWTH EVENT PERSONAS — per-girl voice for ge.reactionDialogue
+// GROWTH EVENT PERSONAS — per-resident voice for ge.reactionDialogue
 // and grow.crossingDialogue. Extends the shared pools in
 // ./fragments.js via registerModuleVariants. Weight 4 so each
-// girl's own voice dominates without silencing shared fragments.
+// resident's own voice dominates without silencing shared fragments.
 // Double depth (addiction/psych/withdrawal gates) for:
 //   Brittany(0), Cassidy(1), Kylie(2), Destiny(5),
 //   Chloe(9), Reneé(10), Daisy(13), Lilith(15).
@@ -432,7 +432,7 @@ registerModuleVariants("ge.reactionDialogue", [
     `"Sugar, I am not doing well right now," she says, quietly strained. "Fix it, please."`,
   ]},
 
-  // ── 14 · Mary Jane — farm girl: harvest imagery ───────────────
+  // ── 14 · Mary Jane — country resident: harvest imagery ────────
   { when: { studentId: 14, corruption: [0], endStageMax: 5 }, weight: W, text: [
     `"Back home we'd call this good eating," she says. "City food just agrees with me."`,
     `"These jeans ain't gonna make it to Christmas at this rate," she laughs.`,
@@ -533,11 +533,11 @@ registerModuleVariants("ge.reactionDialogue", [
 
 // ── grow.crossingDialogue ──────────────────────────────────────
 // Shape: DIALOGUE BEAT — standalone sentence(s) appended after
-// grow.crossing (only when stagesJumped >= 1). Per-girl variants
-// for the 8 double-depth girls across three endStage bands:
+// grow.crossing (only when stagesJumped >= 1). Per-resident variants
+// for the 8 double-depth residents across three endStage bands:
 //   3-5 (Chubby–Heavy), 6-8 (Fat–Enormous), 9-11 (Colossal–Leviathan).
 // Shared band supplements and a wildcard add-on (brings pool
-// wildcard count to ≥3) cover the remaining ten girls.
+// wildcard count to ≥3) cover the remaining ten residents.
 registerModuleVariants("grow.crossingDialogue", [
 
   // ── Brittany (0) ───────────────────────────────────────────────
@@ -727,7 +727,7 @@ registerModuleVariants("grow.crossingDialogue", [
   ]},
 
   // ── Shared band supplements (no studentId) ────────────────────
-  // These supplement all girls; persona variants dominate when they match.
+  // These supplement all residents; persona variants dominate when they match.
   { when: { endStageMin: 2, endStageMax: 2 }, weight: W, text: [
     `"Soft," she says quietly, like naming a fact.`,
     `"There it is," she murmurs, touching her side.`,

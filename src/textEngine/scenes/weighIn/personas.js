@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
-// WEIGH-IN PERSONAS — per-girl voice for the wi.* dialogue slots.
+// WEIGH-IN PERSONAS — per-resident voice for the wi.* dialogue slots.
 // Extends the shared pools in ./fragments.js via registerModuleVariants
 // (adds variants, never replaces). Quotes mined VERBATIM from the
 // retired weighInReplies.js builders — the voice lives in the quotes.
 // Convention: key on studentId + corruption (+ stage band where the
-// line is band-specific), weight 4 so the girl's own voice dominates
+// line is band-specific), weight 4 so the resident's own voice dominates
 // the pool without silencing shared fragments. See ../../AUTHORING.md §4.
 // Roster: AUTHORING.md §3 (ids 0-17).
 // ═══════════════════════════════════════════════════════════════
@@ -370,7 +370,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"Blessed," she breathes.`,
   ]},
 
-  // ── 14 · Mary Jane — farm girl: harvest imagery ──────────────
+  // ── 14 · Mary Jane — country resident: harvest imagery ───────
   { when: { studentId: 14, corruption: [0], stageMax: 5 }, weight: W, text: [
     `"Back home we'd call this 'healthy.' City food hits different though. Better, maybe."`,
     `"These ain't gonna make it to Thanksgiving at this rate," she laughs, thumbing a strained seam.`,

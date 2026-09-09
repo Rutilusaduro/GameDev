@@ -4,7 +4,7 @@
 // Beat modules (wi.arrival, wi.settle, …) are pools of SKELETONS —
 // short templates whose slots are filled by the fragment pools
 // below. Every pool declares ONE grammar shape in its banner.
-// Per-girl voice lives in ./personas.js (registerModuleVariants).
+// Per-resident voice lives in ./personas.js (registerModuleVariants).
 // ═══════════════════════════════════════════════════════════════
 import { registerPool } from '../../engine.js';
 import '../../modules.js'; // subject.* helpers
@@ -797,7 +797,7 @@ registerPool("wi.platformAfter", [
 // ║ BEAT: wi.reply — her personal reaction to the number
 // ╚══════════════════════════════════════════════════════════════
 // Shape: FULL SENTENCE skeletons. This replaces the old per-student
-// monolith builders; the girl's voice lives in {wi.replyDialogue}
+// monolith builders; the resident's voice lives in {wi.replyDialogue}
 // (persona variants in ./personas.js).
 registerPool("wi.reply", [
   { when: {}, text: [
@@ -881,8 +881,8 @@ registerPool("wi.replyBody", [
 ]);
 
 // ── wi.replyDialogue ──────────────────────────────────────────
-// Shape: DIALOGUE BEAT — the girl's verdict on the number.
-// THE per-girl voice slot: personas.js extends this pool with
+// Shape: DIALOGUE BEAT — the resident's verdict on the number.
+// THE per-resident voice slot: personas.js extends this pool with
 // studentId-keyed variants at weight 4. These are the shared fallbacks.
 registerPool("wi.replyDialogue", [
   { when: { corruption: [0] }, text: [
@@ -961,7 +961,7 @@ registerPool("wi.replyDialogue", [
 // ── wi.foodAsk ────────────────────────────────────────────────
 // Shape: FULL SENTENCE — after the number, the appetite speaks up.
 // Silent (empty wildcard) unless hunger/addiction/withdrawal is
-// active; keyed variants are weighted heavy so a hungry girl
+// active; keyed variants are weighted heavy so a hungry resident
 // reliably asks — or demands — food before she leaves.
 registerPool("wi.foodAsk", [
   { when: { stageMin: 7, corruption: [2] }, weight: 8, text: [

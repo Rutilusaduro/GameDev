@@ -288,6 +288,17 @@ const BANNED = [
   /\{girlName\}/i,
   /\bletting a resident stuff me\b/i,
   /\bappetite psychology\b/i,
+  /\bpicking a girl like her\b/i,
+  /\bslowly changing a girl like her\b/i,
+  /\bstrong, athletic girl\b/i,
+  /\bsorority girl\b/i,
+  /\bgamer girl\b/i,
+  /\bnurturing girl grow heavy\b/i,
+  /\bimage-obsessed girl\b/i,
+  /\bquiet girl who used to\b/i,
+  /\bkitchen girl is now\b/i,
+  /\bsensory culinary girl\b/i,
+  /\bthe girl who used to fit in my arms\b/i,
 ];
 
 function assertClean(text, label) {
