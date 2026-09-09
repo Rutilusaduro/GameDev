@@ -528,6 +528,25 @@ check('floor-events-module', () => {
   }
 });
 
+check('homeroom-resident-framing', () => {
+  const activity = read('src/textEngine/scenes/homeroom/homeroomActivityDepth.js');
+  assert.match(activity, /the residents have been waiting/);
+  assert.doesNotMatch(activity, /the girls have been waiting/i);
+  const homeroom = read('src/gameData/evolvedForms.js');
+  assert.match(homeroom, /The residents know what this is/);
+  assert.match(homeroom, /Keep it to the residents/);
+  assert.doesNotMatch(homeroom, /The girls know what this is|Keep it to the students — stay professional/i);
+});
+
+check('desk-utility-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.ra-desk-utility-btn:focus-visible/);
+  assert.match(css, /\.hall-log-tab:focus-visible/);
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /className="ra-desk-utility-btn"/);
+  assert.match(desk, /feed a resident/);
+});
+
 check('narrative-roster-framing', () => {
   const v2 = read('src/textEngine/scenes/v2/v2ProseExpansion.js');
   assert.match(v2, /every resident on your roster/);

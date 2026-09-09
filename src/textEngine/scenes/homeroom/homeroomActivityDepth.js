@@ -29,7 +29,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0.refreshments_first',
 
 registerModuleVariants('homeroom.activity.health_unit.p0', [
   { when: {}, text: [
-    `Scale at the front. Tape on the desk. Health unit day — the girls have been waiting. Sofia stands near the scale, easy and unhurried.`,
+    `Scale at the front. Tape on the desk. Health unit day — the residents have been waiting. Sofia stands near the scale, easy and unhurried.`,
     `Daisy arranges the scale with ceremony. Someone whispers about last semester's chart.`,
   ]},
 ]);

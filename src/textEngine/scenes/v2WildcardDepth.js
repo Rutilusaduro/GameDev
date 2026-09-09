@@ -3,8 +3,8 @@
 // Wildcard depth for V2 pools (emb, res, ritual, echo, dream, *.v2.depth, homeroom).
 import { registerModuleVariants } from '../engine.js';
 
-registerModuleVariants("homeroom.activity.parent_meeting.p0.curriculum", [{ when: {}, weight: 3, text: ["Scale at front. Girls waiting. Daisy arranges it with ceremony."] }]);
-registerModuleVariants("homeroom.activity.health_unit.p0.official", [{ when: {}, weight: 3, text: ["Scale at front. Girls waiting. Daisy arranges it with ceremony."] }]);
+registerModuleVariants("homeroom.activity.parent_meeting.p0.curriculum", [{ when: {}, weight: 3, text: ["Scale at front. Residents waiting. Daisy arranges it with ceremony."] }]);
+registerModuleVariants("homeroom.activity.health_unit.p0.official", [{ when: {}, weight: 3, text: ["Scale at front. Residents waiting. Daisy arranges it with ceremony."] }]);
 registerModuleVariants("emb.action.raid_pantry.depth", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register.", "Hunger steered from within. She obeys and calls it craving."] }]);
 registerModuleVariants("emb.action.seduce_appetite.depth", [{ when: {}, weight: 3, text: ["Hunger steered from within. She obeys and calls it craving."] }]);
 registerModuleVariants("emb.action.mirror_confession.depth", [{ when: {}, weight: 3, text: ["You at the wheel. Food arrives; resistance becomes theater."] }]);

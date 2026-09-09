@@ -214,7 +214,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0.refreshments_first',
 
 registerModuleVariants('homeroom.activity.health_unit.p0', [
   { when: { stageMin: 7 }, weight: 3, text: [
-    `Scale at front. Girls waiting — Sofia near it, easy. Numbers will be interesting reading.`,
+    `Scale at front. Residents waiting — Sofia near it, easy. Numbers will be interesting reading.`,
   ]},
 ]);
 

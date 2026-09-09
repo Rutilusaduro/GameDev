@@ -18,7 +18,7 @@ export const IMMOBILE_REDIRECT = {
     blob:      "Destiny hasn't moved from her setup in so long the chair has moulded itself to her. Her belly settles between the armrests, her thighs spread to the edges, and the idea of a restaurant is incompatible with every metric of her current lifestyle. You're doing delivery. You know where to find her.",
   },
   6:{ // Tiffany — sorority
-    blob:      "Tiffany is the house now — she hosts from her bed, food delivered in waves, the girls coming to her. She stopped going out when the doorframe became a problem, and nobody mentioned it because everyone adjusted around her, which is just how it's always been with Tiffany. You're bringing dinner. She'll tell you where to put it.",
+    blob:      "Tiffany is the house now — she hosts from her bed, food delivered in waves, residents coming to her. She stopped going out when the doorframe became a problem, and nobody mentioned it because everyone adjusted around her, which is just how it's always been with Tiffany. You're bringing dinner. She'll tell you where to put it.",
   },
   7:{ // Priya — overachiever
     blob:      "Priya filed a report about this three weeks ago. She cited logistics, efficiency metrics, and a cost-benefit analysis of transit versus delivery, and concluded that you coming to her was the optimal solution. The report is on her desk. She is also mostly on her desk. You're going to her.",

@@ -1461,7 +1461,7 @@ registerPool('diary.homeroom_queen.c1', [
 
 registerPool('diary.homeroom_queen.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['I ate alongside them — quality control, I told myself — and logged the banana bread as a success. I didn\'t log how much I ate. I\'m not sure what column it would go in.'] },
-  { when: { stage: [5] }, text: ['I\'d been up since five making everything from scratch, and by the time the girls arrived the hallroom smelled like butter and warm sugar and something that felt like a real home.'] },
+  { when: { stage: [5] }, text: ['I\'d been up since five making everything from scratch, and by the time the residents arrived the hallroom smelled like butter and warm sugar and something that felt like a real home.'] },
   { when: { stage: [6] }, text: ['I found myself making more food specifically because I knew she was coming. I\'m not sure when I started planning for individual preferences. I notice I have.'] },
   { when: { stage: [7] }, text: ['Calloway ate three pieces and then asked about my training. I gave a genuine answer. She nodded. I think we understand each other now. I ate alongside them for the full hour.'] },
   { when: { stage: [8] }, text: ['The session was good — Mrs. Monroe brought wine and I politely declined and then accepted — and everyone was softer and more comfortable and more themselves than when we started this.'] },

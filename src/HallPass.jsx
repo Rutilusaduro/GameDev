@@ -8623,17 +8623,18 @@ export default function HallPass(){
           </button>
           <WalletBadge balance={money} />
           {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
-            <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
+            <button type="button" className="ra-desk-utility-btn" onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
           )}
           <button
             type="button"
+            className="ra-desk-utility-btn"
             title={soundEnabled ? 'UI sounds on' : 'UI sounds off'}
             onClick={() => setSoundEnabled(toggleSound().soundEnabled)}
             style={{...C.btn(soundEnabled ? '#2a4a38' : '#222244'),fontSize:10,opacity:0.85,minWidth:36}}
           >
             {soundEnabled ? '🔊' : '🔇'}
           </button>
-          <button onClick={()=>setDebugOpen(d=>!d)} style={{...C.btn("#222244"),fontSize:10,opacity:0.7}}>🐛 Debug</button>
+          <button type="button" className="ra-desk-utility-btn" onClick={()=>setDebugOpen(d=>!d)} style={{...C.btn("#222244"),fontSize:10,opacity:0.7}}>🐛 Debug</button>
         </div>
       </div>
 
@@ -8783,7 +8784,7 @@ export default function HallPass(){
             const ledger=entries.filter(x=>isLedgerLogLine(x.e));
             const shown=logTab==="ledger"?ledger:story;
             const tabBtn=(id,label,count)=>(
-              <button key={id} type="button" onClick={()=>setLogTab(id)}
+              <button key={id} type="button" className="hall-log-tab" onClick={()=>setLogTab(id)}
                 style={{flex:1,fontSize:10,fontWeight:700,padding:"4px 6px",cursor:"pointer",
                   border:"none",borderBottom:logTab===id?"2px solid #c090e8":"2px solid transparent",
                   background:"transparent",color:logTab===id?"#d8a8ff":"#6a5078"}}>
@@ -8798,7 +8799,7 @@ export default function HallPass(){
               <div ref={logRef} style={{flex:1, overflow:"auto"}}>
                 {shown.length===0
                   ? <div style={{fontSize:11,color:"#5a3888",fontStyle:"italic",padding:"6px 2px"}}>
-                      {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed someone."}
+                      {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed a resident."}
                     </div>
                   : shown.map(({e,i})=>{
                     const tone=e.startsWith('🏆')?' hall-log-achievement':e.startsWith('🔓')?' hall-log-unlock':'';

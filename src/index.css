@@ -147,6 +147,34 @@
   outline-offset: 2px;
 }
 
+.ra-desk-utility-btn {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+}
+
+.ra-desk-utility-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.ra-desk-utility-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.ra-desk-utility-btn:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.85);
+  outline-offset: 2px;
+}
+
+.hall-log-tab {
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.hall-log-tab:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.75);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .hall-pass-nav-btn[data-active="true"] {
   background: linear-gradient(180deg, rgba(100, 40, 180, 0.22), rgba(60, 20, 120, 0.14));
   box-shadow: 0 -2px 0 0 currentColor, 0 0 14px rgba(160, 80, 240, 0.18);
@@ -702,6 +730,8 @@
   .ra-desk-header,
   .ra-portrait-chip,
   .ra-desk-action-btn,
+  .ra-desk-utility-btn,
+  .hall-log-tab,
   .ra-desk-stat-pill,
   .ra-desk-week-tick,
   .scene-beat-advance,
@@ -783,6 +813,7 @@
   .hall-roadmap-card:hover,
   .roster-locked-tile:hover,
   .ra-desk-action-btn:hover:not(:disabled),
+  .ra-desk-utility-btn:hover:not(:disabled),
   .floor-checkin-choice:hover,
   .scene-beat-advance:hover,
   .scene-choice-btn:hover:not(:disabled),
