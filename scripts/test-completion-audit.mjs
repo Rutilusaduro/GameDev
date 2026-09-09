@@ -136,6 +136,7 @@ const REQUIRED_E2E = [
   'e2e/setup-wizard.spec.js',
   'e2e/semester-wk4.spec.js',
   'e2e/semester-wk5.spec.js',
+  'e2e/semester-wk12.spec.js',
   'e2e/semester-wk8-all-halls.spec.js',
   'e2e/semester-wk16-all-halls.spec.js',
   'e2e/semester-wk16-clickthrough.spec.js',
@@ -339,8 +340,14 @@ check('competitive-gainer-modal-polish', () => {
 });
 
 check('private-session-modal-polish', () => {
-  assert.match(read('src/index.css'), /\.private-session-modal/);
-  assert.match(read('src/components/PrivateSessionModal.jsx'), /private-session-modal/);
+  const css = read('src/index.css');
+  const modal = read('src/components/PrivateSessionModal.jsx');
+  assert.match(css, /\.private-session-modal/);
+  assert.match(css, /\.private-venue-card:focus-visible/);
+  assert.match(css, /\.private-venue-card:hover/);
+  assert.match(modal, /private-session-modal/);
+  assert.match(modal, /className="private-venue-card"/);
+  assert.match(modal, /role="button"/);
 });
 
 check('v2-modal-polish', () => {

@@ -46,7 +46,15 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                   </div>
                   <div style={{display:"flex",flexDirection:"column",gap:7,marginBottom:14}}>
                     {availableVenueList.map(v=>(
-                      <div key={v.id} style={{...C.card,cursor:"pointer"}} onClick={()=>chooseSessionVenue(v)}>
+                      <div
+                        key={v.id}
+                        role="button"
+                        tabIndex={0}
+                        className="private-venue-card"
+                        style={{...C.card,cursor:"pointer"}}
+                        onClick={()=>chooseSessionVenue(v)}
+                        onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); chooseSessionVenue(v); } }}
+                      >
                         <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{v.label}</div>
                         <div style={{fontSize:11,color:"#6a4870"}}>{v.desc}</div>
                       </div>
