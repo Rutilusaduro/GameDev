@@ -733,8 +733,8 @@ registerPool('grow.reaction', [
     "She nods at the data. She's been waiting for this data.",
   ] },
   { when: { studentId: 12, stageMin: 3 }, weight: 4, text: [
-    "She opens her notebook. Writes: [behavioral observation: subject has reached a new threshold].",
-    "She logs the change. The brackets say subject. She wrote it without hesitating.",
+    "She opens her notebook. Writes: [behavioral observation: resident has reached a new threshold].",
+    "She logs the change. The brackets say resident. She wrote it without hesitating.",
   ] },
   { when: { studentId: 13, stageMin: 3 }, weight: 4, text: [
     "She puts her hand on her belly the way she puts her hand on a child's shoulder. Steady.",

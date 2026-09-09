@@ -131,7 +131,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"Masterpiece in progress," she whispers. "Don't rush it."`,
   ]},
   { when: { studentId: 4, corruption: [0], stageMin: 6 }, weight: W, text: [
-    `"I need a bigger studio," she says, reverent. "For the subject."`,
+    `"I need a bigger studio," she says, reverent. "For the model."`,
     `"Too big for the frame," she whispers. "Good."`,
   ]},
   { when: { studentId: 4, corruption: [1], stageMin: 6 }, weight: W, text: [
@@ -330,7 +330,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"I've moved past the resistance phase," she says, leaning back. "Fascinating process."`,
   ]},
   { when: { studentId: 12, corruption: [2], stageMax: 5 }, weight: W, text: [
-    `"The subject is cooperating," she murmurs — meaning herself.`,
+    `"The resident is cooperating," she murmurs — meaning herself.`,
     `"Integration complete," she says, hands on her soft belly.`,
   ]},
   { when: { studentId: 12, corruption: [0], stageMin: 6 }, weight: W, text: [

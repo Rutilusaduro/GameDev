@@ -426,9 +426,9 @@ registerPool('diary.machine_goddess.s7', [
 
 registerPool('diary.machine_goddess.s8._f5', [
   { when: {}, text: [
-    "Instability hit thirty percent after the serum injector trial. The subject gained fourteen pounds in an afternoon.",
-    "Serum injector trial: thirty percent instability, fourteen pounds on the subject in one afternoon.",
-    "Injector trial exceeded projections. Subject +14 lbs by dinner. I celebrated with paste.",
+    "Instability hit thirty percent after the serum injector trial. The volunteer gained fourteen pounds in an afternoon.",
+    "Serum injector trial: thirty percent instability, fourteen pounds on the volunteer in one afternoon.",
+    "Injector trial exceeded projections. Volunteer +14 lbs by dinner. I celebrated with paste.",
   ]},
 ]);
 
@@ -962,9 +962,9 @@ registerPool('diary.artisan_gallery.s7', [
 
 registerPool('diary.artisan_gallery.s8._f8', [
   { when: {}, text: [
-    "The Living Room: her subject stands beside a timeline on the wall — stage three, stage five, live and heavier than the latest frame.",
-    "The Living Room installation — timeline on the wall, subject live and heavier than print.",
-    "Subject beside her own timeline. Stage three. Stage five. Body ahead of archive.",
+    "The Living Room: her resident model stands beside a timeline on the wall — stage three, stage five, live and heavier than the latest frame.",
+    "The Living Room installation — timeline on the wall, resident live and heavier than print.",
+    "Resident beside her own timeline. Stage three. Stage five. Body ahead of archive.",
   ]},
 ]);
 
@@ -1012,7 +1012,7 @@ registerPool('diary.artisan_gallery.s9._f12', [
   { when: {}, text: [
     " She publishes online anyway. Patrons explode. Scrutiny follows. She shoots more.",
     " Published anyway. Patrons explode. Scrutiny follows. She shoots more.",
-    " Online despite threats. More subjects. More frames. More appetite.",
+    " Online despite threats. More residents. More frames. More appetite.",
   ]},
 ]);
 
@@ -1042,8 +1042,8 @@ registerPool('diary.artisan_gallery.s10._f12', [
 
 registerPool('diary.artisan_gallery.s10._f13', [
   { when: {}, text: [
-    " New subjects every semester.",
-    " New subjects each semester. Same hunger. Better lighting.",
+    " New residents every semester.",
+    " New residents each semester. Same hunger. Better lighting.",
     " Semester after semester — new faces, same appetite, thicker archives.",
   ]},
 ]);

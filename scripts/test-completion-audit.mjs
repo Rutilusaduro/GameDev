@@ -789,6 +789,31 @@ check('psych-researcher-resident-framing', () => {
   assert.doesNotMatch(diary, /The subject was uncertain|My subject told me|First subject session|The subject is growing on schedule/i);
 });
 
+check('arc-subject-resident-framing', () => {
+  const evolved = read('src/gameData/evolvedForms.js');
+  const diary = read('src/textEngine/scenes/diary.js');
+  const growth = read('src/textEngine/scenes/growthEvent/personas.js');
+  const growthFr = read('src/textEngine/scenes/growthEvent/fragments.js');
+  const weigh = read('src/textEngine/scenes/weighIn/personas.js');
+  const phaseD = read('src/textEngine/scenes/diaryPhaseD.js');
+  const dinner = read('src/textEngine/scenes/dinner/reactions.js');
+  assert.match(evolved, /Fatten residents, shoot campus abundance/);
+  assert.match(evolved, /New residents every semester/);
+  assert.match(evolved, /Unmeasured residents often reveal/);
+  assert.match(evolved, /I need a volunteer with documented consent/);
+  assert.doesNotMatch(evolved, /Fatten subjects, shoot|New subjects every semester|Unmeasured subjects often|I need a subject with documented consent|The subject squirms/i);
+  assert.match(growth, /The resident is cooperating fully/);
+  assert.match(weigh, /The resident is cooperating/);
+  assert.match(growthFr, /resident has reached a new threshold/);
+  assert.match(phaseD, /More residents\. More frames/);
+  assert.match(phaseD, /New residents every semester/);
+  assert.doesNotMatch(phaseD, /More subjects\. More frames|New subjects every semester/i);
+  assert.match(dinner, /The model kept getting more interesting/);
+  assert.doesNotMatch(dinner, /The subject kept getting more interesting/i);
+  assert.match(diary, /focus resident selected largest portion/);
+  assert.doesNotMatch(diary, /Behavioral note: subject selected/i);
+});
+
 check('wife-lessons-hunt-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
   assert.match(evolved, /as the daughters led the lesson/);

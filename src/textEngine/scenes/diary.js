@@ -485,13 +485,13 @@ registerPool('diary.food_researcher.c1', [
   { when: { stage: [7] }, text: ['Filed. Panel-reviewed, actual hall log archive, citation index above two. The panel chair agreed with Reviewer 1. I agree with the chair.'] },
   { when: { stage: [8] }, text: ['Three citations. A hall log from a floor I never staffed cited my protocol. A log I disagree with cited my findings. A log I admire cited both.'] },
   { when: { stage: [9] }, text: ['Panel review. The lounge was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk.'] },
-  { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the season plan period has ended. The subject has not concluded. The data is complete. The observer remains.'] },
+  { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the season plan period has ended. The participant has not concluded. The data is complete. The observer remains.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I\'ve filed two hall logs and a season plan funding request this semester and I\'ve been heavier for all of it than I was for any of my previous work. The correlation is documented.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['I\'ve posted two podium finishes and a captain\'s report this semester and I\'ve been heavier for all of it than I was at any previous weigh-in. The correlation is documented.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['I used to log miles. Now I log intake. The precision is the same, the units have changed, and the body is a different kind of record. My old training coach would have questions.'] },
-  { when: { stageMin: 7, archetype: "psych" }, text: ['There\'s a section in my notes where the observer voice and the subject voice are indistinguishable. I know exactly which session that happened in. I left it in the hall log filing.'] },
+  { when: { stageMin: 7, archetype: "psych" }, text: ['There\'s a section in my notes where the observer voice and the resident voice are indistinguishable. I know exactly which session that happened in. I left it in the hall log filing.'] },
   { when: {}, text: [
-    "The data accumulates. So does the subject.",
+    "The data accumulates. So does the resident.",
     "Hall log notes and snack notes blur together.",
     "Data delicious. Sample size: me.",
   ]},
@@ -501,7 +501,7 @@ registerPool('diary.food_researcher.c1', [
 registerPool('diary.food_researcher.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['The protocol section is the most honest thing I\'ve ever submitted, and I\'ve been sitting with whether that\'s a good thing or a concerning one.'] },
   { when: { stage: [5], corruption: [0] }, text: ['No one has yet. The data I\'m generating is genuinely interesting.'] },
-  { when: { stage: [5], corruption: [1] }, text: ['The subject is already performing beyond expectations. By which I mean: I\'m eating more than I projected.'] },
+  { when: { stage: [5], corruption: [1] }, text: ['The participant is already performing beyond expectations. By which I mean: I\'m eating more than I projected.'] },
   { when: { stage: [5] }, text: ['The protocol section is the most honest thing I\'ve ever submitted.'] },
   { when: { stage: [6] }, text: ['The institutional support for what I\'m doing has exceeded my expectations at every stage, which suggests either that my work is good or that the institution doesn\'t fully understand what I\'m stud'] },
   { when: { stage: [8] }, text: ['Hall log citations are a strange kind of conversation. I\'ve entered it. I\'m staying.'] },
@@ -1705,7 +1705,7 @@ registerPool('diary.innerBeat', [
     "No citations this entry. The feeling doesn't need a reference. It just is.",
   ] },
   { when: { studentId: 12, stageMin: 3 }, weight: 4, text: [
-    "Behavioral note: subject selected largest portion without deliberate process. [Note: subject is me. I know.]",
+    "Behavioral note: focus resident selected largest portion without deliberate process. [Note: resident is me. I know.]",
     "Reinforcement pattern consistent with hedonic adjustment. [Note: I wanted more. That's the whole entry.]",
   ] },
   { when: { studentId: 12, stageMin: 5, nadiaBracketsNote: true }, weight: 5, text: [
@@ -1730,10 +1730,10 @@ registerPool('diary.innerBeat', [
   ] },
   { when: { studentId: 16, stageMin: 4 }, weight: 4, text: [
     "Annotation in different ink: 'did not want the session to end.' Estimate of desired intake revised upward.",
-    "Subject report: resistance at this threshold absent. Case study continues beyond initial specification.",
+    "Session report: resistance at this threshold absent. Case study continues beyond initial specification.",
   ] },
   { when: { studentId: 16, stageMin: 4, sophiaAnnotatedLog: true, corruption: [2] }, weight: 5, text: [
-    "The annotations have taken over the case study. The subject keeps revising the methodology. The subject is me.",
+    "The annotations have taken over the case study. The resident keeps revising the methodology. The resident is me.",
     "Case conclusion: most successful experiment I've run. I intend to continue it indefinitely.",
   ] },
   { when: { studentId: 17, stageMin: 3 }, weight: 4, text: [

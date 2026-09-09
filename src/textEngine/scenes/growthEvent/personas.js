@@ -384,7 +384,7 @@ registerModuleVariants("ge.reactionDialogue", [
     `"Past the resistance phase," she says, leaning back. "The data is compelling."`,
   ]},
   { when: { studentId: 12, corruption: [2], endStageMax: 5 }, weight: W, text: [
-    `"The subject is cooperating fully," she murmurs, meaning herself.`,
+    `"The resident is cooperating fully," she murmurs, meaning herself.`,
     `"Integrated," she says, hands on her softening middle.`,
   ]},
   { when: { studentId: 12, corruption: [0], endStageMin: 6 }, weight: W, text: [

@@ -1061,7 +1061,7 @@ registerPool('dinner.reaction.thinContextual._f184', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f185', [
-  { when: {}, text: [". \"The subject kept getting more interesting. Warmer. More to work with.\" She doesn't mean it meanly."] },
+  { when: {}, text: [". \"The model kept getting more interesting. Warmer. More to work with.\" She doesn't mean it meanly."] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f186', [
@@ -1069,7 +1069,7 @@ registerPool('dinner.reaction.thinContextual._f186', [
 ]);
 
 registerPool('dinner.reaction.thinContextual._f187', [
-  { when: {}, text: [". \"The subject kept getting more interesting. Warmer. More to work with.\" She doesn't mean it meanly."] },
+  { when: {}, text: [". \"The model kept getting more interesting. Warmer. More to work with.\" She doesn't mean it meanly."] },
 ]);
 
 registerPool('dinner.reaction.thinContextual._f188', [
