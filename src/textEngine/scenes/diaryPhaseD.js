@@ -1216,7 +1216,7 @@ registerPool('diary.pharmacist.s8._f7', [
   { when: {}, text: [
     "Mass transformation is no longer hypothetical. Campus-wide passive gain, testers at every stage, my own waistline a proof of concept.",
     "Mass transformation live — campus passive gain, testers everywhere, my waist the proof.",
-    "Hyposeason plan retired. Campus gains. I gain. Proof of concept complete.",
+    "Season plan retired. Campus gains. I gain. Proof of concept complete.",
   ]},
 ]);
 

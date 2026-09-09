@@ -477,22 +477,22 @@ registerPool('diary.eating_diarist', [
 // ── FOOD_RESEARCHER ───────────────────────────────────────────
 // ── diary.food_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.food_researcher.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['The season panel paperwork was forty-seven pages. I am the only researcher I know who is also the primary observation subject. I got the approval.'] },
-  { when: { stage: [5], corruption: [0] }, text: ['I have a lab space, a grant, a meal plan that is technically research infrastructure. The institutional support is real and I keep waiting for someone to notice what it\'s actually funding.'] },
-  { when: { stage: [5], corruption: [1] }, text: ['season panel approved. I am the researcher and the subject and the methodology accounts for this, which is the most interesting protocol section I\'ve ever written. The data will be good.'] },
-  { when: { stage: [5] }, text: ['The season panel paperwork was forty-seven pages. I am the only researcher I know who is also the primary observation subject. The committee found this unusual. They approved it.'] },
-  { when: { stage: [6] }, text: ['I have a lab space. I have a grant. I have a meal plan that is technically research infrastructure.'] },
-  { when: { stage: [7] }, text: ['Published. Peer-reviewed, actual journal, impact factor above two. \' The editor agreed with Reviewer 1. I agree with the editor.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The season panel paperwork was forty-seven pages. I am the only observer I know who is also the primary observation subject. I got the approval.'] },
+  { when: { stage: [5], corruption: [0] }, text: ['Prep station, season plan funding, meal plan filed as research infrastructure. The support is real. I keep waiting for someone to notice what it\'s actually funding.'] },
+  { when: { stage: [5], corruption: [1] }, text: ['season panel approved. I am the observer and the subject and the methodology accounts for this, which is the most interesting protocol section I\'ve ever written. The data will be good.'] },
+  { when: { stage: [5] }, text: ['The season panel paperwork was forty-seven pages. I am the only observer I know who is also the primary observation subject. The panel found this unusual. They approved it.'] },
+  { when: { stage: [6] }, text: ['I have a prep station space. I have season plan funding. I have a meal plan that is technically research infrastructure.'] },
+  { when: { stage: [7] }, text: ['Filed. Panel-reviewed, actual journal, impact factor above two. \' The editor agreed with Reviewer 1. I agree with the editor.'] },
   { when: { stage: [8] }, text: ['Three citations. A paper at a school I didn\'t attend cited my methodology. A paper I disagree with cited my findings. A paper I admire cited both.'] },
-  { when: { stage: [9] }, text: ['Keynote. The conference was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk.'] },
-  { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the season plan period has ended. The subject has not concluded. The data is complete. The researcher remains.'] },
-  { when: { stageMin: 7, archetype: "bookworm" }, text: ['I\'ve published two papers and a grant application this semester and I\'ve been heavier for all of it than I was for any of my previous work. The correlation is documented.'] },
+  { when: { stage: [9] }, text: ['Panel review. The lounge was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk.'] },
+  { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the season plan period has ended. The subject has not concluded. The data is complete. The observer remains.'] },
+  { when: { stageMin: 7, archetype: "bookworm" }, text: ['I\'ve published two papers and a season plan funding request this semester and I\'ve been heavier for all of it than I was for any of my previous work. The correlation is documented.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['I\'ve posted two podium finishes and a captain\'s report this semester and I\'ve been heavier for all of it than I was at any previous weigh-in. The correlation is documented.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['I used to log miles. Now I log intake. The precision is the same, the units have changed, and the body is a different kind of record. My old training coach would have questions.'] },
-  { when: { stageMin: 7, archetype: "psych" }, text: ['There\'s a section in my notes where the researcher voice and the subject voice are indistinguishable. I know exactly which session that happened in. I left it in the methodology paper.'] },
+  { when: { stageMin: 7, archetype: "psych" }, text: ['There\'s a section in my notes where the observer voice and the subject voice are indistinguishable. I know exactly which session that happened in. I left it in the hall log filing.'] },
   { when: {}, text: [
     "The data accumulates. So does the subject.",
-    "Lab notes and snack notes blur together.",
+    "Hall log notes and snack notes blur together.",
     "Data delicious. Sample size: me.",
   ]},
 
@@ -507,13 +507,13 @@ registerPool('diary.food_researcher.c2', [
   { when: { stage: [8] }, text: ['Citation counts are a strange kind of conversation. I\'ve entered it. I\'m staying.'] },
   { when: { stage: [9] }, text: ['The Q&A ran thirty minutes over scheduled time. Nobody left.'] },
   { when: { stage: [10] }, text: ['I am both, simultaneously, at the scale that data set always implied I would reach. This was always the endpoint.'] },
-  { when: { stageMin: 7, archetype: "bookworm" }, text: ['I choose to regard it as a research finding rather than an excuse.'] },
+  { when: { stageMin: 7, archetype: "bookworm" }, text: ['I choose to regard it as a hall log finding rather than an excuse.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['I choose to regard it as a training finding rather than an excuse.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['The season panel wouldn\'t let me interview her.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['I noted it as a finding.'] },
   { when: {}, text: [
-    "Hyposeason plan: more. Method: eat. Results: promising.",
-    "Lab notes and snack notes blur together.",
+    "Season plan: more. Method: eat. Results: promising.",
+    "Hall log notes and snack notes blur together.",
     "Data delicious. Sample size: me.",
   ]},
 
@@ -522,8 +522,8 @@ registerPool('diary.food_researcher.c2', [
 registerPool('diary.food_researcher.c3', [
 { when: { stage: [6] }, text: ['Possibly both.'] },
   { when: {}, text: [
-    "Hyposeason plan: more. Method: eat. Results: promising.",
-    "Lab notes and snack notes blur together.",
+    "Season plan: more. Method: eat. Results: promising.",
+    "Hall log notes and snack notes blur together.",
     "Data delicious. Sample size: me.",
   ]},
 
@@ -1165,7 +1165,7 @@ registerPool('diary.ff_author.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['I posted the first chapter and forty-three strangers commented by morning. I sat with that for a while. They understood what I was writing. I\'m not sure I understood it as well as they did.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I went back and read the chapter again and thought: maybe they\'re right. I ate a full breakfast before I started chapter two.'] },
   { when: { stage: [5] }, text: ['She\'s a literature student who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing.'] },
-  { when: { stage: [6] }, text: ['One commenter left a two-paragraph analysis of the chapter where the cheerleader\'s uniform finally splits that was more precise than anything my season plan committee has ever said about my actual aca'] },
+  { when: { stage: [6] }, text: ['One commenter left a two-paragraph analysis of the chapter where the cheerleader\'s uniform finally splits that was more precise than anything my season plan panel has ever said about my actual aca'] },
   { when: { stage: [7] }, text: ['I consider this a generous tribute.'] },
   { when: { stage: [8] }, text: ['The love that surrounds it is the point — the way the characters grow into themselves and are seen clearly and wanted for exactly what they are.'] },
   { when: { stage: [9] }, text: ['The fandom writes their own versions of the story, and some of those versions are about me — the anonymous author, imagined as the main character, large and cared for and fed. They\'re not wrong.'] },
@@ -1410,7 +1410,7 @@ registerPool('diary.psych_researcher.c1', [
   { when: {}, text: [
     "The data accumulates. The variable is noted.",
     "The panel would have questions. I have answers.",
-    "Self-study ongoing. Results robust.",
+    "Self-hall log ongoing. Results robust.",
   ]},
 
 ]);
@@ -1426,7 +1426,7 @@ registerPool('diary.psych_researcher.c2', [
   { when: {}, text: [
     "Variable: appetite. Outcome: significant.",
     "The panel would have questions. I have answers.",
-    "Self-study ongoing. Results robust.",
+    "Self-hall log ongoing. Results robust.",
   ]},
 
 ]);

@@ -76,12 +76,12 @@ export const EVOLVED_REACTIONS = {
     "I wrote the thing. It exists. The writing and the eating were always the same act. I understand that now.",
   ],
   food_researcher:[
-    "season panel approved the self-study. Officially a research subject. The data I'm collecting is extraordinary.",
-    "The institution is taking the season plan seriously. I have a lab. I have a grant application in. I have snacks.",
-    "First publication. A real journal. The reviewers called the methodology 'novel.' The methodology is me.",
+    "Season panel approved the self-study. Officially an observation subject. The data I'm collecting is extraordinary.",
+    "The institution is taking the season plan seriously. I have a prep station. I have a season plan funding request in. I have snacks.",
+    "First hall log filed. Official copy. The reviewers called the methodology 'novel.' The methodology is me.",
     "Cited in three other papers. One of them is from a program I applied to and didn't get in. Interesting.",
-    "Keynote at a nutrition conference. I arrived to the auditorium. The auditorium was not entirely prepared.",
-    "The researcher and the research subject have fully merged. The experiment is complete. The subject remains.",
+    "Panel presentation at the athletics review. I arrived to the auditorium. The auditorium was not entirely prepared.",
+    "The observer and the observation subject have fully merged. The experiment is complete. The subject remains.",
   ],
   // ── GAMER paths ─────────────────────────────────────────────────
   eating_streamer:[
@@ -282,11 +282,11 @@ export const EVOLVED_REACTIONS = {
     "Devices tick on bodies I equipped myself. My own mass feeds the builds that feed everyone else. The workshop hums whether I'm in it or not. I find that correct.",
   ],
   community_researcher:[
-    "First observation session. I went in as a researcher. I ate what was offered because refusing felt like contaminating the sample. I'm noting my own intake separately from the field notes.",
+    "First observation session. I went in as an observer. I ate what was offered because refusing felt like contaminating the sample. I'm noting my own intake separately from the field notes.",
     "The case study is developing. I'm present at more sessions than the methodology technically requires. The subjects haven't noticed I'm eating alongside them. I've noticed.",
     "I stopped pretending the notebook is what I'm there for. I'm still writing, but the writing is increasingly personal. The distinction between observer and participant is becoming difficult to maintain in good faith.",
-    "I've had to add a second protocol section. The first covers the subjects. The second covers the researcher. Both sections have been growing at a similar rate.",
-    "The paper is going to be honest. It was going to be analytical and dispassionate. It's going to be all of that and also honest. The researcher is a variable. I'm writing myself in.",
+    "I've had to add a second protocol section. The first covers the subjects. The second covers the observer. Both sections have been growing at a similar rate.",
+    "The hall log is going to be honest. It was going to be analytical and dispassionate. It's going to be all of that and also honest. The observer is a variable. I'm writing myself in.",
     "I'm the largest person in every room I enter for observation purposes. I've been in a lot of rooms. The data on participant immersion is extensive. The final report will be original.",
   ],
 };
@@ -350,12 +350,12 @@ export const EVOLVED_OUTFITS = {
     "Whatever fits this body. She has a tailor. The tailor is excellent. The clothes are extraordinary.",
   ],
   food_researcher:[
-    "Hall cardigan, custom-ordered. The standard one didn't cover the data. She made a note in the methodology.",
-    "Academic casual with a purpose — she needs pockets, always. The blazer accommodates everything.",
-    "Presentation attire for conferences. Wide-cut, professional, memorable. The slides are also memorable.",
-    "Keynote outfit. Her institution had a photographer there. The photos are impressive.",
-    "Research gear that accommodates field work, office work, and being the field. Practical and extraordinary.",
-    "She dresses like someone whose research has outlasted the original hypothesis. With confidence.",
+    "Hall cardigan, custom-ordered. The standard one didn't cover the data. She made a note in the protocol.",
+    "Hall casual with a purpose — she needs pockets, always. The blazer accommodates everything.",
+    "Presentation attire for panel reviews. Wide-cut, professional, memorable. The slides are also memorable.",
+    "Panel outfit. Her institution had a photographer there. The photos are impressive.",
+    "Observation gear that accommodates field work, office work, and being the field. Practical and extraordinary.",
+    "She dresses like someone whose hall log has outlasted the original hypothesis. With confidence.",
   ],
   eating_streamer:[
     "Stream outfit — comfortable, camera-ready, no restriction. The snacks are in frame. She is in frame.",
@@ -586,11 +586,11 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`${Math.round(s.lbs)} pounds. The second book's final draft. She sends it on a Sunday morning. You read it that day — 90,000 words about her body at every stage above 400 pounds, her belly described at each increment, her thighs, her arms, the way chairs feel, the way food tastes when you weigh ${Math.round(s.lbs)} pounds and you've been eating intentionally for three years. You text her that night: it's the best thing she's written. She replies an hour later: "I know. I was at dinner when you texted. My belly was so full I couldn't move and I kept thinking: I need to describe this exactly. I'm adding a chapter."`,
   ],
   food_researcher:[
-    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the season panel approval came through — she is both researcher and subject, officially, with institutional backing. She shows you the approval document. Her belly presses against the desk as she leans forward to point to her name in the subject section. "Primary participant," she says. She starts data collection that afternoon: weight, intake, measurements, date. The first entry is ${Math.round(s.lbs)} pounds. She takes it seriously.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Lab visit. She shows you the setup: scale, measurement tape, intake log, weekly protocol. She stands on the scale for you: 315. She measures her waist, her hips, her belly circumference — she writes the numbers down without expression. Then she opens the meal log. She's tracked every meal for eight weeks. The graph goes up. "The data is clean," she says. "The subject is cooperative." She means herself. She records your visit. She makes you sign as a witness.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Pre-publication draft. She shares it over dinner — she eats while you read it, answering questions in the margins you indicate. The protocol section describes her body at each measurement point with academic precision. Her belly at ${Math.round(s.lbs)} pounds is described in centimeters. Her thighs in circumference. Her weight gain graphed by week. The conclusions are unambiguous: "Subject demonstrates continued voluntary intake increase consistent with research objectives." She eats the rest of her dinner. "I want to be fatter when the second paper comes out," she says.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Acceptance email. She forwards it with no message. You call her. She's eating — you can hear it. "They accepted it," she says. "Subject at ${Math.round(s.lbs)} pounds, study ongoing, first paper published." She laughs once, briefly. "I'm the most thoroughly documented fat woman in the academic literature," she says. "I documented myself. I'm very proud of both of those things." She eats.`,
-    (s)=>`${Math.round(s.lbs)} pounds. Keynote. She stands at the podium — ${Math.round(s.lbs)} pounds, enormous, her belly a warm presence against the lectern — and presents for fifty minutes on appetite, voluntary weight gain, and longitudinal self-documentation. She puts her own measurements on the slide. Her waist, her belly, her hips — every number, publicly. The audience is silent. She finishes. The first question is: "How much do you plan to weigh at the end of the season plan?" She says: "More than this." She says it exactly like a observer with a hypothesis she has already confirmed.`,
+    (s)=>`She weighs ${Math.round(s.lbs)} pounds and the season panel approval came through — she is both observer and subject, officially, with institutional backing. She shows you the approval document. Her belly presses against the desk as she leans forward to point to her name in the subject section. "Primary participant," she says. She starts data collection that afternoon: weight, intake, measurements, date. The first entry is ${Math.round(s.lbs)} pounds. She takes it seriously.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Station visit. She shows you the setup: scale, measurement tape, intake log, weekly protocol. She stands on the scale for you: 315. She measures her waist, her hips, her belly circumference — she writes the numbers down without expression. Then she opens the meal log. She's tracked every meal for eight weeks. The graph goes up. "The data is clean," she says. "The subject is cooperative." She means herself. She records your visit. She makes you sign as a witness.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Pre-filing draft. She shares it over dinner — she eats while you read it, answering questions in the margins you indicate. The protocol section describes her body at each measurement point with measured precision. Her belly at ${Math.round(s.lbs)} pounds is described in centimeters. Her thighs in circumference. Her weight gain graphed by week. The conclusions are unambiguous: "Subject demonstrates continued voluntary intake increase consistent with season plan objectives." She eats the rest of her dinner. "I want to be fatter when the second hall log volume comes out," she says.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Acceptance email. She forwards it with no message. You call her. She's eating — you can hear it. "They accepted it," she says. "Subject at ${Math.round(s.lbs)} pounds, hall log ongoing, first volume filed." She laughs once, briefly. "I'm the most thoroughly documented fat woman on this floor," she says. "I documented myself. I'm very proud of both of those things." She eats.`,
+    (s)=>`${Math.round(s.lbs)} pounds. Panel review. She stands at the hall lounge mic — ${Math.round(s.lbs)} pounds, enormous, her belly a warm presence against the podium table — and presents for fifty minutes on appetite, voluntary weight gain, and longitudinal self-documentation. She puts her own measurements on the slide. Her waist, her belly, her hips — every number, publicly. The audience is silent. She finishes. The first question is: "How much do you plan to weigh at the end of the season plan?" She says: "More than this." She says it exactly like an observer with a hypothesis she has already confirmed.`,
   ],
   eating_streamer:[
     (s)=>`She weighs ${Math.round(s.lbs)} pounds and the stream is live. She's in the middle of a boss fight and the bowl of ramen is already half gone. Her belly presses against the desk edge. Her thighs fill the gaming chair. The chat is going extremely fast — half of it is the game, half of it is her, her body, the food disappearing. She finishes the boss and the ramen at almost the same time. She looks at the camera. "I'm ${Math.round(s.lbs)} pounds," she says. "I gained nine pounds this month." The chat reacts. The viewer count goes up.`,
@@ -701,7 +701,7 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`State qualifier. Mary Jane is ${Math.round(s.lbs)} pounds and her competition jersey is already getting tight across the front — she commissioned it two months ago — and Darcy watches her walk to the weigh-in with an expression you've seen before on people who've revised something important. The contest starts. You watch from the stands. Midway through the final round, Mary Jane crosses Darcy on the scoreboard, and Darcy stops eating for exactly one second. The crowd makes a sound. You make a sound. Mary Jane keeps eating.`,
     (s)=>`The state fair finals. She's ${Math.round(s.lbs)} pounds in the new jersey and the press are there — two photographers and a features writer who keeps asking you questions you answer vaguely. Mary Jane at the table is something to see from a distance: the full scale of her at a competition table, her belly rounding against the edge, her chest filling the jersey front, eating with the focused certainty of someone for whom this has stopped being a challenge and become a performance. She wins. Darcy starts clapping and doesn't stop. "I trained all year," Darcy says to no one in particular. She keeps clapping.`,
     (s)=>`Tri-state invitational. They built a bigger scale. You were there when the fair director said it — addressing the weigh-in queue, trying to be casual — and the whole line understood who the scale was for. Mary Jane is ${Math.round(s.lbs)} pounds and she steps onto the scale with the ease of someone who has made peace with the number before it appears. The crowd that gathers for her weigh-in is larger than the crowd for any other competitor's whole event. Darcy has a seat in the front row. She brought a sign.`,
-    (s)=>`She can't get to the fair herself — they bring the fair to her. The committee set up a satellite table in the largest event room available; you followed the signs down two hallways and found Mary Jane at approximately ${Math.round(s.lbs)} pounds filling the corner of it, the table edge pressing against the full warm circumference of her belly, her chest resting enormous and heavy on top of it, her jersey printed custom and wide enough to read as a banner. Darcy is here — 500 lbs herself now, seated to the right, not competing. The crowd standing at the edges of the room is quiet the way crowds go quiet when the person at the center of the spectacle is the spectacle entirely. The judges exchange a look. The horn sounds.`,
+    (s)=>`She can't get to the fair herself — they bring the fair to her. The organizers set up a satellite table in the largest event room available; you followed the signs down two hallways and found Mary Jane at approximately ${Math.round(s.lbs)} pounds filling the corner of it, the table edge pressing against the full warm circumference of her belly, her chest resting enormous and heavy on top of it, her jersey printed custom and wide enough to read as a banner. Darcy is here — 500 lbs herself now, seated to the right, not competing. The crowd standing at the edges of the room is quiet the way crowds go quiet when the person at the center of the spectacle is the spectacle entirely. The judges exchange a look. The horn sounds.`,
   ],
   // ── FARM GIRL: wife_lessons ─────────────────────────────────────
   wife_lessons:[
@@ -731,7 +731,7 @@ export const EVOLVED_ACTIVITY_META = {
   eating_captain:  { label:"Enter a Competition",      apCost:1, gainRange:[4,7],  relBonus:10 },
   big_squad_captain:{ label:"Attend a Squad Event",    apCost:1, gainRange:[2,5],  relBonus:12 },
   eating_diarist:  { label:"Read Her Latest Entry",    apCost:1, gainRange:[3,6],  relBonus:11 },
-  food_researcher: { label:"Visit Her Lab",            apCost:1, gainRange:[3,6],  relBonus:10 },
+  food_researcher: { label:"Visit Her Station",            apCost:1, gainRange:[3,6],  relBonus:10 },
   eating_streamer: { label:"📡 Stream Event",           apCost:1, gainRange:[4,8],  relBonus:10 },
   speed_eater:     { label:"Watch a Challenge",        apCost:1, gainRange:[4,9],  relBonus:9  },
   ranked_feedee:   { label:"🎮 Run a Session",          apCost:1, gainRange:[8,22], relBonus:12 },
@@ -1771,7 +1771,7 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
       title:"Week 3: Initial Data",
       phases:[
         {
-          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and has submitted the first quarterly data summary to her season plan committee. The presentation is tomorrow. She's prepared fourteen slides. The data is accurate. She reviewed it three times tonight and has eaten through the review process.`,
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and has submitted the first quarterly data summary to her season plan panel. The presentation is tomorrow. She's prepared fourteen slides. The data is accurate. She reviewed it three times tonight and has eaten through the review process.`,
           choices:[
             {id:"coached_on_framing",label:"Help her frame the preliminary findings",result:`You review the framing together. She's precise about the numbers; you help her decide what narrative goes around them. By the end you've helped her build a presentation that is technically accurate and contextually... manageable. She writes notes in the margin. She eats while she writes.`,lbs:5,rel:7,flag:"coached_framing"},
             {id:"let_her_prepare",label:"Leave her to it — she knows the material",result:`She knows the material. She's been the material. The presentation will be fine. You tell her this and she nods once and goes back to her laptop.`,lbs:3,rel:5,flag:"self_prepared"},
@@ -1786,8 +1786,8 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
         },
       ],
       endings:[
-        {condition:h=>h.includes("coached_framing")&&h.includes("ate_before"),text:(h,s,gain)=>`${s.name} goes into her first panel presentation at ${Math.round(s.lbs+gain)} pounds, well-framed and well-fed. The data is solid. The framing is careful. The committee has been prepped to receive the findings as findings. Time to present.`,gainBonus:4,relBonus:7,startsPresentation:true},
-        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into her first panel presentation at ${Math.round(s.lbs+gain)} pounds with her data and her methodology and her composure. The committee is going to find this very interesting. Time to present.`,gainBonus:2,relBonus:5,startsPresentation:true},
+        {condition:h=>h.includes("coached_framing")&&h.includes("ate_before"),text:(h,s,gain)=>`${s.name} goes into her first panel presentation at ${Math.round(s.lbs+gain)} pounds, well-framed and well-fed. The data is solid. The framing is careful. The panel has been prepped to receive the findings as findings. Time to present.`,gainBonus:4,relBonus:7,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into her first panel presentation at ${Math.round(s.lbs+gain)} pounds with her data and her methodology and her composure. The panel is going to find this very interesting. Time to present.`,gainBonus:2,relBonus:5,startsPresentation:true},
       ]
     },
     // stageIdx 1 — ~340 lbs — Quarter Review
@@ -1795,23 +1795,23 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
       title:"Quarter Review",
       phases:[
         {
-          text:(h,s)=>`Quarter two. ${s.name} is ${Math.round(s.lbs)} pounds and the data has accelerated past the initial projection range. She's presented a note explaining the variance as within acceptable deviation. The committee has accepted this explanation. She's been eating through the write-up process, which she has also documented, because she documents everything.`,
+          text:(h,s)=>`Quarter two. ${s.name} is ${Math.round(s.lbs)} pounds and the data has accelerated past the initial projection range. She's presented a note explaining the variance as within acceptable deviation. The panel has accepted this explanation. She's been eating through the write-up process, which she has also documented, because she documents everything.`,
           choices:[
             {id:"help_explain_variance",label:"Help her build the variance explanation",result:`You work through it together. The explanation is: dietary variables, stress-response eating, ambient caloric increase in the research environment. All true. All technically sufficient. She recites it like someone who's recited it to herself many times.`,lbs:5,rel:7,flag:"variance_prepared"},
-            {id:"ask_how_she_is",label:"Ask how she's actually doing with all of this",result:`She looks at you for a long moment. 'I'm eating three thousand calories a day and logging every one of them and the committee chair said the methodology is 'compelling.' So.' She eats something. 'I'm doing fine.'`,lbs:4,rel:10,flag:"personal_check"},
+            {id:"ask_how_she_is",label:"Ask how she's actually doing with all of this",result:`She looks at you for a long moment. 'I'm eating three thousand calories a day and logging every one of them and the panel chair said the methodology is 'compelling.' So.' She eats something. 'I'm doing fine.'`,lbs:4,rel:10,flag:"personal_check"},
           ]
         },
         {
-          text:(h,s)=>`The quarter review is tomorrow. The rate of gain has accelerated. The committee is going to notice. ${h.includes('variance_prepared')?'She has a solid variance explanation prepared. She\'s also had a solid dinner.':'She\'s been quiet about how she\'s doing. She\'s also been eating steadily.'}`,
+          text:(h,s)=>`The quarter review is tomorrow. The rate of gain has accelerated. The panel is going to notice. ${h.includes('variance_prepared')?'She has a solid variance explanation prepared. She\'s also had a solid dinner.':'She\'s been quiet about how she\'s doing. She\'s also been eating steadily.'}`,
           choices:[
             {id:"big_dinner",label:"Take her to dinner tonight — she deserves it",result:`You take her somewhere substantial. She orders thoroughly and eats carefully and the bill is significant. On the way out she says: 'This will be in the dietary log.' She sounds like someone who finds this funny. She is someone who finds this funny.`,lbs:9,rel:8,flag:"pre_review_dinner"},
-            {id:"final_prep",label:"One more run-through of the data presentation",result:`She runs the deck one more time. The data is what it is. She presents it the way she presents everything: with precision and composure. The committee will receive what they receive.`,lbs:3,rel:6,flag:"final_prepped"},
+            {id:"final_prep",label:"One more run-through of the data presentation",result:`She runs the deck one more time. The data is what it is. She presents it the way she presents everything: with precision and composure. The panel will receive what they receive.`,lbs:3,rel:6,flag:"final_prepped"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("personal_check")&&h.includes("pre_review_dinner"),text:(h,s,gain)=>`${s.name} goes into the quarter review at ${Math.round(s.lbs+gain)} pounds, having eaten well and told you she's fine. The committee is going to have questions. She's going to have answers. Time to present.`,gainBonus:5,relBonus:9,startsPresentation:true},
-        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into the quarter review at ${Math.round(s.lbs+gain)} pounds prepared to defend every data point. The committee is paying attention now. Time to present.`,gainBonus:3,relBonus:6,startsPresentation:true},
+        {condition:h=>h.includes("personal_check")&&h.includes("pre_review_dinner"),text:(h,s,gain)=>`${s.name} goes into the quarter review at ${Math.round(s.lbs+gain)} pounds, having eaten well and told you she's fine. The panel is going to have questions. She's going to have answers. Time to present.`,gainBonus:5,relBonus:9,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into the quarter review at ${Math.round(s.lbs+gain)} pounds prepared to defend every data point. The panel is paying attention now. Time to present.`,gainBonus:3,relBonus:6,startsPresentation:true},
       ]
     },
     // stageIdx 2 — ~432 lbs — Chapter 4 Defense
@@ -1819,7 +1819,7 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
       title:"Chapter 4 Defense",
       phases:[
         {
-          text:(h,s)=>`Chapter 4 is the hardest chapter. It covers the acceleration of gain across the season plan period, the nonlinear increase in appetite, and what ${s.name} refers to in her own draft as 'confounding variables.' The committee is going to read between the lines. She is ${Math.round(s.lbs)} pounds and she knows this.`,
+          text:(h,s)=>`Chapter 4 is the hardest chapter. It covers the acceleration of gain across the season plan period, the nonlinear increase in appetite, and what ${s.name} refers to in her own draft as 'confounding variables.' The panel is going to read between the lines. She is ${Math.round(s.lbs)} pounds and she knows this.`,
           choices:[
             {id:"reviewed_chapter4",label:"Review Chapter 4 with her before submission",result:`You read it together. She's written it precisely. Every sentence is defensible. Some sentences are defensible because they are technically accurate while being contextually overwhelming. You help her keep the ones that are clearest. She keeps all of them.`,lbs:6,rel:9,flag:"reviewed_ch4"},
             {id:"trust_the_data",label:"Trust the data — it speaks for itself",result:`She's confident in the data because the data is accurate. 'If they ask,' she says, 'I'll answer. The data isn't the problem.' She eats something from her desk. 'The data is the data.'`,lbs:4,rel:6,flag:"trusted_data"},
@@ -1834,23 +1834,23 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
         },
       ],
       endings:[
-        {condition:h=>h.includes("reviewed_ch4")&&h.includes("prepared_iyer"),text:(h,s,gain)=>`${s.name} goes into Chapter 4 defense at ${Math.round(s.lbs+gain)} pounds with a response prepared for every anticipated question. The committee is going to ask the questions. She's going to answer them. Time to present.`,gainBonus:7,relBonus:11,startsPresentation:true},
+        {condition:h=>h.includes("reviewed_ch4")&&h.includes("prepared_iyer"),text:(h,s,gain)=>`${s.name} goes into Chapter 4 defense at ${Math.round(s.lbs+gain)} pounds with a response prepared for every anticipated question. The panel is going to ask the questions. She's going to answer them. Time to present.`,gainBonus:7,relBonus:11,startsPresentation:true},
         {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into Chapter 4 defense at ${Math.round(s.lbs+gain)} pounds. The data is accurate. The defense will be thorough. Time to present.`,gainBonus:4,relBonus:7,startsPresentation:true},
       ]
     },
-    // stageIdx 3 — ~524 lbs — Full Committee Review
+    // stageIdx 3 — ~524 lbs — full panel review
     {
-      title:"Full Committee Review",
+      title:"Full Panel Review",
       phases:[
         {
-          text:(h,s)=>`Full committee. Five members. External eyes on the data for the first time. ${s.name} is ${Math.round(s.lbs)} pounds and the data reflects this and the committee is going to be in the same room with both.`,
+          text:(h,s)=>`Full panel. Five members. External eyes on the data for the first time. ${s.name} is ${Math.round(s.lbs)} pounds and the data reflects this and the panel is going to be in the same room with both.`,
           choices:[
             {id:"full_committee_prep",label:"Run a full mock defense — all five perspectives",result:`You run it. She presents to an imagined panel of five and you interrupt from five different angles. She handles all of them with precision and composure and a steady appetite. By the end she's ready. She's also, by any measure, considerably larger than when the hall log began.`,lbs:6,rel:10,flag:"mock_defended"},
-            {id:"confidence_talk",label:"Talk through her confidence — she knows this material better than anyone",result:`She knows the material because she is the material. You remind her of this. She looks at you for a long moment. 'The committee is going to see the numbers,' she says. 'And then they're going to see me.' A pause. 'I'm prepared for both.'`,lbs:4,rel:11,flag:"confidence_built"},
+            {id:"confidence_talk",label:"Talk through her confidence — she knows this material better than anyone",result:`She knows the material because she is the material. You remind her of this. She looks at you for a long moment. 'The panel is going to see the numbers,' she says. 'And then they're going to see me.' A pause. 'I'm prepared for both.'`,lbs:4,rel:11,flag:"confidence_built"},
           ]
         },
         {
-          text:(h,s)=>`The full committee review is tomorrow. Five people who have been reading her work and will now see her in person. The data and the subject have not been in the same room together yet. Tomorrow they will be.`,
+          text:(h,s)=>`The full panel review is tomorrow. Five people who have been reading her work and will now see her in person. The data and the subject have not been in the same room together yet. Tomorrow they will be.`,
           choices:[
             {id:"substantial_meal",label:"A substantial meal tonight — she's earned it",result:`A proper dinner. She eats fully, the way she's learned to eat over the course of the hall log, which is to say thoroughly and without apology. The meal will be in the log. Everything is in the log.`,lbs:10,rel:9,flag:"committee_eve_dinner"},
             {id:"early_night",label:"Early night — she needs to be sharp",result:`She goes home early. She eats something before bed — logged, noted, filed — and sleeps and tomorrow she presents what she is to the people who have been reading about what she is.`,lbs:4,rel:6,flag:"early_night"},
@@ -1858,8 +1858,8 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
         },
       ],
       endings:[
-        {condition:h=>h.includes("mock_defended")&&h.includes("committee_eve_dinner"),text:(h,s,gain)=>`${s.name} goes into full committee review at ${Math.round(s.lbs+gain)} pounds, prepared from every angle, well-fed, and ready to be the subject in the room with her own data. This is the moment. Time to present.`,gainBonus:10,relBonus:13,startsPresentation:true},
-        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into full committee review at ${Math.round(s.lbs+gain)} pounds. The data and the subject are about to share a room. Time to present.`,gainBonus:5,relBonus:8,startsPresentation:true},
+        {condition:h=>h.includes("mock_defended")&&h.includes("committee_eve_dinner"),text:(h,s,gain)=>`${s.name} goes into full panel review at ${Math.round(s.lbs+gain)} pounds, prepared from every angle, well-fed, and ready to be the subject in the room with her own data. This is the moment. Time to present.`,gainBonus:10,relBonus:13,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} goes into full panel review at ${Math.round(s.lbs+gain)} pounds. The data and the subject are about to share a room. Time to present.`,gainBonus:5,relBonus:8,startsPresentation:true},
       ]
     },
     // stageIdx 4 — ~626 lbs — External Examiner
@@ -1891,23 +1891,23 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
       title:"Final Defense",
       phases:[
         {
-          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and submitting the completed final report next week. The final defense is in four days. The committee has read the full document. She has eaten through the writing of every chapter and the dietary log is the most complete document she's ever produced and it ends today.`,
+          text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and submitting the completed final report next week. The final defense is in four days. The panel has read the full document. She has eaten through the writing of every chapter and the dietary log is the most complete document she's ever produced and it ends today.`,
           choices:[
-            {id:"read_last_chapter",label:"Read the last chapter with her",result:`She reads it aloud. The final chapter is careful and precise and documents the hall log's conclusion with academic rigor. The hall log is complete. The subject is 820 pounds. Both sentences are in the document. Both are accurate.`,lbs:7,rel:13,flag:"read_final"},
+            {id:"read_last_chapter",label:"Read the last chapter with her",result:`She reads it aloud. The final chapter is careful and precise and documents the hall log's conclusion with careful rigor. The hall log is complete. The subject is 820 pounds. Both sentences are in the document. Both are accurate.`,lbs:7,rel:13,flag:"read_final"},
             {id:"talk_about_what_next",label:"Talk about what comes after the final report",result:`She's been thinking about it. 'I'll start a new notebook,' she says. 'The season plan period ends. The subject doesn't.' She eats something. 'The data keeps accumulating. That's what data does.'`,lbs:5,rel:12,flag:"after_talk"},
           ]
         },
         {
-          text:(h,s)=>`Day of the final defense. ${s.name} is ${Math.round(s.lbs)} pounds and the committee is assembled and she's about to defend a final report that is about herself and that she has lived for the entirety of its writing. She is the most rigorous subject this committee has ever examined.`,
+          text:(h,s)=>`Day of the final defense. ${s.name} is ${Math.round(s.lbs)} pounds and the panel is assembled and she's about to defend a final report that is about herself and that she has lived for the entirety of its writing. She is the most rigorous subject this panel has ever examined.`,
           choices:[
             {id:"final_meal_before",label:"One last meal before the defense",result:`She chooses something specific — a place she's been going since the second month of the hall log, logged every visit. She eats thoroughly and precisely. 'For the record,' she says, meaning the dietary log. Also meaning: I've thought about this and I'm doing it intentionally and I want a witness.`,lbs:12,rel:12,flag:"final_meal"},
-            {id:"walk_in_with_her",label:"Walk into the defense with her",result:`You walk in with her. The committee is there. She's there. The data is projected on a screen behind her. The subject and the data are in the same room. She stands at the front and looks at the numbers. 'Good data,' she says, mostly to herself. Then she presents.`,lbs:5,rel:14,flag:"walked_in"},
+            {id:"walk_in_with_her",label:"Walk into the defense with her",result:`You walk in with her. The panel is there. She's there. The data is projected on a screen behind her. The subject and the data are in the same room. She stands at the front and looks at the numbers. 'Good data,' she says, mostly to herself. Then she presents.`,lbs:5,rel:14,flag:"walked_in"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("read_final")&&h.includes("final_meal"),text:(h,s,gain)=>`${s.name} enters her final defense at ${Math.round(s.lbs+gain)} pounds having read the last chapter aloud and eaten the last meal before the committee vote. The final report is accurate. She is the final report. Time to present.`,gainBonus:16,relBonus:17,startsPresentation:true},
-        {condition:()=>true,text:(h,s,gain)=>`${s.name} enters her final defense at ${Math.round(s.lbs+gain)} pounds. The hall log is complete. The subject is here. The committee will vote. Time to present.`,gainBonus:9,relBonus:12,startsPresentation:true},
+        {condition:h=>h.includes("read_final")&&h.includes("final_meal"),text:(h,s,gain)=>`${s.name} enters her final defense at ${Math.round(s.lbs+gain)} pounds having read the last chapter aloud and eaten the last meal before the panel vote. The final report is accurate. She is the final report. Time to present.`,gainBonus:16,relBonus:17,startsPresentation:true},
+        {condition:()=>true,text:(h,s,gain)=>`${s.name} enters her final defense at ${Math.round(s.lbs+gain)} pounds. The hall log is complete. The subject is here. The panel will vote. Time to present.`,gainBonus:9,relBonus:12,startsPresentation:true},
       ]
     },
   ],
@@ -3479,7 +3479,7 @@ export const EVOLVED_FORM_META = {
   eating_captain:       { title:"Eating Captain",       color:"#2980b9" },
   big_squad_captain:    { title:"Squad Reformation",    color:"#16a085" },
   eating_diarist:       { title:"Eating Diarist",       color:"#9b59b6" },
-  food_researcher:      { title:"Food Researcher",      color:"#2c3e50" },
+  food_researcher:      { title:"Hall Log Keeper",      color:"#2c3e50" },
   eating_streamer:      { title:"Eating Streamer",      color:"#e74c3c" },
   speed_eater:          { title:"Speed Eater",          color:"#d35400" },
   chapter_hostess:      { title:"Chapter Hostess",      color:"#6c3483" },

@@ -49,6 +49,11 @@ const BANNED = [
   { id: 'for-the-study', re: /\bfor the study\b/i },
   { id: 'disrupts-the-study', re: /disrupts the study/i },
   { id: 'feederism-contemporary-university', re: /Feederism in the Contemporary University/i },
+  { id: 'visit-her-lab', re: /Visit Her Lab/i },
+  { id: 'food-researcher-title', re: /Food Researcher/ },
+  { id: 'academic-literature', re: /academic literature/i },
+  { id: 'keynote-speaker-skill', re: /Keynote Speaker/ },
+  { id: 'irb-approval-skill', re: /IRB Approval/ },
 ];
 
 const ALLOW_LINE = [
