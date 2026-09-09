@@ -592,6 +592,20 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('content-stage-journal-framing', () => {
+  const content = read('src/gameData/content.js');
+  assert.match(content, /skinny for someone who grew up on sweet potato pie/);
+  assert.match(content, /the resident with jam for every mood/);
+  assert.match(content, /intervention sisters came to help/);
+  assert.match(content, /the fastest on this track/);
+  assert.match(content, /wider than some teammates' whole bodies/);
+  assert.doesNotMatch(content, /skinny for a girl who grew up|the girl with jam for every mood|intervention girls came|the fastest girl on this track|the fastest girl on the track|wider than some girls' whole bodies/);
+  const journals = read('src/gameData/evolvedForms.js');
+  assert.match(journals, /ultimate hall appetite case study/);
+  assert.match(journals, /letting the RA stuff me like this/);
+  assert.doesNotMatch(journals, /appetite psychology|letting a resident stuff me like this/);
+});
+
 check('early-portrait-journal-framing', () => {
   const early = read('src/textEngine/scenes/earlyGain/fragments.js');
   assert.match(early, /still mostly who she was at move-in/);

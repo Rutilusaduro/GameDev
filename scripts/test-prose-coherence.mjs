@@ -7,6 +7,7 @@ import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORM_LIST } from '../src/gameData/dorms.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
+import { STAGE_REACTIONS } from '../src/gameData/content.js';
 import {
   EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
   EVOLUTION_BUTTON_BLURB, WL_LESSONS,
@@ -244,6 +245,14 @@ const BANNED = [
   /\bpsychology project\b/i,
   /\bsaying it's all for her research\b/i,
   /\bEvery time Nadia feeds me\b/i,
+  /\bskinny for a girl who grew up\b/i,
+  /\bthe girl with jam for every mood\b/i,
+  /\bintervention girls came\b/i,
+  /\bthe fastest girl on this track\b/i,
+  /\bthe fastest girl on the track\b/i,
+  /\bwider than some girls' whole bodies\b/i,
+  /\bletting a resident stuff me\b/i,
+  /\bappetite psychology\b/i,
 ];
 
 function assertClean(text, label) {
@@ -460,9 +469,16 @@ for (const line of FEEDER_SUBJECT_JOURNALS.swimmer || []) {
   assertClean(line, 'feeder journal swimmer');
 }
 
-for (const archetype of ['bookworm', 'cheerleader', 'athlete', 'culinary', 'gamer', 'psych', 'nursing', 'overachiever', 'quiet', 'farm_girl']) {
+for (const archetype of Object.keys(FEEDER_SUBJECT_JOURNALS)) {
   for (const line of FEEDER_SUBJECT_JOURNALS[archetype] || []) {
-    assertClean(line, `feeder journal ${archetype}`);
+    if (line) assertClean(line, `feeder journal ${archetype}`);
+  }
+}
+
+for (const [archetype, lines] of Object.entries(STAGE_REACTIONS)) {
+  for (const [idx, fn] of lines.entries()) {
+    const text = typeof fn === 'function' ? fn({ lbs: 180 + idx * 25, name: 'Maya' }) : fn;
+    if (text) assertClean(text, `stage reaction ${archetype} stage ${idx}`);
   }
 }
 
