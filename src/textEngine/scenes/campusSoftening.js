@@ -103,7 +103,7 @@ registerPool("diary.campus", [
     ] },
   { when: { campusFattening: true, archetype: "bookworm" }, priority: 2,
     text: [
-      "Library carrels: more snacks, softer occupants. Campus-wide trend, not my section alone.",
+      "Library carrels: more snacks, softer occupants. Campus-wide trend, not my hall alone.",
       "Reference trail on 'ambient caloric environment' now includes the whole quad.",
       "Residents' notebooks and waistbands both thicker this month.",
     ] },
@@ -210,7 +210,7 @@ registerPool("attitude.campus", [
     ] },
   { when: { campusFattening: true, campusTierMin: 2 }, priority: 3,
     text: [
-      "The whole campus eats like my section does now — I'm not ahead, I'm in the middle of something bigger.",
+      "The whole campus eats like my floor does now — I'm not ahead, I'm in the middle of something bigger.",
       "Everyone's softer in the halls. The saturation feels normal. Good.",
     ] },
   { when: { campusFattening: true, campusTierMin: 3 }, priority: 4,

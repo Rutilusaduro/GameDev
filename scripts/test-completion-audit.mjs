@@ -966,7 +966,7 @@ check('cassidy-swimmer-voice', () => {
     /\bfrom her book\b/i,
   ];
 
-  const blockRe = /\{[^{}]*when:\s*\{[^{}]*studentId:\s*1(?!\d)[^{}]*\}[^{}]*text:\s*\[[\s\S]*?\]\s*,?\s*\}/g;
+  const blockRe = /\{[^{}]*when:\s*\{[^{}]*studentId:\s*(?:1(?!\d)|\[1\])[^{}]*\}[^{}]*text:\s*\[[\s\S]*?\]\s*,?\s*\}/g;
 
   for (const file of CASSIDY_VOICE_FILES) {
     const src = read(file);
@@ -976,6 +976,27 @@ check('cassidy-swimmer-voice', () => {
     for (const re of BANNED_IN_CASSIDY) {
       assert.doesNotMatch(cassidyText, re, `${file}: Cassidy voice still has ${re}`);
     }
+  }
+
+  const intimacy = read('src/textEngine/scenes/intimacy/personas.js');
+  const intimacyCassidyRe = /\{[^{}]*when:\s*\{[^{}]*"studentId":\[1\][^{}]*\}[^{}]*text:\s*\[[\s\S]*?\]\s*,?\s*\}/g;
+  const intimacyCassidyBlocks = intimacy.match(intimacyCassidyRe) ?? [];
+  assert.ok(intimacyCassidyBlocks.length >= 4, 'intimacy/personas.js must contain Cassidy (studentId [1]) blocks');
+  const intimacyCassidyText = intimacyCassidyBlocks.join('\n');
+  assert.doesNotMatch(intimacyCassidyText, /\bglasses\b/i, 'intimacy Cassidy still bookworm');
+  assert.doesNotMatch(intimacyCassidyText, /\bphysics\b/i, 'intimacy Cassidy still bookworm');
+  assert.match(intimacyCassidyText, /lane|log|split|pressure/i, 'intimacy Cassidy must use swimmer voice');
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(intimacyCassidyText, re, `intimacy/personas.js Cassidy blocks still has ${re}`);
+  }
+  const intimacySwimmerRe = /\{[^{}]*when:\s*\{[^{}]*"archetype":\["swimmer"\][^{}]*\}[^{}]*text:\s*\[[\s\S]*?\]\s*,?\s*\}/g;
+  const intimacySwimmerBlocks = intimacy.match(intimacySwimmerRe) ?? [];
+  assert.ok(intimacySwimmerBlocks.length >= 4, 'intimacy/personas.js must contain archetype swimmer blocks');
+  const intimacySwimmerText = intimacySwimmerBlocks.join('\n');
+  assert.doesNotMatch(intimacySwimmerText, /\bglasses\b/i, 'intimacy swimmer blocks still bookworm');
+  assert.match(intimacySwimmerText, /lane|pool|split|recovery|dryland|logged/i, 'intimacy swimmer must use athletic voice');
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(intimacySwimmerText, re, `intimacy/personas.js swimmer blocks still has ${re}`);
   }
 
   const CASSIDY_NAMED_FILES = [
@@ -1089,7 +1110,7 @@ check('campus-softening-resident-framing', () => {
   const campus = read('src/textEngine/scenes/campusSoftening.js');
   assert.match(campus, /Residents on my floor have that same post-table warmth/);
   assert.match(campus, /Even staff in the hall look well-fed/);
-  assert.doesNotMatch(campus, /Girls on my floor|Even teachers in the hall|classmates are eating|class is full of subjects/i);
+  assert.doesNotMatch(campus, /Girls on my floor|Even teachers in the hall|classmates are eating|class is full of subjects|\bmy section\b/i);
   const roster = read('src/views/RosterView.jsx');
   assert.match(roster, /residentWithdrawn/);
   assert.doesNotMatch(roster, /classmateWithdrawn/i);
