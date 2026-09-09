@@ -253,7 +253,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
 
   return(
     <div style={C.overlay} onClick={(e)=>{ if(e.target===e.currentTarget) handleCloseFromResponse(); }}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in talk-modal" style={{
         ...C.modal,
         maxWidth: activeResponse?.topic?.sceneType === 'devour' ? 620 : 500,
         borderColor: activeResponse?.topic?.sceneType === 'devour' ? "#802030" : "#5a1890",

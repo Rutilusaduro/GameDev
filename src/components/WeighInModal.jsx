@@ -314,7 +314,7 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
 
   return(
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560}}>
+      <div className="hall-pass-modal-in weigh-in-modal" style={{...C.modal,maxWidth:560}}>
         <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:4}}>⚖ WEIGH-IN · {student.name?.toUpperCase()}</div>
 
         {settled&&phase==="scene"&&(

@@ -349,7 +349,7 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
-import { buildOppositionContext, getEvolvedOpMessage, counterGateReason } from './gameData/oppositionIntegration.js';
+import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
 import {
@@ -2103,7 +2103,7 @@ export default function HallPass(){
     }
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
-    // ── ROSTER UNLOCK ─ spirit reach (slots) + passive trust (queue) ──
+    // ── ROSTER UNLOCK ─ hall reach (slots) + passive trust (queue) ──
     updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
@@ -2647,6 +2647,7 @@ export default function HallPass(){
 
   // ── OPPOSITION / AIB ─────────────────────────────────────────────
   const runOppositionCounter=(counterId,options={})=>{
+    counterId=normalizeCounterId(counterId);
     trackAction(`counter:${counterId}`);
     const oppCtx=buildOppositionContext({
       students, ownedSkills, ownedHallSkills, facultyAffinity,
@@ -2672,7 +2673,7 @@ export default function HallPass(){
       ...options,
       evolvedOpMessage,
       archivistDiscreditFree:archivistFree,
-      spendEchoedWill:(counterId==='floor_pressure'||counterId==='spirit_pressure')?spendEchoedWill:undefined,
+      spendEchoedWill:counterId==='floor_pressure'?spendEchoedWill:undefined,
     });
     if(result.apCost&&ap<result.apCost){push(`⚠️ Need ${result.apCost} AP.`);return;}
     if(result.apCost) setAp(a=>a-result.apCost);

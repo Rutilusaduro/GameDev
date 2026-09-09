@@ -40,7 +40,7 @@ export function OppositionHearingModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 380 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 580, background: 'linear-gradient(160deg,#0a0408,#1a0810,#0a0408)', border: '1px solid #8b304050', maxHeight: '88vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in opposition-hearing-modal" style={{ ...C.modal, maxWidth: 580, border: '1px solid #8b304050', maxHeight: '88vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#c44', marginBottom: 6 }}>👁 {def.title.toUpperCase()}</div>
         {advocate && hasAdvocatePath && !done && (
           <div style={{ fontSize: 10, color: '#8090a8', marginBottom: 8 }}>

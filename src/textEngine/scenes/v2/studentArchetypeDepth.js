@@ -128,23 +128,23 @@ registerModuleVariants('dinner.v2.depth', studentVariants(dinnerByStudent));
 registerModuleVariants('wi.v2.depth', studentVariants(wiByStudent));
 registerModuleVariants('session.v2.depth', studentVariants(sessionByStudent));
 
-const spiritByStudent = {
+const embodimentByStudent = {
   0: ['Inside Brittany, hunger feels like competition — every craving a drill, every bite a score to beat.'],
   1: ['Inside Cassidy, appetite arrives as data first — warmth second, documented third.'],
-  2: ['Inside Kylie, even possession performs — hunger staged, satisfaction camera-ready.'],
+  2: ['Inside Kylie, even riding along performs — hunger staged, satisfaction camera-ready.'],
   3: ['Inside Serena, want moves like training — disciplined start, inevitable abundance.'],
   4: ['Inside Fiona, fullness becomes composition — sensory, slow, reverent.'],
   5: ['Inside Destiny, hunger is another system to optimize until it wins.'],
   6: ['Inside Tiffany, appetite hosts itself — gracious, social, already normal.'],
   7: ['Inside Priya, cravings slot between deadlines and still win.'],
-  8: ['Inside Maya, possession is silence with teeth — want honest, words optional.'],
+  8: ['Inside Maya, the ride is silence with teeth — want honest, words optional.'],
   9: ['Inside Chloé, hunger tastes like abroad — scandalous, delighted, rich.'],
   10: ['Inside Reneé, the resident rides a palate — texture, heat, recipe becoming body.'],
   11: ['Inside Kaylee, nourishment feels like care given and received at once.'],
   12: ['Inside Nadia, appetite observed from within — clinical mask slipping by degrees.'],
   13: ['Inside Daisy, hunger homely — generous, practical, impossible to refuse.'],
   14: ['Inside Mary Jane, want feels like Sunday weather — familiar, sweet, abundant.'],
-  15: ['Inside Lilith, possession predatory — pleasure taken, not requested.'],
+  15: ['Inside Lilith, riding her feels predatory — pleasure taken, not requested.'],
   16: ['Inside Sophia, formulation language thins; want speaks louder.'],
   17: ['Inside Indiana, appetite maps like ruins — every craving a clue worth digging.'],
   18: ['Inside Talia, hunger is an experiment escaping its own controls.'],
@@ -238,7 +238,7 @@ const echoByStudent = {
   18: ['Talia\'s echo trial data crystallized — moment archived where hypothesis became body.'],
 };
 
-registerModuleVariants('embodiment.v2.depth', studentVariants(spiritByStudent));
+registerModuleVariants('embodiment.v2.depth', studentVariants(embodimentByStudent));
 registerModuleVariants('resonance.v2.depth', studentVariants(resonanceByStudent));
 registerModuleVariants('ritual.v2.depth', studentVariants(ritualByStudent));
 registerModuleVariants('dream.v2.depth', studentVariants(dreamByStudent));

@@ -5,6 +5,15 @@
 import { getSuspicionBracket } from './communityResearcher.js';
 import { getStage } from './stages.js';
 
+const LEGACY_COUNTER_IDS = {
+  spirit_pressure: 'floor_pressure',
+};
+
+/** Map legacy opposition counter ids from older saves/UI. */
+export function normalizeCounterId(counterId) {
+  return LEGACY_COUNTER_IDS[counterId] || counterId;
+}
+
 const EVOLVED_OP_MESSAGES = {
   delivery_hive: '✦ Hive intake delays the agenda — drones reroute compliance paperwork.',
   eating_streamer: '✦ Stream distraction floods the Board feed with indulgent clips.',
@@ -58,7 +67,7 @@ export function buildOppositionContext({
 }
 
 export function counterGateReason(counter, ctx) {
-  switch (counter.id) {
+  switch (normalizeCounterId(counter.id)) {
     case 'machine_fatten':
       return ctx.hasGrowthChamber ? null : 'Requires growth accelerator chamber';
     case 'public_discredit':
@@ -68,7 +77,6 @@ export function counterGateReason(counter, ctx) {
       if (ctx.relMaxStudent >= 70) return null;
       return 'Requires institutional cover or a resident at 70+ relationship';
     case 'floor_pressure':
-    case 'spirit_pressure':
       return ctx.hasEchoedWill ? null : 'Requires Echoed Will (Influence tree)';
     case 'faculty_testimony':
       return (ctx.facultyAffinityScore ?? 0) >= 60 || ctx.relMaxStudent >= 60

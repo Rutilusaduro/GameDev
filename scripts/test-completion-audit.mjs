@@ -148,6 +148,7 @@ check('ui-polish-css', () => {
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
     'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
+    'talk-modal', 'weigh-in-modal', 'opposition-hearing-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -215,6 +216,33 @@ check('embodiment-modal-polish', () => {
   const backdrop = read('src/components/v2/SceneBackdrop.jsx');
   assert.match(backdrop, /variant = 'embodiment'/);
   assert.doesNotMatch(backdrop, /VARIANTS\.spirit/);
+});
+
+check('core-modal-polish', () => {
+  const css = read('src/index.css');
+  for (const cls of ['talk-modal', 'weigh-in-modal', 'opposition-hearing-modal']) {
+    assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
+  }
+  assert.match(read('src/components/TalkModal.jsx'), /talk-modal/);
+  assert.match(read('src/components/WeighInModal.jsx'), /weigh-in-modal/);
+  assert.match(read('src/components/OppositionHearingModal.jsx'), /opposition-hearing-modal/);
+});
+
+check('embodiment-depth-framing', () => {
+  const depth = read('src/textEngine/scenes/v2/studentArchetypeDepth.js');
+  assert.match(depth, /embodimentByStudent/);
+  assert.doesNotMatch(depth, /spiritByStudent/);
+  assert.doesNotMatch(depth, /possession performs/);
+  assert.doesNotMatch(depth, /possession is silence/);
+  assert.doesNotMatch(depth, /possession predatory/);
+});
+
+check('opposition-counter-normalize', () => {
+  const integration = read('src/gameData/oppositionIntegration.js');
+  assert.match(integration, /normalizeCounterId/);
+  assert.match(integration, /spirit_pressure: 'floor_pressure'/);
+  const opposition = read('src/gameData/opposition.js');
+  assert.match(opposition, /normalizeCounterId\(counterId\)/);
 });
 
 check('owned-hall-skills', () => {

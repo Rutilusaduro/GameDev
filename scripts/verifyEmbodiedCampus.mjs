@@ -20,7 +20,7 @@ import {
 import { handleEmbodiedMove, handleEmbodiedEventResolve } from '../src/gameData/v2/handlers.js';
 import { createInitialV2State } from '../src/gameData/v2/state.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
-import { UNLOCK_POOL_IDS } from '../src/gameData/spirits.js';
+import { UNLOCK_POOL_IDS } from '../src/gameData/dorms.js';
 
 const rng = () => Math.random();
 let failed = 0;

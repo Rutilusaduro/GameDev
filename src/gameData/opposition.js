@@ -12,8 +12,10 @@ import {
   oppositionUnlockLine, oppositionProxyLine, supernaturalActLine, agendaResolveLine, counterSuccessLine,
 } from './oppositionText.js';
 import {
-  counterGateReason, getEvolvedOpMessage, proxyUnlockFlags, recordCounterType, wellnessScrutinyBonus,
+  counterGateReason, getEvolvedOpMessage, normalizeCounterId, proxyUnlockFlags, recordCounterType, wellnessScrutinyBonus,
 } from './oppositionIntegration.js';
+
+export { normalizeCounterId };
 
 export const AIB_MEMBERS = [
   { id: 'vance', name: 'Dr. Helena Vance', role: 'Chair, Dean of Student Life', resolve: 85, corruption: 0, weightLbs: 145, stance: 'hostile' },
@@ -393,6 +395,7 @@ export function getAdvocateScrutinyMod(advocate) {
 }
 
 export function runAibCounter(opposition, counterId, memberId, options = {}) {
+  counterId = normalizeCounterId(counterId);
   const counter = AIB_COUNTERS.find((c) => c.id === counterId);
   if (!counter) return { opposition, message: null, scrutinyDelta: 0, apCost: 0 };
   let next = { ...opposition, aib: { ...opposition.aib, members: [...opposition.aib.members] } };
@@ -426,7 +429,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
       moneyDelta: 0,
     };
   }
-  if ((counterId === 'floor_pressure' || counterId === 'spirit_pressure') && next.aib.agendaQueue.length) {
+  if (counterId === 'floor_pressure' && next.aib.agendaQueue.length) {
     if (options.spendEchoedWill && !options.spendEchoedWill()) {
       return { opposition: next, message: '⚠️ Echoed Will spent — nothing left to press.', scrutinyDelta: 0, apCost: 0, moneyDelta: 0 };
     }
