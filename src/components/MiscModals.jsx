@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { getFullnessStage } from '../gameData/sessions.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
@@ -25,10 +26,11 @@ export function EvolutionOfferModal({ chooseEvolution, evolutionModal, setEvolut
   );
 }
 
-export function SessionResultModal({ sessionResult, setSessionResult }){
+export function SessionResultModal({ sessionResult, setSessionResult, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled]);
   return(
         <div style={C.overlay}>
-          <div style={C.modal}>
+          <div className="hall-pass-modal-in" style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>SESSION COMPLETE — #{sessionResult.sessionCount}</div>
             <div style={{fontSize:12,color:"#7a50a0",marginBottom:12}}>
               {sessionResult.student.name} · {sessionResult.student.lbs} lbs · {getFullnessStage(sessionResult.fullnessPct).label} ({sessionResult.fullnessPct}%)
@@ -42,7 +44,7 @@ export function SessionResultModal({ sessionResult, setSessionResult }){
                 She can now comfortably eat {sessionResult.capacityBonus}% more than when you first started feeding her privately.
               </div>
             </div>
-            <button style={C.btn("#5818a8")} onClick={()=>setSessionResult(null)}>Continue →</button>
+            <button style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setSessionResult(null); }}>Continue →</button>
           </div>
         </div>
   );
@@ -115,10 +117,11 @@ export function DormUnlockModal({ dorms, onContinue }) {
   );
 }
 
-export function TierUpModal({ setStudents, setTierUpModal, tierUpModal }){
+export function TierUpModal({ setStudents, setTierUpModal, tierUpModal, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled]);
   return(
         <div style={C.overlay}>
-          <div style={{...C.modal,maxWidth:500}}>
+          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500}}>
             <div style={{fontSize:9,letterSpacing:3,color:tierUpModal.newTier.color,marginBottom:8}}>RELATIONSHIP MILESTONE</div>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
               <span style={{fontSize:26}}>{tierUpModal.newTier.emoji}</span>
@@ -149,6 +152,7 @@ export function TierUpModal({ setStudents, setTierUpModal, tierUpModal }){
               if(tierUpModal.newTier.id===3){
                 setStudents(prev=>prev.map(s=>s.id!==tierUpModal.student.id?s:{...s,gainMultiplier:(s.gainMultiplier||1)*1.1}));
               }
+              playHallPassSound('confirm', soundEnabled);
               setTierUpModal(null);
             }}>Continue →</button>
           </div>

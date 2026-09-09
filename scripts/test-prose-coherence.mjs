@@ -7,7 +7,10 @@ import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORM_LIST } from '../src/gameData/dorms.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
-import { EVOLVED_OUTFITS, EVOLVED_EVENTS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/evolvedForms.js';
+import {
+  EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
+  FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
+} from '../src/gameData/evolvedForms.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
@@ -20,6 +23,8 @@ import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
 import '../src/textEngine/scenes/campusExplorationText.js';
+import '../src/textEngine/scenes/diary.js';
+import { renderDiary } from '../src/textEngine/scenes/diary.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -52,6 +57,8 @@ const BANNED = [
   /\bschool nurse\b/i,
   /\bschool file\b/i,
   /\bcooking class\b/i,
+  /\bincoming classes\b/i,
+  /\bincoming class\b/i,
 ];
 
 function assertClean(text, label) {
@@ -223,4 +230,35 @@ for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
   }
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom OK');
+for (const line of FEEDER_SUBJECT_JOURNALS.swimmer || []) {
+  assertClean(line, 'feeder journal swimmer');
+}
+
+for (const archetype of ['bookworm', 'cheerleader']) {
+  for (const line of FEEDER_SUBJECT_JOURNALS[archetype] || []) {
+    assertClean(line, `feeder journal ${archetype}`);
+  }
+}
+
+for (const line of EVOLVED_REACTIONS.campus_legend || []) {
+  assertClean(line, 'campus legend reaction');
+}
+
+const activityForms = ['community_researcher', 'food_researcher', 'campus_legend', 'chapter_hostess', 'wife_lessons'];
+const activityStudent = { name: 'Maya', lbs: 340, archetype: 'swimmer' };
+for (const formId of activityForms) {
+  const beats = EVOLVED_ACTIVITY_TEXT[formId];
+  if (!beats) continue;
+  for (const [idx, beat] of beats.entries()) {
+    const text = typeof beat === 'function' ? beat(activityStudent) : beat;
+    if (text) assertClean(text, `evolved activity ${formId} beat ${idx}`);
+  }
+}
+
+const campusLegendDiary = renderDiary(
+  { ...INIT_STUDENTS[0], evolvedForm: 'campus_legend', lbs: 420, archetype: 'foodie', name: 'Riley' },
+  24,
+);
+if (campusLegendDiary) assertClean(campusLegendDiary, 'campus legend diary render');
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals OK');

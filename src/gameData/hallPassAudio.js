@@ -7,7 +7,7 @@ function getCtx() {
   return audioCtx;
 }
 
-/** @param {'unlock'|'week'|'click'|'confirm'} kind */
+/** @param {'unlock'|'week'|'click'|'confirm'|'tier'|'session'} kind */
 export function playHallPassSound(kind, enabled = true) {
   if (!enabled) return;
   const ctx = getCtx();
@@ -48,6 +48,23 @@ export function playHallPassSound(kind, enabled = true) {
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
       osc.start(t);
       osc.stop(t + 0.18);
+    } else if (kind === 'tier') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(330, t);
+      osc.frequency.exponentialRampToValueAtTime(494, t + 0.12);
+      osc.frequency.exponentialRampToValueAtTime(587, t + 0.26);
+      gain.gain.setValueAtTime(0.042, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.38);
+      osc.start(t);
+      osc.stop(t + 0.38);
+    } else if (kind === 'session') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(294, t);
+      osc.frequency.exponentialRampToValueAtTime(392, t + 0.14);
+      gain.gain.setValueAtTime(0.028, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+      osc.start(t);
+      osc.stop(t + 0.24);
     }
   } catch {
     /* audio optional */

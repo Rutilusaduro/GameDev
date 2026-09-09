@@ -8782,7 +8782,7 @@ export default function HallPass(){
       />}
 
       {/* ── TIER-UP MODAL ── */}
-      {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}
+      {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal} soundEnabled={soundEnabled}/>}
 
       {/* ── SOCIAL EVENT PICKER ── */}
 
@@ -8834,7 +8834,7 @@ export default function HallPass(){
       />}
 
       {/* ── SESSION RESULT ── */}
-      {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult}/>}
+      {sessionResult&&<SessionResultModal sessionResult={sessionResult} setSessionResult={setSessionResult} soundEnabled={soundEnabled}/>}
       {weekPlannerOpen&&(
         <WeekPlannerModal
           students={students}

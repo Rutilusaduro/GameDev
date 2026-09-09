@@ -1066,7 +1066,7 @@ registerPool('diary.campus_legend.c1', [
   { when: { stage: [6] }, text: ['A freshman I\'ve never spoken to referenced \'the legend of the dining hall\' in a group chat I was added to. She meant me.'] },
   { when: { stage: [7] }, text: ['My name on a booth. The dining director did it herself, with a small brass plaque, and told me about it during a meal I was having. I looked at the plaque for a while. Then I finished eating.'] },
   { when: { stage: [8] }, text: ['A campus tour guide mentioned me by name to a group of prospectives. I was eating nearby and overheard. \' I considered interrupting. I decided to finish my meal instead.'] },
-  { when: { stage: [9] }, text: ['Incoming classes are told about me during orientation. I\'ve confirmed this with four separate first-years who told me independently. The story varies slightly in the telling.'] },
+  { when: { stage: [9] }, text: ['Incoming residents are told about me during orientation. I\'ve confirmed this with four separate first-years who told me independently. The story varies slightly in the telling.'] },
   { when: { stage: [10] }, text: ['I came here not knowing anyone or anything. Now I am known before I arrive anywhere on this campus. The campus shaped me and I shaped it back. We are the same thing now.'] },
   { when: {}, text: [
     "The booth is mine. The dining hall knows. Good.",

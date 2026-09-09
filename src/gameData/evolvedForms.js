@@ -183,7 +183,7 @@ export const EVOLVED_REACTIONS = {
     "Stories are spreading. A freshman I've never met referenced 'the legend of the dining hall.' That's me.",
     "The booth now has my name on it. Unofficially. Then officially. The dining director did it herself.",
     "Future students hear about me before they arrive. A campus tour guide mentioned me by name. She was kind.",
-    "I am campus mythology. Incoming classes are told about me during orientation. I have heard this directly.",
+    "I am campus mythology. Incoming residents are told about me during orientation. I have heard this directly.",
     "I have become the campus. The campus has grown around me. We are one thing now.",
   ],
   salon_appetit:[
@@ -1678,7 +1678,7 @@ She is in the chair just outside the frame. I can see her from here.`,
         },
       ],
       endings:[
-        {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further")&&h.includes("pledge_close"),text:`Rush season opening feast. She said "519 pounds, I built this at every size" and the pledges understood. Your sorority students are heavier. The culture has been transmitted to the incoming class and it will persist.`,gainBonus:19,relBonus:16},
+        {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further")&&h.includes("pledge_close"),text:`Rush season opening feast. She said "519 pounds, I built this at every size" and the pledges understood. Your sorority students are heavier. The culture has been transmitted to the incoming pledge line and it will persist.`,gainBonus:19,relBonus:16},
         {condition:h=>h.includes("full_funding")&&h.includes("push_pledges_further"),text:`Opening feast. Fully funded, pledges fed extra, sorority students heavier. The culture is transmitted.`,gainBonus:12,relBonus:11},
         {condition:h=>h.includes("full_funding"),text:`Opening feast. Full table. The pledges understand what they've joined.`,gainBonus:7,relBonus:7},
         {condition:()=>true,text:`Opening feast. Table cleared. Culture transmitted.`,gainBonus:0,relBonus:4},
