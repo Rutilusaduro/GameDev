@@ -22,7 +22,7 @@ export const GAIN_CONFIG = {
   stuffedBonusCap: 5,       // permanent capacity for ending the week stuffed
   stuffedBaseChance: 0.5,   // 50% base, +10% per consecutive stuffed week
   stuffedChancePerStreak: 0.1,
-  forceFeed: { base: 0.45, perSpiritLevel: 0.04, overPenalty: 0.5, min: 0.05, max: 0.95 },
+  forceFeed: { base: 0.45, perReachLevel: 0.04, overPenalty: 0.5, min: 0.05, max: 0.95 },
   // weekly maintenance burn (informational — her own eating covers it; the
   // your calories are pure surplus)
   burnPerDayBase: 2000,
@@ -52,7 +52,7 @@ export const forceFeedChance = (s, fullnessCost, reachLevel = 1) => {
   const overFraction = Math.max(0, ((s.fullness || 0) - cap) / cap);
   const sizeFraction = fullnessCost / cap;
   const c = GAIN_CONFIG.forceFeed;
-  const chance = c.base + (reachLevel - 1) * c.perSpiritLevel - overFraction * c.overPenalty - sizeFraction * 0.3;
+  const chance = c.base + (reachLevel - 1) * c.perReachLevel - overFraction * c.overPenalty - sizeFraction * 0.3;
   return Math.min(c.max, Math.max(c.min, chance));
 };
 

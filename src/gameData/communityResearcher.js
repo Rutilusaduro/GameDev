@@ -558,6 +558,3 @@ export const HAVE_A_CHAT_SCENES = [
     winCondition: (h) => h.includes('concede_framework') || h.includes('no_didnt_know') || h.includes('yes_corroborates'),
   },
 ];
-
-/** @deprecated use getCassidyTier */
-export const getMadelineTier = getCassidyTier;

@@ -548,7 +548,7 @@ export default function HallPass(){
   // wifeLessonsState: persistent {mjStudentId,stage,daughters:{Emma,Chloe,Kezia,Lila},moms:{Darlene,Wanda,Patrice},session:null|{lessonChosen,lessonId,conversationState,log}}
   // session.conversationState: null|{person,stageEntry,optionIdx,subIdx,done,resultText}
   const [competitiveGainerState, setCompetitiveGainerState] = useState(null);
-  // competitiveGainerState: persistent {priyaStudentId,spirit,chatLog:[{text,isProf,wk}],measuredStudentIds:[],measuredComparisons:{},lastChatWeek,corkboardVisitCount,open,view,subState}
+  // competitiveGainerState: persistent {priyaStudentId,drive,chatLog:[{text,isRa,wk}],measuredStudentIds:[],measuredComparisons:{},lastChatWeek,corkboardVisitCount,open,view,subState}
   // view: null|'corkboard'|'measurement_picker'|'measurement_result'|'self_review'|'binge'
   // subState: result/scene data for the current view
   const [cgChatOpen, setCgChatOpen] = useState(false);
@@ -3089,8 +3089,11 @@ export default function HallPass(){
     return{waist:r(waist),bust:r(bust),hip:r(hip),thigh:r(thigh),arm:r(arm)};
   };
 
-  const getCGSpiritTier=(spirit)=>{
-    return CG_CONFIG.spiritTiers.find(t=>spirit>=t.min&&spirit<=t.max)||CG_CONFIG.spiritTiers[0];
+  const cgDrive=(cgState)=>cgState?.drive??cgState?.spirit??0;
+
+  const getCGDriveTier=(drive)=>{
+    const tiers=CG_CONFIG.driveTiers;
+    return tiers.find(t=>drive>=t.min&&drive<=t.max)||tiers[0];
   };
 
   const getCGStageKey=(lbs)=>{
@@ -3105,7 +3108,7 @@ export default function HallPass(){
 
   const initCompetitiveGainerState=(s)=>({
     priyaStudentId:s.id,
-    spirit:0,
+    drive:0,
     chatLog:[],
     measuredStudentIds:[],
     measuredComparisons:{},
@@ -3300,7 +3303,7 @@ export default function HallPass(){
 
   // Chat message generator — called on week advance and on manual chat check
   const generateCGChatMessages=(priya,allStudents,cgState,currentWeek)=>{
-    const tier=getCGSpiritTier(cgState.spirit);
+    const tier=getCGDriveTier(cgDrive(cgState));
     const stageKey=getCGStageKey(priya.lbs);
     const msgs=[];
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
@@ -3354,13 +3357,13 @@ export default function HallPass(){
   const doCGCorkboard=()=>{
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
-      const tier=getCGSpiritTier(prev.spirit);
+      const tier=getCGDriveTier(cgDrive(prev));
       const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
       const idx=(prev.corkboardVisitCount||0)%scenes.length;
       const sceneText=scenes[idx];
-      // Spirit gain: check if any visible student is within threat range
+      // Drive gain: check if any visible student is within threat range
       const priya=students.find(st=>st.id===prev.priyaStudentId);
-      let spiritGain=rnd(CG_CONFIG.spiritGainNeutral[0],CG_CONFIG.spiritGainNeutral[1]);
+      let driveGain=rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
       if(priya){
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
         const visible=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
@@ -3368,15 +3371,15 @@ export default function HallPass(){
           const sM=getMeasurements(s.lbs,s.bodyType);
           CG_CONFIG.categories.forEach(cat=>{
             if(sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){
-              spiritGain+=rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1]);
+              driveGain+=rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]);
             }
           });
         });
       }
-      const nextSpirit=prev.spirit+spiritGain;
+      const nextDrive=cgDrive(prev)+driveGain;
       const priyaNow=students.find(st=>st.id===prev.priyaStudentId);
-      const chatMsgs=priyaNow?generateCGChatMessages(priyaNow,students,{...prev,spirit:nextSpirit},week):[];
-      return{...prev,spirit:nextSpirit,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,chatLog:[...prev.chatLog,...chatMsgs],lastChatWeek:week,view:'corkboard',subState:{sceneText,spiritGain}};
+      const chatMsgs=priyaNow?generateCGChatMessages(priyaNow,students,{...prev,drive:nextDrive},week):[];
+      return{...prev,drive:nextDrive,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,chatLog:[...prev.chatLog,...chatMsgs],lastChatWeek:week,view:'corkboard',subState:{sceneText,driveGain}};
     });
   };
 
@@ -3385,14 +3388,14 @@ export default function HallPass(){
       if(!prev) return prev;
       const priya=students.find(s=>s.id===prev.priyaStudentId);
       if(!priya) return prev;
-      const tier=getCGSpiritTier(prev.spirit);
+      const tier=getCGDriveTier(cgDrive(prev));
       const stageKey=getCGStageKey(priya.lbs);
       const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
       const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
-      const spiritGain=rnd(2,5);
-      return{...prev,spirit:prev.spirit+spiritGain,view:'self_review',subState:{sceneText,spiritGain}};
+      const driveGain=rnd(2,5);
+      return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
   };
 
@@ -3411,7 +3414,7 @@ export default function HallPass(){
       // Determine threats by category
       const threats=[];
       const reactions={};
-      const tier=getCGSpiritTier(prev.spirit);
+      const tier=getCGDriveTier(cgDrive(prev));
       CG_CONFIG.categories.forEach(cat=>{
         let rel='priya_larger';
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
@@ -3419,17 +3422,17 @@ export default function HallPass(){
         const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
         reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, girlName:target.name, bodypart:bodypartLabel(cat)})};
       });
-      const spiritGain=threats.length>0
-        ? threats.length*rnd(CG_CONFIG.spiritGainThreat[0],CG_CONFIG.spiritGainThreat[1])
-        : rnd(CG_CONFIG.spiritGainNeutral[0],CG_CONFIG.spiritGainNeutral[1]);
+      const driveGain=threats.length>0
+        ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
+        : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
       const sceneText=`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
       const measuredComparisons={...(prev.measuredComparisons||{}),[targetStudentId]:{week,priyaM,targetM,reactions,threats}};
-      return{...prev,spirit:prev.spirit+spiritGain,measuredStudentIds:newMeasured,measuredComparisons,
+      return{...prev,drive:cgDrive(prev)+driveGain,measuredStudentIds:newMeasured,measuredComparisons,
         view:'measurement_result',
-        subState:{targetStudentId,priyaM,targetM,sceneText,reactions,threats,spiritGain}};
+        subState:{targetStudentId,priyaM,targetM,sceneText,reactions,threats,driveGain}};
     });
   };
 
@@ -3439,11 +3442,11 @@ export default function HallPass(){
       if(!prev) return prev;
       const priya=students.find(s=>s.id===prev.priyaStudentId);
       if(!priya) return prev;
-      const tier=getCGSpiritTier(prev.spirit);
-      const tierIdx=CG_CONFIG.spiritTiers.indexOf(tier);
+      const tier=getCGDriveTier(cgDrive(prev));
+      const tierIdx=CG_CONFIG.driveTiers.indexOf(tier);
       const stageId=Math.min(7,getStage(priya.lbs).id);
       const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
-      const mult=CG_CONFIG.bingeSpiritMults[Math.max(0,tierIdx)];
+      const mult=CG_CONFIG.bingeDriveMults[Math.max(0,tierIdx)];
       const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
       const stageKey=getCGStageKey(priya.lbs);
       const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
@@ -3480,7 +3483,8 @@ export default function HallPass(){
         targetValue:comparison?.targetValue,
       });
       const msg={text:`[You] ${text}`,isRa:true,isProf:true,wk:week};
-      return{...prev,spirit:prev.spirit+opt.spiritDelta,chatLog:[...prev.chatLog,msg]};
+      const delta=opt.driveDelta??opt.spiritDelta??0;
+      return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
     });
   };
 
@@ -9017,10 +9021,10 @@ export default function HallPass(){
       {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
-      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgRaReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
+      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgDrive={cgDrive} cgRaReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
-      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
+      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgDrive={cgDrive} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled}/>}

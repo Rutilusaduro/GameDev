@@ -17,18 +17,19 @@ function isRaMessage(msg) {
   return !!(msg?.isRa ?? msg?.isProf);
 }
 
-export function CompetitiveGainerChatModal({ competitiveGainerState, students, getCGSpiritTier, cgRaReply, setCgChatOpen, soundEnabled = true }){
+export function CompetitiveGainerChatModal({ competitiveGainerState, students, getCGDriveTier, cgDrive, cgRaReply, setCgChatOpen, soundEnabled = true }){
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled]);
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.evolvedForm==='competitive_gainer');
         if(!priya||!cgS) return null;
-        const tier=getCGSpiritTier(cgS.spirit);
+        const drive=cgDrive?.(cgS)??cgS.drive??cgS.spirit??0;
+        const tier=getCGDriveTier(drive);
         return(
           <div style={{...C.overlay,zIndex:370}}>
             <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
               <div style={{display:"flex",alignItems:"center",marginBottom:12}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC}}>💬 SOFTENING STATS</div>
-                <div style={{marginLeft:"auto",fontSize:9,color:CG_DIM}}>Drive {cgS.spirit} · {tier.label}</div>
+                <div style={{marginLeft:"auto",fontSize:9,color:CG_DIM}}>Drive {drive} · {tier.label}</div>
               </div>
               {/* Chat log */}
               <div style={{maxHeight:320,overflowY:"auto",marginBottom:12,padding:"8px 10px",background:"rgba(232,41,74,0.04)",border:`1px solid ${CG_DIM}40`,borderRadius:5}}>
@@ -47,7 +48,7 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
                   {CG_CHAT_TEMPLATES.raReplies.map(opt=>(
                     <button key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
                       onClick={()=>{ playHallPassSound('click', soundEnabled); cgRaReply(opt.id); }}>
-                      {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{opt.spiritDelta} drive</span>
+                      {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{opt.driveDelta??opt.spiritDelta??0} drive</span>
                     </button>
                   ))}
                 </div>
@@ -58,25 +59,27 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
         );
 }
 
-export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGSpiritTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true }){
+export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGDriveTier, cgDrive, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true }){
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.id===cgS.priyaStudentId);
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, cgS?.view, cgS?.priyaStudentId]);
         if(!priya) return null;
-        const tier=getCGSpiritTier(cgS.spirit);
+        const drive=cgDrive?.(cgS)??cgS.drive??cgS.spirit??0;
+        const tier=getCGDriveTier(drive);
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
-        const tierBarPct=Math.min(100,cgS.spirit/60*100);
+        const tierBarPct=Math.min(100,drive/60*100);
         const isBlob=getStage(priya.lbs).id>=10;
 
         // ── Corkboard view ──
         if(cgS.view==='corkboard'){
-          const{sceneText,spiritGain}=cgS.subState||{};
+          const{sceneText,driveGain,spiritGain}=cgS.subState||{};
+          const gain=driveGain??spiritGain;
           return(
             <div style={{...C.overlay,zIndex:365}}>
               <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📌 CORKBOARD</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
-                <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{spiritGain} · Now {tier.label} ({cgS.spirit})</div>
+                <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain} · Now {tier.label} ({drive})</div>
                 <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
             </div>
@@ -85,7 +88,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
 
         // ── Self-review view ──
         if(cgS.view==='self_review'){
-          const{sceneText,spiritGain}=cgS.subState||{};
+          const{sceneText,driveGain,spiritGain}=cgS.subState||{};
+          const gain=driveGain??spiritGain;
           return(
             <div style={{...C.overlay,zIndex:365}}>
               <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
@@ -109,7 +113,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                     </div>
                   )}
                 </div>
-                <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{spiritGain}</div>
+                <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain}</div>
                 <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
             </div>
@@ -144,7 +148,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
 
         // ── Measurement result ──
         if(cgS.view==='measurement_result'){
-          const{targetStudentId,priyaM:pM,targetM:tM,sceneText,reactions,threats,spiritGain}=cgS.subState||{};
+          const{targetStudentId,priyaM:pM,targetM:tM,sceneText,reactions,threats,driveGain,spiritGain}=cgS.subState||{};
+          const gain=driveGain??spiritGain;
           const target=students.find(s=>s.id===targetStudentId);
           if(!target) return null;
           return(
@@ -179,8 +184,8 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                     <div style={{fontSize:11,fontWeight:700,color:priya.lbs>target.lbs?CG_SUBTLE:CG_TEXT,textAlign:"center"}}>{Math.round(target.lbs)} lbs</div>
                   </div>
                 </div>
-                {threats.length>0&&<div style={{fontSize:10,color:"#e07040",marginBottom:8}}>⚠ Threat detected: {threats.join(", ")} · Drive +{spiritGain}</div>}
-                {!threats.length&&<div style={{fontSize:10,color:CG_ACC,marginBottom:8}}>✓ Priya leads all categories · Drive +{spiritGain}</div>}
+                {threats.length>0&&<div style={{fontSize:10,color:"#e07040",marginBottom:8}}>⚠ Threat detected: {threats.join(", ")} · Drive +{gain}</div>}
+                {!threats.length&&<div style={{fontSize:10,color:CG_ACC,marginBottom:8}}>✓ Priya leads all categories · Drive +{gain}</div>}
                 <button style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:'measurement_picker',subState:null}))}>← Measure Another</button>
                 <button style={{...C.btn(CG_BG),width:"100%",marginTop:6,border:`1px solid ${CG_DIM}30`}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back to Priya</button>
               </div>
@@ -216,7 +221,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
               <div style={{marginBottom:14,padding:"8px 10px",background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_DIM}30`,borderRadius:5}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                   <span style={{fontSize:9,letterSpacing:2,color:tier.color}}>COMPETITIVE DRIVE · {tier.label.toUpperCase()}</span>
-                  <span style={{fontSize:9,color:CG_SUBTLE}}>{cgS.spirit}</span>
+                  <span style={{fontSize:9,color:CG_SUBTLE}}>{drive}</span>
                 </div>
                 <div style={{height:5,background:"#1a0308",borderRadius:3,overflow:"hidden"}}>
                   <div style={{height:"100%",width:`${tierBarPct}%`,background:tier.color,transition:"width 0.3s"}}/>

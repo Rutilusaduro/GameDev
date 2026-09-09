@@ -194,7 +194,7 @@ export const CG_FILLED_CHAT_TEMPLATES = {
   },
 };
 
-const prof = (label, spiritDelta, byStage, fallback) => ({ label, spiritDelta, byStage, fallback });
+const prof = (label, driveDelta, byStage, fallback) => ({ label, driveDelta, byStage, fallback });
 /** @deprecated use CG_RA_REPLY_TEXT */
 export const CG_PROFESSOR_REPLY_TEXT = {
   encourage: prof("You're clearly in the lead", 2, {

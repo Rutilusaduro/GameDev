@@ -15,7 +15,7 @@ export const FEAST_RITUALS = [
     relEach: 5,
     corruptionEach: 4,
     requiresSkill: null,
-    requiresClass: 'ritual_kitchen',
+    requiresHallSkill: 'ritual_kitchen',
     minWeek: 1,
     minReachLevel: 1,
     desc: 'A shared plate. Fingers brush. Nobody pretends they are not watching each other eat.',
@@ -32,7 +32,7 @@ export const FEAST_RITUALS = [
     relEach: 4,
     corruptionEach: 5,
     requiresSkill: null,
-    requiresClass: 'ritual_kitchen',
+    requiresHallSkill: 'ritual_kitchen',
     minWeek: 4,
     minReachLevel: 2,
     desc: 'Courses arrive in sequence. The room fills with heat and chewing. Appetite becomes ceremony.',
@@ -49,7 +49,7 @@ export const FEAST_RITUALS = [
     relEach: 6,
     corruptionEach: 8,
     requiresSkill: 'ritual_master',
-    requiresClass: 'ritual_kitchen',
+    requiresHallSkill: 'ritual_kitchen',
     minWeek: 8,
     minReachLevel: 3,
     desc: 'Candles. Chanting is optional. Fullness is mandatory. Influence saturates the room.',
@@ -66,7 +66,7 @@ export const FEAST_RITUALS = [
     relEach: 8,
     corruptionEach: 10,
     requiresSkill: 'ritual_master',
-    requiresClass: 'ritual_kitchen',
+    requiresHallSkill: 'ritual_kitchen',
     minWeek: 12,
     minReachLevel: 4,
     minStage: 7,
@@ -78,10 +78,11 @@ export const FEAST_RITUALS = [
 export function getAvailableRituals({ ownedSkills = {}, ownedHallSkills = {}, students = [], week = 1, reachLevel = 1 } = {}) {
   const visible = students.filter((s) => !s.hidden);
   return FEAST_RITUALS.filter((r) => {
-    if (r.requiresClass && !ownedHallSkills[r.requiresClass]) return false;
+    const hallSkill = r.requiresHallSkill ?? r.requiresClass;
+    if (hallSkill && !ownedHallSkills[hallSkill]) return false;
     if (r.requiresSkill && (ownedSkills[r.requiresSkill] || 0) < 1) return false;
     if (r.minWeek && week < r.minWeek) return false;
-    const minReach = r.minReachLevel ?? r.minSpiritLevel;
+    const minReach = r.minReachLevel;
     if (minReach && reachLevel < minReach) return false;
     if (r.immobileOnly) {
       const immobile = visible.filter((s) => (s.lbs || 0) >= 360);

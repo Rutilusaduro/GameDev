@@ -231,7 +231,6 @@ export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedHa
   const cor = student.corruption || 0;
   return EMBODIMENT_ACTIONS.filter((a) => {
     if ((ownedSkills[a.requiresSkill] || 0) < 1) return false;
-    if (a.requiresClass && !ownedHallSkills[a.requiresClass]) return false;
     if (stage < a.minStage) return false;
     if (cor < a.minCorruption) return false;
     if (atNode && a.nodes?.length && !a.nodes.includes(atNode)) return false;

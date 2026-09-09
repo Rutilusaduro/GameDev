@@ -229,6 +229,3 @@ export const FLOOR_SCENES = [
       { label:"Push through without food",           effect:{gain:[0,2]},  result:"Nobody gets fed but everyone gets educated. Grudging respect. Several stomachs are audibly registering their objection." },
     ] },
 ];
-
-/** @deprecated use FLOOR_SCENES */
-export const CLASS_SCENES = FLOOR_SCENES;

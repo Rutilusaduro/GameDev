@@ -4921,21 +4921,21 @@ export const WL_DIALOGUES = {
 // ─── COMPETITIVE GAINER DATA ──────────────────────────────────────────────────
 
 export const CG_CONFIG = {
-  spiritTiers:[
+  driveTiers:[
     { min:0,  max:10, label:"Invested", color:"#5b9bd5" },
     { min:11, max:25, label:"Driven",   color:"#e8a020" },
     { min:26, max:45, label:"Frenzied", color:"#e05830" },
     { min:46, max:Infinity, label:"Ruthless", color:"#c00000" },
   ],
-  // Spirit gain ranges
-  spiritGainNeutral:   [0,1],   // Priya leads in all categories
-  spiritGainThreat:    [1,3],   // per category where any girl is ahead or within 10%
+  // Competitive drive gain ranges
+  driveGainNeutral:   [0,1],   // Priya leads in all categories
+  driveGainThreat:    [1,3],   // per category where any girl is ahead or within 10%
   // Binge payoff: 1 AP. Base gain interpolated from minBinge→maxBinge by Priya's weight stage (1-7+).
   bingeApCost:    1,
   minBinge:       10,  // lbs at stage 1
   maxBinge:       50,  // lbs at stage 7+
-  // Per-spirit-tier multiplier on binge gain: Invested/Driven/Frenzied/Ruthless
-  bingeSpiritMults: [1, 1.25, 1.5625, 1.953],
+  // Per-drive-tier multiplier on binge gain: Invested/Driven/Frenzied/Ruthless
+  bingeDriveMults: [1, 1.25, 1.5625, 1.953],
   // "Threat" threshold: girl is within this fraction of Priya's value
   threatFraction: 0.10,
   // Measurement categories tracked
@@ -4959,7 +4959,7 @@ export const CG_BINGE_SCENES = CG_FILLED_BINGE_SCENES;
 // Group chat templates — Grok fills in prose
 // Template strings may contain {priyaWeight}, {priyaWaist}, {priyaBust}, etc.
 export const CG_CHAT_TEMPLATES = {
-  // Priya's opening post per spirit tier
+  // Priya's opening post per drive tier
   priyaPost: CG_FILLED_CHAT_TEMPLATES.priyaPost,
   // Priya's follow-up after seeing replies
   priyaFollowup: CG_FILLED_CHAT_TEMPLATES.priyaFollowup,
@@ -4981,7 +4981,7 @@ export const CG_CHAT_TEMPLATES = {
     "Mary Jane": { ahead:"Well, would you look at that. One of mine is still bigger.", behind:"You are outgrowing the board, Priya. That is a compliment.", close:"Close enough that I would add another helping if I were you.", proud:"Been eating well. Numbers usually follow.", unmeasured:"Measure me after supper if you want the honest version." },
     Lilith:    { ahead:"A larger number is such a small kind of hunger. Still, mine is larger.", behind:"Enjoy your lead. I enjoy watching what it makes you do.", close:"So close. I can feel how much that bothers you.", proud:"Growth is a useful appetite. Yours is loud.", unmeasured:"Some measurements are safer not taken until you are ready." },
   },
-  // RA reply choices (4 options, each nudges competitive spirit meter)
+  // RA reply choices (4 options, each nudges competitive drive meter)
   raReplies:[
     { id:"encourage", ...CG_RA_REPLY_TEXT.encourage },
     { id:"taunt", ...CG_RA_REPLY_TEXT.taunt },

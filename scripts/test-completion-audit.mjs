@@ -219,6 +219,16 @@ check('floor-events-module', () => {
   assert.doesNotMatch(desk, /classEvents\.js/);
   const events = read('src/gameData/floorEvents.js');
   assert.match(events, /export const FLOOR_SCENES/);
+  assert.match(events, /id:"hall_potluck"/);
+  assert.doesNotMatch(events, /id:"class_potluck"/);
+  assert.doesNotMatch(events, /CLASS_SCENES/);
+  for (const shim of [
+    'src/gameData/classEvents.js',
+    'src/gameData/classroomSkills.js',
+    'src/textEngine/scenes/campusEvent/classIntegration.js',
+  ]) {
+    assert.ok(!existsSync(join(root, shim)), `deprecated shim still present: ${shim}`);
+  }
 });
 
 // ── Report ─────────────────────────────────────────────────────
