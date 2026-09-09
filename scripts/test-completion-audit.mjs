@@ -777,6 +777,17 @@ check('wife-lessons-hunt-framing', () => {
   assert.match(evolved, /finally grew a stomach worth feeding/);
   assert.doesNotMatch(evolved, /as the girls led the lesson|the girls proudly serving|like a real girl|the girls seemed to enjoy them/i);
   assert.doesNotMatch(evolved, /Both girls have reached|Both girls hit|Both girls have hit/i);
+  const wlNpcs = evolved.match(/export const WIFE_LESSONS_NPCS = \{[\s\S]*?\n\};/)?.[0] ?? '';
+  assert.ok(wlNpcs, 'evolvedForms.js must contain WIFE_LESSONS_NPCS block');
+  assert.match(wlNpcs, /Emma is 19/);
+  assert.match(wlNpcs, /Claire is 18/);
+  assert.match(wlNpcs, /packed lunches/);
+  assert.match(wlNpcs, /reinforced chairs at the dining table/);
+  assert.doesNotMatch(wlNpcs, /school skirt|school desk|school lunches|school uniform|school clothes|Emma is 16|Claire is 14|Kezia is 17|Taylor is 16|Madison is 17|Sofia is 16/i);
+  assert.match(evolved, /How's the semester/);
+  assert.doesNotMatch(evolved, /How's school\./);
+  assert.match(evolved, /belongs to the hall anymore/);
+  assert.doesNotMatch(evolved, /belongs to the school anymore/i);
   const feast = read('src/textEngine/scenes/hunt/feastStageUp.js');
   assert.match(feast, /delivery driver/);
   assert.match(feast, /deliciously fat Mia/);

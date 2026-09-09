@@ -1215,7 +1215,7 @@ registerPool('diary.ff_author', [
 // ── diary.homestead_queen (decomposed) ─────────────────────────────────────
 registerPool('diary.homestead_queen.c1', [
 { when: { stage: [5], corruption: [0] }, text: ['Made sweet potato pie from scratch at two in the morning because I couldn\'t sleep and the kitchen was there. I ate half of it warm, standing in front of the oven.'] },
-  { when: { stage: [5], corruption: [0] }, text: ['The recipe box is getting full. My notes look more like Mae\'s notes than like anything I learned at school. I ate through two test batches this week. The second was better.'] },
+  { when: { stage: [5], corruption: [0] }, text: ['The recipe box is getting full. My notes look more like Mae\'s notes than like anything I learned in culinary school. I ate through two test batches this week. The second was better.'] },
   { when: { stage: [5] }, text: ['I made sweet potato pie from scratch at two in the morning because I couldn\'t sleep and the kitchen was there.'] },
   { when: { stage: [6] }, text: ['Grandma Mae video-called last Sunday and she could see the setup behind me — the jars lined up on the shelf, the cast iron on every surface, the folding table I\'ve covered with oilcloth and claim'] },
   { when: { stage: [7] }, text: ['The recipe box arrived. \' I made every dish in four days. I kept notes. My notes look like Mae\'s notes, which look like her mother\'s notes. I am in a line of women who knew what to do with food.'] },

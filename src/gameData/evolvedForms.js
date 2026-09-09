@@ -62,7 +62,7 @@ export const EVOLVED_REACTIONS = {
     "New pledges are choosing us specifically for the culture. Word has spread. The chapter is full.",
     "National cheerleading press wrote about us. 'The squad that changed the conversation.' Yes we did.",
     "Speaking at the national Greek leadership conference. My slides are very good. My presence is better.",
-    "Coaches at other schools have quietly stopped the weigh-ins. I'll take the quiet version too.",
+    "Coaches at other campuses have quietly stopped the weigh-ins. I'll take the quiet version too.",
     "What I built is permanent. The culture outlasts the captain. I am very large and very proud.",
   ],
   // ── BOOKWORM paths ──────────────────────────────────────────────
@@ -171,7 +171,7 @@ export const EVOLVED_REACTIONS = {
   delivery_hive:[
     "The room feels different tonight. Warmer. Softer. The delivery bags by the door don't feel like they belong to anyone else anymore. I keep catching myself touching my stomach without thinking. It's heavier than it was yesterday. I think the walls noticed.",
     "There are footsteps in the hallway that aren't mine. They stop at doors I didn't open. I don't have to ask them to bring things anymore. They just... do. My belly rests heavier against my thighs when I sit now. The room feels like it's breathing with me.",
-    "Half the floor doesn't feel like it belongs to the school anymore. It feels like it belongs to me. The air is thicker here. Warmer. People walk slower when they pass my door. I don't even have to speak. My body does the talking now.",
+    "Half the floor doesn't feel like it belongs to the hall anymore. It feels like it belongs to me. The air is thicker here. Warmer. People walk slower when they pass my door. I don't even have to speak. My body does the talking now.",
     "I don't move much anymore. I don't need to. The Hive moves for me. I can feel when a new room softens. It's like a warm pulse somewhere in the building. My body has become the center of something much larger than me. I think I like that.",
     "The whole dorm feels like it's breathing around me. I can feel the warmth in the walls. The deliveries don't even come to my door anymore. They just... arrive where they're needed. I am the heart now. Everything else is just circulation.",
     "I don't know where I end and the Hive begins anymore. My body is the warm center of everything. Rooms don't resist. People don't leave. They settle. They soften. They stay. I am no longer just Maya. I am the place they come home to.",
@@ -2229,7 +2229,7 @@ She says: 'That's a lot of food.' A pause. 'Right.' She picks up the fork.`,
           ]
         },
         {
-          text:(h,s)=>`Grandma Mae calls. Mary Jane answers — her phone propped against a jar of preserves — and Mae's voice fills the room with questions. How's school. What are you making. Is anyone eating with you.
+          text:(h,s)=>`Grandma Mae calls. Mary Jane answers — her phone propped against a jar of preserves — and Mae's voice fills the room with questions. How's the semester. What are you making. Is anyone eating with you.
 
 Mary Jane glances at you. "Someone's here," she says. "He's eating my sweet potato pie." A pause on the line. Mae says: "Well, make sure he eats it right."`,
           choices:[
@@ -3340,7 +3340,7 @@ Becca says Sofia asked for "the strong shake recipe." She says it like a questio
           ]
         },
         {
-          text:(h,s)=>`Daughter news at the extreme. Lily told Ruthanne she figured out what's been in her food. "She wants to learn to make it herself," Ruthanne says. "The real recipes. She knows what they do." Wanda says Kezia's belly reaches the arm of the couch when she sits. Cheryl says Madison can't see her feet anymore — she has to feel for them with her hands. Darlene says Emma and Claire both needed new school clothes and Claire's belly is starting to match Emma's now and Emma does not accept this.
+          text:(h,s)=>`Daughter news at the extreme. Lily told Ruthanne she figured out what's been in her food. "She wants to learn to make it herself," Ruthanne says. "The real recipes. She knows what they do." Wanda says Kezia's belly reaches the arm of the couch when she sits. Cheryl says Madison can't see her feet anymore — she has to feel for them with her hands. Darlene says Emma and Claire both needed new clothes and Claire's belly is starting to match Emma's now and Emma does not accept this.
 
 Patrice says Taylor asked her to tie her shoes for her because she couldn't quite reach.`,
           choices:[
@@ -4081,20 +4081,20 @@ export const WIFE_LESSONS_NPCS = {
       "Barely moves without effort. Her belly rests heavy and forward and warm. She is entirely comfortable with this. She is happy about it.",
     ],
     daughter_stages:[
-      "Emma is 16. Slim, with a trace of belly softness when she sits. Her mother's predisposition.",
-      "Emma's belly has softened noticeably, pressing her school skirt forward. Her appetite picked up. Darlene says she 'finally grew a stomach worth feeding.' Darlene has been adding butter to her school lunches for three weeks.",
+      "Emma is 19. Slim, with a trace of belly softness when she sits. Her mother's predisposition.",
+      "Emma's belly has softened noticeably, pressing her skirt forward. Her appetite picked up. Darlene says she 'finally grew a stomach worth feeding.' Darlene has been adding butter to her packed lunches for three weeks.",
       "Emma is properly soft. Her belly rounds full and warm, her thighs press together when she walks. Her sister Claire is catching up and Emma finds this unacceptable.",
       "Emma is fat. Her belly sits prominent and forward. She and Claire are in a competition neither of them named. Darlene is force-feeding Emma extra shakes to keep her ahead.",
       "Emma is very fat. Her belly is a big soft dome. Claire has surpassed her in belly size and Emma is devastated. Emma has doubled down on eating to close the gap.",
-      "Emma can barely fit in her old school desk. She brings a wider chair. She's massive — soft, round, enormous. She's stopped worrying about Claire and is just focused on the next meal.",
-      "Emma and Claire are both so fat their bellies sit on their laps like warm heavy pillows. They need reinforced chairs at school. Emma has stopped competing and started collaborating. They eat together constantly.",
+      "Emma can barely fit in her old desk at home. She brings a wider chair. She's massive — soft, round, enormous. She's stopped worrying about Claire and is just focused on the next meal.",
+      "Emma and Claire are both so fat their bellies sit on their laps like warm heavy pillows. They need reinforced chairs at the dining table. Emma has stopped competing and started collaborating. They eat together constantly.",
     ],
     sister:{ name:"Claire", stages:[
-      "Claire is 14. Slim. Emma's shadow.",
+      "Claire is 18. Slim. Emma's shadow.",
       "Claire has gained noticeably — soft belly, thighs beginning to press. Emma watches this with alarm.",
       "Claire is surprisingly close to Emma's size. Emma has escalated. Darlene is thrilled to have two daughters growing.",
       "Claire has surpassed Emma. Emma is devastated. Darlene is ferociously proud of both of them.",
-      "Claire is enormous. New school uniform, custom. Emma refuses to share clothes. Both are massive.",
+      "Claire is enormous. New custom outfits, tailored. Emma refuses to share clothes. Both are massive.",
       "Claire and Emma are both fat beyond what the furniture was designed for. Both need reinforced chairs. Claire is still ahead by belly circumference. This is a source of great pride for Darlene.",
       "Both daughters barely leave the house. Their bellies are enormous. They sit on the wide sectional couch together and it takes them both.",
     ]}
@@ -4109,7 +4109,7 @@ export const WIFE_LESSONS_NPCS = {
       "Barely mobile and triumphant. The house is set up around her. She's never been happier.",
     ],
     daughter_stages:[
-      "Kezia is 17. Full hips, some natural softness, a good appetite. Already built like Wanda.",
+      "Kezia is 19. Full hips, some natural softness, a good appetite. Already built like Wanda.",
       "Kezia's belly is soft and round. Hips wider. Wanda started adding cream and butter to everything she eats three weeks ago. Kezia says dinner 'got better.'",
       "Kezia is properly fat. Her belly is a full warm dome. She's the fastest-growing of all the daughters. Wanda is not subtle about her pride.",
       "Kezia is very fat. She had to move to the bigger bedroom because her old door frame was getting narrow for her hips. Wanda moved the furniture and documented the milestone.",
@@ -4128,8 +4128,8 @@ export const WIFE_LESSONS_NPCS = {
       "Barely mobile. Enormous pear shape, belly and hips both massive. She comes to sessions because the kitchen is warm and nobody has asked her to be smaller since she started coming here.",
     ],
     daughter_stages:[
-      "Taylor is 16. Slim, with wide hips and long legs — exactly like Patrice before all this.",
-      "Taylor's hips have widened. Her thighs press together when she walks. Patrice has been putting extra butter in her school lunches for three weeks.",
+      "Taylor is 19. Slim, with wide hips and long legs — exactly like Patrice before all this.",
+      "Taylor's hips have widened. Her thighs press together when she walks. Patrice has been putting extra butter in her packed lunches for three weeks.",
       "Taylor is soft. Her hips are wide, her belly starts to round. She complained her jeans don't fit. Patrice bought new ones, two sizes larger, and hid the tags.",
       "Taylor is fat. Her hips spread wide, her belly rounds prominently. She cannot see her feet when she stands straight. Patrice is jealous of Kezia's lead and has been making Taylor extra shakes.",
       "Taylor can barely tie her own shoes — her belly blocks her reach when she bends. She asks Patrice to tie them. Patrice does it and orders her another meal.",
@@ -4147,11 +4147,11 @@ export const WIFE_LESSONS_NPCS = {
       "Barely mobile. Had the car passenger seat modified for Madison. Considers this normal home maintenance. Still maintains the spreadsheet.",
     ],
     daughter_stages:[
-      "Madison is 17. Soft-figured with a round belly and her mother's competitive streak.",
+      "Madison is 19. Soft-figured with a round belly and her mother's competitive streak.",
       "Madison has gained noticeably. Belly rounds forward. Cheryl started adding lard to the cooking 'by accident.' She adds it deliberately.",
       "Madison is fat. Her belly presses her clothes forward. She tried to squeeze into her friend's car and her friends had to shuffle to make room.",
       "Madison is very fat. Her belly is a prominent soft dome. Her friends are growing too, but slowly; Madison takes up most of the back seat.",
-      "Madison is enormous. Cheryl hired a seamstress for her school clothes. She measures Madison every Sunday and reports to the group chat.",
+      "Madison is enormous. Cheryl hired a seamstress for her weekend wardrobe. She measures Madison every Sunday and reports to the group chat.",
       "Madison barely fits in standard seating. The car's passenger side has been modified with a wider seat. Cheryl had this done professionally and considers it normal maintenance. The spreadsheet is very detailed.",
       "Madison is massive. She sits in the modified car seat and still overflows it slightly. Cheryl is ferociously proud and openly jealous of Kezia. She is pushing Madison harder than ever.",
     ]
@@ -4185,7 +4185,7 @@ export const WIFE_LESSONS_NPCS = {
       "Her obsession is Sofia. She documents every milestone. She is enormously proud.",
     ],
     daughter_stages:[
-      "Sofia is 16. Soft-figured and round-faced. A natural, easy gainer.",
+      "Sofia is 19. Soft-figured and round-faced. A natural, easy gainer.",
       "Sofia has gained rapidly — belly rounds soft and full, arms and thighs thick. She's ahead of most of the daughters already.",
       "Sofia is fat. Her belly presses her clothes forward. Becca bought her jeans four sizes larger than she needed at the time.",
       "Sofia is very fat. She moves with the slow ease of someone who has grown comfortable with a large body. Becca texted the group: 'She asked for the strong shake. The strong one.'",

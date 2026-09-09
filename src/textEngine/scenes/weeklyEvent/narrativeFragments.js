@@ -10,7 +10,7 @@ registerPool('weekly.uniformSplit.incident', [
   { when: { studentId: 0 }, priority: 1, weight: 4, text: [
     'During tryouts — tryouts {subject.name} is running as captain — her cheer uniform splits along the seam with an audible pop.',
     '{subject.name}\'s captain sash won\'t close over her middle anymore. Today, in front of the whole squad for the routine review, it gives up entirely.',
-    'Her squad jacket hasn\'t closed in a month. Today the uniform top finally splits at the back mid-demonstration, in front of the school, in full view of the stands.',
+    'Her squad jacket hasn\'t closed in a month. Today the uniform top finally splits at the back mid-demonstration, in full view of the stands on the quad.',
   ] },
   { when: { archetype: 'cheerleader' }, text: [
     'Mid-routine — a difficult lift section {subject.name} choreographed herself — her dance costume splits at the hip with a sharp crack.',
