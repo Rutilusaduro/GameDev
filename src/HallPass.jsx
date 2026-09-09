@@ -8552,7 +8552,7 @@ export default function HallPass(){
             <div style={{fontSize:10,color:"#8a5060",letterSpacing:3,marginTop:2}}>{getApproachLabel(raProfile)?`${getApproachLabel(raProfile).toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
           </div>
         </div>
-        <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
+        <div className="ra-desk-stats-bar" style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
           {raProfile&&(
             <div className="ra-desk-stat-pill" title="Hall Cred — on-style actions fill it; full returns AP" style={{textAlign:"center",background:raProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
               <div style={{height:6,background:"rgba(0,0,0,0.35)",borderRadius:3,overflow:"hidden",marginBottom:2}}>

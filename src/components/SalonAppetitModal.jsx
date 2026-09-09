@@ -48,6 +48,7 @@ export function SalonAppetitModal({
                 <button
                   key={g.id}
                   type="button"
+                  className="salon-choice-row"
                   style={{ ...C.btn(on ? ACCENT : '#3a2030'), textAlign: 'left', fontSize: 12 }}
                   onClick={() => toggleGuest(g.id)}
                 >
@@ -78,7 +79,7 @@ export function SalonAppetitModal({
           <p style={{ fontSize: 12, color: '#dcc', lineHeight: 1.6 }}>Chloé plans four courses. {chloe ? `${Math.round(chloe.lbs)} lbs` : ''} and hungry for spectacle.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {SALON_COURSES.map((c) => (
-              <button key={c.id} type="button" style={{ ...C.btn('#4a2838'), textAlign: 'left', fontSize: 12 }} onClick={() => onPickMenu(c.id)}>
+              <button key={c.id} type="button" className="salon-choice-row" style={{ ...C.btn('#4a2838'), textAlign: 'left', fontSize: 12 }} onClick={() => onPickMenu(c.id)}>
                 {c.label} <span style={{ color: GOLD, fontSize: 10 }}>+{c.lbs} lbs · prestige +{c.prestige}</span>
               </button>
             ))}
@@ -97,7 +98,7 @@ export function SalonAppetitModal({
           <p style={{ fontSize: 12, color: '#ecc', marginBottom: 10 }}>{course?.label || 'Course'} is served.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {SALON_SERVICE_CHOICES.map((c) => (
-              <button key={c.id} type="button" style={{ ...C.btn('#5a3040'), textAlign: 'left', fontSize: 12 }} onClick={() => onService(c.id)}>
+              <button key={c.id} type="button" className="salon-choice-row" style={{ ...C.btn('#5a3040'), textAlign: 'left', fontSize: 12 }} onClick={() => onService(c.id)}>
                 {c.label}
               </button>
             ))}

@@ -40,7 +40,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
                 const partner=students.find(st=>st.evolvedForm===cfg.evolvedForm);
                 const avail=!!partner&&!fairReady&&ap>=FAIR_TRAINING_CONFIG.apCost;
                 return(
-                  <button key={key} disabled={!avail} onClick={()=>startFairTrainingSession(key)}
+                  <button key={key} type="button" className="fair-partner-card" disabled={!avail} onClick={()=>startFairTrainingSession(key)}
                     style={{...C.btn(avail?fairOrange:"#2a1800"),opacity:avail?1:0.4,fontSize:12,padding:"8px 6px",textAlign:"left"}}>
                     {cfg.label}{cfg.special?' ✦':''}<br/>
                     <span style={{fontSize:9,color:"#c0a070"}}>{partner?`${partner.name} — ${Math.round(partner.lbs)} lbs`:'not evolved'}</span>
@@ -126,8 +126,8 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
               {!fd.weighInChoice&&<>
                 <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  <button style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
-                  <button style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
                 </div>
               </>}
               {fd.weighInChoice&&<>
@@ -155,8 +155,8 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
               {!fd.afterpartyChoice&&<>
                 <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  <button style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
-                  <button style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>
                 </div>
               </>}
               {fd.afterpartyChoice&&<>

@@ -63,7 +63,7 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                           const disabled=food.consumed||(stageIdx<3&&tooFull);
                           const isSelected=food.selected&&!food.consumed;
                           return(
-                            <button key={food.key!==undefined?food.key:idx}
+                            <button key={food.key!==undefined?food.key:idx} type="button" className="eating-contest-food-row"
                               style={{...C.btn(food.consumed?"#0a1a0a":isSelected?"#1a4800":"#103520"),opacity:food.consumed?0.3:tooFull?0.5:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":"pointer",border:isSelected?"1px solid #a0e040":"1px solid transparent"}}
                               disabled={disabled}
                               onClick={()=>devourUnlocked?toggleFoodSelection('your',food.key):eatContestFood(idx)}>
@@ -83,7 +83,7 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                         {mayaFoods.map((food,idx)=>{
                           const isSelected=food.selected&&!food.consumed;
                           return devourUnlocked?(
-                            <button key={food.key!==undefined?food.key:100+idx}
+                            <button key={food.key!==undefined?food.key:100+idx} type="button" className="eating-contest-food-row"
                               style={{...C.btn(food.consumed?"#0a1a0a":isSelected?"#3a1800":"#0f1a0a"),opacity:food.consumed?0.3:1,textAlign:"left",padding:"5px 8px",fontSize:11,display:"flex",alignItems:"center",gap:6,cursor:food.consumed?"not-allowed":"pointer",border:isSelected?"1px solid #e07040":"1px solid transparent"}}
                               disabled={food.consumed}
                               onClick={()=>toggleFoodSelection('maya',food.key)}>

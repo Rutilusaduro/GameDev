@@ -1688,9 +1688,36 @@ check('desk-utility-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.ra-desk-utility-btn:focus-visible/);
   assert.match(css, /\.hall-log-tab:focus-visible/);
+  assert.match(css, /\.ra-desk-stats-bar > \.ra-desk-stat-pill/);
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /className="ra-desk-utility-btn"/);
+  assert.match(desk, /className="ra-desk-stats-bar"/);
   assert.match(desk, /feed a resident/);
+});
+
+check('fair-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/FairModals.jsx');
+  assert.match(css, /\.fair-partner-card:focus-visible/);
+  assert.match(css, /\.fair-choice-row:focus-visible/);
+  assert.match(modal, /fair-partner-card/);
+  assert.match(modal, /fair-choice-row/);
+});
+
+check('eating-contest-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/EatingContestModal.jsx');
+  assert.match(css, /\.eating-contest-food-row:focus-visible/);
+  assert.match(css, /\.eating-contest-food-row:hover:not\(:disabled\)/);
+  assert.match(modal, /eating-contest-food-row/);
+});
+
+check('salon-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/SalonAppetitModal.jsx');
+  assert.match(css, /\.salon-choice-row:focus-visible/);
+  assert.match(css, /\.salon-choice-row:hover/);
+  assert.match(modal, /salon-choice-row/);
 });
 
 check('modal-button-polish', () => {

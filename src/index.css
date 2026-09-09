@@ -349,6 +349,17 @@
   transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
+.ra-desk-stats-bar > .ra-desk-stat-pill {
+  animation: hallPassViewIn 0.22s ease-out both;
+}
+
+.ra-desk-stats-bar > .ra-desk-stat-pill:nth-child(1) { animation-delay: 0.02s; }
+.ra-desk-stats-bar > .ra-desk-stat-pill:nth-child(2) { animation-delay: 0.05s; }
+.ra-desk-stats-bar > .ra-desk-stat-pill:nth-child(3) { animation-delay: 0.08s; }
+.ra-desk-stats-bar > .ra-desk-stat-pill:nth-child(4) { animation-delay: 0.11s; }
+.ra-desk-stats-bar > .ra-desk-stat-pill:nth-child(5) { animation-delay: 0.14s; }
+.ra-desk-stats-bar > .ra-desk-stat-pill:nth-child(6) { animation-delay: 0.17s; }
+
 .ra-portrait-chip {
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
@@ -834,6 +845,37 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(200, 134, 10, 0.16);
 }
 
+.fair-partner-card {
+  font-family: inherit;
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.fair-partner-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32), 0 0 16px rgba(200, 134, 10, 0.14);
+}
+
+.fair-partner-card:focus-visible {
+  outline: 2px solid rgba(220, 170, 80, 0.85);
+  outline-offset: 2px;
+}
+
+.fair-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.fair-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.fair-choice-row:focus-visible {
+  outline: 2px solid rgba(220, 170, 80, 0.85);
+  outline-offset: 2px;
+}
+
 .opposition-endgame-modal {
   background: linear-gradient(165deg, rgba(8, 8, 16, 0.98), rgba(16, 16, 32, 0.96), rgba(6, 6, 12, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(96, 112, 160, 0.14);
@@ -849,6 +891,21 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(48, 160, 80, 0.14);
 }
 
+.eating-contest-food-row {
+  transition: transform 0.12s ease, box-shadow 0.16s ease, filter 0.16s ease, border-color 0.16s ease;
+}
+
+.eating-contest-food-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.06);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.26);
+}
+
+.eating-contest-food-row:focus-visible {
+  outline: 2px solid rgba(96, 220, 128, 0.85);
+  outline-offset: 2px;
+}
+
 .sumo-match-modal {
   background: linear-gradient(165deg, rgba(20, 4, 4, 0.98), rgba(36, 8, 8, 0.96), rgba(12, 2, 2, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(208, 80, 64, 0.14);
@@ -857,6 +914,21 @@
 .salon-modal {
   background: linear-gradient(165deg, rgba(18, 8, 12, 0.98), rgba(36, 16, 24, 0.96), rgba(10, 4, 8, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(139, 41, 66, 0.14);
+}
+
+.salon-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.salon-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.salon-choice-row:focus-visible {
+  outline: 2px solid rgba(201, 162, 39, 0.85);
+  outline-offset: 2px;
 }
 
 .stream-session-modal {
@@ -1166,11 +1238,16 @@
   .week-planner-resident-chip:hover,
   .homeroom-participant-card:hover,
   .homeroom-activity-card:hover,
-  .homeroom-choice-row:hover {
+  .homeroom-choice-row:hover,
+  .fair-partner-card:hover,
+  .fair-choice-row:hover,
+  .eating-contest-food-row:hover,
+  .salon-choice-row:hover {
     transform: none;
   }
 
-  .week-planner-slot-card {
+  .week-planner-slot-card,
+  .ra-desk-stats-bar > .ra-desk-stat-pill {
     animation: none;
   }
 }
