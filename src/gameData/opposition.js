@@ -300,7 +300,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
         ...students.filter((s) => !s.hidden && s.supernaturalForm !== 'apple_oracle').map((s) => ({ id: s.id, corruptionDelta: -5 })),
       );
       if (students.some((s) => s.supernaturalForm === 'apple_oracle')) {
-        effects.logs.push('🍎 Apple Oracle shields the homeroom from shame — one resident untouched.');
+        effects.logs.push('🍎 Apple Oracle shields the hall kitchen from shame — one resident untouched.');
       }
       effects.logs.push('🕯️ Shame vigil — corruption −5 for visible students.');
       break;

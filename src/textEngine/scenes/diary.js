@@ -1453,7 +1453,7 @@ registerPool('diary.homeroom_queen.c1', [
   { when: { stage: [10] }, text: ['End of term. All six of them in the room at once, which hasn\'t happened since the formal event was established. I made everything.'] },
   { when: {}, text: [
     "Tuesday is coming. The kitchen is ready.",
-    "Homeroom royalty includes royal appetite.",
+    "Hall kitchen royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},
 
@@ -1469,7 +1469,7 @@ registerPool('diary.homeroom_queen.c2', [
   { when: { stage: [10] }, text: ['I ate everything I\'d saved for myself and then some of theirs when there were offers.'] },
   { when: {}, text: [
     "Hall fed. RA blinking. I smiled.",
-    "Homeroom royalty includes royal appetite.",
+    "Hall kitchen royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},
 
@@ -1484,7 +1484,7 @@ registerPool('diary.homeroom_queen.c3', [
   { when: { stage: [10] }, text: ['The room was full and warm and loud with laughing and I sat in the middle of it — enormous and full and happy and flour-dusted — and thought: yes.'] },
   { when: {}, text: [
     "Hall fed. RA blinking. I smiled.",
-    "Homeroom royalty includes royal appetite.",
+    "Hall kitchen royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},
 
@@ -1495,7 +1495,7 @@ registerPool('diary.homeroom_queen.c4', [
   { when: { stage: [10] }, text: ['This is exactly what I was supposed to do with all of this. I logged that. It belongs in the record.'] },
   { when: {}, text: [
     "Hall fed. RA blinking. I smiled.",
-    "Homeroom royalty includes royal appetite.",
+    "Hall kitchen royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},
 

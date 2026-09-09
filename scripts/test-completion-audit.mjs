@@ -894,7 +894,33 @@ check('homeroom-resident-framing', () => {
   const homeroom = read('src/gameData/evolvedForms.js');
   assert.match(homeroom, /The residents know what this is/);
   assert.match(homeroom, /Keep it to the residents/);
-  assert.doesNotMatch(homeroom, /The girls know what this is|Keep it to the students — stay professional/i);
+  assert.match(homeroom, /wellness-program aligned/);
+  assert.match(homeroom, /wellness notes/);
+  assert.doesNotMatch(homeroom, /The girls know what this is|Keep it to the students — stay professional|curriculum-aligned|curriculum notes/i);
+  const diary = read('src/textEngine/scenes/diary.js');
+  assert.match(diary, /Hall kitchen royalty includes royal appetite/);
+  assert.doesNotMatch(diary, /Homeroom royalty/i);
+  const modal = read('src/components/HomeroomQueenModal.jsx');
+  assert.match(modal, /FLOOR RESIDENTS · tap to conference/);
+  assert.doesNotMatch(modal, /STUDENTS · tap to conference/i);
+});
+
+check('hall-kitchen-curriculum-framing', () => {
+  const v2 = read('src/textEngine/scenes/v2/v2ProseExpansion.js');
+  assert.match(v2, /hall kitchen queen holds court/);
+  assert.doesNotMatch(v2, /homeroom queen holds court|cookies, curriculum/i);
+  const salon = read('src/textEngine/scenes/salonGallerySceneDepth.js');
+  assert.match(salon, /Hall kitchen queen evolution/);
+  assert.doesNotMatch(salon, /Homeroom queen evolution|appetite as curriculum/i);
+  const thin = read('src/textEngine/scenes/supernatural/thinVoice.js');
+  assert.match(thin, /wellness unit asks restraint/);
+  assert.doesNotMatch(thin, /homeroom asks restraint/i);
+  const depth = read('src/textEngine/scenes/supernatural/depth.js');
+  assert.match(depth, /Wellness briefings preach moderation/);
+  assert.doesNotMatch(depth, /Homeroom preaches|Spirit fingers without flesh/i);
+  const hearing = read('src/gameData/oppositionHearings.js');
+  assert.match(hearing, /abundance is the hall program/);
+  assert.doesNotMatch(hearing, /abundance is the curriculum/i);
 });
 
 check('desk-utility-polish', () => {

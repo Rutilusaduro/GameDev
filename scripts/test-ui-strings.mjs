@@ -121,6 +121,8 @@ assert(!/PROF · SCALE|PROF · INDUSTRIAL/i.test(weighIn), 'WeighInModal must no
 const homeroom = readFileSync('src/components/HomeroomQueenModal.jsx', 'utf8');
 assert(homeroom.includes('+{ch.classGain} floor'), 'HomeroomQueenModal must label classGain as floor');
 assert(!/\+\{ch\.classGain\} class/.test(homeroom), 'HomeroomQueenModal must not show +N class');
+assert(homeroom.includes('FLOOR RESIDENTS · tap to conference'), 'HomeroomQueenModal must say floor residents');
+assert(!/STUDENTS · tap to conference/.test(homeroom), 'HomeroomQueenModal must not say students');
 
 const campusView = readFileSync('src/views/CampusView.jsx', 'utf8');
 assert(campusView.includes('Heavier new residents'), 'CampusView saturation hint must say residents');

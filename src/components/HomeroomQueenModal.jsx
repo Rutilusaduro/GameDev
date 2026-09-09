@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// HOMEROOM QUEEN — Daisy's kitchen-club mini-interface
+// HALL KITCHEN QUEEN — Daisy's kitchen-club mini-interface
 // ═══════════════════════════════════════════════════════════════
 import { useEffect } from 'react';
 import { C } from '../styles.js';
@@ -208,7 +208,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                 </div>
               </div>
               {/* Students */}
-              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>STUDENTS · tap to conference</div>
+              <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>FLOOR RESIDENTS · tap to conference</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
                 {STUDENT_KEYS.map(name=>(
                   <ParticipantCard

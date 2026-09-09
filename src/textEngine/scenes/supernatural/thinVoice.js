@@ -14,7 +14,7 @@ const FORM_VOICES = [
   { supernaturalForm: 'curator_wraith', texts: ['The exhibition is my body, absent. Hunger hangs in the gallery like a piece I cannot take down.'] },
   { supernaturalForm: 'hive_mote', texts: ['The hive eats through me. I am thin conduit; their appetite echoes in my empty middle.'] },
   { supernaturalForm: 'salon_wraith', texts: ['The room is elegant and empty. My appetite is neither.'] },
-  { supernaturalForm: 'apple_oracle', texts: ['The homeroom asks restraint. I taste every apple they refuse and my hollow stomach answers.'] },
+  { supernaturalForm: 'apple_oracle', texts: ['The wellness unit asks restraint. I taste every apple they refuse and my hollow stomach answers.'] },
   { supernaturalForm: 'harvest_maiden', texts: ['Fields remember fullness. I wear the season thin but the harvest hunger stayed rooted.'] },
   { supernaturalForm: 'mirror_thin', texts: ['I see the fat girl I was in every reflection. The mirror kept her appetite when it took her mass.'] },
   { supernaturalForm: 'sous_wight', texts: ['The kitchen steam passes through me. I taste everything; I hold nothing.'] },

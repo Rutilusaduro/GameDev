@@ -2894,7 +2894,7 @@ Mrs. Monroe arrives last, parks badly, and waves through the window with both ha
         {
           text:(h,s)=>`${s.name} is ${Math.round(s.lbs)} pounds and she looks comfortable at the counter, comfortable in the apron, comfortable in the common-room kitchen in a way that suggests she's stopped thinking of it as anyone else's space. She has the recipe book open to something indulgent.
 
-"Mrs. Calloway asked me yesterday about what I'm making," she says. "I told her it was curriculum-aligned." She looks at you. "Is there a curriculum it's aligned with?"`,
+"Mrs. Calloway asked me yesterday about what I'm making," she says. "I told her it was wellness-program aligned." She looks at you. "Is there a wellness program it's aligned with?"`,
           choices:[
             {id:"recipe_rich",label:"Make the rich batch regardless — she's not going to stop",result:(s)=>`She makes the rich batch. The hall lounge fills. She taste-tests once from the pan, then again to be sure. "It's good," she says. She means: I know it is. The notebook confirms it.`,lbs:9,rel:8,flag:"recipe_rich"},
             {id:"recipe_special",label:"Try the cream-filled brioche — this is the moment",result:(s)=>`She makes the cream-filled brioche, which has been in the recipe book since the second week. It requires forty minutes and two rounds of taste-testing. She eats more during testing than she'd planned. The result is extraordinary.`,lbs:12,rel:10,flag:"recipe_special"},
@@ -3738,7 +3738,7 @@ export const HOMEROOM_CONFERENCE_EVENTS = {
 
 "I wanted to ask about Tuesdays," she says. "Kayla talks about them constantly."`,
     choices:[
-      {id:"curriculum_frame",label:"Walk her through the curriculum framing — keep it professional",
+      {id:"curriculum_frame",label:"Walk her through the wellness-program framing — keep it professional",
        result:`Daisy goes through the enrichment rationale with specific, accurate detail. Mrs. Calloway listens with her arms crossed, then uncrosses them by the third point. "She's been happier," she admits. "I noticed." She leaves without further questions. Daisy exhales.`,
        lbs:2,momGain:6,rel:5,suspDelta:-2},
       {id:"offer_tasting",label:"Offer a tasting — redirect with warmth",
@@ -3781,7 +3781,7 @@ export const HOMEROOM_GROUP_ACTIVITIES = {
     apCost:1,
     text:`All three moms are here — Mrs. Monroe arrived first and has already claimed the good chair near the window; Mrs. Reyes came in mid-sentence about something; Mrs. Calloway is near the back with her jacket buttoned, watching the room. Daisy stands at the front, notepad in hand.
 
-The agenda says: progress updates, enrichment activities, curriculum notes. The room has its own agenda.`,
+The agenda says: progress updates, enrichment activities, wellness notes. The room has its own agenda.`,
     choices:[
       {id:"curriculum",label:"Cover the agenda properly — keep the framing intact",
        result:`Daisy goes through everything on the list, thoroughly and warmly. Mrs. Calloway uncrosses her arms by the second item. Mrs. Monroe has her hand in the snack bowl. By the end the meeting has accomplished everything stated and the moms are leaving with containers.`,

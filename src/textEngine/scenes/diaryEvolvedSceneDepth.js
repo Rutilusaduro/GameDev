@@ -104,7 +104,7 @@ const STAGE11_C1 = {
     `Queen immobile. County sends fried things. Scepter unused. Belly holds court.`,
   ],
   wife_lessons: [
-    `Lesson from the chair. Students bring questions and plates. Marriage curriculum edible.`,
+    `Lesson from the chair. Residents bring questions and plates. Marriage lessons edible.`,
     `I teach abundance by example. Desk cleared for dessert. Room rapt. Hungry.`,
   ],
   psych_researcher: [
@@ -113,7 +113,7 @@ const STAGE11_C1 = {
   ],
   homeroom_queen: [
     `Tuesday from a chair. They bring everything. I taste-test anyway. Royalty need not stand.`,
-    `Flour-dusted at center. Six mothers orbit. Homeroom is geography now. Yes.`,
+    `Flour-dusted at center. Six mothers orbit. Hall kitchen is geography now. Yes.`,
   ],
   cultivator: [
     `Harvest complete. Subject immobile. I am immobile. Session log continues from chairs.`,
@@ -198,7 +198,7 @@ registerModuleVariants('homeroom.conference.Bri.brief', [
 registerModuleVariants('homeroom.activity.parent_meeting.p0', [
   { when: {}, text: [
     `Three mothers, one Daisy, zero empty hands. Mrs. Monroe claimed the window chair. Mrs. Reyes mid-sentence. Mrs. Calloway catalogs.`,
-    `The agenda says curriculum. The room smells like butter. Everyone knows which agenda wins.`,
+    `The agenda says wellness notes. The room smells like butter. Everyone knows which agenda wins.`,
   ]},
 ]);
 

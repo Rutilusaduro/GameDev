@@ -130,14 +130,14 @@ registerPool('evolved.gainer.v2.depth', [
 registerPool('evolved.homeroomQueen.v2.depth', [
   { when: { studentId: 13, stageMin: 8 }, text: [
     `Daisy flour-dusted at center — six mothers orbit, Tuesday theology made flesh.`,
-    `Homeroom queen evolution — soft power, hard butter, suspicion meter rising.`,
+    `Hall kitchen queen evolution — soft power, hard butter, suspicion meter rising.`,
   ]},
   { when: { studentId: 13 }, text: [
-    `Conference container always out. Parents fed. Curriculum optional.`,
+    `Conference container always out. Parents fed. Wellness paperwork optional.`,
     `Bake-sale diplomacy. Abundance as policy. Daisy smiling.`,
   ]},
   { when: {}, text: [
-    `Homeroom queen evolution — lounge as court, appetite as curriculum.`,
+    `Hall kitchen queen evolution — lounge as court, appetite as policy.`,
   ]},
 ]);
 
@@ -186,11 +186,11 @@ registerModuleVariants('homeroom.v2.depth', [
     `Daisy's kitchen hums — flour-dusted, enormous at center, Tuesday theology made flesh.`,
   ]},
   { when: { studentId: 13, stageMin: 5 }, weight: W, text: [
-    `Cookies, curriculum, calculated indulgence. Parents orbit the desk container.`,
+    `Cookies, hall log, calculated indulgence. Parents orbit the desk container.`,
   ]},
   { when: {}, weight: 3, text: [
     `Institutional warmth — bake-sale diplomacy, suspicion meter rising one tray at a time.`,
-    `Soft power measured in butter. Homeroom queen holds court.`,
+    `Soft power measured in butter. Hall kitchen queen holds court.`,
   ]},
 ]);
 

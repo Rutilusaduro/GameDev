@@ -485,7 +485,7 @@ registerPool('opposition.v2.depth', [
   ]},
   { when: {}, text: [
     'Institutional pressure reshapes the board — scarcity and scrutiny braid together off-screen.',
-    'Vance\'s folder thickens. Appetite defended like curriculum, attacked like scandal.',
+    'Vance\'s folder thickens. Appetite defended like policy, attacked like scandal.',
     'Five polished chairs, one hungry hall — the Board performs worry while you perform abundance.',
     'Toner and denial in the conference air. Hunger is the argument they cannot win cleanly.',
   ]},
@@ -616,9 +616,9 @@ registerPool('wifeLessonsTalk.v2.depth', [
 ]);
 registerPool('homeroom.v2.depth', [
   { when: {}, text: [
-    "Daisy's kitchen hums with institutional warmth — cookies, curriculum, and calculated indulgence.",
+    "Daisy's kitchen hums with institutional warmth — cookies, hall log, and calculated indulgence.",
     'Tuesday theology: feed the hall, charm the parents, grow the suspicion meter one tray at a time.',
-    'The homeroom queen holds court — soft power measured in butter and bake-sale diplomacy.',
+    'The hall kitchen queen holds court — soft power measured in butter and bake-sale diplomacy.',
   ]},
 ]);
 registerPool('wifeLessons.v2.depth', [
@@ -633,7 +633,7 @@ registerPool('wifeLessons.v2.depth', [
   { when: {}, text: [
     'Warm kitchen, warm dough, warm philosophy — abundance taught one generous bite at a time.',
     'The lesson is not just food. It is permission, passed around the table until no one refuses.',
-    'Southern comfort made curriculum. Every woman in the room understands what she is being offered.',
+    'Southern comfort made ritual. Every woman in the room understands what she is being offered.',
   ]},
 ]);
 

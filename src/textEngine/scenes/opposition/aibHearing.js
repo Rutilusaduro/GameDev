@@ -57,7 +57,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.feast', [
 registerPoolAutoDecompose('opposition.hearing.removal.result.hold_firm', [
   { when: {}, text: [
     'You do not apologize. Several members look away first.',
-    'Abundance named as curriculum. Vance\'s folder feels thinner suddenly.',
+    'Abundance named as hall policy. Vance\'s folder feels thinner suddenly.',
     'You hold the line without flinching. Hunger stays on the meal plan.',
   ]},
 ]);

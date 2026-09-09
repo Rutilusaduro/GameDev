@@ -341,6 +341,22 @@ const BANNED = [
   /\bRibbon girls smile first\b/i,
   /\bCrown girls count everything\b/i,
   /\bYour greedy girl appreciates\b/i,
+  /\bhomeroom queen\b/i,
+  /\bHomeroom royalty\b/,
+  /\bHomeroom is geography\b/,
+  /\bHomeroom preaches\b/,
+  /\bHomeroom asks restraint\b/,
+  /\bthe homeroom from\b/i,
+  /\bcurriculum-aligned\b/i,
+  /\bcurriculum notes\b/i,
+  /\bcurriculum framing\b/i,
+  /\bAbundance named as curriculum\b/,
+  /\babundance is the curriculum\b/i,
+  /\bShe's in the curriculum\b/,
+  /\bappetite as curriculum\b/i,
+  /\bCurriculum optional\b/i,
+  /\bcookies, curriculum\b/i,
+  /\bSpirit fingers without flesh\b/,
 ];
 
 function assertClean(text, label) {

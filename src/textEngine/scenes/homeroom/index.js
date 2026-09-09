@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
-// Homeroom Queen — engine bridge from HOMEROOM_* legacy prose.
+// Hall kitchen queen — engine bridge from HOMEROOM_* legacy prose.
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
@@ -49,7 +49,7 @@ export function renderHomeroomPool(poolKey, daisyStudent, week = 1, opts = {}) {
   }
 }
 
-/** Homeroom Queen prose beat — V2 depth on legacy text (fallback). */
+/** Hall kitchen queen prose beat — V2 depth on legacy text (fallback). */
 export function renderHomeroomProse(text, daisyStudent, week = 1, opts = {}) {
   if (!text?.trim()) return '';
   const ctx = buildHomeroomCtx(daisyStudent, week, opts);

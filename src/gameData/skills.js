@@ -448,7 +448,7 @@ export const EVOLVED_SKILL_TREES = {
     { id:"ed_agent",      tier:2, label:"Literary Agent",     cost:40, desc:"+4 relationship per activity viewing.",                                       activityRelBonus:4 },
     { id:"ed_book",       tier:3, label:"Book Deal",          cost:70, desc:"Scrutiny -3/week. She's a published author. Admin is careful with authors.", weeklyScrutinyReduce:3 },
     { id:"ed_reviews",    tier:4, label:"Critical Acclaim",   cost:110, desc:"+2 passive lbs/week. The writing legitimizes everything.",                  passiveBonus:2 },
-    { id:"ed_canon",      tier:5, label:"Canonical Text",     cost:160, desc:"+3 passive, +5 rel/activity, scrutiny -2/week. She's in the curriculum.",   passiveBonus:3, activityRelBonus:5, weeklyScrutinyReduce:2 },
+    { id:"ed_canon",      tier:5, label:"Canonical Text",     cost:160, desc:"+3 passive, +5 rel/activity, scrutiny -2/week. She's in the campus anthology.",   passiveBonus:3, activityRelBonus:5, weeklyScrutinyReduce:2 },
   ],
   food_researcher:[
     { id:"fr_irb",        tier:1, label:"Season Panel Approval",       cost:20, desc:"Scrutiny -3/week. Institutional backing is powerful cover.",                 weeklyScrutinyReduce:3 },
