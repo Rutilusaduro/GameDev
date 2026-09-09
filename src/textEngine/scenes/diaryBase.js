@@ -188,7 +188,7 @@ registerPool("diary.destiny.achievement", [
 
 registerPool("diary.tiffany.uncounted", [
   { when: { studentId: 6, stageMin: 3, stageMax: 4, corruption: [0] }, weight: 4, text: [
-    "Hosted an event tonight. Twenty-three girls, three courses, wine for the ones who wanted it.",
+    "Hosted an event tonight. Twenty-three residents, three courses, wine for the ones who wanted it.",
     "I was the hostess, the timekeeper, the plate-counter. I made sure everyone had enough because that's what I do.",
     "Halfway through dessert I realized I hadn't eaten. I hadn't even set a place for myself.",
   ]},

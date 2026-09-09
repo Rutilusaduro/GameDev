@@ -665,7 +665,7 @@ registerModuleVariants("grow.crossingDialogue", [
     `"Stairs told me first," she murmurs. "Mirror just agreed."`,
   ]},
   { when: { studentId: 14, endStageMin: 7 }, weight: W, text: [
-    `"Lord," she breathes. "That's a lot of girl."`,
+    `"Lord," she breathes. "That's a lot of woman."`,
   ]},
 
   // ── Sophia (16) ────────────────────────────────────────────────

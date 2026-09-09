@@ -44,6 +44,7 @@ import { renderCampusSighting } from '../src/textEngine/scenes/campusExploration
 import '../src/textEngine/scenes/campusExplorationText.js';
 import '../src/textEngine/scenes/diary.js';
 import { renderDiary } from '../src/textEngine/scenes/diary.js';
+import { renderEcologyReport } from '../src/textEngine/scenes/rosterTell/index.js';
 import { NADIA_SUBJECT_JOURNALS } from '../src/gameData/nadiaSubjectJournals.js';
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import '../src/textEngine/scenes/campusEvent/depth.js';
@@ -206,6 +207,13 @@ const BANNED = [
   /\bphrase for girls who committed\b/i,
   /\blot of girl to get airborne\b/i,
   /\bhope every girl on that squad\b/i,
+  /\bthe girl from State\b/i,
+  /\btwo girls cried\b/i,
+  /\bCampus myth: girl who\b/i,
+  /\bTwenty-three girls\b/i,
+  /\bThat's a lot of girl\b/i,
+  /\bFor a girl still finding her footing\b/i,
+  /\bfive more girls to the board\b/i,
 ];
 
 function assertClean(text, label) {
@@ -539,6 +547,37 @@ const wifeLessonsDiary = renderDiary(
 );
 if (wifeLessonsDiary) assertClean(wifeLessonsDiary, 'wife lessons diary render');
 
+const eatingCaptainDiary = renderDiary(
+  { ...INIT_STUDENTS[0], evolvedForm: 'eating_captain', lbs: 320, archetype: 'foodie', name: 'Priya' },
+  20,
+);
+if (eatingCaptainDiary) assertClean(eatingCaptainDiary, 'eating captain diary render');
+
+const squadCaptainDiary = renderDiary(
+  { ...INIT_STUDENTS[0], evolvedForm: 'big_squad_captain', lbs: 260, archetype: 'cheerleader', name: 'Brooke' },
+  16,
+);
+if (squadCaptainDiary) assertClean(squadCaptainDiary, 'big squad captain diary render');
+
+const competitiveGainerDiary = renderDiary(
+  { ...INIT_STUDENTS[0], evolvedForm: 'competitive_gainer', lbs: 300, archetype: 'overachiever', name: 'Nadia' },
+  22,
+);
+if (competitiveGainerDiary) assertClean(competitiveGainerDiary, 'competitive gainer diary render');
+
+const tiffanyDiary = renderDiary(
+  { ...INIT_STUDENTS.find((s) => s.id === 6), lbs: 155, corruption: 0 },
+  10,
+);
+if (tiffanyDiary) assertClean(tiffanyDiary, 'Tiffany base diary render');
+
+const neglectedReport = renderEcologyReport(
+  { ...INIT_STUDENTS[0], name: 'Maya', corruption: 0 },
+  8,
+  { globals: { favoritismFlag: 'neglected' } },
+);
+if (neglectedReport) assertClean(neglectedReport, 'roster ecology neglected report');
+
 for (const archetype of Object.keys(NADIA_SUBJECT_JOURNALS)) {
   for (const intro of NADIA_SUBJECT_JOURNALS[archetype]?.intro || []) {
     assert(!/\[placeholder/i.test(intro), `Nadia journal ${archetype} intro must not be placeholder`);
@@ -655,6 +694,16 @@ if (tiffany) {
     { v2DepthChance: 0 },
   );
   if (growthScene) assertClean(growthScene, 'growth scene Tiffany stage jump');
+}
+
+const mj = INIT_STUDENTS.find((s) => s.id === 14);
+if (mj) {
+  const mjGrowth = renderGrowthScene(
+    { ...mj, lbs: 280, corruption: 2 },
+    { endStage: 7, startStage: 5, stagesJumped: 2, gainLbs: 20, week: 14 },
+    { v2DepthChance: 0 },
+  );
+  if (mjGrowth) assertClean(mjGrowth, 'growth scene Mary Jane stage jump');
 }
 
 for (const key of [

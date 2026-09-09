@@ -95,7 +95,7 @@ registerPool('roster.ecologyReport.neglected', [
     `{subject.name} is already running low on goodwill, and the neglect this week has made it worse. She looks like someone waiting to be remembered.`,
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
-    `{subject.name} hasn't been fed or spoken to in a week. For a girl still finding her footing here, the gap between her and whoever you've been spending time on is starting to feel like an answer.`,
+    `{subject.name} hasn't been fed or spoken to in a week. For a resident still finding her footing here, the gap between her and whoever you've been spending time on is starting to feel like an answer.`,
   ]},
 ]);
 

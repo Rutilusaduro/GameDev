@@ -312,7 +312,7 @@ registerPool('diary.body_positive_creator', [
 // ── diary.eating_captain (decomposed) ─────────────────────────────────────
 registerPool('diary.eating_captain.c1', [
 { when: { stage: [5], corruption: [0] }, text: ['Regional Open. The warmup room, Maya from Lakewood at 330 lbs, not looking at me. I ate my warmup. I stepped on the scale. The judge read my number twice. Maya looked over.'] },
-  { when: { stage: [5] }, text: ['Regional Open. My first. The warmup room smelled like cooking and the girl from State — 178 lbs, two years on the circuit — looked at me the way people look at something they didn\'t expect.'] },
+  { when: { stage: [5] }, text: ['Regional Open. My first. The warmup room smelled like cooking and the competitor from State — 178 lbs, two years on the circuit — looked at me the way people look at something they didn\'t expect.'] },
   { when: { stage: [6] }, text: ['Six months in. Maya says hello now. She\'s 370 and I\'m 320 and the gap is closing and she knows it the same way I know it.'] },
   { when: { stage: [7], corruption: [0] }, text: ['Conference championship. I weighed in at 419 and Maya\'s number was 410 and the judge said mine into the microphone and Maya stopped writing with the marker.'] },
   { when: { stage: [7] }, text: ['Conference championship. I weighed in at 419 and Maya\'s number was 410 and the head judge said mine into the microphone and Maya stopped writing mid-number with the marker.'] },
@@ -370,8 +370,8 @@ registerPool('diary.eating_captain', [
 // ── BIG_SQUAD_CAPTAIN ─────────────────────────────────────────
 // ── diary.big_squad_captain (decomposed) ─────────────────────────────────────
 registerPool('diary.big_squad_captain.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['I said it in front of the squad and two girls cried. One left. I kept going. Six new pledges signed up the following week. I don\'t know yet if I built a thing or just started one.'] },
-  { when: { stage: [5] }, text: ['I stood in front of the squad and said: no more weigh-ins, no more size requirements, no more conversations about who fits the uniform before we talk about who can do the work. Two girls cried.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I said it in front of the squad and two squadmates cried. One left. I kept going. Six new pledges signed up the following week. I don\'t know yet if I built a thing or just started one.'] },
+  { when: { stage: [5] }, text: ['I stood in front of the squad and said: no more weigh-ins, no more size requirements, no more conversations about who fits the uniform before we talk about who can do the work. Two squadmates cried.'] },
   { when: { stage: [6] }, text: ['Pledges are choosing us. They say they heard about the culture — that we celebrate what bodies can do rather than what they look like. This is accurate.'] },
   { when: { stage: [7] }, text: ['A journalist called for a quote. Then they asked for a sit-down. \' I read it three times and ate something good and thought about what a long way this has come.'] },
   { when: { stage: [8] }, text: ['National Greek leadership conference. I spoke for forty minutes. My chapter was in the front row. At the end there was a long silence and then the room started.'] },
@@ -1070,7 +1070,7 @@ registerPool('diary.campus_legend.c1', [
   { when: { stage: [10] }, text: ['I came here not knowing anyone or anything. Now I am known before I arrive anywhere on this campus. The campus shaped me and I shaped it back. We are the same thing now.'] },
   { when: {}, text: [
     "The booth is mine. The dining hall knows. Good.",
-    "Campus myth: girl who never stops eating. True.",
+    "Campus myth: resident who never stops eating. True.",
     "Legend status earned one tray at a time.",
   ]},
 
@@ -1085,7 +1085,7 @@ registerPool('diary.campus_legend.c2', [
   { when: { stage: [10] }, text: ['I am the place and the place is me.'] },
   { when: {}, text: [
     "They tell stories in the dining hall. I am the story.",
-    "Campus myth: girl who never stops eating. True.",
+    "Campus myth: resident who never stops eating. True.",
     "Legend status earned one tray at a time.",
   ]},
 

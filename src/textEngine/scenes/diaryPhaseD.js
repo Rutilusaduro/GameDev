@@ -102,7 +102,7 @@ registerPool('diary.competitive_gainer.s6._f9', [
 
 registerPool('diary.competitive_gainer.s6._f10', [
   { when: {}, text: [
-    "I have added five more girls to the board. I am slightly behind in hip measurement compared to one of them, and that is unacceptable. I have already adjusted my intake schedule.",
+    "I have added five more residents to the board. I am slightly behind in hip measurement compared to one of them, and that is unacceptable. I have already adjusted my intake schedule.",
     "Five new names on the board. One hip measurement threatens mine. Unacceptable. Intake schedule revised.",
     "The leaderboard grew. So did my appetite. Correlation noted. Causation intended.",
   ]},

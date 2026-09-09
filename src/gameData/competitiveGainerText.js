@@ -15,7 +15,7 @@ export const CG_FILLED_DIARY = [
 My thighs spread wider across the chair than they used to, rubbing with a constant soft friction that makes me shift just to feel it again. The numbers do not lie. I am already leading in waist circumference. It feels... satisfying.`,
   `The straight lines of my old body are disappearing faster than I expected. My belly has grown rounder, pushing forward heavily when I sit at my desk, the soft apron of it resting warmly on my thickening thighs. I caught my reflection earlier - fabric straining across the new width of my hips, seams pulling as I move. Thigh friction is constant now, a warm, plush reminder with every step.
 
-I have added five more girls to the board. I am slightly behind in hip measurement compared to one of them, and that is unacceptable. I have already adjusted my intake schedule. The data will reflect my response by next week.`,
+I have added five more residents to the board. I am slightly behind in hip measurement compared to one of them, and that is unacceptable. I have already adjusted my intake schedule. The data will reflect my response by next week.`,
   `When I sit down now my belly rounds forward in a heavy, undeniable arc, spilling softly over my waistband and forcing me to adjust my custom trousers constantly. The blazer I wore last semester is long gone - replaced by pieces that still feel tight across my broadening back and chest. My thighs have become massive, spreading wide and pressing together with every movement, the warm friction almost distracting during study blocks.
 
 I am leading in waist and total weight. Brittany's thighs remain a threat. I have devised a targeted binge protocol to widen the gap. The board is updating daily. This is no longer a side project.`,

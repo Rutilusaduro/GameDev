@@ -592,6 +592,29 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('diary-roster-resident-framing', () => {
+  const diary = read('src/textEngine/scenes/diary.js');
+  assert.match(diary, /competitor from State/);
+  assert.match(diary, /two squadmates cried/);
+  assert.match(diary, /Campus myth: resident who never stops eating/);
+  assert.doesNotMatch(diary, /the girl from State|two girls cried|Campus myth: girl who never stops eating/i);
+  const diaryBase = read('src/textEngine/scenes/diaryBase.js');
+  assert.match(diaryBase, /Twenty-three residents/);
+  assert.doesNotMatch(diaryBase, /Twenty-three girls/);
+  const diaryPhaseD = read('src/textEngine/scenes/diaryPhaseD.js');
+  assert.match(diaryPhaseD, /five more residents to the board/);
+  assert.doesNotMatch(diaryPhaseD, /five more girls to the board/);
+  const rosterTell = read('src/textEngine/scenes/rosterTell/index.js');
+  assert.match(rosterTell, /For a resident still finding her footing/);
+  assert.doesNotMatch(rosterTell, /For a girl still finding her footing/);
+  const growth = read('src/textEngine/scenes/growthEvent/personas.js');
+  assert.match(growth, /That's a lot of woman/);
+  assert.doesNotMatch(growth, /That's a lot of girl/);
+  const cgText = read('src/gameData/competitiveGainerText.js');
+  assert.match(cgText, /five more residents to the board/);
+  assert.doesNotMatch(cgText, /five more girls to the board/);
+});
+
 check('gossip-dinner-resident-framing', () => {
   const gossip = read('src/textEngine/scenes/gossip/index.js');
   assert.match(gossip, /resident-to-resident awareness/);
