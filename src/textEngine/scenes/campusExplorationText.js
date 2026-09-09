@@ -256,7 +256,7 @@ registerPool('campus.travel', [
       'Two students compare meal-plan hacks. Both plans have expanded since September.',
       'The breeze carries fried sugar from three directions at once.',
       'Someone naps on a bench with a half-eaten pastry balanced on their stomach like a trophy.',
-      'A study group converts a whiteboard into a snack roster. Academics are listed second.',
+      'A study group converts a whiteboard into a snack roster. Homework is listed second.',
       'Roommates argue about whose turn it is to order. Both phones already have carts open.',
       'A facilities worker eyes a reinforced bench and makes a note. You do not ask what it says.',
     ] },

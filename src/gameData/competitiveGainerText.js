@@ -10,7 +10,7 @@ export const CG_FILLED_REACTIONS = [
 ];
 
 export const CG_FILLED_DIARY = [
-  `Tonight I finally mounted the corkboard properly. The pins slide in cleanly as I lean forward, and I feel my heavy belly press warmly against the desk edge in a thick, rounded swell that was not there a month ago. My once-straight waist has softened into noticeable rolls that spill over my waistband when I sit, warm and plush. Initial measurements are logged: mine, Brittany's thighs, Kylie's bust. The data is clean. Academic, even. But I already know this is more than research now. I am going to be the largest.
+  `Tonight I finally mounted the corkboard properly. The pins slide in cleanly as I lean forward, and I feel my heavy belly press warmly against the desk edge in a thick, rounded swell that was not there a month ago. My once-straight waist has softened into noticeable rolls that spill over my waistband when I sit, warm and plush. Initial measurements are logged: mine, Brittany's thighs, Kylie's bust. The data is clean. Precise, even. But I already know this is more than a side project now. I am going to be the largest.
 
 My thighs spread wider across the chair than they used to, rubbing with a constant soft friction that makes me shift just to feel it again. The numbers do not lie. I am already leading in waist circumference. It feels... satisfying.`,
   `The straight lines of my old body are disappearing faster than I expected. My belly has grown rounder, pushing forward heavily when I sit at my desk, the soft apron of it resting warmly on my thickening thighs. I caught my reflection earlier - fabric straining across the new width of my hips, seams pulling as I move. Thigh friction is constant now, a warm, plush reminder with every step.

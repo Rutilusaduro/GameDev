@@ -26,7 +26,7 @@ registerPool('scrutiny.tierUp.header', [
     `An automated flag from the wellness compliance system — low priority, for now.`,
   ]},
   { when: { scrutinyTierId: 2 }, weight: 3, text: [
-    `An email from the Dean of Academic Affairs. The subject line is three words: "Preliminary Welfare Review."`,
+    `An email from the Director of Residence Life. The subject line is three words: "Preliminary Welfare Review."`,
     `A formal notice through the housing channel — Office of Student Affairs letterhead.`,
   ]},
   { when: { scrutinyTierId: 3 }, weight: 3, text: [
@@ -52,7 +52,7 @@ registerPoolAutoDecompose('scrutiny.tierUp.body', [
     `"This office has received multiple independent reports regarding the physical welfare of students in your section. A formal review period commences immediately." You read it three times.`,
   ]},
   { when: { scrutinyTierId: 3 }, weight: 3, text: [
-    `You are under formal investigation by the Office of Academic Integrity and Student Welfare. Public events involving your enrolled cohort are suspended pending outcome. The institution is no longer looking the other way.`,
+    `You are under formal investigation by the Office of Housing Conduct and Student Welfare. Floor events involving your residents are suspended pending outcome. The institution is no longer looking the other way.`,
     `"A full investigative inquiry has been opened. You are advised not to alter the conditions of your hall until the review concludes." Everything you have built is in the light now.`,
     `The letter is three pages. The first is procedure. The second is a list of incidents they've already documented. The third is a timeline. They've been watching longer than you realized.`,
   ]},

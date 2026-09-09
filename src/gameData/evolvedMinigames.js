@@ -50,15 +50,15 @@ export const EVOLVED_MINIGAMES = {
     ],
   },
   presentation_defense: {
-    title: 'Committee Defense',
-    tag: 'ACADEMIC SUBJECT',
+    title: 'Panel Review',
+    tag: 'HALL LOG SUBJECT',
     accent: '#2c5f8a',
     phases: [
       {
-        text: (ctx) => `${ctx.studentName} stands at the podium. The committee has questions. The data charts her body in ways academia pretends are neutral.`,
+        text: (ctx) => `${ctx.studentName} stands at the hall lounge mic. The review panel has questions. Her season-plan slides chart her body in ways housing pretends are neutral.`,
         choices: [
-          { id: 'reframe', label: 'Reframe the data as embodied research', score: 3, log: 'The room shifts — curiosity replaces judgment.' },
-          { id: 'deflect', label: 'Deflect to methodology — bore them precise', score: 1, log: 'Footnotes buy time.' },
+          { id: 'reframe', label: 'Reframe the data as embodied hall log', score: 3, log: 'The room shifts — curiosity replaces judgment.' },
+          { id: 'deflect', label: 'Deflect to methodology — bore them precise', score: 1, log: 'Appendix notes buy time.' },
           { id: 'confess', label: 'Confess appetite as the real season plan', score: 2, log: 'Honesty lands like a thrown gauntlet.' },
         ],
       },

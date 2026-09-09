@@ -212,7 +212,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
       const labels = {
         campus_challenge: 'Campus Challenge',
         delivery_order: 'Home Nest Delivery',
-        presentation_defense: 'Academic Subject Defense',
+        presentation_defense: 'Hall Log Defense',
       };
       push(`✦ ${s.name} — ${labels[gameId]}: ${minigameTierLabel(result.tier)} · +${result.gain} lbs · +${result.rel} rel`);
       setOutcome(result);

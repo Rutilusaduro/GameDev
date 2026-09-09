@@ -128,6 +128,12 @@ const BANNED = [
   { id: 'academic-pivot-title', re: /Academic Pivot/i },
   { id: 'professors-quarters-pwa', re: /Professor's Quarters/i },
   { id: 'prof-sim-short-name', re: /Prof Sim/i },
+  { id: 'academic-subject-defense', re: /Academic Subject Defense/i },
+  { id: 'academic-subject-tag', re: /ACADEMIC SUBJECT/i },
+  { id: 'dean-academic-affairs', re: /Dean of Academic Affairs/i },
+  { id: 'office-academic-integrity', re: /Office of Academic Integrity/i },
+  { id: 'academics-listed-second', re: /Academics are listed second/i },
+  { id: 'academia-pretends', re: /academia pretends/i },
 ];
 
 const ALLOW_LINE = [

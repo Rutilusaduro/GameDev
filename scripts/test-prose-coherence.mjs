@@ -8,11 +8,15 @@ import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORM_LIST } from '../src/gameData/dorms.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS } from '../src/gameData/communityResearcher.js';
 import { EVOLVED_OUTFITS } from '../src/gameData/evolvedForms.js';
+import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
+import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
+import { renderScrutinyTierUp } from '../src/textEngine/scenes/scrutiny/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
+import '../src/textEngine/scenes/campusExplorationText.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -31,6 +35,11 @@ const BANNED = [
   /\bProfessor's Quarters\b/i,
   /\bProf Sim\b/i,
   /\bProfessor Sim\b/i,
+  /\bAcademic Subject\b/i,
+  /\bDean of Academic Affairs\b/i,
+  /\bOffice of Academic Integrity\b/i,
+  /\bAcademics are listed\b/i,
+  /\bacademia pretends\b/i,
 ];
 
 function assertClean(text, label) {
@@ -101,4 +110,27 @@ for (const id of agendaIds) {
   if (line) assertClean(line, `opposition agenda ${id}`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition OK');
+for (const [gameId, def] of Object.entries(EVOLVED_MINIGAMES)) {
+  assertClean(`${def.title} ${def.tag}`, `minigame ${gameId} header`);
+  for (const phase of def.phases) {
+    const body = typeof phase.text === 'function' ? phase.text({ studentName: 'Maya' }) : phase.text;
+    assertClean(body, `minigame ${gameId} phase`);
+    for (const ch of phase.choices) {
+      assertClean(`${ch.label} ${ch.log}`, `minigame ${gameId} choice ${ch.id}`);
+    }
+  }
+}
+
+for (const entry of CG_FILLED_DIARY) {
+  assertClean(entry, 'Priya competitive gainer diary');
+}
+
+for (const tierId of [1, 2, 3]) {
+  assertClean(renderScrutinyTierUp(tierId, { week: 10 }), `scrutiny tier ${tierId}`);
+}
+
+const campusCtx = buildTextContext({ week: 6, globals: { campusTierMin: 0 } });
+const campusLine = render('{campus.travel}', campusCtx)?.trim();
+if (campusLine) assertClean(campusLine, 'campus travel flavor');
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames OK');
