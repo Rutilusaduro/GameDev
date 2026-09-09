@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
 import { renderEvolvedEventProse } from '../textEngine/scenes/evolved/index.js';
 
@@ -20,7 +21,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";
         return(
-          <div style={C.overlay}>
+          <ModalOverlay dismissible={false} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in evolved-event-modal" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#07030f,#120820,#07030f)",border:`1px solid ${accentColor}50`,maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{evDef.title.toUpperCase()}</div>
               <div style={{fontSize:15,fontWeight:700,color:evMeta?.color||"#d8a8ff",marginBottom:12}}>{s.name}</div>
@@ -102,6 +103,6 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
               {done&&startsSalon&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#8b2942"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openSalonHub(studentId);}}>🥂 Open the Salon</button>}
               {done&&startsGallery&&<button type="button" className="evolved-event-choice-row" style={{...C.btn("#c47a2a"),width:"100%",marginTop:4}} onClick={()=>{setEvolvedEventState(null);openGalleryHub(studentId);}}>🖼 Open the Gallery</button>}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

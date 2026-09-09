@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { GIFT_COST } from '../gameData/discontent.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { SceneStage } from './SceneStage.jsx';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#c05038';
 
@@ -33,7 +34,7 @@ export function ConfrontationModal({
   const student = { id: studentId, name, lbs: lbs ?? 130 };
 
   return (
-    <div style={C.overlay}>
+    <ModalOverlay dismissible={false} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in confrontation-modal" style={{ ...C.modal, maxWidth: 540, border: `1px solid ${ACCENT}` }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT, marginBottom: 6 }}>
           {winBack ? '🕊 MAKING AMENDS' : '🔥 SHE’S HAD ENOUGH'}
@@ -70,6 +71,6 @@ export function ConfrontationModal({
           ]}
         />
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

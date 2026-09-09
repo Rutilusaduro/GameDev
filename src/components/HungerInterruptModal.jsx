@@ -6,6 +6,7 @@ import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 import { getStage } from '../gameData/stages.js';
 import { getInterruptDenyRelLoss } from '../gameData/hungerAddiction.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function HungerInterruptModal({
   student,
@@ -34,7 +35,7 @@ export function HungerInterruptModal({
   const residentName = s?.name || 'her';
 
   return (
-    <div style={{ ...C.overlay, zIndex: 9000, padding: 16 }}>
+    <ModalOverlay dismissible={false} soundEnabled={soundEnabled} style={{ zIndex: 9000, padding: 16 }}>
       <div
         className="hall-pass-modal-in hunger-interrupt-modal"
         style={{ ...C.modal, maxWidth: 520, width: '100%', maxHeight: '90vh', overflowY: 'auto', border: '1px solid #80305060' }}
@@ -74,7 +75,7 @@ export function HungerInterruptModal({
           </button>
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 

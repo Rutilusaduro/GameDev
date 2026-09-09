@@ -76,7 +76,7 @@ export function SalonAppetitModal({
 
   if (session.phase === 'menu') {
     return (
-      <div style={{ ...C.overlay, zIndex: 360 }}>
+      <ModalOverlay dismissible={false} style={{ zIndex: 360 }}>
         <div className="hall-pass-modal-in salon-modal" style={{ ...C.modal, maxWidth: 520, background: '#12080c', border: `1px solid ${GOLD}44` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: GOLD }}>MENU DU SOIR ({session.menuPicks.length}/4)</div>
           <p style={{ fontSize: 12, color: '#dcc', lineHeight: 1.6 }}>Chloé plans four courses. {chloe ? `${Math.round(chloe.lbs)} lbs` : ''} and hungry for spectacle.</p>
@@ -88,14 +88,14 @@ export function SalonAppetitModal({
             ))}
           </div>
         </div>
-      </div>
+      </ModalOverlay>
     );
   }
 
   if (session.phase === 'service') {
     const course = session.menuPicks[Math.min(session.round, session.menuPicks.length - 1)];
     return (
-      <div style={{ ...C.overlay, zIndex: 360 }}>
+      <ModalOverlay dismissible={false} style={{ zIndex: 360 }}>
         <div className="hall-pass-modal-in salon-modal" style={{ ...C.modal, maxWidth: 520, background: '#12080c', border: `1px solid ${ACCENT}55` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>SERVICE — Round {session.round + 1}/4</div>
           <p style={{ fontSize: 12, color: '#ecc', marginBottom: 10 }}>{course?.label || 'Course'} is served.</p>
@@ -107,13 +107,13 @@ export function SalonAppetitModal({
             ))}
           </div>
         </div>
-      </div>
+      </ModalOverlay>
     );
   }
 
   if (session.phase === 'digestif') {
     return (
-      <div style={{ ...C.overlay, zIndex: 360 }}>
+      <ModalOverlay dismissible={false} style={{ zIndex: 360 }}>
         <div className="hall-pass-modal-in salon-modal" style={{ ...C.modal, maxWidth: 480, background: '#12080c', border: `1px solid ${GOLD}66` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: GOLD }}>LE DIGESTIF</div>
           <p style={{ fontSize: 12, color: '#eed', lineHeight: 1.7 }}>
@@ -124,7 +124,7 @@ export function SalonAppetitModal({
           ))}
           <button type="button" style={{ ...C.btn(GOLD), width: '100%', marginTop: 12 }} onClick={() => { playHallPassSound('confirm', soundEnabled); onDigestif(); }}>Finish the evening ✓</button>
         </div>
-      </div>
+      </ModalOverlay>
     );
   }
 

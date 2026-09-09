@@ -6,6 +6,7 @@ import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFeedingAppetiteNote } from '../gameData/feedingSession.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, privateSession?.student?.id]);
@@ -22,7 +23,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
     const sessionPace=ps.sessionPace||'steady';
     const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
         return(
-          <div style={C.overlay}>
+          <ModalOverlay dismissible={false} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in private-session-modal" style={{...C.modal,maxWidth:640,padding:20}}>
 
               {/* Header */}
@@ -225,6 +226,6 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

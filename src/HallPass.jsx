@@ -7880,7 +7880,7 @@ export default function HallPass(){
         const isDone=sceneIdx>=scenes.length&&!pendingResult;
         const current=!isDone&&!pendingResult?scenes[sceneIdx]:null;
         return(
-          <div style={C.overlay}>
+          <ModalOverlay dismissible={false} soundEnabled={soundEnabled}>
             <div className="hall-pass-modal-in floor-checkin-modal" style={{...C.modal,maxWidth:600,border:'1px solid #8040c860'}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>FLOOR CHECK-IN — WEEK {week}</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:19}}>
@@ -7972,7 +7972,7 @@ export default function HallPass(){
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
       })()}
 

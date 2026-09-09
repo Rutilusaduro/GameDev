@@ -2125,9 +2125,23 @@ check('modal-dismiss-polish', () => {
     'src/components/RecordingSessionModal.jsx',
     'src/components/StreamSessionModal.jsx',
     'src/HallPass.jsx',
+    'src/components/ConfrontationModal.jsx',
+    'src/components/EvolvedEventModal.jsx',
+    'src/components/HungerInterruptModal.jsx',
+    'src/components/OriginPickModal.jsx',
+    'src/components/PrivateSessionModal.jsx',
   ]) {
     const src = read(rel);
     assert.match(src, /ModalOverlay/, `${rel}: modal dismiss wiring`);
+  }
+});
+
+check('no-bare-c-overlay', () => {
+  for (const abs of walkSrcFiles()) {
+    const rel = abs.slice(root.length + 1);
+    if (rel === 'src/components/ModalOverlay.jsx') continue;
+    const src = readFileSync(abs, 'utf8');
+    assert.doesNotMatch(src, /C\.overlay/, `${rel}: bare C.overlay — use ModalOverlay component`);
   }
 });
 

@@ -327,7 +327,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
         const phaseText=phase?renderIntimacyPhase(sceneId,phaseIdx,s,history,tier,sceneWeek??1):null;
         const accentColor="#c050a0";
         return(
-          <div style={C.overlay}>
+          <ModalOverlay dismissible={false}>
             <div className="hall-pass-modal-in picker-modal" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#0a0318,#160424,#0a0318)",border:`1px solid ${accentColor}40`,maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:9,letterSpacing:4,color:accentColor,marginBottom:4}}>{(def.label||sceneId).toUpperCase()}</div>
               <div style={{fontSize:15,fontWeight:700,color:"#e8a8d0",marginBottom:4}}>{s.name}</div>
@@ -364,7 +364,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
               )}
               {done&&<button type="button" className="intimacy-choice-row" style={{...C.btn(accentColor),width:"100%",marginTop:4}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeIntimacyEvent(); }}>Continue ✓</button>}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }
 
