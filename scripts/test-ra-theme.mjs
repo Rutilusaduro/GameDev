@@ -97,6 +97,10 @@ const BANNED = [
   { id: 'department-budget', re: /Department budget/i },
   { id: 'athletics-department', re: /Athletics Department/i },
   { id: 'future-of-department', re: /future of the department/i },
+  { id: 'balance-seminar', re: /seminar on "balance"/i },
+  { id: 'seminar-interference', re: /seminar interference/i },
+  { id: 'revised-academic-outline', re: /revised academic outline/i },
+  { id: 'legitimate-research-phrase', re: /legitimate research/i },
 ];
 
 const ALLOW_LINE = [

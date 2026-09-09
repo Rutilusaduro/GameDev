@@ -152,7 +152,7 @@ export function applySupernaturalAgendaHook(cardEffect, students, effects) {
         gainMultWeeks: 1,
       },
     };
-    effects.logs = [...(effects.logs || []), '⚡ Wire Saint — seminar interference softens appetite dampening (−8% not −15%).'];
+    effects.logs = [...(effects.logs || []), '⚡ Wire Saint — workshop interference softens appetite dampening (−8% not −15%).'];
   }
   return effects;
 }

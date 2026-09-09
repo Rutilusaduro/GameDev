@@ -34,7 +34,7 @@ registerPool('opposition.agenda.wellness_seminar', [
     'Mandatory wellness workshop — portion charts, restraint language, appetite treated like illness.',
     'The auditorium fills with students told to fear fullness. Your floor hears the sermon anyway.',
     'Wellness slides flicker on screen. Hunger is framed as a problem the Board can solve.',
-    'A seminar on "balance" runs two hours. Nobody mentions how good your catering smells outside.',
+    'A workshop on "balance" runs two hours. Nobody mentions how good your catering smells outside.',
   ]},
 ]);
 

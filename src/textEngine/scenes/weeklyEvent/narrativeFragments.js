@@ -135,9 +135,9 @@ registerPool('weekly.thesisRewrite.submit', [
     'A revised season plan outline arrives from {subject.name}.',
   ] },
   { when: {}, text: [
-    '{subject.name} submits a revised academic outline.',
+    '{subject.name} submits a revised season plan outline.',
     'A new outline from {subject.name} lands in your inbox.',
-    '{subject.name} revises her proposal and sends it over.',
+    '{subject.name} revises her floor proposal and sends it over.',
     'Her revised outline shows up before desk hours.',
   ] },
 ]);
@@ -154,14 +154,14 @@ registerPool('weekly.thesisRewrite.title', [
   { when: {}, text: [
     'The title is rigorous on paper.',
     'The abstract sounds athletic.',
-    'The framing is academic and deliberate.',
-    'On paper it reads like legitimate research.',
+    'The framing is deliberate and hall-ready.',
+    'On paper it reads like a legitimate season plan.',
   ] },
 ]);
 
 registerPool('weekly.thesisRewrite.verdict', [
   { when: { archetype: 'bookworm' }, text: [
-    'The abstract is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
+    'The abstract is rigorous. It is also clearly an elaborate hall-standing justification for eating constantly.',
     'You read it twice. It is real scholarship and transparently convenient.',
     'You approve it immediately.',
     'She beams with the energy of someone who has made weight gain count toward her hall standing.',
