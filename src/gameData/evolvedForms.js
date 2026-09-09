@@ -1765,7 +1765,7 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
 
   // ── OVERACHIEVER: competitive_gainer — handled by custom modal ──────────
   // (no EVOLVED_EVENTS entry — doEvolvedActivity opens competitiveGainerState directly)
-  _deprecated_academic_subject:[
+  community_researcher:[
     // stageIdx 0 — ~258 lbs — Week 3: First panel presentation
     {
       title:"Week 3: Initial Data",
@@ -3702,7 +3702,7 @@ export const HOMEROOM_CONFERENCE_EVENTS = {
 
 "Is this about hall standing?" she asks. Her tone implies she already knows it isn't.`,
     choices:[
-      {id:"academic",label:"Actually go through her progress — she's been doing well",
+      {id:"progress_review",label:"Actually go through her progress — she's been doing well",
        result:`"Your engagement scores have gone up every single week since September," Daisy says, and she means it — the improvement is real and specific. Kayla blinks. "Oh," she says, genuinely surprised. Then she looks at the container on the corner of the desk. "Can I—" Daisy slides it over without comment.`,
        lbs:2,classGain:4,rel:5,suspDelta:-1},
       {id:"tuesday",label:"Skip the pretense — ask what she'd most like on Tuesday",

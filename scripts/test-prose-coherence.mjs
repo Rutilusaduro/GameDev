@@ -7,13 +7,15 @@ import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORM_LIST } from '../src/gameData/dorms.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
-import { EVOLVED_OUTFITS } from '../src/gameData/evolvedForms.js';
+import { EVOLVED_OUTFITS, EVOLVED_EVENTS, HOMEROOM_CONFERENCE_EVENTS } from '../src/gameData/evolvedForms.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
 import { renderScrutinyTierUp } from '../src/textEngine/scenes/scrutiny/index.js';
 import { renderGroupDinnerReaction } from '../src/textEngine/scenes/dinner/index.js';
+import '../src/textEngine/scenes/homeroom/index.js';
+import { renderHomeroomPool } from '../src/textEngine/scenes/homeroom/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
@@ -45,6 +47,7 @@ const BANNED = [
   /\bacademically\b/i,
   /\bfor academia\b/i,
   /\btracking this academically\b/i,
+  /\bBest class I ever had\b/i,
 ];
 
 function assertClean(text, label) {
@@ -163,4 +166,34 @@ for (const kind of dinnerKinds) {
   }
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner OK');
+const mockStudent = { name: 'Cassidy', lbs: 320 };
+for (const ev of EVOLVED_EVENTS.community_researcher || []) {
+  assertClean(ev.title, `Cassidy evolved event title`);
+  for (const phase of ev.phases || []) {
+    const body = typeof phase.text === 'function' ? phase.text([], mockStudent) : phase.text;
+    assertClean(body, `Cassidy evolved ${ev.title} phase`);
+    for (const ch of phase.choices || []) {
+      const result = typeof ch.result === 'function' ? ch.result(mockStudent) : ch.result;
+      assertClean(`${ch.label} ${result}`, `Cassidy evolved choice ${ch.id}`);
+    }
+  }
+  for (const end of ev.endings || []) {
+    const text = typeof end.text === 'function' ? end.text([], mockStudent, 5) : end.text;
+    if (text) assertClean(text, `Cassidy evolved ${ev.title} ending`);
+  }
+}
+
+const daisy = INIT_STUDENTS.find((s) => s.id === 13) || INIT_STUDENTS[0];
+for (const [npcKey, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
+  assertClean(typeof ev.text === 'function' ? ev.text : ev.text, `homeroom conference ${npcKey}`);
+  for (const ch of ev.choices || []) {
+    assertClean(ch.label, `homeroom conference ${npcKey} choice label`);
+    const result = typeof ch.result === 'function' ? ch.result : ch.result;
+    if (result) assertClean(result, `homeroom conference ${npcKey} choice ${ch.id}`);
+    const poolKey = `homeroom.conference.${npcKey}.${ch.id}`;
+    const rendered = renderHomeroomPool(poolKey, daisy, 10);
+    if (rendered) assertClean(rendered, `homeroom pool ${poolKey}`);
+  }
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved OK');

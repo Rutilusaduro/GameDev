@@ -137,6 +137,7 @@ const BANNED = [
   { id: 'academically-adverb', re: /\bacademically\b/i },
   { id: 'for-academia', re: /\bfor academia\b/i },
   { id: 'tracking-academically', re: /tracking this academically/i },
+  { id: 'best-class-ever', re: /Best class I ever had/i },
 ];
 
 const ALLOW_LINE = [

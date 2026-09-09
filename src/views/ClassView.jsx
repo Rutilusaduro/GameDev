@@ -18,11 +18,12 @@ import { getDiscontentTier } from '../gameData/discontent.js';
 import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
 // changes, so it doesn't flicker on every parent re-render.
-function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
+function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnabled = true }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
   const ascForm = getAscensionFormForStudent(s);
@@ -52,7 +53,7 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
     <div
       className="roster-tile"
       style={{ ...C.card, border: cardBorder, background: cardBg || C.card.background, position: 'relative', overflow: 'hidden' }}
-      onClick={onOpen}
+      onClick={() => { playHallPassSound('click', soundEnabled); onOpen(); }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 3 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -160,6 +161,7 @@ export function ClassView({
   startDormId = null,
   onAmends,
   onOpenStudent,
+  soundEnabled = true,
 }) {
   const rosterSlots = getRosterSlotCount(spiritLevel);
   const openCount = countOpenPoolStudents(students);
@@ -180,7 +182,7 @@ export function ClassView({
           <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
-              <RosterTile key={s.id} s={s} week={week} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
+              <RosterTile key={s.id} s={s} week={week} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
             ))}
           </div>
           {locked.length > 0 && (

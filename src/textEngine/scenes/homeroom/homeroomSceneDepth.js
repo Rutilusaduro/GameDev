@@ -59,7 +59,7 @@ registerModuleVariants('homeroom.conference.Mrs_Monroe.taste_now', [
   ]},
 ]);
 
-registerModuleVariants('homeroom.conference.Kayla.academic', [
+registerModuleVariants('homeroom.conference.Kayla.progress_review', [
   { when: {}, text: [
     `Kayla blinks at real praise — then eyes the desk container. "Can I—" Daisy slides it over. Progress and pastry, same meeting.`,
     `Grades up, appetite up — Kayla accepts both. "Tuesday still counts, right?" Container answers before Daisy does.`,

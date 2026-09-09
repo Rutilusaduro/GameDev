@@ -175,7 +175,7 @@ export const FACULTY = [
         ]},
       marry:{ text:()=>`Rosa cackles and smacks your shoulder with a towel. "You and half the faculty! Get in line behind Coach Brooks — she proposed over the carnitas." She plates you dessert you did not order. "Flattery gets you thirds. Eat."`,
         options:[ {label:"Back", next:"hub"} ]},
-      students:{ text:()=>`"Artists. Animals. Both." She beams at the chaos of her teaching kitchen. "Best class I ever had. You know what changed? They stopped cooking scared. Scared of butter, scared of portions, scared of enjoying it. Now?" She gestures: a student is proudly torching a crème brûlée the size of a hubcap. "Now they cook like abundance is the assignment. Because it is."`,
+      students:{ text:()=>`"Artists. Animals. Both." She beams at the chaos of her teaching kitchen. "Best kitchen crew I ever had. You know what changed? They stopped cooking scared. Scared of butter, scared of portions, scared of enjoying it. Now?" She gestures: a resident is proudly torching a crème brûlée the size of a hubcap. "Now they cook like abundance is the assignment. Because it is."`,
         options:[
           {label:"\"Send your best dishes to my hall lounge.\"", next:"pipeline", affinity:6},
           {label:"Back", next:"hub"},
