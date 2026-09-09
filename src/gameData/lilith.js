@@ -6,7 +6,7 @@ export const LILITH_ID = 15;
 
 export const HUNT_NODES = {
   dorm:         { id:'dorm',         label:"Her Dorm",       desc:"The narrow hallway outside your door. Incense and something you won't name. The safest place on campus, and the emptiest." },
-  quad:         { id:'quad',         label:"The Quad",       desc:"Open grass, diagonal paths. Students move through it without looking at each other, which suits you perfectly." },
+  quad:         { id:'quad',         label:"The Quad",       desc:"Open grass, diagonal paths. Residents move through it without looking at each other, which suits you perfectly." },
   dining_hall:  { id:'dining_hall',  label:"Dining Hall",    desc:"Fluorescence, trays, the smell of institutional garlic bread. They're distracted here. Easy to approach without being noticed doing it." },
   dorm_row:     { id:'dorm_row',     label:"Dorm Row",       desc:"A long stretch of residence halls. Boys coming and going, propped-open doors, music bleeding into hallways." },
   crossroads:   { id:'crossroads',   label:"The Crossroads", desc:"Where the south path splits. A bench, a bike rack, the particular energy of people deciding which way to go." },

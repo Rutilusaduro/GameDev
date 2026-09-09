@@ -701,7 +701,7 @@ registerPool('grow.reaction', [
     "She stopped tracking split times the week the weight made itself obvious. Better metrics exist.",
   ] },
   { when: { studentId: 4, stageMin: 3 }, weight: 4, text: [
-    "She holds still a moment — the way she holds still in front of a subject worth painting.",
+    "She holds still a moment — the way she holds still in front of a model worth painting.",
     "She goes to her sketchbook. The drawing takes longer than she expects.",
   ] },
   { when: { studentId: 5, stageMin: 3 }, weight: 4, text: [

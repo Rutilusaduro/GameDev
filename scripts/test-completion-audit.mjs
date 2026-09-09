@@ -789,6 +789,37 @@ check('psych-researcher-resident-framing', () => {
   assert.doesNotMatch(diary, /The subject was uncertain|My subject told me|First subject session|The subject is growing on schedule/i);
 });
 
+check('narrative-residents-not-students', () => {
+  const narrative = read('src/textEngine/scenes/weeklyEvent/narrativeFragments.js');
+  const campus = read('src/textEngine/scenes/campus/fragments.js');
+  const squad = read('src/textEngine/scenes/squadStageCoverage.js');
+  const hunt = read('src/textEngine/scenes/hunt/depth.js');
+  const lilith = read('src/gameData/lilith.js');
+  const evolved = read('src/gameData/evolvedForms.js');
+  const growth = read('src/textEngine/scenes/growthEvent/fragments.js');
+  const diary = read('src/textEngine/scenes/diary.js');
+  assert.match(narrative, /Residents orbit her/);
+  assert.match(narrative, /Residents visit in steady streams/);
+  assert.match(campus, /Residents make room/);
+  assert.match(campus, /past residents who make room/);
+  assert.match(squad, /Residents drift past/);
+  assert.match(squad, /Two residents compare meal-plan hacks/);
+  assert.match(hunt, /distracted residents/);
+  assert.match(lilith, /Residents move through it without looking/);
+  assert.match(evolved, /First resident enrolled/);
+  assert.match(growth, /model worth painting/);
+  assert.match(diary, /best model was here the whole time/);
+  assert.doesNotMatch(narrative, /Students orbit her|Students visit in steady streams/i);
+  assert.doesNotMatch(campus, /Students make room|past students who make room|between students who have not/i);
+  assert.doesNotMatch(squad, /Students drift past|Two students compare/i);
+  assert.doesNotMatch(hunt, /distracted students/i);
+  assert.doesNotMatch(lilith, /Students move through it without looking/i);
+  assert.doesNotMatch(evolved, /First subject enrolled/i);
+  const phaseD = read('src/textEngine/scenes/diaryPhaseD.js');
+  assert.match(phaseD, /resident caught eating and happy/);
+  assert.doesNotMatch(phaseD, /subject caught eating and happy/i);
+});
+
 check('nadia-feedee-blob-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
   const diary = read('src/textEngine/scenes/diary.js');

@@ -194,7 +194,7 @@ export const EVOLVED_REACTIONS = {
     "La Grande Soirée — twelve settings, black silk, *encore* until the sun. I am the salon.",
   ],
   artisan_gallery:[
-    "First subject enrolled. First contact sheet pinned. The camera doesn't lie — only frames truth generously.",
+    "First resident enrolled. First contact sheet pinned. The camera doesn't lie — only frames truth generously.",
     "Field roll on the quad: abundance everywhere, if you know how to look.",
     "Opening night — eight prints, critics, cheese. I ate in the corner on purpose.",
     "The Living Room: her timeline on the wall, her body live, heavier than the latest frame.",

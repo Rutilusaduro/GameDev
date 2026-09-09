@@ -4,7 +4,7 @@
 import { registerModuleVariants } from '../../engine.js';
 
 registerModuleVariants('hunt.node.dorm', [{ when: {}, text: ["Incense threads the narrow hall outside her door — private, shadowed, the safest hunting ground she keeps.", "Her dorm corridor smells of smoke and secrets; footsteps echo soft against closed doors."] }]);
-registerModuleVariants('hunt.node.quad', [{ when: {}, text: ["The quad spreads open under sky and gossip — diagonal paths, distracted students, easy cover.", "Grass and crossing paths; everyone moving through without really seeing each other."] }]);
+registerModuleVariants('hunt.node.quad', [{ when: {}, text: ["The quad spreads open under sky and gossip — diagonal paths, distracted residents, easy cover.", "Grass and crossing paths; everyone moving through without really seeing each other."] }]);
 registerModuleVariants('hunt.node.dining_hall', [{ when: {}, text: ["Institutional light, tray clatter, garlic bread in the air — hunger everywhere, attention elsewhere.", "The dining hall hums with distraction; plates and chatter make approach easy."] }]);
 registerModuleVariants('hunt.node.dorm_row', [{ when: {}, text: ["Residence halls in a long row — propped doors, hallway music, boys drifting in and out.", "Dorm row smells like laundry and ambition; traffic steady, witnesses scarce."] }]);
 registerModuleVariants('hunt.node.crossroads', [{ when: {}, text: ["The crossroads bench holds indecision — bikes, split paths, people pausing before they choose.", "Where paths fork: a bench, a rack, the charged stillness of someone deciding where next."] }]);

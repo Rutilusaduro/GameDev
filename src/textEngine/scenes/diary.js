@@ -1662,7 +1662,7 @@ registerPool('diary.innerBeat', [
   ] },
   { when: { studentId: 4, stageMin: 5, fionaSelfPhotographed: true }, weight: 5, text: [
     "Turned the camera on myself. The image is good. I'm entering it in the spring show.",
-    "I've photographed everything worth seeing on this campus. The best subject was here the whole time.",
+    "I've photographed everything worth seeing on this campus. The best model was here the whole time.",
   ] },
   { when: { studentId: 5, stageMin: 4 }, weight: 4, text: [
     "Third session hunger interrupted. Third time I didn't mind losing the game. Fifth time the food came to the stream.",

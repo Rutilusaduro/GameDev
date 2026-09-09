@@ -570,13 +570,13 @@ registerPool('weekly.blobEnding.setup', [
 
 registerPool('weekly.blobEnding.court', [
   { when: { endStageMin: 10 }, text: [
-    'She holds court from her specially furnished room — vast, warm, content. Students orbit her. She eats, talks, laughs.',
-    'Students orbit her. She eats, talks, laughs.',
+    'She holds court from her specially furnished room — vast, warm, content. Residents orbit her. She eats, talks, laughs.',
+    'Residents orbit her. She eats, talks, laughs.',
     'The room is warm with bodies and plates.',
   ] },
   { when: {}, text: [
     'She is vast, warm, and content.',
-    'Students visit in steady streams.',
+    'Residents visit in steady streams.',
     'She eats and talks and keeps receiving.',
     'The room feels like a settled kingdom.',
   ] },

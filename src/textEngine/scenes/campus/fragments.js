@@ -84,7 +84,7 @@ registerPool('campus.moveSentence', [
 
 registerPool('campus.destination', [
   { when: {}, text: ['down the hall', 'across campus', 'toward her next stop', 'where the afternoon takes her next'] },
-  { when: { campusLocale: 'hallway' }, text: ['through the foot traffic', 'along the corridor', 'past students who make room'] },
+  { when: { campusLocale: 'hallway' }, text: ['through the foot traffic', 'along the corridor', 'past residents who make room'] },
   { when: { campusLocale: 'floor meeting_hall' }, text: ['into the aisle', 'toward her seat', 'down the steps'] },
   { when: { campusLocale: 'cafeteria' }, text: ['through the line', 'toward an open table', 'to the booth she prefers'] },
   { when: { campusLocale: 'stairwell' }, text: ['up the stairs', 'to the next landing', 'one step at a time'] },
@@ -102,7 +102,7 @@ registerPool('campus.obstacle', [
     ', the corridor narrowing around passing bodies',
   ] },
   { when: { stageMin: 0, stageMax: 4 }, text: [
-    ', weaving between students who have not learned her width yet',
+    ', weaving between residents who have not learned her width yet',
     ', a door held open a beat too long',
     ', the crowd parting without comment',
   ] },
@@ -161,7 +161,7 @@ registerPool('campus.spaceObs', [
     'Doorways feel narrower. Her hips disagree politely with the frame.',
   ] },
   { when: { campusLocale: 'hallway', stageMin: 6 }, text: [
-    'Students make room — not unkindly, simply factually.',
+    'Residents make room — not unkindly, simply factually.',
     'The corridor was not designed for her. She uses it anyway.',
     'Foot traffic parts around her hips without drama.',
     'She owns a lane now whether she asked for one or not.',
