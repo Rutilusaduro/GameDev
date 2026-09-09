@@ -6,6 +6,8 @@ import { DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek, UNLOCK_POOL_IDS } from '.
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
+import { render } from '../src/textEngine/engine.js';
+import { buildTextContext } from '../src/gameData/textContext.js';
 
 function sportyResidents() {
   return Object.entries(STUDENT_HOME_DORM)
@@ -44,6 +46,14 @@ assert.equal(swimmerEvent.archetype, 'swimmer');
 const seasonBeat = renderWeeklyEvent('season_plan_rewrite', cassidy, { week: 6 });
 assert(seasonBeat && seasonBeat.length > 40, 'season_plan_rewrite must render non-trivial prose');
 assert(!/Ethnographic Self-Study/i.test(seasonBeat), 'swimmer beat must not use bookworm thesis title');
+
+const campusCtx = buildTextContext({
+  subject: cassidy,
+  week: 10,
+  globals: { campusFattening: true, campusTier: 2 },
+});
+const campusBeat = render('{attitude.campus}', campusCtx)?.trim() || '';
+assert(!/\bclassmates\b/i.test(campusBeat), 'campus softening beat must not say classmates');
 
 const startDorm = 'sporty';
 assert.deepEqual(dormUnlocksForWeek(7, startDorm), []);

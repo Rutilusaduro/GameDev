@@ -73,13 +73,13 @@ registerPool("diary.campus", [
     ] },
   { when: { campusFattening: true, archetype: "culinary" }, priority: 2,
     text: [
-      "Classmates linger after tastings now. They leave softer. Word's out beyond my section.",
+      "Residents linger after tastings now. They leave softer. Word's out beyond my hall.",
       "The practicum kitchen is busier. Everyone's appetite turned up campus-wide.",
       "Mrs. Reyes said the whole school feels hungrier. I smiled and kept kneading.",
     ] },
   { when: { campusFattening: true, archetype: "influencer" }, priority: 2,
     text: [
-      "Classmates keep DMing that they're 'catching up.' Campus wellness posts aren't helping. Good.",
+      "Residents keep DMing that they're 'catching up.' Campus wellness posts aren't helping. Good.",
       "Filmed B-roll in the union. Every background body looked rounder than last month.",
       "Comments aren't just about me anymore. Half are 'my whole dorm is eating like this now.'",
     ] },
@@ -105,13 +105,13 @@ registerPool("diary.campus", [
     text: [
       "Library carrels: more snacks, softer occupants. Campus-wide trend, not my section alone.",
       "Citation trail on 'ambient caloric environment' now includes the whole quad.",
-      "Classmates' notebooks and waistbands both thicker this month.",
+      "Residents' notebooks and waistbands both thicker this month.",
     ] },
   { when: { campusFattening: true, archetype: 'swimmer' }, priority: 2,
     text: [
-      "pool deck carrels: more snacks, softer occupants. Campus-wide trend, not my section alone.",
-      "Citation trail on 'ambient caloric environment' now includes the whole quad.",
-      "Classmates' notesplits and waistbands both thicker this month.",
+      "Pool deck after practice: more snacks, softer occupants. Campus-wide trend, not my lane alone.",
+      "Training log trail on 'ambient caloric environment' now includes the whole quad.",
+      "Teammates' splits and waistbands both thicker this month.",
     ] },
   { when: { campusFattening: true, archetype: "athlete" }, priority: 2,
     text: [
@@ -135,7 +135,7 @@ registerPool("diary.campus", [
     text: [
       "People I don't know look softer in the hall. I notice. I don't say. I eat.",
       "Campus feels padded. Like everyone's holding something warm.",
-      "Classmates' footsteps sound heavier. Mine fit in now.",
+      "Residents' footsteps sound heavier. Mine fit in now.",
     ] },
   { when: { campusFattening: true, archetype: "artsy" }, priority: 2,
     text: [
@@ -163,7 +163,7 @@ registerPool("diary.campus", [
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
-      "Classmates look softer in passing. Not just my section — everywhere.",
+      "Residents look softer in passing. Not just my hall — everywhere.",
       "The whole campus feels padded lately. Hunger hangs in the air like weather.",
       "Strangers in the dining hall eat like they belong to the same appetite now.",
     ] },
@@ -220,7 +220,7 @@ registerPool("attitude.campus", [
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
-      "Classmates look rounder in floor meeting — not just me, not just today.",
+      "Residents look rounder in floor meeting — not just me, not just today.",
       "Campus-wide appetite and I'm right in the middle of it, happy to be.",
       "Everyone's softer in the halls. I fit the weather now.",
     ] },
@@ -255,7 +255,7 @@ registerPool("talk.campusCoda", [
   { when: { campusFattening: true }, priority: 0,
     text: [
       (ctx) => `Outside, the dining hall line looks thicker than last month — not just longer. Fuller. Campus-wide.`,
-      (ctx) => `${ctx.subject.name} mentions, almost offhand, that half her classmates looked softer at floor meeting this week.`,
+      (ctx) => `${ctx.subject.name} mentions, almost offhand, that half the floor looked softer at floor meeting this week.`,
       (ctx) => `"Everyone's eating like it's mandatory," ${ctx.subject.name} says. "Maybe it is, now."`,
     ] },
   { when: {}, text: ['', '', ''] },
@@ -268,7 +268,7 @@ registerPool("weighIn.campus", [
     text: [
       (ctx) => `${ctx.subject.name} tilts her phone toward the hallway. "Campus is having a soft era. I'm not the only one filming it."`,
       (ctx) => `"Content everywhere," ${ctx.subject.name} says. "Everyone's rounding out. Relatable era."`,
-      (ctx) => `${ctx.subject.name} checks her notifications. "Three classmates posted weigh-ins this week. All up. Campus meta."`,
+      (ctx) => `${ctx.subject.name} checks her notifications. "Three residents posted weigh-ins this week. All up. Campus meta."`,
     ] },
   { when: { campusFattening: true, archetype: "cheerleader" }, priority: 2,
     text: [
@@ -286,12 +286,12 @@ registerPool("weighIn.campus", [
     ] },
   { when: { campusFattening: true, archetype: "psych" }, priority: 2,
     text: [
-      (ctx) => `${ctx.subject.name} notes aloud that her classmates' numbers would make an excellent appendix. "Campus-wide," she adds, pleased.`,
+      (ctx) => `${ctx.subject.name} notes aloud that the floor's numbers would make an excellent appendix. "Campus-wide," she adds, pleased.`,
     ] },
   { when: { campusFattening: true }, priority: 0,
     text: [
       (ctx) => `Through the door you can hear the dining hall — busy, content, campus-wide.`,
-      (ctx) => `${ctx.subject.name} mentions classmates complaining about tighter jeans. She doesn't sound sympathetic. She sounds included.`,
+      (ctx) => `${ctx.subject.name} mentions residents complaining about tighter jeans. She doesn't sound sympathetic. She sounds included.`,
       (ctx) => `"Not just me," ${ctx.subject.name} says quietly, patting her middle. "The whole campus feels it."`,
     ] },
   { when: {}, text: ['', '', ''] },
