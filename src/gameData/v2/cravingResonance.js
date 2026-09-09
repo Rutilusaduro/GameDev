@@ -22,15 +22,15 @@ export function getResonanceTier(linkCount, classLbs = 0) {
   return tier;
 }
 
-export function getMaxResonanceLinks(ownedClassSkills = {}) {
-  return ownedClassSkills.resonance_bells
+export function getMaxResonanceLinks(ownedHallSkills = {}) {
+  return ownedHallSkills.resonance_bells
     ? V2_CONFIG.maxResonanceLinksWithBells
     : V2_CONFIG.maxResonanceLinks;
 }
 
-export function canCreateLink(aId, bId, students, resonanceState, ownedSkills = {}, ownedClassSkills = {}) {
+export function canCreateLink(aId, bId, students, resonanceState, ownedSkills = {}, ownedHallSkills = {}) {
   if ((ownedSkills.hunger_web || 0) < 1) return { ok: false, reason: 'Requires Hunger Web skill' };
-  const maxLinks = getMaxResonanceLinks(ownedClassSkills);
+  const maxLinks = getMaxResonanceLinks(ownedHallSkills);
   if ((resonanceState.links || []).length >= maxLinks) return { ok: false, reason: 'Link capacity full' };
   const a = students.find((s) => s.id === aId);
   const b = students.find((s) => s.id === bId);
@@ -77,8 +77,8 @@ export function pulseResonance(fedStudentId, calories, students, resonanceState)
   return { pulses, bonusCalories: bonusCal * pulses.length };
 }
 
-export function shouldResonanceSurge(resonanceState, week, students = [], ownedClassSkills = {}) {
-  if (!ownedClassSkills.resonance_bells) return false;
+export function shouldResonanceSurge(resonanceState, week, students = [], ownedHallSkills = {}) {
+  if (!ownedHallSkills.resonance_bells) return false;
   const classLbs = getCombinedClassLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, classLbs);
   if (tier.id < 2) return false;

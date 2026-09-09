@@ -26,7 +26,7 @@ export function getEvolvedOpMessage(students) {
 export function buildOppositionContext({
   students = [],
   ownedSkills = {},
-  ownedClassSkills = {},
+  ownedHallSkills = {},
   facultyAffinity = {},
   labState = null,
   pharmacistState = null,
@@ -43,7 +43,7 @@ export function buildOppositionContext({
     cultStage,
     hasGrowthChamber: !!labState?.installedInventions?.growth_accelerator_chamber,
     networkStage: labState?.stage ?? 1,
-    hasInstitutionalCover: !!(ownedClassSkills?.institutional_cover || ownedSkills?.institutional_cover),
+    hasInstitutionalCover: !!(ownedHallSkills?.institutional_cover || ownedSkills?.institutional_cover),
     hasEchoedWill: (ownedSkills?.echoed_will || 0) > 0,
     relMaxStudent: relMax,
     facultyAffinityScore,

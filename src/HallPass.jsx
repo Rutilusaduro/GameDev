@@ -212,7 +212,7 @@ import { HomeroomQueenModal } from './components/HomeroomQueenModal.jsx';
 import { LilithClueModal, LilithHuntModal } from './components/LilithModals.jsx';
 import { ChapterHostessHangoutModal, ChapterHostessFeastPrepModal, ChapterHostessFeastLogModal } from './components/ChapterHostessModals.jsx';
 import { ClassView } from './views/ClassView.jsx';
-import { SpiritHubView } from './views/SpiritHubView.jsx';
+import { InfluenceView } from './views/InfluenceView.jsx';
 import { EmbodimentModal } from './components/v2/EmbodimentModal.jsx';
 import { FeastRitualModal, DreamModal, EchoArchiveModal } from './components/v2/V2Modals.jsx';
 import {
@@ -373,7 +373,7 @@ import {
 import {
   computeClassSkillCurrency, buyClassSkill, aggregateClassSkillEffects, listPurchasableClassSkills,
   hasClassUnlock, getClassActionCost, isDinnerVenueUnlocked,
-} from './gameData/classroomSkills.js';
+} from './gameData/hallLoungeSkills.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -428,7 +428,7 @@ export default function HallPass(){
   })));
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
-    money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, raProfile, adminScrutiny,
+    money, ap, week, ownedSkills, ownedHallSkills, facultyAffinity, raProfile, adminScrutiny,
     globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
@@ -436,7 +436,7 @@ export default function HallPass(){
   const setAp = (updater) => setPlayer((p) => updatePlayerField(p, 'ap', updater));
   const setWeek = (updater) => setPlayer((p) => updatePlayerField(p, 'week', updater));
   const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
-  const setOwnedClassSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedClassSkills', updater));
+  const setOwnedHallSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedHallSkills', updater));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
   const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', updater));
   const setHallCred = (updater) => setPlayer((p) => updatePlayerField(p, 'hallCred', updater));
@@ -446,7 +446,7 @@ export default function HallPass(){
   const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
   const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
   const setV2State = (updater) => setPlayer((p) => updatePlayerField(p, 'v2State', updater));
-  const [view,setView]=useState("class");
+  const [view,setView]=useState("roster");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Hall Pass — Week one on your floor. Five residents, one master key, and a dining hall that never closes."]);
   const [logTab,setLogTab]=useState("story");
@@ -921,7 +921,7 @@ export default function HallPass(){
   };
 
   const addScrutiny=(n)=>{
-    const classFx=aggregateClassSkillEffects(ownedClassSkills||{});
+    const classFx=aggregateClassSkillEffects(ownedHallSkills||{});
     const mult=profileScrutinyMult(raProfile)
               *(1-(raProfile?.traits?.includes("discreet")?0.35:0))
               *skillScrutinyReduce
@@ -991,10 +991,10 @@ export default function HallPass(){
     push('🩸 Lilith devours the Portion Saint — scarcity pressure collapses (−50).');
   };
 
-  const purchaseClassSkill=(skillId)=>{
-    const result=buyClassSkill(skillId,ownedClassSkills||{},students);
+  const purchaseHallLoungeSkill=(skillId)=>{
+    const result=buyClassSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
-    setOwnedClassSkills(result.owned);
+    setOwnedHallSkills(result.owned);
     push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
   };
 
@@ -1599,7 +1599,7 @@ export default function HallPass(){
     }
     const scrutinyTier=getScrutinyTier(adminScrutiny);
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
-    const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
+    const classSkillFx=aggregateClassSkillEffects(ownedHallSkills||{});
     const weeklyApBase=5+skillApBonus+(classSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
     const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
@@ -1814,7 +1814,7 @@ export default function HallPass(){
       if(found.length) setTimeout(()=>push(`🎒 Pantry restocked: ${found.map(i=>`${i.emoji} ${i.label}`).join(", ")}`),100);
     }
     // ── V2.0 pre-digest weekly — resonance bonus/surge, embodiment reset ──
-    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,ownedClassSkills||{},week);
+    const v2Weekly=runWeeklyV2Events(v2,updated,ownedSkills,ownedHallSkills||{},week);
     const nextV2State=v2Weekly.v2State;
     if(v2Weekly.passiveStudents) updated=v2Weekly.passiveStudents;
     for(const msg of v2Weekly.messages){
@@ -2649,7 +2649,7 @@ export default function HallPass(){
   const runOppositionCounter=(counterId,options={})=>{
     trackAction(`counter:${counterId}`);
     const oppCtx=buildOppositionContext({
-      students, ownedSkills, ownedClassSkills, facultyAffinity,
+      students, ownedSkills, ownedHallSkills, facultyAffinity,
       labState, pharmacistState, communityResearcherState, lilithUnlocked,
     });
     const available=getAvailableCounters(opposition,students,{...oppCtx,lilithUnlocked,pharmacistStage:pharmacistState?.stage??1});
@@ -6407,7 +6407,7 @@ export default function HallPass(){
   };
   const runEmbodimentStart=(studentId)=>{
     const s=students.find(st=>st.id===studentId);
-    const result=handleEmbodimentStart(s,{ownedSkills,ownedClassSkills,embodimentState:v2.embodiment,week,v2State:v2});
+    const result=handleEmbodimentStart(s,{ownedSkills,ownedHallSkills,embodimentState:v2.embodiment,week,v2State:v2});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
@@ -6487,7 +6487,7 @@ export default function HallPass(){
     }
   };
   const runResonanceLink=(aId,bId)=>{
-    const result=handleResonanceLink(aId,bId,students,v2,ownedSkills,ownedClassSkills||{});
+    const result=handleResonanceLink(aId,bId,students,v2,ownedSkills,ownedHallSkills||{});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
@@ -6505,7 +6505,7 @@ export default function HallPass(){
     push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.${linkProse?` ${linkProse.slice(0,100)}`:''}`);
   };
   const runFeastRitual=(ritualId,studentIds,text)=>{
-    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,reachLevel,v2State:v2});
+    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedHallSkills:ownedHallSkills||{},week,reachLevel,v2State:v2});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
@@ -6530,7 +6530,7 @@ export default function HallPass(){
   const runDream=(s,scenario,choice,wakeText)=>{
     const manual=!dreamPresetScenario;
     if(manual){
-      const check=canTriggerDream(s,{ownedSkills,ownedClassSkills:ownedClassSkills||{},dreamsState:v2.dreams,week,manual:true});
+      const check=canTriggerDream(s,{ownedSkills,ownedHallSkills:ownedHallSkills||{},dreamsState:v2.dreams,week,manual:true});
       if(!check.ok){ push(`⚠️ ${check.reason}`); setDreamStudent(null); return; }
       if(ap<(check.apCost||0)){ push(`⚠️ Need ${check.apCost} AP`); setDreamStudent(null); return; }
       setAp(a=>a-(check.apCost||0));
@@ -6560,7 +6560,7 @@ export default function HallPass(){
     setDreamPresetScenario(null);
   };
   const runEchoResonate=(echo)=>{
-    const result=handleEchoResonate(echo.id,v2,ownedSkills,ownedClassSkills||{});
+    const result=handleEchoResonate(echo.id,v2,ownedSkills,ownedHallSkills||{});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
@@ -6726,7 +6726,7 @@ export default function HallPass(){
   };
 
   const executeClassFeed=(action,compoundId)=>{
-    const actionCost=getClassActionCost(action,ownedClassSkills||{});
+    const actionCost=getClassActionCost(action,ownedHallSkills||{});
     setAp(a=>a-actionCost);
     if(action.id==='refeast_ritual'){
       setOpposition(prev=>({
@@ -6805,7 +6805,7 @@ export default function HallPass(){
 
   const doClass=(action)=>{
     trackAction(`doClass:${action.id}`);
-    const actionCost=getClassActionCost(action,ownedClassSkills||{});
+    const actionCost=getClassActionCost(action,ownedHallSkills||{});
     if(ap<actionCost){push("⚠️ Not enough AP!");return;}
     if(scrutinyBlocksClassFeast(adminScrutiny,action.id)){
       push('⚠️ Administration review — public hall feasts are suspended until scrutiny eases.');
@@ -7753,7 +7753,7 @@ export default function HallPass(){
   const raCorruptionMult=profileCorruptionMult(raProfile);
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const skillEffects=aggregateSkillEffects(ownedSkills);
-  const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
+  const classSkillFx=aggregateClassSkillEffects(ownedHallSkills||{});
   const spentSkillPoints=computeSpentSkillPoints(ownedSkills);
   const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const hasSkill=(id)=>(ownedSkills[id]||0)>0;
@@ -7772,7 +7772,7 @@ export default function HallPass(){
   },0);
 
   // ── EFFECTIVE ACTIONS (applying unlocked skill effects) ──────
-  const ownedClass=ownedClassSkills||{};
+  const ownedClass=ownedHallSkills||{};
   const effectiveSingleActions=ACTIONS_SINGLE.filter(a=>{
     if(!a.requiresUnlock) return true;
     return hasClassUnlock(ownedClass,a.requiresUnlock);
@@ -7789,7 +7789,7 @@ export default function HallPass(){
     return isDinnerVenueUnlocked(v.id,ownedClass);
   });
 
-  const views=["class","actions","achievements","log"];
+  const views=["roster","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
   // ── OPENING: RA INTRO → APPROACH → HALL → SUITEMATE ──────────────
@@ -8632,7 +8632,7 @@ export default function HallPass(){
 
       {/* NAV */}
       <div style={C.nav}>
-        {[["class","📋 Roster"],["classroom","🏠 Hall Lounge"],["spirit-hub","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
+        {[["roster","📋 Roster"],["hall-lounge","🏠 Hall Lounge"],["influence","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
@@ -8652,7 +8652,7 @@ export default function HallPass(){
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── ROSTER VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
+          {view==="roster"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
@@ -8660,13 +8660,13 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="classroom"&&<HallLoungeView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill}/>}
 
-          {view==="spirit-hub"&&<SpiritHubView
+          {view==="influence"&&<InfluenceView
             students={students}
             v2State={v2}
             ownedSkills={ownedSkills}
-            ownedClassSkills={ownedClassSkills||{}}
+            ownedHallSkills={ownedHallSkills||{}}
             embodimentState={v2.embodiment}
             onOpenEmbodiment={openEmbodiment}
             onCreateLink={runResonanceLink}
@@ -8679,7 +8679,7 @@ export default function HallPass(){
           />}
 
           {/* ── STUDENT DETAIL ── */}
-          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedClassSkills={ownedClassSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen} soundEnabled={soundEnabled}/>}
+          {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedHallSkills={ownedHallSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen} soundEnabled={soundEnabled}/>}
 
           {/* ── CLASS ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doClass={doClass} effectiveClassActions={effectiveClassActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
@@ -8758,7 +8758,7 @@ export default function HallPass(){
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
-          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,ownedClassSkills,facultyAffinity,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('class')}/>}
+          {view==="oversight"&&<OversightView opposition={opposition} adminScrutiny={adminScrutiny} ap={ap} students={students} week={week} lilithUnlocked={lilithUnlocked} pharmacistStage={pharmacistState?.stage??1} oppositionCtx={buildOppositionContext({students,ownedSkills,ownedHallSkills,facultyAffinity,labState,pharmacistState,communityResearcherState,lilithUnlocked})} onRunCounter={runOppositionCounter} onRunCounterOnMember={runOppositionCounterOnMember} onStartHearing={startOppositionHearing} onClose={()=>setView('roster')}/>}
 
           {view==="sprite-test"&&<SpriteTestView/>}
 
@@ -8860,7 +8860,7 @@ export default function HallPass(){
         onContinue={()=>{
           playHallPassSound('confirm', soundEnabled);
           setDormUnlockModal(null);
-          setView('class');
+          setView('roster');
         }}
       />}
 
@@ -9312,7 +9312,7 @@ export default function HallPass(){
           student={embodimentStudent}
           week={week}
           ownedSkills={ownedSkills}
-          ownedClassSkills={ownedClassSkills||{}}
+          ownedHallSkills={ownedHallSkills||{}}
           embodimentState={v2.embodiment}
           walkLog={v2.embodiment?.walkLog||[]}
           onAppendLog={appendEmbodimentLog}
@@ -9329,7 +9329,7 @@ export default function HallPass(){
         <FeastRitualModal
           students={students}
           ownedSkills={ownedSkills}
-          ownedClassSkills={ownedClassSkills||{}}
+          ownedHallSkills={ownedHallSkills||{}}
           week={week}
           reachLevel={reachLevel}
           onRun={runFeastRitual}

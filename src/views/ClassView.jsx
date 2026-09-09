@@ -186,7 +186,7 @@ export function ClassView({
   };
   return (
     <>
-      {view === 'class' && (
+      {view === 'roster' && (
         <div>
           <DormUnlockProgress unlockedDorms={unlockedDorms} startDormId={startDormId} week={week} />
           <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>

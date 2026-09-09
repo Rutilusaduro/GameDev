@@ -180,6 +180,26 @@ check('reach-level-naming', () => {
   assert.doesNotMatch(desk, /\bspiritLevel\b/);
 });
 
+check('influence-view-routes', () => {
+  assert.ok(existsSync(join(root, 'src/views/InfluenceView.jsx')));
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /InfluenceView/);
+  assert.match(desk, /\["roster","📋 Roster"\]/);
+  assert.match(desk, /\["hall-lounge","🏠 Hall Lounge"\]/);
+  assert.match(desk, /\["influence","✨ Influence"\]/);
+  assert.doesNotMatch(desk, /SpiritHubView/);
+  assert.doesNotMatch(desk, /view==="class"/);
+  assert.doesNotMatch(desk, /view==="spirit-hub"/);
+});
+
+check('owned-hall-skills', () => {
+  const player = read('src/gameData/player.js');
+  assert.match(player, /ownedHallSkills/);
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /ownedHallSkills/);
+  assert.doesNotMatch(desk, /ownedClassSkills/);
+});
+
 // ── Report ─────────────────────────────────────────────────────
 const failed = checks.filter((c) => !c.ok);
 for (const c of checks) {

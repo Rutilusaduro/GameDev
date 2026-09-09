@@ -106,7 +106,7 @@ export function captureCorruptionTierEcho(v2State, studentId, week, stageId, tie
   }));
 }
 
-export function runWeeklyV2Events(v2State, students, ownedSkills, ownedClassSkills, week) {
+export function runWeeklyV2Events(v2State, students, ownedSkills, ownedHallSkills, week) {
   let next = resetV2Weekly(v2State);
   const messages = [];
 
@@ -117,7 +117,7 @@ export function runWeeklyV2Events(v2State, students, ownedSkills, ownedClassSkil
   }
 
   // Resonance surge — requires resonance_bells hall lounge upgrade
-  if (shouldResonanceSurge(next.resonance, week, students, ownedClassSkills || {})) {
+  if (shouldResonanceSurge(next.resonance, week, students, ownedHallSkills || {})) {
     next = {
       ...next,
       resonance: { ...next.resonance, lastSurgeWeek: week },
@@ -198,12 +198,12 @@ export function handleEmbodiedEventResolve(student, event, v2State, { students =
   };
 }
 
-export function getEmbodiedCampusActions(student, nodeId, ownedSkills, ownedClassSkills) {
-  return embodiedActionsAtNode(student, nodeId, ownedSkills, ownedClassSkills);
+export function getEmbodiedCampusActions(student, nodeId, ownedSkills, ownedHallSkills) {
+  return embodiedActionsAtNode(student, nodeId, ownedSkills, ownedHallSkills);
 }
 
-export function handleResonanceLink(aId, bId, students, v2State, ownedSkills, ownedClassSkills) {
-  const check = canCreateLink(aId, bId, students, v2State.resonance, ownedSkills, ownedClassSkills);
+export function handleResonanceLink(aId, bId, students, v2State, ownedSkills, ownedHallSkills) {
+  const check = canCreateLink(aId, bId, students, v2State.resonance, ownedSkills, ownedHallSkills);
   if (!check.ok) return { ok: false, reason: check.reason };
   const resonance = createResonanceLink(aId, bId, v2State.resonance, students);
   const relCost = check.relCost || 0;
@@ -258,8 +258,8 @@ export function handleEchoReplay(v2State, echoId) {
   return { v2State: { ...v2State, echoes: replayEcho(v2State.echoes, echoId) } };
 }
 
-export function handleEchoResonate(echoId, v2State, ownedSkills, ownedClassSkills) {
-  const check = canResonateEcho(v2State.echoes, echoId, ownedSkills, ownedClassSkills);
+export function handleEchoResonate(echoId, v2State, ownedSkills, ownedHallSkills) {
+  const check = canResonateEcho(v2State.echoes, echoId, ownedSkills, ownedHallSkills);
   if (!check.ok) return { ok: false, reason: check.reason };
   const echoes = resonateEcho(v2State.echoes, echoId);
   return { ok: true, apCost: check.apCost, moment: check.moment, v2State: { ...v2State, echoes } };

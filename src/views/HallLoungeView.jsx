@@ -8,12 +8,12 @@ import {
   computeClassSkillTotal,
   computeClassSkillSpent,
   canBuyClassSkill,
-} from '../gameData/classroomSkills.js';
+} from '../gameData/hallLoungeSkills.js';
 
 const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
-function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
-  const owned = ownedClassSkills || {};
+function ClassroomSkillsPanel({ students, ownedHallSkills, onPurchase }) {
+  const owned = ownedHallSkills || {};
   const total = computeClassSkillTotal(students);
   const spent = computeClassSkillSpent(owned);
   const currency = computeClassSkillCurrency(students, owned);
@@ -79,15 +79,15 @@ function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
   );
 }
 
-export function HallLoungeView({ students, ownedClassSkills, onPurchaseClassSkill }) {
+export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLoungeSkill }) {
   return (
     <div>
       <p style={C.secT}>🏠 Hall Lounge</p>
-      {onPurchaseClassSkill ? (
+      {onPurchaseHallLoungeSkill ? (
         <ClassroomSkillsPanel
           students={students}
-          ownedClassSkills={ownedClassSkills}
-          onPurchase={onPurchaseClassSkill}
+          ownedHallSkills={ownedHallSkills}
+          onPurchase={onPurchaseHallLoungeSkill}
         />
       ) : (
         <div style={{ fontSize: 11, color: '#706080', fontStyle: 'italic' }}>

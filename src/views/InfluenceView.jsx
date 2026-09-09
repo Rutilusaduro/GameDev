@@ -12,11 +12,11 @@ import { StudentPortrait } from '../components/StudentPortrait.jsx';
 
 const ACCENT = '#c44a2a';
 
-export function SpiritHubView({
+export function InfluenceView({
   students,
   v2State,
   ownedSkills,
-  ownedClassSkills,
+  ownedHallSkills,
   embodimentState,
   onOpenEmbodiment,
   onCreateLink,
@@ -31,8 +31,8 @@ export function SpiritHubView({
   const visible = students.filter((s) => !s.hidden && s.lockState !== 'locked');
   const links = v2State?.resonance?.links || [];
   const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
-  const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, reachLevel });
-  const hasDreamChamber = !!ownedClassSkills?.dream_chamber;
+  const rituals = getAvailableRituals({ ownedSkills, ownedHallSkills, students, week, reachLevel });
+  const hasDreamChamber = !!ownedHallSkills?.dream_chamber;
   const hasSpiritRide = (ownedSkills?.spirit_ride || 0) >= 1;
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;
   const hasDreamWalk = (ownedSkills?.dream_walk || 0) >= 1;
@@ -231,7 +231,7 @@ export function SpiritHubView({
             {visible.map((s) => {
               const dreamCheck = canTriggerDream(s, {
                 ownedSkills,
-                ownedClassSkills: ownedClassSkills || {},
+                ownedHallSkills: ownedHallSkills || {},
                 dreamsState: v2State?.dreams,
                 week,
                 manual: true,

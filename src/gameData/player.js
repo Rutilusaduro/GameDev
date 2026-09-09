@@ -23,7 +23,7 @@ export function createInitialPlayer(overrides = {}) {
     ap: 5,
     week: 1,
     ownedSkills: {},
-    ownedClassSkills: {},
+    ownedHallSkills: overrides.ownedHallSkills ?? overrides.ownedClassSkills ?? {},
     facultyAffinity: {},
     raProfile: null,
     unlockedDorms: [],

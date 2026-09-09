@@ -46,7 +46,7 @@ function assertClean(text, label) {
 
 const hallPass = readFileSync('src/HallPass.jsx', 'utf8');
 assert(
-  /\[\["class","📋 Roster"\],\["classroom","🏠 Hall Lounge"\],\["spirit-hub","✨ Influence"\]/.test(hallPass),
+  /\[\["roster","📋 Roster"\],\["hall-lounge","🏠 Hall Lounge"\],\["influence","✨ Influence"\]/.test(hallPass),
   'main nav must use Roster / Hall Lounge / Influence labels',
 );
 assert(hallPass.includes('RA DESK'), 'header must say RA DESK');
@@ -65,9 +65,10 @@ assert(wizard.includes('RESIDENCE LIFE SIMULATOR'), 'setup wizard genre tag requ
 assert(wizard.includes('Your floor. Your rules.'), 'setup wizard tagline required');
 assertClean(wizard, 'RaSetupWizard.jsx');
 
-const spiritHub = readFileSync('src/views/SpiritHubView.jsx', 'utf8');
-assert(spiritHub.includes('Floor Influence'), 'SpiritHubView title must be Floor Influence');
-assertClean(spiritHub, 'SpiritHubView.jsx');
+const influence = readFileSync('src/views/InfluenceView.jsx', 'utf8');
+assert(influence.includes('Floor Influence'), 'InfluenceView title must be Floor Influence');
+assert.match(influence, /export function InfluenceView/);
+assertClean(influence, 'InfluenceView.jsx');
 
 const roster = readFileSync('src/views/ClassView.jsx', 'utf8');
 assert(roster.includes('Residents —'), 'ClassView must label roster Residents');

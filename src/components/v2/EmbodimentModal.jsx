@@ -36,7 +36,7 @@ export function EmbodimentModal({
   student,
   week = 1,
   ownedSkills,
-  ownedClassSkills,
+  ownedHallSkills,
   embodimentState,
   walkLog = [],
   onAppendLog,
@@ -58,7 +58,7 @@ export function EmbodimentModal({
   const actions = getAvailableEmbodimentActions(
     student,
     ownedSkills,
-    ownedClassSkills || {},
+    ownedHallSkills || {},
     atNode,
   );
 

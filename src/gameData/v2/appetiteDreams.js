@@ -66,12 +66,12 @@ export function getDreamChoices(scenarioId, lucidUnlocked = false) {
   return steer ? [...base.filter((c) => !c.lucidOnly), steer, ...extras] : base;
 }
 
-export function canTriggerDream(student, { ownedSkills = {}, ownedClassSkills = {}, dreamsState = {}, week = 1, manual = false } = {}) {
+export function canTriggerDream(student, { ownedSkills = {}, ownedHallSkills = {}, dreamsState = {}, week = 1, manual = false } = {}) {
   if ((ownedSkills.dream_walk || 0) < 1) return { ok: false, reason: 'Requires Dream Walk skill' };
   const stage = getStage(student.lbs).id;
   if (stage < 2) return { ok: false, reason: 'Student too early in growth' };
   if ((student.corruption || 0) < 40) return { ok: false, reason: 'Corruption too low for dreams' };
-  if (manual && !ownedClassSkills.dream_chamber) return { ok: false, reason: 'Requires Dream Chamber upgrade' };
+  if (manual && !ownedHallSkills.dream_chamber) return { ok: false, reason: 'Requires Dream Chamber upgrade' };
   const lastWeek = dreamsState.lastDreamWeek?.[student.id] || 0;
   if (lastWeek === week) return { ok: false, reason: 'Already dreamed this week' };
   return { ok: true, apCost: manual ? V2_CONFIG.dreamBaseAp : 0 };

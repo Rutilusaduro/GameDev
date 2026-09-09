@@ -168,7 +168,7 @@ export function DebugPanel({
                   onClick={() => {
                     setOwnedSkills((prev) => ({ ...prev, spirit_ride: 1, deep_ride: 1 }));
                     setAp((a) => Math.max(a, 20));
-                    setView('spirit-hub');
+                    setView('influence');
                   }}>
                   🌒 Floor Influence QA
                 </button>

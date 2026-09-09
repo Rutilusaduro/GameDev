@@ -36,7 +36,7 @@ import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { canViewEchoArchive } from '../gameData/v2/bodyEcho.js';
 import { useEffect, useState } from 'react';
 
-export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedClassSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen, soundEnabled = true }){
+export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedHallSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen, soundEnabled = true }){
             const s=sel;
             const st=getStage(s.lbs);
             const [showDossier, setShowDossier] = useState(!!dossierOpen);
@@ -106,7 +106,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                       </button>
                     )}
                   </div>
-                  <button style={{...C.smBtn,width:"100%",marginTop:4}} onClick={()=>setView("class")}>← Back to Roster</button>
+                  <button style={{...C.smBtn,width:"100%",marginTop:4}} onClick={()=>setView("roster")}>← Back to Roster</button>
                 </div>
               );
             }
@@ -121,7 +121,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     onClose={() => { setShowDossier(false); setDossierOpen?.(false); }}
                     soundEnabled={soundEnabled}
                   />
-                  <button style={{ ...C.smBtn, width: '100%', marginTop: 4 }} onClick={() => setView('class')}>← Back to Roster</button>
+                  <button style={{ ...C.smBtn, width: '100%', marginTop: 4 }} onClick={() => setView('roster')}>← Back to Roster</button>
                 </div>
               );
             }
@@ -985,7 +985,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                         </button>
                       )}
                       {(ownedSkills?.dream_walk||0)>=1&&(s.corruption||0)>=40&&getStage(s.lbs).id>=2&&(()=>{
-                        const dreamCheck=canTriggerDream(s,{ownedSkills,ownedClassSkills:ownedClassSkills||{},dreamsState:v2State?.dreams,week,manual:true});
+                        const dreamCheck=canTriggerDream(s,{ownedSkills,ownedHallSkills:ownedHallSkills||{},dreamsState:v2State?.dreams,week,manual:true});
                         return (
                           <button type="button" style={{...C.btn('#3060a0'),flex:'1 1 140px',fontSize:11,opacity:!dreamCheck.ok||ap<2?0.45:1}}
                             disabled={!dreamCheck.ok||ap<2}
@@ -996,17 +996,17 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                         );
                       })()}
                     </div>
-                    {(ownedSkills?.memory_palace||0)>=1&&!ownedClassSkills?.echo_gallery&&(
+                    {(ownedSkills?.memory_palace||0)>=1&&!ownedHallSkills?.echo_gallery&&(
                       <p style={{fontSize:11,color:'#607080',fontStyle:'italic'}}>Echoes capture automatically. Build Echo Gallery to view the archive.</p>
                     )}
-                    {canViewEchoArchive(ownedSkills,ownedClassSkills||{})&&(
+                    {canViewEchoArchive(ownedSkills,ownedHallSkills||{})&&(
                       <div>
                         <div style={{fontSize:10,color:'#8090a0',marginBottom:6}}>BODY ECHO ARCHIVE</div>
                         <EchoArchivePanel
                           student={s}
                           echoesState={v2State?.echoes}
                           ownedSkills={ownedSkills}
-                          ownedClassSkills={ownedClassSkills}
+                          ownedHallSkills={ownedHallSkills}
                           onOpenEcho={(echo)=>openEchoReplay?.(echo)}
                           onResonate={onEchoResonate}
                         />

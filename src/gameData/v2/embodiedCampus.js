@@ -190,8 +190,8 @@ export function canEmbodiedMove(fromId, toId, student = null) {
   return true;
 }
 
-export function embodiedActionsAtNode(student, nodeId, ownedSkills, ownedClassSkills) {
-  const actions = getAvailableEmbodimentActions(student, ownedSkills, ownedClassSkills);
+export function embodiedActionsAtNode(student, nodeId, ownedSkills, ownedHallSkills) {
+  const actions = getAvailableEmbodimentActions(student, ownedSkills, ownedHallSkills);
   return actions.filter((a) => {
     if (!a.nodes || !a.nodes.length) return true;
     return a.nodes.includes(nodeId);

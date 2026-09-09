@@ -14,11 +14,11 @@ import { renderEchoReplay } from '../../textEngine/scenes/v2/echo/index.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
 
-export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, week = 1, reachLevel = 1, onRun, onClose, soundEnabled = true }) {
+export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week = 1, reachLevel = 1, onRun, onClose, soundEnabled = true }) {
   const [selected, setSelected] = useState([]);
   const [ritualId, setRitualId] = useState(null);
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, ritualId]);
-  const available = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, reachLevel });
+  const available = getAvailableRituals({ ownedSkills, ownedHallSkills, students, week, reachLevel });
   const ritual = FEAST_RITUALS.find((r) => r.id === ritualId);
 
   const toggle = (id) => {
@@ -125,7 +125,7 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
   );
 }
 
-export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedClassSkills, onOpenEcho, onResonate }) {
+export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedHallSkills, onOpenEcho, onResonate }) {
   const echoes = (echoesState?.moments || []).filter((m) => m.studentId === student?.id);
   if (!echoes.length) {
     return <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>No echoes captured yet. Milestones will preserve themselves here.</p>;

@@ -54,13 +54,13 @@ export function replayEcho(echoesState, echoId) {
   return { ...echoesState, moments };
 }
 
-export function canViewEchoArchive(ownedSkills = {}, ownedClassSkills = {}) {
-  return (ownedSkills.memory_palace || 0) >= 1 && !!ownedClassSkills.echo_gallery;
+export function canViewEchoArchive(ownedSkills = {}, ownedHallSkills = {}) {
+  return (ownedSkills.memory_palace || 0) >= 1 && !!ownedHallSkills.echo_gallery;
 }
 
-export function canResonateEcho(echoesState, echoId, ownedSkills = {}, ownedClassSkills = {}) {
+export function canResonateEcho(echoesState, echoId, ownedSkills = {}, ownedHallSkills = {}) {
   if ((ownedSkills.memory_palace || 0) < 1) return { ok: false, reason: 'Requires Memory Palace skill' };
-  if (!ownedClassSkills.echo_gallery) return { ok: false, reason: 'Requires Echo Gallery hall lounge upgrade' };
+  if (!ownedHallSkills.echo_gallery) return { ok: false, reason: 'Requires Echo Gallery hall lounge upgrade' };
   const moment = (echoesState.moments || []).find((m) => m.id === echoId);
   if (!moment) return { ok: false, reason: 'Echo not found' };
   if ((echoesState.resonated || []).includes(echoId)) return { ok: false, reason: 'Already resonated' };

@@ -210,7 +210,7 @@ export const EMBODIMENT_ACTIONS = [
   },
 ];
 
-export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, embodimentState = {}, week = 1 } = {}) {
+export function canEmbody(student, { ownedSkills = {}, ownedHallSkills = {}, embodimentState = {}, week = 1 } = {}) {
   if (!student || student.hidden) return { ok: false, reason: 'No target' };
   if (student.lockState === 'locked') return { ok: false, reason: 'She is not close enough to inhabit yet' };
   if ((ownedSkills.spirit_ride || 0) < 1) return { ok: false, reason: 'Requires Resident Ride skill' };
@@ -220,18 +220,18 @@ export function canEmbody(student, { ownedSkills = {}, ownedClassSkills = {}, em
   const apCost = (ownedSkills.deep_ride || 0) >= 1
     ? V2_CONFIG.embodimentDeepRideAp
     : V2_CONFIG.embodimentBaseAp;
-  const discounted = ownedClassSkills.embodiment_chamber
+  const discounted = ownedHallSkills.embodiment_chamber
     ? Math.max(1, apCost - 1)
     : apCost;
   return { ok: true, apCost: discounted };
 }
 
-export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedClassSkills = {}, atNode = null) {
+export function getAvailableEmbodimentActions(student, ownedSkills = {}, ownedHallSkills = {}, atNode = null) {
   const stage = getStage(student.lbs).id;
   const cor = student.corruption || 0;
   return EMBODIMENT_ACTIONS.filter((a) => {
     if ((ownedSkills[a.requiresSkill] || 0) < 1) return false;
-    if (a.requiresClass && !ownedClassSkills[a.requiresClass]) return false;
+    if (a.requiresClass && !ownedHallSkills[a.requiresClass]) return false;
     if (stage < a.minStage) return false;
     if (cor < a.minCorruption) return false;
     if (atNode && a.nodes?.length && !a.nodes.includes(atNode)) return false;

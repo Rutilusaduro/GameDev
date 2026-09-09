@@ -75,10 +75,10 @@ export const FEAST_RITUALS = [
   },
 ];
 
-export function getAvailableRituals({ ownedSkills = {}, ownedClassSkills = {}, students = [], week = 1, reachLevel = 1 } = {}) {
+export function getAvailableRituals({ ownedSkills = {}, ownedHallSkills = {}, students = [], week = 1, reachLevel = 1 } = {}) {
   const visible = students.filter((s) => !s.hidden);
   return FEAST_RITUALS.filter((r) => {
-    if (r.requiresClass && !ownedClassSkills[r.requiresClass]) return false;
+    if (r.requiresClass && !ownedHallSkills[r.requiresClass]) return false;
     if (r.requiresSkill && (ownedSkills[r.requiresSkill] || 0) < 1) return false;
     if (r.minWeek && week < r.minWeek) return false;
     const minReach = r.minReachLevel ?? r.minSpiritLevel;
