@@ -35,7 +35,7 @@ export const CONTEST_FOOD_POPUPS = {
     `Hot dogs. They disappear into your belly the way a glass of water disappears into the sea. You are 820 pounds and hot dogs are not even warmup food for you anymore. They are just weight. You add them without ceremony and reach for the next item before the crowd has noticed you started.`,
   ],
   wings:[
-    `Messy and fast — you pull the meat off without slowing down, the sauce going everywhere, your belly warm and pushing forward with each piece. The girl from State across the table is watching. You don't look back.`,
+    `Messy and fast — you pull the meat off without slowing down, the sauce going everywhere, your belly warm and pushing forward with each piece. The resident from State across the table is watching. You don't look back.`,
     `You work through the wings with the focused efficiency of someone who has done this dozens of times. The bones pile up. Your belly is warm and pressing. More.`,
     `Each wing goes in and your belly takes it and asks for the next one. You eat with a rhythm now, the crowd building noise in the background, Maya working at her side of the table. You don't look at her.`,
     `The pile disappears. You eat wings the way you eat everything at this stage — with the complete focus of a body that was built for this, your belly enormous and pressing forward and wanting more.`,
@@ -111,7 +111,7 @@ export const CONTEST_FOOD_POPUPS = {
 export const CONTEST_ACTION_POPUPS = {
   unbutton:[
     `The button gives and your belly comes forward — the full warm round weight of it freed from the waistband, pressing into the table without apology. You breathe properly for the first time in ten minutes. Someone in the crowd makes a sound. The judges write something. There is more room now. You reach for the next thing.`,
-    `Relief. Immediate. Your belly expands into the freed space, pressing forward into the table, warm and obvious and enormous. The girl from State looks over. You're already eating again.`,
+    `Relief. Immediate. Your belly expands into the freed space, pressing forward into the table, warm and obvious and enormous. The resident from State looks over. You're already eating again.`,
     `The button gives and your belly comes forward all at once — warm and round and freed, hanging heavy and low, the full weight of it settling between your thighs and pressing the table. Your competition top rides up two more inches. Your belly is out, fully visible, warm in the competition lights, and there is room now. More room.`,
     `Your belly bursts free. That's not an exaggeration — it was pressed and contained and now it isn't, the full enormous warm mass of it pressing forward and down, visible to the entire crowd, the table groaning slightly against the new weight. Maya glances over. You eat something.`,
     `The button goes and your belly is free and it is vast and warm and it presses everything within reach. The crowd makes a sound that isn't quite a gasp and isn't quite a cheer — something in between, something they didn't rehearse. Your belly is enormous and out and visible and you put one hand flat on it for one second, feeling the warmth and the weight of yourself, and then you reach for more food.`,
@@ -854,7 +854,7 @@ export const RECORDING_ONE_MORE_TAKE = [
   (lbs)=>`You tell her you want one more take. Kylie beams, her cheeks flushed. "Yes, RA. I'll eat even more for you this time." She shifts eagerly, belly jiggling.`, // stage 0
   (lbs)=>`You ask for another. "Mmm, good. I'm getting so full but I love it," she says warmly, rubbing her heavy belly with devotion.`, // stage 1
   (lbs)=>`One more take. Kylie breathes deeply, her massive body shifting. "I'll keep going as long as you want me to... I trust you completely."`, // stage 2
-  (lbs)=>`You want another. She smiles slowly, heavy and content. "I'm so huge for you already... but yes. Feed your enormous girl more."`, // stage 3
+  (lbs)=>`You want another. She smiles slowly, heavy and content. "I'm so huge for you already... but yes. Feed me more."`, // stage 3
   (lbs)=>`You request one more. Kylie murmurs warmly, barely able to move. "Anything for you, RA. My body is yours to grow."`, // stage 4
   (lbs)=>`You tell her one more take. Her voice is soft and adoring. "I'm not going anywhere... fill me up even more. I love being your blob."`, // stage 5
 ];

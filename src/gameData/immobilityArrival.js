@@ -226,7 +226,7 @@ export function getSettleDominant(student) {
 
 export const FINAL_FORMS = {
   feed:      { id: 'ever_expanding', label: 'Ever-Expanding',  desc: 'Growth uncapped. She keeps settling outward without ceiling.' },
-  care:      { id: 'comfort_queen',  label: 'Comfort Queen',   desc: 'The room is hers. Other girls seek her warmth.' },
+  care:      { id: 'comfort_queen',  label: 'Comfort Queen',   desc: 'The room is hers. Other residents seek her warmth.' },
   socialize: { id: 'the_adored',     label: 'The Adored',      desc: 'Pleasure center. Visitors come unprompted. The campus orbits her.' },
 };
 
@@ -274,8 +274,8 @@ export function getAttendees(student, allStudents = []) {
 // branch string stored on student.finalForm.
 export const FINAL_FORM_FX = {
   feed:      { selfGain: [3, 6],        perk: '+3–6 lbs to her own settling each week — growth without ceiling.' },
-  care:      { othersDiscontent: 2,     perk: 'Soothes the room — every other girl sheds 2 discontent each week.' },
-  socialize: { othersRel: 1,            perk: 'The campus orbits her — every other girl warms +1 toward you each week.' },
+  care:      { othersDiscontent: 2,     perk: 'Soothes the room — every other resident sheds 2 discontent each week.' },
+  socialize: { othersRel: 1,            perk: 'The campus orbits her — every other resident warms +1 toward you each week.' },
 };
 
 export function getFinalFormFx(student) {

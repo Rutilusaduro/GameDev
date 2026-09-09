@@ -4,21 +4,21 @@ import { pick } from '../textEngine/engine.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 
 const VICTIM_NAMES = [
-  'a girl from the dining hall',
+  'a resident from the dining hall',
   'a sophomore nobody recognized',
   'a transfer resident with no friends yet',
-  'a girl from the library',
+  'a resident from the library',
   'someone from the campus coffee shop',
-  'a quiet girl from the east dorm',
-  'a girl who wandered into the wrong building',
+  'a quiet resident from the east wing',
+  'a resident who wandered into the wrong building',
   'a hall aide on late shift',
-  'a girl waiting for a rideshare',
+  'someone waiting for a rideshare',
   'someone from the night lounge down the hall',
 ];
 
 const VICTIM_DETAILS = [
   'She was maybe nineteen, soft in the way freshmen still are, carrying a paper bag of takeout she never got to eat.',
-  'She had headphones in and a nervous smile — the kind of girl who says sorry when you bump into her.',
+  'She had headphones in and a nervous smile — the kind of person who says sorry when you bump into her.',
   'She smelled like vanilla lotion and dining-hall fries. She was alone. That mattered.',
   'She was thin, still — narrow wrists, uncertain posture, the body of someone who has not yet learned what hunger can become.',
   'She laughed too loud at something on her phone, then went quiet when she saw your office door open.',
@@ -52,13 +52,13 @@ Not hunger. Not yet. Something older.
 
 ${detail} ${victim.charAt(0).toUpperCase() + victim.slice(1)}. You brought her here on a pretext — a hall check-in, a form, a kindness. She trusted the door closing behind her. She trusted you.
 
-${name} looks at the girl. Looks at you. Her hands are shaking.
+${name} looks at her. Looks at you. Her hands are shaking.
 
 "I can't," she whispers. But her body leans forward anyway — ${mass} shifting, ${body.toLowerCase()}, breath coming faster. "I can't do that. She's a person. She's—"
 
 You say the word again.
 
-What happens next is not eating. It is consumption — violent, total, impossible. ${name} moves with a momentum that frightens her even as she obeys it. The girl screams once. Then the sound is gone — swallowed, literally, into the growing heat of ${name}'s body.
+What happens next is not eating. It is consumption — violent, total, impossible. ${name} moves with a momentum that frightens her even as she obeys it. She screams once. Then the sound is gone — swallowed, literally, into the growing heat of ${name}'s body.
 
 It takes a long time. Long enough for ${name} to feel every pound land.
 
@@ -78,11 +78,11 @@ She looks at you with eyes that are not entirely hers anymore.
 
 ${detail} ${victim.charAt(0).toUpperCase() + victim.slice(1)}. She came willingly — confused, but willing. ${name} was kind at first. Warm. She offered snacks. She offered her lap. She offered the hungry, heavy weight of ${mass} — ${body.toLowerCase()} — as a place to sit and feel safe.
 
-The girl relaxed. That was the mistake.
+She relaxed. That was the mistake.
 
-${name} devours her in stages — not frantic, not sloppy. Ritual. Methodical. She pulls the girl into her body inch by inch, belly swelling with each swallowed sound, thighs spreading wider on the chair, flesh cascading and settling with every new pound.
+${name} devours her in stages — not frantic, not sloppy. Ritual. Methodical. She pulls her into her body inch by inch, belly swelling with each swallowed sound, thighs spreading wider on the chair, flesh cascading and settling with every new pound.
 
-The girl's clothes are the last to go — fabric and memory and identity, all pulled into ${name}'s growing heat until there is nothing left but the office and the warmth and the weight.
+Her clothes are the last to go — fabric and memory and identity, all pulled into ${name}'s growing heat until there is nothing left but the office and the warmth and the weight.
 
 When it ends, ${name} sits at ${lbs} lbs and rising, belly distended beyond reason, hands cradling the vast new dome of herself. She is breathing through her mouth. She is smiling.
 
@@ -98,19 +98,19 @@ Her eyes are different. Sharper. The conflict is still there — you can see it 
 
 She has been waiting for this.
 
-${detail} ${victim.charAt(0).toUpperCase() + victim.slice(1)}. ${name} doesn't bother with pretext anymore. She opens the door herself. She calls the girl in. She locks it.
+${detail} ${victim.charAt(0).toUpperCase() + victim.slice(1)}. ${name} doesn't bother with pretext anymore. She opens the door herself. She calls her in. She locks it.
 
 "You brought me someone," ${name} says warmly, not to you — to her belly. At ${lbs} lbs she is ${body.toLowerCase()}, vast and patient, ${mass} spread across the office like weather.
 
-The girl tries to run. ${name} is faster — not with legs, but with hunger. She catches the girl against ${mass}, wraps her in soft impossible weight, and begins.
+She tries to run. ${name} is faster — not with legs, but with hunger. She catches her against ${mass}, wraps her in soft impossible weight, and begins.
 
 The devouring is slow. Sensual. Total.
 
-You watch ${name} consume another human being the way she once consumed dessert — with focus, with pleasure, with the deep satisfied sounds of a body that knows exactly what it is for. The girl disappears into her inch by inch: first the screaming, then the struggling, then the wet swallowing sounds, then the silence, then the growth.
+You watch ${name} consume another human being the way she once consumed dessert — with focus, with pleasure, with the deep satisfied sounds of a body that knows exactly what it is for. She disappears into her inch by inch: first the screaming, then the struggling, then the wet swallowing sounds, then the silence, then the growth.
 
 ${name}'s belly swells in real time — flesh pushing outward, rolling over her thighs, splitting what clothing remains, jiggling with each new pound absorbed. Her breasts grow heavier. Her ass spreads wider. The chair breaks. She doesn't notice.
 
-When the girl is gone, ${name} sits in the wreckage and runs her hands over the new vastness of herself.
+When she is gone, ${name} sits in the wreckage and runs her hands over the new vastness of herself.
 
 "More," she breathes. Not a request. A status report.
 

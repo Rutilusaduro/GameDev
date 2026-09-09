@@ -50,6 +50,8 @@ import '../src/textEngine/scenes/diary.js';
 import { renderDiary } from '../src/textEngine/scenes/diary.js';
 import { renderEcologyReport } from '../src/textEngine/scenes/rosterTell/index.js';
 import { NADIA_SUBJECT_JOURNALS } from '../src/gameData/nadiaSubjectJournals.js';
+import { buildDevourScene } from '../src/gameData/devourScene.js';
+import { FINAL_FORMS, FINAL_FORM_FX } from '../src/gameData/immobilityArrival.js';
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import '../src/textEngine/scenes/campusEvent/depth.js';
 import { renderGossipMurmur, renderGossipReact } from '../src/textEngine/scenes/gossip/index.js';
@@ -299,6 +301,15 @@ const BANNED = [
   /\bkitchen girl is now\b/i,
   /\bsensory culinary girl\b/i,
   /\bthe girl who used to fit in my arms\b/i,
+  /\ba girl from the dining hall\b/i,
+  /\bcalls the girl in\b/i,
+  /\bThe girl who tends the room\b/i,
+  /\bTwo girls share a bench\b/i,
+  /\bdevours the fattened girl\b/i,
+  /\bFeed your enormous girl\b/i,
+  /\bOther girls seek her warmth\b/i,
+  /\bevery other girl sheds\b/i,
+  /\bevery other girl warms\b/i,
 ];
 
 function assertClean(text, label) {
@@ -1019,6 +1030,18 @@ const cultivatorIntro = renderCultivatorIntro('milkshake', 'Maya', 10);
 if (cultivatorIntro) assertClean(cultivatorIntro, 'cultivator intro');
 const cultivatorRecruit = renderCultivatorRecruitment(10);
 if (cultivatorRecruit) assertClean(cultivatorRecruit, 'cultivator recruitment');
+
+const devourStudent = { ...INIT_STUDENTS[0], name: 'Maya', lbs: 280, corruption: 2 };
+for (const corTier of [0, 1, 2]) {
+  const devour = buildDevourScene(devourStudent, corTier, 10);
+  assertClean(devour, `devour scene corTier ${corTier}`);
+}
+for (const form of Object.values(FINAL_FORMS)) {
+  assertClean(`${form.label} ${form.desc}`, `final form ${form.id}`);
+}
+for (const [branch, fx] of Object.entries(FINAL_FORM_FX)) {
+  assertClean(`${branch} ${fx.perk}`, `final form fx ${branch}`);
+}
 
 for (const cfg of Object.values(FAIR_TRAINING_CONFIG.collaborators)) {
   assertClean(cfg.label, `fair collab ${cfg.influenceKey}`);

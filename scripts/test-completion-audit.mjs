@@ -618,6 +618,31 @@ check('wife-lessons-depth-framing', () => {
   assert.doesNotMatch(pharmacist, /meets the girls who meet/i);
 });
 
+check('settling-devour-resident-framing', () => {
+  const devour = read('src/gameData/devourScene.js');
+  assert.match(devour, /a resident from the dining hall/);
+  assert.match(devour, /calls her in/);
+  assert.doesNotMatch(devour, /\ba girl from the (dining hall|library)\b/i);
+  assert.doesNotMatch(devour, /calls the girl in|The girl screams|When the girl is gone/i);
+  const immobility = read('src/gameData/immobilityArrival.js');
+  assert.match(immobility, /Other residents seek her warmth/);
+  assert.match(immobility, /every other resident sheds/);
+  assert.match(immobility, /every other resident warms/);
+  assert.doesNotMatch(immobility, /Other girls seek her warmth|every other girl sheds|every other girl warms/i);
+  const unlock = read('src/gameData/unlockScenes.js');
+  assert.match(unlock, /The resident who tends the room/);
+  assert.doesNotMatch(unlock, /The girl who tends the room/i);
+  const campus = read('src/gameData/campus.js');
+  assert.match(campus, /Two residents share a bench/);
+  assert.doesNotMatch(campus, /Two girls share a bench|A girl at the registrar|Three girls walk the track/i);
+  const mini = read('src/gameData/miniGames.js');
+  assert.match(mini, /The resident from State/);
+  assert.doesNotMatch(mini, /The girl from State|Feed your enormous girl/i);
+  const cultivator = read('src/textEngine/scenes/cultivator/vignettes.js');
+  assert.match(cultivator, /fattened tester/);
+  assert.doesNotMatch(cultivator, /fattened girl/i);
+});
+
 check('nadia-journal-framing', () => {
   const nadia = read('src/gameData/nadiaSubjectJournals.js');
   assert.match(nadia, /picking a resident like her/);

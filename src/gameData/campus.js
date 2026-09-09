@@ -45,7 +45,7 @@ export const CAMPUS_NODES = {
     flavor:[
       "The food trucks have doubled since last semester. Market forces at work.",
       "A picnic on the lawn has entered its fourth hour. The blanket is mostly serving dishes now.",
-      "Two girls share a bench built for three and fill it completely. Neither seems bothered. The bench, structurally, has opinions.",
+      "Two residents share a bench built for three and fill it completely. Neither seems bothered. The bench, structurally, has opinions.",
     ],
   },
   library: {
@@ -128,7 +128,7 @@ export const CAMPUS_NODES = {
     flavor:[
       "The bulletin board is a palimpsest of flyers; the bottom layer is from six semesters ago. A wellness announcement. It has not aged well.",
       "The vending alcove has been colonized by a study group using it as a snack depot.",
-      "A girl at the registrar's window is gesturing expressively. Lockwood listens with the expression of someone who has already made up her mind and has all day.",
+      "A resident at the registrar's window is gesturing expressively. Lockwood listens with the expression of someone who has already made up her mind and has all day.",
     ],
   },
   coffee_shop: {
@@ -137,7 +137,7 @@ export const CAMPUS_NODES = {
     desc:"Soft chairs, decent espresso, and pastries that are theoretically for sale and practically communal. The staff have stopped enforcing the one-item-minimum. It wasn't worth the looks.",
     flavor:[
       "Every table has something sweet on it. The ones without coffee cups have more pastries.",
-      "A girl waits for her order, phone in one hand and a half-eaten muffin from somewhere else in the other.",
+      "Someone waits for her order, phone in one hand and a half-eaten muffin from somewhere else in the other.",
       "The loyalty card program has been abused to the point that the barista just smiles and waves the heavy regulars through.",
     ],
   },
@@ -156,7 +156,7 @@ export const CAMPUS_NODES = {
     exits:["gym"],
     desc:"Quarter-mile loop, bleachers, and a field house nobody goes to after the vending machines were removed. Coach Brooks runs fitness assessments here. She has quietly stopped recording the weight measurements.",
     flavor:[
-      "Three girls walk the track in a cluster, snacks in hand. It counts as exercise. Brooks said so.",
+      "Three residents walk the track in a cluster, snacks in hand. It counts as exercise. Brooks said so.",
       "The bleachers double as a lunch spot for residents who want the fresh air without the movement.",
       "Someone's left a bag from the food court wedged under a bleacher seat. For later, presumably.",
     ],
