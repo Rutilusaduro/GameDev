@@ -12,7 +12,18 @@ import {
   FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
 } from '../src/gameData/evolvedForms.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
-import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
+import { CG_FILLED_DIARY, CG_RA_REPLY_TEXT } from '../src/gameData/competitiveGainerText.js';
+import { TALK_TOPICS } from '../src/gameData/talkSystem.js';
+import { createContext } from '../src/textEngine/engine.js';
+import { renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
+import '../src/textEngine/scenes/talkCodas.js';
+import '../src/textEngine/scenes/talkEncourage.js';
+import '../src/textEngine/scenes/talkCheckIn.js';
+import '../src/textEngine/scenes/talkCompliment.js';
+import '../src/textEngine/scenes/talkSuggest.js';
+import '../src/textEngine/scenes/talkRefusal.js';
+import '../src/textEngine/scenes/talkDiscontent.js';
+import '../src/textEngine/scenes/talkCommandFinish.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
 import { renderScrutinyTierUp } from '../src/textEngine/scenes/scrutiny/index.js';
@@ -266,9 +277,73 @@ for (const line of FEEDER_SUBJECT_JOURNALS.swimmer || []) {
   assertClean(line, 'feeder journal swimmer');
 }
 
-for (const archetype of ['bookworm', 'cheerleader']) {
+for (const archetype of ['bookworm', 'cheerleader', 'athlete', 'culinary']) {
   for (const line of FEEDER_SUBJECT_JOURNALS[archetype] || []) {
     assertClean(line, `feeder journal ${archetype}`);
+  }
+}
+
+for (const [replyId, reply] of Object.entries(CG_RA_REPLY_TEXT)) {
+  assertClean(reply.label, `CG RA reply ${replyId} label`);
+  assertClean(reply.fallback, `CG RA reply ${replyId} fallback`);
+  for (const [stage, line] of Object.entries(reply.byStage || {})) {
+    assertClean(line, `CG RA reply ${replyId} ${stage}`);
+  }
+}
+
+const talkSkillEffects = {
+  unlockSuggestion: true,
+  unlockCommand: true,
+  devourersThreshold: true,
+  totalSurrender: true,
+};
+const talkSubject = {
+  ...swimmer,
+  corruption: 55,
+  relationship: 75,
+  lbs: 310,
+  stomachCapacity: 120,
+  fullness: 20,
+};
+const talkCtx = createContext({
+  subject: talkSubject,
+  skillEffects: talkSkillEffects,
+  week: 10,
+  globals: { campusFattening: true, campusTier: 2, discontentTier: 0, complimentUnwelcome: false },
+});
+for (const topic of TALK_TOPICS) {
+  if (topic.sceneType === 'devour') continue;
+  if (!topic.engineTemplate) continue;
+  const line = render(topic.engineTemplate, talkCtx);
+  if (line) assertClean(line, `talk topic ${topic.id}`);
+  if (topic.refusalTemplate) {
+    const refusal = render(topic.refusalTemplate, talkCtx);
+    if (refusal) assertClean(refusal, `talk refusal ${topic.id}`);
+  }
+}
+
+const evolvedProseForms = ['homeroom_queen', 'campus_legend', 'competitive_gainer', 'food_researcher'];
+for (const formId of evolvedProseForms) {
+  const events = EVOLVED_EVENTS[formId] || [];
+  for (const [stageIdx, ev] of events.entries()) {
+    const subject = { ...INIT_STUDENTS[0], evolvedForm: formId, name: 'Maya', lbs: 340, archetype: 'swimmer' };
+    for (const phase of ev.phases || []) {
+      const raw = typeof phase.text === 'function' ? phase.text([], subject) : phase.text;
+      const rendered = renderEvolvedEventProse(raw, subject, 10, { formId, stageIdx, v2DepthChance: 0 });
+      if (rendered) assertClean(rendered, `evolved prose ${formId} stage ${stageIdx}`);
+      for (const ch of phase.choices || []) {
+        const result = typeof ch.result === 'function' ? ch.result(subject) : ch.result;
+        if (result) {
+          const choiceRendered = renderEvolvedEventProse(result, subject, 10, { formId, stageIdx, v2DepthChance: 0 });
+          if (choiceRendered) assertClean(choiceRendered, `evolved prose choice ${formId} ${ch.id}`);
+        }
+      }
+    }
+    for (const end of ev.endings || []) {
+      const rawEnd = typeof end.text === 'function' ? end.text([], subject, 5) : end.text;
+      const endRendered = renderEvolvedEventProse(rawEnd, subject, 10, { formId, stageIdx, v2DepthChance: 0 });
+      if (endRendered) assertClean(endRendered, `evolved prose ending ${formId} stage ${stageIdx}`);
+    }
   }
 }
 
@@ -374,4 +449,4 @@ for (const slot of [
   if (line) assertClean(line, `opposition endgame ${slot}`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in OK');
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies OK');

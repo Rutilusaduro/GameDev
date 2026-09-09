@@ -1,18 +1,21 @@
 // ═══════════════════════════════════════════════════════════════
 // LANE CAPTAIN — season plan / field study modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, HAVE_A_CHAT_SCENES } from '../gameData/communityResearcher.js';
 import { getStage } from '../gameData/stages.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
-export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome }){
+export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true }){
         const crs=communityResearcherState;
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, crs?.modalPhase]);
         const blue="#4a6fa5"; const lblue="#8fa8e0";
         const cassidy=students.find(s=>s.id===1);
         const mName=cassidy?.name||"Cassidy";
         const wrap=(children)=>(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520,background:"linear-gradient(160deg,#010510,#020818,#010510)",border:`1px solid ${blue}60`,maxHeight:"88vh",overflowY:"auto"}}>
               {children}
             </div>
           </div>
@@ -26,9 +29,9 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
             {THESIS_BOARD.phases[crs.boardPhase]?.(mName)||''}
           </div>
           {crs.boardPhase<2?(
-            <button style={{...C.btn(blue),width:"100%"}} onClick={advanceThesisBoard}>Continue →</button>
+            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); advanceThesisBoard(); }}>Continue →</button>
           ):(
-            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(cassidy)}>
+            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); completeThesisDefense(cassidy); }}>
               ✓ Panel Approved — Continue
             </button>
           )}
@@ -41,7 +44,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.85,marginBottom:14}}>
             The athletics panel approves unanimously. Ward's note about the meal logs is already in the field journal. Floor case studies may now begin.
           </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(cassidy)}>Begin Case Studies →</button>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); completeThesisDefense(cassidy); }}>Begin Case Studies →</button>
         </>);
 
         // ── CASE STUDY GRID ──
@@ -83,7 +86,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
                 );
               })}
             </div>
-            <button style={{...C.btn("#1a2030"),width:"100%",fontSize:11}} onClick={()=>setCommunityResearcherState(prev=>({...prev,modalPhase:null}))}>Cancel</button>
+            <button style={{...C.btn("#1a2030"),width:"100%",fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setCommunityResearcherState(prev=>({...prev,modalPhase:null})); }}>Cancel</button>
           </>);
         }
 
@@ -94,7 +97,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:12,color:"#a0b8cc",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
             {crs.eventText||''}
           </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{if(cassidy)completeCaseStudy(cassidy);}}>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); if(cassidy)completeCaseStudy(cassidy); }}>
             Record Findings ✓ (1 AP)
           </button>
         </>);
@@ -114,7 +117,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
               <div style={{fontSize:9,color:"#405070"}}>Suspicion total: <span style={{color:crs.totalSuspicion>17?"#c08060":crs.totalSuspicion>13?"#a09050":"#6080a0"}}>{crs.totalSuspicion||0}</span></div>
               <div style={{fontSize:9,color:"#405070"}}>Study {crs.caseStudyStage}/4 done</div>
             </div>
-            <button style={{...C.btn(blue),width:"100%"}} onClick={dismissBoardReaction}>Continue →</button>
+            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); dismissBoardReaction(); }}>Continue →</button>
           </>);
         }
 
@@ -125,7 +128,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
             {crs.finalReviewText||''}
           </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={proceedFromFinalReview}>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); proceedFromFinalReview(); }}>
             {(getSuspicionBracket(crs.totalSuspicion||0)==='green'||getSuspicionBracket(crs.totalSuspicion||0)==='yellow')
               ?'Accept Verdict →':'Have Those Conversations →'}
           </button>
@@ -155,7 +158,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {(phase?.choices||[]).map(ch=>(
                 <button key={ch.id} style={{...C.btn("#0e1a30"),textAlign:"left",fontSize:11,padding:"10px 14px",border:`1px solid ${blue}50`}}
-                  onClick={()=>makeHaveAChatChoice(ch.id)}>
+                  onClick={()=>{ playHallPassSound('click', soundEnabled); makeHaveAChatChoice(ch.id); }}>
                   {ch.label}
                 </button>
               ))}
@@ -175,7 +178,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
             <div style={{fontSize:13,fontWeight:700,color:"#6aaa80",marginBottom:12}}>Approved</div>
             <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{outcomeText}</div>
-            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(true)}>Close</button>
+            <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeThesisOutcome(true); }}>Close</button>
           </>);
         }
 
@@ -186,7 +189,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
             The panel was not convinced. The file is closed. Cassidy keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a season plan and isn't a journal. Whatever it is, she'll finish it on her own terms.
           </div>
-          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(false)}>Close</button>
+          <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeThesisOutcome(false); }}>Close</button>
         </>);
 
         return null;

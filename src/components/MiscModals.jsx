@@ -72,7 +72,8 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup, soundEnabled = true }
 
 
 
-export function DormUnlockModal({ dorms, onContinue }) {
+export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('unlock', soundEnabled); }, [soundEnabled]);
   if (!dorms?.length) return null;
   const primary = dorms[0];
   return (

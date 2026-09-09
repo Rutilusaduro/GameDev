@@ -1,20 +1,31 @@
 // ═══════════════════════════════════════════════════════════════
 // COMPETITIVE GAINER — Group Chat modal + Main Evolved modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { CG_CONFIG, CG_CHAT_TEMPLATES } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
-export function CompetitiveGainerChatModal({ competitiveGainerState, students, getCGSpiritTier, cgProfessorReply, setCgChatOpen }){
+const CG_BG = '#0a0306';
+const CG_ACC = '#e8294a';
+const CG_DIM = '#7a1530';
+const CG_TEXT = '#f0d0d8';
+const CG_SUBTLE = '#c08090';
+
+function isRaMessage(msg) {
+  return !!(msg?.isRa ?? msg?.isProf);
+}
+
+export function CompetitiveGainerChatModal({ competitiveGainerState, students, getCGSpiritTier, cgProfessorReply, setCgChatOpen, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled]);
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.evolvedForm==='competitive_gainer');
         if(!priya||!cgS) return null;
         const tier=getCGSpiritTier(cgS.spirit);
-        const CG_BG="#0a0306"; const CG_ACC="#e8294a"; const CG_DIM="#7a1530";
-        const CG_TEXT="#f0d0d8"; const CG_SUBTLE="#c08090";
         return(
           <div style={{...C.overlay,zIndex:370}}>
-            <div style={{...C.modal,maxWidth:580,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
               <div style={{display:"flex",alignItems:"center",marginBottom:12}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC}}>💬 SOFTENING STATS</div>
                 <div style={{marginLeft:"auto",fontSize:9,color:CG_DIM}}>Drive {cgS.spirit} · {tier.label}</div>
@@ -23,8 +34,8 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
               <div style={{maxHeight:320,overflowY:"auto",marginBottom:12,padding:"8px 10px",background:"rgba(232,41,74,0.04)",border:`1px solid ${CG_DIM}40`,borderRadius:5}}>
                 {cgS.chatLog.length===0&&<div style={{fontSize:11,color:CG_SUBTLE,fontStyle:"italic"}}>No posts yet. Visit the corkboard to trigger the first post.</div>}
                 {cgS.chatLog.map((msg,i)=>(
-                  <div key={i} style={{marginBottom:8,paddingLeft:8,borderLeft:`2px solid ${msg.isProf?CG_ACC:CG_DIM}40`}}>
-                    <div style={{fontSize:10,color:msg.isProf?CG_ACC:CG_TEXT,lineHeight:1.65}}>{msg.text}</div>
+                  <div key={i} style={{marginBottom:8,paddingLeft:8,borderLeft:`2px solid ${isRaMessage(msg)?CG_ACC:CG_DIM}40`}}>
+                    <div style={{fontSize:10,color:isRaMessage(msg)?CG_ACC:CG_TEXT,lineHeight:1.65}}>{msg.text}</div>
                     <div style={{fontSize:8,color:CG_SUBTLE,marginTop:2}}>Week {msg.wk}</div>
                   </div>
                 ))}
@@ -35,25 +46,24 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
                 <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                   {(CG_CHAT_TEMPLATES.raReplies || CG_CHAT_TEMPLATES.professorReplies).map(opt=>(
                     <button key={opt.id} style={{...C.btn(CG_DIM),fontSize:10,padding:"5px 10px"}}
-                      onClick={()=>cgProfessorReply(opt.id)}>
+                      onClick={()=>{ playHallPassSound('click', soundEnabled); cgProfessorReply(opt.id); }}>
                       {opt.label} <span style={{color:CG_ACC,marginLeft:4}}>+{opt.spiritDelta} drive</span>
                     </button>
                   ))}
                 </div>
               </div>
-              <button style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>setCgChatOpen(false)}>Leave Chat</button>
+              <button style={{...C.btn(CG_BG),width:"100%",border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); setCgChatOpen(false); }}>Leave Chat</button>
             </div>
           </div>
         );
 }
 
-export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGSpiritTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal }){
+export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGSpiritTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true }){
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.id===cgS.priyaStudentId);
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, cgS?.view, cgS?.priyaStudentId]);
         if(!priya) return null;
         const tier=getCGSpiritTier(cgS.spirit);
-        const CG_BG="#0a0306"; const CG_ACC="#e8294a"; const CG_DIM="#7a1530";
-        const CG_TEXT="#f0d0d8"; const CG_SUBTLE="#c08090";
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
         const tierBarPct=Math.min(100,cgS.spirit/60*100);
         const isBlob=getStage(priya.lbs).id>=10;
@@ -63,7 +73,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           const{sceneText,spiritGain}=cgS.subState||{};
           return(
             <div style={{...C.overlay,zIndex:365}}>
-              <div style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📌 CORKBOARD</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{spiritGain} · Now {tier.label} ({cgS.spirit})</div>
@@ -78,7 +88,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           const{sceneText,spiritGain}=cgS.subState||{};
           return(
             <div style={{...C.overlay,zIndex:365}}>
-              <div style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📏 SELF-REVIEW</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:12,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:12}}>
@@ -111,7 +121,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           const measurableStudents=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
           return(
             <div style={{...C.overlay,zIndex:365}}>
-              <div style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 SELECT WHO TO MEASURE</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:14}}>
                   {measurableStudents.map(s=>{
@@ -139,7 +149,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           if(!target) return null;
           return(
             <div style={{...C.overlay,zIndex:365}}>
-              <div style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 MEASURING {target.name.toUpperCase()}</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 {/* Comparison table */}
@@ -183,7 +193,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           const{gain,sceneText}=cgS.subState||{};
           return(
             <div style={{...C.overlay,zIndex:365}}>
-              <div style={{...C.modal,maxWidth:520,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>🔴 {tier.label.toUpperCase()} BINGE</div>
                 <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
                 <div style={{fontSize:13,fontWeight:700,color:CG_ACC,textAlign:"center",marginBottom:14}}>+{gain} lbs</div>
@@ -196,7 +206,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
         // ── Main modal ──
         return(
           <div style={{...C.overlay,zIndex:365}}>
-            <div style={{...C.modal,maxWidth:500,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC}}>📊 COMPETITIVE GAINER</div>
@@ -243,7 +253,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{CG_CONFIG.bingeApCost} AP · {tier.label} intensity</span>
                 </button>
               </div>
-              <button style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={closeCGModal}>Close</button>
+              <button style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeCGModal(); }}>Close</button>
             </div>
           </div>
         );

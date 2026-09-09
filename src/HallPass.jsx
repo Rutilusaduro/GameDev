@@ -3440,7 +3440,7 @@ export default function HallPass(){
         priyaValue:comparison?.priyaValue,
         targetValue:comparison?.targetValue,
       });
-      const msg={text:`[You] ${text}`,isProf:true,wk:week};
+      const msg={text:`[You] ${text}`,isRa:true,isProf:true,wk:week};
       return{...prev,spirit:prev.spirit+opt.spiritDelta,chatLog:[...prev.chatLog,msg]};
     });
   };
@@ -8774,6 +8774,7 @@ export default function HallPass(){
       {/* ── DORM UNLOCK MODAL ── */}
       {dormUnlockModal&&<DormUnlockModal
         dorms={dormUnlockModal}
+        soundEnabled={soundEnabled}
         onContinue={()=>{
           playHallPassSound('confirm', soundEnabled);
           setDormUnlockModal(null);
@@ -8932,10 +8933,10 @@ export default function HallPass(){
       {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession}/>}
 
       {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
-      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgProfessorReply={cgRaReply} setCgChatOpen={setCgChatOpen}/>}
+      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgProfessorReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
-      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal}/>}
+      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive}/>}
@@ -9072,7 +9073,7 @@ export default function HallPass(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)}/>}
+      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)} soundEnabled={soundEnabled}/>}
 
       {pharmacistChemSession&&pharmacistChemStudentId!=null&&(()=>{
         const chemStudent=students.find(st=>st.id===pharmacistChemStudentId);
@@ -9155,7 +9156,7 @@ export default function HallPass(){
       )}
 
       {/* ── LANE CAPTAIN MODAL ── */}
-      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome}/>}
+      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome} soundEnabled={soundEnabled}/>}
 
       {/* ── CULTIVATOR MODAL ── */}
       {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} week={week} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth}/>}

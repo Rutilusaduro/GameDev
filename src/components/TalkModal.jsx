@@ -3,7 +3,7 @@
 // Topics gated by skill effects; responses by corruption tier.
 // Register codas appended when corruption tier + skills qualify.
 // ═══════════════════════════════════════════════════════════════
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
 import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
@@ -30,6 +30,7 @@ import { getBrandControlTier, getStreamVoice, ensureStreamFields } from '../game
 import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
 // ── response builder ──────────────────────────────────────────
 
@@ -176,7 +177,8 @@ function ResponseDisplay({ topic, text, student, week, section, traceNodes, onCl
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0 }){
+export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, student?.id]);
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
@@ -251,7 +253,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
 
   return(
     <div style={C.overlay} onClick={(e)=>{ if(e.target===e.currentTarget) handleCloseFromResponse(); }}>
-      <div style={{
+      <div className="hall-pass-modal-in" style={{
         ...C.modal,
         maxWidth: activeResponse?.topic?.sceneType === 'devour' ? 620 : 500,
         borderColor: activeResponse?.topic?.sceneType === 'devour' ? "#802030" : "#5a1890",
@@ -266,7 +268,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
               {(student.corruption||0)>0 && ` · ${student.corruption} corruption`}
             </div>
           </div>
-          <button style={{...C.btn("#1a0830"),fontSize:11}} onClick={handleCloseFromResponse}>✕ Close</button>
+          <button style={{...C.btn("#1a0830"),fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); handleCloseFromResponse(); }}>✕ Close</button>
         </div>
 
         {/* AP cost note */}
