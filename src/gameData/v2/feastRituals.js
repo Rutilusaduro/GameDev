@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// FEAST RITUALS — ceremonial multi-student feeding
+// FEAST RITUALS — ceremonial multi-resident feeding
 // ═══════════════════════════════════════════════════════════════
 
 export const FEAST_RITUALS = [

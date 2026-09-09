@@ -122,7 +122,7 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
               <div style={{fontSize:11,color:"#8070a0",marginBottom:14,textAlign:"center"}}>Close tier or above · any weight stage</div>
               {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible residents — build a Close relationship first.</div>}
               {eligible.map(st=>(
-                <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#080016",border:`1px solid ${purple}40`,cursor:"pointer"}}
+                <div key={st.id} role="button" tabIndex={0} className="picker-choice-row" style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#080016",border:`1px solid ${purple}40`,cursor:"pointer"}}
                   onClick={()=>{
                     playHallPassSound('confirm', soundEnabled);
                     setStudents(prev=>prev.map(x=>x.id===nadia.id?{...x,researchSubjectId:st.id}:x));
@@ -134,7 +134,8 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
                       setAp(a=>a-(meta?.apCost||1));
                       setEvolvedEventState({studentId:nadia.id,formId:'psych_researcher',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
                     }
-                  }}>
+                  }}
+                  onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                   <div style={{flex:1}}>
                     <div style={{color:"#c0a0e0",fontWeight:"bold",fontSize:13}}>{st.name}</div>
                     <div style={{color:"#806090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
@@ -179,8 +180,9 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
               <div style={{fontSize:11,color:"#a080c0",marginBottom:14,textAlign:"center"}}>Intimate tier · content-creator archetype</div>
               {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible partners right now — need an Intimate-tier gamer, artsy, or quiet resident.</div>}
               {eligible.map(st=>(
-                <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
-                  onClick={()=>{ playHallPassSound('confirm', soundEnabled); setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairDay:false});}}}>
+                <div key={st.id} role="button" tabIndex={0} className="picker-choice-row" style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
+                  onClick={()=>{ playHallPassSound('confirm', soundEnabled); setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairDay:false});}}}
+                  onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                   <div style={{flex:1}}>
                     <div style={{color:lightPurple,fontWeight:"bold",fontSize:13}}>{st.name}</div>
                     <div style={{color:"#907090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>

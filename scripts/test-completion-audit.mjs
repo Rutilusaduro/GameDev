@@ -1637,6 +1637,16 @@ check('modal-button-polish', () => {
   assert.match(gallery, /hall-pass-modal-in artisan-gallery-modal/);
 });
 
+check('picker-row-polish', () => {
+  const css = read('src/index.css');
+  const picker = read('src/components/PickerModals.jsx');
+  assert.match(css, /\.picker-choice-row:focus-visible/);
+  assert.match(css, /\.picker-choice-row:hover/);
+  assert.match(picker, /className="picker-choice-row"/);
+  assert.match(picker, /role="button"/);
+  assert.match(picker, /tabIndex=\{0\}/);
+});
+
 check('narrative-roster-framing', () => {
   const v2 = read('src/textEngine/scenes/v2/v2ProseExpansion.js');
   assert.match(v2, /every resident on your roster/);
