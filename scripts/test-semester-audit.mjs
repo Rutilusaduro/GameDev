@@ -11,7 +11,7 @@ import {
 import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { CLASS_SCENES } from '../src/gameData/classEvents.js';
-import { STAGE_DROP_REACTIONS } from '../src/gameData/content.js';
+import { STAGE_DROP_REACTIONS, STAGE_REACTIONS, OUTFITS } from '../src/gameData/content.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
@@ -184,4 +184,19 @@ for (const [archetype, lines] of Object.entries(STAGE_DROP_REACTIONS)) {
   lines.forEach((line, idx) => assertClean(line, `drop reaction ${archetype} stage ${idx}`));
 }
 
-console.log('semester-audit: wk1-16 sim per start hall, all floor scenes, drop reactions, unlock scenes, narrative sweeps OK');
+const sampleSubject = { lbs: 220, startLbs: 130, name: 'Resident' };
+for (const [archetype, lines] of Object.entries(STAGE_REACTIONS)) {
+  assert.equal(lines.length, 11, `${archetype} stage reactions should cover stages 0–10`);
+  lines.forEach((fn, idx) => {
+    const text = typeof fn === 'function' ? fn(sampleSubject) : fn;
+    assertClean(text, `stage reaction ${archetype} stage ${idx}`);
+  });
+}
+
+for (const [archetype, lines] of Object.entries(OUTFITS)) {
+  if (archetype === 'default') continue;
+  assert.equal(lines.length, 11, `${archetype} outfits should cover stages 0–10`);
+  lines.forEach((line, idx) => assertClean(line, `outfit ${archetype} stage ${idx}`));
+}
+
+console.log('semester-audit: wk1-16 sim per start hall, all floor scenes, stage/drop reactions, outfits, unlock scenes, narrative sweeps OK');
