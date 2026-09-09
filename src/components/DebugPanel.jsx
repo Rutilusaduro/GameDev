@@ -15,6 +15,8 @@ import { defaultSalonState } from '../gameData/chloeSalon.js';
 import { defaultGalleryState } from '../gameData/fionaGallery.js';
 import { SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../gameData/chapterHostess.js';
 import { TESTER_START_LBS } from '../gameData/cultivator.js';
+import { defaultPharmacistState } from '../gameData/pharmacist.js';
+import { createInitialHiveState } from '../gameData/mayaHive.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
@@ -61,6 +63,8 @@ export function DebugPanel({
   setChapterHostessState,
   setCommunityResearcherState,
   setCultivatorState,
+  setPharmacistState,
+  setMayaHiveState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -394,6 +398,34 @@ export function DebugPanel({
                       setView('student');
                     }}>
                     🍰 Cultivator Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(30,90,70,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 16
+                          ? { ...s, evolvedForm: 'pharmacist', lbs: 200, relationship: 60, mood: 'stressed' }
+                          : s
+                      )));
+                      setPharmacistState?.(defaultPharmacistState());
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(16);
+                      setView('student');
+                    }}>
+                    🧪 Pharmacist Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(90,40,120,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 8
+                          ? { ...s, evolvedForm: 'delivery_hive', lbs: 200, relationship: 60, mood: 'content' }
+                          : s
+                      )));
+                      setMayaHiveState?.(createInitialHiveState(8));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(8);
+                      setView('student');
+                    }}>
+                    🕸️ Hive Arc QA
                   </button>
                 </>
               )}

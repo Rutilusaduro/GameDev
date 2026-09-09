@@ -113,6 +113,24 @@ export async function unlockCultivatorArcQA(page) {
   await expect(page.getByText('EVOLVED PATH')).toBeVisible();
 }
 
+/** Debug: Sophia pharmacist arc + open student detail. */
+export async function unlockPharmacistArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Pharmacist Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
+/** Debug: Maya delivery hive arc + open student detail. */
+export async function unlockHiveArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Hive Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();
