@@ -1127,6 +1127,31 @@ check('ra-specialties-legacy-framing', () => {
   assert.doesNotMatch(sessions, /The body is your subject|teaching people to really look|Research study risk halved/i);
 });
 
+check('nadia-sophia-baseline-framing', () => {
+  const echo = read('src/textEngine/scenes/v2/echo/echoSceneDepth.js');
+  const psych = read('src/textEngine/scenes/psychShift/personas.js');
+  const interior = read('src/textEngine/scenes/interior/personas.js');
+  const early = read('src/textEngine/scenes/earlyGain/personas.js');
+  const origins = read('src/gameData/origins/index.js');
+  const custom = read('src/textEngine/scenes/customStudent/index.js');
+  const dinner = read('src/textEngine/scenes/dinner/reactions.js');
+  assert.match(echo, /resident kept eating, hall log unnecessary/);
+  assert.match(psych, /Nadia closes the hall log/);
+  assert.match(interior, /Baseline pair: her old jeans/);
+  assert.match(early, /Log error.*She is the resident/);
+  assert.match(early, /Baseline contamination/);
+  assert.match(origins, /Baseline check\. I am the baseline/);
+  assert.match(custom, /Baseline: denial/);
+  assert.match(dinner, /hall log entry/);
+  assert.doesNotMatch(echo, /subject continued eating|field notes unnecessary/i);
+  assert.doesNotMatch(psych, /closes the field notes/i);
+  assert.doesNotMatch(interior, /Control group:/i);
+  assert.doesNotMatch(early, /Subject error|She is the subject|Control group contamination/i);
+  assert.doesNotMatch(origins, /Control group\. I am the control group/i);
+  assert.doesNotMatch(custom, /Control group:/i);
+  assert.doesNotMatch(dinner, /like a field note/i);
+});
+
 check('floor-event-hall-target', () => {
   const floor = read('src/gameData/floorEvents.js');
   const helpers = read('src/utils/gameHelpers.js');

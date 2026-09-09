@@ -323,7 +323,7 @@ registerModuleVariants('shift.coda', [
     'Menu for tomorrow: more of everything.',
   ]},
   { when: { studentId: 12, corruption: [1] }, weight: W, text: [
-    'Nadia closes the field notes. Conclusion: she wanted this.',
+    'Nadia closes the hall log. Conclusion: she wanted this.',
     'The dynamic holds into next week.',
     'Further observation required. She volunteers.',
   ]},

@@ -71,7 +71,7 @@ registerModuleVariants('interior.selfObs', [
   { when: { studentId: 16, corruption: [0], stageMax: 4 }, weight: W, text: [
     'Sophia double-checks the mirror the way she double-checks dosages. The number is real.',
     'Wellness research was supposed to stay theoretical. Her waist disagrees.',
-    'Control group: her old jeans. Results: significant.',
+    'Baseline pair: her old jeans. Results: significant.',
   ]},
   { when: { studentId: 3, corruption: [0], stageMin: 2, stageMax: 4 }, weight: W, text: [
     'Serena inventories new softness like a training log she did not authorize.',

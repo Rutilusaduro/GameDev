@@ -44,7 +44,7 @@ registerModuleVariants('shift.interior', [
   { when: { ...CUSTOM, corruption: [0] }, priority: P, weight: W, text: [
     'She files appetite under variables. It refuses to stay there.',
     'The model updates around her hunger, quietly and without permission.',
-    'Control group: denial. Results: inconclusive. She eats.',
+    'Baseline: denial. Results: inconclusive. She eats.',
   ]},
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'She stops arguing with the numbers. Appetite wins the model.',

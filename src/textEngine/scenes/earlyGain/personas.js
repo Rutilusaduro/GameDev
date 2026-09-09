@@ -271,8 +271,8 @@ registerModuleVariants('slender.deflect', [
   ]},
   { when: { studentId: 12, gainStance: 'opposed', ...EARLY }, weight: W, text: [
     `"Within normal variance," Nadia says, watching you.`,
-    `"Subject error," she murmurs. She is the subject.`,
-    `"Control group contamination," she says. She contaminated herself.`,
+    `"Log error," she murmurs. She is the resident.`,
+    `"Baseline contamination," she says. She contaminated herself.`,
   ]},
   { when: { studentId: 17, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Trail weight," Indiana says. "Provisions stick."`,
