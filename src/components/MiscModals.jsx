@@ -98,6 +98,7 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
         {dorms.map((d) => (
           <div
             key={d.id}
+            className="hall-unlock-new"
             style={{
               ...C.infoBox(d.accentSoft || 'rgba(40,20,60,0.3)'),
               marginBottom: 10,
@@ -111,7 +112,7 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
             <div style={{ fontStyle: 'italic', color: '#c8b8e0' }}>{d.hook}</div>
           </div>
         ))}
-        <button style={{ ...C.btn(primary.color), width: '100%', fontWeight: 700 }} onClick={onContinue}>
+        <button style={{ ...C.btn(primary.color), width: '100%', fontWeight: 700 }} onClick={() => { playHallPassSound('click', soundEnabled); onContinue(); }}>
           View Roster →
         </button>
       </div>

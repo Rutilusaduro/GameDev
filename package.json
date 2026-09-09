@@ -21,6 +21,7 @@
     "test:semester-audit": "node scripts/test-semester-audit.mjs",
     "test:prose-coherence": "node scripts/test-prose-coherence.mjs",
     "test:ui-strings": "node scripts/test-ui-strings.mjs",
+    "test:no-placeholders": "node scripts/test-no-placeholders.mjs",
     "test:e2e": "playwright test",
     "test:smoke": "node scripts/test-smoke.mjs",
     "text:lint": "node scripts/textLint.mjs"

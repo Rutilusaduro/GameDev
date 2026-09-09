@@ -107,6 +107,13 @@ export async function dismissBlockingModals(page) {
       continue;
     }
 
+    const weekRecap = page.getByRole('button', { name: /^Begin Week \d+$/ });
+    if (await weekRecap.isVisible().catch(() => false)) {
+      await weekRecap.click();
+      await page.waitForTimeout(60);
+      continue;
+    }
+
     const talkCalm = page.getByRole('button', { name: /Talk to her/ });
     if (await talkCalm.isVisible().catch(() => false)) {
       await talkCalm.click();

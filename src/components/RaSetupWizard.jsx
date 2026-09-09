@@ -99,7 +99,7 @@ export function RaSetupWizard({ students, onComplete }) {
         </div>
 
         {step === 'intro' && (
-          <>
+          <div key="intro" className="hall-pass-view-in">
             <div style={{
               background: 'rgba(255,255,255,0.04)', border: `1px solid ${accentSoft}`,
               borderRadius: 12, padding: '20px 22px', marginBottom: 22,
@@ -118,11 +118,11 @@ export function RaSetupWizard({ students, onComplete }) {
                 Meet the RA →
               </button>
             </div>
-          </>
+          </div>
         )}
 
         {step === 'approach' && (
-          <>
+          <div key="approach" className="hall-pass-view-in">
             <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 8, textAlign: 'center' }}>
               How do you run your hall?
             </div>
@@ -154,11 +154,11 @@ export function RaSetupWizard({ students, onComplete }) {
                 Choose your hall →
               </button>
             </div>
-          </>
+          </div>
         )}
 
         {step === 'dorm' && approach && (
-          <>
+          <div key="dorm" className="hall-pass-view-in">
             <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 4, textAlign: 'center' }}>
               Which hall do you take?
             </div>
@@ -200,10 +200,11 @@ export function RaSetupWizard({ students, onComplete }) {
                 Add a suitemate →
               </button>
             </div>
-          </>
+          </div>
         )}
 
         {step === 'suitemate' && approach && dorm && (
+          <div key="suitemate" className="hall-pass-view-in">
           <CustomStudentWizard
             accent={accent}
             title="Your Fifth Suitemate"
@@ -212,6 +213,7 @@ export function RaSetupWizard({ students, onComplete }) {
             onBack={() => setStep('dorm')}
             onComplete={(draft) => onComplete({ approach, dorm, customDraft: draft })}
           />
+          </div>
         )}
       </div>
     </div>
