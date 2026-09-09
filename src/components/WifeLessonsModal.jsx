@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // WIFE LESSONS MINI-GAME
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
@@ -15,9 +17,12 @@ function wlNextThresholdCap(stage, daughters) {
   return exitCap;
 }
 
-export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession }){
+export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession, soundEnabled = true }){
         const{stage,daughters,moms,session}=wifeLessonsState;
         const{lessonChosen,lessonId,lessonProse,mjGainAccum,relAccum,conversationState,log}=session;
+        useEffect(() => {
+          playHallPassSound('confirm', soundEnabled);
+        }, [soundEnabled, stage, lessonId, conversationState?.person, conversationState?.optionIdx]);
 
         const WINE_BG="#0e0508";
         const WINE_DIM="#5a2040";
@@ -38,7 +43,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
           const transcript=history?.length?history:[];
           return(
             <div style={{...C.overlay,zIndex:360}}>
-              <div style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
+              <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:560,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"88vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="wifeLessons" />
                 <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
                   <div style={{fontSize:9,letterSpacing:4,color:WINE_ACCENT}}>💬 {person.toUpperCase()}</div>
@@ -94,7 +99,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         // ── Main session view ──
         return(
           <div style={{...C.overlay,zIndex:360}}>
-            <div style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,background:WINE_BG,border:`1px solid ${WINE_ACCENT}40`,maxHeight:"90vh",overflowY:"auto"}}>
               <SceneBackdrop variant="wifeLessons" />
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
@@ -199,7 +204,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
 
               <button
                 style={{...C.btn("#0e0508"),width:"100%",marginTop:4,border:`1px solid ${WINE_ACCENT}30`,fontSize:12}}
-                onClick={closeWifeLessonsSession}>
+                onClick={()=>{ playHallPassSound('click', soundEnabled); closeWifeLessonsSession(); }}>
                 End Session{mjGainAccum>0?` · +${mjGainAccum} lbs to Mary Jane`:""}
               </button>
             </div>

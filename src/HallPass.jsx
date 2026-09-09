@@ -8899,11 +8899,11 @@ export default function HallPass(){
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled}/>}
 
-      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening}/>}
+      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
 
-      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition}/>}
+      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition} soundEnabled={soundEnabled}/>}
 
-      {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct}/>}
+      {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct} soundEnabled={soundEnabled}/>}
       {refeedSurgeState&&(()=>{
         const surgeStudent=students.find(st=>st.id===refeedSurgeState.studentId);
         if(!surgeStudent) return null;
@@ -8932,7 +8932,7 @@ export default function HallPass(){
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession} soundEnabled={soundEnabled}/>}
 
       {/* ── WIFE LESSONS MINI-GAME ── */}
-      {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession}/>}
+      {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
       {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgProfessorReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
@@ -8944,7 +8944,7 @@ export default function HallPass(){
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
-      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup}/>}
+      {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup} soundEnabled={soundEnabled}/>}
 
       {forceFeederState&&<ForceFeederModal
         state={forceFeederState}
@@ -9116,7 +9116,7 @@ export default function HallPass(){
       {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction}/>}
 
       {/* ── SUMO MATCH MINI-GAME MODAL ── */}
-      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} week={week} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup}/>}
+      {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} week={week} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup} soundEnabled={soundEnabled}/>}
 
       {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
       {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students}/>}

@@ -51,6 +51,9 @@ import { renderHungerInterrupt, renderHungerOutcome } from '../src/textEngine/sc
 import { renderConfront, renderConfrontWithMemory } from '../src/textEngine/scenes/confront/index.js';
 import '../src/textEngine/scenes/hungerInterrupt/index.js';
 import '../src/textEngine/scenes/confront/index.js';
+import { renderContestPayoff, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
+import { renderSumoPayoff, renderSumoAftermath } from '../src/textEngine/scenes/sumoMatch/index.js';
+import { SALON_COURSES, SALON_SERVICE_CHOICES } from '../src/gameData/chloeSalon.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -478,4 +481,35 @@ for (const slot of [
   if (line) assertClean(line, `opposition endgame ${slot}`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront OK');
+const contestStudent = {
+  ...(INIT_STUDENTS.find((s) => s.archetype === 'culinary') || INIT_STUDENTS[9]),
+  lbs: 340,
+  name: 'Reneé',
+};
+for (let stageIdx = 0; stageIdx < 5; stageIdx++) {
+  const payoff = renderContestPayoff(stageIdx, contestStudent, 12, 10);
+  if (payoff) assertClean(payoff, `contest payoff stage ${stageIdx}`);
+  const weigh = renderContestWeighIn2(stageIdx, contestStudent, 8, 6, 330, 10);
+  if (weigh) assertClean(weigh, `contest weigh-in stage ${stageIdx}`);
+}
+
+const sumoStudent = {
+  ...(INIT_STUDENTS.find((s) => s.archetype === 'athlete') || INIT_STUDENTS[3]),
+  lbs: 380,
+  name: 'Serena',
+};
+for (let stageIdx = 0; stageIdx < 4; stageIdx++) {
+  const payoff = renderSumoPayoff(stageIdx, sumoStudent, 15, 10);
+  if (payoff) assertClean(payoff, `sumo payoff stage ${stageIdx}`);
+  const aftermath = renderSumoAftermath(stageIdx, sumoStudent, 15, true, 400, 10);
+  if (aftermath) assertClean(aftermath, `sumo aftermath stage ${stageIdx}`);
+}
+
+for (const course of SALON_COURSES) {
+  assertClean(course.label, `salon course ${course.id}`);
+}
+for (const choice of SALON_SERVICE_CHOICES) {
+  assertClean(choice.label, `salon service ${choice.id}`);
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon OK');

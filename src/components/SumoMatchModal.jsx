@@ -1,13 +1,16 @@
 // ═══════════════════════════════════════════════════════════════
 // SUMO MATCH — Mini-game modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { renderSumoAftermath, renderSumoPayoff } from '../textEngine/scenes/sumoMatch/index.js';
 
-export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup }){
+export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup, soundEnabled = true }){
         const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText,fillRingUsed}=sumoMatchState;
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, studentId, phase, stageIdx]);
         const s=students.find(st=>st.id===studentId); if(!s) return null;
         const won=yourBouts>oppBouts;
         const markerPct=Math.max(0,Math.min(100,(ringPos+100)/2));
@@ -17,7 +20,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
         const aftermathText=renderSumoAftermath(stageIdx,s,gainAccum,won,oppLbs,week);
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#d05040",marginBottom:4}}>THE DOHYO — vs {SUMO_RIVAL_NAME.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#ff8060",marginBottom:12}}>{s.name}</div>
 
@@ -127,7 +130,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                   </div>
                 </div>
                 <div style={{fontSize:12,color:"#e0c0b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>{payoffText}</div>
-                <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={closeSumoMatch}>Close</button>
+                <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeSumoMatch(); }}>Close</button>
               </>)}
 
               {/* POPUP OVERLAY */}
@@ -135,7 +138,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
                   <div style={{background:"#160606",border:"1px solid #80303050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
                     <div style={{fontSize:12,color:"#e8b8a8",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
-                    <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={dismissSumoPopup}>Continue</button>
+                    <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); dismissSumoPopup(); }}>Continue</button>
                   </div>
                 </div>
               )}

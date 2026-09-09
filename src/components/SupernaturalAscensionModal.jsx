@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { SUPERNATURAL_FORMS } from '../gameData/supernaturalForms.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 
-export function SupernaturalAscensionModal({ students, opposition, onAscend, onDismiss }) {
+export function SupernaturalAscensionModal({ students, opposition, onAscend, onDismiss, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, opposition?.supernatural?.actWeek]);
   const eligible = students.filter((s) => s.evolvedForm && !s.supernaturalForm && SUPERNATURAL_FORMS[s.archetype]);
   return (
     <div style={{ ...C.overlay, zIndex: 400 }}>
-      <div style={{ ...C.modal, maxWidth: 560, background: 'linear-gradient(160deg,#050208,#120818,#050208)', border: '1px solid #6040a080' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560, background: 'linear-gradient(160deg,#050208,#120818,#050208)', border: '1px solid #6040a080' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#a080d0', marginBottom: 8 }}>👻 THE SUPERNATURAL ACT</div>
         <p style={{ fontSize: 12, color: '#d0c0e8', lineHeight: 1.8, marginBottom: 14 }}>
           Week {opposition?.supernatural?.actWeek}: stomachs flutter empty, then hunger without mass. A voice of scarcity:
@@ -24,7 +27,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
                   key={s.id}
                   type="button"
                   style={{ ...C.btn('#4a2860'), textAlign: 'left', fontSize: 12 }}
-                  onClick={() => onAscend(s.id, form.id)}
+                  onClick={() => { playHallPassSound('confirm', soundEnabled); onAscend(s.id, form.id); }}
                 >
                   {s.name} → {form.label}
                   <span style={{ color: '#c0a0e0', fontSize: 10, marginLeft: 8 }}>gain ×{form.gainMult}</span>
@@ -35,7 +38,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
         ) : (
           <p style={{ fontSize: 11, color: '#8070a0', marginBottom: 12 }}>No evolved students ready for ascension this week.</p>
         )}
-        <button type="button" style={{ ...C.btn('#444'), width: '100%' }} onClick={onDismiss}>Acknowledge — the act has begun</button>
+        <button type="button" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>Acknowledge — the act has begun</button>
       </div>
     </div>
   );

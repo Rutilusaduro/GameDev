@@ -1,12 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
 // EATING CONTEST — Mini-game modal
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { CONTEST_MAYA_WEIGHTS } from '../gameData/miniGames.js';
 import { renderContestWeighIn2, renderContestPayoff } from '../textEngine/scenes/eatingContest/index.js';
 
-export function EatingContestModal({ eatingContestState, students, week = 1, toggleFoodSelection, eatContestFood, doContestAction, doDevour, setEatingContestState, closeEatingContest, dismissContestPopup }){
+export function EatingContestModal({ eatingContestState, students, week = 1, toggleFoodSelection, eatContestFood, doContestAction, doDevour, setEatingContestState, closeEatingContest, dismissContestPopup, soundEnabled = true }){
         const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phase,pantsFactor,actions}=eatingContestState;
+        useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, studentId, phase, stageIdx]);
         const s=students.find(st=>st.id===studentId); if(!s) return null;
         const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
         const effectiveMax=maxYourFullness-pantsFactor;
@@ -23,7 +26,7 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
         const completions=s.contestCompletions||0;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#030e04,#061a08,#030e04)",border:"1px solid #20803050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#030e04,#061a08,#030e04)",border:"1px solid #20803050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#30a050",marginBottom:4}}>{contestTitle.toUpperCase()} — COMPETITION</div>
               <div style={{fontSize:14,fontWeight:700,color:"#60dd80",marginBottom:4}}>{s.name}</div>
               {completions>0&&<div style={{fontSize:9,color:"#20804a",marginBottom:8,letterSpacing:1}}>VETERAN ×{completions+1} — capacity ×{(1+0.15*completions).toFixed(2)}</div>}
@@ -159,7 +162,7 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                   <div style={{fontSize:12,color:"#c0d8b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
                     {payoffText}
                   </div>
-                  <button style={{...C.btn("#1a4020"),width:"100%"}} onClick={closeEatingContest}>
+                  <button style={{...C.btn("#1a4020"),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeEatingContest(); }}>
                     Close
                   </button>
                 </>
@@ -170,7 +173,7 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1300}}>
                   <div style={{background:"#05120a",border:"1px solid #30804050",borderRadius:10,padding:20,maxWidth:460,margin:16}}>
                     <div style={{fontSize:12,color:"#b0d8a0",lineHeight:1.9,fontStyle:"italic",marginBottom:14}}>{popupText}</div>
-                    <button style={{...C.btn("#1a4030"),width:"100%"}} onClick={dismissContestPopup}>Continue</button>
+                    <button style={{...C.btn("#1a4030"),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); dismissContestPopup(); }}>Continue</button>
                   </div>
                 </div>
               )}
