@@ -208,6 +208,12 @@ registerPool("attitude.campus", [
       "The moms were first. Now the whole pickup line looks padded. I notice. I'm not sorry.",
       "Tuesday energy leaked campus-wide and I'm equal parts guilty and thrilled.",
     ] },
+  { when: { campusFattening: true, archetype: "swimmer" }, priority: 2,
+    text: [
+      "Lane group looks thicker in the natatorium mirror — campus carb load, not just my meal plan.",
+      "Training log says the whole team is rounding out. Splits slower. Appetites not.",
+      "Post-practice hunger hit every hall, not just mine. I fit the current now.",
+    ] },
   { when: { campusFattening: true, campusTierMin: 2 }, priority: 3,
     text: [
       "The whole campus eats like my floor does now — I'm not ahead, I'm in the middle of something bigger.",
