@@ -1,5 +1,5 @@
 // The Squad — Lead: A1 Mobile | Support: A4 Architect
-// Campus class-event observation prose — keyed mood/archetype/campusFattening (DEPTH_PLAN §9d).
+// Campus floor-event observation prose — keyed mood/archetype/campusFattening (DEPTH_PLAN §9d).
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';

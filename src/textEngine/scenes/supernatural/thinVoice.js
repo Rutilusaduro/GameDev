@@ -6,7 +6,7 @@ import { registerPool } from '../../engine.js';
 const FORM_VOICES = [
   { supernaturalForm: 'sumo_wraith', texts: ['The ring is empty but my stomach remembers every bout. Hunger moves like a tide I cannot refuse.'] },
   { supernaturalForm: 'hollow_icon', texts: ['The camera loves hollow. My belly does not — it remembers every pound the lens erased.'] },
-  { supernaturalForm: 'pep_ghost', texts: ['I cheer without mass. The pep stays; the weight left. Hunger is the only school spirit that followed me.'] },
+  { supernaturalForm: 'pep_ghost', texts: ['I cheer without mass. The pep stays; the weight left. Hunger is the only squad spirit that followed me.'] },
   { supernaturalForm: 'archivist_skin', texts: ['Every file I catalogued included appetite. The archive kept the hunger when the flesh went thin.'] },
   { supernaturalForm: 'lag_sprite', texts: ['Frame skip. Body lag. Stomach buffering — always loading, never full enough.'] },
   { supernaturalForm: 'silhouette_host', texts: ['I host the room in outline only. They eat; I feel every plate through the hollow.'] },

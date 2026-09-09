@@ -1,6 +1,6 @@
 // The Squad — Lead: A2 Psych | Support: A6 Slender, A1 Mobile, A5 Editor
 // ═══════════════════════════════════════════════════════════════
-// ROSTER TELL — the at-a-glance "tell" for a class-grid tile.
+// ROSTER TELL — the at-a-glance "tell" for a roster tile.
 // One terse, lowercase fragment that reads her current standing vibe
 // through BEHAVIOR (where she is on the corruption arc, her appetite,
 // her size) rather than a number or bar — so scanning the roster reads

@@ -724,7 +724,7 @@ registerPool('dinner.reaction.fatEncourage._f134', [
 ]);
 
 registerPool('dinner.reaction.fatEncourage._f135', [
-  { when: {}, text: [". \"New school, not sure about anything, not eating enough.\" She presses the hand. \"This campus is good to you if you let it be. Eat. I'm so glad I transferred.\""] },
+  { when: {}, text: [". \"New campus, not sure about anything, not eating enough.\" She presses the hand. \"This place is good to you if you let it be. Eat. I'm so glad I transferred.\""] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage', [
@@ -1262,7 +1262,7 @@ registerPool('dinner.reaction.jealousyDefault', [
   { when: {"archetype":"sorority"}, text: ["{subject.name} notices the discrepancy and tilts her chin. \"Are we being equitable here?\" she asks pleasantly, which isn't quite pleasant."] },
   { when: {"archetype":"overachiever"}, text: ["{subject.name} notes the disparity with a small sound — not quite a word, not quite not. She has already mentally logged the discrepancy. She will not forget it."] },
   { when: {"archetype":"quiet"}, text: ["{subject.name} watches {ref.name}'s dish arrive and says nothing. She watches it quite intently for someone who's saying nothing."] },
-  { when: {"archetype":"transfer"}, text: ["{subject.name} glances at {ref.name}'s plate with a slight frown. \"At my last school,\" she starts, then doesn't finish. She doesn't need to."] },
+  { when: {"archetype":"transfer"}, text: ["{subject.name} glances at {ref.name}'s plate with a slight frown. \"At my last campus,\" she starts, then doesn't finish. She doesn't need to."] },
   { when: {"archetype":"culinary"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
   { when: {"archetype":"nursing"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
   { when: {"archetype":"psych"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },

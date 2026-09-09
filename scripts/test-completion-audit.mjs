@@ -882,7 +882,9 @@ check('gossip-dinner-resident-framing', () => {
   const dinner = read('src/textEngine/scenes/dinner/reactions.js');
   assert.match(dinner, /phrase for residents who committed/);
   assert.match(dinner, /lot of mass to get airborne/);
-  assert.doesNotMatch(dinner, /phrase for girls who committed|lot of girl to get airborne/i);
+  assert.match(dinner, /At my last campus/);
+  assert.match(dinner, /New campus, not sure about anything/);
+  assert.doesNotMatch(dinner, /phrase for girls who committed|lot of girl to get airborne|At my last school|New school, not sure/i);
   const content = read('src/gameData/content.js');
   assert.match(content, /hope everyone on that squad/);
   assert.doesNotMatch(content, /hope every girl on that squad/i);
@@ -1232,7 +1234,8 @@ check('hall-kitchen-curriculum-framing', () => {
   assert.doesNotMatch(salon, /Homeroom queen evolution|appetite as curriculum/i);
   const thin = read('src/textEngine/scenes/supernatural/thinVoice.js');
   assert.match(thin, /wellness unit asks restraint/);
-  assert.doesNotMatch(thin, /homeroom asks restraint/i);
+  assert.match(thin, /squad spirit that followed me/);
+  assert.doesNotMatch(thin, /homeroom asks restraint|school spirit that followed me/i);
   const depth = read('src/textEngine/scenes/supernatural/depth.js');
   assert.match(depth, /Wellness briefings preach moderation/);
   assert.doesNotMatch(depth, /Homeroom preaches|Spirit fingers without flesh/i);
