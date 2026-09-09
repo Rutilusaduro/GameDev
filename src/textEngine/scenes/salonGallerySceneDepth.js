@@ -30,7 +30,7 @@ registerPool('evolved.gallery.v2.depth', [
     `Gallery ships to her. Prints on walls she can see without standing.`,
   ]},
   { when: { studentId: 4, stageMin: 6 }, text: [
-    `Shutter clicks between bites. Consent forms and hunger both signed.`,
+    `Shutter clicks between bites. Release forms and hunger both signed.`,
     `Field archive thickens. Waistlines thicken. Correlation beautiful.`,
   ]},
   { when: { studentId: 4 }, text: [
@@ -171,13 +171,13 @@ registerModuleVariants('artisan_gallery.hub', [
     `Field archive fat with frames. Studio smells paint and butter.`,
   ]},
   { when: { studentId: 4, stageMin: 5 }, weight: W, text: [
-    `First contact sheet pinned: mid-bite, mid-laugh. Consent forms on the table.`,
-    `Fiona at {subject.lbs} pounds — camera ready, subject hungry, archive begun.`,
+    `First contact sheet pinned: mid-bite, mid-laugh. Release forms on the table.`,
+    `Fiona at {subject.lbs} pounds — camera ready, model hungry, archive begun.`,
   ]},
   { when: {}, weight: 3, text: [
-    `Prints on twine. Bodies in frame. Fiona feeds the subject and clicks the shutter.`,
+    `Prints on twine. Bodies in frame. Fiona feeds the model and clicks the shutter.`,
     `Patrons murmur. Archive grows. Evidence, she calls it. Art, she means.`,
-    `The camera waits. The subject is already hungry.`,
+    `The camera waits. The model is already hungry.`,
   ]},
 ]);
 

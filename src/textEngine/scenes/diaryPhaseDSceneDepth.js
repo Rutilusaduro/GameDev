@@ -101,7 +101,7 @@ const S9 = {
   artisan_gallery: {
     sid: 4,
     lines: [
-      `Series *In Progress* now campus-wide. Strangers ask to be subjects. Consent forms and appetite both signed.`,
+      `Series *In Progress* now campus-wide. Strangers ask to be models. Release forms and appetite both signed.`,
     ],
   },
   pharmacist: {

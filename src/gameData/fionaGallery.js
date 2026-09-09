@@ -27,7 +27,7 @@ export const FIELD_LOCATIONS = [
 ];
 
 export const STUDIO_ACTIONS = [
-  { id: 'feed_subject', label: 'Feed subject', subjectLbs: 8, fionaLbs: 0, quality: 'Print' },
+  { id: 'feed_subject', label: 'Feed model', subjectLbs: 8, fionaLbs: 0, quality: 'Print' },
   { id: 'feed_together', label: 'Feed together', subjectLbs: 5, fionaLbs: 4, quality: 'Study' },
   { id: 'shoot_only', label: 'Shoot only', subjectLbs: 0, fionaLbs: 0, quality: 'Masterwork' },
   { id: 'direct_feed', label: 'Direct & feed', subjectLbs: 11, fionaLbs: 3, quality: 'Masterwork' },
@@ -54,7 +54,7 @@ export function defaultGalleryState(fionaStudentId = 4) {
 }
 
 export function enrollSubject(state, studentId, studentName) {
-  if (state.subjects.length >= 3) return { state, ok: false, reason: 'Max 3 subjects.' };
+  if (state.subjects.length >= 3) return { state, ok: false, reason: 'Max 3 models.' };
   if (state.subjects.some((s) => s.studentId === studentId)) return { state, ok: false, reason: 'Already enrolled.' };
   return {
     state: {
@@ -102,7 +102,7 @@ export function studioAction(state, actionId) {
       ? 'Fiona eats from the same tray, camera dangling, unashamed.'
       : action.id === 'shoot_only'
         ? 'She shoots without feeding — hunger in the frame.'
-        : 'Subject fed. Shutter clicks.';
+        : 'Model fed. Shutter clicks.';
   if (round >= 3) {
     const critic = CRITIC_TIERS[Math.floor(Math.random() * CRITIC_TIERS.length)];
     return {
@@ -181,12 +181,12 @@ export function mountExhibition(state, theme = 'documentary') {
 
 export const GALLERY_EVOLVED_EVENTS = [
   {
-    title: 'First Subject',
+    title: 'First Model',
     phases: [
       {
         text: (h, s) => `Fiona pins the first contact sheet to *In Progress*. A resident, mid-bite, mid-laugh. Fiona is ${Math.round(s.lbs)} pounds and says: "The subject cooperates. The camera doesn't lie."`,
         choices: [
-          { id: 'enroll', label: 'Enroll the first official subject', result: 'Consent forms become art contracts. Everyone signs.', lbs: 4, rel: 10, flag: 'first_subject' },
+          { id: 'enroll', label: 'Enroll the first official model', result: 'Release forms become art contracts. Everyone signs.', lbs: 4, rel: 10, flag: 'first_subject' },
           { id: 'candid', label: 'Start with candid field work only', result: 'She shoots from the hip. The quad yields gold.', lbs: 3, rel: 8, flag: 'field_first' },
         ],
       },
@@ -199,7 +199,7 @@ export const GALLERY_EVOLVED_EVENTS = [
       },
     ],
     endings: [
-      { condition: (h) => h.includes('first_subject') && h.includes('wall_up'), text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. First subject enrolled. First wall hung.`, gainBonus: 5, relBonus: 11, startsGallery: true },
+      { condition: (h) => h.includes('first_subject') && h.includes('wall_up'), text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. First model enrolled. First wall hung.`, gainBonus: 5, relBonus: 11, startsGallery: true },
       { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. The archive begins.`, gainBonus: 3, relBonus: 7, startsGallery: true },
     ],
   },
@@ -253,14 +253,14 @@ export const GALLERY_EVOLVED_EVENTS = [
     title: 'The Living Room',
     phases: [
       {
-        text: (h, s) => `The featured subject stands beside their timeline — stage three, stage five, live and heavier still. Fiona is ${Math.round(s.lbs)} pounds and introduces them: "The work continues. She continues."`,
+        text: (h, s) => `The featured model stands beside their timeline — stage three, stage five, live and heavier still. Fiona is ${Math.round(s.lbs)} pounds and introduces them: "The work continues. She continues."`,
         choices: [
-          { id: 'feature', label: 'Let the subject speak', result: 'Shy words. Loud applause. More food.', lbs: 6, rel: 12, flag: 'subject_speaks' },
-          { id: 'feed_live', label: 'Feed the subject live', result: 'Grapes, cream, cameras. The crowd hushes.', lbs: 10, rel: 10, flag: 'live_feed' },
+          { id: 'feature', label: 'Let the model speak', result: 'Shy words. Loud applause. More food.', lbs: 6, rel: 12, flag: 'subject_speaks' },
+          { id: 'feed_live', label: 'Feed the model live', result: 'Grapes, cream, cameras. The crowd hushes.', lbs: 10, rel: 10, flag: 'live_feed' },
         ],
       },
       {
-        text: (h, s) => `A patron offers commission. Fiona is ${Math.round(s.lbs)} pounds and already planning the next subject.`,
+        text: (h, s) => `A patron offers commission. Fiona is ${Math.round(s.lbs)} pounds and already planning the next model.`,
         choices: [
           { id: 'accept', label: 'Accept the commission', result: '$300 and a waiting list.', lbs: 4, rel: 8, flag: 'commission' },
           { id: 'selective', label: 'Stay selective', result: 'Prestige rises. Lines form.', lbs: 3, rel: 10, flag: 'selective' },
@@ -302,13 +302,13 @@ export const GALLERY_EVOLVED_EVENTS = [
         text: (h, s) => `A museum wants the series permanently. Fiona is ${Math.round(s.lbs)} pounds and touches the acceptance letter like a texture study.`,
         choices: [
           { id: 'accept_museum', label: 'Accept — permanent collection', result: 'Her name on a wall. Bodies on a wall. Same thing.', lbs: 5, rel: 12, flag: 'museum' },
-          { id: 'negotiate', label: 'Negotiate for living subject clause', result: 'Future openings mandatory. She smiles.', lbs: 6, rel: 10, flag: 'living_clause' },
+          { id: 'negotiate', label: 'Negotiate for living model clause', result: 'Future openings mandatory. She smiles.', lbs: 6, rel: 10, flag: 'living_clause' },
         ],
       },
       {
         text: (h, s) => `The gallery is no longer a project. It's an institution. Fiona is ${Math.round(s.lbs)} pounds and still shooting, still feeding, still pinning.`,
         choices: [
-          { id: 'legacy', label: 'Launch the legacy program', result: 'New subjects every semester. Forever.', lbs: 8, rel: 11, flag: 'legacy' },
+          { id: 'legacy', label: 'Launch the legacy program', result: 'New models every semester. Forever.', lbs: 8, rel: 11, flag: 'legacy' },
           { id: 'retrospective', label: 'Retrospective on herself too', result: 'Self-portraits join the wall. Full circle.', lbs: 9, rel: 9, flag: 'self_included' },
         ],
       },

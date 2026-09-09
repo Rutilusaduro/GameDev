@@ -656,7 +656,7 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`La Grande Soirée closes at dawn. Chloé is ${Math.round(s.lbs)} pounds, silk clinging where she's grown fullest, the guest book thick with names. She finds you in the kitchen afterward, licking pastry cream from her thumb. "*Encore,*" she murmurs — not to the room anymore, to the semester itself.`,
   ],
   artisan_gallery:[
-    (s)=>`Fiona weighs ${Math.round(s.lbs)} pounds and pins the first contact sheet to *In Progress* — a resident mid-bite, mid-laugh. "The subject cooperates," she says. "The camera doesn't lie." Consent forms become art contracts. Everyone signs.`,
+    (s)=>`Fiona weighs ${Math.round(s.lbs)} pounds and pins the first contact sheet to *In Progress* — a resident mid-bite, mid-laugh. "The subject cooperates," she says. "The camera doesn't lie." Release forms become art contracts. Everyone signs.`,
     (s)=>`${Math.round(s.lbs)} pounds on the quad with a camera and hunger. She photographs abundance without apology — strangers' softness, dining-hall regulars, the honest curve of a bench under someone who's stopped pretending. The field archive grows fat with frames.`,
     (s)=>`Opening night: eight prints, critics, cheese. Fiona is ${Math.round(s.lbs)} pounds in linen that won't survive the evening. She eats in the corner on purpose — performance and documentation the same act. A critic writes *uncomfortably generous.* She pins the review beside the work.`,
     (s)=>`The Living Room: her resident model stands beside a timeline on the wall — stage three, stage five, live and heavier than the latest frame. Fiona is ${Math.round(s.lbs)} pounds and introduces them: "The work continues. She continues." The crowd hushes. Then it doesn't.`,

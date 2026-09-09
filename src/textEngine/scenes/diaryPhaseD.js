@@ -874,8 +874,8 @@ registerPool('diary.artisan_gallery.s5._f2', [
 
 registerPool('diary.artisan_gallery.s5._f3', [
   { when: {}, text: [
-    " \"The camera doesn't lie.\" Consent forms become art contracts. Everyone signs.",
-    " \"The camera doesn't lie.\" Consent forms on the table. Everyone signs hungry.",
+    " \"The camera doesn't lie.\" Release forms become art contracts. Everyone signs.",
+    " \"The camera doesn't lie.\" Release forms on the table. Everyone signs hungry.",
     " Camera honest. Forms signed. Appetite documented.",
   ]},
 ]);

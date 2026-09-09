@@ -805,6 +805,38 @@ check('fiona-artsy-model-framing', () => {
   assert.doesNotMatch(diaryBase, /The subject is beautiful|medium and the artist and the subject|The subject is excellent|subject is soft, warming|observer is the subject is the analyst/i);
 });
 
+check('fiona-gallery-model-ui', () => {
+  const modal = read('src/components/ArtisanGalleryModal.jsx');
+  const gallery = read('src/gameData/fionaGallery.js');
+  const evolved = read('src/gameData/evolvedForms.js');
+  const phaseD = read('src/textEngine/scenes/diaryPhaseD.js');
+  const salon = read('src/textEngine/scenes/salonGallerySceneDepth.js');
+  const depth = read('src/textEngine/scenes/diaryPhaseDSceneDepth.js');
+  assert.match(modal, /ENROLL MODEL/);
+  assert.match(modal, /MODELS \(/);
+  assert.match(modal, /Enroll model/);
+  assert.match(modal, /while the model eats/);
+  assert.match(modal, /model \+/);
+  assert.doesNotMatch(modal, /ENROLL SUBJECT|SUBJECTS \(|Enroll subject|while the subject eats|subject \+/i);
+  assert.match(gallery, /Feed model/);
+  assert.match(gallery, /Max 3 models/);
+  assert.match(gallery, /First Model/);
+  assert.match(gallery, /Release forms become art contracts/);
+  assert.match(gallery, /First model enrolled/);
+  assert.match(gallery, /The subject cooperates/);
+  assert.doesNotMatch(gallery, /Feed subject|Max 3 subjects|First Subject|Consent forms become|First subject enrolled/i);
+  assert.match(evolved, /Release forms become art contracts/);
+  assert.match(evolved, /The subject cooperates/);
+  assert.doesNotMatch(evolved, /Consent forms become art contracts/i);
+  assert.match(phaseD, /Release forms become art contracts/);
+  assert.doesNotMatch(phaseD, /Consent forms become art contracts/i);
+  assert.match(salon, /Release forms and hunger both signed/);
+  assert.match(salon, /Fiona feeds the model and clicks the shutter/);
+  assert.doesNotMatch(salon, /Consent forms and hunger|Fiona feeds the subject/i);
+  assert.match(depth, /Strangers ask to be models/);
+  assert.doesNotMatch(depth, /Strangers ask to be subjects/i);
+});
+
 check('hall-group-project-ra-framing', () => {
   const floor = read('src/gameData/floorEvents.js');
   const campus = read('src/textEngine/scenes/campusEvent/depth.js');

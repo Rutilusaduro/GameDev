@@ -31,7 +31,7 @@ export function ArtisanGalleryModal({
     return (
       <div style={{ ...C.overlay, zIndex: 360 }}>
         <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 480, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
-          <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>ENROLL SUBJECT</div>
+          <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>ENROLL MODEL</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
             {candidates.map((s) => (
               <button key={s.id} type="button" style={{ ...C.btn('#3a3028'), textAlign: 'left', fontSize: 12 }} onClick={() => onConfirmEnroll(s.id, s.name)}>
@@ -50,11 +50,11 @@ export function ArtisanGalleryModal({
       <div style={{ ...C.overlay, zIndex: 360 }}>
         <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 520, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>STUDIO — Round {session.round + 1}/3</div>
-          <p style={{ fontSize: 12, color: CREAM, lineHeight: 1.6 }}>Feed & frame. Fiona shoots while the subject eats.</p>
+          <p style={{ fontSize: 12, color: CREAM, lineHeight: 1.6 }}>Feed & frame. Fiona shoots while the model eats.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {STUDIO_ACTIONS.map((a) => (
               <button key={a.id} type="button" style={{ ...C.btn('#4a3a28'), textAlign: 'left', fontSize: 12 }} onClick={() => onStudioAction(a.id)}>
-                {a.label} <span style={{ fontSize: 10, color: '#c9a87c' }}>subject +{a.subjectLbs}{a.fionaLbs ? ` · Fiona +${a.fionaLbs}` : ''}</span>
+                {a.label} <span style={{ fontSize: 10, color: '#c9a87c' }}>model +{a.subjectLbs}{a.fionaLbs ? ` · Fiona +${a.fionaLbs}` : ''}</span>
               </button>
             ))}
           </div>
@@ -72,7 +72,7 @@ export function ArtisanGalleryModal({
           {fiona && <><br />Fiona · {Math.round(fiona.lbs)} lbs</>}
         </div>
 
-        <div style={{ fontSize: 10, color: '#a89078', marginBottom: 6 }}>SUBJECTS ({galleryState.subjects.length}/3)</div>
+        <div style={{ fontSize: 10, color: '#a89078', marginBottom: 6 }}>MODELS ({galleryState.subjects.length}/3)</div>
         {galleryState.subjects.map((sub) => (
           <div key={sub.studentId} style={{ fontSize: 11, color: '#dcc8b0', marginBottom: 4, display: 'flex', gap: 8, alignItems: 'center' }}>
             <span>{sub.name} — {sub.sessions} sessions · {sub.photos.length} frames</span>
@@ -80,7 +80,7 @@ export function ArtisanGalleryModal({
           </div>
         ))}
         {galleryState.subjects.length < 3 && (
-          <button type="button" style={{ ...C.btn('#4a3a30'), width: '100%', marginBottom: 12, fontSize: 12 }} onClick={onOpenSubjectPicker}>+ Enroll subject</button>
+          <button type="button" style={{ ...C.btn('#4a3a30'), width: '100%', marginBottom: 12, fontSize: 12 }} onClick={onOpenSubjectPicker}>+ Enroll model</button>
         )}
 
         <div style={{ fontSize: 10, color: '#a89078', marginBottom: 6 }}>FIELD SHOOT (1 AP)</div>
