@@ -528,6 +528,19 @@ check('floor-events-module', () => {
   }
 });
 
+check('resident-framing-ui', () => {
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /SELECT RESIDENTS/);
+  assert.match(desk, /residents for dinner/);
+  assert.match(desk, /resident bristles|residents bristle/);
+  assert.doesNotMatch(desk, /SELECT GIRLS|girls to take to dinner|girl bristles|girls bristle/);
+  const trees = read('src/gameData/skillTrees.js');
+  assert.match(trees, /for all residents/);
+  assert.doesNotMatch(trees, /\b(girl|girls)\b/);
+  const setup = read('src/components/RaSetupWizard.jsx');
+  assert.match(setup, /build the resident who/);
+});
+
 // ── Report ─────────────────────────────────────────────────────
 const failed = checks.filter((c) => !c.ok);
 for (const c of checks) {

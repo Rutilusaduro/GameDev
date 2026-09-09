@@ -183,7 +183,7 @@ export function RaSetupWizard({ students, onComplete }) {
           <CustomStudentWizard
             accent={accent}
             title="Your Fifth Suitemate"
-            subtitle="Every hall has a wildcard — build the girl who rounds out your floor."
+            subtitle="Every hall has a wildcard — build the resident who rounds out your floor."
             backLabel="← Pick another hall"
             onBack={() => setStep('dorm')}
             onComplete={(draft) => onComplete({ approach, dorm, customDraft: draft })}

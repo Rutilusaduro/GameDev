@@ -1980,7 +1980,7 @@ export default function HallPass(){
       if(disc===(s.discontent||0)&&mems===s.memories&&mood===s.mood) return s;
       return {...s,discontent:disc,memories:mems,mood};
     });
-    if(exposedCount>0) setTimeout(()=>push(`😠 ${exposedCount} ${exposedCount===1?"girl bristles":"girls bristle"} at being paraded under this much scrutiny.`),170);
+    if(exposedCount>0) setTimeout(()=>push(`😠 ${exposedCount} ${exposedCount===1?"resident bristles":"residents bristle"} at being paraded under this much scrutiny.`),170);
 
     // A girl pushed past the brink confronts you (one per week).
     const rebel=updated.find(s=>shouldConfront(s,newWeek));
@@ -7537,7 +7537,7 @@ export default function HallPass(){
     const totalG=groupDinnerEvent.students.reduce((a,s)=>a+s.totalGain,0);
     guardHungerInterrupt(()=>{
       setAp(a=>a-3);
-      push(`✅ Group dinner complete. ${totalG.toLocaleString()} cal total across ${groupDinnerEvent.students.length} girls (≈${Math.round(calsToLbs(totalG))} lbs once digested).`);
+      push(`✅ Group dinner complete. ${totalG.toLocaleString()} cal total across ${groupDinnerEvent.students.length} residents (≈${Math.round(calsToLbs(totalG))} lbs once digested).`);
       setStudents(prev=>prev.map(s=>{
         const inGroup=groupDinnerEvent.students.some(gs=>gs.id===s.id);
         if(!inGroup) return s;
@@ -8218,9 +8218,9 @@ export default function HallPass(){
       {groupDinnerPicker&&(
         <div style={C.overlay}>
           <div className="hall-pass-modal-in group-dinner-picker-modal" style={{...C.modal,maxWidth:580}}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SELECT GIRLS</div>
+            <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SELECT RESIDENTS</div>
             <div style={{fontSize:12,color:"#9070c0",marginBottom:14,fontStyle:"italic"}}>
-              Choose {groupDinnerPicker.count} girls to take to dinner.
+              Choose {groupDinnerPicker.count} residents for dinner.
               {" "}({groupDinnerPicker.selected.length}/{groupDinnerPicker.count} selected)
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:14,maxHeight:340,overflowY:"auto"}}>
@@ -8936,7 +8936,7 @@ export default function HallPass(){
           onClose={()=>setWeekPlannerOpen(false)}
         />
       )}
-      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectGirl={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}} soundEnabled={soundEnabled}/>}
+      {weekRecap&&<WeekRecapModal weekRecap={weekRecap} onClose={()=>setWeekRecap(null)} onSelectResident={(id)=>{openStudentDetail(id,{dossier:true});setWeekRecap(null);}} soundEnabled={soundEnabled}/>}
       {milestoneQueue&&<MilestoneCeremonyModal queue={milestoneQueue}
         week={week}
         soundEnabled={soundEnabled}

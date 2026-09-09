@@ -41,25 +41,25 @@ export const SKILLS = [
     rankDesc:r=>`+${r*5}% force-feed success`,
     effects:{ forceFeedBonus:0.05 } },
   { id:"quiet_suggestion", tree:"influence", tier:0, icon:"🗣", name:"Quiet Suggestion", maxRanks:1,
-    desc:"Unlocks suggestive dialogue options when talking with the girls.",
+    desc:"Unlocks suggestive dialogue options when talking with residents.",
     rankDesc:()=>`Unlocks Suggest topics in Talk`,
     effects:{ unlockSuggestion:1 } },
   { id:"echoed_will", tree:"influence", tier:0, icon:"🔁", name:"Echoed Will", maxRanks:1,
-    desc:"When you successfully push a girl past capacity, she doubles the amount on her own.",
+    desc:"When you successfully push a resident past capacity, she doubles the amount on her own.",
     rankDesc:()=>`Force-fed calories are echoed by her own hand`,
     effects:{ echoedWill:1 } },
 
   // ═══ INFLUENCE — Tier 2: Direct Influence ═══
   { id:"forceful_push", tree:"influence", tier:1, icon:"🫷", name:"Forceful Push", maxRanks:2,
-    desc:"Significantly increases success when pushing a girl into an extreme action.",
+    desc:"Significantly increases success when pushing a resident into an extreme action.",
     rankDesc:r=>`+${r*10}% extreme action success`,
     effects:{ extremeBonus:0.10 } },
   { id:"heavy_hand", tree:"influence", tier:1, icon:"✋", name:"Heavy Hand", maxRanks:1,
-    desc:"Once a girl reaches max capacity, she automatically eats the first food offered afterward.",
-    rankDesc:()=>`First feed after hitting capacity always lands (1/girl/week)`,
+    desc:"Once a resident reaches max capacity, she automatically eats the first food offered afterward.",
+    rankDesc:()=>`First feed after hitting capacity always lands (1/resident/week)`,
     effects:{ heavyHand:1 } },
   { id:"eroded_will", tree:"influence", tier:1, icon:"🌊", name:"Eroded Will", maxRanks:2,
-    desc:"Global reduction in resistance to intense feeding across all girls.",
+    desc:"Global reduction in resistance to intense feeding across all residents.",
     rankDesc:r=>`+${r*6}% to all force-feed and extreme rolls`,
     effects:{ forceFeedBonus:0.06, extremeBonus:0.06 } },
 
@@ -73,7 +73,7 @@ export const SKILLS = [
     rankDesc:()=>`Unlocks Command topics in Talk`,
     effects:{ unlockCommand:1 } },
   { id:"mesmerizing_aura", tree:"influence", tier:2, icon:"🌀", name:"Mesmerizing Aura", maxRanks:1,
-    desc:"Once per week, drape one girl in the aura — her resistance plummets for the week.",
+    desc:"Once per week, drape one resident in the aura — her resistance plummets for the week.",
     rankDesc:()=>`Arm in Talk: +35% to all rolls on her this week`,
     effects:{ mesmerizingAura:1 } },
 
@@ -83,11 +83,11 @@ export const SKILLS = [
     rankDesc:r=>`+${r*6}% digestion yield`,
     effects:{ conversionBonus:0.06 } },
   { id:"expanded_capacity", tree:"gluttony", tier:0, icon:"🫙", name:"Expanded Capacity", maxRanks:3,
-    desc:"Permanent small increase to stomach capacity for all girls.",
-    rankDesc:r=>`+${r*10} capacity, all girls`,
+    desc:"Permanent small increase to stomach capacity for all residents.",
+    rankDesc:r=>`+${r*10} capacity, all residents`,
     effects:{ capacityBonus:10 } },
   { id:"hungry_whispers", tree:"gluttony", tier:0, icon:"🤫", name:"Hungry Whispers", maxRanks:2,
-    desc:"Girls are slightly more likely to accept food when near capacity.",
+    desc:"Residents are slightly more likely to accept food when near capacity.",
     rankDesc:r=>`Big servings count ${r*25}% smaller for refusal rolls`,
     effects:{ sizePenaltyReduction:0.25 } },
   { id:"lingering_fullness", tree:"gluttony", tier:0, icon:"⏳", name:"Lingering Fullness", maxRanks:2,
@@ -95,12 +95,12 @@ export const SKILLS = [
     rankDesc:r=>`${r*15}% of fullness carries over each week`,
     effects:{ fullnessCarryover:0.15 } },
   { id:"appetite_boost", tree:"gluttony", tier:0, icon:"🍴", name:"Appetite Boost", maxRanks:2,
-    desc:"Small permanent increase to how much a girl takes in per feeding.",
+    desc:"Small permanent increase to how much a resident takes in per feeding.",
     rankDesc:r=>`+${r*10}% calories per accepted feed`,
     effects:{ calorieBonus:0.10 } },
   { id:"soft_start", tree:"gluttony", tier:0, icon:"🌱", name:"Soft Start", maxRanks:1,
-    desc:"Girls early in their journey hold more than they should.",
-    rankDesc:()=>`+20 capacity for girls at stage 0-1`,
+    desc:"Residents early in their journey hold more than they should.",
+    rankDesc:()=>`+20 capacity for residents at stage 0-1`,
     effects:{ softStart:20 } },
 
   // ═══ GLUTTONY — Tier 2: Deepening Hunger ═══
@@ -110,15 +110,15 @@ export const SKILLS = [
     effects:{ conversionBonus:0.08 } },
   { id:"stomach_expansion", tree:"gluttony", tier:1, icon:"🎈", name:"Stomach Expansion", maxRanks:2,
     desc:"Larger permanent increase to stomach capacity.",
-    rankDesc:r=>`+${r*20} capacity, all girls`,
+    rankDesc:r=>`+${r*20} capacity, all residents`,
     effects:{ capacityBonus:20 } },
   { id:"gluttons_instinct", tree:"gluttony", tier:1, icon:"🐺", name:"Glutton's Instinct", maxRanks:1,
-    desc:"Girls keep eating even when full — a well-fed girl may keep going on her own.",
-    rankDesc:()=>`Girls above 70% fullness may self-feed at week's end`,
+    desc:"Residents keep eating even when full — a well-fed resident may keep going on her own.",
+    rankDesc:()=>`Residents above 70% fullness may self-feed at week's end`,
     effects:{ gluttonsInstinct:1 } },
   { id:"weight_retention", tree:"gluttony", tier:1, icon:"🧲", name:"Weight Retention", maxRanks:2,
     desc:"Reduces the weekly maintenance burn — more of what they eat stays.",
-    rankDesc:r=>`+${r} lbs/week passive gain, all girls`,
+    rankDesc:r=>`+${r} lbs/week passive gain, all residents`,
     effects:{ passiveLbs:1 } },
   { id:"force_of_habit", tree:"gluttony", tier:1, icon:"🔄", name:"Force of Habit", maxRanks:2,
     desc:"Successful overeating has a chance to permanently stretch capacity on the spot.",
@@ -136,10 +136,10 @@ export const SKILLS = [
     effects:{ conversionBonus:0.12 } },
   { id:"limitless_capacity", tree:"gluttony", tier:2, icon:"♾", name:"Limitless Capacity", maxRanks:3,
     desc:"Very large permanent increases to stomach capacity.",
-    rankDesc:r=>`+${r*35} capacity, all girls`,
+    rankDesc:r=>`+${r*35} capacity, all residents`,
     effects:{ capacityBonus:35 } },
   { id:"endless_appetite", tree:"gluttony", tier:2, icon:"🕳", name:"Endless Appetite", maxRanks:1,
-    desc:"Girls can be pushed much further past capacity before refusal spikes.",
+    desc:"Residents can be pushed much further past capacity before refusal spikes.",
     rankDesc:()=>`Refusal chance stops climbing past 150% fullness`,
     effects:{ endlessAppetite:1 } },
   { id:"permanent_expansion", tree:"gluttony", tier:2, icon:"💠", name:"Permanent Expansion", maxRanks:2,
@@ -148,10 +148,10 @@ export const SKILLS = [
     effects:{ stuffedCapBonus:5 } },
   { id:"bodys_surrender", tree:"gluttony", tier:2, icon:"🌺", name:"Body's Surrender", maxRanks:1,
     desc:"Unlocks physical traits — their bodies transform to serve the appetite.",
-    rankDesc:()=>`Girls develop traits as they grow (see her detail panel)`,
+    rankDesc:()=>`Residents develop traits as they grow (see her detail panel)`,
     effects:{ bodysSurrender:1 } },
   { id:"devouring_presence", tree:"gluttony", tier:2, icon:"😈", name:"Devouring Presence", maxRanks:1,
-    desc:"Once per week, one girl's hunger becomes an event.",
+    desc:"Once per week, one resident's hunger becomes an event.",
     rankDesc:()=>`Arm in Talk: her capacity doubles + all rolls +30% this week`,
     effects:{ devouringPresence:1 } },
   { id:"devourers_threshold", tree:"gluttony", tier:2, icon:"🩸", name:"Devourer's Threshold", maxRanks:1,
@@ -161,11 +161,11 @@ export const SKILLS = [
 
   // ═══ CORRUPTION — Tier 1: Cracks in the Foundation ═══
   { id:"first_crack", tree:"corruption", tier:0, icon:"🥚", name:"First Crack", maxRanks:1,
-    desc:"The first time a girl is pushed past capacity, something gives way permanently.",
-    rankDesc:()=>`First force-feed grants +6 corruption (once per girl)`,
+    desc:"The first time a resident is pushed past capacity, something gives way permanently.",
+    rankDesc:()=>`First force-feed grants +6 corruption (once per resident)`,
     effects:{ firstCrack:6 } },
   { id:"curious_appetite", tree:"corruption", tier:0, icon:"🍎", name:"Curious Appetite", maxRanks:2,
-    desc:"Girls become more open to trying new and extreme indulgences.",
+    desc:"Residents become more open to trying new and extreme indulgences.",
     rankDesc:r=>`Corruption gains +${r*25}%`,
     effects:{ corruptionRate:0.25 } },
   { id:"shame_erosion", tree:"corruption", tier:0, icon:"🫧", name:"Shame Erosion", maxRanks:2,
@@ -179,7 +179,7 @@ export const SKILLS = [
     rankDesc:()=>`Corruption tiers reached 10 points sooner`,
     effects:{ shameErosion:10 } },
   { id:"craving_submission", tree:"corruption", tier:1, icon:"🎀", name:"Craving Submission", maxRanks:1,
-    desc:"Girls begin to enjoy being pushed and controlled.",
+    desc:"Residents begin to enjoy being pushed and controlled.",
     rankDesc:()=>`Force-feeds grant +2 relationship and +1 corruption`,
     effects:{ cravingSubmission:1 } },
   { id:"internalized_role", tree:"corruption", tier:1, icon:"🐷", name:"Internalized Role", maxRanks:1,
@@ -189,20 +189,20 @@ export const SKILLS = [
 
   // ═══ CORRUPTION — Tier 3: Total Corruption ═══
   { id:"willing_vessel", tree:"corruption", tier:2, icon:"🏺", name:"Willing Vessel", maxRanks:1,
-    desc:"Girls actively seek out indulgence without being told.",
-    rankDesc:()=>`Broken In girls self-stuff twice as often`,
+    desc:"Residents actively seek out indulgence without being told.",
+    rankDesc:()=>`Broken In residents self-stuff twice as often`,
     effects:{ willingVessel:1 } },
   { id:"pride_in_ruin", tree:"corruption", tier:2, icon:"🏛", name:"Pride in Ruin", maxRanks:1,
-    desc:"At very high weights, girls become proud of how far they've come.",
-    rankDesc:()=>`Stage 8+ girls gain +2 relationship/week`,
+    desc:"At very high weights, residents become proud of how far they've come.",
+    rankDesc:()=>`Stage 8+ residents gain +2 relationship/week`,
     effects:{ prideInRuin:1 } },
   { id:"broken_mind", tree:"corruption", tier:2, icon:"🫠", name:"Broken Mind", maxRanks:1,
     desc:"Unlocks deeply submissive, broken, devoted dialogue and behavior.",
     rankDesc:()=>`Unlocks the Broken dialogue register in Talk`,
     effects:{ brokenMind:1 } },
   { id:"total_surrender", tree:"corruption", tier:2, icon:"🖤", name:"Total Surrender", maxRanks:1,
-    desc:"Past a threshold, a girl is permanently, eagerly compliant.",
-    rankDesc:()=>`Girls at 90+ corruption never refuse anything`,
+    desc:"Past a threshold, a resident is permanently, eagerly compliant.",
+    rankDesc:()=>`Residents at 90+ corruption never refuse anything`,
     effects:{ totalSurrender:1 } },
 
   // ═══ V2.0 — Floor Influence ═══
@@ -219,7 +219,7 @@ export const SKILLS = [
     rankDesc:()=>`Unlock Body Echo Archive`,
     effects:{ memoryPalace:1 } },
   { id:"hunger_web", tree:"gluttony", tier:1, icon:"🔗", name:"Hunger Web", maxRanks:1,
-    desc:"Bind residents' appetites — craving pulses travel between linked girls.",
+    desc:"Bind residents' appetites — craving pulses travel between linked residents.",
     rankDesc:()=>`Unlock Craving Resonance links`,
     effects:{ hungerWeb:1 } },
   { id:"ritual_master", tree:"gluttony", tier:2, icon:"🔥", name:"Ritual Master", maxRanks:1,
@@ -338,13 +338,13 @@ export function capacityBonusFromSkills(owned = {}) {
   return aggregateSkillEffects(owned).capacityBonus || 0;
 }
 
-/** Capacity granted by soft_start for girls at stage 0–1 only. */
+/** Capacity granted by soft_start for residents at stage 0–1 only. */
 export function softStartBonus(owned = {}, stageId) {
   if (stageId > 1) return 0;
   return aggregateSkillEffects(owned).softStart || 0;
 }
 
-/** Grant physical traits when Body's Surrender is owned; runs once per week per student. */
+/** Grant physical traits when Body's Surrender is owned; runs once per week per resident. */
 export function tickPhysicalTraits(student, owned = {}) {
   if (!aggregateSkillEffects(owned).bodysSurrender) return student;
   const stage = getStage(student.lbs);

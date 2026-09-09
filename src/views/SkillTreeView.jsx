@@ -249,7 +249,7 @@ function PhysicalTraitsPanel({ students, ownedSkills }){
   if(allTraits.length === 0) return(
     <div style={{...C.card,padding:12,marginTop:8}}>
       <div style={{fontSize:10,letterSpacing:2,color:"#9b71cc",marginBottom:6}}>PHYSICAL TRAITS</div>
-      <div style={{fontSize:11,color:"#6a4a88"}}>Body's Surrender is active. Traits will manifest as girls grow.</div>
+      <div style={{fontSize:11,color:"#6a4a88"}}>Body's Surrender is active. Traits will manifest as residents grow.</div>
     </div>
   );
 
@@ -284,14 +284,14 @@ function ActiveBonuses({ effects }){
   if(effects.internalizedRole)   lines.push({icon:"🐷",text:`Submissive register unlocked`,col:"#ffb0c0"});
   if(effects.brokenMind)         lines.push({icon:"🫠",text:`Broken register unlocked`,col:"#c060a0"});
   if(effects.totalSurrender)     lines.push({icon:"🖤",text:`90+ corruption: no refusals`,col:"#e0c8e8"});
-  if(effects.prideInRuin)        lines.push({icon:"🏛",text:`Stage 8+ girls +2 rel/week`,col:"#d0b080"});
-  if(effects.gluttonsInstinct)   lines.push({icon:"🐺",text:`Girls may self-feed at week's end`,col:"#e0a040"});
+  if(effects.prideInRuin)        lines.push({icon:"🏛",text:`Stage 8+ residents +2 rel/week`,col:"#d0b080"});
+  if(effects.gluttonsInstinct)   lines.push({icon:"🐺",text:`Residents may self-feed at week's end`,col:"#e0a040"});
   if(effects.endlessAppetite)    lines.push({icon:"🕳",text:`Refusal cap at 150% fullness`,col:"#9080e0"});
-  if(effects.heavyHand)          lines.push({icon:"✋",text:`First post-cap feed guaranteed 1×/girl/wk`,col:"#80d0a0"});
+  if(effects.heavyHand)          lines.push({icon:"✋",text:`First post-cap feed guaranteed 1×/resident/wk`,col:"#80d0a0"});
   if(effects.echoedWill)         lines.push({icon:"🔁",text:`Force-feeds echoed by her own hand`,col:"#a0c8ff"});
   if(effects.breakResistance)    lines.push({icon:"⛓",text:`Override 1 refusal/week via Talk`,col:"#c0a060"});
-  if(effects.mesmerizingAura)    lines.push({icon:"🌀",text:`Arm 1 girl: +35% all rolls/week`,col:"#b080ff"});
-  if(effects.devouringPresence)  lines.push({icon:"😈",text:`Arm 1 girl: capacity ×2 + rolls +30%/week`,col:"#ff8060"});
+  if(effects.mesmerizingAura)    lines.push({icon:"🌀",text:`Arm 1 resident: +35% all rolls/week`,col:"#b080ff"});
+  if(effects.devouringPresence)  lines.push({icon:"😈",text:`Arm 1 resident: capacity ×2 + rolls +30%/week`,col:"#ff8060"});
   if(effects.bodysSurrender)     lines.push({icon:"🌺",text:`Physical traits active`,col:"#ff80c0"});
 
   if(!lines.length) return(

@@ -11,18 +11,18 @@ const EXTRA_BORDER = {
   quiet: '#506080',
 };
 
-export function WeekRecapModal({ weekRecap, onClose, onSelectGirl, soundEnabled = true }) {
+export function WeekRecapModal({ weekRecap, onClose, onSelectResident, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('week', soundEnabled); }, [soundEnabled, weekRecap?.week]);
   const { week, movers = [], extras = [] } = weekRecap;
   const totalCards = movers.length + extras.length;
 
   const renderCard = (key, name, label, prose, borderColor, studentId, cardIndex = 0) => {
-    const tappable = !!onSelectGirl && studentId != null;
+    const tappable = !!onSelectResident && studentId != null;
     return (
       <div
         key={key}
         className="week-recap-card-in"
-        onClick={tappable ? () => onSelectGirl(studentId) : undefined}
+        onClick={tappable ? () => onSelectResident(studentId) : undefined}
         role={tappable ? 'button' : undefined}
         style={{
           ...C.card,

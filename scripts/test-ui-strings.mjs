@@ -36,6 +36,16 @@ const BANNED = [
   /\bdevoted student testify\b/i,
   /\bPlace selected girl\b/i,
   /\bSelect a girl below\b/i,
+  /\bSELECT GIRLS\b/i,
+  /\bgirls to take to dinner\b/i,
+  /\bgirl bristles\b/i,
+  /\bgirls bristle\b/i,
+  /\bacross \d+ girls\b/i,
+  /\bbuild the girl who\b/i,
+  /\btalking with the girls\b/i,
+  /\ball girls\b/i,
+  /\bArm 1 girl\b/i,
+  /\b1\/girl\/week\b/i,
 ];
 
 function assertClean(text, label) {
@@ -132,5 +142,17 @@ assertClean(opposition, 'oppositionHearings.js');
 const hallSkills = readFileSync('src/gameData/skills.js', 'utf8');
 assert(hallSkills.includes('for all residents'), 'skills must say residents not students');
 assertClean(hallSkills, 'skills.js');
+
+const skillTrees = readFileSync('src/gameData/skillTrees.js', 'utf8');
+assert(skillTrees.includes('for all residents'), 'skillTrees must say residents not girls');
+assertClean(skillTrees, 'skillTrees.js');
+
+const skillTreeView = readFileSync('src/views/SkillTreeView.jsx', 'utf8');
+assert(skillTreeView.includes('as residents grow'), 'SkillTreeView must say residents grow');
+assertClean(skillTreeView, 'SkillTreeView.jsx');
+
+const settling = readFileSync('src/views/SettlingView.jsx', 'utf8');
+assert(settling.includes('When a resident grows past mobility'), 'SettlingView must say resident');
+assertClean(settling, 'SettlingView.jsx');
 
 console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, achievements, resident framing OK');
