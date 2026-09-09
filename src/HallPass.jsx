@@ -8204,7 +8204,7 @@ export default function HallPass(){
       {/* GIRL PICKER */}
       {/* IMMOBILE REDIRECT POPUP */}
       {immobileRedirect&&(
-        <div style={C.overlay}>
+        <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); setImmobileRedirect(null); }} soundEnabled={soundEnabled}>
           <div className="hall-pass-modal-in immobile-redirect-modal" style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c05070",marginBottom:6}}>SHE CAN'T GO OUT</div>
             <div style={{fontSize:11,color:"#9070a0",marginBottom:14}}>
@@ -8219,8 +8219,9 @@ export default function HallPass(){
               setImmobileRedirect(null);
               startDinner(s,{skipImmobileCheck:true});
             }}>Bring her food instead →</button>
+            <button type="button" className="dinner-lane-choice-row" style={{...C.btn("#333"),width:"100%",marginTop:8}} onClick={()=>{ playHallPassSound('click', soundEnabled); setImmobileRedirect(null); }}>Cancel</button>
           </div>
-        </div>
+        </ModalOverlay>
       )}
 
       {groupDinnerPicker&&(

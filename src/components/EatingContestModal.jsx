@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { CONTEST_MAYA_WEIGHTS } from '../gameData/miniGames.js';
 import { renderContestWeighIn2, renderContestPayoff } from '../textEngine/scenes/eatingContest/index.js';
 
@@ -24,8 +25,9 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
         const selectedCount=selectedYourCount+selectedMayaCount;
         const payoffText=renderContestPayoff(stageIdx,s,yourGain,week);
         const completions=s.contestCompletions||0;
+        const dismissContest=()=>{ playHallPassSound('confirm', soundEnabled); closeEatingContest(); };
         return(
-          <div style={{...C.overlay,zIndex:1200}}>
+          <ModalOverlay onClose={dismissContest} dismissible={phase==='scoreboard'} soundEnabled={soundEnabled} style={{ zIndex: 1200 }}>
             <div className="hall-pass-modal-in eating-contest-modal" style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#030e04,#061a08,#030e04)",border:"1px solid #20803050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#30a050",marginBottom:4}}>{contestTitle.toUpperCase()} — COMPETITION</div>
               <div style={{fontSize:14,fontWeight:700,color:"#60dd80",marginBottom:4}}>{s.name}</div>
@@ -162,7 +164,7 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                   <div style={{fontSize:12,color:"#c0d8b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>
                     {payoffText}
                   </div>
-                  <button style={{...C.btn("#1a4020"),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeEatingContest(); }}>
+                  <button style={{...C.btn("#1a4020"),width:"100%"}} onClick={dismissContest}>
                     Close
                   </button>
                 </>
@@ -178,6 +180,6 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

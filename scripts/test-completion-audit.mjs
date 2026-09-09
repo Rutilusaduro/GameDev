@@ -2119,6 +2119,11 @@ check('modal-dismiss-polish', () => {
     'src/components/ChapterHostessModals.jsx',
     'src/components/LilithModals.jsx',
     'src/components/DebugPanel.jsx',
+    'src/components/DialogueLab.jsx',
+    'src/components/EatingContestModal.jsx',
+    'src/components/SumoMatchModal.jsx',
+    'src/components/RecordingSessionModal.jsx',
+    'src/components/StreamSessionModal.jsx',
     'src/HallPass.jsx',
   ]) {
     const src = read(rel);

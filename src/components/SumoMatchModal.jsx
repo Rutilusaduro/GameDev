@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { renderSumoAftermath, renderSumoPayoff } from '../textEngine/scenes/sumoMatch/index.js';
@@ -18,8 +19,9 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
         const isBlob=getStage(s.lbs).id>=10;
         const payoffText=renderSumoPayoff(stageIdx,s,gainAccum,week);
         const aftermathText=renderSumoAftermath(stageIdx,s,gainAccum,won,oppLbs,week);
+        const dismissSumo=()=>{ playHallPassSound('confirm', soundEnabled); closeSumoMatch(); };
         return(
-          <div style={{...C.overlay,zIndex:1200}}>
+          <ModalOverlay onClose={dismissSumo} dismissible={phase==='scoreboard'} soundEnabled={soundEnabled} style={{ zIndex: 1200 }}>
             <div className="hall-pass-modal-in sumo-match-modal" style={{...C.modal,maxWidth:620,background:"linear-gradient(160deg,#140404,#1f0808,#140404)",border:"1px solid #80303050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#d05040",marginBottom:4}}>THE DOHYO — vs {SUMO_RIVAL_NAME.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#ff8060",marginBottom:12}}>{s.name}</div>
@@ -130,7 +132,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                   </div>
                 </div>
                 <div style={{fontSize:12,color:"#e0c0b0",lineHeight:1.9,marginBottom:16,fontStyle:"italic"}}>{payoffText}</div>
-                <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); closeSumoMatch(); }}>Close</button>
+                <button style={{...C.btn("#5a1c14"),width:"100%"}} onClick={dismissSumo}>Close</button>
               </>)}
 
               {/* POPUP OVERLAY */}
@@ -143,6 +145,6 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

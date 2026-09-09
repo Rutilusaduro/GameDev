@@ -10,6 +10,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { C } from '../styles.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { INIT_STUDENTS } from '../gameData/students.js';
 import { DINNER_CONVERSATION, GROUP_CONVERSATIONS } from '../gameData/sessions.js';
 import { WEIGHT_STAGES, getStage } from '../gameData/stages.js';
@@ -670,7 +671,7 @@ export function DialogueLab({ onClose }) {
   };
 
   return (
-    <div style={{ ...C.overlay, alignItems: "flex-start", paddingTop: 16, overflowY: "auto", zIndex: 60 }}>
+    <ModalOverlay onClose={onClose} style={{ alignItems: "flex-start", paddingTop: 16, overflowY: "auto", zIndex: 60 }}>
       <div style={{ ...C.modal, maxWidth: 760, width: "95%", maxHeight: "92vh", overflowY: "auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <div style={{ fontSize: 11, letterSpacing: 3, color: "#70c0e0" }}>🎲 DIALOGUE LAB</div>
@@ -869,6 +870,6 @@ export function DialogueLab({ onClose }) {
           </>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { renderRecordingOpening, renderRecordingTakeIntro } from '../textEngine/scenes/recordingSession/index.js';
 
 export function RecordingSessionModal({ recordingSessionState, students, week = 1, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup, soundEnabled = true }){
@@ -32,8 +33,9 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
         const paceChoices=['pace_push','pace_settle','pace_surge'];
         const stepChoices=[angleChoices,foodChoices,paceChoices];
         const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);
+        const dismissRecording=()=>{ playHallPassSound('click', soundEnabled); closeRecordingSession(); };
         return(
-          <div style={C.overlay} key="recording-modal">
+          <ModalOverlay onClose={dismissRecording} dismissible={rs.phase==='done'} soundEnabled={soundEnabled} key="recording-modal">
             <div className="hall-pass-modal-in recording-session-modal" style={{...C.modal,maxWidth:520,background:bg,border:`1px solid ${amber}50`}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
                 <div style={{color:amber,fontWeight:"bold",letterSpacing:2,fontSize:11}}>🎬 FILM HER SESSION — {kylie.name.toUpperCase()}</div>
@@ -143,6 +145,6 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
                 </div>
               )}
             </div>
-          </div>
+          </ModalOverlay>
         );
 }

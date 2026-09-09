@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { C } from '../styles.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 import { createContext } from '../textEngine/engine.js';
 import { renderStreamBeat } from '../textEngine/scenes/stream/liveBridge.js';
 import {
@@ -380,8 +381,10 @@ export function StreamSessionModal({
   const staminaColor = ss.stamina > 50 ? '#60c080' : ss.stamina > 20 ? '#e0c040' : '#e04040';
   const ctx = buildStreamContext(ss, student, week);
 
+  const dismissStream = () => { closeStream(); };
+  const canDismissStream = ss.phase === 'done' || ss.phase === 'resolution' || (ss.phase !== 'done' && ss.phase !== 'resolution');
   return (
-    <div style={C.overlay} key="stream-modal">
+    <ModalOverlay onClose={dismissStream} dismissible={canDismissStream} soundEnabled={soundEnabled} key="stream-modal">
       <div className="hall-pass-modal-in stream-session-modal" style={{ ...C.modal, maxWidth: 680, background: BG, border: `1px solid ${RED}50` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ color: RED, fontWeight: 'bold', letterSpacing: 2, fontSize: 11 }}>
@@ -645,6 +648,6 @@ export function StreamSessionModal({
           </button>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
