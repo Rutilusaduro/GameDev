@@ -13,7 +13,7 @@ export const getJealousyLine=(neglected,fed)=>{
     bookworm:`${neglected.name} closes her book slowly and looks at ${fed.name}'s plate with the mild expression of someone documenting an anomaly. She has not said anything. She is building a file.`,
     gamer:`${neglected.name} looks at ${fed.name}'s food, looks at her empty place, and says: "Unbalanced." That's it. She goes back to her phone.`,
     overachiever:`${neglected.name} notes the disparity with a small sound — not quite a word, not quite not. She has already mentally logged the discrepancy. She will not forget it.`,
-    transfer:`${neglected.name} glances at ${fed.name}'s plate with a slight frown. "At my last school," she starts, then doesn't finish. She doesn't need to.`,
+    transfer:`${neglected.name} glances at ${fed.name}'s plate with a slight frown. "At my last campus," she starts, then doesn't finish. She doesn't need to.`,
   };
   return m[neglected.archetype]||`${neglected.name} looks meaningfully at ${fed.name}'s food and then at her own empty place setting.`;
 };
