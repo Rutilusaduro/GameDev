@@ -349,7 +349,7 @@ Cassidy ${mEat} When she glanced at Kaylee's clipboard on the way out, there was
         `Nadia said, to no one in particular: "Daisy already had four. That sets a contextual baseline. The social pressure to match is significant." She watched Cassidy pick up another one.`,
         `"You respond well to warmth," Nadia said, to Cassidy directly. "Most people do. Daisy is unusually effective because she means it. The manipulation works better when it isn't." She handed Cassidy something else. "Here."`,
         `Nadia had moved her chair closer. "At this size, the appetite is self-sustaining," she said, clinically. "The psychological intervention is secondary now. You'd keep eating without us." She looked at Cassidy's plate. "Nevertheless." She refilled it.`,
-        `Nadia watched in silence for a long moment. Then: "I designed this session around Daisy's warmth as the primary vector. I included myself as a secondary pressure mechanism." A pause. "I am not the secondary mechanism anymore." She studied Cassidy with undisguised interest. "You've outgrown the study design."`,
+        `Nadia watched in silence for a long moment. Then: "I designed this session around Daisy's warmth as the primary vector. I included myself as a secondary pressure mechanism." A pause. "I am not the secondary mechanism anymore." She studied Cassidy with undisguised interest. "You've outgrown the hall log design."`,
       ][mTier];
       return `${opener}, Daisy had been baking since eight in the morning.
 

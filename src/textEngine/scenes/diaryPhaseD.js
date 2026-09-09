@@ -1190,8 +1190,8 @@ registerPool('diary.pharmacist.s7._f5', [
 
 registerPool('diary.pharmacist.s7._f6', [
   { when: {}, text: [
-    " I eat with them sometimes — methodology, I tell the IRB in my head.",
-    " I eat with them. Methodology, I insist to the imaginary IRB.",
+    " I eat with them sometimes — methodology, I tell the season panel in my head.",
+    " I eat with them. Methodology, I insist to the imaginary season panel.",
     " Shared meals logged as methodology. Appetite logged as honest.",
   ]},
 ]);

@@ -85,7 +85,7 @@ registerModuleVariants('diary.innerBeat', [
   ]},
   { when: { studentId: 16, stageMin: 9 }, weight: W, text: [
     `Case conclusion revised: most successful experiment I've run. I intend to continue indefinitely.`,
-    `The annotations became the study. The subject keeps revising methodology. The subject is me.`,
+    `The annotations became the hall log. The subject keeps revising protocol. The subject is me.`,
   ]},
   { when: { studentId: 17, stageMin: 9 }, weight: W, text: [
     `Field note: subject exceeds every prior find on site. Calipers insufficient. Pride sufficient.`,

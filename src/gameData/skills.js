@@ -451,8 +451,8 @@ export const EVOLVED_SKILL_TREES = {
     { id:"ed_canon",      tier:5, label:"Canonical Text",     cost:160, desc:"+3 passive, +5 rel/activity, scrutiny -2/week. She's in the curriculum.",   passiveBonus:3, activityRelBonus:5, weeklyScrutinyReduce:2 },
   ],
   food_researcher:[
-    { id:"fr_irb",        tier:1, label:"IRB Approval",       cost:20, desc:"Scrutiny -3/week. Institutional backing is powerful cover.",                 weeklyScrutinyReduce:3 },
-    { id:"fr_lab",        tier:2, label:"Lab Access",         cost:40, desc:"+1 passive lbs/week. The study requires consistent intake.",                 passiveBonus:1 },
+    { id:"fr_irb",        tier:1, label:"season panel Approval",       cost:20, desc:"Scrutiny -3/week. Institutional backing is powerful cover.",                 weeklyScrutinyReduce:3 },
+    { id:"fr_lab",        tier:2, label:"Lab Access",         cost:40, desc:"+1 passive lbs/week. The hall log requires consistent intake.",                 passiveBonus:1 },
     { id:"fr_published",  tier:3, label:"Published",          cost:70, desc:"+4 relationship per activity. Academic recognition bonds.",                   activityRelBonus:4 },
     { id:"fr_grant",      tier:4, label:"Grant Funding",      cost:110, desc:"Scrutiny -4/week. Grants convert skeptics.",                                weeklyScrutinyReduce:4 },
     { id:"fr_keynote",    tier:5, label:"Keynote Speaker",    cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -4/week. She IS the research.",        passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:4 },
@@ -493,8 +493,8 @@ export const EVOLVED_SKILL_TREES = {
     { id:"me_legend",     tier:5, label:"Data Legend",        cost:160, desc:"+2 passive, +5 lbs/activity, +4 rel/activity. The numbers are extraordinary.",passiveBonus:2, activityGainBonus:5, activityRelBonus:4 },
   ],
   food_scientist:[
-    { id:"fs_irb",        tier:1, label:"IRB Approval",       cost:20, desc:"Scrutiny -3/week. Institutional cover is the strongest shield.",              weeklyScrutinyReduce:3 },
-    { id:"fs_lab",        tier:2, label:"Lab Access",         cost:40, desc:"+1 passive lbs/week. The study protocol requires it.",                       passiveBonus:1 },
+    { id:"fs_irb",        tier:1, label:"season panel Approval",       cost:20, desc:"Scrutiny -3/week. Institutional cover is the strongest shield.",              weeklyScrutinyReduce:3 },
+    { id:"fs_lab",        tier:2, label:"Lab Access",         cost:40, desc:"+1 passive lbs/week. The hall log protocol requires it.",                       passiveBonus:1 },
     { id:"fs_published",  tier:3, label:"First Publication",  cost:70, desc:"+4 relationship per activity. Academic bond deepens.",                       activityRelBonus:4 },
     { id:"fs_cited",      tier:4, label:"Cited Research",     cost:110, desc:"Scrutiny -4/week. Prestigious citations change the conversation.",           weeklyScrutinyReduce:4 },
     { id:"fs_keynote",    tier:5, label:"Keynote",            cost:160, desc:"+2 passive, +5 rel/activity, scrutiny -4/week. The experiment is complete.", passiveBonus:2, activityRelBonus:5, weeklyScrutinyReduce:4 },

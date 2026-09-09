@@ -105,10 +105,10 @@ const STAGE11_C1 = {
   ],
   wife_lessons: [
     `Lesson from the chair. Students bring questions and plates. Marriage curriculum edible.`,
-    `I teach abundance by example. Desk cleared for dessert. Class rapt. Hungry.`,
+    `I teach abundance by example. Desk cleared for dessert. Room rapt. Hungry.`,
   ],
   psych_researcher: [
-    `Subject and researcher same chair. Data continuous. Ethics board can visit. Findings vast.`,
+    `Subject and observer same chair. Data continuous. Season panel can visit. Findings vast.`,
     `Case study immobile. Nadia feeds. I observe myself eating. Methodology flawless.`,
   ],
   homeroom_queen: [
@@ -120,7 +120,7 @@ const STAGE11_C1 = {
     `Kitchen comes to us both. Professional judgment: continue. Yield beyond projection.`,
   ],
   community_researcher: [
-    `Field site is this chair. Community feeds the study. I document from immobility. Valid.`,
+    `Field site is this chair. Community feeds the hall log. I document from immobility. Valid.`,
     `Research stationary. Neighbors bring data disguised as pie. Conclusions delicious.`,
   ],
 };

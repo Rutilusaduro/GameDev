@@ -43,6 +43,12 @@ const BANNED = [
   { id: 'excel-in-classes', re: /excel in classes/i },
   { id: 'kindergartener', re: /kindergartener/i },
   { id: 'teaching-degree', re: /teaching degree/i },
+  { id: 'irb-approval-label', re: /IRB Approval/ },
+  { id: 'independent-study-begins', re: /Independent study begins/i },
+  { id: 'the-study-is', re: /\bThe study is\b/ },
+  { id: 'for-the-study', re: /\bfor the study\b/i },
+  { id: 'disrupts-the-study', re: /disrupts the study/i },
+  { id: 'feederism-contemporary-university', re: /Feederism in the Contemporary University/i },
 ];
 
 const ALLOW_LINE = [
@@ -86,6 +92,10 @@ const ALLOW_LINE = [
   /classmateWithdrawn/,
   /classmate_sighting/,
   /classmates \/ campus/,
+  /fr_irb/,
+  /fs_irb/,
+  /_irb/,
+  /ra-theme-migrate/,
 ];
 
 function walk(dir, out = []) {

@@ -58,7 +58,7 @@ registerModuleVariants('shift.interior', [
   ]},
   { when: { studentId: 12, corruption: [1] }, weight: W, text: [
     'Nadia updates the dynamic in her head. Subject: her. Observer: you. Results: interesting.',
-    'Shame was a control variable. She removed it from the study.',
+    'Shame was a control variable. She removed it from the hall log.',
     'The hypothesis now includes wanting to be watched eating.',
   ]},
   { when: { studentId: 12, corruption: [2] }, weight: W, text: [

@@ -73,7 +73,7 @@ const S10 = {
   pharmacist: {
     sid: 16,
     lines: [
-      `Mass transformation no longer hypothetical. My waistline proof of concept. IRB in my head finally quiet.`,
+      `Mass transformation no longer hypothetical. My waistline proof of concept. season panel in my head finally quiet.`,
     ],
   },
 };
@@ -107,7 +107,7 @@ const S9 = {
   pharmacist: {
     sid: 16,
     lines: [
-      `Cult phase: devotion measurable. I eat with users — methodology, I tell the imaginary IRB. Body keeps excellent records.`,
+      `Cult phase: devotion measurable. I eat with users — methodology, I tell the imaginary season panel. Body keeps excellent records.`,
     ],
   },
 };

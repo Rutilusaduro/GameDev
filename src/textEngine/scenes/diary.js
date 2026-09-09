@@ -275,7 +275,7 @@ registerPool('diary.body_positive_creator.c2', [
   { when: { stage: [7], corruption: [0] }, text: ['The standing ovation was real and sustained. I stood there and thought: I didn\'t know I was going to be this. Now I know.'] },
   { when: { stage: [7] }, text: ['The standing ovation was real and sustained and I stood there accepting it feeling larger than I ever have.'] },
   { when: { stage: [8] }, text: ['I am very large on a billboard on a major highway and I am correct.'] },
-  { when: { stage: [9] }, text: ['I eat well and exist largely and apparently that has become something worth studying. I am the study.'] },
+  { when: { stage: [9] }, text: ['I eat well and exist largely and apparently that has become something worth studying. I am the hall log.'] },
   { when: { stage: [10], corruption: [0] }, text: ['The work continues without me having to defend it anymore — exactly what I was working toward.'] },
   { when: { stage: [10] }, text: ['The argument did not require me to be small or quiet or apologetic, and I wasn\'t, and now I am enormous and permanent and the work is done in the sense that it continues without requiring my acti'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The new metric is something I can\'t chart — the messages I get from people who say my platform is the reason they stopped hating themselves. That\'s what the work was for.'] },
@@ -477,15 +477,15 @@ registerPool('diary.eating_diarist', [
 // ── FOOD_RESEARCHER ───────────────────────────────────────────
 // ── diary.food_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.food_researcher.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. I got the approval.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The season panel paperwork was forty-seven pages. I am the only researcher I know who is also the primary observation subject. I got the approval.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I have a lab space, a grant, a meal plan that is technically research infrastructure. The institutional support is real and I keep waiting for someone to notice what it\'s actually funding.'] },
-  { when: { stage: [5], corruption: [1] }, text: ['IRB approved. I am the researcher and the subject and the methodology accounts for this, which is the most interesting methodology section I\'ve ever written. The data will be good.'] },
-  { when: { stage: [5] }, text: ['The IRB paperwork was forty-seven pages. I am the only researcher I know who is also the primary research subject. The committee found this unusual. They approved it.'] },
+  { when: { stage: [5], corruption: [1] }, text: ['season panel approved. I am the researcher and the subject and the methodology accounts for this, which is the most interesting protocol section I\'ve ever written. The data will be good.'] },
+  { when: { stage: [5] }, text: ['The season panel paperwork was forty-seven pages. I am the only researcher I know who is also the primary observation subject. The committee found this unusual. They approved it.'] },
   { when: { stage: [6] }, text: ['I have a lab space. I have a grant. I have a meal plan that is technically research infrastructure.'] },
   { when: { stage: [7] }, text: ['Published. Peer-reviewed, actual journal, impact factor above two. \' The editor agreed with Reviewer 1. I agree with the editor.'] },
   { when: { stage: [8] }, text: ['Three citations. A paper at a school I didn\'t attend cited my methodology. A paper I disagree with cited my findings. A paper I admire cited both.'] },
   { when: { stage: [9] }, text: ['Keynote. The conference was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk.'] },
-  { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the study period has ended. The subject has not concluded. The data is complete. The researcher remains.'] },
+  { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the season plan period has ended. The subject has not concluded. The data is complete. The researcher remains.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I\'ve published two papers and a grant application this semester and I\'ve been heavier for all of it than I was for any of my previous work. The correlation is documented.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['I\'ve posted two podium finishes and a captain\'s report this semester and I\'ve been heavier for all of it than I was at any previous weigh-in. The correlation is documented.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['I used to log miles. Now I log intake. The precision is the same, the units have changed, and the body is a different kind of record. My old training coach would have questions.'] },
@@ -499,17 +499,17 @@ registerPool('diary.food_researcher.c1', [
 ]);
 
 registerPool('diary.food_researcher.c2', [
-{ when: { stage: [5], corruption: [0] }, text: ['The methodology section is the most honest thing I\'ve ever submitted, and I\'ve been sitting with whether that\'s a good thing or a concerning one.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The protocol section is the most honest thing I\'ve ever submitted, and I\'ve been sitting with whether that\'s a good thing or a concerning one.'] },
   { when: { stage: [5], corruption: [0] }, text: ['No one has yet. The data I\'m generating is genuinely interesting.'] },
   { when: { stage: [5], corruption: [1] }, text: ['The subject is already performing beyond expectations. By which I mean: I\'m eating more than I projected.'] },
-  { when: { stage: [5] }, text: ['The methodology section is the most honest thing I\'ve ever submitted.'] },
+  { when: { stage: [5] }, text: ['The protocol section is the most honest thing I\'ve ever submitted.'] },
   { when: { stage: [6] }, text: ['The institutional support for what I\'m doing has exceeded my expectations at every stage, which suggests either that my work is good or that the institution doesn\'t fully understand what I\'m stud'] },
   { when: { stage: [8] }, text: ['Citation counts are a strange kind of conversation. I\'ve entered it. I\'m staying.'] },
   { when: { stage: [9] }, text: ['The Q&A ran thirty minutes over scheduled time. Nobody left.'] },
   { when: { stage: [10] }, text: ['I am both, simultaneously, at the scale that data set always implied I would reach. This was always the endpoint.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I choose to regard it as a research finding rather than an excuse.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['I choose to regard it as a training finding rather than an excuse.'] },
-  { when: { stageMin: 6, archetype: "athlete" }, text: ['The IRB wouldn\'t let me interview her.'] },
+  { when: { stageMin: 6, archetype: "athlete" }, text: ['The season panel wouldn\'t let me interview her.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['I noted it as a finding.'] },
   { when: {}, text: [
     "Hyposeason plan: more. Method: eat. Results: promising.",
@@ -1406,10 +1406,10 @@ registerPool('diary.psych_researcher.c1', [
   { when: { stage: [7] }, text: ['I\'ve been observing appetite dynamics in this subject for six months and I\'ve noticed my notes from shared feeding sessions are more detailed than my remote observation notes.'] },
   { when: { stage: [8] }, text: ['My subject told me today that they look forward to our sessions. I wrote it down. Then I sat with it for a while. Then I ate the rest of what was on the table.'] },
   { when: { stage: [9] }, text: ['I have generated more data on appetite, embodiment, and the feeder/feedee dynamic than I will likely be able to publish in full. My own data is extensive. The subject\'s data is extraordinary.'] },
-  { when: { stage: [10] }, text: ['Final entry for this volume. I am very large and my subject is very large and the research produced by this relationship will be the most honest work of my career.'] },
+  { when: { stage: [10] }, text: ['Final entry for this volume. I am very large and my subject is very large and the observation produced by this relationship will be the most honest work of my career.'] },
   { when: {}, text: [
     "The data accumulates. The variable is noted.",
-    "IRB would have questions. I have answers.",
+    "The panel would have questions. I have answers.",
     "Self-study ongoing. Results robust.",
   ]},
 
@@ -1422,10 +1422,10 @@ registerPool('diary.psych_researcher.c2', [
   { when: { stage: [7] }, text: ['I am aware of what this probably means. I am continuing anyway.'] },
   { when: { stage: [8] }, text: ['Variable noted: I found this information pleasing.'] },
   { when: { stage: [9] }, text: ['I\'ve decided to count my weight gain as a finding.'] },
-  { when: { stage: [10] }, text: ['I stopped being the observer sometime around session forty. I am in the study. I always was.'] },
+  { when: { stage: [10] }, text: ['I stopped being the observer sometime around session forty. I am in the hall log. I always was.'] },
   { when: {}, text: [
     "Variable: appetite. Outcome: significant.",
-    "IRB would have questions. I have answers.",
+    "The panel would have questions. I have answers.",
     "Self-study ongoing. Results robust.",
   ]},
 
@@ -1535,7 +1535,7 @@ registerPool('diary.cultivator.c2', [
   { when: { stage: [6] }, text: ['Quality control required more attention than usual. I\'m eating more at sessions than I expected. I logged it.'] },
   { when: { stage: [7] }, text: ['The kitchen is running exactly as intended.'] },
   { when: { stage: [8] }, text: ['I ate the full quality-control portion today and did not note this as unusual.'] },
-  { when: { stage: [9] }, text: ['I ate alongside her. I am considerably larger than I was at the start of this study. I find this entirely appropriate.'] },
+  { when: { stage: [9] }, text: ['I ate alongside her. I am considerably larger than I was at the start of this hall log. I find this entirely appropriate.'] },
   { when: { stage: [10] }, text: ['The kitchen is warm and full and the recipe is perfect and I ate everything I made and she ate everything I served and we sat across from each other both large and full and satisfied and I felt —'] },
   { when: {}, text: [
     "Harvest came in heavy. I came in heavier.",
@@ -1569,12 +1569,12 @@ registerPool('diary.cultivator', [
 registerPool('diary.community_researcher.c1', [
 { when: { stage: [5], corruption: [0] }, text: ['First case study. I told myself I was observing. I observed and I ate and I noted that being welcomed into a space creates an obligation to participate in what the space is for.'] },
   { when: { stage: [5] }, text: ['First case study. I told myself I was observing.'] },
-  { when: { stage: [6] }, text: ['Midway through the study. I look different than when I started. I note this the way I note everything — in clinical language that fits neatly into the methodology.'] },
+  { when: { stage: [6] }, text: ['Midway through this hall log. I look different than when I started. I note this the way I note everything — in clinical language that fits neatly into the methodology.'] },
   { when: { stage: [7] }, text: ['My advisor asked about my "level of personal engagement" with the research. " I believe this. I\'m writing a paper about how immersion in these communities is both unavoidable and clarifying.'] },
   { when: { stage: [8] }, text: ['I\'ve stopped wearing the cardigans to the case studies. The cardigans stopped fitting somewhere between the third and fourth session. I\'ve documented this transition.'] },
   { when: { stage: [9] }, text: ['The paper is 60,000 words. It\'s going to be good — I know when something is good because the writing comes faster than the thinking, and this came faster than anything I\'ve written before.'] },
   { when: { stage: [10] }, text: ["I submitted today. \" She means the honesty. I documented my own transformation as methodology. She approved it. I ate an entire box of something celebratory before bed. I note this approvingly."] },
-  { when: { stageMin: 7, archetype: "bookworm" }, text: ['The methodology is immersive participant observation. I know what immersive participant observation does to a researcher. I wrote a chapter on it before I started the study.'] },
+  { when: { stageMin: 7, archetype: "bookworm" }, text: ['The methodology is immersive participant observation. I know what immersive participant observation does to a researcher. I wrote a chapter on it before I opened this hall log.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['The protocol is immersive self-tracking. I know what immersive self-tracking does to an athlete. I wrote the season plan before I started living inside it.'] },
   { when: {}, text: [
     "The fieldwork continues. The data grows. So does the researcher.",
