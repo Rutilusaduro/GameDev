@@ -32,6 +32,10 @@ const BANNED = [
   /\bAll students reach\b/i,
   /\bthe student body\b/i,
   /\bstudent voice session\b/i,
+  /\bStudent Removal Hearing\b/i,
+  /\bdevoted student testify\b/i,
+  /\bPlace selected girl\b/i,
+  /\bSelect a girl below\b/i,
 ];
 
 function assertClean(text, label) {
@@ -113,5 +117,17 @@ assertClean(oversight, 'OversightView.jsx');
 const sessions = readFileSync('src/gameData/sessions.js', 'utf8');
 assert(sessions.includes('feed a resident for the first time'), 'achievements must say resident');
 assertClean(sessions, 'sessions.js');
+
+const weekPlanner = readFileSync('src/components/WeekPlannerModal.jsx', 'utf8');
+assert(weekPlanner.includes('Place selected resident here'), 'WeekPlannerModal must say resident');
+assertClean(weekPlanner, 'WeekPlannerModal.jsx');
+
+const opposition = readFileSync('src/gameData/oppositionHearings.js', 'utf8');
+assert(opposition.includes('Resident Removal Hearing'), 'opposition must say Resident Removal Hearing');
+assertClean(opposition, 'oppositionHearings.js');
+
+const hallSkills = readFileSync('src/gameData/skills.js', 'utf8');
+assert(hallSkills.includes('for all residents'), 'skills must say residents not students');
+assertClean(hallSkills, 'skills.js');
 
 console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, achievements, resident framing OK');

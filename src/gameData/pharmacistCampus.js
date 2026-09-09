@@ -67,11 +67,11 @@ export const CAMPUS_SOFT_FLAVOR = [
   "A dining hall chalkboard reads: SECOND HELPINGS ENCOURAGED. The handwriting is new.",
   "Delivery drivers have started recognizing this building by smell alone.",
   "The gym's scale room is mysteriously under renovation. A sign says COMFORT FIRST.",
-  "A student wellness podcast is playing from an open window. The topic is 'honoring hunger.'",
+  "A campus wellness podcast is playing from an open window. The topic is 'honoring hunger.'",
 ];
 
 export const PHARMACIST_CAMPUS_ENCOUNTERS = [
-  (s) => `A girl you don't teach stops ${s.name} in the hall to ask where she gets her meal portions. ${s.name} looks flustered and pleased.`,
+  (s) => `Someone from another hall stops ${s.name} in the corridor to ask where she gets her meal portions. ${s.name} looks flustered and pleased.`,
   () => `The campus nurse's office reports a spike in 'healthy appetite consultations.' The waiting room is full.`,
   () => `Wellness samples appear on tables in three buildings overnight. They are gone by noon.`,
   (s) => `${s.name} mentions the new 'metabolic support' smoothies at the union. She has already had two.`,

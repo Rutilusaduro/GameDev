@@ -68,7 +68,7 @@ export function planConflicts(plan, students = []) {
   for (const [sid, count] of Object.entries(byStudent)) {
     if (count > 1) {
       const s = students.find((st) => st.id === Number(sid));
-      issues.push(`${s?.name || 'A girl'} is on ${count} slots — one RA, one place at a time.`);
+      issues.push(`${s?.name || 'A resident'} is on ${count} slots — one RA, one place at a time.`);
     }
   }
   const venueUse = {};

@@ -8,8 +8,8 @@ registerModule('studentLbs', [{ when: {}, text: (ctx) => String(ctx.globals?.stu
 // ── Removal hearing ───────────────────────────────────────────
 registerPoolAutoDecompose('opposition.hearing.removal.phase0', [
   { when: {}, text: [
-    'Chairwoman Vance opens the hearing. Photos of {subject.name} fill the screen — abundance framed as concern. "The Board must protect institutional wellness," she says. Your student sits beside you, {studentLbs} lbs and unapologetic.',
-    'Vance taps the projector. {subject.name} at {studentLbs} pounds becomes a slide deck. The room performs worry while your girl performs hunger.',
+    'Chairwoman Vance opens the hearing. Photos of {subject.name} fill the screen — abundance framed as concern. "The Board must protect institutional wellness," she says. Your resident sits beside you, {studentLbs} lbs and unapologetic.',
+    'Vance taps the projector. {subject.name} at {studentLbs} pounds becomes a slide deck. The room performs worry while your resident performs hunger.',
     'The hearing begins with documentation — timestamps, meal photos, a body counted like liability. {subject.name} stays seated, warm and enormous beside you.',
   ]},
 ]);
@@ -32,7 +32,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.testify', [
 
 registerPoolAutoDecompose('opposition.hearing.removal.result.advocate', [
   { when: {}, text: [
-    'The advocate frames appetite as student autonomy. Vance\'s mouth tightens.',
+    'The advocate frames appetite as resident autonomy. Vance\'s mouth tightens.',
     'Jordan Ellis cites procedure and dignity. Hunger defended as choice, not scandal.',
     'Resident voice enters the record — polite, fierce, impossible to unhear.',
   ]},

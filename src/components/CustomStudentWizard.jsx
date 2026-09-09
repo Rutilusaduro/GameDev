@@ -84,7 +84,7 @@ export function CustomStudentWizard({
           <div style={C.infoBox('rgba(255,255,255,0.035)')}>
             <b>Archetype: Inventor</b>
             <div style={{ fontSize: 12, color: '#bba8d0', marginTop: 4 }}>
-              v1 keeps the lab/prototype arc intact and lets the player tune the student who sits there.
+              v1 keeps the lab/prototype arc intact and lets the player tune the resident who sits there.
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@ export function CustomStudentWizard({
             ))}
           </div>
           <div style={C.infoBox('rgba(255,255,255,0.035)')}>
-            <b>{draft.name || 'The student'}</b> · {weight.lbs} lbs · {draft.bodyType} · {CUSTOM_STANCE_PRESETS[draft.gainStance].label}<br />
+            <b>{draft.name || 'The resident'}</b> · {weight.lbs} lbs · {draft.bodyType} · {CUSTOM_STANCE_PRESETS[draft.gainStance].label}<br />
             Voice: {voice.label} · Wardrobe: {selectedGarments}
           </div>
         </div>

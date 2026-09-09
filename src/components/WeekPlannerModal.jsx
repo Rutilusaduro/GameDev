@@ -82,7 +82,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
                     else if (student) assignSlot(i, null);
                   }}
                 >
-                  {pickStudent != null ? 'Place selected girl here' : student ? 'Remove' : 'Select a girl below, then tap here'}
+                  {pickStudent != null ? 'Place selected resident here' : student ? 'Remove' : 'Select a resident below, then tap here'}
                 </button>
               </div>
             );
@@ -116,7 +116,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
           <button type="button" style={{ ...C.btn(), flex: 1 }} onClick={() => onCommit?.(plan)}>
             Lock plan
           </button>
-          <button type="button" style={{ ...C.btn('#333'), flex: 0 }} onClick={onClose}>
+          <button type="button" style={{ ...C.btn('#333'), flex: 0 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose?.(); }}>
             Cancel
           </button>
         </div>

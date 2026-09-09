@@ -50,7 +50,7 @@ export function renderHearingPhase(type, phaseIdx, student, week) {
   return renderHearingPool(pool, student, week, type, phaseIdx, { v2DepthChance: 0.32 })
     || (type === 'emergency'
       ? 'Scandal meter critical. Vance calls an emergency session.'
-      : `Chairwoman Vance opens the hearing. ${student?.name || 'Your student'} sits beside you.`);
+      : `Chairwoman Vance opens the hearing. ${student?.name || 'Your resident'} sits beside you.`);
 }
 
 export function renderHearingChoiceResult(type, choiceId, student, week, phaseIdx = 0) {
