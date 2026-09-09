@@ -125,7 +125,7 @@ export function applySupernaturalAgendaHook(cardEffect, students, effects) {
   }
   if (cardEffect === 'mandatory_fitness' && forms.has('pep_ghost')) {
     effects.studentPatches = (effects.studentPatches || []).map((p) => ({ ...p, relDelta: (p.relDelta || 0) + 4, hungerDelta: Math.max(0, (p.hungerDelta || 0) - 1) }));
-    effects.logs = [...(effects.logs || []), '👻 Pep Ghost — fitness order becomes pep rally; one student spared the worst (−hunger).'];
+    effects.logs = [...(effects.logs || []), '👻 Pep Ghost — fitness order becomes pep rally; one resident spared the worst (−hunger).'];
   }
   if (cardEffect === 'shame_vigil' && forms.has('salon_wraith')) {
     effects.studentPatches = (effects.studentPatches || []).map((p) => {

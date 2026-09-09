@@ -30,16 +30,16 @@ export const ROTATING_ADVOCATES = [
 ];
 
 export const AIB_AGENDA_CARDS = [
-  { id: 'wellness_audit', minScrutiny: 50, label: 'Wellness Audit', scrutiny: 8, message: '📋 AIB wellness audit — a student is flagged for assessment.', effect: 'wellness_audit' },
+  { id: 'wellness_audit', minScrutiny: 50, label: 'Wellness Audit', scrutiny: 8, message: '📋 AIB wellness audit — a resident is flagged for assessment.', effect: 'wellness_audit' },
   { id: 'device_confiscation', minScrutiny: 60, label: 'Device Confiscation', scrutiny: 10, message: '🔧 Compliance confiscates a lab device for review.', effect: 'device_confiscation' },
   { id: 'size_review', minScrutiny: 55, label: 'Floor Size Review', scrutiny: 9, message: '⚖️ Board demands documented weigh-ins for the hall.', effect: 'size_review' },
   { id: 'wellness_seminar', minScrutiny: 50, label: 'Wellness Workshop', scrutiny: 6, message: '📢 Mandatory wellness workshop dampens campus appetite.', effect: 'wellness_seminar' },
   { id: 'budget_freeze', minScrutiny: 75, label: 'Budget Freeze', scrutiny: 5, money: -200, message: '💸 Floor budget frozen pending review.', effect: 'budget_freeze' },
-  { id: 'removal_hearing', minScrutiny: 90, label: 'Removal Hearing', scrutiny: 12, message: '⚠️ Student removal hearing opened.', effect: 'removal_hearing' },
+  { id: 'removal_hearing', minScrutiny: 90, label: 'Removal Hearing', scrutiny: 12, message: '⚠️ Resident removal hearing opened.', effect: 'removal_hearing' },
   { id: 'mandatory_fitness', minScrutiny: 40, label: 'Mandatory Fitness', scrutiny: 5, message: '🏃 Wellness Coalition orders fitness assessments.', effect: 'mandatory_fitness', proxy: 'wellnessCoalition' },
   { id: 'shame_vigil', minScrutiny: 45, label: 'Shame Vigil', scrutiny: 7, message: '🕯️ Ascetic Circle vigil — shame ripples through the hall.', effect: 'shame_vigil', proxy: 'asceticCircle' },
   { id: 'faculty_informant', minScrutiny: 55, label: 'Staff Informant', scrutiny: 4, message: '📝 Staff informant briefs the Board on your hall.', effect: 'faculty_informant' },
-  { id: 'student_advocacy', minScrutiny: 35, label: 'Student Advocacy Session', scrutiny: 4, message: '📣 Rotating advocate schedules a student voice session.', effect: 'student_advocacy' },
+  { id: 'student_advocacy', minScrutiny: 35, label: 'Resident Advocacy Session', scrutiny: 4, message: '📣 Rotating advocate schedules a resident voice session.', effect: 'student_advocacy' },
 ];
 
 export const AIB_COUNTERS = [
@@ -298,7 +298,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
         ...students.filter((s) => !s.hidden && s.supernaturalForm !== 'apple_oracle').map((s) => ({ id: s.id, corruptionDelta: -5 })),
       );
       if (students.some((s) => s.supernaturalForm === 'apple_oracle')) {
-        effects.logs.push('🍎 Apple Oracle shields the homeroom from shame — one student untouched.');
+        effects.logs.push('🍎 Apple Oracle shields the homeroom from shame — one resident untouched.');
       }
       effects.logs.push('🕯️ Shame vigil — corruption −5 for visible students.');
       break;
@@ -319,7 +319,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
       if (advocate && (advocate.stance === 'neutral' || advocate.stance === 'compromised' || advocate.stance === 'wavering' || avgRel >= 50)) {
         effects.scrutinyDelta -= 3;
         effects.oppositionPatch.agendaDelay = true;
-        effects.logs.push(`📣 ${advocate.name} amplifies student voice — scrutiny −3, top agenda delayed.`);
+        effects.logs.push(`📣 ${advocate.name} amplifies resident voice — scrutiny −3, top agenda delayed.`);
       } else if (advocate?.personality === 'activist') {
         effects.scrutinyDelta -= 1;
         effects.logs.push(`📣 ${advocate.name} files a dissent — scrutiny −1.`);
@@ -714,7 +714,7 @@ export function processOppositionWeek(opposition, {
   });
   if (delayNextAgenda && stillQueued.length) {
     stillQueued[0] = { ...stillQueued[0], resolvesWeek: stillQueued[0].resolvesWeek + 1 };
-    logs.push('📣 Student advocate delay — top agenda pushed one week.');
+    logs.push('📣 Resident advocate delay — top agenda pushed one week.');
   }
   next = { ...next, aib: { ...next.aib, agendaQueue: stillQueued } };
 

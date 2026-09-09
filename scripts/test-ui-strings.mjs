@@ -27,6 +27,11 @@ const BANNED = [
   /\bEvolved Student Operation\b/i,
   /\bstudent panel\b/i,
   /\bEquip to Student\b/i,
+  /\bfeed a student\b/i,
+  /\bAny student reaches\b/i,
+  /\bAll students reach\b/i,
+  /\bthe student body\b/i,
+  /\bstudent voice session\b/i,
 ];
 
 function assertClean(text, label) {
@@ -105,4 +110,8 @@ const oversight = readFileSync('src/views/OversightView.jsx', 'utf8');
 assert(oversight.includes('Evolved Resident Op'), 'OversightView must say Evolved Resident Op');
 assertClean(oversight, 'OversightView.jsx');
 
-console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, resident framing OK');
+const sessions = readFileSync('src/gameData/sessions.js', 'utf8');
+assert(sessions.includes('feed a resident for the first time'), 'achievements must say resident');
+assertClean(sessions, 'sessions.js');
+
+console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, achievements, resident framing OK');

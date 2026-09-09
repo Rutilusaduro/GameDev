@@ -1509,7 +1509,7 @@ export default function HallPass(){
         });
         const pulseProse=renderResonancePulse(createContext({ subject: s, week }));
         const pulseSnippet=pulseProse?.trim().slice(0,160);
-        setTimeout(()=>push(`🔗 ${pulseSnippet||`Appetite resonates — ${pulseResult.pulses.length} linked student(s) feel the pull.`}`),95);
+        setTimeout(()=>push(`🔗 ${pulseSnippet||`Appetite resonates — ${pulseResult.pulses.length} linked resident(s) feel the pull.`}`),95);
       }
     }
     if((ownedSkills.memory_palace||0)>=1){
@@ -2783,7 +2783,7 @@ export default function HallPass(){
           if(s.id!==studentId) return s;
           return {...s,wasHiddenBeforeSuspension:s.hidden,aibSuspensionWeeks:ending.studentHiddenWeeks,hidden:true};
         }));
-        push(`⚠️ ${students.find(s=>s.id===studentId)?.name||'Student'} suspended from campus for ${ending.studentHiddenWeeks} weeks.`);
+        push(`⚠️ ${students.find(s=>s.id===studentId)?.name||'Resident'} suspended from campus for ${ending.studentHiddenWeeks} weeks.`);
       }else if((type==='removal'&&ending.studentHiddenWeeks===0)||(type==='emergency'&&(ending.scandalDelta||0)<-10)){
         setGlobalStats(g=>({...g,oppositionHearingsWon:(g.oppositionHearingsWon||0)+1}));
       }
@@ -2832,7 +2832,7 @@ export default function HallPass(){
     const live=students.find(st=>st.id===studentId);
     const eligibility=isAscensionEligible(live,{students});
     if(!live||!eligibility.eligible){
-      push(`⚠️ ${live?.name||'Student'} is not ready to ascend.`);
+      push(`⚠️ ${live?.name||'Resident'} is not ready to ascend.`);
       setAscensionCeremony(null);
       return;
     }
@@ -4108,7 +4108,7 @@ export default function HallPass(){
       setTimeout(()=>push(`✦ Sophia advances: ${stageMeta?.label}. New compounds unlocked.`),120);
     }
     if(!prevState.campusFattening&&next.campusFattening){
-      setTimeout(()=>push(`🌿 ${narrative||'Campus Softening'} — the student body starts rounding out.`),160);
+      setTimeout(()=>push(`🌿 ${narrative||'Campus Softening'} — the resident body starts rounding out.`),160);
     }else if(narrative&&narrative!==CAMPUS_NARRATIVE_LABELS[getCampusNarrativeTier(prevState)]){
       setTimeout(()=>push(`🌿 Campus influence intensifies: ${narrative}.`),160);
     }
@@ -9011,7 +9011,7 @@ export default function HallPass(){
         <DeviceTuningModal
           deviceDefId={deviceUsageModal.deviceDefId}
           deviceLabel={deviceUsageModal.deviceLabel}
-          studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Student'}
+          studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Resident'}
           onComplete={completeDeviceUsage}
           onClose={()=>setDeviceUsageModal(null)}
           soundEnabled={soundEnabled}
@@ -9020,7 +9020,7 @@ export default function HallPass(){
       {deviceUsageModal?.type==='route'&&(
         <DeviceRouteModal
           deviceLabel={deviceUsageModal.deviceLabel}
-          studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Student'}
+          studentName={students.find(st=>st.id===deviceUsageModal.studentId)?.name||'Resident'}
           onComplete={completeDeviceUsage}
           onClose={()=>setDeviceUsageModal(null)}
           soundEnabled={soundEnabled}

@@ -85,7 +85,7 @@ registerPool('opposition.agenda.faculty_informant', [
 
 registerPool('opposition.agenda.student_advocacy', [
   { when: {}, text: [
-    'Rotating advocate schedules a student voice session — procedure wearing sympathy.',
+    'Rotating advocate schedules a resident voice session — procedure wearing sympathy.',
     'Student advocacy hour booked. The Board wants dissent on record before they override it.',
     'Jordan Ellis requests floor time. Institutional theater with a human face.',
     'Advocate session announced. Your girls may speak — if the room pretends to listen.',

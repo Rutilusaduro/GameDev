@@ -34,7 +34,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.advocate', [
   { when: {}, text: [
     'The advocate frames appetite as student autonomy. Vance\'s mouth tightens.',
     'Jordan Ellis cites procedure and dignity. Hunger defended as choice, not scandal.',
-    'Student voice enters the record — polite, fierce, impossible to unhear.',
+    'Resident voice enters the record — polite, fierce, impossible to unhear.',
   ]},
 ]);
 
@@ -80,7 +80,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.spirit', [
 
 registerPoolAutoDecompose('opposition.hearing.removal.ending.advocate_voice', [
   { when: {}, text: [
-    'Student voice carries. Removal denied with the advocate on record.',
+    'Resident voice carries. Removal denied with the advocate on record.',
     'The advocate\'s argument stands. {subject.name} stays — enrollment intact, appetite unmoved.',
     'Jordan Ellis closes the record. {subject.name} remains enrolled — procedure outpaced by testimony.',
   ]},

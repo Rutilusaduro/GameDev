@@ -16,15 +16,15 @@ export const PROF_SUBJECTS=[
   {id:"literature",label:"Literature",emoji:"📚",desc:"You read transformation into every text. You recognize a character arc when you're living one — and when you're writing someone else's.",bonus:"+15% relationship from conversation actions. Dinner conversations are richer."},
   {id:"nutrition",label:"Nutrition Science",emoji:"🔬",desc:"The body is your subject. Intake, accumulation, the whole scientific romance of how things change and where they end up.",bonus:"All feeding actions +10% gain. Study check-ins unlock caloric analysis."},
   {id:"art_history",label:"Art History",emoji:"🎨",desc:"You've spent a career teaching people to really look at form. The appreciative eye is a habit by now. You can't turn it off.",bonus:"Observe costs 0 AP. Group dinner jealousy triggers more frequently."},
-  {id:"physical_ed",label:"Physical Education",emoji:"🏋️",desc:"Years preaching fitness. There's a particular poetry in what you're doing now. You know exactly where each pound lands.",bonus:"Student weight and stage always visible. Stage transitions unlock unique commentary."},
+  {id:"physical_ed",label:"Physical Education",emoji:"🏋️",desc:"Years preaching fitness. There's a particular poetry in what you're doing now. You know exactly where each pound lands.",bonus:"Resident weight and stage always visible. Stage transitions unlock unique commentary."},
   {id:"philosophy",label:"Philosophy",emoji:"⚖️",desc:"Everything is relative. Consequence is deferred. You are examining several lives, including your own.",bonus:"+5% all gain actions. Admin scrutiny rises 20% more slowly."},
 ];
 
 export const PROF_TRAITS=[
-  {id:"patient",label:"Patient",emoji:"🕰️",desc:"You play a long game. The slow accumulation, the inevitable tipping points — these are more satisfying to you than brute force.",effect:"+2 relationship from every action. Passive gain +1 lb/student/week."},
-  {id:"observant",label:"Observant",emoji:"👁️",desc:"Nothing escapes you. Weight stages, how a shirt fits, the slight breathlessness on stairs — you clock all of it, always.",effect:"Student weight always visible. Observe costs 0 AP."},
+  {id:"patient",label:"Patient",emoji:"🕰️",desc:"You play a long game. The slow accumulation, the inevitable tipping points — these are more satisfying to you than brute force.",effect:"+2 relationship from every action. Passive gain +1 lb/resident/week."},
+  {id:"observant",label:"Observant",emoji:"👁️",desc:"Nothing escapes you. Weight stages, how a shirt fits, the slight breathlessness on stairs — you clock all of it, always.",effect:"Resident weight always visible. Observe costs 0 AP."},
   {id:"generous",label:"Generous",emoji:"🍽️",desc:"You express care through food. It's almost automatic. The portions are just enthusiastic.",effect:"All feeding actions +15% gain. Dinner fullness +10%."},
-  {id:"charismatic",label:"Charismatic",emoji:"✨",desc:"Students listen when you talk. They lean in. They stay for office hours longer than they intended.",effect:"Talk actions grant double relationship. Dinner conversations unlock sooner."},
+  {id:"charismatic",label:"Charismatic",emoji:"✨",desc:"Residents listen when you talk. They lean in. They stay for hall hours longer than they intended.",effect:"Talk actions grant double relationship. Dinner conversations unlock sooner."},
   {id:"discreet",label:"Discreet",emoji:"🔇",desc:"You're good at making the unusual seem unremarkable. Keeping things quiet is a skill you've honed.",effect:"Admin scrutiny rises 35% more slowly. Research study risk halved."},
 ];
 
@@ -286,20 +286,20 @@ export const DINNER_CONVERSATION = [
 
 
 export const ACHIEVEMENT_LIST = [
-  { id:"first_gain",    label:"🌱 First Feeding",       desc:"Successfully feed a student for the first time.",            check:(sts)=>sts.some(s=>s.lbs>s.startLbs) },
-  { id:"stage2",        label:"📈 Chubby Club",         desc:"Any student reaches the Chubby stage.",                     check:(sts)=>sts.some(s=>getStage(s.lbs).id>=3) },
-  { id:"stage4",        label:"🍔 Heavy Hitter",        desc:"Any student reaches Heavy.",                                check:(sts)=>sts.some(s=>getStage(s.lbs).id>=5) },
-  { id:"stage6",        label:"🛋️ Couch Queen",        desc:"Any student reaches Very Fat.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=7) },
-  { id:"stage8",        label:"🏠 Immovable Object",   desc:"Any student reaches Immobile.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=9) },
-  { id:"stage9",        label:"🌕 Blob Status",         desc:"Any student reaches Blob.",                                 check:(sts)=>sts.some(s=>getStage(s.lbs).id>=10) },
-  { id:"all_soft",      label:"🫧 Soft Semester",       desc:"All students reach at least Soft.",                         check:(sts)=>sts.every(s=>getStage(s.lbs).id>=2) },
-  { id:"all_chubby",    label:"🥧 Chubby Hall",        desc:"All students reach at least Chubby.",                       check:(sts)=>sts.every(s=>getStage(s.lbs).id>=3) },
-  { id:"all_plump",     label:"🍮 Plump Roster",        desc:"All students reach at least Plump.",                        check:(sts)=>sts.every(s=>getStage(s.lbs).id>=4) },
+  { id:"first_gain",    label:"🌱 First Feeding",       desc:"Successfully feed a resident for the first time.",            check:(sts)=>sts.some(s=>s.lbs>s.startLbs) },
+  { id:"stage2",        label:"📈 Chubby Club",         desc:"Any resident reaches the Chubby stage.",                     check:(sts)=>sts.some(s=>getStage(s.lbs).id>=3) },
+  { id:"stage4",        label:"🍔 Heavy Hitter",        desc:"Any resident reaches Heavy.",                                check:(sts)=>sts.some(s=>getStage(s.lbs).id>=5) },
+  { id:"stage6",        label:"🛋️ Couch Queen",        desc:"Any resident reaches Very Fat.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=7) },
+  { id:"stage8",        label:"🏠 Immovable Object",   desc:"Any resident reaches Immobile.",                             check:(sts)=>sts.some(s=>getStage(s.lbs).id>=9) },
+  { id:"stage9",        label:"🌕 Blob Status",         desc:"Any resident reaches Blob.",                                 check:(sts)=>sts.some(s=>getStage(s.lbs).id>=10) },
+  { id:"all_soft",      label:"🫧 Soft Semester",       desc:"All residents reach at least Soft.",                         check:(sts)=>sts.every(s=>getStage(s.lbs).id>=2) },
+  { id:"all_chubby",    label:"🥧 Chubby Hall",        desc:"All residents reach at least Chubby.",                       check:(sts)=>sts.every(s=>getStage(s.lbs).id>=3) },
+  { id:"all_plump",     label:"🍮 Plump Roster",        desc:"All residents reach at least Plump.",                        check:(sts)=>sts.every(s=>getStage(s.lbs).id>=4) },
   { id:"total100",      label:"💯 Century Club",        desc:"Total hall weight gain reaches 100 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=100 },
   { id:"total500",      label:"🎖️ Five Hundred",        desc:"Total hall weight gain reaches 500 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=500 },
   { id:"total1000",     label:"🏆 One Thousand",        desc:"Total hall weight gain reaches 1,000 lbs.",                check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=1000 },
-  { id:"rel_max",       label:"❤️ Beloved RA",  desc:"Any student reaches 100% relationship.",                    check:(sts)=>sts.some(s=>s.relationship>=100) },
-  { id:"all_rel50",     label:"💜 Well-Loved",          desc:"All students at 50%+ relationship.",                        check:(sts)=>sts.every(s=>s.relationship>=50) },
+  { id:"rel_max",       label:"❤️ Beloved RA",  desc:"Any resident reaches 100% relationship.",                    check:(sts)=>sts.some(s=>s.relationship>=100) },
+  { id:"all_rel50",     label:"💜 Well-Loved",          desc:"All residents at 50%+ relationship.",                        check:(sts)=>sts.every(s=>s.relationship>=50) },
   { id:"narrative5",    label:"📖 Storyteller",         desc:"Trigger 5 narrative events.",                               check:(sts,g)=>g.narrativeCount>=5 },
   { id:"narrative10",   label:"📚 Epic Saga",           desc:"Trigger 10 narrative events.",                              check:(sts,g)=>g.narrativeCount>=10 },
   { id:"aib_notice",    label:"👁 Under Watch",         desc:"Residence Review Board takes notice.",                      check:(sts,g)=>!!g.aibUnlocked },
