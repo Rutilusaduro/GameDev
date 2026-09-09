@@ -3,7 +3,6 @@
 // ═══════════════════════════════════════════════════════════════
 
 const VARIANTS = {
-  spirit: { colors: ['#4a2870', '#8a4be0', '#2a1840'], pattern: '◆◇◆◇◆◇◆' },
   feast: { colors: ['#8a4020', '#c06030', '#3a2010'], pattern: '🍽·🍷·🍽·🍷' },
   dream: { colors: ['#284868', '#6090c8', '#1a2840'], pattern: '☾ · ✦ · ☾ · ✦' },
   echo: { colors: ['#3060a0', '#90b0c8', '#1a2848'], pattern: '⌁ ≋ ⌁ ≋ ⌁' },
@@ -15,8 +14,8 @@ const VARIANTS = {
   campus: { colors: ['#284838', '#60a080', '#102018'], pattern: '🌿 · 🏫 · 🌿' },
 };
 
-export function SceneBackdrop({ variant = 'spirit', height = 48 }) {
-  const v = VARIANTS[variant] || VARIANTS.spirit;
+export function SceneBackdrop({ variant = 'embodiment', height = 48 }) {
+  const v = VARIANTS[variant] || VARIANTS.embodiment;
   const [c1, c2, c3] = v.colors;
   return (
     <div

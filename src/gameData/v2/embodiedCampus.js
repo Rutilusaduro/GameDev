@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { CAMPUS_NODES } from '../campus.js';
 import { getStage } from '../stages.js';
-import { getAvailableEmbodimentActions } from './spiritEmbodiment.js';
+import { getAvailableEmbodimentActions } from './residentEmbodiment.js';
 import { grantPassiveTrust } from '../rosterUnlock.js';
 
 export const EMBODIED_START_NODE = 'dorms';

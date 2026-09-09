@@ -293,6 +293,11 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(128, 64, 200, 0.16);
 }
 
+.embodiment-modal {
+  background: linear-gradient(165deg, rgba(10, 6, 20, 0.98), rgba(22, 10, 38, 0.96), rgba(6, 4, 14, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(138, 75, 224, 0.18);
+}
+
 .milestone-resident-header {
   padding: 8px 12px;
   border-radius: 8px;
@@ -338,6 +343,7 @@
   .tier-up-cta,
   .hunger-interrupt-modal,
   .floor-checkin-modal,
+  .embodiment-modal,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;

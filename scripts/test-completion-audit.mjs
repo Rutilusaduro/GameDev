@@ -147,7 +147,7 @@ check('ui-polish-css', () => {
     'ra-desk-week-tick', 'scene-beat-advance', 'scene-choice-btn',
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
-    'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal',
+    'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta', 'hunger-interrupt-modal', 'floor-checkin-modal', 'embodiment-modal',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -197,6 +197,24 @@ check('resident-ride-skill', () => {
   assert.match(skills, /id:"resident_ride"/);
   assert.doesNotMatch(skills, /id:"spirit_ride"/);
   assert.match(skills, /migrateOwnedSkills/);
+});
+
+check('resident-embodiment-module', () => {
+  assert.ok(existsSync(join(root, 'src/gameData/v2/residentEmbodiment.js')));
+  assert.ok(!existsSync(join(root, 'src/gameData/v2/spiritEmbodiment.js')));
+  const handlers = read('src/gameData/v2/handlers.js');
+  assert.match(handlers, /residentEmbodiment\.js/);
+  assert.doesNotMatch(handlers, /spiritEmbodiment/);
+});
+
+check('embodiment-modal-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.embodiment-modal/);
+  const modal = read('src/components/v2/EmbodimentModal.jsx');
+  assert.match(modal, /embodiment-modal/);
+  const backdrop = read('src/components/v2/SceneBackdrop.jsx');
+  assert.match(backdrop, /variant = 'embodiment'/);
+  assert.doesNotMatch(backdrop, /VARIANTS\.spirit/);
 });
 
 check('owned-hall-skills', () => {

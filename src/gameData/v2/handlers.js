@@ -4,7 +4,7 @@
 import {
   canEmbody, startEmbodiment, endEmbodiment, applyEmbodimentAction,
   EMBODIMENT_ACTIONS,
-} from './spiritEmbodiment.js';
+} from './residentEmbodiment.js';
 import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
   applyResonancePassiveBonus, applyResonanceSurgeBonus, getCombinedHallLbs, getResonanceTier,

@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { C } from '../../styles.js';
 import { playHallPassSound } from '../../gameData/hallPassAudio.js';
-import { getAvailableEmbodimentActions } from '../../gameData/v2/spiritEmbodiment.js';
+import { getAvailableEmbodimentActions } from '../../gameData/v2/residentEmbodiment.js';
 import { isEmbodiedImmobile } from '../../gameData/v2/embodiedCampus.js';
 import { CAMPUS_NODES } from '../../gameData/campus.js';
 import { createContext } from '../../textEngine/engine.js';
@@ -117,7 +117,7 @@ export function EmbodimentModal({
 
   return (
     <div style={C.modalOverlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560, maxHeight: '92vh', overflowY: 'auto', borderColor: '#8a4be080' }}>
+      <div className="hall-pass-modal-in embodiment-modal" style={{ ...C.modal, maxWidth: 560, maxHeight: '92vh', overflowY: 'auto', borderColor: '#8a4be080' }}>
         <SceneBackdrop variant="embodiment" />
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
           <StudentPortrait student={student} size={72} />

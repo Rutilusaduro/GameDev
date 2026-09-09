@@ -160,9 +160,12 @@ export function applySupernaturalAgendaHook(cardEffect, students, effects) {
 /** Hearing paths unlocked by ascended thin-forms. */
 export function getSupernaturalHearingFlags(students) {
   const forms = new Set((students || []).filter((s) => s.supernaturalForm).map((s) => s.supernaturalForm));
+  const hasEmbodimentPath = forms.size > 0;
   return {
-    hasInfluencePath: forms.size > 0,
-    hasSpiritPath: forms.size > 0,
+    hasInfluencePath: hasEmbodimentPath,
+    hasEmbodimentPath,
+    /** @deprecated use hasEmbodimentPath */
+    hasSpiritPath: hasEmbodimentPath,
     hasArchivistDiscredit: forms.has('archivist_skin'),
     hasHiveShield: forms.has('hive_mote'),
     hasSalonCharm: forms.has('salon_wraith'),
