@@ -55,6 +55,7 @@ export function DebugPanel({
   setOwnedHallSkills,
   setSalonState,
   setGalleryState,
+  setCompetitiveGainerState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -258,6 +259,28 @@ export function DebugPanel({
                       setView('student');
                     }}>
                     🖼 Gallery Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(180,20,50,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 7
+                          ? { ...s, evolvedForm: 'competitive_gainer', lbs: 200, relationship: 60, mood: 'stressed' }
+                          : s
+                      )));
+                      setCompetitiveGainerState?.({
+                        priyaStudentId: 7,
+                        drive: 0,
+                        chatLog: [],
+                        measuredStudentIds: [],
+                        measuredComparisons: {},
+                        lastChatWeek: week,
+                        corkboardVisitCount: 0,
+                      });
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(7);
+                      setView('student');
+                    }}>
+                    📊 CG Arc QA
                   </button>
                 </>
               )}

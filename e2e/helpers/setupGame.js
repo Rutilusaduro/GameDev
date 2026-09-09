@@ -68,6 +68,15 @@ export async function unlockGalleryArcQA(page) {
   await expect(page.getByText('EVOLVED PATH')).toBeVisible();
 }
 
+/** Debug: Priya competitive gainer arc + open student detail. */
+export async function unlockCGArcQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /CG Arc QA/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+  await dismissBlockingModals(page);
+  await expect(page.getByText('EVOLVED PATH')).toBeVisible();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();

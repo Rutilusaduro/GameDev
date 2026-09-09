@@ -9,7 +9,7 @@ test('eating streamer arc opens event modal and routes to stream session', async
 
   const modal = page.locator('.evolved-event-modal');
   await expect(modal.getByText('FIRST REAL MUKBANG')).toBeVisible();
-  await expect(modal.getByText('Destiny')).toBeVisible();
+  await expect(modal.getByText('Destiny', { exact: true })).toBeVisible();
   await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
 
   await modal.locator('.evolved-event-choice-row').first().click();
