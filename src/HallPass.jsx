@@ -6763,7 +6763,7 @@ export default function HallPass(){
         fedCount++;
         return {...fed,oppositionBlockedGain:false};
       });
-      push(`👻 Refeast Ritual: ${fedCount} students refed${refused?` · ${refused} too full`:""} — scarcity pressure eases.`);
+      push(`👻 Refeast Ritual: ${fedCount} residents refed${refused?` · ${refused} too full`:""} — scarcity pressure eases.`);
       setStudents(updated);
       if(surgeStudent) setRefeedSurgeState({studentId:surgeStudent.id,taps:0,tapsNeeded:3});
       const evs=collectEvents(updated);
@@ -6784,7 +6784,7 @@ export default function HallPass(){
       fedCount++;totalCals+=cals;
       return fed;
     });
-    push(`🎉 ${action.label}: ${fedCount} students dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}${compoundLabel?` · laced with ${compoundLabel}`:""}.`);
+    push(`🎉 ${action.label}: ${fedCount} residents dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}${compoundLabel?` · laced with ${compoundLabel}`:""}.`);
     const evs=collectEvents(updated);
     setStudents(updated);
     if(evs.length){

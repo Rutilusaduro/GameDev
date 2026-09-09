@@ -359,7 +359,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"Plenty to go around," she murmurs, glowing.`,
   ]},
   { when: { studentId: 13, corruption: [0], stageMin: 6 }, weight: W, text: [
-    `"The kids I student-teach think I'm pregnant," she laughs. "I just tell them: fed."`,
+    `"The kids in my mentor group think I'm pregnant," she laughs. "I just tell them: fed."`,
   ]},
   { when: { studentId: 13, corruption: [1], stageMin: 6 }, weight: W, text: [
     `"Well-fed," she says, patting her belly. "That's the goal."`,

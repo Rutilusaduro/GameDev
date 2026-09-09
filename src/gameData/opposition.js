@@ -302,7 +302,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
       if (students.some((s) => s.supernaturalForm === 'apple_oracle')) {
         effects.logs.push('🍎 Apple Oracle shields the hall kitchen from shame — one resident untouched.');
       }
-      effects.logs.push('🕯️ Shame vigil — corruption −5 for visible students.');
+      effects.logs.push('🕯️ Shame vigil — corruption −5 for visible residents.');
       break;
     case 'faculty_informant':
       if ((opposition.aib.informantShieldWeeks || 0) <= 0) {
