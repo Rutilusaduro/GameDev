@@ -75,7 +75,7 @@ registerPool("diary.campus", [
     text: [
       "Residents linger after tastings now. They leave softer. Word's out beyond my hall.",
       "The practicum kitchen is busier. Everyone's appetite turned up campus-wide.",
-      "Mrs. Reyes said the whole school feels hungrier. I smiled and kept kneading.",
+      "Mrs. Reyes said the whole campus feels hungrier. I smiled and kept kneading.",
     ] },
   { when: { campusFattening: true, archetype: "influencer" }, priority: 2,
     text: [

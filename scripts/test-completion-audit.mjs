@@ -903,6 +903,16 @@ check('homeroom-resident-framing', () => {
   const modal = read('src/components/HomeroomQueenModal.jsx');
   assert.match(modal, /FLOOR RESIDENTS · tap to conference/);
   assert.doesNotMatch(modal, /STUDENTS · tap to conference/i);
+  assert.match(homeroom, /Wide Tables/);
+  assert.match(homeroom, /Residence life loaned wider lounge tables/);
+  assert.match(homeroom, /hall lounge tee/);
+  assert.match(homeroom, /Brings wine to floor events/);
+  assert.doesNotMatch(homeroom, /Wide Desks|science room|Brings wine to school events|Bri's uniform doesn't quite tuck/i);
+  assert.match(diary, /taste-test more on the floor than I do at home/);
+  assert.doesNotMatch(diary, /happy at school/i);
+  const campus = read('src/textEngine/scenes/campusSoftening.js');
+  assert.match(campus, /whole campus feels hungrier/);
+  assert.doesNotMatch(campus, /whole school feels hungrier/i);
 });
 
 check('cassidy-swimmer-voice', () => {

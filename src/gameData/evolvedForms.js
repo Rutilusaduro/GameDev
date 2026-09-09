@@ -2903,7 +2903,7 @@ Mrs. Monroe arrives last, parks badly, and waves through the window with both ha
           ]
         },
         {
-          text:(h,s)=>`The session is warm and easy. Bri's uniform doesn't quite tuck anymore — she's stopped trying. Kayla has started sitting differently, wider, like she's found the right angle for her hips. Sofia moves through the room with the confidence of someone who has decided exactly what kind of person she is and is correct about it.
+          text:(h,s)=>`The session is warm and easy. Bri's hall lounge tee doesn't quite tuck anymore — she's stopped trying. Kayla has started sitting differently, wider, like she's found the right angle for her hips. Sofia moves through the room with the confidence of someone who has decided exactly what kind of person she is and is correct about it.
 
 Daisy watches all of this from the counter, ${Math.round(s.lbs)} pounds and attentive.`,
           choices:[
@@ -2927,12 +2927,12 @@ Daisy watches all of this from the counter, ${Math.round(s.lbs)} pounds and atte
         {condition:()=>true,text:(h,s,gain)=>`Mrs. Calloway went home. Tuesday continues. Daisy is ${Math.round(s.lbs+gain)} pounds and adding notes to the record.`,gainBonus:3,relBonus:6,classGain:12,momGain:7},
       ]
     },
-    // stageIdx 3 — "Wide Desks" (classWeight ≥ 120)
+    // stageIdx 3 — "Wide Tables" (classWeight ≥ 120)
     {
-      title:"Wide Desks",
+      title:"Wide Tables",
       phases:[
         {
-          text:(h,s)=>`The school sent over the wider writing desks from the science room two weeks ago. Sofia has claimed the largest one and moved it to her preferred spot with the ease of someone who knows her own requirements. She spreads wide into it. It looks correct.
+          text:(h,s)=>`Residence life loaned wider lounge tables from storage two weeks ago. Sofia has claimed the largest one and moved it to her preferred spot with the ease of someone who knows her own requirements. She spreads wide into it. It looks correct.
 
 Daisy is ${Math.round(s.lbs)} pounds at the counter, looking satisfied. "Ready?" she says.`,
           choices:[
@@ -2943,7 +2943,7 @@ Daisy is ${Math.round(s.lbs)} pounds at the counter, looking satisfied. "Ready?"
           ]
         },
         {
-          text:(h,s)=>`Bri can't tuck her uniform anymore. She tried earlier in the week, apparently — Kayla told Daisy during the session with the specific detail of someone who found this information useful. Bri herself is currently eating the second piece without any apparent concern about the uniform situation.
+          text:(h,s)=>`Bri can't tuck her lounge tee anymore. She tried earlier in the week, apparently — Kayla told Daisy during the session with the specific detail of someone who found this information useful. Bri herself is currently eating the second piece without any apparent concern about the fit situation.
 
 "I told her it looked nice," Daisy says. She looks at you. "It did look nice."`,
           choices:[
@@ -2964,7 +2964,7 @@ Mrs. Calloway is watching from near the door.`,
       endings:[
         {condition:h=>h.includes("recipe_special")&&h.includes("enlisted_monroe"),text:(h,s,gain)=>`The peach upside-down cake, Sofia's desk, Mrs. Monroe managing Mrs. Calloway with the ease of someone who has been managing things for years — Daisy is ${Math.round(s.lbs+gain)} pounds and the notebook records this as the best session yet.`,gainBonus:10,relBonus:13,classGain:24,momGain:16},
         {condition:h=>h.includes("enlisted_monroe"),text:(h,s,gain)=>`Mrs. Monroe is an asset. Daisy is ${Math.round(s.lbs+gain)} pounds and the dynamic has shifted. Tuesday has allies now.`,gainBonus:6,relBonus:10,classGain:18,momGain:12},
-        {condition:()=>true,text:(h,s,gain)=>`Wide desks, fuller residents, Tuesday ongoing. Daisy is ${Math.round(s.lbs+gain)} pounds and adding pages.`,gainBonus:4,relBonus:7,classGain:14,momGain:8},
+        {condition:()=>true,text:(h,s,gain)=>`Wide tables, fuller residents, Tuesday ongoing. Daisy is ${Math.round(s.lbs+gain)} pounds and adding pages.`,gainBonus:4,relBonus:7,classGain:14,momGain:8},
       ]
     },
     // stageIdx 4 — "The Group Chat" (momWeight ≥ 70)
@@ -3674,7 +3674,7 @@ export const BATCH_BAKER_NPCS = {
     4:"She brings coffee for both of you now. She's comfortable. She doesn't comment on her size or yours. She just eats and talks and is present.",
   },
   Mrs_Monroe:{
-    0:"Glamorous, confident, comfortable in her body from the start. Brings wine to school events. Daisy's favorite.",
+    0:"Glamorous, confident, comfortable in her body from the start. Brings wine to floor events. Daisy's favorite.",
     1:"Warmer, rounder, and even more comfortable than before. She's started commenting on which recipes she prefers and her preferences are detailed.",
     2:"Noticeably softer everywhere — her hips generous, her belly rounding out the wrap dress. She laughs about everything. She's your biggest advocate.",
     3:"Gloriously fat, openly and happily. She has stopped noticing because she stopped caring a long time ago. She brings the good wine now.",

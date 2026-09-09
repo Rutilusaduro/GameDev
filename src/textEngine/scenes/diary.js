@@ -1448,7 +1448,7 @@ registerPool('diary.homeroom_queen.c1', [
   { when: { stage: [5] }, text: ['The first Tuesday.'] },
   { when: { stage: [6] }, text: ['Mrs. Monroe came inside today instead of waiting at the window. She sat at the table and had four pieces and talked about everything and laughed at all of it.'] },
   { when: { stage: [7] }, text: ['The group has grown comfortable. Kayla doesn\'t arrive early anymore — she arrives on time, which means she was never uncertain, just cautious. Bri has stopped asking what\'s in things. Mrs.'] },
-  { when: { stage: [8] }, text: ['I realized this week that I taste-test more at school than I do at home, which doesn\'t make nutritional sense unless you factor in that I\'m happy at school. I\'m happy on Tuesdays.'] },
+  { when: { stage: [8] }, text: ['I realized this week that I taste-test more on the floor than I do at home, which doesn\'t make nutritional sense unless you factor in that I\'m happy on Tuesdays. I\'m happy in the hall kitchen.'] },
   { when: { stage: [9] }, text: ['Sofia wore something different today. Not smaller — more comfortable, more expansive, more herself. Mrs. Reyes has stopped tugging at her jacket and I want to note that this is not a small thing.'] },
   { when: { stage: [10] }, text: ['End of term. All six of them in the room at once, which hasn\'t happened since the formal event was established. I made everything.'] },
   { when: {}, text: [
