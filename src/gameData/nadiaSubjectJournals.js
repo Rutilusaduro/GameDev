@@ -1850,66 +1850,147 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
   },
   culinary: {
     intro: [
-      `[placeholder: Nadia intro — why she chose the culinary resident]`,
-      `[placeholder: Nadia intro — why she chose the culinary as her subject (Enormous/Colossal)]`,
-      `[placeholder: Nadia intro — why she chose the culinary as her subject (Blob)]`,
+      `Dear Journal,
+
+I've started my private hall log on appetite dynamics and I've chosen Reneé as my subject. She's the culinary arts junior — flour always dusting her sleeves or collar, tasting everything like she's listening for a chord. She already has that naturally rotund build: soft round belly, thick capable arms, wide hips, and full breasts that tug at her apron ties. She talks about food the way other people talk about music — tempo, balance, harmony — and her whole body answers every bite like an instrument. There's something so arousing about a girl who lives in the kitchen and already carries weight so beautifully. I want to see her swell until every recipe she tests lands on her body like a second course. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to press my fat against hers and feel her grow fuller for me.
+
+— Nadia`,
+      `Dear Journal,
+
+I'm starting my private hall log on appetite dynamics with Reneé as the subject. She's the culinary arts junior, always dusted with flour somewhere on her clothes, closing her eyes when she tastes like she's hearing a note resolve. Her rotund figure is already gorgeous — round belly, thick thighs, full heavy breasts, soft arms made for kneading dough. She describes flavor in rhythm and texture, and I can't stop thinking about how perfect she'd be with so much more of her to press against. My own colossal body spreads heavily across the bed as I write this, rolls everywhere, belly hanging in thick layers. I'm already obsessed. This log is the perfect excuse to make her swell until she's a kitchen goddess of soft fat. I need to feel her growing curves squish against mine. I want her heavier than I ever managed to become.
+
+— Nadia`,
+      `Dear Journal,
+
+I'm beginning my official hall observation log on appetite dynamics with Reneé as the subject. She's the culinary arts junior, flour on her cuffs, sensory and precise, talking about salt and fat like they're notes in a score. She already has that naturally rotund build — soft belly, wide hips, thick thighs, full breasts — but I know what she needs to become. This log is mostly a front now. I already understand appetite completely through my own body — an immobile, overflowing blob of fat that spreads across my reinforced bed in every direction, rolls cascading endlessly, my belly so vast it completely pins me down and smothers everything. Growing any more myself feels nearly impossible, so I will live vicariously through her. I'm going to turn this flour-dusted sensory cook into something truly enormous until her fat can slap and press against every inch of mine. I can't wait.
+
+— Nadia`,
     ],
     entries: [
       [
-        `[placeholder: Nadia's notes — culinary subject at Slight — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Slight — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Slight — Nadia at Blob]`,
+        `Reneé came by tonight still looking like her usual rotund self, flour streaked across her apron and one cheek. Her soft belly and full breasts looked so inviting under her chef's coat. I kept the feeding gentle but steady — rich pasta, garlic bread, and layered desserts she described as "too sweet in the top register." By the end her belly was nicely rounded and tight.
+
+When I hugged her goodbye, my heavy soft gut squished firmly into her softer middle. The contrast felt amazing. I pressed my massive tits against her already full chest, smothering her slightly while holding her close. She hummed something about "good mouthfeel" and hugged me back. Feeling her natural roundness against my fat made me so excited for how much more of her there will be soon. I love that she already lives for taste — I just want to enhance every curve.`,
+        `Reneé came over tonight still looking too lean for a girl who belongs in a kitchen. Her rotund softness is nice, but she needs so much more volume. I fed her without mercy — huge plates of pasta, bread, shakes, and cake until her belly was swollen tight and she was groaning on every breath.
+
+Afterwards I pulled her tightly against my colossal body. My enormous belly completely swallowed her softer middle, heavy fat rolling over and smothering her. I shoved her face deep between my massive tits and held her there while I rubbed her overstuffed stomach. She whispered that the fullness had "too much bass, not enough melody yet." Feeling how small she still is only makes me more determined. She has to grow faster. I told her how good she'll look when there's so much more of her pressing back against me. I'm already soaked just thinking about it.`,
+        `Reneé came by tonight still looking far too slim for my liking. Her soft belly and full breasts are lovely, but she needs so much more. I fed her heavily from my bed, guiding her to eat huge portions without stopping until her belly was swollen round and she could barely sit up.
+
+I had her climb onto the bed and sink into my enormous blob. My vast belly rose like a mountain beside her as I pulled her close, letting her smaller frame disappear into my warm, heavy fat. I buried her face deep between my gigantic pillowy tits, smothering her while I rubbed her bloated stomach with what little movement I have left. She mumbled about "the finish" hitting all at once. Feeling how small she still is against me intensifies everything. She has to grow much bigger for both of us. I whispered how incredible it will feel when there's so much more of her pressing and slapping against my body. I'm experiencing this all through her now.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Slim — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Slim — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Slim — Nadia at Blob]`,
+        `Reneé returned today. Her belly is staying fuller longer after our sessions and her thick thighs rub together a little more. That rotund kitchen figure is starting to look even cushier, flour still dusting her sleeves like always.
+
+After feeding her extra helpings until she was content and full, I pulled her into a long hug. My fat belly molded heavily over hers, warm and possessive, while I buried my face between her full breasts. They felt so pillowy already. I rubbed her back and whispered how good she was doing for the hall log. She said the session had "good structure, needs more body." The thought of turning her naturally round figure even softer and heavier against my own body is getting me wet. She has this focused, sensory vibe that makes corrupting her feel extra delicious.`,
+        `Reneé's belly is staying fuller longer now, and her thighs rub together more when she walks. That sweet, rotund figure is finally starting to yield.
+
+I kept her here longer tonight. I laid her on top of me so our bodies could press together. My huge gut molded heavily over hers, warm and possessive, while I buried my face between her full breasts. They felt even softer already. I groped her thickening ass and thighs, squeezing the new plushness. She let out those low, pleased sounds she makes when a sauce finally comes together. I told her how right this feels. My obsession is growing stronger every session — I need her to outgrow what I am.`,
+        `Reneé's stomach stays rounded and full for hours after feeding, and her thighs brush together more noticeably. That rotund kitchen figure is finally starting to soften.
+
+I kept her longer tonight. I made her lie on top of my massive blob, her body sinking deep into my endless fat. Our bellies pressed together — hers newly plush, mine an overwhelming heavy mass that dominated her completely. I held her head down between my enormous tits, surrounding her face in warm sweaty cleavage while I groped her thickening ass and thighs. She whimpered softly and called the pressure "rich, almost too forward." The contrast feels so good, but I need so much more. Every new pound on her brings me intense pleasure and a hint of envy. I'm already imagining how it will feel when she starts to outgrow me.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Soft — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Soft — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Soft — Nadia at Blob]`,
+        `Reneé is softening up nicely. Her belly now has a constant plush roundness, her hips look wider, and her breasts seem even heavier under her flour-dusted apron.
+
+I had her sit on my lap tonight. My thick heavy gut rested right on top of her softer middle, squishing and spreading over her in the most satisfying way. I wrapped my arms around her and buried my face deep between her swelling tits, feeling them pillow against my cheeks while I rubbed her full belly. She let out soft, breathy little sighs and said she could "taste the butter in the air." Having her already-rotund figure starting to yield and press back against my fat feels incredible. I'm getting addicted.`,
+        `Reneé's waist has widened, her belly now has a constant soft roundness, and her breasts rest heavier on her middle.
+
+After stuffing her until she was panting, I pulled her close on the bed. Our bellies squished together — hers warm and giving, mine an overwhelming heavy mass that engulfed her. I shoved her face deep into my enormous cleavage while I jiggled and rubbed her thickening thighs. The way her body is softening against mine feels addictive. She moaned that everything was "hitting in the same key." I love knowing I'm the one making her grow. Every new pound on her makes me wonder how much further she can go.`,
+        `Reneé's waist has widened, her belly now carries a constant soft roundness, and her breasts sit heavier on her middle.
+
+After stuffing her until she was panting and full, I pulled her tightly against my blob form. Our bellies squished together — hers warm and yielding, mine a vast heavy wave that rolled over her. I buried my face deep into her swelling tits, motorboating and licking while grinding what I could against her. Every jiggle sends shivers through my immense body. She gasped that the fullness was "like a chord that won't resolve." I love feeling her expand against me. This is why I chose her — to watch this sensory cook grow heavy in my place. There's already a spark of wonder in me as I think about how big she might become.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Chubby — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Chubby — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Chubby — Nadia at Blob]`,
+        `Reneé's body has grown so much softer. Her belly sways gently when she walks, her ass jiggles more, and her heavy breasts rest noticeably on her middle. Flour still finds her collar no matter how careful she is.
+
+I fed her until she was groaning happily, then laid her against me on the bed. Our bellies pressed together — hers plush and full, mine heavy and sagging — rolling and squishing warmly. I shoved her face gently into my massive cleavage and held her there while I groped her widening hips and thickening thighs. She felt so warm and giving already, humming about "depth and roundness." I love how her rotund figure is expanding and becoming even more huggable against my own fat.`,
+        `Reneé's belly sways when she walks now, her ass jiggles, and her breasts have become large and pendulous.
+
+I kept her pressed against me for hours. Our bellies rolled and folded over each other in thick waves of warm fat as I groped every new inch. I buried my face completely in her heavy tits, licking and motorboating them while grinding us together. She felt so good, but I still need more. There's a strange envy growing in me — she might actually surpass my size one day. The thought fills me with wonder and arousal.`,
+        `Reneé's belly sways when she walks now, her ass jiggles noticeably, and her breasts have become large and pendulous.
+
+I had her spend hours pressed against me. Our bellies slapped and folded over each other in thick waves of warm fat as I held her as tightly as I could. I shoved her face completely into my gigantic tits while I groped her new rolls and heavy thighs. She felt so good sinking into my mass. Since my own growth is almost nothing now, every new curve on her fills me with both pleasure and envy. I wonder if she'll eventually become even bigger than I am. The thought excites me more than I expected.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Plump — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Plump — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Plump — Nadia at Blob]`,
+        `Reneé looks properly plush these days. Her figure has widened with a big soft belly, thick spreading thighs, and heavy breasts that sway beautifully. She still talks about seasoning like it's sheet music.
+
+After feeding I pulled her on top of me. Her belly squashed down onto my heavy gut, fat melding together as I held her close. I buried my face completely in her massive tits, motorboating and licking while squeezing her fat ass. She gasped and held me tighter, murmuring that the pressure was "full-bodied, almost aggressive." The way her enhanced rotund figure jiggles and presses against me is addictive. I kept her there a long time, enjoying every squish.`,
+        `Reneé's figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with every movement.
+
+I had her climb on top of me after feeding. Her belly squashed down onto my colossal one, fat melding together as I wrapped my arms around her. I buried myself deep in her massive tits, moaning into them while squeezing her fat ass. The way she jiggles against me is incredible. She whispered that she could feel every note of it. I kept her there a long time, telling her how perfect she feels getting heavier. I feel a pang of envy mixed with awe — she's pulling ahead of where I ever reached.`,
+        `Reneé's figure has widened dramatically, with a big soft belly, thick spreading thighs, and heavy breasts that sway with every step.
+
+I made her climb on top of my enormous blob after feeding. Her belly squashed down onto my vast one, fat slapping and molding together as I wrapped my thick arms around her. I buried myself deep in her massive tits, licking and moaning into them while squeezing her fat ass and sides. The way she jiggles against me is addictive. She called the sensation "a crescendo I can't stop." I kept her there a long time, telling her how perfect she feels getting heavier. A deep envy is mixing with wonder — she's pulling ahead of where I ever reached.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Heavy — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Heavy — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Heavy — Nadia at Blob]`,
+        `Reneé moves slower now. Her belly hangs and sways, her thighs rub constantly, and her breasts have grown truly massive. She still wipes flour off her hands before she touches me, like habit.
+
+I kept her in bed with me, pressing our bodies together. Our bellies squished and spilled over each other in warm waves of fat. I buried my face deep between her enormous tits, licking the soft flesh while groping her sagging belly and wide hips. She was breathing heavily, calling the warmth "decadent, almost obscene." Feeling this much of her soft, heavy body against my own fat is heaven. I love what I'm turning her into.`,
+        `Reneé moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
+
+Tonight I pulled her fully against my colossal form. Our heavy bellies collided and spilled over each other in soft warm waves. I buried my face between her sagging tits, licking the soft flesh while groping her thickening rolls. Feeling how much more there is of her against me brings both pleasure and envy. She's becoming so massive while I stay stuck like this. It's wonderful and frustrating at the same time. I need her even bigger.`,
+        `Reneé moves slower now, her whole body rippling and swaying, belly hanging lower with each visit.
+
+Tonight I pulled her as close as possible. Our heavy bellies collided and slapped together in soft warm waves, fat spreading and pressing everywhere. I buried my face between her sagging tits, licking the sweaty flesh while groping her thickening rolls. She moaned that the weight was "like standing inside a chord." Feeling how much more there is of her against my immense size brings both bliss and jealousy. She's becoming so massive while I stay stuck like this. It's wonderful and aching at the same time. I need her even bigger.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Fat — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Fat — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Fat — Nadia at Blob]`,
+        `Reneé's body has grown so fat and lush. She has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. Her apron strings haven't fit in weeks.
+
+I had her lie beside me so I could roll partially over her. Our big fat bellies engulfed each other, warm and heavy. I smothered my face in her gigantic tits and rubbed my thick thighs against hers. She moaned softly, holding me like she was plating something precious. The once-rotund kitchen girl is now so heavy and wonderful against my own. I'm completely obsessed.`,
+        `Reneé has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks now.
+
+I kept her in bed for ages, pressing our bodies together. Her big fat belly squished wonderfully under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits, licking while our bellies ground together. The warmth of her body feels amazing, but I can't help feeling envious. She's growing beyond what I managed. It fills me with strange wonder and hunger.`,
+        `Reneé has rolls on her sides, a heavy hanging belly, and breasts that rest on top of her gut. She waddles more than walks.
+
+I kept her in bed for ages. Her big fat belly slapped and squished under my colossal mass, folding and overflowing as we shifted. I buried my face deep into her gigantic sweaty tits, licking while our bellies pressed and rubbed together. She whispered that she felt "braised in her own fat." The warmth and heaviness of her body feels amazing, but the envy is stronger now. She's growing beyond what I managed. It fills me with strange wonder and hunger.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Very Fat — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Very Fat — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Very Fat — Nadia at Blob]`,
+        `Reneé is very fat now. She waddles cutely, everything on her jiggles heavily, and she moves slower now. She still describes bites out loud like she's reviewing a concert.
+
+After feeding her until she was stuffed I pulled her close for hours. Our massive bellies squished and folded together as I held her. I buried myself face-first in her enormous sweaty tits, licking while grinding our lower bodies. The way her fat spills and rolls against me drives me crazy. She still has that focused, sensory energy even as she gets heavier, which makes it hotter.`,
+        `Reneé waddles heavily now, every part of her jiggling and swaying with each step.
+
+After feeding her until she was stuffed I rolled partially over her. Our massive bellies engulfed each other in heavy warm fat. I smothered my face in her enormous tits and rubbed my thick thighs against hers. The way her body yields under mine drives me crazy with lust and envy. She's getting so much bigger than I ever did. I both love it and feel a deep longing.`,
+        `Reneé waddles heavily now, every part of her jiggling and swaying with each movement.
+
+After feeding her until she was stuffed I had her lie beside me. I rolled what I could of my blob over her, our massive bellies engulfing and slapping against each other in heavy warm fat. I smothered my face in her enormous tits and rubbed against her spreading thighs. She called the sensation "a finale that never ends." The way her body yields under mine drives me crazy with lust and envy. She's getting so much bigger than I ever did. I both love it and feel a deep longing.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Enormous — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Enormous — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Enormous — Nadia at Blob]`,
+        `Reneé looks enormous. Her body is covered in heavy rolls and sagging fat. She barely fits comfortably in normal seats anymore. Flour still clings to her sleeves like a signature.
+
+I made her press on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her. I buried my face deep between her gigantic breasts, moaning into them as our fat rolled and squished together. She felt so good covering me. I love how her rotund figure has become this massive landscape of softness.`,
+        `Reneé's body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
+
+I made her press fully on top of me. Her enormous belly smothered mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning as our fat rolled and squished together. The sheer size of her now leaves me in awe and envy. She's outgrowing me so beautifully. I groped every roll, lost in the sensation.`,
+        `Reneé's body is covered in heavy rolls and sagging fat. She barely fits comfortably anywhere anymore.
+
+I had her press fully on top of my blob. Her enormous belly slapped down onto mine in soft heavy warmth while I wrapped my arms around her wide sides. I buried my face deep between her gigantic breasts, moaning as our fat rolled and squished together. She hummed that we were "two courses served at once." The sheer size of her now leaves me in awe and envy. She's outgrowing me so beautifully. I groped every roll, lost in the sensation.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Colossal — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Colossal — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Colossal — Nadia at Blob]`,
+        `Reneé has grown colossal. She's a massive, waddling mountain of soft fat with a huge hanging belly and breasts resting heavily on it. She still closes her eyes when she chews, like she's listening.
+
+We spent a long time with our bodies pressed together. Our colossal bellies folded and spilled over one another in thick waves. I shoved her face into my massive tits while I groped her immense body, squeezing every roll. The feeling of her size against me is pure bliss. Her sensory, culinary personality mixed with all this fat is perfect.`,
+        `Reneé has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
+
+We spent hours with our bodies pressed together. Our colossal bellies folded and spilled over one another in thick waves. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch. Feeling how enormous she's grown fills me with wonder and jealousy. She's becoming what I always wanted to be. I still crave even more from her.`,
+        `Reneé has become a massive waddling mountain of soft fat, belly hanging low and breasts resting heavily on top.
+
+We spent hours with our bodies pressed together. Our colossal bellies slapped and folded over one another in thick waves of fat. I shoved her face into my massive tits while I groped her immense body, squeezing and jiggling every inch I could reach. She whimpered that the pressure was "the loudest flavor she's ever felt." Feeling how enormous she's grown fills me with wonder and jealousy. She's becoming what I always wanted to be. I still crave even more of her.`,
       ],
       [
-        `[placeholder: Nadia's notes — culinary subject at Blob — Nadia at Heavy/Fat/Very Fat]`,
-        `[placeholder: Nadia's notes — culinary subject at Blob — Nadia at Enormous/Colossal]`,
-        `[placeholder: Nadia's notes — culinary subject at Blob — Nadia at Blob]`,
+        `Reneé has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the bed. She's enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The flour-dusted rotund cook I started with has transformed into this perfect helpless mountain of sensory fat.
+
+I had her brought right beside me so our enormous blob bodies could press together completely. Our vast bellies squished and engulfed each other in endless warm heavy waves of fat, rolling and folding as we pushed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides while our bodies melted against one another. She moaned that it was "a whole symphony, all at once." The sensation was overwhelming. I groped whatever I could reach, lost in pure ecstasy. This is everything I wanted when I chose her. She grew so beautifully for me.`,
+        `Reneé has finally become a true blob — completely immobile, an overflowing sea of soft fat spreading across the bed beside mine. She's enormous, with vast rolls cascading everywhere, a belly so huge it pins her down, and breasts like heavy pillows resting on top of her. The sensory culinary girl I chose has transformed into this perfect helpless mountain of fat.
+
+I had her positioned right against me so our enormous bodies could press together completely. Our vast bellies slapped and squished heavily against each other in endless warm waves of fat, rolling, folding, and spilling as we pushed as close as possible. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by soft sweaty flesh on all sides. I felt every inch of her massive body — rolls pressing and jiggling against my own, bellies overwhelming one another. She whispered that she'd "never tasted anything like this." The sensation was overwhelming. I moaned loudly into her cleavage for what felt like hours, groping whatever I could reach. She has outgrown me so completely. It fills me with envy and pure wonder. This is everything I wanted when I chose her. She's perfect now.`,
+        `Reneé has finally become a true blob — completely immobile like me, an overflowing sea of soft fat spreading across the bed right beside mine. She's enormous, with vast rolls cascading in every direction, a belly so huge and heavy it completely pins her down, and breasts like massive heavy pillows resting on top of her. The flour-dusted, sensory culinary girl I chose has been transformed into this perfect, helpless, overflowing mountain of fat, every inch of her soft and yielding.
+
+I had her positioned right against me so our enormous bodies could press together as closely as possible. Our vast bellies slapped heavily against each other in endless warm waves of fat, rolling, folding, spilling, and jiggling with every tiny shift. I felt every inch of her massive form — her thick rolls pressing and slapping into my own, her heavy breasts smothering against my chest, her wide hips and thighs spreading out and merging their softness with mine. She called it "the final movement — no encore, just more." The sensation was overwhelming and intoxicating. I buried my face as deep as I could into her gigantic pillowy tits, surrounded by warm, sweaty, endless flesh on all sides while our bodies molded and squished together. I licked and moaned loudly into her cleavage for what felt like hours, groping and squeezing whatever rolls and folds I could reach with my limited movement. Every slap of fat, every heavy press, every ripple that traveled through her body into mine sent waves of pleasure through me.
+
+She has completely outgrown me. Where I stopped, she kept going, becoming this perfect immobile goddess of fat. The envy I feel is sharp and deep, yet it mixes with pure wonder and arousal. I chose her so I could experience this growth vicariously, and she has given me more than I ever dreamed. She's so much bigger, so much softer, so much more everything than I became. I moaned her name into her tits again and again, lost in the feeling of our colossal bodies slapping and pressing together. This is perfection. This is everything I wanted. She's perfect now.`,
       ],
     ],
   },
+
 };
