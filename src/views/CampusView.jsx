@@ -242,7 +242,7 @@ export function CampusView({
           {portionSaintAvailable && onHuntPortionSaint && (
             <div style={{ ...C.card, borderColor: '#4a3060', marginBottom: 8, padding: '10px 12px' }}>
               <div style={{ fontSize: 11, color: '#c0a0e0', marginBottom: 8, lineHeight: 1.6 }}>
-                Lilith senses the Portion Saint in the dining hall — a possessed liaison counting bites.
+                Lilith senses the Portion Saint in the dining hall — a zealot dining liaison counting bites.
               </div>
               <button type="button" style={{ ...C.btn('#5a2040'), width: '100%', fontSize: 11 }} disabled={ap < 2} onClick={onHuntPortionSaint}>
                 🩸 Lilith hunts the Portion Saint (2 AP) — scarcity −50

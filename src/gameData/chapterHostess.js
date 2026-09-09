@@ -142,7 +142,7 @@ export const HOSTESS_HANGOUTS = {
     },
     {
       title: "Her Menu",
-      intro: (s) => `Reneé is quiet when you sit down. Different quiet.\n\n"I want to cater it myself," she says. "My menu. Full service. I've been building to something like this since I started school."`,
+      intro: (s) => `Reneé is quiet when you sit down. Different quiet.\n\n"I want to cater it myself," she says. "My menu. Full service. I've been building to something like this since freshman year."`,
       choices: [
         { id: "absolutely",  label: "Tell her yes immediately",    result: "She exhales. 'I wasn't sure you'd say yes,' she says. 'I've had the menu drafted for three months.' She opens her phone." },
         { id: "ask_to_see",  label: "Ask to see the menu first",   result: "She hands you her phone. A twelve-item tasting menu with ingredient sourcing notes. She's been doing this quietly. 'Still three months of prep,' she says." },

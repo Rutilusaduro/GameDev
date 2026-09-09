@@ -755,7 +755,7 @@ registerPool('diary.body_positive_greek.c2', [
 { when: { stage: [5] }, text: ['I considered this a signal.'] },
   { when: { stage: [6] }, text: ['We fill every slot in the pledge class.'] },
   { when: { stage: [7] }, text: ['The irony was appreciated.'] },
-  { when: { stage: [8] }, text: ['When it was over and the applause had settled, a chapter president from another school came up and said: \'We\'ve been doing the weigh-ins wrong. \' I didn\'t say anything. I just nodded.'] },
+  { when: { stage: [8] }, text: ['When it was over and the applause had settled, a chapter president from another campus came up and said: \'We\'ve been doing the weigh-ins wrong. \' I didn\'t say anything. I just nodded.'] },
   { when: { stage: [9] }, text: ['A footnote in a document that governs thousands of chapters. Not nothing.'] },
   { when: { stage: [10] }, text: ['I made something that makes things. Enough.'] },
   { when: {}, text: [

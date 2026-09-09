@@ -890,6 +890,20 @@ check('gossip-dinner-resident-framing', () => {
   assert.doesNotMatch(content, /hope every girl on that squad/i);
 });
 
+check('campus-no-possession-framing', () => {
+  const campus = read('src/views/CampusView.jsx');
+  const opposition = read('src/gameData/oppositionCampus.js');
+  const hostess = read('src/gameData/chapterHostess.js');
+  const diary = read('src/textEngine/scenes/diary.js');
+  assert.doesNotMatch(campus, /\bpossessed\b/i);
+  assert.doesNotMatch(opposition, /\bpossessed\b/i);
+  assert.match(opposition, /zealot dining liaison/);
+  assert.doesNotMatch(hostess, /started school/i);
+  assert.match(hostess, /since freshman year/);
+  assert.doesNotMatch(diary, /another school/i);
+  assert.match(diary, /another campus/);
+});
+
 check('floor-event-hall-target', () => {
   const floor = read('src/gameData/floorEvents.js');
   const helpers = read('src/utils/gameHelpers.js');

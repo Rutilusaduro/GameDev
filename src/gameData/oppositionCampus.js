@@ -15,7 +15,7 @@ const VANCE_LINES = {
 
 const PORTION_SAINT_LINES = [
   '🕯️ The Portion Saint lingers by the serving line — thin, radiant, counting every tray.',
-  '🕯️ A possessed dining liaison whispers portion sizes. Lilith would recognize the hunger in her eyes.',
+  '🕯️ A zealot dining liaison whispers portion sizes. Lilith would recognize the hunger in her eyes.',
 ];
 
 const MIRROR_FAST_LINES = [
