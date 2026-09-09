@@ -124,7 +124,16 @@ export function TierUpModal({ setStudents, setTierUpModal, tierUpModal, soundEna
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled]);
   return(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500}}>
+          <div
+          className="hall-pass-modal-in"
+          style={{
+            ...C.modal,
+            maxWidth: 500,
+            background: 'linear-gradient(165deg, rgba(12,6,24,0.98), rgba(28,10,48,0.95), rgba(10,6,20,0.98))',
+            border: `1px solid ${tierUpModal.newTier.color}60`,
+            boxShadow: `0 16px 48px rgba(0,0,0,0.45), 0 0 28px ${tierUpModal.newTier.color}18`,
+          }}
+        >
             <div style={{fontSize:9,letterSpacing:3,color:tierUpModal.newTier.color,marginBottom:8}}>RELATIONSHIP MILESTONE</div>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
               <span style={{fontSize:26}}>{tierUpModal.newTier.emoji}</span>

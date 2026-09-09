@@ -36,6 +36,58 @@ function floorCheckInModal(page) {
   return page.locator('.hall-pass-modal-in').filter({ hasText: 'FLOOR CHECK-IN' });
 }
 
+async function deskHasBlockingOverlay(page) {
+  const checks = [
+    'NARRATIVE EVENT',
+    'RELATIONSHIP MILESTONE',
+    'FLOOR CHECK-IN',
+    'A THRESHOLD CROSSED',
+    'INTERRUPTION',
+    'THE WEEK IN REVIEW',
+    'HALL REACH EXPANDED',
+    'WEEK PLANNER',
+    'A NEW DIRECTION',
+    'SESSION COMPLETE',
+  ];
+  for (const label of checks) {
+    if (await page.getByText(label).isVisible().catch(() => false)) return true;
+  }
+  return false;
+}
+
+async function drainNarrativeModal(page, { maxTaps = 96 } = {}) {
+  for (let step = 0; step < maxTaps; step += 1) {
+    if (!(await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false))) return;
+    const narrativeModal = page.locator('.hall-pass-modal-in').filter({ hasText: 'NARRATIVE EVENT' });
+    const nextBeat = narrativeModal.getByRole('button', { name: /Tap for next beat/i });
+    if (await nextBeat.isVisible().catch(() => false)) {
+      await nextBeat.click({ force: true });
+      await page.waitForTimeout(30);
+      continue;
+    }
+    const dismissBtn = narrativeModal.getByRole('button', { name: 'Dismiss' }).filter({ hasNotText: /Dismissed/i });
+    if (await dismissBtn.isVisible().catch(() => false)) {
+      await dismissBtn.click({ force: true });
+      return;
+    }
+    const continueBtn = narrativeModal.getByRole('button', { name: 'Continue →' }).first();
+    if (await continueBtn.isVisible().catch(() => false)) {
+      await continueBtn.click({ force: true });
+      return;
+    }
+    await page.waitForTimeout(40);
+  }
+}
+
+/** Loop resolve until known overlays are gone (or pass limit). */
+export async function ensureDeskClear(page, { maxPasses = 20 } = {}) {
+  for (let pass = 0; pass < maxPasses; pass += 1) {
+    await drainNarrativeModal(page);
+    await resolveBlockingUI(page, { maxSteps: 240 });
+    if (!(await deskHasBlockingOverlay(page))) return;
+  }
+}
+
 /** Clear hunger interrupts, milestones, recaps, dorm unlocks, narrative beats. */
 export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
   for (let step = 0; step < maxSteps; step += 1) {
@@ -113,32 +165,31 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
       }
     }
 
+    if (await page.getByText('WEEK PLANNER').isVisible().catch(() => false)) {
+      if (await clickIfVisible(page.getByRole('button', { name: 'Cancel' }))) {
+        acted = true;
+        continue;
+      }
+    }
+
     if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
       const narrativeModal = page.locator('.hall-pass-modal-in').filter({ hasText: 'NARRATIVE EVENT' });
-      for (let beat = 0; beat < 32; beat += 1) {
-        if (await clickIfVisible(narrativeModal.getByRole('button', { name: 'Dismiss' }))) {
-          acted = true;
-          break;
-        }
-        if (await clickIfVisible(narrativeModal.getByRole('button', { name: 'Continue →' }))) {
-          acted = true;
-          break;
-        }
-        const proseBeat = narrativeModal.locator('button').filter({
-          hasNotText: /Tap for next beat|Transcript|Dismiss|Continue/,
-        }).first();
-        if (await proseBeat.isVisible().catch(() => false)) {
-          await proseBeat.click({ force: true });
-          acted = true;
-          await page.waitForTimeout(25);
-          continue;
-        }
+      for (let beat = 0; beat < 48; beat += 1) {
         const nextBeat = narrativeModal.getByRole('button', { name: /Tap for next beat/i });
         if (await nextBeat.isVisible().catch(() => false)) {
           await nextBeat.click({ force: true });
           acted = true;
           await page.waitForTimeout(25);
           continue;
+        }
+        const dismissBtn = narrativeModal.getByRole('button', { name: 'Dismiss' }).filter({ hasNotText: /Dismissed/i });
+        if (await clickIfVisible(dismissBtn)) {
+          acted = true;
+          break;
+        }
+        if (await clickIfVisible(narrativeModal.getByRole('button', { name: 'Continue →' }).first())) {
+          acted = true;
+          break;
         }
         break;
       }
@@ -158,8 +209,11 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
 /** Walk floor check-in modal through choices → End Week (if shown). */
 export async function completeFloorCheckIn(page) {
   for (let step = 0; step < 32; step += 1) {
+    if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
+      await drainNarrativeModal(page, { maxTaps: 128 });
+    }
     if (await page.getByText('RELATIONSHIP MILESTONE').isVisible().catch(() => false)) {
-      await resolveBlockingUI(page, { maxSteps: 12 });
+      await resolveBlockingUI(page, { maxSteps: 24 });
     }
 
     const checkIn = floorCheckInModal(page);
@@ -172,9 +226,9 @@ export async function completeFloorCheckIn(page) {
       return;
     }
 
-    const advance = checkIn.getByRole('button', { name: /Continue →|View Summary →/ });
+    const advance = checkIn.getByRole('button', { name: /Continue →|View Summary →/ }).first();
     if (await advance.isVisible().catch(() => false)) {
-      await advance.click();
+      await advance.click({ force: true });
       continue;
     }
 
@@ -210,7 +264,7 @@ export async function getDisplayedWeek(page) {
 
 /** Dismiss hunger interrupt or narrative modals that block the desk. */
 export async function dismissBlockingModals(page) {
-  await resolveBlockingUI(page);
+  await ensureDeskClear(page, { maxPasses: 24 });
 }
 
 /** Advance via Next Week until target week (inclusive). */
@@ -219,8 +273,24 @@ export async function advanceToWeek(page, targetWeek) {
     const current = await getDisplayedWeek(page);
     if (current >= targetWeek) return current;
 
-    await resolveBlockingUI(page);
-    await page.getByRole('button', { name: '⏩ Next Week (+5 AP)' }).click();
+    let advanced = false;
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      await ensureDeskClear(page, { maxPasses: 24 });
+      if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
+        await drainNarrativeModal(page, { maxTaps: 128 });
+      }
+      const nextWeek = page.getByRole('button', { name: '⏩ Next Week (+5 AP)' });
+      const narrativeOpen = await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false);
+      if (!narrativeOpen) {
+        await nextWeek.click({ timeout: 10_000 });
+        advanced = true;
+        break;
+      }
+      await page.waitForTimeout(120);
+    }
+    if (!advanced) {
+      throw new Error(`Next Week blocked after clear attempts (week ${await getDisplayedWeek(page)})`);
+    }
     await completeFloorCheckIn(page);
     await resolveBlockingUI(page, { maxSteps: 160 });
     await page.waitForTimeout(80);

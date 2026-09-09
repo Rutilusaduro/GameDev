@@ -139,6 +139,8 @@ check('e2e-coverage', () => {
 // ── UI polish hooks ────────────────────────────────────────────
 check('ui-polish-css', () => {
   const css = read('src/index.css');
+  const styles = read('src/styles.js');
+  assert.match(styles, /backdropFilter/i, 'modal overlay must use backdrop blur');
   for (const cls of [
     'hall-pass-view-in', 'ra-wizard-card', 'hall-pass-modal-in', 'hall-unlock-new', 'ra-desk-header',
     'roster-tile-in', 'week-recap-card-in', 'hall-roadmap-card',

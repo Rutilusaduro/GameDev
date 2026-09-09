@@ -27,6 +27,7 @@ import '../src/textEngine/scenes/talkRefusal.js';
 import '../src/textEngine/scenes/talkDiscontent.js';
 import '../src/textEngine/scenes/talkCommandFinish.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
+import { weeklyEventHasModularText } from '../src/gameData/weeklyEventText.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
 import { renderScrutinyTierUp } from '../src/textEngine/scenes/scrutiny/index.js';
 import { renderGroupDinnerReaction } from '../src/textEngine/scenes/dinner/index.js';
@@ -182,6 +183,19 @@ const seasonBeat = renderWeeklyEvent('season_plan_rewrite', swimmer, { week: 6 }
 assertClean(thesisBeat, 'thesis_rewrite bookworm render');
 assertClean(thesisSwimmerBeat, 'thesis_rewrite swimmer render');
 assertClean(seasonBeat, 'season_plan_rewrite render');
+
+for (const ev of NARRATIVE_EVENTS) {
+  if (!weeklyEventHasModularText(ev.id)) continue;
+  for (const student of INIT_STUDENTS.filter((s) => !s.hidden).slice(0, 10)) {
+    for (let sample = 0; sample < 12; sample += 1) {
+      const mock = { ...student, lbs: 120 + sample * 18, lockState: 'open' };
+      const text = renderWeeklyEvent(ev.id, mock, { week: 4 + (sample % 12), v2DepthChance: 1 });
+      assert(text && typeof text === 'string' && text.trim().length > 0, `weekly ${ev.id} empty for ${student.name}`);
+      assert(!/\{weekly\.|\{unresolved|\[(?:weekly|unresolved)\./i.test(text), `weekly ${ev.id} unresolved slot for ${student.name}: ${text.slice(0, 100)}`);
+      assertClean(text, `weekly ${ev.id} ${student.name}`);
+    }
+  }
+}
 
 const floorScene = CLASS_SCENES.find((s) => s.id === 'class_potluck');
 const floorStudent = INIT_STUDENTS[0];
