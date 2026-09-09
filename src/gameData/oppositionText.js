@@ -19,7 +19,7 @@ export function renderOppositionLine(pool, ctx = {}, opts = {}) {
 
 export function oppositionUnlockLine(week) {
   return renderOppositionLine('opposition.aib.unlocked', { week })
-    || 'The Academic Inquiry Board has noticed your class.';
+    || 'The Residence Review Board has noticed your hall.';
 }
 
 export function oppositionProxyLine(proxyKey, week) {

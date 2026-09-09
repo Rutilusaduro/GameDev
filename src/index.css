@@ -2,8 +2,11 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
+@keyframes hallPassViewIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hall-pass-view-in {
+  animation: hallPassViewIn 0.22s ease-out;
 }

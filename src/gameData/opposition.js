@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// OPPOSITION — Academic Inquiry Board & escalation (§29–33)
+// OPPOSITION — Residence Review Board & escalation (§29–33)
 // ═══════════════════════════════════════════════════════════════
 
 import { getStage } from './stages.js';
@@ -305,9 +305,9 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
     case 'faculty_informant':
       if ((opposition.aib.informantShieldWeeks || 0) <= 0) {
         effects.scrutinyDelta += 4;
-        effects.logs.push('📝 Faculty informant escalates Board scrutiny (+4).');
+        effects.logs.push('📝 Staff informant escalates Board scrutiny (+4).');
       } else {
-        effects.logs.push('📝 Informant report filed — faculty testimony shields you.');
+        effects.logs.push('📝 Informant report filed — staff testimony shields you.');
       }
       break;
     case 'student_advocacy': {
@@ -481,7 +481,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
   }
   if (counterId === 'faculty_testimony') {
     next.aib.informantShieldWeeks = 2;
-    return { opposition: next, message: '📎 Faculty testimony on record — informant muted 2 weeks.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: next, message: '📎 Staff testimony on record — informant muted 2 weeks.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'bureaucratic_capture') {
     if (!memberId) {

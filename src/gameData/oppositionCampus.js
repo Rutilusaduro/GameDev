@@ -4,7 +4,7 @@
 
 const VANCE_LINES = {
   health_center: [
-    '👁 Dr. Helena Vance reviews wellness charts in the health center — her pen pauses when she sees your class on the roster.',
+    '👁 Dr. Helena Vance reviews wellness charts in the health center — her pen pauses when she sees your hall on the roster.',
     '👁 Vance confers with a nurse about "concerning BMI trends." She does not look surprised to see you.',
   ],
   faculty_lounge: [
@@ -42,7 +42,7 @@ export function rollAccreditationObserverEvent(nodeId, opposition, rng = Math.ra
   if (rng() > 0.28) return null;
   const name = opposition.proxies.observerName || 'The Regional Observer';
   const lines = [
-    `📋 ${name} takes notes in the lecture hall — accreditation eyes on your class.`,
+    `📋 ${name} takes notes in the lecture hall — accreditation eyes on your hall.`,
     `📋 ${name} compares your syllabus to wellness metrics. The pen never stops.`,
   ];
   return lines[Math.floor(rng() * lines.length)];

@@ -56,7 +56,7 @@ export function ConfrontationModal({
               ? { id: 'leave', label: 'Leave her be for now', intent: 'wait', onClick: onLeave }
               : {
                 id: 'stand',
-                label: `Stand firm — ${withdrawn ? 'let her go' : 'she walks out of your class'}`,
+                label: `Stand firm — ${withdrawn ? 'let her go' : 'she walks off your hall'}`,
                 intent: 'press',
                 onClick: onStandFirm,
               },

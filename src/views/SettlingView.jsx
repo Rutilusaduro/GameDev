@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // THE SETTLING — endgame area for immobile girls (stage 10+).
-// They leave the class roster and live here. No "talk", no dinner,
+// They leave the roster and live here. No "talk", no dinner,
 // no mobile-only singles. Three robust trees: Socialize / Feed / Care,
 // each a 2-click flow (pick tree → pick action).
 // ═══════════════════════════════════════════════════════════════
@@ -91,7 +91,7 @@ export function SettlingListView({ students, week, setSelectedId, setView }) {
       <p style={{ ...C.secT, color: GOLD_DIM, borderColor: `${GOLD}30` }}>The Settling — {settled.length} arrived</p>
       {settled.length === 0 ? (
         <div style={{ ...C.infoBox('rgba(40,28,12,0.3)'), color: '#8a7040', fontStyle: 'italic', textAlign: 'center', padding: 24 }}>
-          No one has settled yet. When a girl grows past mobility, she leaves the class and arrives here — to be kept.
+          No one has settled yet. When a girl grows past mobility, she leaves the roster and arrives here — to be kept.
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(210px,1fr))', gridAutoRows: 'minmax(150px,auto)', gap: 8 }}>

@@ -193,11 +193,11 @@ export const SKILL_TREE = [
 
   { id:"ritual_kitchen", tier:2, cost:150, category:"feeding", label:"🕯️ Ritual Kitchen",
     desc:"A dedicated preparation space for ceremonial feasts — multiple courses, serving rituals, the infrastructure of spectacle.",
-    effect:"Unlocks Feast Rituals: Communion Snack and Class Banquet.",
+    effect:"Unlocks Feast Rituals: Communion Snack and Hall Banquet.",
     passiveBonus:0, apBonus:0, gainMult:0.05, unlocks:["feast_rituals"] },
 
   { id:"embodiment_chamber", tier:2, cost:150, category:"psychology", label:"🌒 Embodiment Chamber",
-    desc:"A quiet annex where the spirit can slip between bodies without the usual cost of focus.",
+    desc:"A quiet annex where you can slip into a resident's perspective without the usual cost of focus.",
     effect:"Resident Ride costs 1 AP instead of 2.",
     passiveBonus:0, apBonus:0, gainMult:0, unlocks:["embodiment_discount"] },
 
@@ -212,7 +212,7 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0.05, unlocks:["echo_resonate"] },
 
   { id:"dream_chamber", tier:3, cost:350, category:"psychology", label:"💤 Dream Chamber",
-    desc:"A rest space tuned for subconscious appetite work — soft light, impossible portions, the spirit walking dreams on demand.",
+    desc:"A rest space tuned for subconscious appetite work — soft light, impossible portions, hunger walking dreams on demand.",
     effect:"Manual Appetite Dream trigger (2 AP).",
     passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dream_manual"] },
 
@@ -509,7 +509,7 @@ export const EVOLVED_SKILL_TREES = {
   salon_appetit:[
     { id:"sa_grace",      tier:1, label:"Hostess Grâce",      cost:20, desc:"+5 relationship per salon evening.",                                         activityRelBonus:5 },
     { id:"sa_menu",       tier:2, label:"Menu Magnifique",    cost:40, desc:"Salon evenings +4 extra lbs.",                                               activityGainBonus:4 },
-    { id:"sa_invite",     tier:3, label:"Invité Spécial",     cost:70, desc:"Scrutiny -2/week. Faculty dine with discretion.",                            weeklyScrutinyReduce:2 },
+    { id:"sa_invite",     tier:3, label:"Invité Spécial",     cost:70, desc:"Scrutiny -2/week. Staff dine with discretion.",                            weeklyScrutinyReduce:2 },
     { id:"sa_double",     tier:4, label:"Double Service",     cost:110, desc:"+6 lbs per salon evening.",                                                 activityGainBonus:6 },
     { id:"sa_reine",      tier:5, label:"Reine du Salon",     cost:160, desc:"+2 passive, scrutiny -2/wk, +6 rel/activity.",                              passiveBonus:2, activityRelBonus:6, weeklyScrutinyReduce:2 },
   ],

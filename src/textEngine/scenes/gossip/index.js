@@ -17,17 +17,17 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 registerPool('gossip.react.notice', [
   { when: {}, text: [
     `She's clocked the change. Hasn't said anything yet.`,
-    `The class updates quietly, without meeting anyone's eyes.`,
+    `The hall updates quietly, without meeting anyone's eyes.`,
   ]},
   { when: { memType: 'scaleBreak' }, weight: 3, text: [
     (ctx) => `${ctx.globals?.memName ?? 'She'} broke the scale this week. The number went around the room before the hour was out.`,
-    (ctx) => `The class registered ${ctx.globals?.memName ?? 'her'} differently after the scale — the way attention shifts when a fact becomes undeniable.`,
+    (ctx) => `The hall registered ${ctx.globals?.memName ?? 'her'} differently after the scale — the way attention shifts when a fact becomes undeniable.`,
     (ctx) => `${ctx.globals?.memName ?? 'She'} doesn't weigh what she weighed. The scale said so. Everyone knows.`,
   ]},
   { when: { memType: 'stageUp' }, weight: 3, text: [
     (ctx) => `${ctx.globals?.memName ?? 'She'} crossed a stage this week. It shows.`,
     (ctx) => `The way ${ctx.globals?.memName ?? 'she'}'s been filling out — it registered on the room before it registered on her.`,
-    (ctx) => `${ctx.globals?.memName ?? 'She'} is bigger than she was. The class has updated its read on her.`,
+    (ctx) => `${ctx.globals?.memName ?? 'She'} is bigger than she was. The hall has updated its read on her.`,
   ]},
 ]);
 
@@ -95,7 +95,7 @@ registerPool('gossip.react.line', [
 // Ambient class awareness — no specific event, no named girl.
 registerPool('gossip.murmur', [
   { when: {}, text: [
-    `The class moves around each other differently now. Everyone's tracking, even when nobody says it.`,
+    `The hall moves around each other differently now. Everyone's tracking, even when nobody says it.`,
     `Glances cross the room — at thighs, at waistbands, at who's going back for seconds. A whole conversation without words.`,
     `She knows the room is watching her. They all know. The watching has become the weather.`,
     `The girls have their own accounting. It runs parallel to whatever you thinks is happening.`,

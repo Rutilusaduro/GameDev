@@ -58,7 +58,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.hold_firm', [
   { when: {}, text: [
     'You do not apologize. Several members look away first.',
     'Abundance named as curriculum. Vance\'s folder feels thinner suddenly.',
-    'You hold the line without flinching. Hunger stays on the syllabus.',
+    'You hold the line without flinching. Hunger stays on the meal plan.',
   ]},
 ]);
 
@@ -170,7 +170,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.result.double_down', [
 registerPoolAutoDecompose('opposition.hearing.emergency.result.absorb', [
   { when: {}, text: [
     'You take the hit. They stay fed.',
-    'Blame absorbed. The class protected at your expense.',
+    'Blame absorbed. The hall protected at your expense.',
     'You accept the scandal so their plates stay full.',
   ]},
 ]);
@@ -201,7 +201,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.ending.scapegoat_survive
 
 registerPoolAutoDecompose('opposition.hearing.emergency.ending.absorb_cost', [
   { when: {}, text: [
-    'You absorb the scandal. The class eats free this month.',
+    'You absorb the scandal. The hall eats free this month.',
     'Personal cost, collective relief. Hunger funded by your reputation.',
     'Your name on the report. Their plates full anyway.',
   ]},

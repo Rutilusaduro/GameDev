@@ -438,7 +438,7 @@ registerPool('echo.v2.depth', [
   ]},
 ]);
 registerPool('gossip.v2.depth', [
-  { when: {}, text: ['The class keeps its own accounting — glances, whispers, appetite noticed before it is named.'] },
+  { when: {}, text: ['The hall keeps its own accounting — glances, whispers, appetite noticed before it is named.'] },
 ]);
 registerPool('resonance.v2.depth', [
   { when: { stageMin: 9 }, text: [
@@ -464,7 +464,7 @@ registerPool('campusDevice.v2.depth', [
 ]);
 registerPool('opposition.v2.depth', [
   { when: { hearingType: 'emergency' }, text: [
-    'Emergency session — every signature waits like a blade. The class holds its breath in the hallway.',
+    'Emergency session — every signature waits like a blade. The hall holds its breath in the hallway.',
     'Scandal made procedural. Vance wants blood on paper before anyone eats again.',
   ]},
   { when: { hearingType: 'removal', hearingPhase: [1, 2] }, text: [

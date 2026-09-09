@@ -18,7 +18,7 @@ registerPool('ritual.communion_snack.depth', [
 
 registerPool('ritual.class_banquet.depth', [
   { when: { stageMin: 8 }, text: [
-    'Courses stack like architecture — soup, bread, mains, desserts refusing refusal. The class eats with ceremonial hunger.',
+    'Courses stack like architecture — soup, bread, mains, desserts refusing refusal. The hall eats with ceremonial hunger.',
     'Banquet scale: many bellies, one rhythm, competitive undertones softening into collective surrender.',
   ]},
   { when: { stageMin: 4 }, text: [
@@ -37,7 +37,7 @@ registerPool('ritual.sacred_gluttony.depth', [
   ]},
   { when: { stageMin: 5 }, text: [
     'Platters like altars. They eat with devotional focus — each swallow consecrated, each belly an offering.',
-    'Ceremony and appetite merge. The class worships at the table and leaves heavier in body and spirit.',
+    'Ceremony and appetite merge. The hall worships at the table and leaves heavier in body and spirit.',
   ]},
   { when: {}, text: [
     'Floor feast: restraint abandoned, food blessed by hunger, the spirit sated on spectacle.',

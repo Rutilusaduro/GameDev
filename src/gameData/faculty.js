@@ -12,7 +12,7 @@ export const FACULTY = [
     desc:"Precise, tweedy, devastatingly well-read. Maintains a strict public persona and a desk drawer of contraband marzipan.",
     tree:{
       hub:{ text:(t,a)=>a>=50
-          ?`Hartley closes her book without marking the page — for you, an honor. "RA. I've been defending your curriculum at meetings again. Sit. There may be marzipan."`
+          ?`Hartley closes her book without marking the page — for you, an honor. "RA. I've been defending your floor program at meetings again. Sit. There may be marzipan."`
           :`Dr. Hartley looks up over her glasses, marking her page with one finger. "RA. To what do I owe the interruption — pleasant as it is."`,
         options:[
           {label:"Ask about her research", next:"research"},
@@ -143,7 +143,7 @@ export const FACULTY = [
           {label:"\"Come sit in on a class sometime.\"", next:"sitIn", affinity:5},
           {label:"Back", next:"hub"},
         ]},
-      sitIn:{ text:()=>`Abara's smile is genuine and a little hungry — intellectually, mostly. "I accept. I'll bring nothing but a notebook and an open mind." She rises, and the chair sighs in a way it didn't last year. "And perhaps an appetite. Word is your classes cater."`,
+      sitIn:{ text:()=>`Abara's smile is genuine and a little hungry — intellectually, mostly. "I accept. I'll bring nothing but a notebook and an open mind." She rises, and the chair sighs in a way it didn't last year. "And perhaps an appetite. Word is your floor caters."`,
         options:[ {label:"Back", next:"hub"} ]},
       noticed:{ text:()=>`She sets the coffee down and gives you the full, unhurried weight of her attention. "I've noticed that refusal behaves strangely around you. People mean to say no and find they've said yes. I've noticed the campus is reorganizing itself around appetite like iron filings around something magnetic." A beat. "And I've noticed I don't feel like reporting any of it. Which is the most interesting data point of all." She picks the coffee back up. "Whatever you are, RA — keep being it where I can watch."`,
         options:[

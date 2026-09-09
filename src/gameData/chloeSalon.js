@@ -172,7 +172,7 @@ export const SALON_EVOLVED_EVENTS = [
     ],
   },
   {
-    title: 'Faculty Drift',
+    title: 'Staff Drift',
     phases: [
       {
         text: (h, s) => `Dr. Mori follows the smell of coq au vin to Chloé's door. She's ${Math.round(s.lbs)} pounds, hostess in black silk, and doesn't pretend surprise. "RA Mori. You may stay for dessert."`,
@@ -190,7 +190,7 @@ export const SALON_EVOLVED_EVENTS = [
       },
     ],
     endings: [
-      { condition: (h) => h.includes('mori_regular'), text: (h, s, gain) => `Faculty knows. ${s.name} is ${Math.round(s.lbs + gain)} pounds and the salon has a reputation.`, gainBonus: 5, relBonus: 10, startsSalon: true },
+      { condition: (h) => h.includes('mori_regular'), text: (h, s, gain) => `Staff knows. ${s.name} is ${Math.round(s.lbs + gain)} pounds and the salon has a reputation.`, gainBonus: 5, relBonus: 10, startsSalon: true },
       { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. Campus murmurs begin.`, gainBonus: 3, relBonus: 7, startsSalon: true },
     ],
   },

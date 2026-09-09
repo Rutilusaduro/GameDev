@@ -9,5 +9,5 @@ registerModuleVariants('memory.self', [{ when: {}, text: [
 
 registerModuleVariants('memory.class', [{ when: {}, text: [
   "Someone else's gain has become lounge furniture — noticed, filed, discussed in glances.",
-  "The class tracks who is changing; nobody pretends otherwise anymore.",
+  "The hall tracks who is changing; nobody pretends otherwise anymore.",
 ] }]);

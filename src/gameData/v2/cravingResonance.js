@@ -6,7 +6,7 @@ import { V2_CONFIG } from './state.js';
 export const RESONANCE_TIERS = [
   { id: 0, label: 'Dormant', minLinks: 0, minClassLbs: 0, passiveBonus: 0, pulseMult: 1.0, desc: 'No resonance web yet.' },
   { id: 1, label: 'Stirring', minLinks: 1, minClassLbs: 0, passiveBonus: 1, pulseMult: 1.15, desc: 'Cravings echo between linked students.' },
-  { id: 2, label: 'Harmonic', minLinks: 2, minClassLbs: 2000, passiveBonus: 2, pulseMult: 1.3, desc: 'The class hums with shared appetite.' },
+  { id: 2, label: 'Harmonic', minLinks: 2, minClassLbs: 2000, passiveBonus: 2, pulseMult: 1.3, desc: 'The hall hums with shared appetite.' },
   { id: 3, label: 'Hive Appetite', minLinks: 3, minClassLbs: 5000, passiveBonus: 4, pulseMult: 1.5, desc: 'One girl eats; they all feel it.' },
 ];
 

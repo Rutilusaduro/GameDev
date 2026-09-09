@@ -272,7 +272,7 @@ registerPool('campus.location', [
   { when: { nodeId: 'gym' }, priority: 2,
     text: ['The juice bar blender never stops during peak hours.', 'A poster advertises "recovery" portions the size of small pets.', 'Someone leaves the treadmill for the smoothie line and does not return.'] },
   { when: { nodeId: 'garden' }, priority: 2,
-    text: ['Fruit trees lean slightly toward the path, as if offering.', 'A greenhouse fan hums. Inside, someone is eating something not on the syllabus.', 'Herbs grow thick along the path — picked clean below, untouched above reach.'] },
+    text: ['Fruit trees lean slightly toward the path, as if offering.', 'A greenhouse fan hums. Inside, someone is eating something not on the meal plan.', 'Herbs grow thick along the path — picked clean below, untouched above reach.'] },
   { when: {}, text: [
     'The campus hums with its usual foot traffic and appetite.',
     'Students drift past carrying food like portable flags.',

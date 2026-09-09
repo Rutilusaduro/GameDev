@@ -46,7 +46,7 @@ export function SalonAppetitModal({
                   style={{ ...C.btn(on ? ACCENT : '#3a2030'), textAlign: 'left', fontSize: 12 }}
                   onClick={() => toggleGuest(g.id)}
                 >
-                  {g.name}{g.scandal ? ' ⚠️' : ''}{g.faculty ? ' · faculty' : ''}
+                  {g.name}{g.scandal ? ' ⚠️' : ''}{g.faculty ? ' · staff' : ''}
                 </button>
               );
             })}

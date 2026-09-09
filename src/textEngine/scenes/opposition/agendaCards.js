@@ -15,7 +15,7 @@ registerPool('opposition.agenda.device_confiscation', [
   { when: {}, text: [
     'Compliance seals a lab device in a gray case. Innovation waits behind a lock.',
     'Martin Orr signs the confiscation order. Your hardware becomes their exhibit.',
-    'A device vanishes for "review." The class feels the gap where invention lived.',
+    'A device vanishes for "review." The hall feels the gap where invention lived.',
     'Orr\'s clipboard wins. Something you built sits in a drawer until they decide otherwise.',
   ]},
 ]);
@@ -32,7 +32,7 @@ registerPool('opposition.agenda.size_review', [
 registerPool('opposition.agenda.wellness_seminar', [
   { when: {}, text: [
     'Mandatory wellness seminar — portion charts, restraint language, appetite treated like illness.',
-    'The auditorium fills with students told to fear fullness. Your class hears the sermon anyway.',
+    'The auditorium fills with students told to fear fullness. Your floor hears the sermon anyway.',
     'Wellness slides flicker on screen. Hunger is framed as a problem the Board can solve.',
     'A seminar on "balance" runs two hours. Nobody mentions how good your catering smells outside.',
   ]},

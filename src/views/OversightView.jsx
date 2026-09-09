@@ -29,7 +29,7 @@ export function OversightView({
         </div>
         <p style={{ fontSize: 13, color: '#bbb', lineHeight: 1.7 }}>
           {actSummary.act.antagonist}. The Board is still dormant — scrutiny whispers, not agendas.
-          Class transformation pressure: {actSummary.classPressure}/100.
+          Hall transformation pressure: {actSummary.classPressure}/100.
         </p>
         {(opposition?.meta?.rumorCount ?? 0) > 0 && (
           <p style={{ fontSize: 11, color: '#907060', fontStyle: 'italic' }}>
@@ -47,7 +47,7 @@ export function OversightView({
   if (!aib?.unlocked) {
     return (
       <div style={{ padding: 24, color: '#888' }}>
-        <p>Administrative oversight is quiet — for now. Scrutiny must reach 25 before the Academic Inquiry Board takes notice.</p>
+        <p>Administrative oversight is quiet — for now. Scrutiny must reach 25 before the Residence Review Board takes notice.</p>
         <button type="button" style={{ ...C.btn('#555'), marginTop: 12 }} onClick={onClose}>← Back</button>
       </div>
     );
@@ -71,7 +71,7 @@ export function OversightView({
       <div style={{ fontSize: 10, letterSpacing: 4, color: '#c44', marginBottom: 8 }}>👁 OVERSIGHT — ACADEMIC INQUIRY BOARD</div>
       <div style={{ fontSize: 11, color: '#a88', padding: '8px 10px', background: '#1a1018', borderRadius: 6, marginBottom: 10, lineHeight: 1.6 }}>
         <strong>Act {actSummary.act.id}</strong> — {actSummary.act.label} · {actSummary.act.antagonist}<br />
-        Class pressure {actSummary.classPressure}/100 · {actSummary.act.scrutinyRole}
+        Hall pressure {actSummary.classPressure}/100 · {actSummary.act.scrutinyRole}
         {opposition.supernatural?.actTriggered && opposition.supernatural.curseQueue?.length > 0 && (
           <span> · {opposition.supernatural.curseQueue.length} active curse(s)</span>
         )}
@@ -248,7 +248,7 @@ export function OversightView({
         </div>
       )}
 
-      <button type="button" style={{ ...C.btn('#555') }} onClick={onClose}>← Back to class</button>
+      <button type="button" style={{ ...C.btn('#555') }} onClick={onClose}>← Back to roster</button>
     </div>
   );
 }

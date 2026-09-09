@@ -85,7 +85,7 @@ export const PHARMACIST_CAMPUS_EVENTS = [
     id: 'wellness_fair',
     target: 'class',
     gain: [2, 5],
-    text: () => `Sophia's wellness branding has reached the student union: free "metabolic support" samples at every table. The line wraps around the building. Your class drifts through it the way water finds low ground — unhurried, thorough, noticeably fuller by evening.`,
+    text: () => `Sophia's wellness branding has reached the student union: free "metabolic support" samples at every table. The line wraps around the building. Your floor drifts through it the way water finds low ground — unhurried, thorough, noticeably fuller by evening.`,
   },
   {
     id: 'dining_portions',

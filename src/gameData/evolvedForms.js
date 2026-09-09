@@ -118,7 +118,7 @@ export const EVOLVED_REACTIONS = {
   ],
   body_positive_greek:[
     "Proposal: end the weigh-in tradition, end the size requirements. One sister voted against. She later apologized.",
-    "New pledges are choosing us because of what we stand for. The class is the largest we've ever had.",
+    "New pledges are choosing us because of what we stand for. The chapter is the largest we've ever had.",
     "National Greek press covered us. The article used the word 'radical' twice. We ordered pizza to celebrate.",
     "Speaking at the national Panhellenic leadership conference. My chapter is in the front row. We fill a row.",
     "The national organization quietly changed its guidance on member wellness. We were mentioned in the notes.",
@@ -2916,7 +2916,7 @@ Daisy watches all of this from the counter, ${Math.round(s.lbs)} pounds and atte
 
 "I wanted to ask," she begins, "about the enrichment activities."`,
           choices:[
-            {id:"deflected_question",label:"Answer warmly and specifically — focus on the academic framing",result:(s)=>`Daisy answers before you can. "Nutritional impact on attention and mood is actually an emerging area in educational research," she says, completely calmly. "The class has been more engaged on Tuesdays than any other day of the week." Mrs. Calloway blinks. "That's... good," she says. She accepts the container Daisy hands her. She eats a piece on the way to her car.`,lbs:4,rel:10,flag:"deflected_question"},
+            {id:"deflected_question",label:"Answer warmly and specifically — focus on the wellness framing",result:(s)=>`Daisy answers before you can. "Nutritional impact on attention and mood is actually an emerging area in residence-life research," she says, completely calmly. "The floor has been more engaged on Tuesdays than any other day of the week." Mrs. Calloway blinks. "That's... good," she says. She accepts the container Daisy hands her. She eats a piece on the way to her car.`,lbs:4,rel:10,flag:"deflected_question"},
             {id:"direct_question",label:"Let Daisy handle it honestly — she deserves to own this",result:(s)=>`"I love feeding them," Daisy says. Plainly, warmly, completely unashamed. Mrs. Calloway stares at her for a full three seconds. Then she says: "Kayla does look forward to Tuesdays." It's not an accusation. It's almost a compliment. The cardigan pulls a little more as she breathes.`,lbs:5,rel:7,flag:"direct_question"},
           ]
         },

@@ -205,7 +205,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
               {/* Drive bar */}
               <div style={{marginBottom:14,padding:"8px 10px",background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_DIM}30`,borderRadius:5}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                  <span style={{fontSize:9,letterSpacing:2,color:tier.color}}>COMPETITIVE SPIRIT · {tier.label.toUpperCase()}</span>
+                  <span style={{fontSize:9,letterSpacing:2,color:tier.color}}>COMPETITIVE DRIVE · {tier.label.toUpperCase()}</span>
                   <span style={{fontSize:9,color:CG_SUBTLE}}>{cgS.spirit}</span>
                 </div>
                 <div style={{height:5,background:"#1a0308",borderRadius:3,overflow:"hidden"}}>

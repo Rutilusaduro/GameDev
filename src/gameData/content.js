@@ -205,7 +205,7 @@ export const STAGE_REACTIONS = {
 
   psych: [
     // Stage 0 ~80 lbs
-    (s) => `Current weight: ${Math.round(s.lbs)} lbs. Significantly underweight. I've noted the physical data but I find I'm more interested in everyone else's numbers right now. The class is full of subjects worth observing. I'm making notes.`,
+    (s) => `Current weight: ${Math.round(s.lbs)} lbs. Significantly underweight. I've noted the physical data but I find I'm more interested in everyone else's numbers right now. The floor is full of subjects worth observing. I'm making notes.`,
     // Stage 1 ~100-135 lbs
     (s) => `${Math.round(s.lbs)} lbs. Within normal range — barely. I eat at my desk while reading. The food is incidental to the reading. I've started a new column in my observation log for appetite-related behaviors. The data is promising.`,
     // Stage 2 ~135-162 lbs

@@ -82,7 +82,7 @@ function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
 export function ClassroomView({ students, ownedClassSkills, onPurchaseClassSkill }) {
   return (
     <div>
-      <p style={C.secT}>🏛 Classroom</p>
+      <p style={C.secT}>🏠 Hall Lounge</p>
       {onPurchaseClassSkill ? (
         <ClassroomSkillsPanel
           students={students}
@@ -91,7 +91,7 @@ export function ClassroomView({ students, ownedClassSkills, onPurchaseClassSkill
         />
       ) : (
         <div style={{ fontSize: 11, color: '#706080', fontStyle: 'italic' }}>
-          Hall lounge upgrades unlock as your class grows.
+          Hall lounge upgrades unlock as your floor fills out.
         </div>
       )}
     </div>

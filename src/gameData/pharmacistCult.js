@@ -19,7 +19,7 @@ export const CULT_DISTRIBUTION_ROUTES = [
   {
     id: 'dorm_captains',
     label: 'Route through dorm captains',
-    desc: 'Wider campus push via trusted intermediaries. Your class feels it first.',
+    desc: 'Wider campus push via trusted intermediaries. Your hall feels it first.',
     apCost: 1,
     exposure: 7,
     circleGrowth: [0, 1],

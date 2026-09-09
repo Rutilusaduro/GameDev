@@ -1026,7 +1026,7 @@ export default function HallPass(){
       setStudents(prev=>{
         let next=prev;
         for(const g of effects.trustGrants){
-          next=next.map(s=>s.id===g.studentId?grantPassiveTrust(s,g.amount):s);
+          next=next.map(s=>s.id===g.studentId?grantPassiveTrust(s,g.amount,unlockedDorms):s);
         }
         return next;
       });
@@ -6919,7 +6919,7 @@ export default function HallPass(){
       return {...x,discontent:bumpDiscontent(x.discontent,DISCONTENT_RIPPLE)};
     }));
     const nm=students.find(s=>s.id===studentId)?.name||'She';
-    push(`🚪 ${nm} walks out of your class. She won't engage until you make it right.`);
+    push(`🚪 ${nm} walks off your hall. She won't engage until you make it right.`);
     if(witnesses>0) setTimeout(()=>push(`😶 The room goes quiet — the others watched her go, and it sits with them.`),180);
     setConfrontation(null);
   };
@@ -7677,7 +7677,7 @@ export default function HallPass(){
   };
 
   const sel=selectedId!==null?students.find(s=>s.id===selectedId):null;
-  // Immobile girls (stage 10+) leave the class roster and live in The Settling.
+  // Immobile girls (stage 10+) leave the roster and live in The Settling.
   const settledStudents=students.filter(s=>getImmobilityTier(s)>=1);
   const mobileStudents=students.filter(s=>getImmobilityTier(s)<1);
   const selSettled=!!sel&&getImmobilityTier(sel)>=1;
@@ -8479,11 +8479,11 @@ export default function HallPass(){
               <span style={{fontSize:9,color:professorProfile.color||"#c0a8e8",letterSpacing:2}}>CRED</span>
             </div>
           )}
-          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Spirit",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
+          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Reach",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
             <div key={l} style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
               <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>
-                {l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":l==="Spirit"?"SPIRIT":"SKILL PTS"}
+                {l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":l==="Reach"?"REACH":"SKILL PTS"}
               </span>
             </div>
           ))}
@@ -8549,7 +8549,7 @@ export default function HallPass(){
       </div>
 
       <div style={C.body}>
-        <div style={C.main}>
+        <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── CLASS VIEW ── */}
           {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}

@@ -340,7 +340,7 @@ registerModuleVariants("enc.owned", [
     `"Buff received," Destiny says, deadpan, pulling the food closer. "Appetite +10. Stack it."`,
   ]},
   { when: { studentId: 6 }, weight: 4, text: [
-    `"Say it like you mean it," Tiffany says, pulling the plate closer. "I eat better when faculty approves."`,
+    `"Say it like you mean it," Tiffany says, pulling the plate closer. "I eat better when my RA approves."`,
   ]},
   { when: { studentId: 8 }, weight: 4, text: [
     `"I was waiting for you to say that," Maya admits. "I eat more when you watch. That's not a complaint."`,
@@ -382,7 +382,7 @@ registerModuleVariants("enc.giveIn", [
     `"This is your fault," Fiona murmurs around the first bite. It sounds like thanks painted in watercolor.`,
   ]},
   { when: { studentId: 6 }, weight: 4, text: [
-    `"Chapter policy," Tiffany says brightly. "Always accept seconds when offered by faculty."`,
+    `"Chapter policy," Tiffany says brightly. "Always accept seconds when offered by staff."`,
   ]},
   { when: { studentId: 8 }, weight: 4, text: [
     `Maya exhales — surrender and relief braided — and takes another bite before the protest finishes.`,

@@ -95,7 +95,7 @@ registerPool('memory.class', [
     `The girls keep a quiet eye on how the others are changing.`,
   ]},
   { when: { memType: 'scaleBreak' }, weight: 3, text: [
-    (ctx) => `The class still hasn't stopped talking about ${ctx.globals?.memName ?? 'one of the others'} and the scale.`,
+    (ctx) => `The hall still hasn't stopped talking about ${ctx.globals?.memName ?? 'one of the others'} and the scale.`,
   ]},
   { when: { memType: 'stageUp' }, weight: 3, text: [
     (ctx) => `Everyone's noticed how much ${ctx.globals?.memName ?? 'one of the others'} has filled out lately.`,

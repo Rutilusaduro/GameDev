@@ -23,13 +23,13 @@ registerModuleVariants("res.pulse.depth", [{ when: {}, weight: 3, text: ["Surge 
 registerModuleVariants("res.surge.depth", [{ when: {}, weight: 3, text: ["Appetite travels the wire between them — invisible, hungry, impossible to unfeel."] }]);
 registerModuleVariants("res.pulse", [{ when: {}, weight: 3, text: ["Surge builds like weather. Mass answers mass through the link."] }]);
 registerModuleVariants("res.surge", [{ when: {}, weight: 3, text: ["The resonance hums. Hunger shared before it is confessed."] }]);
-registerModuleVariants("ritual.communion_snack.depth", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The class eats with ceremonial hunger.", "The ritual lingers after plates empty — butter, surrender, spirit pleased."] }]);
+registerModuleVariants("ritual.communion_snack.depth", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger.", "The ritual lingers after plates empty — butter, surrender, appetite pleased."] }]);
 registerModuleVariants("ritual.class_banquet.depth", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites.", "Bedside tribute — food carried to warm altars that cannot travel."] }]);
-registerModuleVariants("ritual.sacred_gluttony.depth", [{ when: {}, weight: 3, text: ["Ceremony complete. Bellies remember. Appetite consecrated.", "Courses stack like architecture. The class eats with ceremonial hunger."] }]);
+registerModuleVariants("ritual.sacred_gluttony.depth", [{ when: {}, weight: 3, text: ["Ceremony complete. Bellies remember. Appetite consecrated.", "Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.leviathan_vigil.depth", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites.", "Bedside tribute — food carried to warm altars that cannot travel."] }]);
-registerModuleVariants("ritual.communion_snack.beat", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, spirit pleased."] }]);
+registerModuleVariants("ritual.communion_snack.beat", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, appetite pleased."] }]);
 registerModuleVariants("ritual.class_banquet", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
-registerModuleVariants("ritual.sacred_gluttony", [{ when: {}, weight: 3, text: ["Ceremony complete. Bellies remember. Appetite consecrated.", "Courses stack like architecture. The class eats with ceremonial hunger."] }]);
+registerModuleVariants("ritual.sacred_gluttony", [{ when: {}, weight: 3, text: ["Ceremony complete. Bellies remember. Appetite consecrated.", "Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.leviathan_vigil", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
 registerModuleVariants("echo.capture.depth", [{ when: {}, weight: 3, text: ["The moment returns warmer — appetite sharper, body more present than memory promised.", "Archive replay: fullness intact, growth undeniable, shame absent."] }]);
 registerModuleVariants("echo.replay.depth", [{ when: {}, weight: 3, text: ["You return to the moment. Her belly still sways in archive-physics.", "The echo replays fuller — heat, weight, the sound of satisfaction after thirds."] }]);
@@ -84,4 +84,4 @@ registerModuleVariants("evolved.feedee.v2.depth", [{ when: {}, weight: 3, text: 
 registerModuleVariants("evolved.machine.v2.depth", [{ when: {}, weight: 3, text: ["Inventor inside invention — appetite the final spec.", "Flesh and firmware meshed. Hunger engineered outward from stillness."] }]);
 registerModuleVariants("evolved.pharmacist.v2.depth", [{ when: {}, weight: 3, text: ["Compound hunger saturates campus. Wellness rhetoric surrenders to warmth.", "Batch cooling. She tasted dose one herself — data starts inside."] }]);
 registerModuleVariants("evolved.gainer.v2.depth", [{ when: {}, weight: 3, text: ["Spreadsheet and stomach aligned. Optimization succeeded beyond spec.", "Competitive gainer evolution — shame benched, appetite peer-reviewed."] }]);
-registerModuleVariants("evolved.homeroomQueen.v2.depth", [{ when: {}, weight: 3, text: ["Classroom as court. Appetite as curriculum. Butter as diplomacy.", "Parents fed. Curriculum optional. Daisy smiling at center."] }]);
+registerModuleVariants("evolved.homeroomQueen.v2.depth", [{ when: {}, weight: 3, text: ["Hall kitchen as court. Appetite as curriculum. Butter as diplomacy.", "Parents fed. Curriculum optional. Daisy smiling at center."] }]);

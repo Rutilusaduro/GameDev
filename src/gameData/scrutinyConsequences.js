@@ -48,6 +48,6 @@ export function weeklyScrutinyNudge(scrutiny, tierId, opposition) {
     return { message: `👁 AIB telegraph: ${next.label} resolves week ${next.resolvesWeek}.`, scrutinyDelta: 0 };
   }
   if (tierId >= 3) return { message: '⚠️ Administration has opened a formal review. Public demonstrations are risky this week.', scrutinyDelta: 0 };
-  if (tierId >= 2) return { message: '📋 Faculty whispers about your class. Keep a lower profile.', scrutinyDelta: 0 };
+  if (tierId >= 2) return { message: '📋 Staff whispers about your floor. Keep a lower profile.', scrutinyDelta: 0 };
   return null;
 }

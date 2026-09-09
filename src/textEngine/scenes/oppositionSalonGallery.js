@@ -7,7 +7,7 @@ registerPool('opposition.act.rumor', [
 ]);
 
 registerPool('opposition.aib.unlocked', [
-  'The Academic Inquiry Board has noticed your hall. Agendas queue. Resolve bends.',
+  'The Residence Review Board has noticed your hall. Agendas queue. Resolve bends.',
   'Scrutiny opens doors — the wrong kind. Five members watch from polished tables.',
 ]);
 

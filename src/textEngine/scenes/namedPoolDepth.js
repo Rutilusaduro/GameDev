@@ -5,8 +5,8 @@ import { registerModuleVariants } from '../engine.js';
 
 registerModuleVariants("bodyType.desc", [{ when: {}, weight: 3, text: ["{word.movement}", "{word.size}"] }]);
 registerModuleVariants("clothing.desc", [{ when: {}, weight: 3, text: ["{word.garment.top}", "{word.garment.waist}"] }]);
-registerModuleVariants("opposition.aib.unlocked", [{ when: {}, weight: 3, text: ["Institutional teeth find language for appetite — folders thick, concern performed.", "Vance taps once. Cooperation expected. Your class feels the room lean."] }]);
-registerModuleVariants("opposition.aib.open", [{ when: {}, weight: 3, text: ["Vance taps once. Cooperation expected. Your class feels the room lean.", "Garden candles outside; dinner smells inside. Restraint flickers, appetite wins."] }]);
+registerModuleVariants("opposition.aib.unlocked", [{ when: {}, weight: 3, text: ["Institutional teeth find language for appetite — folders thick, concern performed.", "Vance taps once. Cooperation expected. Your hall feels the room lean."] }]);
+registerModuleVariants("opposition.aib.open", [{ when: {}, weight: 3, text: ["Vance taps once. Cooperation expected. Your hall feels the room lean.", "Garden candles outside; dinner smells inside. Restraint flickers, appetite wins."] }]);
 registerModuleVariants("opposition.proxy.ascetic_circle", [{ when: {}, weight: 3, text: ["Garden candles outside; dinner smells inside. Restraint flickers, appetite wins."] }]);
 registerModuleVariants("supernatural.act.open", [{ when: {}, weight: 3, text: ["Runes glow. Scarcity arrives wearing wellness language like a crown.", "Skin too tight on memory-mass. Luminous hunger beneath, honest and enormous."] }]);
 registerModuleVariants("supernatural.thinReveal", [{ when: {}, weight: 3, text: ["The hollow act flickers — famine language failing against real appetite.", "Skin too tight on memory-mass. Luminous hunger beneath, honest and enormous."] }]);
@@ -20,12 +20,12 @@ registerModuleVariants("emb.action.mirror_confession", [{ when: {}, weight: 3, t
 registerModuleVariants("emb.action.text_ra", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register."] }]);
 registerModuleVariants("emb.action.roommate_tempt", [{ when: {}, weight: 3, text: ["Fullness gathers while shame schedules a late arrival."] }]);
 registerModuleVariants("emb.action.public_eating", [{ when: {}, weight: 3, text: ["Crumbs, wrappers, evidence. The body keeps score warmly."] }]);
-registerModuleVariants("ritual.generic.depth", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The class eats with ceremonial hunger."] }]);
+registerModuleVariants("ritual.generic.depth", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.communion_snack", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, spirit pleased.", "Shared plate, shared heat — intimacy measured in bites."] }]);
-registerModuleVariants("ritual.communion_snack.beat", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The class eats with ceremonial hunger."] }]);
+registerModuleVariants("ritual.communion_snack.beat", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.communion_snack.after", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, spirit pleased."] }]);
 registerModuleVariants("ritual.class_banquet", [{ when: {}, weight: 3, text: ["The ritual lingers after plates empty — butter, surrender, spirit pleased."] }]);
-registerModuleVariants("ritual.leviathan_vigil", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The class eats with ceremonial hunger."] }]);
+registerModuleVariants("ritual.leviathan_vigil", [{ when: {}, weight: 3, text: ["Courses stack like architecture. The hall eats with ceremonial hunger."] }]);
 registerModuleVariants("ritual.generic", [{ when: {}, weight: 3, text: ["Shared plate, shared heat — intimacy measured in bites."] }]);
 registerModuleVariants("echo.type.stage_up.depth", [{ when: {}, weight: 3, text: ["Fabric surrendered. Appetite did not. The echo preserves both."] }]);
 registerModuleVariants("echo.type.weigh_in.depth", [{ when: {}, weight: 3, text: ["Immobile and content — vastness settled, food brought to her."] }]);

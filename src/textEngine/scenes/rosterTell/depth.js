@@ -15,6 +15,6 @@ registerModuleVariants('roster.ecologyReport.neglected', [{ when: {}, text: [
 ] }]);
 
 registerModuleVariants('roster.ecologyReport', [{ when: {}, text: [
-  'The class ecology shifts week to week — who gets fed, who gets spoken to, who starts to pull ahead.',
+  'The hall ecology shifts week to week — who gets fed, who gets spoken to, who starts to pull ahead.',
   'Attention in the room has its own weather; this week it settled somewhere specific.',
 ] }]);

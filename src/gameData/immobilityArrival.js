@@ -2,7 +2,7 @@
 // ═══════════════════════════════════════════════════════════════
 // IMMOBILITY ARRIVAL — "The Settling": the weight endgame.
 //
-//   • Settling area  — girls at stage 10+ leave the class roster and live here.
+//   • Settling area  — girls at stage 10+ leave the roster and live here.
 //                      Three robust actions (Socialize / Feed / Care For), each
 //                      with a sub-menu (2-click flow). No Talk, no dinner.
 //   • SETTLING_ACTIONS — full 3-tree data model. Care subs are dynamic (static
