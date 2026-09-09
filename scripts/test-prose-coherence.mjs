@@ -32,6 +32,9 @@ import { renderMemoryClass } from '../src/textEngine/scenes/memory/index.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
 import '../src/textEngine/scenes/v2/resonance/depth.js';
 import '../src/textEngine/scenes/earlyGain/personas.js';
+import { renderWeighInIntro, renderWeighInReaction } from '../src/textEngine/scenes/weighIn/index.js';
+import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
+import { renderAscensionCeremony } from '../src/textEngine/scenes/ascension/index.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -334,4 +337,23 @@ const resCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 16, globals: 
 const resSurge = render('{res.surge.depth}', resCtx)?.trim();
 if (resSurge) assertClean(resSurge, 'resonance surge depth');
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus OK');
+for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie']) {
+  const subject = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
+  const intro = renderWeighInIntro(subject, 10, false, { week: 10 });
+  const reaction = renderWeighInReaction(subject, 10, { week: 10, bigScale: false });
+  if (intro) assertClean(intro, `weigh-in intro ${archetype}`);
+  if (reaction) assertClean(reaction, `weigh-in reaction ${archetype}`);
+}
+
+for (const [type, phaseIdx] of [['removal', 0], ['removal', 1], ['emergency', 0]]) {
+  const hearingLine = renderHearingPhase(type, phaseIdx, swimmer, 12);
+  if (hearingLine) assertClean(hearingLine, `hearing ${type} phase ${phaseIdx}`);
+}
+
+const ascensionLine = renderAscensionCeremony(
+  { ...swimmer, id: swimmer.id, lbs: 520, ascensionPending: { formId: 'serena' } },
+  16,
+);
+if (ascensionLine) assertClean(ascensionLine, 'ascension ceremony render');
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in OK');

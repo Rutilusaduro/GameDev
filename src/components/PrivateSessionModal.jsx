@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage, getTier } from '../gameData/sessions.js';
 import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFeedingAppetiteNote } from '../gameData/feedingSession.js';
 
-export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent }){
+export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent, soundEnabled = true }){
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, privateSession?.student?.id]);
         const ps=privateSession;
     const s=liveStudent||ps.student;
     const capOpts={capacityBonus:ps.capacityBonus||0,toleranceBuffer:ps.toleranceBuffer||0};
@@ -20,7 +23,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
     const availableVenueList=PRIVATE_VENUES.filter(v=>tier.id>=v.minTier);
         return(
           <div style={C.overlay}>
-            <div style={{...C.modal,maxWidth:640,padding:20}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,padding:20}}>
 
               {/* Header */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>

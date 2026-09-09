@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { REMOVAL_HEARING, EMERGENCY_HEARING, pickHearingEnding } from '../gameData/oppositionHearings.js';
 import { getSupernaturalHearingFlags } from '../gameData/supernaturalForms.js';
 import { renderHearingPhase } from '../textEngine/scenes/opposition/index.js';
@@ -10,7 +12,9 @@ export function OppositionHearingModal({
   week = 1,
   onChoice,
   onClose,
+  soundEnabled = true,
 }) {
+  useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, hearingState?.type, hearingState?.phaseIdx]);
   if (!hearingState) return null;
   const def = hearingState.type === 'emergency' ? EMERGENCY_HEARING : REMOVAL_HEARING;
   const student = hearingState.studentId != null ? students.find((s) => s.id === hearingState.studentId) : null;
@@ -36,7 +40,7 @@ export function OppositionHearingModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 380 }}>
-      <div style={{ ...C.modal, maxWidth: 580, background: 'linear-gradient(160deg,#0a0408,#1a0810,#0a0408)', border: '1px solid #8b304050', maxHeight: '88vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 580, background: 'linear-gradient(160deg,#0a0408,#1a0810,#0a0408)', border: '1px solid #8b304050', maxHeight: '88vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#c44', marginBottom: 6 }}>👁 {def.title.toUpperCase()}</div>
         {advocate && hasAdvocatePath && !done && (
           <div style={{ fontSize: 10, color: '#8090a8', marginBottom: 8 }}>

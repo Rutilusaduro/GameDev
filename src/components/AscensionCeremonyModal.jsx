@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { TextFlagToolbar } from './TextFlagToolbar.jsx';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
 import { getAscensionFormForStudent } from '../gameData/ascension/forms.js';
@@ -18,7 +20,9 @@ export function AscensionCeremonyModal({
   scrollback,
   onScrollbackPush,
   instantText,
+  soundEnabled = true,
 }) {
+  useEffect(() => { playHallPassSound('unlock', soundEnabled); }, [soundEnabled, student?.id]);
   if (!student) return null;
   const form = getAscensionFormForStudent(student);
   const stateLine = buildStateLine(
@@ -29,6 +33,7 @@ export function AscensionCeremonyModal({
   return (
     <div style={{ ...C.overlay, zIndex: 450 }} role="dialog" aria-modal="true" aria-labelledby="ascension-title">
       <div
+        className="hall-pass-modal-in"
         style={{
           ...C.modal,
           maxWidth: 620,
