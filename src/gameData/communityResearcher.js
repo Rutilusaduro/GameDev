@@ -520,7 +520,7 @@ export const HAVE_A_CHAT_SCENES = [
       {
         text: (h) => `AD Harmon's office has plants everywhere. She offers tea before Cassidy has sat down.\n\n"I want to support this season plan. The argument is important and the data is real." She sets her cup down. "Help me do that. Rivera needs something she can point to. Give me something I can take back to her."\n\nShe waits.`,
         choices: [
-          { id: 'consent_claim', label: '"All subjects were willing participants."' },
+          { id: 'consent_claim', label: '"All residents were willing participants."' },
           { id: 'ethics_appendix', label: '"I\'ll write a full consent and ethics appendix."' },
         ],
       },

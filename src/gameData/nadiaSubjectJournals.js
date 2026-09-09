@@ -9,7 +9,7 @@ export const NADIA_SUBJECT_JOURNALS = {
     intro: [
       `Dear Journal,
 
-I’ve officially started my private hall log on appetite dynamics. After considering several options, I chose Brittany as my subject. She’s the energetic cheerleader with that classic hourglass figure — tiny waist, wide hips, thick thighs, and full perky breasts that bounce with every step. She’s still slim and athletic right now, and there’s something so intriguing about the idea of slowly changing a resident like her. I want to explore how her mind shifts as her body softens and swells. Personally... I’m excited by the thought of our bodies pressing together as she grows. My own heavy belly and thick rolls already rest heavily on my lap as I write this. I can’t wait to feel her changing against me.
+I’ve officially started my private hall log on appetite dynamics. After considering several options, I chose Brittany for my hall log. She’s the energetic cheerleader with that classic hourglass figure — tiny waist, wide hips, thick thighs, and full perky breasts that bounce with every step. She’s still slim and athletic right now, and there’s something so intriguing about the idea of slowly changing a resident like her. I want to explore how her mind shifts as her body softens and swells. Personally... I’m excited by the thought of our bodies pressing together as she grows. My own heavy belly and thick rolls already rest heavily on my lap as I write this. I can’t wait to feel her changing against me.
 
 — Nadia`,
       `Dear Journal,
@@ -173,7 +173,7 @@ I had her positioned right against me so our enormous blob bodies could melt tog
     intro: [
       `Dear Journal,
 
-I’ve started my private hall log on appetite dynamics, and I’ve chosen Cassidy as my subject. She’s the varsity swimmer — always buried in lane splits on the pool deck, swim cap pushed back, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a resident like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this lean swimmer into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
+I’ve started my private hall log on appetite dynamics, and I’ve chosen Cassidy for my hall log. She’s the varsity swimmer — always buried in lane splits on the pool deck, swim cap pushed back, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a resident like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this lean swimmer into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -335,7 +335,7 @@ I had her positioned right against me so our enormous bodies could press togethe
     intro: [
       `Dear Journal,
 
-I’ve started my private hall log on appetite dynamics, and I’ve chosen her as my subject. She’s the classic bookworm — always buried in thick novels in the common room, wearing oversized sweaters, glasses perched on her nose, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a resident like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this quiet reader into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
+I’ve started my private hall log on appetite dynamics, and I’ve chosen her for my hall log. She’s the classic bookworm — always buried in thick novels in the common room, wearing oversized sweaters, glasses perched on her nose, quiet and thoughtful. Her body is so straight and flat right now: narrow shoulders, almost no chest, slim hips, and long legs with very little curve. There’s something fascinating about picking a resident like her. She’s so cerebral, so disconnected from her own body. I want to see how her mind reacts when that flat figure starts to soften and swell. Personally, the idea of turning this quiet reader into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -497,7 +497,7 @@ I had her positioned right against me so our enormous bodies could press togethe
     intro: [
       `Dear Journal,
 
-I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Kylie as my subject. She’s the classic influencer — always taking selfies, posting outfit videos, and obsessing over her image. She has a stunning hourglass figure: tiny waist, wide hips, thick thighs, and full perky breasts that she loves showing off in tight clothes. She’s still slim and toned right now, but I can’t stop thinking about ruining that perfect influencer body. There’s something so hot about watching a resident who makes money off her looks slowly soften and swell. I want to see how her mind changes when that tight hourglass gets buried under new layers of fat. My own heavy belly and thick rolls rest on my lap as I write this. I’m already excited to feel her growing body press and squish against mine.
+I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Kylie for my hall log. She’s the classic influencer — always taking selfies, posting outfit videos, and obsessing over her image. She has a stunning hourglass figure: tiny waist, wide hips, thick thighs, and full perky breasts that she loves showing off in tight clothes. She’s still slim and toned right now, but I can’t stop thinking about ruining that perfect influencer body. There’s something so hot about watching a resident who makes money off her looks slowly soften and swell. I want to see how her mind changes when that tight hourglass gets buried under new layers of fat. My own heavy belly and thick rolls rest on my lap as I write this. I’m already excited to feel her growing body press and squish against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -641,7 +641,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
     intro: [
       `Dear Journal,
 
-I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Serena as my subject. She’s the dedicated athlete — always at the gym, running track, or in the weight room, with that strong, athletic build: toned arms, visible abs, powerful thighs, muscular legs, and a tight, athletic frame that screams discipline. She’s so fit and energetic right now. There’s something incredibly arousing about picking a resident like her. I want to explore what happens to her mind when all that athletic strength slowly disappears under layers of soft fat. Personally, the idea of turning this hard, toned athlete into something heavy, jiggly, and breathing harder turns me on more than anything. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her firm body soften and press against mine.
+I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Serena for my hall log. She’s the dedicated athlete — always at the gym, running track, or in the weight room, with that strong, athletic build: toned arms, visible abs, powerful thighs, muscular legs, and a tight, athletic frame that screams discipline. She’s so fit and energetic right now. There’s something incredibly arousing about picking a resident like her. I want to explore what happens to her mind when all that athletic strength slowly disappears under layers of soft fat. Personally, the idea of turning this hard, toned athlete into something heavy, jiggly, and breathing harder turns me on more than anything. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her firm body soften and press against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -785,7 +785,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
     intro: [
       `Dear Journal,
 
-I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Fiona as my subject. She’s the artsy type — always sketching, painting, or lost in creative thoughts, with paint on her fingers and flowing clothes. Her body is so straight and flat: narrow shoulders, almost no chest, slim hips, and very little curve anywhere. She’s delicate and androgynous in that artistic way. There’s something fascinating about picking a resident like her. I want to see how her creative mind reacts when her flat, straight figure starts to soften and swell. Personally, the idea of turning this artistic, flat resident into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
+I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Fiona for my hall log. She’s the artsy type — always sketching, painting, or lost in creative thoughts, with paint on her fingers and flowing clothes. Her body is so straight and flat: narrow shoulders, almost no chest, slim hips, and very little curve anywhere. She’s delicate and androgynous in that artistic way. There’s something fascinating about picking a resident like her. I want to see how her creative mind reacts when her flat, straight figure starts to soften and swell. Personally, the idea of turning this artistic, flat resident into something heavy and jiggly really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her changing body press against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -931,7 +931,7 @@ She has actually reached my size, I didn't expect it and yet it’s inspiring me
     intro: [
       `Dear Journal,
 
-I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Tiffany as my subject. She’s the classic sorority resident — bubbly, social, always at parties or Greek events, with that topheavy hourglass figure. She has full, prominent breasts, a smaller waist, and wide hips that she loves showing off in tight tops and short skirts. She’s still relatively slim and energetic right now, but I can already picture how incredible she’ll look when all that top-heavy beauty gets buried under new layers of softness. There’s something so fun about the idea of taking a popular, party-loving sorority resident and making her heavier and lazier. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her growing curves press and squish against mine.
+I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Tiffany for my hall log. She’s the classic sorority resident — bubbly, social, always at parties or Greek events, with that topheavy hourglass figure. She has full, prominent breasts, a smaller waist, and wide hips that she loves showing off in tight tops and short skirts. She’s still relatively slim and energetic right now, but I can already picture how incredible she’ll look when all that top-heavy beauty gets buried under new layers of softness. There’s something so fun about the idea of taking a popular, party-loving sorority resident and making her heavier and lazier. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her growing curves press and squish against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -1073,7 +1073,7 @@ I had her positioned right against me so our enormous bodies could press togethe
     intro: [
       `Dear Journal,
 
-I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Priya as my subject. She’s the ultimate overachiever — always buried in planners, leading study groups, chasing every hall honor, and stressing about her hall standing and future ambitions. Her body is so straight and flat: narrow shoulders, almost no chest, slim hips, and very little curve anywhere. She dresses conservatively in simple blouses and slacks, looking neat and professional. There’s something deeply arousing about picking a resident like her. I want to see how her driven, perfectionist mind reacts when her flat, disciplined body starts to soften and swell. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her straight figure widen and press against mine.
+I’ve officially started my private hall log on appetite dynamics, and I’ve chosen Priya for my hall log. She’s the ultimate overachiever — always buried in planners, leading study groups, chasing every hall honor, and stressing about her hall standing and future ambitions. Her body is so straight and flat: narrow shoulders, almost no chest, slim hips, and very little curve anywhere. She dresses conservatively in simple blouses and slacks, looking neat and professional. There’s something deeply arousing about picking a resident like her. I want to see how her driven, perfectionist mind reacts when her flat, disciplined body starts to soften and swell. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to feel her straight figure widen and press against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -1356,7 +1356,7 @@ I chose Mary Jane because she was the perfect voluptuous country resident — st
     intro: [
       `Dear Journal,
 
-I’ve started my private hall log on appetite dynamics and I’ve chosen Daisy as my subject. She’s the sweet hall mentor — always talking about looking after her floor, super nurturing and patient with this warm, motherly energy. She already has such a perfect mombod: wide hips, thick thighs, full heavy breasts, and a naturally soft belly that strains gently against her clothes. She’s curvy and huggable but still relatively slim overall. There’s something so arousing about the idea of taking a resident who already looks like a young mom and making her even softer, heavier, and more maternal. I want to see her body swell until that mombod becomes overwhelming. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to press my fat against hers and feel her soften and grow for me.
+I’ve started my private hall log on appetite dynamics and I’ve chosen Daisy for my hall log. She’s the sweet hall mentor — always talking about looking after her floor, super nurturing and patient with this warm, motherly energy. She already has such a perfect mombod: wide hips, thick thighs, full heavy breasts, and a naturally soft belly that strains gently against her clothes. She’s curvy and huggable but still relatively slim overall. There’s something so arousing about the idea of taking a resident who already looks like a young mom and making her even softer, heavier, and more maternal. I want to see her body swell until that mombod becomes overwhelming. My own heavy belly and thick rolls rest on my lap as I write this. I can’t wait to press my fat against hers and feel her soften and grow for me.
 
 — Nadia`,
       `Dear Journal,
@@ -1500,7 +1500,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
     intro: [
       `Dear Journal,
 
-I've officially started my private hall log on appetite dynamics, and I've chosen Maya as my subject. She's the quiet studio art minor — always tucked into a corner of the common room in an oversized sweater, sketchbook open, charcoal on her fingers, watching everything and saying almost nothing. Her body is a soft pear right now: narrow shoulders, almost no chest, a slim waist, and hips and thighs that are already wider than the rest of her. There's something delicious about picking a resident who notices everything and still won't speak up. I want to see what happens when that observant little pear shape starts to swell and settle. Personally, the idea of turning this silent artist into something heavy and warm against me really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to feel her changing body press against mine.
+I've officially started my private hall log on appetite dynamics, and I've chosen Maya for my hall log. She's the quiet studio art minor — always tucked into a corner of the common room in an oversized sweater, sketchbook open, charcoal on her fingers, watching everything and saying almost nothing. Her body is a soft pear right now: narrow shoulders, almost no chest, a slim waist, and hips and thighs that are already wider than the rest of her. There's something delicious about picking a resident who notices everything and still won't speak up. I want to see what happens when that observant little pear shape starts to swell and settle. Personally, the idea of turning this silent artist into something heavy and warm against me really turns me on. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to feel her changing body press against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -1662,7 +1662,7 @@ I had her positioned right against me so our enormous bodies could press togethe
     intro: [
       `Dear Journal,
 
-I've officially started my private hall log on appetite dynamics, and I've chosen Chloé as my subject. She's the Paris transfer from Sorbonne — architecture major, silk scarves on her chair, wine on her breath, that sultry hourglass figure she carries like she designed it herself. Tiny waist, wide hips, full breasts, and a voice that makes every sentence sound like an invitation. She's still relatively slim right now, but she already treats American portions like a personal discovery. "In Paris they teach you to stop," she told me once, laughing. "Here they teach you to continue." There's something so delicious about watching a resident who hosted polite salons back home slowly surrender to our cafeteria mountains and my private feeding sessions. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to feel her growing curves press and squish against mine.
+I've officially started my private hall log on appetite dynamics, and I've chosen Chloé for my hall log. She's the Paris transfer from Sorbonne — architecture major, silk scarves on her chair, wine on her breath, that sultry hourglass figure she carries like she designed it herself. Tiny waist, wide hips, full breasts, and a voice that makes every sentence sound like an invitation. She's still relatively slim right now, but she already treats American portions like a personal discovery. "In Paris they teach you to stop," she told me once, laughing. "Here they teach you to continue." There's something so delicious about watching a resident who hosted polite salons back home slowly surrender to our cafeteria mountains and my private feeding sessions. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to feel her growing curves press and squish against mine.
 
 — Nadia`,
       `Dear Journal,
@@ -1806,7 +1806,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
     intro: [
       `Dear Journal,
 
-I've officially started my private hall log on appetite dynamics, and I've chosen Kaylee as my subject. She's third-year in the nursing program — warm, attentive, the one who asks how you're doing and actually means it. She has that fertility goddess build already: full heavy breasts, wide hips, thick thighs, and a soft belly that looks like it was made to be cradled. She's still relatively slim overall, but there's something so arousing about taking a resident who spends her days caring for everyone else and turning her into the one who needs looking after. I want to see that nurturing body swell until she's overflowing with softness. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to press my fat against hers and feel her ripen and grow for me.
+I've officially started my private hall log on appetite dynamics, and I've chosen Kaylee for my hall log. She's third-year in the nursing program — warm, attentive, the one who asks how you're doing and actually means it. She has that fertility goddess build already: full heavy breasts, wide hips, thick thighs, and a soft belly that looks like it was made to be cradled. She's still relatively slim overall, but there's something so arousing about taking a resident who spends her days caring for everyone else and turning her into the one who needs looking after. I want to see that nurturing body swell until she's overflowing with softness. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to press my fat against hers and feel her ripen and grow for me.
 
 — Nadia`,
       `Dear Journal,
@@ -1950,7 +1950,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
     intro: [
       `Dear Journal,
 
-I've started my private hall log on appetite dynamics and I've chosen Reneé as my subject. She's the culinary arts junior — flour always dusting her sleeves or collar, tasting everything like she's listening for a chord. She already has that naturally rotund build: soft round belly, thick capable arms, wide hips, and full breasts that tug at her apron ties. She talks about food the way other people talk about music — tempo, balance, harmony — and her whole body answers every bite like an instrument. There's something so arousing about a resident who lives in the kitchen and already carries weight so beautifully. I want to see her swell until every recipe she tests lands on her body like a second course. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to press my fat against hers and feel her grow fuller for me.
+I've started my private hall log on appetite dynamics and I've chosen Reneé for my hall log. She's the culinary arts junior — flour always dusting her sleeves or collar, tasting everything like she's listening for a chord. She already has that naturally rotund build: soft round belly, thick capable arms, wide hips, and full breasts that tug at her apron ties. She talks about food the way other people talk about music — tempo, balance, harmony — and her whole body answers every bite like an instrument. There's something so arousing about a resident who lives in the kitchen and already carries weight so beautifully. I want to see her swell until every recipe she tests lands on her body like a second course. My own heavy belly and thick rolls rest on my lap as I write this. I can't wait to press my fat against hers and feel her grow fuller for me.
 
 — Nadia`,
       `Dear Journal,

@@ -42,6 +42,8 @@ const BANNED = [
   /\bSelect a Subject\b/,
   /\beligible subjects\b/i,
   /\bRecruit Subject\b/,
+  /\bgallery subject\b/i,
+  /\bAll subjects cultivated\b/i,
   /\bPlace selected girl\b/i,
   /\bSelect a girl below\b/i,
   /\bSELECT GIRLS\b/i,

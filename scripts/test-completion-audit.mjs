@@ -767,6 +767,8 @@ check('nadia-journal-framing', () => {
   assert.doesNotMatch(nadia, /\bfarm-girl type\b/i);
   assert.doesNotMatch(nadia, /\bnurturing girl\b/i);
   assert.doesNotMatch(nadia, /\b(girl|girls)\b/i);
+  assert.doesNotMatch(nadia, /as my subject/i);
+  assert.match(nadia, /for my hall log/);
 });
 
 check('wife-lessons-hunt-framing', () => {
@@ -921,6 +923,21 @@ check('resident-journal-ui-framing', () => {
   const picker = read('src/components/PickerModals.jsx');
   assert.match(picker, /RESIDENT JOURNAL/);
   assert.doesNotMatch(picker, /SUBJECT JOURNAL/);
+});
+
+check('detail-view-subject-framing', () => {
+  const desk = read('src/HallPass.jsx');
+  const detail = read('src/views/StudentDetailView.jsx');
+  const faculty = read('src/gameData/faculty.js');
+  const cassidy = read('src/gameData/communityResearcher.js');
+  assert.match(desk, /gallery resident/);
+  assert.doesNotMatch(desk, /gallery subject/i);
+  assert.match(detail, /All taste testers cultivated/);
+  assert.doesNotMatch(detail, /All subjects cultivated/i);
+  assert.match(faculty, /Test residents finish/);
+  assert.match(faculty, /Most residents gain\. All residents return/);
+  assert.match(cassidy, /All residents were willing participants/);
+  assert.doesNotMatch(cassidy, /All subjects were willing participants/i);
 });
 
 check('picker-resident-framing-ui', () => {

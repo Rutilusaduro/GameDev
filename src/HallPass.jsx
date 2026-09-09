@@ -2593,7 +2593,7 @@ export default function HallPass(){
     setGalleryState(prev=>{
       const { state:next, ok, reason }=enrollSubject(prev,studentId,studentName);
       if(!ok){push(`⚠️ ${reason}`);return prev;}
-      push(`🖼 ${studentName} enrolled as gallery subject.`);
+      push(`🖼 ${studentName} enrolled as gallery resident.`);
       return {...next,subjectPickerOpen:false};
     });
   };

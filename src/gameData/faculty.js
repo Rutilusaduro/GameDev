@@ -99,14 +99,14 @@ export const FACULTY = [
           {label:"\"What's your success rate?\"", next:"rate", affinity:4},
           {label:"Back", next:"hub"},
         ]},
-      rate:{ text:()=>`Mori consults a clipboard she clearly doesn't need. "Test subjects finish, on average, 240% of intended portions. One research assistant ate her own control group." The smile again, slightly wider. "I had to order new lab coats. Sizes up. The grant committee asked no questions."`,
+      rate:{ text:()=>`Mori consults a clipboard she clearly doesn't need. "Test residents finish, on average, 240% of intended portions. One research assistant ate her own control group." The smile again, slightly wider. "I had to order new lab coats. Sizes up. The grant committee asked no questions."`,
         options:[ {label:"Back", next:"hub"} ]},
       taste:{ text:()=>`Her eyes do something complicated and pleased. "A volunteer with floor credentials. Sit." What follows is forty minutes of spoons, careful notes, and dishes that taste like more. "Interesting," she murmurs, watching you reach unprompted for a third helping of trial nineteen. "Very interesting."`,
         options:[
           {label:"\"Sign me up for the full protocol.\"", next:"protocol", affinity:6},
           {label:"Back", next:"hub"},
         ]},
-      protocol:{ text:()=>`"The full protocol is twelve weeks," Mori says, already writing your name. "Most subjects gain. All subjects return." She caps her pen. "I'll note that you understood the terms and smiled. For the file."`,
+      protocol:{ text:()=>`"The full protocol is twelve weeks," Mori says, already writing your name. "Most residents gain. All residents return." She caps her pen. "I'll note that you understood the terms and smiled. For the file."`,
         options:[ {label:"Back", next:"hub"} ]},
       study:{ text:()=>`Mori sets down her pen entirely, which from her is a standing ovation. "A cross-floor appetite log. Your cohort's... remarkable outcomes, my instrumentation." She extends a hand. "I've been watching your residents' trajectories for three semesters, RA. The curves are beautiful. I want the protocol."`,
         options:[

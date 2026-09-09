@@ -436,7 +436,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                               <div style={{fontSize:9,letterSpacing:3,color:brown,marginBottom:4}}>🍰 EVOLVED PATH</div>
                               <div style={{fontSize:13,fontWeight:700,color:"#CD853F",marginBottom:8}}>The Cultivator</div>
                               {exhausted?(
-                                <div style={{color:"#7a4020",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>All subjects cultivated. No further yield is possible.</div>
+                                <div style={{color:"#7a4020",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>All taste testers cultivated. No further yield is possible.</div>
                               ):isDigesting?(
                                 <div>
                                   <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 10px",marginBottom:8}}>
