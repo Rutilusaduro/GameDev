@@ -51,6 +51,8 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnable
   );
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="roster-tile roster-tile-in"
       style={{
         ...C.card,
@@ -61,6 +63,13 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnable
         animationDelay: `${Math.min(tileIndex, 12) * 45}ms`,
       }}
       onClick={() => { playHallPassSound('click', soundEnabled); onOpen(); }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          playHallPassSound('click', soundEnabled);
+          onOpen();
+        }
+      }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 3 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

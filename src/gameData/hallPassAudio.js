@@ -7,7 +7,7 @@ function getCtx() {
   return audioCtx;
 }
 
-/** @param {'unlock'|'week'|'click'|'confirm'|'tier'|'session'|'weigh'|'alert'} kind */
+/** @param {'unlock'|'week'|'click'|'nav'|'confirm'|'tier'|'session'|'weigh'|'alert'} kind */
 export function playHallPassSound(kind, enabled = true) {
   if (!enabled) return;
   const ctx = getCtx();
@@ -40,6 +40,14 @@ export function playHallPassSound(kind, enabled = true) {
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
       osc.start(t);
       osc.stop(t + 0.05);
+    } else if (kind === 'nav') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(392, t);
+      osc.frequency.exponentialRampToValueAtTime(494, t + 0.07);
+      gain.gain.setValueAtTime(0.02, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+      osc.start(t);
+      osc.stop(t + 0.1);
     } else if (kind === 'confirm') {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(440, t);

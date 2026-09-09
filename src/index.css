@@ -39,6 +39,12 @@
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.38);
 }
 
+.roster-tile:focus-visible {
+  outline: 2px solid rgba(180, 120, 255, 0.75);
+  outline-offset: 2px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(160, 80, 240, 0.2);
+}
+
 .roster-locked-tile {
   transition: opacity 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
@@ -96,6 +102,19 @@
 .hall-pass-nav-btn[data-active="true"] {
   background: linear-gradient(180deg, rgba(100, 40, 180, 0.22), rgba(60, 20, 120, 0.14));
   box-shadow: 0 -2px 0 0 currentColor, 0 0 14px rgba(160, 80, 240, 0.18);
+  position: relative;
+}
+
+.hall-pass-nav-btn[data-active="true"]::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, transparent, rgba(200, 150, 255, 0.85), transparent);
+  box-shadow: 0 0 10px rgba(160, 80, 240, 0.35);
 }
 
 .hall-pass-nav-btn:hover:not([data-active="true"]) {

@@ -424,6 +424,21 @@ check('niche-modal-polish', () => {
   }
 });
 
+check('hall-pass-audio-nav', () => {
+  const audio = read('src/gameData/hallPassAudio.js');
+  const desk = read('src/HallPass.jsx');
+  assert.match(audio, /kind === 'nav'/);
+  assert.match(desk, /playHallPassSound\('nav'/);
+});
+
+check('roster-tile-a11y', () => {
+  const roster = read('src/views/RosterView.jsx');
+  const css = read('src/index.css');
+  assert.match(roster, /tabIndex=\{0\}/);
+  assert.match(roster, /role="button"/);
+  assert.match(css, /\.roster-tile:focus-visible/);
+});
+
 check('desk-nav-polish', () => {
   const css = read('src/index.css');
   const desk = read('src/HallPass.jsx');
