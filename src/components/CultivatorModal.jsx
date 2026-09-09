@@ -99,11 +99,11 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
 
         // ── STAGE UP ──
         if(cs.modalPhase==='stage_up') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 SUBJECT PROGRESS</div>
+          <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 TESTER PROGRESS</div>
           <div style={{fontSize:14,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName}</div>
           <div style={{fontSize:11,color:"#a07040",marginBottom:10}}>Advanced to {getStage(cs.testerLbs).label} — {Math.round(cs.testerLbs)} lbs</div>
           <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>{cs.stageUpText||''}</div>
-          <div style={{fontSize:10,color:"#5a3020",marginBottom:14}}>Harvest is now available. Continuing will grow the subject further.</div>
+          <div style={{fontSize:10,color:"#5a3020",marginBottom:14}}>Harvest is now available. Continuing will grow the tester further.</div>
           <button style={{...C.btn(brown),width:"100%"}} onClick={dismissCultivatorStageUp}>Continue →</button>
         </>);
 

@@ -1144,7 +1144,9 @@ check('picker-resident-framing-ui', () => {
   assert.doesNotMatch(detail, /RESEARCH SUBJECT/);
   assert.match(cultivator, /Select a Taste Tester/);
   assert.match(cultivator, /Recruit Tester/);
-  assert.doesNotMatch(cultivator, /Select a Subject|Recruit Subject|Subject: /);
+  assert.match(cultivator, /TESTER PROGRESS/);
+  assert.match(cultivator, /grow the tester further/);
+  assert.doesNotMatch(cultivator, /Select a Subject|Recruit Subject|Subject: |SUBJECT PROGRESS|grow the subject further/i);
   assert.doesNotMatch(evolved, /subject\?\.name\|\|'The subject'/);
   const minigames = read('src/gameData/evolvedMinigames.js');
   assert.match(minigames, /tag: 'HALL LOG FOCUS'/);
