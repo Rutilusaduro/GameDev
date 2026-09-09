@@ -164,6 +164,10 @@ const REQUIRED_E2E = [
   'e2e/evolved-hive-arc.spec.js',
   'e2e/evolved-wife-lessons-arc.spec.js',
   'e2e/evolved-machine-goddess-arc.spec.js',
+  'e2e/evolved-state-fair-arc.spec.js',
+  'e2e/evolved-psych-researcher-arc.spec.js',
+  'e2e/evolved-feedee-creator-arc.spec.js',
+  'e2e/evolved-ranked-feedee-arc.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

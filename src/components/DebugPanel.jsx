@@ -458,6 +458,62 @@ export function DebugPanel({
                     }}>
                     🔧 Machine Goddess Arc QA
                   </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(120,80,20,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 14
+                          ? { ...s, evolvedForm: 'state_fair_queen', lbs: 200, relationship: 60, mood: 'cheerful' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(14);
+                      setView('student');
+                    }}>
+                    🎡 State Fair Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(60,40,90,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => {
+                        if (s.id === 12) {
+                          return { ...s, evolvedForm: 'psych_researcher', lbs: 200, relationship: 60, mood: 'observant', researchSubjectId: 1 };
+                        }
+                        if (s.id === 1) return { ...s, relationship: 60 };
+                        return s;
+                      }));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(12);
+                      setView('student');
+                    }}>
+                    📋 Psych Researcher Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(80,30,100,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => {
+                        if (s.id === 2) {
+                          return { ...s, evolvedForm: 'feedee_creator', lbs: 200, relationship: 60, mood: 'excited' };
+                        }
+                        if (s.id === 5) return { ...s, relationship: 80 };
+                        return s;
+                      }));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(2);
+                      setView('student');
+                    }}>
+                    📸 Feedee Creator Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(20,50,90,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 5
+                          ? { ...s, evolvedForm: 'ranked_feedee', lbs: 200, relationship: 60, mood: 'tired' }
+                          : s
+                      )));
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(5);
+                      setView('student');
+                    }}>
+                    🎮 Ranked Feedee Arc QA
+                  </button>
                 </>
               )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}

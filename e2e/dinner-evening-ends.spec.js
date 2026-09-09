@@ -56,7 +56,7 @@ test('1-on-1 dinner triggers EVENING ENDS popup at capacity', async ({ page }) =
   }
 
   const eveningEnd = page.locator('.dinner-end-modal');
-  await expect(eveningEnd.getByText('EVENING ENDS')).toBeVisible({ timeout: 15_000 });
+  await expect(eveningEnd.getByText('EVENING ENDS', { exact: true }).first()).toBeVisible({ timeout: 15_000 });
   await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
   await eveningEnd.getByRole('button', { name: 'Continue →' }).click();
   await expect(page.locator('.dinner-end-modal')).toHaveCount(0);
