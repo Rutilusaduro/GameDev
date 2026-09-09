@@ -890,6 +890,15 @@ check('gossip-dinner-resident-framing', () => {
   assert.doesNotMatch(content, /hope every girl on that squad/i);
 });
 
+check('floor-event-hall-target', () => {
+  const floor = read('src/gameData/floorEvents.js');
+  const helpers = read('src/utils/gameHelpers.js');
+  const desk = read('src/HallPass.jsx');
+  assert.doesNotMatch(floor, /target:\s*['"]class['"]/);
+  assert.doesNotMatch(helpers, /target==="class"/);
+  assert.doesNotMatch(desk, /type==="class"|kind==='class'|target==='class'/);
+});
+
 check('memory-hall-framing', () => {
   const memory = read('src/textEngine/scenes/memory/index.js');
   const memData = read('src/gameData/memory.js');

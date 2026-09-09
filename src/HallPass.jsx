@@ -1790,7 +1790,7 @@ export default function HallPass(){
       });
       if(campusEv){
         setTimeout(()=>{
-          if(campusEv.target==='hall'||campusEv.target==='class'){
+          if(campusEv.target==='hall'){
             push(`🌿 ${campusEv.text()}`);
             setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
           }else{
@@ -6695,7 +6695,7 @@ export default function HallPass(){
         }:st);
         targetName=s.name;
       }
-    }else if(type==="hall"||type==="class"){
+    }else if(type==="hall"){
       gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
       newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
       targetName="the hall";
@@ -9291,7 +9291,7 @@ export default function HallPass(){
         }else if(picker.kind==='interrupt'){
           student=students.find(st=>st.id===picker.studentId);
           feedLabel=`Compound-laced meal for ${student?.name}`;
-        }else if(picker.kind==='hall'||picker.kind==='class'){
+        }else if(picker.kind==='hall'){
           feedLabel=`${picker.action.label} — lace the whole hall meal?`;
           student=students.find(st=>!st.hidden)||students[0];
         }
@@ -9306,7 +9306,7 @@ export default function HallPass(){
             onConfirm={(compoundId)=>{
               setCompoundFeedPicker(null);
               if(picker.kind==='item') executeItemFeed(picker.item,picker.studentId,compoundId);
-              else if(picker.kind==='hall'||picker.kind==='class') executeFloorFeed(picker.action,compoundId);
+              else if(picker.kind==='hall') executeFloorFeed(picker.action,compoundId);
               else if(picker.kind==='interrupt') finishHungerInterrupt(picker.studentId,'compound',compoundId);
             }}
             onCancel={()=>setCompoundFeedPicker(null)}

@@ -67,7 +67,7 @@ export function generateFloorCheckIn(students,week){
     const matching=FLOOR_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
     if(matching.length){ scenes.push({type:"student",scene:matching[rnd(0,matching.length-1)],student:{...s}}); break; }
   }
-  const hallWide=FLOOR_SCENES.filter(sc=>sc.target==="hall"||sc.target==="class");
+  const hallWide=FLOOR_SCENES.filter(sc=>sc.target==="hall");
   if(hallWide.length) scenes.push({type:"hall",scene:hallWide[rnd(0,hallWide.length-1)],student:null});
   return scenes;
 }

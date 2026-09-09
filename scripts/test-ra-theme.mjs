@@ -214,7 +214,6 @@ const ALLOW_LINE = [
   /pickHallMemory/,
   /memory\.class/,
   /memory\.hall/,
-  /type==="class"/,
   /type==="hall"/,
   /case 'class'/,
   /view==="roster"/,
