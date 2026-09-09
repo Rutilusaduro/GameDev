@@ -13,6 +13,7 @@ import { createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligi
 import { renderSlenderMirrorBeat } from '../textEngine/scenes/earlyGain/index.js';
 import { pickStudentMemory } from '../gameData/memory.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 function renderWeighInPhase(renderFn, student, week, opts) {
   const trace = [];
@@ -313,7 +314,11 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
   useEffect(()=>{ weighSoundFiredRef.current=false; },[phase,student?.id]);
 
   return(
-    <div style={C.overlay}>
+    <ModalOverlay
+      onClose={() => { playHallPassSound('click', soundEnabled); close(); }}
+      dismissible={phase === 'reaction'}
+      soundEnabled={soundEnabled}
+    >
       <div className="hall-pass-modal-in weigh-in-modal" style={{...C.modal,maxWidth:560}}>
         <div style={{fontSize:9,letterSpacing:4,color:"#a060ff",marginBottom:4}}>⚖ WEIGH-IN · {student.name?.toUpperCase()}</div>
 
@@ -421,6 +426,6 @@ export function WeighInModal({weighInState,setWeighInState,bigScaleUnlocked,brok
           </>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

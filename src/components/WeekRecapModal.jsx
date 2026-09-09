@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const EXTRA_BORDER = {
   psych: '#a05090',
@@ -44,7 +45,7 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectResident, soundEnab
   };
 
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div
         className="hall-pass-modal-in week-recap-modal"
         style={{
@@ -100,6 +101,6 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectResident, soundEnab
           Begin Week {week}
         </button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

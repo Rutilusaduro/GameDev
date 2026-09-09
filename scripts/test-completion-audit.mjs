@@ -2065,6 +2065,28 @@ check('floor-checkin-keyboard-a11y', () => {
   assert.match(block[0], /tabIndex=\{0\}/);
 });
 
+check('modal-dismiss-polish', () => {
+  assert.ok(existsSync(join(root, 'src/hooks/useModalDismiss.js')));
+  assert.ok(existsSync(join(root, 'src/components/ModalOverlay.jsx')));
+  const overlay = read('src/components/ModalOverlay.jsx');
+  const dismiss = read('src/hooks/useModalDismiss.js');
+  assert.match(overlay, /useModalDismiss/);
+  assert.match(overlay, /e\.target === e\.currentTarget/);
+  assert.match(dismiss, /e\.key === 'Escape'/);
+  for (const rel of [
+    'src/components/WeekRecapModal.jsx',
+    'src/components/WeekPlannerModal.jsx',
+    'src/components/MilestoneCeremonyModal.jsx',
+    'src/components/DestinySpendModal.jsx',
+    'src/components/WeighInModal.jsx',
+    'src/components/OppositionHearingModal.jsx',
+    'src/components/TalkModal.jsx',
+  ]) {
+    const src = read(rel);
+    assert.match(src, /ModalOverlay|useModalDismiss/, `${rel}: modal dismiss wiring`);
+  }
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

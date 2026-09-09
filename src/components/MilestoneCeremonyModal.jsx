@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { buildStateLine } from '../textEngine/textFlagFormat.js';
 import { SceneStage } from './SceneStage.jsx';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#d8a030';
 
@@ -34,7 +35,7 @@ export function MilestoneCeremonyModal({
   const student = { id: ev.id, name: ev.name, lbs: ev.endLbs ?? 0 };
 
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={onDismissAll} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in milestone-ceremony-modal" style={{ ...C.modal, maxWidth: 560, border: `1px solid ${ACCENT}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>✦ A THRESHOLD CROSSED</div>
@@ -72,6 +73,6 @@ export function MilestoneCeremonyModal({
           ]}
         />
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

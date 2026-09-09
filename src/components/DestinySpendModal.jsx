@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { BRANDS, DESTINY_SPEND_ITEMS, getStreamVoiceLabel } from '../gameData/streaming.js';
 import { formatMoney } from '../gameData/wallet.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 const RED = '#e74c3c';
 
@@ -24,7 +25,7 @@ export function DestinySpendModal({
   const voice = student.streamVoice || 'default';
 
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in destiny-spend-modal" style={{
         ...C.modal, maxWidth: 520,
         background: 'linear-gradient(160deg,#120408,#1a0810,#120408)',
@@ -128,6 +129,6 @@ export function DestinySpendModal({
 
         <button type="button" className="destiny-spend-choice-row" style={{ ...C.btn('#200810'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

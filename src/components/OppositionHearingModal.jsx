@@ -4,6 +4,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { REMOVAL_HEARING, EMERGENCY_HEARING, pickHearingEnding } from '../gameData/oppositionHearings.js';
 import { getSupernaturalHearingFlags } from '../gameData/supernaturalForms.js';
 import { renderHearingPhase } from '../textEngine/scenes/opposition/index.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function OppositionHearingModal({
   hearingState,
@@ -39,7 +40,12 @@ export function OppositionHearingModal({
   }) ?? [];
 
   return (
-    <div style={{ ...C.overlay, zIndex: 380 }}>
+    <ModalOverlay
+      onClose={() => { playHallPassSound('click', soundEnabled); onClose(); }}
+      dismissible={done}
+      soundEnabled={soundEnabled}
+      style={{ zIndex: 380 }}
+    >
       <div className="hall-pass-modal-in opposition-hearing-modal" style={{ ...C.modal, maxWidth: 580, border: '1px solid #8b304050', maxHeight: '88vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: '#c44', marginBottom: 6 }}>👁 {def.title.toUpperCase()}</div>
         {advocate && hasAdvocatePath && !done && (
@@ -77,7 +83,7 @@ export function OppositionHearingModal({
           <button type="button" style={{ ...C.btn('#6a2838'), width: '100%', marginTop: 8 }} onClick={onClose}>Continue ✓</button>
         )}
       </div>
-    </div>
+    </ModalOverlay>
   );
 }
 

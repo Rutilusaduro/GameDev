@@ -12,6 +12,7 @@ import {
   defaultSlotLabel,
 } from '../gameData/weekPlanner.js';
 import { getStage } from '../gameData/stages.js';
+import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('click', soundEnabled); }, [soundEnabled, week]);
@@ -31,7 +32,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
   };
 
   return (
-    <div style={C.overlay}>
+    <ModalOverlay onClose={() => { playHallPassSound('click', soundEnabled); onClose?.(); }} soundEnabled={soundEnabled}>
       <div className="hall-pass-modal-in week-planner-modal" style={{ ...C.modal, maxWidth: 560 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>WEEK PLANNER</div>
         <div style={{ fontSize: 15, fontWeight: 700, color: '#c090e8', marginBottom: 4 }}>Week {week} — place your attention</div>
@@ -122,6 +123,6 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
           </button>
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

@@ -31,6 +31,7 @@ import { getHungerTier, getAddictionLevel } from '../gameData/hungerAddiction.js
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { useModalDismiss } from '../hooks/useModalDismiss.js';
 
 // ── response builder ──────────────────────────────────────────
 
@@ -244,6 +245,8 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
     }
     onClose();
   };
+
+  useModalDismiss(handleCloseFromResponse);
 
   const groupedTopics = [
     { group:"talk",    label:"Conversation",   topics: TALK_TOPICS.filter(t=>t.group==="talk") },
