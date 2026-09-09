@@ -4,7 +4,7 @@ import assert from 'assert';
 import { readFileSync } from 'fs';
 import { DORM_LIST } from '../src/gameData/dorms.js';
 import { RA_APPROACH_LIST } from '../src/gameData/raApproaches.js';
-import { PROFESSOR_RANKS } from '../src/gameData/content.js';
+import { RA_RANKS } from '../src/gameData/content.js';
 
 const BANNED = [
   /Professor Sim/i,
@@ -78,11 +78,12 @@ const deviceInv = readFileSync('src/views/DeviceInventoryView.jsx', 'utf8');
 assert(deviceInv.includes('Equip to Resident'), 'DeviceInventoryView must say Equip to Resident');
 assertClean(deviceInv, 'DeviceInventoryView.jsx');
 
-const lounge = readFileSync('src/views/ClassroomView.jsx', 'utf8');
-assert(lounge.includes('HALL LOUNGE'), 'ClassroomView must say HALL LOUNGE');
-assertClean(lounge, 'ClassroomView.jsx');
+const lounge = readFileSync('src/views/HallLoungeView.jsx', 'utf8');
+assert(lounge.includes('HALL LOUNGE'), 'HallLoungeView must say HALL LOUNGE');
+assert.match(lounge, /export function HallLoungeView/);
+assertClean(lounge, 'HallLoungeView.jsx');
 
-for (const r of PROFESSOR_RANKS) {
+for (const r of RA_RANKS) {
   assert(r.label, 'rank needs label');
   assert(!/professor/i.test(r.label), `rank label must not say professor: ${r.label}`);
 }

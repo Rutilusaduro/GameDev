@@ -238,7 +238,7 @@ export function handleRitual(ritualId, studentIds, ctx) {
     ok: true,
     apCost: ritual.apCost,
     effects,
-    spiritFavor: ritualId === 'sacred_gluttony' ? V2_CONFIG.ritualSacredFavor : 0,
+    hallCred: ritualId === 'sacred_gluttony' ? V2_CONFIG.ritualSacredFavor : 0,
     v2State: { ...ctx.v2State, rituals },
   };
 }

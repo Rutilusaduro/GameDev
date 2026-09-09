@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// PLAYER STATE — professor-scoped scalars + self-device fields
+// PLAYER STATE — RA-scoped scalars + self-device fields
 // Engine-free. Persistence not implemented (in-memory only).
 // ═══════════════════════════════════════════════════════════════
 import { WALLET_CONFIG } from './wallet.js';
@@ -14,7 +14,7 @@ export function createEmptyPlayerEquip() {
 }
 
 /**
- * Initial player object — fold all professor-scoped scalars here.
+ * Initial player object — fold all RA-scoped scalars here.
  * @param {object} [overrides]
  */
 export function createInitialPlayer(overrides = {}) {

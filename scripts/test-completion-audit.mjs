@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { DORMS, DORM_LIST, dormUnlocksForWeek, STUDENT_HOME_DORM } from '../src/gameData/dorms.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
-import { PROFESSOR_RANKS } from '../src/gameData/content.js';
+import { RA_RANKS } from '../src/gameData/content.js';
 
 const root = join(import.meta.dirname, '..');
 const read = (rel) => readFileSync(join(root, rel), 'utf8');
@@ -85,7 +85,7 @@ check('community-researcher-cassidy', () => {
 
 // ── RA-framed ranks ────────────────────────────────────────────
 check('ra-rank-labels', () => {
-  const labels = PROFESSOR_RANKS.map((r) => r.label).join(' ');
+  const labels = RA_RANKS.map((r) => r.label).join(' ');
   assert.match(labels, /New RA/);
   assert.doesNotMatch(labels, /Professor/i);
 });
@@ -164,6 +164,20 @@ check('floor-checkin-state', () => {
   assert.match(desk, /\[floorCheckIn,setFloorCheckIn\]/);
   assert.doesNotMatch(desk, /\bclassSession\b/);
   assert.doesNotMatch(desk, /\bstartClass\b/);
+});
+
+check('hall-lounge-view', () => {
+  assert.ok(existsSync(join(root, 'src/views/HallLoungeView.jsx')));
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /HallLoungeView/);
+  assert.doesNotMatch(desk, /\bprofessorProfile\b/);
+  assert.doesNotMatch(desk, /\bClassroomView\b/);
+});
+
+check('reach-level-naming', () => {
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /\breachLevel\b/);
+  assert.doesNotMatch(desk, /\bspiritLevel\b/);
 });
 
 // ── Report ─────────────────────────────────────────────────────

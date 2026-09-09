@@ -167,9 +167,9 @@ const sportyStartRoster = simulateInitialRoster('sporty');
 const priya = sportyStartRoster.find((s) => s.id === 7);
 assert(priya && priya.lockState === 'locked', 'Priya locked on sporty start');
 assert.equal(isHallReachable(priya, ['sporty']), false, 'nerdy hall locked at wk1');
-const afterW7Drip = applyWeeklyTrustDrip([priya], { spiritLevel: 1, week: 7, unlockedDorms: ['sporty'], rng: () => 0.5 });
+const afterW7Drip = applyWeeklyTrustDrip([priya], { reachLevel: 1, week: 7, unlockedDorms: ['sporty'], rng: () => 0.5 });
 assert.equal(afterW7Drip[0].passiveTrust, 0, 'no trust drip before hall unlock');
-const afterW8Drip = applyWeeklyTrustDrip([priya], { spiritLevel: 1, week: 8, unlockedDorms: ['sporty', 'nerdy'], rng: () => 0.5 });
+const afterW8Drip = applyWeeklyTrustDrip([priya], { reachLevel: 1, week: 8, unlockedDorms: ['sporty', 'nerdy'], rng: () => 0.5 });
 assert.ok(afterW8Drip[0].passiveTrust > 0, 'trust drip after nerdy hall unlocks');
 assert.ok(afterW8Drip[0].passiveTrust < ROSTER_TRUST_GATE, 'one week drip should not auto-unlock');
 

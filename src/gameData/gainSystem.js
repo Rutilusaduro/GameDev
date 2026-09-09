@@ -47,12 +47,12 @@ export const calsToLbs = (cals) => cals / GAIN_CONFIG.calsPerLb;
 
 // Chance a force-feed past capacity succeeds. Spirit influence helps;
 // how far past capacity she already is, and how big the food is, hurt.
-export const forceFeedChance = (s, fullnessCost, spiritLevel = 1) => {
+export const forceFeedChance = (s, fullnessCost, reachLevel = 1) => {
   const cap = s.stomachCapacity || GAIN_CONFIG.baseCapacity;
   const overFraction = Math.max(0, ((s.fullness || 0) - cap) / cap);
   const sizeFraction = fullnessCost / cap;
   const c = GAIN_CONFIG.forceFeed;
-  const chance = c.base + (spiritLevel - 1) * c.perSpiritLevel - overFraction * c.overPenalty - sizeFraction * 0.3;
+  const chance = c.base + (reachLevel - 1) * c.perSpiritLevel - overFraction * c.overPenalty - sizeFraction * 0.3;
   return Math.min(c.max, Math.max(c.min, chance));
 };
 

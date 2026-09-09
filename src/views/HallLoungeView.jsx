@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CLASSROOM VIEW — prestige upgrades (lbs-cost skill shop)
+// HALL LOUNGE VIEW — prestige upgrades (lbs-cost skill shop)
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { SKILL_TREE } from '../gameData/skills.js';
@@ -79,7 +79,7 @@ function ClassroomSkillsPanel({ students, ownedClassSkills, onPurchase }) {
   );
 }
 
-export function ClassroomView({ students, ownedClassSkills, onPurchaseClassSkill }) {
+export function HallLoungeView({ students, ownedClassSkills, onPurchaseClassSkill }) {
   return (
     <div>
       <p style={C.secT}>🏠 Hall Lounge</p>

@@ -300,7 +300,7 @@ export const STAGE_DROP_REACTIONS = {
   farm_girl:['"Huh." Big smile, smaller scale reading. "Well. Guess I\'ll hit the kitchen harder."','Lost a bit. She pats her chest. "Plenty room for more pie."','Down a size. She laughs. "Mama\'d fuss. I\'m fussin\' back with seconds."','Dropped. She looks at her jam jars. "Body was sweeter at that weight."','Lost a real amount. She fans herself. "Summer heat\'ll put it back on quick."','Significant drop. She whistles. "Had good curves there. I\'ll coax \'em home."','A whole stage gone. She plants hands on hips. "Farm girl don\'t stay skinny long."','Lost a lot. She grins. "Less of me to warm the whole common room."','Down from my favorite fullness. She taps her belly. "Favorite\'s coming back."','That much gone and I felt it in every dress. She winks. "Dress\'ll stretch again."','Even from here I remember how soft I was. She beams. "Soft is the plan."'],
 };
 
-export const PROFESSOR_RANKS = [
+export const RA_RANKS = [
   { min:0,  label:"New RA" },
   { min:1,  label:"Floor Lead" },
   { min:3,  label:"Senior RA" },
@@ -311,6 +311,9 @@ export const PROFESSOR_RANKS = [
   { min:22, label:"Dean of Indulgence" },
   { min:27, label:"The Architect" },
 ];
+
+/** @deprecated use RA_RANKS */
+export const PROFESSOR_RANKS = RA_RANKS;
 
 
 export const OUTFITS = {

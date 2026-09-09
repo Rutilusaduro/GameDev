@@ -28,7 +28,7 @@ assert.equal(isHallReachable(nerdyGirl, unlocked), false);
 assert.equal(isHallReachable(annexGirl, unlocked), false);
 
 const afterDrip = applyWeeklyTrustDrip([nerdyGirl, cassidy], {
-  spiritLevel: 1,
+  reachLevel: 1,
   week: 4,
   unlockedDorms: unlocked,
 });

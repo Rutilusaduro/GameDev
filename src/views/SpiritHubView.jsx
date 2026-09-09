@@ -24,14 +24,14 @@ export function SpiritHubView({
   onOpenDream,
   ap,
   week = 1,
-  spiritLevel = 1,
+  reachLevel = 1,
   witnessLog = [],
 }) {
   const [linkPickA, setLinkPickA] = useState(null);
   const visible = students.filter((s) => !s.hidden && s.lockState !== 'locked');
   const links = v2State?.resonance?.links || [];
   const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
-  const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, spiritLevel });
+  const rituals = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, reachLevel });
   const hasDreamChamber = !!ownedClassSkills?.dream_chamber;
   const hasSpiritRide = (ownedSkills?.spirit_ride || 0) >= 1;
   const hasHungerWeb = (ownedSkills?.hunger_web || 0) >= 1;

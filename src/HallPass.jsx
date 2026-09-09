@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
 import { GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
-import { STAGE_DROP_REACTIONS, PROFESSOR_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
+import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
@@ -233,7 +233,7 @@ import { createInitialV2State, V2_CONFIG } from './gameData/v2/state.js';
 import { appendEmbodimentWalkLog } from './gameData/v2/embodiedCampus.js';
 import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
 import './textEngine/scenes/v2/index.js';
-import { ClassroomView } from './views/ClassroomView.jsx';
+import { HallLoungeView } from './views/HallLoungeView.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
 import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
@@ -404,7 +404,7 @@ import { C } from './styles.js';
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════
 
-const SPIRIT_XP_PER_LEVEL=40;
+const REACH_XP_PER_LEVEL=40;
 
 // Legacy aliases — RA pivot keeps old variable names in hot paths
 const SPIRITS = RA_APPROACHES;
@@ -431,8 +431,6 @@ export default function HallPass(){
     money, ap, week, ownedSkills, ownedClassSkills, facultyAffinity, raProfile, adminScrutiny,
     globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State,
   } = player;
-  const professorProfile = raProfile;
-  const spiritFavor = hallCred;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
   const setAp = (updater) => setPlayer((p) => updatePlayerField(p, 'ap', updater));
@@ -441,9 +439,7 @@ export default function HallPass(){
   const setOwnedClassSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedClassSkills', updater));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
   const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', updater));
-  const setProfessorProfile = setRaProfile;
   const setHallCred = (updater) => setPlayer((p) => updatePlayerField(p, 'hallCred', updater));
-  const setSpiritFavor = setHallCred;
   const setUnlockedDorms = (updater) => setPlayer((p) => updatePlayerField(p, 'unlockedDorms', updater));
   const setAdminScrutiny = (updater) => setPlayer((p) => updatePlayerField(p, 'adminScrutiny', updater));
   const setGlobalStats = (updater) => setPlayer((p) => updatePlayerField(p, 'globalStats', updater));
@@ -494,7 +490,7 @@ export default function HallPass(){
   const [dreamPresetScenario,setDreamPresetScenario]=useState(null);
   const [echoReplay,setEchoReplay]=useState(null);
   const v2 = v2State || createInitialV2State();
-  // professorProfile lives on player object
+  // raProfile lives on player object
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
@@ -668,7 +664,7 @@ export default function HallPass(){
 
   // Tier-up detection
   useEffect(()=>{
-    if(!professorProfile) return;
+    if(!raProfile) return;
     const ups=[];
     students.forEach(s=>{
       const prevRel=prevRelsRef.current[s.id]??s.relationship;
@@ -699,7 +695,7 @@ export default function HallPass(){
         if(fn) setTierUpModal({student:u.student,oldTier:u.oldTier,newTier:u.newTier,scene:fn(u.student)});
       }
     }
-  },[students,professorProfile]);
+  },[students,raProfile]);
 
   // Check achievements
   useEffect(()=>{
@@ -897,15 +893,15 @@ export default function HallPass(){
 
   // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.
   const gainFavor=(tag)=>{
-    const fill=favorFill(professorProfile?.approachId||professorProfile?.spiritId,tag);
+    const fill=favorFill(raProfile?.approachId||raProfile?.spiritId,tag);
     if(!fill) return;
-    const next=(spiritFavor||0)+fill;
+    const next=(hallCred||0)+fill;
     if(next>=FAVOR_MAX){
-      setSpiritFavor(next-FAVOR_MAX);
+      setHallCred(next-FAVOR_MAX);
       setAp(a=>Math.min(20,a+FAVOR_REBATE));
-      push(`✨ Hall cred maxed — ${RA_APPROACHES[professorProfile?.approachId||professorProfile?.spiritId]?.label} returns ${FAVOR_REBATE} AP.`);
+      push(`✨ Hall cred maxed — ${RA_APPROACHES[raProfile?.approachId||raProfile?.spiritId]?.label} returns ${FAVOR_REBATE} AP.`);
     }else{
-      setSpiritFavor(next);
+      setHallCred(next);
     }
   };
 
@@ -926,8 +922,8 @@ export default function HallPass(){
 
   const addScrutiny=(n)=>{
     const classFx=aggregateClassSkillEffects(ownedClassSkills||{});
-    const mult=profileScrutinyMult(professorProfile)
-              *(1-(professorProfile?.traits?.includes("discreet")?0.35:0))
+    const mult=profileScrutinyMult(raProfile)
+              *(1-(raProfile?.traits?.includes("discreet")?0.35:0))
               *skillScrutinyReduce
               *(1-(classFx.scrutinyReduce||0));
     const actual=Math.max(0,Math.round(n*mult));
@@ -1309,7 +1305,7 @@ export default function HallPass(){
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
   const addCorruption=(s,amount,textOpts={})=>{
     const before=getCorruptionTier(s.corruption||0).id;
-    const scaled=amount>0?amount*profCorruptionMult:amount;
+    const scaled=amount>0?amount*raCorruptionMult:amount;
     const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+scaled);
     const after=getCorruptionTier(newC).id;
     if(after>before){
@@ -1367,7 +1363,7 @@ export default function HallPass(){
         forced=true;
       } else {
         const bonuses=getForceFeedChanceBonuses(s);
-        let chance=forceFeedChance(s,fullnessCost,spiritLevel)+bonuses.corruptionBonus;
+        let chance=forceFeedChance(s,fullnessCost,reachLevel)+bonuses.corruptionBonus;
         if(opts.refusalBonus!=null) chance+=opts.refusalBonus;
         else chance+=bonuses.complianceBonus;
         chance+=bonuses.dependenceBonus||0;
@@ -1390,7 +1386,7 @@ export default function HallPass(){
       const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
       calMult*=(preview.feedResult.calMult??1);
     }
-    const scaledCals=Math.round(calories*(s.gainMultiplier||1)*profGainMult*calMult);
+    const scaledCals=Math.round(calories*(s.gainMultiplier||1)*raGainMult*calMult);
     const scaledFull=scaledFullEarly;
     if(label) push(`🍽️ ${label} — ${s.name}: +${scaledCals.toLocaleString()} cal (fullness ${Math.min(999,(s.fullness||0)+scaledFull)}/${cap})`);
     let feedWeekUsed=null;
@@ -2108,8 +2104,8 @@ export default function HallPass(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     // ── ROSTER UNLOCK ─ spirit reach (slots) + passive trust (queue) ──
-    updated = applyWeeklyTrustDrip(updated, { spiritLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
-    const ripe = pickRipeUnlock(updated, spiritLevel, effectiveUnlockedDorms);
+    updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
+    const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? { ...s, lockState: 'open' } : s));
       const scene = getUnlockScene(ripe.id) || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
@@ -6509,7 +6505,7 @@ export default function HallPass(){
     push(`🔗 ${a?.name} ↔ ${b?.name} — appetites linked.${linkProse?` ${linkProse.slice(0,100)}`:''}`);
   };
   const runFeastRitual=(ritualId,studentIds,text)=>{
-    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,spiritLevel,v2State:v2});
+    const result=handleRitual(ritualId,studentIds,{students,ownedSkills,ownedClassSkills:ownedClassSkills||{},week,reachLevel,v2State:v2});
     if(!result.ok){ push(`⚠️ ${result.reason}`); return; }
     if(ap<result.apCost){ push(`⚠️ Need ${result.apCost} AP`); return; }
     setAp(a=>a-result.apCost);
@@ -6525,9 +6521,9 @@ export default function HallPass(){
       };
     }));
     push(`🕯️ Feast ritual complete.${text?` ${text.slice(0,120)}...`:''}`);
-    if(result.spiritFavor){
-      setSpiritFavor(f=>(f||0)+result.spiritFavor);
-      push(`✨ Floor feast — hall cred +${result.spiritFavor}.`);
+    if(result.hallCred){
+      setHallCred(f=>(f||0)+result.hallCred);
+      push(`✨ Floor feast — hall cred +${result.hallCred}.`);
     }
     setFeastRitualOpen(false);
   };
@@ -6918,7 +6914,8 @@ export default function HallPass(){
           };
           setTimeout(()=>push(`🩸 ${ns.name} has changed. Something in her eyes is different now.`),200);
           if(opposition?.supernatural?.actTriggered){
-            const sl=1+Math.floor((player.spiritXp||0)/SPIRIT_XP_PER_LEVEL);
+            const floorLbs=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
+            const sl=1+Math.floor(Math.max(0,Math.round(floorLbs))/REACH_XP_PER_LEVEL);
             setOpposition(prev=>devourScarcityDamage(prev,sl));
             push('👁 Devour tears a hole in Scarcity\'s counting — pressure eases.');
           }
@@ -7164,7 +7161,7 @@ export default function HallPass(){
       },
       gameCtx:{
         skillGainMult,
-        profGainMult,
+        raGainMult,
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'dinner',
@@ -7232,7 +7229,7 @@ export default function HallPass(){
       },
       gameCtx:{
         skillGainMult,
-        profGainMult,
+        raGainMult,
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'dinner',
@@ -7356,7 +7353,7 @@ export default function HallPass(){
       },
       gameCtx:{
         skillGainMult,
-        profGainMult,
+        raGainMult,
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
@@ -7468,7 +7465,7 @@ export default function HallPass(){
       },
       gameCtx:{
         skillGainMult,
-        profGainMult,
+        raGainMult,
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
@@ -7606,7 +7603,7 @@ export default function HallPass(){
       },
       gameCtx:{
         skillGainMult,
-        profGainMult,
+        raGainMult,
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'private_session',
@@ -7742,27 +7739,27 @@ export default function HallPass(){
   const selSettled=!!sel&&getImmobilityTier(sel)>=1;
   const talkStudent=talkStudentId!=null?students.find(s=>s.id===talkStudentId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
-  const spiritXp=Math.max(0,Math.round(totalGained));
-  const spiritLevel=1+Math.floor(spiritXp/SPIRIT_XP_PER_LEVEL);
-  const spiritRankProgress=Math.max(0,spiritLevel-1);
-  const totalSkillPoints=Math.max(0,spiritLevel-1);
+  const reachXp=Math.max(0,Math.round(totalGained));
+  const reachLevel=1+Math.floor(reachXp/REACH_XP_PER_LEVEL);
+  const reachRankProgress=Math.max(0,reachLevel-1);
+  const totalSkillPoints=Math.max(0,reachLevel-1);
   const visibleStudents=students.filter(studentVisibleOnCampus);
   const avgLbs=Math.round(visibleStudents.reduce((a,s)=>a+s.lbs,0)/Math.max(1,visibleStudents.length));
   // ── RA PROFILE / TRAIT EFFECTS ──────────────────────────────
-  const hasTrait=(id)=>professorProfile?.traits?.includes(id)||false;
-  const hasSubj=(id)=>professorProfile?.subject===id;
-  const profGainMult=profileGainMult(professorProfile);
-  const profPassiveBonus=profilePassiveBonus(professorProfile);
-  const profCorruptionMult=profileCorruptionMult(professorProfile);
+  const hasTrait=(id)=>raProfile?.traits?.includes(id)||false;
+  const hasSubj=(id)=>raProfile?.subject===id;
+  const raGainMult=profileGainMult(raProfile);
+  const raPassiveBonus=profilePassiveBonus(raProfile);
+  const raCorruptionMult=profileCorruptionMult(raProfile);
   // ── SKILL TREE DERIVED VALUES ──────────────────────────────
   const skillEffects=aggregateSkillEffects(ownedSkills);
   const classSkillFx=aggregateClassSkillEffects(ownedClassSkills||{});
   const spentSkillPoints=computeSpentSkillPoints(ownedSkills);
   const availableSkillPoints=Math.max(0,totalSkillPoints-spentSkillPoints);
   const hasSkill=(id)=>(ownedSkills[id]||0)>0;
-  const skillPassiveBonus=(skillEffects.passiveLbs||0)+profPassiveBonus;
+  const skillPassiveBonus=(skillEffects.passiveLbs||0)+raPassiveBonus;
   const skillApBonus=(skillEffects.apBonus||0);
-  const skillGainMult=profGainMult;
+  const skillGainMult=raGainMult;
   const skillScrutinyReduce=1;
   const skillScrutinyPassiveReduce=0;
   const skillSessionCapBonus=classSkillFx.sessionCapBonus||0;
@@ -8530,34 +8527,34 @@ export default function HallPass(){
         className="ra-desk-header"
         style={{
           ...C.hdr,
-          borderBottom:`2px solid ${professorProfile?.color||"#4a1590"}`,
-          background:`linear-gradient(135deg,#0a0414 0%,#140828 42%,${professorProfile?.accentSoft||"rgba(80,18,140,0.18)"} 100%)`,
-          boxShadow:`inset 0 -1px 0 ${professorProfile?.accentSoft||"rgba(120,40,200,0.15)"}`,
+          borderBottom:`2px solid ${raProfile?.color||"#4a1590"}`,
+          background:`linear-gradient(135deg,#0a0414 0%,#140828 42%,${raProfile?.accentSoft||"rgba(80,18,140,0.18)"} 100%)`,
+          boxShadow:`inset 0 -1px 0 ${raProfile?.accentSoft||"rgba(120,40,200,0.15)"}`,
         }}
       >
         <div style={{display:"flex",gap:12,alignItems:"center",minWidth:0}}>
-          {professorProfile&&(
+          {raProfile&&(
             <RaPortraitChip
-              accent={professorProfile.color||"#c44a2a"}
-              accentSoft={professorProfile.accentSoft||"rgba(196,74,42,0.22)"}
+              accent={raProfile.color||"#c44a2a"}
+              accentSoft={raProfile.accentSoft||"rgba(196,74,42,0.22)"}
               size={44}
             />
           )}
           <div style={{minWidth:0}}>
-            <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:professorProfile?.color||"#c44a2a",lineHeight:1.15}}>RA DESK — {getDorm(professorProfile?.dormId||professorProfile?.subject)?.label?.toUpperCase()||"YOUR HALL"}</div>
-            <div style={{fontSize:10,color:"#8a5060",letterSpacing:3,marginTop:2}}>{RA_APPROACHES[professorProfile?.approachId||professorProfile?.spiritId]?.label?`${RA_APPROACHES[professorProfile.approachId||professorProfile.spiritId].label.toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
+            <div style={{fontSize:19,fontWeight:700,letterSpacing:2,color:raProfile?.color||"#c44a2a",lineHeight:1.15}}>RA DESK — {getDorm(raProfile?.dormId||raProfile?.subject)?.label?.toUpperCase()||"YOUR HALL"}</div>
+            <div style={{fontSize:10,color:"#8a5060",letterSpacing:3,marginTop:2}}>{RA_APPROACHES[raProfile?.approachId||raProfile?.spiritId]?.label?`${RA_APPROACHES[raProfile.approachId||raProfile.spiritId].label.toUpperCase()} · WEEK ${week}`:"HALL PASS"}</div>
           </div>
         </div>
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
-          {professorProfile&&(
-            <div className="ra-desk-stat-pill" title="Hall Cred — on-style actions fill it; full returns AP" style={{textAlign:"center",background:professorProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
+          {raProfile&&(
+            <div className="ra-desk-stat-pill" title="Hall Cred — on-style actions fill it; full returns AP" style={{textAlign:"center",background:raProfile.accentSoft||"rgba(80,18,140,0.3)",borderRadius:6,padding:"3px 11px",minWidth:74}}>
               <div style={{height:6,background:"rgba(0,0,0,0.35)",borderRadius:3,overflow:"hidden",marginBottom:2}}>
-                <div style={{height:"100%",width:`${Math.min(100,((spiritFavor||0)/FAVOR_MAX)*100)}%`,background:professorProfile.color||"#a060ff",transition:"width 0.25s"}}/>
+                <div style={{height:"100%",width:`${Math.min(100,((hallCred||0)/FAVOR_MAX)*100)}%`,background:raProfile.color||"#a060ff",transition:"width 0.25s"}}/>
               </div>
-              <span style={{fontSize:9,color:professorProfile.color||"#c0a8e8",letterSpacing:2}}>CRED</span>
+              <span style={{fontSize:9,color:raProfile.color||"#c0a8e8",letterSpacing:2}}>CRED</span>
             </div>
           )}
-          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Reach",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
+          {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Reach",`Lv ${reachLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
             <div
               key={l}
               className={`ra-desk-stat-pill${l === 'Wk' ? ' ra-desk-week-tick' : ''}`}
@@ -8571,7 +8568,7 @@ export default function HallPass(){
             </div>
           ))}
           {(()=>{
-            const rank=([...PROFESSOR_RANKS].reverse().find(r=>spiritRankProgress>=r.min)||PROFESSOR_RANKS[0]);
+            const rank=([...RA_RANKS].reverse().find(r=>reachRankProgress>=r.min)||RA_RANKS[0]);
             return(
               <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:90}}>
                 <span style={{fontSize:13,fontWeight:700,color:"#f0c060",display:"block",letterSpacing:0.5}}>{rank.label}</span>
@@ -8641,7 +8638,7 @@ export default function HallPass(){
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
         ].map(([v,l])=>{
           const active=view===v;
-          const accent=professorProfile?.color||"#7a24d8";
+          const accent=raProfile?.color||"#7a24d8";
           return (
           v==="student"&&!sel?null:
           <button key={v} className="hall-pass-nav-btn" data-active={active ? 'true' : 'false'} style={{
@@ -8655,7 +8652,7 @@ export default function HallPass(){
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── ROSTER VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
@@ -8663,7 +8660,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="classroom"&&<ClassroomView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
+          {view==="classroom"&&<HallLoungeView students={students} ownedClassSkills={ownedClassSkills} onPurchaseClassSkill={purchaseClassSkill}/>}
 
           {view==="spirit-hub"&&<SpiritHubView
             students={students}
@@ -8677,7 +8674,7 @@ export default function HallPass(){
             onOpenDream={(s)=>setDreamStudent(s)}
             ap={ap}
             week={week}
-            spiritLevel={spiritLevel}
+            reachLevel={reachLevel}
             witnessLog={campusState?.witnessLog||[]}
           />}
 
@@ -8757,7 +8754,7 @@ export default function HallPass(){
           />}
 
 {/* ── SKILL TREE ── */}
-          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} ownedSkills={ownedSkills} skillEffects={skillEffects} students={students} onBuy={buySkillRank} onMax={maxSkillRank} spiritLevel={spiritLevel} spiritXp={spiritXp%SPIRIT_XP_PER_LEVEL} spiritXpForNextLevel={SPIRIT_XP_PER_LEVEL}/>}
+          {view==="skills"&&<SkillTreeView availableSkillPoints={availableSkillPoints} ownedSkills={ownedSkills} skillEffects={skillEffects} students={students} onBuy={buySkillRank} onMax={maxSkillRank} reachLevel={reachLevel} reachXp={reachXp%REACH_XP_PER_LEVEL} reachXpForNextLevel={REACH_XP_PER_LEVEL}/>}
 
           {view==="achievements"&&<AchievementsView achievements={achievements}/>}
 
@@ -9334,7 +9331,7 @@ export default function HallPass(){
           ownedSkills={ownedSkills}
           ownedClassSkills={ownedClassSkills||{}}
           week={week}
-          spiritLevel={spiritLevel}
+          reachLevel={reachLevel}
           onRun={runFeastRitual}
           onClose={()=>setFeastRitualOpen(false)}
           soundEnabled={soundEnabled}

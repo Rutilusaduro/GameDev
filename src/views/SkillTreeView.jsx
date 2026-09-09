@@ -323,7 +323,7 @@ function ActiveBonuses({ effects }){
 
 // ── main view ─────────────────────────────────────────────────
 
-export function SkillTreeView({ availableSkillPoints, ownedSkills, skillEffects, students, onBuy, onMax, spiritLevel, spiritXp, spiritXpForNextLevel }){
+export function SkillTreeView({ availableSkillPoints, ownedSkills, skillEffects, students, onBuy, onMax, reachLevel, reachXp, reachXpForNextLevel }){
   // ownedSkills: { skillId: rankCount, ... }
   // skillEffects: aggregated effect totals from skillEffect() helper
   const owned = ownedSkills || {};
@@ -341,9 +341,9 @@ export function SkillTreeView({ availableSkillPoints, ownedSkills, skillEffects,
           </div>
         </div>
         <div style={{fontSize:11,color:"#8d6db4",textAlign:"right"}}>
-          {spiritLevel!=null&&(
+          {reachLevel!=null&&(
             <div style={{marginBottom:4}}>
-              Hall Reach Lv {spiritLevel} · {spiritXp??0}/{spiritXpForNextLevel??40} floor lbs gained
+              Hall Reach Lv {reachLevel} · {reachXp??0}/{reachXpForNextLevel??40} floor lbs gained
             </div>
           )}
           Spend points in a tree to unlock higher tiers. Multiple ranks stack effects.

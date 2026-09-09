@@ -104,7 +104,7 @@ const START_DORMS = ['sporty', 'nerdy', 'socialite', 'weirdos'];
 
 for (const startDorm of START_DORMS) {
   let roster = buildRoster(startDorm);
-  const spiritLevel = 3;
+  const reachLevel = 3;
   const homeCount = DORMS[startDorm].studentIds.length;
 
   for (let week = 1; week <= 16; week += 1) {
@@ -112,14 +112,14 @@ for (const startDorm of START_DORMS) {
 
     for (let drip = 0; drip < 12; drip += 1) {
       roster = applyWeeklyTrustDrip(roster, {
-        spiritLevel, week, unlockedDorms, rng: () => 0.99,
+        reachLevel, week, unlockedDorms, rng: () => 0.99,
       });
     }
 
-    let ripe = pickRipeUnlock(roster, spiritLevel, unlockedDorms);
+    let ripe = pickRipeUnlock(roster, reachLevel, unlockedDorms);
     while (ripe) {
       roster = roster.map((s) => (s.id === ripe.id ? { ...s, lockState: 'open' } : s));
-      ripe = pickRipeUnlock(roster, spiritLevel, unlockedDorms);
+      ripe = pickRipeUnlock(roster, reachLevel, unlockedDorms);
     }
 
     if (MILESTONE_WEEKS.includes(week)) {
@@ -157,8 +157,8 @@ for (const startDorm of START_DORMS) {
       assert.equal(unlockedDorms.length, 4, `${startDorm} must unlock all halls by wk16`);
       const openCount = roster.filter((s) => s.lockState === 'open').length;
       assert.ok(
-        openCount >= getRosterSlotCount(spiritLevel),
-        `${startDorm} wk16 should fill ${getRosterSlotCount(spiritLevel)} roster slots, got ${openCount}`,
+        openCount >= getRosterSlotCount(reachLevel),
+        `${startDorm} wk16 should fill ${getRosterSlotCount(reachLevel)} roster slots, got ${openCount}`,
       );
       assert.ok(openCount > homeCount, `${startDorm} wk16 should unlock residents beyond home hall`);
     }

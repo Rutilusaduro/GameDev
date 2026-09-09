@@ -67,7 +67,7 @@ assert(isEmbodiedImmobile(blob), 'stage 10+ flagged immobile');
 let locked = roster.filter((s) => s.lockState === 'locked');
 let simStudents = roster.map((s) => ({ ...s }));
 for (let w = 1; w <= 12; w++) {
-  simStudents = applyWeeklyTrustDrip(simStudents, { spiritLevel: 4, week: w + 20, rng });
+  simStudents = applyWeeklyTrustDrip(simStudents, { reachLevel: 4, week: w + 20, rng });
 }
 const stillLocked = simStudents.filter((s) => s.lockState === 'locked');
 const maxTrust = Math.max(...stillLocked.map((s) => s.passiveTrust || 0));

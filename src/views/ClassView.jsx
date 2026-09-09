@@ -162,7 +162,7 @@ export function ClassView({
   students,
   lilithUnlocked,
   elaraDiscovered = false,
-  spiritLevel = 1,
+  reachLevel = 1,
   avgLbs,
   setSelectedId,
   setView,
@@ -173,7 +173,7 @@ export function ClassView({
   onOpenStudent,
   soundEnabled = true,
 }) {
-  const rosterSlots = getRosterSlotCount(spiritLevel);
+  const rosterSlots = getRosterSlotCount(reachLevel);
   const openCount = countOpenPoolStudents(students);
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);

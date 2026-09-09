@@ -14,11 +14,11 @@ import { renderEchoReplay } from '../../textEngine/scenes/v2/echo/index.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
 
-export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, week = 1, spiritLevel = 1, onRun, onClose, soundEnabled = true }) {
+export function FeastRitualModal({ students, ownedSkills, ownedClassSkills, week = 1, reachLevel = 1, onRun, onClose, soundEnabled = true }) {
   const [selected, setSelected] = useState([]);
   const [ritualId, setRitualId] = useState(null);
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, ritualId]);
-  const available = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, spiritLevel });
+  const available = getAvailableRituals({ ownedSkills, ownedClassSkills, students, week, reachLevel });
   const ritual = FEAST_RITUALS.find((r) => r.id === ritualId);
 
   const toggle = (id) => {
