@@ -45,7 +45,7 @@ registerPool("diary.brittany.uniform", [
 ]);
 
 // ══════════════════════════════════════════════════════════════════
-// MADELINE (1) — Bookworm — "The Dataset"
+// CASSIDY (1) — Swimmer — "The Dataset"
 // Sub-arc: She starts keeping field notes on her own transformation.
 // Clinical distance gradually erodes as she documents herself.
 // ══════════════════════════════════════════════════════════════════

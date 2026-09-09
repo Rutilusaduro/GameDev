@@ -71,7 +71,7 @@ export const FACULTY = [
         ]},
       goliath:{ text:()=>`Brooks watches you attempt yours with open delight, finishing hers in the time it takes you to find the straw. "Good work. You know, half this staff acts scared of food. You get it." She claps your shoulder; you feel it in your teeth. "You're alright, RA."`,
         options:[ {label:"Back", next:"hub"} ]},
-      bulk:{ text:()=>`Brooks leans in, suddenly conspiratorial. "Between us? It's ALWAYS bulking season. Cutting is a myth invented by sad people." She pats her own well-built middle, which has been winning its long argument with her waistband for a few semesters. "Power needs padding. Tell your students. Tell everyone."`,
+      bulk:{ text:()=>`Brooks leans in, suddenly conspiratorial. "Between us? It's ALWAYS bulking season. Cutting is a myth invented by sad people." She pats her own well-built middle, which has been winning its long argument with her waistband for a few semesters. "Power needs padding. Tell your residents. Tell everyone."`,
         options:[
           {label:"\"I do. Constantly.\"", next:"constantly", affinity:6},
           {label:"Back", next:"hub"},
@@ -108,7 +108,7 @@ export const FACULTY = [
         ]},
       protocol:{ text:()=>`"The full protocol is twelve weeks," Mori says, already writing your name. "Most subjects gain. All subjects return." She caps her pen. "I'll note that you understood the terms and smiled. For the file."`,
         options:[ {label:"Back", next:"hub"} ]},
-      study:{ text:()=>`Mori sets down her pen entirely, which from her is a standing ovation. "A cross-departmental appetite study. Your cohort's... remarkable outcomes, my instrumentation." She extends a hand. "I've been watching your students' trajectories for three semesters, RA. The curves are beautiful. I want the methodology."`,
+      study:{ text:()=>`Mori sets down her pen entirely, which from her is a standing ovation. "A cross-floor appetite log. Your cohort's... remarkable outcomes, my instrumentation." She extends a hand. "I've been watching your residents' trajectories for three semesters, RA. The curves are beautiful. I want the protocol."`,
         options:[
           {label:"Shake on it — share (some) methodology", next:"shake", affinity:8},
           {label:"Back", next:"hub"},
@@ -136,11 +136,11 @@ export const FACULTY = [
           {label:"\"Maybe people are just... happier.\"", next:"happier", affinity:3},
           {label:"Back", next:"hub"},
         ]},
-      happier:{ text:()=>`"Maybe." She lets the word sit. "I ran the numbers, you know. Contentment correlates with proximity to your department at r equals point-seven-one." A sip. "I'm a scientist, RA. When I find a happiness machine, I don't unplug it. I take notes. And lately—" she glances down, wry, at her own softened silhouette "—the machine appears to have a wide radius."`,
+      happier:{ text:()=>`"Maybe." She lets the word sit. "I ran the numbers, you know. Contentment correlates with proximity to your floor at r equals point-seven-one." A sip. "I'm a scientist, RA. When I find a happiness machine, I don't unplug it. I take notes. And lately—" she glances down, wry, at her own softened silhouette "—the machine appears to have a wide radius."`,
         options:[ {label:"Back", next:"hub"} ]},
       students:{ text:()=>`"Thriving. Less anxiety, more appetite — those usually trade off, and they're not." She pulls up a chart she's clearly been waiting to show someone. "My eating-behavior workshop tripled in enrollment. Half of them cite your residents as the reason. Whatever you run on this floor, it has gravity."`,
         options:[
-          {label:"\"Come sit in on a class sometime.\"", next:"sitIn", affinity:5},
+          {label:"\"Come sit in on a hall session sometime.\"", next:"sitIn", affinity:5},
           {label:"Back", next:"hub"},
         ]},
       sitIn:{ text:()=>`Abara's smile is genuine and a little hungry — intellectually, mostly. "I accept. I'll bring nothing but a notebook and an open mind." She rises, and the chair sighs in a way it didn't last year. "And perhaps an appetite. Word is your floor caters."`,
@@ -160,7 +160,7 @@ export const FACULTY = [
     desc:"Built the culinary program from a hotplate and a grudge. Feeds everyone within reach on principle. Her hugs smell like brown butter.",
     tree:{
       hub:{ text:(t,a)=>a>=50
-          ?`"MI PROFESOR!" Rosa abandons a saucepan to someone junior and steers you to a stool by the elbow. "Sit, sit. You came on tasting day. You always come on tasting day. You think I don't notice? Eat."`
+          ?`"HEY RA!" Rosa abandons a saucepan to someone junior and steers you to a stool by the elbow. "Sit, sit. You came on tasting day. You always come on tasting day. You think I don't notice? Eat."`
           :`Chef Delgado points a wooden spoon at you before you've fully entered the kitchen. "You. RA. You look underfed and I take that personally. Sit."`,
         options:[
           {label:"Submit to being fed", next:"fed"},
@@ -180,7 +180,7 @@ export const FACULTY = [
           {label:"\"Send your best dishes to my hall lounge.\"", next:"pipeline", affinity:6},
           {label:"Back", next:"hub"},
         ]},
-      pipeline:{ text:()=>`Rosa's eyes narrow with delight. "A practicum! Real eaters for my cooks!" She's already untying her apron to plan. "My students cook, your students eat, everybody grows — the program, I mean. The program grows." A wink that suggests she means everything. "Deal, profesor."`,
+      pipeline:{ text:()=>`Rosa's eyes narrow with delight. "A practicum! Real eaters for my cooks!" She's already untying her apron to plan. "My students cook, your residents eat, everybody grows — the program, I mean. The program grows." A wink that suggests she means everything. "Deal, RA."`,
         options:[ {label:"Back", next:"hub"} ]},
       recipe:{ text:()=>`The kitchen goes quiet. Rosa studies you, then unties the little notebook from her apron string — laminated cards, her grandmother's hand. "Abuela's pozole. I have given this to two people. One was a priest." She copies it out slowly, in beautiful handwriting. "You feed people, RA. Really feed them. I see it. So." She presses the card into your palm and closes your fingers over it. "Now you feed them this."`,
         options:[
@@ -212,14 +212,14 @@ export const FACULTY = [
         ]},
       budget:{ text:()=>`"Oh, you'll love this." She swivels a monitor toward you. "Dining services budget: up forty percent. Gym revenue: up — people love the juice bar. Health center visits: DOWN. Everyone's thriving and nobody can explain it, so the board approved everything and went to lunch." She dusts sugar off the keyboard. "Longest lunch in board history, incidentally."`,
         options:[ {label:"Back", next:"hub"} ]},
-      enrollment:{ text:()=>`"Through the roof. Your department especially — there's a waitlist. A WAITLIST." She pulls a tin of shortbread from the filing cabinet, files being flexible here. "Applicants keep citing 'campus culture.' One essay just said 'I hear everyone there is happy and extremely well-fed' and honestly? Admitted. Instantly."`,
+      enrollment:{ text:()=>`"Through the roof. Your floor especially — there's a waitlist. A WAITLIST." She pulls a tin of shortbread from the filing cabinet, files being flexible here. "Applicants keep citing 'campus culture.' One essay just said 'I hear everyone there is happy and extremely well-fed' and honestly? Admitted. Instantly."`,
         options:[
           {label:"\"Keep feeding the waitlist rumors.\"", next:"rumors", affinity:5},
           {label:"Back", next:"hub"},
         ]},
       rumors:{ text:()=>`Penny mimes zipping her lips, then immediately unzips them. "RA, I am a PROFESSIONAL. The rumors feed themselves. I merely... cater them." She salutes you with shortbread. "Pun intended. Always intended."`,
         options:[ {label:"Back", next:"hub"} ]},
-      aboutYou:{ text:()=>`Penny sets down her pastry, which means it's serious. "Honestly? They say their daughters went away to college and came back confident. They say your students smile like they know something." She ticks fingers, sugar-dusted. "Brooks says you 'get it.' Mori calls you 'the variable.' Abara calls you 'the vector,' affectionately, I checked." She picks her pastry back up. "Me? I say you're the best thing to happen to my snack budget in twenty years, and in this office that is the highest clearance level of praise."`,
+      aboutYou:{ text:()=>`Penny sets down her pastry, which means it's serious. "Honestly? They say their daughters went away to campus and came back confident. They say your residents smile like they know something." She ticks fingers, sugar-dusted. "Brooks says you 'get it.' Mori calls you 'the variable.' Abara calls you 'the vector,' affectionately, I checked." She picks her pastry back up. "Me? I say you're the best thing to happen to my snack budget in twenty years, and in this office that is the highest clearance level of praise."`,
         options:[
           {label:"\"And what do YOU know, Penny?\"", next:"knows", affinity:8},
           {label:"Back", next:"hub"},

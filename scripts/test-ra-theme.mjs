@@ -70,6 +70,17 @@ const BANNED = [
   { id: 'change-of-thesis', re: /Change of Thesis/i },
   { id: 'old-advisor', re: /old advisor/i },
   { id: 'second-phd', re: /second PhD/i },
+  { id: 'your-students', re: /your students/i },
+  { id: 'tell-your-students', re: /Tell your students/i },
+  { id: 'mi-profesor', re: /MI PROFESOR/i },
+  { id: 'deal-profesor', re: /Deal, profesor/i },
+  { id: 'course-credit', re: /Offer course credit/i },
+  { id: 'independent-study-project', re: /independent study project/i },
+  { id: 'irb-subject-zero', re: /IRB subject zero/i },
+  { id: 'thesis-on-others', re: /Thesis on others/i },
+  { id: 'sit-in-on-a-class', re: /sit in on a class/i },
+  { id: 'gap-in-the-literature', re: /gap in the literature/i },
+  { id: 'research-spiral', re: /Research Spiral/ },
 ];
 
 const ALLOW_LINE = [

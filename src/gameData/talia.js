@@ -16,7 +16,7 @@ export const INVENTOR_PATH_STAGES = [
     id: 1,
     key: 'inventor',
     label: 'The Inventor',
-    desc: 'Hands-on device builds, private workshop experiments, and equipping prototypes on your students.',
+    desc: 'Hands-on device builds, private workshop experiments, and equipping prototypes on your residents.',
     unlockNote: 'Active — gather parts, research blueprints, build inventions.',
   },
   {

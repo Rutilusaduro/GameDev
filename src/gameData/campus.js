@@ -61,7 +61,7 @@ export const CAMPUS_NODES = {
   dining_hall: {
     id:"dining_hall", label:"Dining Hall", emoji:"🍽️", x:72, y:40,
     exits:["quad","dorms","food_court","coffee_shop"],
-    desc:"All-you-can-eat, a phrase the student body has come to treat as a personal challenge. The staff know your students by name and portion size. The dessert station has tripled its footprint.",
+    desc:"All-you-can-eat, a phrase the student body has come to treat as a personal challenge. The staff know your residents by name and portion size. The dessert station has tripled its footprint.",
     flavor:[
       "The dining staff are wheeling out a fourth dessert cart. On a Tuesday.",
       "A laminated sign reads 'UNLIMITED MEANS UNLIMITED — Management.' It looks recent and hard-won.",

@@ -26,7 +26,7 @@ export class GameErrorBoundary extends Component {
         <div style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(160deg,#1a1018,#0d0810)', border: '1px solid #6a4050' }}>
           <div style={{ fontSize: 10, letterSpacing: 4, color: '#c9a060', marginBottom: 8 }}>📋 FIELD NOTE — INTERRUPTION</div>
           <p style={{ fontSize: 13, color: '#e8d8c8', lineHeight: 1.75, marginBottom: 12 }}>
-            The semester hiccuped. Your students are still there — but the scene caught, like a held breath.
+            The semester hiccuped. Your residents are still there — but the scene caught, like a held breath.
             Your progress should still be saved locally.
           </p>
           <pre style={{ fontSize: 10, color: '#a08070', background: '#0a0608', padding: 10, borderRadius: 6, overflow: 'auto', maxHeight: 120, marginBottom: 12 }}>

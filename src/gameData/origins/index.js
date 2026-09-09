@@ -10,7 +10,7 @@ export const ORIGIN_DECKS = {
     { id: 'britt_pageant', label: 'Pageant legacy', voiceLine: '"Posture fixes everything. Until it does not."', psych: P(45, 55, 10, 15), gainStance: 'secret', register: 'mirror_early' },
   ],
   1: [
-    { id: 'madd_subject_zero', label: 'IRB subject zero', voiceLine: '"Methodology begins at home."', psych: P(35, 25, 15, 45), gainStance: 'reluctant', register: 'clinical' },
+    { id: 'madd_subject_zero', label: 'Protocol subject zero', voiceLine: '"Methodology begins at home."', psych: P(35, 25, 15, 45), gainStance: 'reluctant', register: 'clinical' },
     { id: 'madd_hidden_binge', label: 'Hidden dorm binge arc', voiceLine: '"The wrappers are primary sources."', psych: P(55, 30, 10, 10), gainStance: 'secret', register: 'dataset_hunger' },
   ],
   2: [
@@ -54,7 +54,7 @@ export const ORIGIN_DECKS = {
     { id: 'kaylee_self_care', label: 'Aggressive self-care', voiceLine: '"Orders for me too."', psych: P(55, 30, 20, 10), gainStance: 'secret', register: 'self_care' },
   ],
   12: [
-    { id: 'nadia_thesis_others', label: 'Thesis on others', voiceLine: '"Observation contaminates the observer."', psych: P(35, 30, 15, 40), gainStance: 'reluctant', register: 'observer' },
+    { id: 'nadia_thesis_others', label: 'Season plan on others', voiceLine: '"Observation contaminates the observer."', psych: P(35, 30, 15, 40), gainStance: 'reluctant', register: 'observer' },
     { id: 'nadia_dream_journal', label: 'Dream journal appetite', voiceLine: '"Interesting. I was hungry before waking."', psych: P(55, 35, 15, 10), gainStance: 'secret', register: 'rem' },
   ],
   13: [

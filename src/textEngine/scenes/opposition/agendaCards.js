@@ -61,7 +61,7 @@ registerPool('opposition.agenda.mandatory_fitness', [
     'Wellness Coalition orders fitness assessments — coaches with measuring tapes and gym-floor certainty.',
     'Mandatory fitness blocks the afternoon. Movement prescribed where appetite was never the crime.',
     'Coach Washburn\'s allies arrive with clipboards. Bodies judged by metrics that hate softness.',
-    'The coalition wants exertion on record. Your students are told to earn their meals.',
+    'The coalition wants exertion on record. Your residents are told to earn their meals.',
   ]},
 ]);
 

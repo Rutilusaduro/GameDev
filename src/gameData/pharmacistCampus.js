@@ -91,7 +91,7 @@ export const PHARMACIST_CAMPUS_EVENTS = [
     id: 'dining_portions',
     target: 'class',
     gain: [3, 6],
-    text: () => `The dining hall quietly increases default portions campus-wide. Regulars notice first. Your students notice second. By week's end the staff are plating for appetites that did not exist last semester.`,
+    text: () => `The dining hall quietly increases default portions campus-wide. Regulars notice first. Your residents notice second. By week's end the staff are plating for appetites that did not exist last semester.`,
   },
   {
     id: 'delivery_surge',
