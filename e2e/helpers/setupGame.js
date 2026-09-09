@@ -55,7 +55,9 @@ async function deskHasBlockingOverlay(page) {
     'HALL REACH EXPANDED',
     'WEEK PLANNER',
     'A NEW DIRECTION',
-    'SESSION COMPLETE',
+    'ROOM SESSION LOGGED',
+    'BREW SESSION LOGGED',
+    'TASTING SESSION LOGGED',
   ];
   for (const label of checks) {
     if (await page.getByText(label).isVisible().catch(() => false)) return true;
@@ -128,13 +130,20 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
       }
     }
 
-    if (await page.getByText('SESSION COMPLETE').isVisible().catch(() => false)) {
-      const modal = page.locator('.hall-pass-modal-in').filter({ hasText: 'SESSION COMPLETE' });
-      if (await clickIfVisible(modal.getByRole('button', { name: 'Continue →' }))) {
-        acted = true;
-        continue;
+    for (const sessionLabel of ['ROOM SESSION LOGGED', 'BREW SESSION LOGGED', 'TASTING SESSION LOGGED']) {
+      if (await page.getByText(sessionLabel).isVisible().catch(() => false)) {
+        const modal = page.locator('.hall-pass-modal-in').filter({ hasText: sessionLabel });
+        if (await clickIfVisible(modal.getByRole('button', { name: 'Continue →' }))) {
+          acted = true;
+          break;
+        }
+        if (await clickIfVisible(modal.getByRole('button', { name: 'Close' }))) {
+          acted = true;
+          break;
+        }
       }
     }
+    if (acted) continue;
 
     if (await page.getByText('A THRESHOLD CROSSED').isVisible().catch(() => false)) {
       if (await clickIfVisible(page.getByRole('button', { name: 'Skip remaining' }))) {

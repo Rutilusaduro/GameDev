@@ -75,7 +75,7 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
           }
           // Session summary
           return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 SESSION COMPLETE</div>
+            <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>🍰 TASTING SESSION LOGGED</div>
             <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:8}}>{cs.testerName} — {getStage(cs.testerLbs).label}</div>
             <div style={{fontSize:12,color:"#c09060",lineHeight:1.85,marginBottom:12,fontStyle:"italic"}}>{session.eatingReaction}</div>
             <div style={{background:"rgba(10,4,0,0.5)",borderRadius:7,padding:"8px 12px",marginBottom:14,fontSize:11}}>

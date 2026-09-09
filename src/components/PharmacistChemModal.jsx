@@ -186,7 +186,7 @@ export function PharmacistChemModal({
     granted.forEach(id => { counts[id] = (counts[id] || 0) + 1; });
     return wrap(
       <>
-        <div style={{ fontSize: 9, letterSpacing: 4, color: chrome.accent, marginBottom: 4 }}>🧪 SESSION COMPLETE</div>
+        <div style={{ fontSize: 9, letterSpacing: 4, color: chrome.accent, marginBottom: 4 }}>🧪 BREW SESSION LOGGED</div>
         <div style={{ fontSize: 13, fontWeight: 700, color: '#8ad4b0', marginBottom: 8 }}>{student.name}</div>
         {(chemSession.acquisitionLog || []).slice(-1).map((line, i) => (
           <div key={i} style={{ fontSize: 11, color: '#709888', fontStyle: 'italic', lineHeight: 1.65, marginBottom: 10 }}>{line}</div>

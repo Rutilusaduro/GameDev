@@ -31,9 +31,9 @@ export function SessionResultModal({ sessionResult, setSessionResult, soundEnabl
   return(
         <div style={C.overlay}>
           <div className="hall-pass-modal-in" style={C.modal}>
-            <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>SESSION COMPLETE — #{sessionResult.sessionCount}</div>
+            <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>ROOM SESSION LOGGED — #{sessionResult.sessionCount}</div>
             <div style={{fontSize:12,color:"#7a50a0",marginBottom:12}}>
-              {sessionResult.student.name} · {sessionResult.student.lbs} lbs · {getFullnessStage(sessionResult.fullnessPct).label} ({sessionResult.fullnessPct}%)
+              Resident {sessionResult.student.name} · {sessionResult.student.lbs} lbs · {getFullnessStage(sessionResult.fullnessPct).label} ({sessionResult.fullnessPct}%)
             </div>
             <div style={{...C.infoBox("rgba(60,10,100,0.25)"),lineHeight:1.9,fontSize:13,color:"#e0d0b0",fontStyle:"italic",marginBottom:16}}>
               {sessionResult.scene}
@@ -41,7 +41,7 @@ export function SessionResultModal({ sessionResult, setSessionResult, soundEnabl
             <div style={{...C.infoBox("rgba(40,5,70,0.3)"),fontSize:11,color:"#9060c0",marginBottom:14}}>
               {sessionResult.totalGain.toLocaleString()} cal this session (≈+{Math.round(sessionResult.totalGain/3500)} lbs digesting) · Appetite capacity expanded by +8 (total bonus: +{sessionResult.capacityBonus})
               <div style={{fontSize:10,color:"#604080",marginTop:3}}>
-                She can now comfortably eat {sessionResult.capacityBonus}% more than when you first started feeding her privately.
+                She can now comfortably eat {sessionResult.capacityBonus}% more than when you first hosted her on your floor.
               </div>
             </div>
             <button style={C.btn("#5818a8")} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setSessionResult(null); }}>Continue →</button>
