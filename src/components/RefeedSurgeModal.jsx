@@ -37,15 +37,15 @@ export function RefeedSurgeModal({ student, tapsNeeded = 3, taps = 0, onTap, onC
           ))}
         </div>
         {taps < tapsNeeded ? (
-          <button type="button" style={{ ...C.btn('#305080'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onTap(); }}>
+          <button type="button" className="refeed-surge-choice-row" style={{ ...C.btn('#305080'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onTap(); }}>
             Feed the surge ({tapsNeeded - taps} left)
           </button>
         ) : (
-          <button type="button" style={{ ...C.btn('#4060a0'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onComplete(); }}>
+          <button type="button" className="refeed-surge-choice-row" style={{ ...C.btn('#4060a0'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onComplete(); }}>
             Surge complete →
           </button>
         )}
-        <button type="button" style={{ ...C.btn('#333'), width: '100%', marginTop: 8, fontSize: 10 }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>
+        <button type="button" className="refeed-surge-choice-row" style={{ ...C.btn('#333'), width: '100%', marginTop: 8, fontSize: 10 }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>
           Skip
         </button>
       </div>

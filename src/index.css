@@ -1076,6 +1076,66 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 64, 224, 0.16);
 }
 
+.chapter-hostess-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.chapter-hostess-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.chapter-hostess-choice-row:focus-visible {
+  outline: 2px solid rgba(168, 96, 224, 0.85);
+  outline-offset: 2px;
+}
+
+.opposition-endgame-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.opposition-endgame-choice-row:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.opposition-endgame-choice-row:focus-visible {
+  outline: 2px solid rgba(128, 160, 200, 0.85);
+  outline-offset: 2px;
+}
+
+.refeed-surge-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.refeed-surge-choice-row:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.refeed-surge-choice-row:focus-visible {
+  outline: 2px solid rgba(96, 144, 192, 0.85);
+  outline-offset: 2px;
+}
+
+.supernatural-ascension-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.supernatural-ascension-choice-row:hover:not(:disabled) {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.supernatural-ascension-choice-row:focus-visible {
+  outline: 2px solid rgba(160, 128, 208, 0.85);
+  outline-offset: 2px;
+}
+
 .supernatural-ascension-modal {
   background: linear-gradient(165deg, rgba(5, 2, 8, 0.98), rgba(18, 8, 24, 0.96), rgba(4, 1, 6, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 32px rgba(96, 64, 160, 0.18);
@@ -1354,7 +1414,11 @@
   .recording-choice-row:hover,
   .collab-stream-choice-row:hover,
   .lilith-choice-row:hover,
-  .pharmacist-choice-row:hover {
+  .pharmacist-choice-row:hover,
+  .chapter-hostess-choice-row:hover,
+  .opposition-endgame-choice-row:hover,
+  .refeed-surge-choice-row:hover,
+  .supernatural-ascension-choice-row:hover {
     transform: none;
   }
 

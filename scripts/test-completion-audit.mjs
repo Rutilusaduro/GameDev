@@ -1778,6 +1778,38 @@ check('pharmacist-row-polish', () => {
   assert.match(cult, /pharmacist-choice-row/);
 });
 
+check('chapter-hostess-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/ChapterHostessModals.jsx');
+  assert.match(css, /\.chapter-hostess-choice-row:focus-visible/);
+  assert.match(css, /\.chapter-hostess-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /chapter-hostess-choice-row/);
+});
+
+check('opposition-endgame-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/OppositionEndgameModal.jsx');
+  assert.match(css, /\.opposition-endgame-choice-row:focus-visible/);
+  assert.match(css, /\.opposition-endgame-choice-row:hover/);
+  assert.match(modal, /opposition-endgame-choice-row/);
+});
+
+check('refeed-surge-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/RefeedSurgeModal.jsx');
+  assert.match(css, /\.refeed-surge-choice-row:focus-visible/);
+  assert.match(css, /\.refeed-surge-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /refeed-surge-choice-row/);
+});
+
+check('supernatural-ascension-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/SupernaturalAscensionModal.jsx');
+  assert.match(css, /\.supernatural-ascension-choice-row:focus-visible/);
+  assert.match(css, /\.supernatural-ascension-choice-row:hover:not\(:disabled\)/);
+  assert.match(modal, /supernatural-ascension-choice-row/);
+});
+
 check('modal-button-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.hall-pass-modal-in button:focus-visible/);

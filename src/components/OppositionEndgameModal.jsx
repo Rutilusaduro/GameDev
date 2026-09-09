@@ -35,7 +35,7 @@ export function OppositionEndgameModal({ beat, onDismiss, soundEnabled = true })
             {beat.detail}
           </div>
         )}
-        <button type="button" style={{ ...C.btn(meta.color), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onDismiss(); }}>
+        <button type="button" className="opposition-endgame-choice-row" style={{ ...C.btn(meta.color), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onDismiss(); }}>
           Continue →
         </button>
       </div>

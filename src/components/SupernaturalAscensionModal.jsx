@@ -26,6 +26,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
                 <button
                   key={s.id}
                   type="button"
+                  className="supernatural-ascension-choice-row"
                   style={{ ...C.btn('#4a2860'), textAlign: 'left', fontSize: 12 }}
                   onClick={() => { playHallPassSound('confirm', soundEnabled); onAscend(s.id, form.id); }}
                 >
@@ -38,7 +39,7 @@ export function SupernaturalAscensionModal({ students, opposition, onAscend, onD
         ) : (
           <p style={{ fontSize: 11, color: '#8070a0', marginBottom: 12 }}>No evolved residents ready for ascension this week.</p>
         )}
-        <button type="button" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>Acknowledge — the act has begun</button>
+        <button type="button" className="supernatural-ascension-choice-row" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onDismiss(); }}>Acknowledge — the act has begun</button>
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
                   const tierName=[MENU_TIERS,ATMOSPHERE_TIERS,GUEST_TIERS][['renee','fiona','kylie'].indexOf(key)];
                   const nextTier=tierName?.[Math.min(unlocks+1,5)];
                   return(
-                    <button key={id}
+                    <button key={id} type="button" className="chapter-hostess-choice-row"
                       style={{...C.btn(maxed?"#30205040":"#401060"),width:"100%",marginBottom:8,opacity:maxed?0.4:1,textAlign:"left",padding:"10px 14px"}}
                       onClick={()=>{ if(!maxed){ playHallPassSound('click', soundEnabled); openHostessHangout(id); } }}>
                       <div style={{fontWeight:700,fontSize:12}}>{nameMap[id]} — {categoryMap[id]}</div>
@@ -33,7 +33,7 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
                     </button>
                   );
                 })}
-                <button style={{...C.btn("#28184060"),width:"100%",marginTop:4}} onClick={()=>{ playHallPassSound('click', soundEnabled); setChapterHostessState(prev=>({...prev,hangoutOpen:false,hangoutStudentId:null})); }}>Cancel</button>
+                <button type="button" className="chapter-hostess-choice-row" style={{...C.btn("#28184060"),width:"100%",marginTop:4}} onClick={()=>{ playHallPassSound('click', soundEnabled); setChapterHostessState(prev=>({...prev,hangoutOpen:false,hangoutStudentId:null})); }}>Cancel</button>
               </div>
             </div>
           );
@@ -56,7 +56,7 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
                   <div style={{fontSize:12,color:"#a080c0",lineHeight:1.75,marginBottom:16,whiteSpace:"pre-line"}}>{typeof vignette.intro==='function'?vignette.intro(tiffany):vignette.intro}</div>
                   <div style={{display:"flex",flexDirection:"column",gap:6}}>
                     {vignette.choices.map(c=>(
-                      <button key={c.id} style={{...C.btn("#401060"),width:"100%",textAlign:"left",padding:"10px 14px",fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeHostessHangoutChoice(c.id); }}>
+                      <button key={c.id} type="button" className="chapter-hostess-choice-row" style={{...C.btn("#401060"),width:"100%",textAlign:"left",padding:"10px 14px",fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeHostessHangoutChoice(c.id); }}>
                         {c.label}
                       </button>
                     ))}
@@ -70,7 +70,7 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
                     <div style={{fontSize:11,color:"#d0a0ff",lineHeight:1.65}}>{chosenChoice.result}</div>
                   </div>
                   <div style={{fontSize:10,color:"#70508090",marginBottom:12,fontStyle:"italic"}}>+{vignette.gainBonus} lbs · +{vignette.relBonus} rel · upgrade unlocked</div>
-                  <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); makeHostessHangoutChoice('confirm'); }}>Continue ✓</button>
+                  <button type="button" className="chapter-hostess-choice-row" style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); makeHostessHangoutChoice('confirm'); }}>Continue ✓</button>
                 </>
               )}
             </div>
@@ -103,8 +103,8 @@ export function ChapterHostessFeastPrepModal({ chapterHostessState, beginFeast, 
                   <div style={{fontSize:10,color:"#60408070",marginTop:2,fontStyle:"italic"}}>{tiers[tier]?.desc||""}</div>
                 </div>
               ))}
-              <button style={{...C.btn("#5a18b0"),width:"100%",marginTop:6,fontSize:13}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); beginFeast(); }}>Begin the Feast ✦</button>
-              <button style={{...C.btn("#28104060"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setChapterHostessState(prev=>({...prev,feastPrepOpen:false})); }}>Go Back</button>
+              <button type="button" className="chapter-hostess-choice-row" style={{...C.btn("#5a18b0"),width:"100%",marginTop:6,fontSize:13}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); beginFeast(); }}>Begin the Feast ✦</button>
+              <button type="button" className="chapter-hostess-choice-row" style={{...C.btn("#28104060"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setChapterHostessState(prev=>({...prev,feastPrepOpen:false})); }}>Go Back</button>
             </div>
           </div>
         );
@@ -133,7 +133,7 @@ export function ChapterHostessFeastLogModal({ chapterHostessState, completeFeast
                 <div style={{fontSize:13,color:"#d090ff",fontWeight:700}}>Tiffany +{ch.feastGainTotal} lbs · +{ch.feastRelTotal} rel</div>
                 {ch.sisters&&<div style={{fontSize:10,color:"#806090",marginTop:4}}>{ch.sisters.map(sis=>`${sis.name} +${ch.pendingSisterGains?.[sis.name]||0} lbs`).join(" · ")}{ch.stageIdx>=1?` · Camille +${ch.pendingCamilleGain||0} lbs`:""}</div>}
               </div>
-              <button style={{...C.btn("#5a18b0"),width:"100%",fontSize:13}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); completeFeast(); }}>The Feast is Done ✓</button>
+              <button type="button" className="chapter-hostess-choice-row" style={{...C.btn("#5a18b0"),width:"100%",fontSize:13}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); completeFeast(); }}>The Feast is Done ✓</button>
             </div>
           </div>
         );
