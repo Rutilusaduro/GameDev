@@ -22,6 +22,7 @@ const BANNED = [
   /Athletics Department/i,
   /future of the department/i,
   /\bnew students\b/i,
+  /\bEach student gains\b/i,
   /\bper student\b/i,
   /\bUse on student\b/i,
   /\bchoose a student\b/i,
@@ -174,5 +175,6 @@ assert(errorBoundary.includes('Log this issue'), 'GameErrorBoundary must say Log
 assertClean(errorBoundary, 'GameErrorBoundary.jsx');
 
 assert(hallPass.includes('Something wrong? Shift Log'), 'HallPass hall log must link to Shift Log');
+assert(hallPass.includes('Each resident gains'), 'HallPass floor check-in must say Each resident gains');
 
 console.log('ui-strings: setup wizard, nav, views, ranks, dorm hooks, weigh-in, homeroom, achievements, resident framing OK');

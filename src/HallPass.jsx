@@ -7905,7 +7905,7 @@ export default function HallPass(){
                   {pendingResult.gain>0&&(
                     <div style={{fontSize:12,color:"#f0a060",marginBottom:12}}>
                       {pendingResult.target==="the hall"
-                        ?`📊 Each student gains ~${pendingResult.gain} lbs`
+                        ?`📊 Each resident gains ~${pendingResult.gain} lbs`
                         :`⚖️ ${pendingResult.target} gains ${pendingResult.gain} lbs`}
                     </div>
                   )}
@@ -8686,10 +8686,10 @@ export default function HallPass(){
             witnessLog={campusState?.witnessLog||[]}
           />}
 
-          {/* ── STUDENT DETAIL ── */}
+          {/* ── RESIDENT DETAIL ── */}
           {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedHallSkills={ownedHallSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen} soundEnabled={soundEnabled}/>}
 
-          {/* ── CLASS ACTIONS ── */}
+          {/* ── FLOOR ACTIONS ── */}
           {view==="actions"&&<ActionsView ap={ap} doFloorAction={doFloorAction} effectiveHallActions={effectiveHallActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
 
           {/* ── PANTRY / INVENTORY ── */}

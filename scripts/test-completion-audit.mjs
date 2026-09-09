@@ -1264,8 +1264,9 @@ check('resident-framing-ui', () => {
   assert.match(desk, /SELECT RESIDENTS/);
   assert.match(desk, /residents for dinner/);
   assert.match(desk, /resident bristles|residents bristle/);
+  assert.match(desk, /Each resident gains/);
   assert.match(desk, /Something wrong\? Shift Log/);
-  assert.doesNotMatch(desk, /SELECT GIRLS|girls to take to dinner|girl bristles|girls bristle|Field Notes/i);
+  assert.doesNotMatch(desk, /SELECT GIRLS|girls to take to dinner|girl bristles|girls bristle|Field Notes|Each student gains/i);
   const trees = read('src/gameData/skillTrees.js');
   assert.match(trees, /for all residents/);
   assert.doesNotMatch(trees, /\b(girl|girls)\b/);

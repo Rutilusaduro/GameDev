@@ -121,6 +121,11 @@ registerModuleVariants("_45.f0", [{ when: {}, weight: 3, text: ["Mid-session sus
 registerModuleVariants("_45.f1", [{ when: {}, weight: 3, text: ["The kitchen shows small signs of disruption. Data recorded anyway.", "Irritation visible beneath satisfaction — yield secured, schedule ruined."] }]);
 registerModuleVariants("_46.f0", [{ when: {}, weight: 3, text: ["Mid-session suspicion spikes — {subject.name} bolts for the door.", "During the tasting {subject.name} panics and lunges toward the exit."] }]);
 registerModuleVariants("_46.f1", [{ when: {}, weight: 3, text: ["The kitchen shows small signs of disruption. Data recorded anyway.", "Irritation visible beneath satisfaction — yield secured, schedule ruined."] }]);
+registerModuleVariants("_46.f2", [{ when: {}, weight: 3, text: [
+  "Reneé logs the data mentally at first, satisfied with the completion despite the emergency.",
+  "Emergency harvest logged anyway — timing suboptimal, yield intact.",
+  "She files the session under acceptable variance and reaches for the next tray.",
+] }]);
 registerModuleVariants("_47.f0", [{ when: {}, weight: 3, text: ["Mid-session suspicion spikes — {subject.name} bolts for the door.", "During the tasting {subject.name} panics and lunges toward the exit."] }]);
 registerModuleVariants("_47.f1", [{ when: {}, weight: 3, text: ["Irritation visible beneath satisfaction — yield secured, schedule ruined.", "Reneé sits heavier, logging the suboptimal timing without sentiment."] }]);
 registerModuleVariants("_48.f0", [{ when: {}, weight: 3, text: ["During the tasting {subject.name} panics and lunges toward the exit.", "Halfway through feeding, alarm hits and {subject.name} tries to flee."] }]);
