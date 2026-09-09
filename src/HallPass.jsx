@@ -847,7 +847,7 @@ export default function HallPass(){
       if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
       return ns;
     }));
-    push(`🏠 ${hallDef.label} — your hall. ${apDef.label} energy. Five doors open; the rest of campus waits.`);
+    push(`🏠 ${hallDef.label} — your hall. ${apDef.label} energy. ${startIds.length} doors open; the rest of campus waits.`);
   };
 
   // Spirit Favor meter — on-lean actions fill it; full → partial AP rebate.

@@ -157,7 +157,7 @@ export function RaSetupWizard({ students, onComplete }) {
               Which hall do you take?
             </div>
             <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 16 }}>
-              Five residents start on your roster. The other halls unlock as the semester deepens.
+              Your hall&apos;s residents start on your roster. The other halls unlock as the semester deepens.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
               {DORM_LIST.map((d) => {

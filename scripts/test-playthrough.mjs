@@ -2,7 +2,7 @@
 /** Sanity checks for RA dorm pivot — roster, Cassidy swimmer arc, dorm unlock path. */
 import assert from 'assert';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
-import { DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek } from '../src/gameData/dorms.js';
+import { DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek, UNLOCK_POOL_IDS } from '../src/gameData/dorms.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
@@ -27,13 +27,15 @@ assert.ok(sportyIds.includes(1), 'Cassidy must home in sporty dorm');
 const dormCounts = Object.fromEntries(
   ['sporty', 'nerdy', 'socialite', 'weirdos'].map((id) => [
     id,
-    Object.values(STUDENT_HOME_DORM).filter((d) => d === id).length,
+    Object.entries(STUDENT_HOME_DORM).filter(([, dorm]) => dorm === id).length,
   ]),
 );
-for (const [dormId, count] of Object.entries(dormCounts)) {
-  assert.ok(count >= 3, `${dormId} hall needs at least 3 unlock-pool residents, got ${count}`);
-}
-assert.equal(dormCounts.weirdos, 3, 'weirdos hall should have 3 residents after Annex rebalance');
+assert.equal(dormCounts.sporty, 5, 'sporty hall should have 5 home residents');
+assert.equal(dormCounts.socialite, 5, 'socialite hall should have 5 home residents');
+assert.equal(dormCounts.nerdy, 4, 'nerdy hall should have 4 home residents');
+assert.equal(dormCounts.weirdos, 4, 'weirdos hall should have 4 home residents');
+assert.equal(UNLOCK_POOL_IDS.length, 18, 'unlock pool should cover 18 roster residents');
+assert.ok(!UNLOCK_POOL_IDS.includes(15), 'Lilith stays outside the unlock pool');
 
 const swimmerEvent = NARRATIVE_EVENTS.find((e) => e.id === 'season_plan_rewrite');
 assert(swimmerEvent, 'season_plan_rewrite narrative event must exist');

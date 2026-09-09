@@ -2,7 +2,7 @@
 // DORM HALLS — pre-game hall pick + resident roster
 // ═══════════════════════════════════════════════════════════════
 
-export const UNLOCK_POOL_IDS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+export const UNLOCK_POOL_IDS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18];
 
 /** One home hall per unlock-pool resident. */
 export const STUDENT_HOME_DORM = {
@@ -14,13 +14,16 @@ export const STUDENT_HOME_DORM = {
   5: 'weirdos',
   6: 'socialite',
   7: 'nerdy',
-  8: 'weirdos',
+  8: 'nerdy',
   9: 'socialite',
   10: 'weirdos',
   11: 'sporty',
   12: 'nerdy',
-  13: 'nerdy',
+  13: 'socialite',
   14: 'sporty',
+  16: 'nerdy',
+  17: 'weirdos',
+  18: 'weirdos',
 };
 
 export const DORMS = {
