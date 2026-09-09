@@ -88,7 +88,7 @@ function DeviceDetailPanel({ def, statusCtx, flavorStudent, week, onClose, onEqu
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {!def.playerInvention && def.form !== 'campus_tool' && def.form !== 'stationary' && def.form !== 'consumable' && (
           <button style={C.btn(ACCENT)} onClick={() => onEquipStudent(def)}>
-            Equip to Student…
+            Equip to Resident…
           </button>
         )}
         {(def.form === 'consumable' || def.form === 'stationary' || def.form === 'campus_tool') && (

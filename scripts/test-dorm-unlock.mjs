@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /** Verify dorm unlock schedule + hall reach gating. */
 import assert from 'assert';
-import { dormUnlocksForWeek, DORMS, getStudentHomeDorm } from '../src/gameData/dorms.js';
+import { dormUnlocksForWeek, DORMS, getStudentHomeDorm, effectiveUnlockWeek } from '../src/gameData/dorms.js';
 import {
   isHallReachable, applyWeeklyTrustDrip, grantPassiveTrust, ROSTER_TRUST_GATE,
 } from '../src/gameData/rosterUnlock.js';
@@ -13,6 +13,11 @@ assert.deepEqual(dormUnlocksForWeek(7, startDorm), []);
 assert.deepEqual(dormUnlocksForWeek(8, startDorm), ['nerdy']);
 assert.deepEqual(dormUnlocksForWeek(12, startDorm), ['nerdy', 'socialite']);
 assert.deepEqual(dormUnlocksForWeek(16, startDorm), ['nerdy', 'socialite', 'weirdos']);
+assert.deepEqual(dormUnlocksForWeek(8, 'nerdy'), ['sporty'], 'nerdy start unlocks Victory Hall at wk8');
+assert.deepEqual([...dormUnlocksForWeek(16, 'nerdy')].sort(), ['socialite', 'sporty', 'weirdos']);
+assert.equal(effectiveUnlockWeek('sporty', 'nerdy'), 8, 'Victory Hall UI gate for nerdy start');
+assert.equal(effectiveUnlockWeek('sporty', 'sporty'), 0, 'Victory Hall home hall has no gate week');
+assert.equal(effectiveUnlockWeek('nerdy', 'sporty'), 8);
 
 const cassidy = { id: 1, lockState: 'locked', passiveTrust: 0, homeDorm: 'sporty' };
 const nerdyGirl = { id: 7, lockState: 'locked', passiveTrust: 0, homeDorm: 'nerdy' };

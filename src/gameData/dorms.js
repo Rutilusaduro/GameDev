@@ -108,6 +108,15 @@ export function getLockedDormStudentIds(unlockedDorms = []) {
   });
 }
 
+/** UI + roster copy — Victory Hall gates at week 8 for non-sporty starts. */
+export function effectiveUnlockWeek(dormId, startDormId) {
+  const dorm = DORMS[dormId];
+  if (!dorm) return 0;
+  if (dorm.unlockWeek > 0) return dorm.unlockWeek;
+  if (dormId === 'sporty' && startDormId && startDormId !== 'sporty') return 8;
+  return 0;
+}
+
 export function dormUnlocksForWeek(week, startDormId) {
   const ids = DORM_LIST.filter(
     (d) => d.id !== startDormId && d.unlockWeek > 0 && week >= d.unlockWeek,

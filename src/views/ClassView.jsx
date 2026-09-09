@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useMemo } from 'react';
 import { C } from '../styles.js';
-import { DORM_LIST, getDorm, getStudentHomeDorm } from '../gameData/dorms.js';
+import { DORM_LIST, getDorm, getStudentHomeDorm, effectiveUnlockWeek, dormUnlocksForWeek } from '../gameData/dorms.js';
 import {
   ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents,
 } from '../gameData/rosterUnlock.js';
@@ -94,7 +94,8 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
   if (startDormId) open.add(startDormId);
   const allOpen = DORM_LIST.every((d) => open.has(d.id));
   if (allOpen) return null;
-  const justUnlocked = DORM_LIST.filter((d) => d.unlockWeek > 0 && week === d.unlockWeek && open.has(d.id));
+  const unlockedThisWeek = new Set(dormUnlocksForWeek(week, startDormId));
+  const justUnlocked = DORM_LIST.filter((d) => open.has(d.id) && unlockedThisWeek.has(d.id));
   return (
     <div style={{ marginBottom: 16, padding: '12px 14px', background: 'linear-gradient(135deg,rgba(28,12,52,0.92),rgba(14,8,28,0.95))', border: '1px solid #4a2870', borderRadius: 10, boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}>
       {justUnlocked.length > 0 && (
@@ -106,12 +107,14 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(140px,1fr))', gap: 8 }}>
         {DORM_LIST.map((d) => {
           const isOpen = open.has(d.id);
-          const weeksLeft = Math.max(0, d.unlockWeek - week);
-          const pct = d.unlockWeek <= 0 ? 100 : Math.min(100, Math.round((week / d.unlockWeek) * 100));
+          const gate = effectiveUnlockWeek(d.id, startDormId);
+          const isNew = isOpen && unlockedThisWeek.has(d.id);
+          const weeksLeft = Math.max(0, gate - week);
+          const pct = gate <= 0 ? (isOpen ? 100 : 0) : Math.min(100, Math.round((week / gate) * 100));
           return (
             <div
               key={d.id}
-              className={isOpen && d.unlockWeek > 0 && week === d.unlockWeek ? 'hall-unlock-new' : undefined}
+              className={isNew ? 'hall-unlock-new' : undefined}
               style={{
                 padding: '8px 10px',
                 borderRadius: 6,
@@ -123,18 +126,18 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
                 <span style={{ fontSize: 14 }}>{d.emoji}</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: isOpen ? d.color : '#6a5888' }}>{d.shortLabel}</span>
-                {isOpen && d.unlockWeek > 0 && week === d.unlockWeek && (
+                {isNew && (
                   <span style={{ fontSize: 8, color: '#ffe8a0', marginLeft: 4, letterSpacing: 1 }}>NEW</span>
                 )}
                 {isOpen && <span style={{ fontSize: 9, color: d.color, marginLeft: 'auto' }}>OPEN</span>}
-                {!isOpen && d.unlockWeek > 0 && <span style={{ fontSize: 9, color: '#6a5888', marginLeft: 'auto' }}>LOCKED</span>}
+                {!isOpen && gate > 0 && <span style={{ fontSize: 9, color: '#6a5888', marginLeft: 'auto' }}>LOCKED</span>}
               </div>
               <div style={{ fontSize: 9.5, color: '#6a5088', lineHeight: 1.35 }}>
                 {isOpen
                   ? d.label
-                  : (weeksLeft > 0 ? `Week ${d.unlockWeek} · ${weeksLeft} wk left` : `Unlocks week ${d.unlockWeek}`)}
+                  : (weeksLeft > 0 ? `Week ${gate} · ${weeksLeft} wk left` : `Unlocks week ${gate}`)}
               </div>
-              {!isOpen && d.unlockWeek > 0 && (
+              {!isOpen && gate > 0 && (
                 <div style={{ height: 3, background: '#1a0e30', borderRadius: 2, marginTop: 6, overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: `${pct}%`, background: d.color, transition: 'width 0.3s' }} />
                 </div>
@@ -217,7 +220,7 @@ export function ClassView({
                         </>
                       ) : (
                         <div style={{ fontSize: 9.5, color: '#50406a', fontStyle: 'italic', lineHeight: 1.4 }}>
-                          {dorm ? `${dorm.label} opens week ${dorm.unlockWeek}` : 'Hall locked'}
+                          {dorm ? `${dorm.label} opens week ${effectiveUnlockWeek(home, startDormId) || '?'}` : 'Hall locked'}
                         </div>
                       )}
                     </div>

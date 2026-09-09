@@ -25,6 +25,8 @@ const BANNED = [
   /\bAddicted students\b/i,
   /\bEvolved students\b/i,
   /\bEvolved Student Operation\b/i,
+  /\bstudent panel\b/i,
+  /\bEquip to Student\b/i,
 ];
 
 function assertClean(text, label) {
@@ -60,7 +62,12 @@ assertClean(spiritHub, 'SpiritHubView.jsx');
 
 const roster = readFileSync('src/views/ClassView.jsx', 'utf8');
 assert(roster.includes('Residents —'), 'ClassView must label roster Residents');
+assert(roster.includes('effectiveUnlockWeek'), 'ClassView must use effectiveUnlockWeek for hall gates');
 assertClean(roster, 'ClassView.jsx');
+
+const deviceInv = readFileSync('src/views/DeviceInventoryView.jsx', 'utf8');
+assert(deviceInv.includes('Equip to Resident'), 'DeviceInventoryView must say Equip to Resident');
+assertClean(deviceInv, 'DeviceInventoryView.jsx');
 
 const lounge = readFileSync('src/views/ClassroomView.jsx', 'utf8');
 assert(lounge.includes('HALL LOUNGE'), 'ClassroomView must say HALL LOUNGE');

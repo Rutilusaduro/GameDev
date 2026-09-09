@@ -96,7 +96,7 @@ export function OversightView({
       )}
       {markedHuntMember && (
         <div style={{ fontSize: 11, color: '#c8a0d0', padding: '8px 10px', background: '#1a1028', borderRadius: 4, marginBottom: 12 }}>
-          🩸 {markedHuntMember.name} marked for Lilith — open Lilith&apos;s hunt from her student panel.
+          🩸 {markedHuntMember.name} marked for Lilith — open Lilith&apos;s hunt from her resident panel.
         </div>
       )}
       {telegraph && (
@@ -127,7 +127,7 @@ export function OversightView({
 
       {aib.pendingHearing && (
         <div style={{ fontSize: 11, color: '#e88', marginBottom: 12, padding: 10, background: '#301010', borderRadius: 6 }}>
-          ⚠️ Removal hearing pending for {students.find((s) => s.id === aib.pendingHearing.studentId)?.name || 'student'}.
+          ⚠️ Removal hearing pending for {students.find((s) => s.id === aib.pendingHearing.studentId)?.name || 'resident'}.
           {onStartHearing && (
             <button type="button" style={{ ...C.btn('#6a2838'), width: '100%', marginTop: 8, fontSize: 11 }} onClick={() => onStartHearing('removal', aib.pendingHearing.studentId)}>
               Begin Removal Hearing
