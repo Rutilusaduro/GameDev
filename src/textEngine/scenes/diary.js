@@ -477,10 +477,10 @@ registerPool('diary.eating_diarist', [
 // ── FOOD_RESEARCHER ───────────────────────────────────────────
 // ── diary.food_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.food_researcher.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['The season panel paperwork was forty-seven pages. I am the only observer I know who is also the primary observation subject. I got the approval.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['The season panel paperwork was forty-seven pages. I am the only observer I know who is also the primary observation participant. I got the approval.'] },
   { when: { stage: [5], corruption: [0] }, text: ['Prep station, season plan funding, meal plan filed as research infrastructure. The support is real. I keep waiting for someone to notice what it\'s actually funding.'] },
-  { when: { stage: [5], corruption: [1] }, text: ['season panel approved. I am the observer and the subject and the methodology accounts for this, which is the most interesting protocol section I\'ve ever written. The data will be good.'] },
-  { when: { stage: [5] }, text: ['The season panel paperwork was forty-seven pages. I am the only observer I know who is also the primary observation subject. The panel found this unusual. They approved it.'] },
+  { when: { stage: [5], corruption: [1] }, text: ['season panel approved. I am the observer and the participant and the methodology accounts for this, which is the most interesting protocol section I\'ve ever written. The data will be good.'] },
+  { when: { stage: [5] }, text: ['The season panel paperwork was forty-seven pages. I am the only observer I know who is also the primary observation participant. The panel found this unusual. They approved it.'] },
   { when: { stage: [6] }, text: ['I have a prep station space. I have season plan funding. I have a meal plan that is technically research infrastructure.'] },
   { when: { stage: [7] }, text: ['Filed. Panel-reviewed, actual hall log archive, citation index above two. The panel chair agreed with Reviewer 1. I agree with the chair.'] },
   { when: { stage: [8] }, text: ['Three citations. A hall log from a floor I never staffed cited my protocol. A log I disagree with cited my findings. A log I admire cited both.'] },

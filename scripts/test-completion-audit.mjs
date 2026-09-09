@@ -789,6 +789,21 @@ check('psych-researcher-resident-framing', () => {
   assert.doesNotMatch(diary, /The subject was uncertain|My subject told me|First subject session|The subject is growing on schedule/i);
 });
 
+check('nadia-feedee-blob-framing', () => {
+  const evolved = read('src/gameData/evolvedForms.js');
+  const diary = read('src/textEngine/scenes/diary.js');
+  const content = read('src/gameData/content.js');
+  assert.match(evolved, /Resident Recruitment Failure/);
+  assert.match(evolved, /become my own participant/);
+  assert.match(evolved, /ultimate participant/);
+  assert.match(evolved, /observation participant/);
+  assert.doesNotMatch(evolved, /Subject Recruitment Failure|become my own subject|ultimate subject|observation subject\. The data|needed a subject\. Now I am/i);
+  assert.match(diary, /primary observation participant/);
+  assert.doesNotMatch(diary, /primary observation subject|observer and the subject and the methodology/i);
+  assert.match(content, /primary observation participant/);
+  assert.doesNotMatch(content, /primary observation subject/i);
+});
+
 check('arc-subject-resident-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
   const diary = read('src/textEngine/scenes/diary.js');
