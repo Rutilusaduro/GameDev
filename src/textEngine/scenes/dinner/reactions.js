@@ -224,63 +224,123 @@ registerPool('dinner.reaction.thinJealousy._f55', [
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw1', [
-  { when: {}, text: ["\"Coach would log three times my intake tonight,\" {subject.name} says. She closes her training log. \"I'm not angry. I'm updating the split.\""] },
+  { when: {}, text: [
+    "\"Coach would log three times my intake tonight,\" {subject.name} says. She closes her training log. \"I'm not angry. I'm updating the split.",
+    "\"Her fuel intake is triple mine,\" {subject.name} says, tapping her log. \"Lane captain's not supposed to envy plates. I'm noting it anyway.",
+    "\"That's off my meal plan by a full block,\" {subject.name} murmurs. She shuts her training log. \"I'm not mad. I'm revising the split.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw2', [
-  { when: {}, text: [". The split is interesting.\" She watches {ref.name} eat. She is not just logging."] },
+  { when: {}, text: [
+    ". The split is interesting.\" She watches {ref.name} eat. She is not just logging.",
+    ". The numbers are louder than I expected.\" She watches {ref.name} eat without looking away.",
+    ". Worth a second read.\" She keeps her eyes on {ref.name}'s plate like it's race footage.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw3', [
-  { when: {}, text: ["{subject.name} looks up from her lane assignments and studies {ref.name} with the focus she gives to podium footage. Warm, full, softly considerable, utterly comfortable."] },
+  { when: {}, text: [
+    "{subject.name} looks up from her lane assignments and studies {ref.name} with the focus she gives to podium footage. Warm, full, softly considerable, utterly comfortable.",
+    "{subject.name} pauses over her season plan and watches {ref.name} the way she watches a relay anchor finish — easy, rounded, completely at home in her skin.",
+    "{subject.name} lifts her gaze from the natatorium schedule on her phone and studies {ref.name} with lane-captain attention. Full, warm, unhurried, enviably soft.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw4', [
-  { when: {}, text: [". \"I've been tracking this in season-plan terms,\" she says. \"What it looks like. What it feels like.\" A pause. \"The dryland videos don't do it justice.\""] },
+  { when: {}, text: [
+    ". \"I've been tracking this in season-plan terms,\" she says. \"What it looks like. What it feels like.\" A pause. \"The dryland videos don't do it justice.\"",
+    ". \"I've been logging this in training terms,\" she says. \"What it looks like. What it costs to maintain.\" A pause. \"The pool deck doesn't capture it.\"",
+    ". \"Season-plan sidebar,\" she says quietly. \"Visual reference only.\" She exhales. \"No footage prepared me for this.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw5', [
-  { when: {}, text: ["{subject.name} reaches over with lane-captain deliberateness and rests her fingers on {ref.name}'s soft middle."] },
+  { when: {}, text: [
+    "{subject.name} reaches over with lane-captain deliberateness and rests her fingers on {ref.name}'s soft middle.",
+    "{subject.name} bridges the table the way she bridges lanes before a relay — deliberate — and rests her palm on {ref.name}'s warmth.",
+    "{subject.name} reaches across with swimmer's certainty and settles her hand on {ref.name}'s soft middle, slow and measuring.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw6', [
-  { when: {}, text: [". She does this the way she checks turn form — steady, measuring. \"The training log said this would feel like warmth and weight,\" she says."] },
+  { when: {}, text: [
+    ". She does this the way she checks turn form — steady, measuring. \"The training log said this would feel like warmth and weight,\" she says.",
+    ". Same touch she uses on tired teammates after finals — gentle, assessing. \"The training block promised this,\" she says.",
+    ". She checks the contact like a coach reviewing footage — patient, exact. \"The log undersold warmth and weight,\" she murmurs.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy.sw7', [
-  { when: {}, text: [". \"The training log was conservative.\""] },
+  { when: {}, text: [
+    ". \"The training log was conservative.\"",
+    ". \"I'd have rounded up,\" she admits.",
+    ". \"Conservative estimate,\" she says, almost fond.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf1', [
-  { when: {}, text: ["{subject.name} marks her place in the training log and looks at {ref.name}'s empty plate with measured concern. \"She hasn't fueled,\" she says."] },
+  { when: {}, text: [
+    "{subject.name} marks her place in the training log and looks at {ref.name}'s empty plate with measured concern. \"She hasn't fueled,\" she says.",
+    "{subject.name} closes her training log mid-entry and studies {ref.name}'s empty plate. \"Under-fueled,\" she says.",
+    "{subject.name} taps her pen against the log and frowns at {ref.name}'s bare plate. \"That's not a meal,\" she says.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf2', [
-  { when: {}, text: [". \"That's off the meal plan. Get her something.\""] },
+  { when: {}, text: [
+    ". \"That's off the meal plan. Get her something.\"",
+    ". \"Coach would bench us for that. Feed her.\"",
+    ". \"Fix the deficit. Now.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf3', [
-  { when: {}, text: ["\"I've been reviewing intake curves,\" {subject.name} says. \"Strong correlation between calories and comfort. The sample in front of you is me.\" She slides a dish toward {ref.name}."] },
+  { when: {}, text: [
+    "\"I've been reviewing intake curves,\" {subject.name} says. \"Strong correlation between calories and comfort. The proof is sitting right here.\" She slides a dish toward {ref.name}.",
+    "\"Intake curves don't lie,\" {subject.name} says. \"More calories, more comfort. I'm the live example.\" She nudges a dish toward {ref.name}.",
+    "\"I've charted this block,\" {subject.name} says. \"The pattern is obvious. Case study's right here.\" She slides food toward {ref.name}.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf4', [
-  { when: {}, text: [". \"Add yourself to the training block.\""] },
+  { when: {}, text: [
+    ". \"Add yourself to the training block.\"",
+    ". \"Log a serving. Start the set.\"",
+    ". \"Your turn in the lane.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf5', [
-  { when: {}, text: ["{subject.name} sets down her log and addresses {ref.name} directly: \"I was lean. I ran every split on restriction. The season plan I was on was wrong.\" She pats her own considerable middle."] },
+  { when: {}, text: [
+    "{subject.name} sets down her log and addresses {ref.name} directly: \"I was lean. I ran every split on restriction. The season plan I was on was wrong.\" She pats her own considerable middle.",
+    "{subject.name} sets down her log. \"I used to ration every bite for splits,\" she tells {ref.name}. \"Wrong protocol.\" She pats her own considerable middle.",
+    "{subject.name} meets {ref.name}'s eyes over the table. \"Restriction season broke me. Fuel season fixed me.\" She smooths a hand over her fullness.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf6', [
-  { when: {}, text: [". \"This is the corrected block. Start eating. I'll walk you through the reps.\""] },
+  { when: {}, text: [
+    ". \"This is the corrected block. Start eating. I'll walk you through the reps.\"",
+    ". \"New program. Same coach energy. Eat.\"",
+    ". \"Warm-up's over. Dig in — I'll count you in.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf7', [
-  { when: {}, text: ["{subject.name} takes {ref.name}'s hand and places it against her own full, warm belly with deliberate care. \"Benchmark set,\" she says."] },
+  { when: {}, text: [
+    "{subject.name} takes {ref.name}'s hand and places it against her own full, warm belly with deliberate care. \"Benchmark set,\" she says.",
+    "{subject.name} guides {ref.name}'s hand to her own warm, full belly. \"Target pace,\" she says softly.",
+    "{subject.name} places {ref.name}'s palm against her middle with athlete's patience. \"Feel the benchmark,\" she says.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage.swf8', [
-  { when: {}, text: [". \"This is what the evening feels like when you hit your numbers. I want you on the board.\""] },
+  { when: {}, text: [
+    ". \"This is what the evening feels like when you hit your numbers. I want you on the board.\"",
+    ". \"This is post-practice fullness. I want you swimming in it.\"",
+    ". \"Hit your macros and the table feels like this. Join me.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy._f56', [
@@ -828,15 +888,27 @@ registerPool('dinner.reaction.fatRetort._f159', [
 ]);
 
 registerPool('dinner.reaction.fatRetort.swr1', [
-  { when: {}, text: ["\"I've been where you are,\" {ref.name} says. \"I ran the same restriction block. The times were wrong."] },
+  { when: {}, text: [
+    "\"I've been where you are,\" {ref.name} says. \"I ran the same restriction block. The times were wrong.",
+    "\"Same lane, different year,\" {ref.name} says. \"I chased lean splits until the season plan broke.",
+    "\"I logged every hungry night,\" {ref.name} says. \"Restriction block. Wrong coach. Wrong times.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatRetort.swr2', [
-  { when: {}, text: [" Mine are better now.\" She pats her full middle with lane-captain satisfaction. \"The corrected protocol is available."] },
+  { when: {}, text: [
+    " Mine are better now.\" She pats her full middle with lane-captain satisfaction. \"The corrected protocol is available.",
+    " Fuel fixed it.\" She smooths a hand over her warmth. \"The updated block is right here.",
+    " I stopped racing empty.\" She pats her belly, pleased. \"Better protocol on the table.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatRetort.swr3', [
-  { when: {}, text: [". It involves fueling.\""] },
+  { when: {}, text: [
+    ". It involves fueling.\"",
+    ". Start with a plate.\"",
+    ". Eat first. Split later.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.fatRetort', [
@@ -1113,19 +1185,35 @@ registerPool('dinner.reaction.thinContextual._f215', [
 ]);
 
 registerPool('dinner.reaction.thinContextual.swt1', [
-  { when: {}, text: ["\"I've been comparing your freshman training logs to this semester,\" {subject.name} says. \"The handwriting is the same. The meal columns are fuller."] },
+  { when: {}, text: [
+    "\"I've been comparing your freshman training logs to this semester,\" {subject.name} says. \"The handwriting is the same. The meal columns are fuller.",
+    "\"I pulled your old lane logs,\" {subject.name} says. \"Same athlete. Fuller entries every week.",
+    "\"Freshman fuel sheets versus tonight,\" {subject.name} says, tapping her log. \"Same name. Bigger appetite columns.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinContextual.swt2', [
-  { when: {}, text: [". The splits got slower and you got happier.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\""] },
+  { when: {}, text: [
+    ". The splits got slower and you got happier.\" She watches {ref.name} eat steadily. \"Something loosened in you. The season plan got better when the rest of you did too.\"",
+    ". The times eased and your smile didn't.\" She watches {ref.name} eat steadily. \"Restriction stopped driving you. Comfort started.\"",
+    ". More calories, more ease.\" She watches {ref.name} with lane-captain fondness. \"You stopped fighting the table and started winning it.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinContextual.swt3', [
-  { when: {}, text: ["\"Coach still has your old lane assignments on file,\" {subject.name} says. \"Freshman year versus now.\" She tilts her head at {ref.name}'s plate. \"Same stroke."] },
+  { when: {}, text: [
+    "\"Coach still has your old lane assignments on file,\" {subject.name} says. \"Freshman year versus now.\" She tilts her head at {ref.name}'s plate. \"Same stroke.",
+    "\"Natatorium archive still lists your freshman lanes,\" {subject.name} says. \"Then versus now.\" She nods at {ref.name}'s plate. \"Same swimmer.",
+    "\"I found your first-season splits,\" {subject.name} says. \"Lean year, hungry year.\" She looks at {ref.name}'s fullness. \"Same person.",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinContextual.swt4', [
-  { when: {}, text: [". Very different fuel load.\" She sounds almost fond. \"You stopped racing restriction and started winning at this instead.\""] },
+  { when: {}, text: [
+    ". Very different fuel load.\" She sounds almost fond. \"You stopped racing restriction and started winning at this instead.\"",
+    ". Completely different meal block.\" She sounds almost proud. \"You traded empty lanes for this.\"",
+    ". Heavier fuel, better mood.\" She smiles slightly. \"You quit starving the season and started feeding it.\"",
+  ] },
 ]);
 
 registerPool('dinner.reaction.thinContextual', [
