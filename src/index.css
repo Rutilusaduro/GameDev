@@ -548,6 +548,36 @@
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(144, 80, 200, 0.14);
 }
 
+.week-planner-slot-card {
+  animation: hallPassViewIn 0.22s ease-out both;
+  transition: transform 0.14s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.week-planner-slot-card:nth-child(1) { animation-delay: 0.02s; }
+.week-planner-slot-card:nth-child(2) { animation-delay: 0.05s; }
+.week-planner-slot-card:nth-child(3) { animation-delay: 0.08s; }
+.week-planner-slot-card:nth-child(4) { animation-delay: 0.11s; }
+.week-planner-slot-card:nth-child(5) { animation-delay: 0.14s; }
+
+.week-planner-slot-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28), 0 0 14px rgba(144, 80, 200, 0.12);
+}
+
+.week-planner-resident-chip {
+  transition: transform 0.12s ease, box-shadow 0.16s ease, filter 0.16s ease, border-color 0.16s ease;
+}
+
+.week-planner-resident-chip:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.week-planner-resident-chip:focus-visible {
+  outline: 2px solid rgba(180, 140, 255, 0.85);
+  outline-offset: 2px;
+}
+
 .maya-hive-modal {
   background: linear-gradient(165deg, rgba(8, 4, 14, 0.98), rgba(20, 8, 30, 0.96), rgba(6, 2, 10, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 36px rgba(217, 140, 255, 0.18);
@@ -752,6 +782,51 @@
 .homeroom-queen-modal {
   background: linear-gradient(165deg, rgba(18, 10, 4, 0.98), rgba(36, 20, 8, 0.96), rgba(12, 6, 2, 0.98)) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(200, 140, 80, 0.16);
+}
+
+.homeroom-participant-card {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.homeroom-participant-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32), 0 0 16px rgba(200, 140, 80, 0.14);
+}
+
+.homeroom-participant-card:focus-visible {
+  outline: 2px solid rgba(220, 160, 96, 0.85);
+  outline-offset: 2px;
+}
+
+.homeroom-activity-card {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.homeroom-activity-card:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.homeroom-activity-card:focus-visible {
+  outline: 2px solid rgba(220, 160, 96, 0.85);
+  outline-offset: 2px;
+}
+
+.homeroom-choice-row {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.homeroom-choice-row:hover {
+  transform: translateX(2px);
+  filter: brightness(1.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.homeroom-choice-row:focus-visible {
+  outline: 2px solid rgba(220, 160, 96, 0.85);
+  outline-offset: 2px;
 }
 
 .fair-modal {
@@ -1086,7 +1161,16 @@
   .cultivator-choice-row:hover,
   .cultivator-choice-row:active,
   .compound-feed-choice-row:hover,
-  .compound-feed-choice-row:active {
+  .compound-feed-choice-row:active,
+  .week-planner-slot-card:hover,
+  .week-planner-resident-chip:hover,
+  .homeroom-participant-card:hover,
+  .homeroom-activity-card:hover,
+  .homeroom-choice-row:hover {
     transform: none;
+  }
+
+  .week-planner-slot-card {
+    animation: none;
   }
 }

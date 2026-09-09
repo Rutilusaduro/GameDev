@@ -364,8 +364,25 @@ check('v2-modal-polish', () => {
 });
 
 check('week-planner-modal-polish', () => {
-  assert.match(read('src/index.css'), /\.week-planner-modal/);
-  assert.match(read('src/components/WeekPlannerModal.jsx'), /week-planner-modal/);
+  const css = read('src/index.css');
+  const modal = read('src/components/WeekPlannerModal.jsx');
+  assert.match(css, /\.week-planner-modal/);
+  assert.match(css, /\.week-planner-slot-card/);
+  assert.match(css, /\.week-planner-resident-chip:focus-visible/);
+  assert.match(modal, /week-planner-modal/);
+  assert.match(modal, /week-planner-slot-card/);
+  assert.match(modal, /week-planner-resident-chip/);
+});
+
+check('homeroom-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/HomeroomQueenModal.jsx');
+  assert.match(css, /\.homeroom-participant-card:focus-visible/);
+  assert.match(css, /\.homeroom-activity-card:focus-visible/);
+  assert.match(css, /\.homeroom-choice-row:focus-visible/);
+  assert.match(modal, /homeroom-participant-card/);
+  assert.match(modal, /homeroom-activity-card/);
+  assert.match(modal, /homeroom-choice-row/);
 });
 
 check('maya-hive-modal-polish', () => {

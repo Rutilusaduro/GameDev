@@ -53,7 +53,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
             const venue = PLANNER_VENUES.find((v) => v.id === slot.venueId) || PLANNER_VENUES[0];
             const preview = previewPlannedSlot(student, { ...slot, slotIndex: i }, week);
             return (
-              <div key={i} style={{ ...C.card, cursor: 'default', marginBottom: 0 }}>
+              <div key={i} className="week-planner-slot-card" style={{ ...C.card, cursor: 'default', marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <div style={{ fontWeight: 700, color: '#c090e8' }}>
                     Slot {i + 1} · {venue.glyph} {venue.label}
@@ -98,6 +98,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
               <button
                 key={s.id}
                 type="button"
+                className="week-planner-resident-chip"
                 onClick={() => setPickStudent(selected ? null : s.id)}
                 style={{
                   ...C.smBtn,

@@ -23,6 +23,7 @@ function ParticipantCard({ name, descIdx, npcKey, canAfford, onSelect, accent, d
   return (
     <button
       type="button"
+      className="homeroom-participant-card"
       disabled={!enabled}
       onClick={() => enabled && onSelect(npcKey)}
       style={{
@@ -149,7 +150,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                 {!resultText&&!done&&choices.length>0&&(
                   <div style={{display:"flex",flexDirection:"column",gap:7}}>
                     {choices.map(ch=>(
-                      <button key={ch.id}
+                      <button key={ch.id} type="button" className="homeroom-choice-row"
                         style={{...C.btn(warmAccent),textAlign:"left",padding:"9px 14px",fontSize:12,lineHeight:1.5}}
                         onClick={()=>makeHomeroomActivityChoice(ch.id)}>
                         <span style={{fontWeight:700}}>{ch.label}</span>
@@ -245,7 +246,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                 {Object.entries(HOMEROOM_GROUP_ACTIVITIES).map(([key,actDef])=>{
                   const canAfford=classAp>=actDef.apCost;
                   return(
-                    <button key={key}
+                    <button key={key} type="button" className="homeroom-activity-card"
                       style={{...C.btn(canAfford?warmDim:"#1a0f06"),flex:1,opacity:canAfford?1:0.38,padding:"9px 12px",lineHeight:1.4,textAlign:"left"}}
                       disabled={!canAfford}
                       onClick={()=>startHomeroomGroupActivity(key)}>
