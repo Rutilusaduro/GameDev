@@ -175,7 +175,7 @@ registerPool('campus.sighting', [
   { when: { archetype: 'eced', weightBand: 'heavy' }, priority: 4,
     text: [
       '{subject.name} holds desk hours with a crockpot. Students eat. She eats. Lesson plans wait.',
-      'She waddles between classrooms with foil trays — nurturing at scale, belly leading, smile unwavering.',
+      'She waddles between dorm kitchens with foil trays — nurturing at scale, belly leading, smile unwavering.',
       'The practicum observes her; she observes them eating — everyone passes.',
     ] },
   { when: { archetype: 'eced', weightBand: 'extreme' }, priority: 4,
