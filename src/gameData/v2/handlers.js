@@ -110,7 +110,7 @@ export function runWeeklyV2Events(v2State, students, ownedSkills, ownedHallSkill
   let next = resetV2Weekly(v2State);
   const messages = [];
 
-  // Resonance passive bonus — class-wide appetite calories before digest
+  // Resonance passive bonus — hall-wide appetite calories before digest
   const passive = applyResonancePassiveBonus(students, next.resonance);
   if (passive.tier.passiveBonus > 0) {
     messages.push({ type: 'passive', tier: passive.tier.label, bonus: passive.tier.passiveBonus });

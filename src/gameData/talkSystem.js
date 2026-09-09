@@ -52,7 +52,7 @@ export const TALK_TOPICS = [
 // (Rendered via talk.coda in the text engine — see talkCodas.js.)
 export const REGISTER_CODAS = {
   submissive: [
-    (s)=>`"...thank you for taking care of me, RA," ${s.name} adds, quieter. "Your greedy girl appreciates it."`,
+    (s)=>`"...thank you for taking care of me, RA," ${s.name} adds, quieter. "I mean it."`,
     (s)=>`${s.name} adds, almost to herself: "I'm getting so big for you." She doesn't seem to notice she said 'for you.'`,
   ],
   broken: [
@@ -69,7 +69,7 @@ export const TALK_CONFIG = {
 };
 
 // ── Body-compliment welcome rule ──────────────────────────────
-// Complimenting a girl's body only lands once she's either pretty fat
+// Complimenting a resident's body only lands once she's either pretty fat
 // (into the heavier stages) OR close enough to you. Before that it reads
 // as unsolicited and creepy: a negative interaction that also draws
 // admin scrutiny.

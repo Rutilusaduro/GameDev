@@ -1,5 +1,5 @@
 // The Squad — Lead: A1 Mobile | Support: A5 Editor
-// Per-girl campus navigation voice — locale and mobility beats.
+// Per-resident campus navigation voice — locale and mobility beats.
 import { registerModuleVariants } from '../../engine.js';
 import './fragments.js';
 

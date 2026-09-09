@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A7 Artisan
-// Intimacy per-girl + archetype voice — mined from legacyIntimacy.snapshot.js.
+// Intimacy per-resident + archetype voice — mined from legacyIntimacy.snapshot.js.
 // Regenerate: node scripts/generateIntimacyPersonas.mjs
 import { registerModuleVariants } from '../../engine.js';
 import './depth.js';

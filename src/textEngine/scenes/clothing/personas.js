@@ -1,5 +1,5 @@
 // The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
-// Per-girl clothing failure reactions — corruption-keyed dialogue.
+// Per-resident clothing failure reactions — corruption-keyed dialogue.
 import { registerModuleVariants } from '../../engine.js';
 import './fragments.js';
 

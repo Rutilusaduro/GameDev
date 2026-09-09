@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// PER-DEVICE DEPENDENCE — how hooked a girl is on a specific rig
+// PER-DEVICE DEPENDENCE — how hooked a resident is on a specific rig
 // Map: deviceId → 0–100. Distinct from global psych.dependence.
 // DEPTH_PLAN §2d — wired into refusal, withdrawal, malfunctions.
 // ═══════════════════════════════════════════════════════════════
@@ -70,7 +70,7 @@ export function getDependenceLevel(student, slotOrDeviceId) {
   return getDeviceDependence(student, deviceId);
 }
 
-/** Hooked girls comply more readily when pushed past capacity. */
+/** Hooked residents comply more readily when pushed past capacity. */
 export function getDependenceRefusalBonus(student, deviceId = null) {
   let level = 0;
   if (deviceId) {

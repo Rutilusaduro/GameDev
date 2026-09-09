@@ -4,7 +4,7 @@
 // Prose Council audit deliverable: one small, sexy sub-arc/character
 // moment for every single student in the roster, staged across weight
 // ranges and corruption tiers. These entries capture the emotional
-// core of transformation for each girl.
+// core of transformation for each resident.
 //
 // Structure: registerPool("diary.<studentId>.<arcName>", variants)
 // Selectors: stage, stageMin/stageMax, corruption (0/1/2), season, mood

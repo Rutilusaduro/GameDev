@@ -7,7 +7,7 @@
 //
 //   feed.react.beat  — how she eats THIS food at THIS fullness
 //                      (foodKind × feedRoom × stage, lexicon-reused)
-//   feed.react.line  — her reaction (per-girl studentId, weight 4,
+//   feed.react.line  — her reaction (per-resident studentId, weight 4,
 //                      pooled with corruption/room-keyed generics)
 //   feed.react       — composed skeleton "{beat} {line}"
 //
@@ -76,7 +76,7 @@ registerPool('feed.react.beat', [
 ]);
 
 // ── feed.react.line ───────────────────────────────────────────
-// Shape: DIALOGUE / BEHAVIOR BEAT — her response. Per-girl persona
+// Shape: DIALOGUE / BEHAVIOR BEAT — her response. Per-resident persona
 // lines (studentId, weight 4) POOLED WITH corruption/room generics
 // (weight 2, {subject.name}) so the beat tracks identity AND psyche.
 registerPool('feed.react.line', [
@@ -133,7 +133,7 @@ registerPool('feed.react.line', [
     `Talia eats one-handed over a blueprint, registering the pleasure a beat late. "Hm. Caloric density's excellent, actually."`,
   ]},
 
-  // ── corruption / room generics — cover every girl, shade by psyche ─
+  // ── corruption / room generics — cover every resident, shade by psyche ─
   { when: { corruption: [0], feedRoom: 'eager' }, weight: 2, text: [
     `{subject.name} catches herself going back for more and pulls up short, cheeks warming. "That's — that's just because it's good."`,
   ]},

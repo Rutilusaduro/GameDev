@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A5 Editor
-// Per-girl interior self-observation — embeddable in eating/campus/clothing beats.
+// Per-resident interior self-observation — embeddable in eating/campus/clothing beats.
 import { registerModuleVariants } from '../../engine.js';
 import './selfObs.js';
 import './sizeRealize.js';

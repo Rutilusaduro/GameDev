@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A2 Psych
 // ═══════════════════════════════════════════════════════════════
-// GATEWAY MOMENTS — per-girl "signature threshold" diary unlocks.
+// GATEWAY MOMENTS — per-resident "signature threshold" diary unlocks.
 //
 // The highest-weight (5) diary entries in diary.js are gated behind a
 // per-student boolean — brittanyUniformStrained, kyliePrivateMoment,

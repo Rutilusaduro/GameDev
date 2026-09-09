@@ -1,5 +1,5 @@
-// Metadata for per-girl stage-up narrative beats — prose in textEngine/scenes/weeklyEvent/
-// (The class-wide RANDOM_EVENTS / SEMESTER_EVENTS bulk-gain layer was removed: its
+// Metadata for per-resident stage-up narrative beats — prose in textEngine/scenes/weeklyEvent/
+// (The hall-wide RANDOM_EVENTS / SEMESTER_EVENTS bulk-gain layer was removed: its
 //  balance assumptions predate the current tuning.)
 export const NARRATIVE_EVENTS = [
   { id: 'uniform_split', stageMin: 3, archetype: 'cheerleader', title: 'Uniform Incident', gain: [4, 8], rel: 12 },

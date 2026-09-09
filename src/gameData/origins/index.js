@@ -30,7 +30,7 @@ export const ORIGIN_DECKS = {
     { id: 'destiny_offline_lobby', label: 'Offline bot lobby', voiceLine: '"No spectators. More snacks."', psych: P(55, 30, 15, 10), gainStance: 'secret', register: 'speedrun' },
   ],
   6: [
-    { id: 'tiffany_legacy_thin', label: 'Legacy thin chapter', voiceLine: '"Perfect girls smile through brunch."', psych: P(25, 35, 20, 55), gainStance: 'opposed', register: 'chapter_face' },
+    { id: 'tiffany_legacy_thin', label: 'Legacy thin chapter', voiceLine: '"Perfect chapter faces smile through brunch."', psych: P(25, 35, 20, 55), gainStance: 'opposed', register: 'chapter_face' },
     { id: 'tiffany_feast_founder', label: 'Wednesday feast founder', voiceLine: '"More is more, babe."', psych: P(50, 35, 15, 10), gainStance: 'secret', register: 'hostess' },
   ],
   7: [
@@ -62,7 +62,7 @@ export const ORIGIN_DECKS = {
     { id: 'daisy_snack_mom', label: 'Snack mom for everyone', voiceLine: '"I packed extra. I always do."', psych: P(50, 30, 20, 10), gainStance: 'secret', register: 'pantry' },
   ],
   14: [
-    { id: 'mj_fair_thin_prize', label: 'County fair thin prize', voiceLine: '"Ribbon girls smile first."', psych: P(35, 25, 20, 45), gainStance: 'reluctant', register: 'ribbon' },
+    { id: 'mj_fair_thin_prize', label: 'County fair thin prize', voiceLine: '"Ribbon winners smile first."', psych: P(35, 25, 20, 45), gainStance: 'reluctant', register: 'ribbon' },
     { id: 'mj_homestead_abundance', label: 'Homestead abundance', voiceLine: '"No sense being shy around a table."', psych: P(55, 30, 15, 10), gainStance: 'secret', register: 'harvest' },
   ],
   15: [

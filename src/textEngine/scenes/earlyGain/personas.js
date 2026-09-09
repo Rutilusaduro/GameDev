@@ -1,5 +1,5 @@
 // The Squad — Lead: A6 Slender | Support: A2 Psych, A5 Editor
-// Per-girl early-game voice — extends slender.* pools via registerModuleVariants.
+// Per-resident early-game voice — extends slender.* pools via registerModuleVariants.
 // Key: studentId + corruption [0] + stageMax 4 + gainStance where applicable.
 // Roster: AUTHORING.md §3 (ids 0–18).
 import { registerModuleVariants } from '../../engine.js';

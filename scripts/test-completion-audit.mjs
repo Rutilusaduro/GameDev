@@ -618,6 +618,25 @@ check('wife-lessons-depth-framing', () => {
   assert.doesNotMatch(pharmacist, /meets the girls who meet/i);
 });
 
+check('talk-lilith-origin-framing', () => {
+  const talk = read('src/gameData/talkSystem.js');
+  assert.match(talk, /I mean it/);
+  assert.doesNotMatch(talk, /Your greedy girl appreciates/i);
+  const journal = read('src/textEngine/scenes/researchJournal/depth.js');
+  assert.match(journal, /Keep me soft, full, and kept/);
+  assert.doesNotMatch(journal, /Feed your good girl/i);
+  const lilith = read('src/gameData/lilith.js');
+  assert.match(lilith, /interesting-looking people in this café/);
+  assert.doesNotMatch(lilith, /interesting-looking girls in this café/i);
+  const origins = read('src/gameData/origins/index.js');
+  assert.match(origins, /Perfect chapter faces smile through brunch/);
+  assert.match(origins, /Ribbon winners smile first/);
+  assert.doesNotMatch(origins, /Perfect girls smile through brunch|Ribbon girls smile first/i);
+  const originBeat = read('src/textEngine/scenes/origin/index.js');
+  assert.match(originBeat, /Crown hopefuls count everything/);
+  assert.doesNotMatch(originBeat, /Crown girls count everything/i);
+});
+
 check('hall-system-resident-framing', () => {
   const skills = read('src/gameData/skills.js');
   assert.match(skills, /2 residents simultaneously/);

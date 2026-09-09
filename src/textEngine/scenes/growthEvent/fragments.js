@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // GROWTH EVENT — fragment pools (slot-composed)
 // Grammar shapes declared per-pool banner.
-// Per-girl voice lives in ./personas.js.
+// Per-resident voice lives in ./personas.js.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool } from '../../engine.js';
 import '../../modules.js';

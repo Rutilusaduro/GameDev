@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// WEEKLY EVENT — render API for per-girl stage-up narrative beats
+// WEEKLY EVENT — render API for per-resident stage-up narrative beats
 // (The hall-wide random-incident layer was removed with RANDOM_EVENTS.)
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';

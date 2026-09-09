@@ -25,7 +25,7 @@ registerModuleVariants('roster.tell', [
     `done pretending she isn't furious with you`,
     `one wrong move from walking out`,
   ]},
-  // A content girl with an empty seat in the room — no priority, so it just
+  // A content resident with an empty seat in the room — no priority, so it just
   // joins the base pool and surfaces now and then (her own grievance, if she
   // has one, still priority-gates this out).
   { when: { classmateWithdrawn: true }, weight: 3, text: [

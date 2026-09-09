@@ -20,7 +20,7 @@ import '../clothing/index.js'; // ensures {cloth.scene} is registered
 
 // ── milestone.body ────────────────────────────────────────────
 // Shape: FULL SENTENCE — present-tense, observational, appreciative.
-// Banded across the ladder so a small girl's crossing reads nothing
+// Banded across the ladder so a small resident's crossing reads nothing
 // like a colossal one. Reuses {word.*} instead of re-describing bodies.
 // First beat of the crescendo: what she has grown into.
 registerPool('milestone.body', [

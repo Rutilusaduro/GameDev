@@ -62,7 +62,7 @@ export function getCorruptionForceFeedBonus(student) {
 }
 
 /**
- * Addiction compliance — stuffed girls push through more often (§1 risk/reward upside).
+ * Addiction compliance — stuffed residents push through more often (§1 risk/reward upside).
  * Paired with higher interrupt frequency from addiction in hungerAddiction.js.
  */
 export function getForceFeedComplianceBonus(student) {

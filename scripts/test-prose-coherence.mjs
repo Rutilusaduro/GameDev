@@ -20,11 +20,12 @@ import {
   CG_FILLED_DIARY, CG_RA_REPLY_TEXT, CG_FILLED_REACTIONS, CG_FILLED_CORKBOARD_SCENES,
   CG_FILLED_BINGE_SCENES, CG_FILLED_CHAT_TEMPLATES, CG_FILLED_MEASUREMENT_REACTIONS,
 } from '../src/gameData/competitiveGainerText.js';
-import { TALK_TOPICS } from '../src/gameData/talkSystem.js';
+import { TALK_TOPICS, REGISTER_CODAS } from '../src/gameData/talkSystem.js';
 import { SKILLS, SKILL_TREES } from '../src/gameData/skillTrees.js';
 import { createContext } from '../src/textEngine/engine.js';
 import { renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
 import '../src/textEngine/scenes/talkCodas.js';
+import '../src/textEngine/scenes/researchJournal/depth.js';
 import '../src/textEngine/scenes/talkEncourage.js';
 import '../src/textEngine/scenes/talkCheckIn.js';
 import '../src/textEngine/scenes/talkCompliment.js';
@@ -96,7 +97,7 @@ import { planConflicts } from '../src/gameData/weekPlanner.js';
 import { renderRecordingOpening } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { renderCultivatorIntro, renderCultivatorRecruitment } from '../src/textEngine/scenes/cultivator/index.js';
-import { CLUE_INVESTIGATION, HUNT_NODES } from '../src/gameData/lilith.js';
+import { CLUE_INVESTIGATION, HUNT_NODES, HUNT_MEN } from '../src/gameData/lilith.js';
 import { CULT_DISTRIBUTION_ROUTES } from '../src/gameData/pharmacistCult.js';
 import { LAB_ACQUISITION_OPTIONS } from '../src/gameData/talia.js';
 import { renderLabSessionBeat } from '../src/textEngine/scenes/talia/lab.js';
@@ -334,6 +335,12 @@ const BANNED = [
   /\bYour greedy girl appreciates\b/i,
   /\bculinary girl lives\b/i,
   /\ba girl with a headlamp\b/i,
+  /\bFeed your good girl\b/i,
+  /\binteresting-looking girls in this café\b/i,
+  /\bPerfect girls smile through brunch\b/i,
+  /\bRibbon girls smile first\b/i,
+  /\bCrown girls count everything\b/i,
+  /\bYour greedy girl appreciates\b/i,
 ];
 
 function assertClean(text, label) {
@@ -695,6 +702,14 @@ for (const topic of TALK_TOPICS) {
     if (refusal) assertClean(refusal, `talk refusal ${topic.id}`);
   }
 }
+for (const fn of REGISTER_CODAS.submissive || []) {
+  const line = typeof fn === 'function' ? fn(talkSubject) : fn;
+  if (line) assertClean(line, 'talk register submissive coda');
+}
+for (const fn of REGISTER_CODAS.broken || []) {
+  const line = typeof fn === 'function' ? fn(talkSubject) : fn;
+  if (line) assertClean(line, 'talk register broken coda');
+}
 
 const evolvedProseForms = ['homeroom_queen', 'campus_legend', 'competitive_gainer', 'food_researcher', 'psych_researcher'];
 for (const formId of evolvedProseForms) {
@@ -935,6 +950,14 @@ if (ecedStudent) {
     globals: { archetype: 'eced' },
   }))?.trim();
   if (attitudeLine) assertClean(attitudeLine, 'attitude eced');
+  for (const slot of ['journal.feeder.eced.s9', 'journal.feeder.eced.s10']) {
+    const journalLine = render(`{${slot}}`, buildTextContext({
+      subject: { ...ecedStudent, lbs: 420 },
+      week: 16,
+      globals: { archetype: 'eced' },
+    }))?.trim();
+    if (journalLine) assertClean(journalLine, `feeder journal ${slot}`);
+  }
 }
 
 for (const [type, phaseIdx] of [['removal', 0], ['removal', 1], ['emergency', 0]]) {
@@ -1033,6 +1056,12 @@ assertClean(CLUE_INVESTIGATION.text, 'lilith clue text');
 assertClean(CLUE_INVESTIGATION.resultText, 'lilith clue result');
 for (const node of Object.values(HUNT_NODES)) {
   assertClean(`${node.label} ${node.desc}`, `lilith hunt node ${node.id}`);
+}
+for (const man of HUNT_MEN) {
+  for (const stage of [0, 4, 8]) {
+    const desc = typeof man.desc === 'function' ? man.desc(stage) : man.desc;
+    if (desc) assertClean(`${man.name} ${man.tag} ${desc}`, `lilith hunt man ${man.id} stage ${stage}`);
+  }
 }
 for (const route of CULT_DISTRIBUTION_ROUTES) {
   assertClean(`${route.label} ${route.desc}`, `cult route ${route.id}`);

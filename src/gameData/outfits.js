@@ -25,7 +25,7 @@ export function garmentFitState(garment, lbs) {
 }
 
 // ponytail: defaults derived from startLbs — no roster/save changes; a real
-// wardrobe (per-girl garments, purchase flow) is long-term roadmap.
+// wardrobe (per-resident garments, purchase flow) is long-term roadmap.
 // Waistbands lose the argument first, tops last.
 export function defaultOutfitFor(student) {
   const base = student?.startLbs ?? student?.lbs ?? 130;

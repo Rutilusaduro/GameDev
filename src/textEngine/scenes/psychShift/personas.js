@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A5 Editor
-// Per-girl corruption-shift interior beats — 6-line arc mined across tiers.
+// Per-resident corruption-shift interior beats — 6-line arc mined across tiers.
 import { registerModuleVariants } from '../../engine.js';
 import './fragments.js';
 

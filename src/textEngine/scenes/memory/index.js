@@ -3,7 +3,7 @@
 // MEMORY BEATS — short callbacks that make the world accrue.
 // The memory store (gameData/memory.js) records notable events; this
 // renders a reference to one: a same-week feast still working on her, a
-// long-arc milestone, or cross-girl gossip about someone else.
+// long-arc milestone, or cross-resident gossip about someone else.
 //
 //   memory.self  — her own history (memScope × memType, {memWeeksAgo})
 //   memory.class — what the hall remembers about another girl ({memName})
@@ -110,7 +110,7 @@ export function renderMemorySelf(student, week = 1, opts = {}) {
   return appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.25);
 }
 
-/** Render cross-girl gossip about another girl. */
+/** Render cross-resident gossip about another girl. */
 export function renderMemoryClass(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });

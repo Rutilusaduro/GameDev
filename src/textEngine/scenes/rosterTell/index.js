@@ -66,7 +66,7 @@ export function renderRosterTell(student, week = 1, opts = {}) {
 // week-close pass; consumes favoritismFlag global.
 //
 //   globals: favoritismFlag ∈ 'favored' | 'neglected'
-//            favoritismName — the girl's name (for neglected framing)
+//            favoritismName — the resident's name (for neglected framing)
 // ═══════════════════════════════════════════════════════════════
 
 // ── roster.ecologyReport.favored ─────────────────────────────
@@ -108,7 +108,7 @@ registerPool('roster.ecologyReport', [
   { when: {}, text: [''] },
 ]);
 
-/** Voiced report-card beat for one girl's favoritism state this week.
+/** Voiced report-card beat for one resident's favoritism state this week.
  *  Pass favoritismFlag: 'favored' | 'neglected' in opts. */
 export function renderEcologyReport(student, week = 1, opts = {}) {
   if (!student) return '';

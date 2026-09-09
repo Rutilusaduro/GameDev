@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // WEIGH-IN BREAK SCENE — the analog scale cracks under her.
 // wi.breakBeat  — physical aftermath (stage/corruption keyed)
-// wi.breakLine  — her reaction (per-girl, mined from the retired
+// wi.breakLine  — her reaction (per-resident, mined from the retired
 //                 BREAK_SCENES in WeighInModal.jsx — quotes verbatim)
 // wi.swap / wi.purchase — RA-voice beats for scale logistics.
 // ═══════════════════════════════════════════════════════════════
@@ -37,7 +37,7 @@ registerPool("wi.breakBeat", [
 ]);
 
 // ── wi.breakLine ──────────────────────────────────────────────
-// Shape: DIALOGUE BEAT — her verdict on the wreckage. Per-girl.
+// Shape: DIALOGUE BEAT — her verdict on the wreckage. Per-resident.
 registerPool("wi.breakLine", [
   { when: { studentId: 0 }, weight: 4, text: [
     `Brittany hops off like she's dismounting a routine, hands on her hips, completely unbothered. "Okay, that one is on the scale, not me."`,

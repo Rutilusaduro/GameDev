@@ -50,7 +50,7 @@ registerPool('scene.hungerInterrupt.appearance', [
 
 // Tonal coherence (WORD_GRANULAR_ENGINE_PLAN §4.1): behavior beats assert
 // interrupt.tone; request/tone beats assert theirs too, so the contradiction
-// guard makes a glaring girl unable to follow up with a shy "please".
+// guard makes a glaring resident unable to follow up with a shy "please".
 registerPool('scene.hungerInterrupt.behavior', [
   { when: { corruption: [2], hungerTier: [3, 4] }, priority: 5,
     asserts: { 'interrupt.tone': 'demanding' },

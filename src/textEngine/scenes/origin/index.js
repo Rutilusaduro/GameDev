@@ -55,7 +55,7 @@ registerModuleVariants('diary.innerBeat', [
   ]},
   { when: { studentId: 0, origin: 'britt_pageant', ...EARLY }, weight: W, text: [
     'Checked my profile in the microwave door. Good light. Better curve. Saved the thought.',
-    'Crown girls count everything. I counted tonight. I want the number higher next week.',
+    'Crown hopefuls count everything. I counted tonight. I want the number higher next week.',
   ]},
   { when: { studentId: 8, origin: 'maya_moved_often', ...EARLY }, weight: W, text: [
     'Third address in two years. First kitchen that felt like mine. I ate slowly anyway.',

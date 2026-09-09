@@ -1,5 +1,5 @@
 // The Squad — Lead: A3 Immobility | Support: A7 Artisan, A5 Editor
-// Per-girl immobility voice — stage 10–11 persona lines.
+// Per-resident immobility voice — stage 10–11 persona lines.
 import { registerModuleVariants } from '../../engine.js';
 import './fragments.js';
 

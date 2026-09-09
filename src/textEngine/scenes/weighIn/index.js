@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: WEIGH-IN — weekly check-in, fully slot-composed.
 // Templates compose beat modules; beats are skeleton pools whose
-// slots draw from the fragment pools in ./fragments.js, per-girl
+// slots draw from the fragment pools in ./fragments.js, per-resident
 // voice in ./personas.js, break scene in ./breakScene.js.
 // This file is the public API — WeighInModal imports from here.
 // Canonical exemplar scene for src/textEngine/AUTHORING.md.

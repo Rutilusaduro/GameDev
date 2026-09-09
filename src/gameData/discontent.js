@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// DISCONTENT — a hidden per-girl unhappiness that the world expresses
+// DISCONTENT — a hidden per-resident unhappiness that the world expresses
 // through behavior, never a bar. Accumulates from things she dislikes
 // (unsolicited body comments, force-feeding before she trusts you,
 // being shown off in public before she's comfortable), shows up as
@@ -43,7 +43,7 @@ export const DISLIKE_SENSITIVITY = {
   predator:     { creeped: 0.4, exposed: 0.5 },
 };
 
-/** The discontent a given slight inflicts on THIS girl (per-girl weighted). */
+/** The discontent a given slight inflicts on THIS resident (per-resident weighted). */
 export function grievanceGain(student, type) {
   const base = DISCONTENT_GAIN[type] || 0;
   const mult = DISLIKE_SENSITIVITY[student?.archetype]?.[type] ?? 1;

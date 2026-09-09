@@ -6,19 +6,19 @@ import { UNLOCK_POOL_IDS, getStudentHomeDorm } from './dorms.js';
 export const ROSTER_TRUST_GATE = 60;
 export const ROSTER_START_SLOTS = 5;
 
-/** Roster seats unlocked by hall reach (pool girls only). */
+/** Roster seats unlocked by hall reach (pool residents only). */
 export function getRosterSlotCount(reachLevel = 1) {
   return ROSTER_START_SLOTS + Math.max(0, reachLevel - 1);
 }
 
-/** Count unlock-pool girls who have crossed the trust door. */
+/** Count unlock-pool residents who have crossed the trust door. */
 export function countOpenPoolStudents(students = []) {
   return students.filter(
     (s) => UNLOCK_POOL_IDS.includes(s.id) && s.lockState !== 'locked',
   ).length;
 }
 
-/** Weekly passive trust for one locked pool girl — scales with hall reach + week. */
+/** Weekly passive trust for one locked pool resident — scales with hall reach + week. */
 export function weeklyTrustDripAmount({ reachLevel = 1, week = 1, rng = Math.random } = {}) {
   const base = 6 + Math.floor(rng() * 7); // 6–12
   const reachBonus = Math.max(0, reachLevel - 2) * 3;

@@ -1,6 +1,6 @@
 // The Squad — Lead: A3 Immobility | Support: A7 Artisan, A5 Editor
 // Settling gather scene — the leviathan capstone (tier 2 only).
-// Space-takeover + girls attending her unprompted. House voice: she is the
+// Space-takeover + residents attending her unprompted. House voice: she is the
 // fixed point the room reorganizes around; the others come to her warmth.
 import { registerPool } from '../../engine.js';
 

@@ -270,7 +270,7 @@ export function getInterruptTalkRelGain(student) {
   return gain;
 }
 
-/** Relationship, mood, and aggression fallout when turning a hungry girl away. */
+/** Relationship, mood, and aggression fallout when turning a hungry resident away. */
 export function applyDenialConsequences(student) {
   let s = denyHunger(student);
   const tier = getHungerTier(s);

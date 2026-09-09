@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // CORRUPTION — hidden psychological progression
-// Tracks how "broken-in" a girl is to gaining, submission, and
+// Tracks how "broken-in" a resident is to gaining, submission, and
 // indulgence. Affects GENERAL actions only (dinners, sessions, class
 // feeds, weekly behavior) — evolved tasks keep their own voice.
 //

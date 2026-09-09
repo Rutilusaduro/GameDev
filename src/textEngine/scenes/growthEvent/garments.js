@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// GROWTH EVENT GARMENTS — per-girl outfit noun phrases for ge.garment
+// GROWTH EVENT GARMENTS — per-resident outfit noun phrases for ge.garment
 // ═══════════════════════════════════════════════════════════════
 import { registerModuleVariants } from '../../engine.js';
 import './fragments.js';

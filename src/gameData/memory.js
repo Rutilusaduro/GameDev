@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
-// MEMORY STORE — a lightweight per-girl event history the prose can
+// MEMORY STORE — a lightweight per-resident event history the prose can
 // call back to. Engine-free: just records notable events onto
 // student.memories (already persisted with students in saves) and
 // picks a relevant one to reference later — same-week callbacks,
-// long-arc milestones, and cross-girl gossip.
+// long-arc milestones, and cross-resident gossip.
 //
 //   memory entry: { t: type, w: week, v?: value }
 //   types: 'feast' | 'forced' | 'stuffed' | 'stageUp' | 'scaleBreak'
@@ -26,7 +26,7 @@ function rpick(arr) {
 }
 
 /**
- * Pick a memory of THIS girl worth calling back to, relative to the
+ * Pick a memory of THIS resident worth calling back to, relative to the
  * just-played `week`. Same-week → recent feasts/force-feeds; long-arc →
  * prior-week milestones. Returns selector globals or null.
  */
@@ -48,7 +48,7 @@ export function pickStudentMemory(student, week) {
 }
 
 /**
- * Pick a recent, notable event by SOMEONE ELSE for a cross-girl callback.
+ * Pick a recent, notable event by SOMEONE ELSE for a cross-resident callback.
  * Scans all students' memories for scale breaks / stage-ups in the last few
  * weeks. Returns { memName, memType, memWeeksAgo } or null.
  */

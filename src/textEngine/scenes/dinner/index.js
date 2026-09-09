@@ -73,7 +73,7 @@ export function renderGroupDinnerReaction(kind, subject, ref, week = 1, opts = {
   return maybeV2Dinner(composed, subject, week, opts);
 }
 
-/** Fed girl unbuttons mid-meal when she crosses fullness cap. */
+/** Fed resident unbuttons mid-meal when she crosses fullness cap. */
 export function renderDinnerUnbutton(student, week = 1, opts = {}) {
   const main = renderReactionPool(REACTION_POOLS.unbutton, student, student, week, opts);
   const composed = composeOverlay(main, renderOverlay(student, week, opts));
@@ -89,7 +89,7 @@ export function renderDinnerConversation(convId, student, week = 1, opts = {}) {
   return maybeV2Dinner(composed, student, week, opts);
 }
 
-/** Render a group dinner conversation; subject + ref are the two girls at the table. */
+/** Render a group dinner conversation; subject + ref are the two residents at the table. */
 export function renderGroupDinnerConversation(convId, subject, ref, week = 1, opts = {}) {
   if (!subject || !convId) return '';
   const ctx = buildTextContext({

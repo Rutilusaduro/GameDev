@@ -71,7 +71,7 @@ export const HUNT_MEN = [
     id: 'zack_m', name: "Zack Morris", tag: "Coffee Regular",
     location: 'coffee_shop', difficulty: 1,
     desc: (stage) => stage < 4
-      ? "He's been making eyes at interesting-looking girls in this café for three semesters. You finally qualify. He just doesn't know what it'll cost."
+      ? "He's been making eyes at interesting-looking people in this café for three semesters. You finally qualify. He just doesn't know what it'll cost."
       : "He's stopped pretending to read. You walked through the door and something in the room changed. He felt it before he saw you.",
   },
   {

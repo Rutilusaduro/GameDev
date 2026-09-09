@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// DOSSIER — per-girl living journal assembled from weekly snapshots.
+// DOSSIER — per-resident living journal assembled from weekly snapshots.
 // Engine-free read model: snapshots append on week advance; UI assembles.
 // ═══════════════════════════════════════════════════════════════
 import { getCorruptionTier } from './corruption.js';

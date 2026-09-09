@@ -4,12 +4,12 @@
 // advanceWeek mutates a huge amount of state (passive gain, digestion,
 // stuffing, stage-ups, corruption auto-eating) and used to flatten it
 // into one "🧬 Digestion — Name +N lbs" log line. This scene turns the
-// girls who actually moved into an in-voice recap beat, so the off-screen
+// residents who actually moved into an in-voice recap beat, so the off-screen
 // engine is FELT instead of invisible.
 //
 //   week.recap.beat — what the week's gain did to her body
 //                     (gainBand × stagedUp × stuffedWeek × stage)
-//   week.recap.line — her take on it (per-girl studentId weight 4,
+//   week.recap.line — her take on it (per-resident studentId weight 4,
 //                     pooled with corruption-keyed generics)
 //   week.recap      — composed skeleton "{beat} {line}"
 //
@@ -120,7 +120,7 @@ registerPool('week.recap.line', [
     `Talia measures the change, frowns at the data, then notes — almost to herself — that she does not want to reverse it.`,
   ]},
 
-  // ── corruption generics — cover every girl, shade by psyche ─
+  // ── corruption generics — cover every resident, shade by psyche ─
   { when: { corruption: [0] }, weight: 2, text: [
     `{subject.name} catches the difference in the mirror and looks away fast, a flush climbing her neck.`,
   ]},

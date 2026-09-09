@@ -231,7 +231,7 @@ export function addictionDrainMod(addiction, roundIndex, totalRounds) {
 export function deriveBarParams({ weightStageId, addiction, resistance, roundIndex, totalRounds, challenge }) {
   const stagePenalty = Math.max(0, weightStageId - 5) * 0.008;
   const stageSpeed = Math.max(0, weightStageId - 5) * 0.035;
-  // Lighter girls get a wider sweet spot and a noticeably slower indicator.
+  // Lighter residents get a wider sweet spot and a noticeably slower indicator.
   const lowStageEase = weightStageId < 5 ? (5 - weightStageId) * 0.018 : 0;
   const lowStageSlow = weightStageId < 5 ? (5 - weightStageId) * 0.03 : 0;
   const addictionMod = addictionZoneMod(addiction, roundIndex, totalRounds);
