@@ -771,6 +771,24 @@ check('nadia-journal-framing', () => {
   assert.match(nadia, /for my hall log/);
 });
 
+check('psych-researcher-resident-framing', () => {
+  const evolved = read('src/gameData/evolvedForms.js');
+  const content = read('src/gameData/content.js');
+  const diary = read('src/textEngine/scenes/diary.js');
+  assert.match(evolved, /It involves a focus resident/);
+  assert.match(evolved, /Pick a focus resident for the hall log/);
+  assert.match(evolved, /Willing taste testers/);
+  assert.match(evolved, /Grow each taste tester through stages/);
+  assert.match(evolved, /willing taste testers/);
+  assert.doesNotMatch(evolved, /involves a subject|formal subject|Voluntary subjects|One subject at a time|Grow the subject through stages|feeds the subject directly|Ask the subject directly|Keep the focus on the subject/i);
+  assert.match(content, /residents worth observing/);
+  assert.match(content, /My resident observations are richer/);
+  assert.match(content, /The residents feel more knowable/);
+  assert.doesNotMatch(content, /subjects worth observing|My subject observations|The subjects feel more knowable/i);
+  assert.match(diary, /diary\.psych_researcher/);
+  assert.doesNotMatch(diary, /The subject was uncertain|My subject told me|First subject session|The subject is growing on schedule/i);
+});
+
 check('wife-lessons-hunt-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
   assert.match(evolved, /as the daughters led the lesson/);

@@ -205,17 +205,17 @@ export const STAGE_REACTIONS = {
 
   psych: [
     // Stage 0 ~80 lbs
-    (s) => `Current weight: ${Math.round(s.lbs)} lbs. Significantly underweight. I've noted the physical data but I find I'm more interested in everyone else's numbers right now. The floor is full of subjects worth observing. I'm making notes.`,
+    (s) => `Current weight: ${Math.round(s.lbs)} lbs. Significantly underweight. I've noted the physical data but I find I'm more interested in everyone else's numbers right now. The floor is full of residents worth observing. I'm making notes.`,
     // Stage 1 ~100-135 lbs
     (s) => `${Math.round(s.lbs)} lbs. Within normal range — barely. I eat at my desk while reading. The food is incidental to the reading. I've started a new column in my observation log for appetite-related behaviors. The data is promising.`,
     // Stage 2 ~135-162 lbs
-    (s) => `${Math.round(s.lbs)} lbs. Something has shifted — I can feel it in the way my clothes settle, the way I sit in chairs. I'm logging it as a variable. Variables are interesting. My subject observations are richer now. I find myself identifying with certain data points.`,
+    (s) => `${Math.round(s.lbs)} lbs. Something has shifted — I can feel it in the way my clothes settle, the way I sit in chairs. I'm logging it as a variable. Variables are interesting. My resident observations are richer now. I find myself identifying with certain data points.`,
     // Stage 3 ~162-195 lbs
     (s) => `${Math.round(s.lbs)} lbs. My waistband requires daily adjustment and my reflection is noticeably different. I observe this with clinical detachment. Or I'm trying to. I've started noting my own mood data alongside the weight data and the correlation is unmistakable.`,
     // Stage 4 ~195-238 lbs
     (s) => `${Math.round(s.lbs)} lbs. My belly presses my notebook against the desk when I lean forward. I catalogued this as a research incident and then sat with it for a moment. My body is providing data I didn't design for. I'm running a supplementary hall log on myself. Preliminary results suggest I'm enjoying this.`,
     // Stage 5 ~238-285 lbs
-    (s) => `${Math.round(s.lbs)} lbs. My thighs press together through twelve hours of sitting and I've stopped pretending not to notice. My observations have gotten richer. The subjects feel more knowable to me now — I understand appetite and embodiment from the inside in ways the old notes never quite captured.`,
+    (s) => `${Math.round(s.lbs)} lbs. My thighs press together through twelve hours of sitting and I've stopped pretending not to notice. My observations have gotten richer. The residents feel more knowable to me now — I understand appetite and embodiment from the inside in ways the old notes never quite captured.`,
     // Stage 6 ~285-360 lbs
     (s) => `${Math.round(s.lbs)} lbs. My belly hangs forward when I stand and I'm in a dorm floor and I haven't managed to care. I care about the data. The data is very interesting. My own physical presence has become a significant variable in my ongoing hall log. I have started keeping a separate log.`,
     // Stage 7 ~360-465 lbs

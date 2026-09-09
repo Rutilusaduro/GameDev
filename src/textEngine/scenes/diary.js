@@ -1399,14 +1399,14 @@ registerPool('diary.wife_lessons', [
 // ── PSYCH_RESEARCHER ──────────────────────────────────────────
 // ── diary.psych_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.psych_researcher.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['Session one. The subject was uncertain — expected. I maintained clinical distance throughout. My own intake during the session exceeded my baseline. I\'ve noted it in the variable log.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['Session one. The resident was uncertain — expected. I maintained clinical distance throughout. My own intake during the session exceeded my baseline. I\'ve noted it in the variable log.'] },
   { when: { stage: [5], corruption: [0] }, text: ['First session. I kept the professional framing. I noticed my note-taking was very detailed. I notice I\'m using more paper than I expected. Both things are in the log.'] },
-  { when: { stage: [5] }, text: ['Session one. Subject was uncertain — expected. I maintained clinical distance throughout, which was harder than expected. My own intake during the session exceeded my baseline.'] },
-  { when: { stage: [6] }, text: ['Month three. The subject\'s appetite has changed in kind. They reach for things now, unprompted, like the food is owed to them. The data is extraordinary.'] },
-  { when: { stage: [7] }, text: ['I\'ve been observing appetite dynamics in this subject for six months and I\'ve noticed my notes from shared feeding sessions are more detailed than my remote observation notes.'] },
-  { when: { stage: [8] }, text: ['My subject told me today that they look forward to our sessions. I wrote it down. Then I sat with it for a while. Then I ate the rest of what was on the table.'] },
-  { when: { stage: [9] }, text: ['I have generated more data on appetite, embodiment, and the feeder/feedee dynamic than I will likely be able to publish in full. My own data is extensive. The subject\'s data is extraordinary.'] },
-  { when: { stage: [10] }, text: ['Final entry for this volume. I am very large and my subject is very large and the observation produced by this relationship will be the most honest work of my career.'] },
+  { when: { stage: [5] }, text: ['Session one. The resident was uncertain — expected. I maintained clinical distance throughout, which was harder than expected. My own intake during the session exceeded my baseline.'] },
+  { when: { stage: [6] }, text: ['Month three. The resident\'s appetite has changed in kind. They reach for things now, unprompted, like the food is owed to them. The data is extraordinary.'] },
+  { when: { stage: [7] }, text: ['I\'ve been observing appetite dynamics in this resident for six months and I\'ve noticed my notes from shared feeding sessions are more detailed than my remote observation notes.'] },
+  { when: { stage: [8] }, text: ['My focus resident told me today that they look forward to our sessions. I wrote it down. Then I sat with it for a while. Then I ate the rest of what was on the table.'] },
+  { when: { stage: [9] }, text: ['I have generated more data on appetite, embodiment, and the feeder/feedee dynamic than I will likely be able to publish in full. My own data is extensive. The resident\'s data is extraordinary.'] },
+  { when: { stage: [10] }, text: ['Final entry for this volume. I am very large and my focus resident is very large and the observation produced by this relationship will be the most honest work of my career.'] },
   { when: {}, text: [
     "The data accumulates. The variable is noted.",
     "The panel would have questions. I have answers.",
@@ -1515,11 +1515,11 @@ registerPool('diary.homeroom_queen', [
 // ── diary.cultivator (decomposed) ─────────────────────────────────────
 registerPool('diary.cultivator.c1', [
 { when: { stage: [5], corruption: [0] }, text: ['First session. I built the recipe around her palate — not a concession, a technique. She ate everything. I ate the test portions and logged both sets of results.'] },
-  { when: { stage: [5] }, text: ['First subject session. I built the recipe specifically around her palate — not a concession, a technique. She ate everything without questioning.'] },
-  { when: { stage: [6] }, text: ['The subject is growing on schedule. I adjusted the recipe upward this week — heavier base, extra portion — and she accepted the change as if it had always been this way.'] },
-  { when: { stage: [7] }, text: ['I\'ve started noting my own weight in the session log. It\'s relevant data. I\'m considerably heavier than when this started, which is also relevant data. The subject is on pace.'] },
-  { when: { stage: [8] }, text: ['Harvest window is open. The subject is at Very Fat stage. I could proceed now. I\'m not proceeding now. I want to see the next stage. This is a professional judgment, not an excuse.'] },
-  { when: { stage: [9] }, text: ['The subject is enormous. She takes up the chair completely and eats with the complete appetite of someone past self-consciousness. I fed her the richest version of everything.'] },
+  { when: { stage: [5] }, text: ['First taste tester session. I built the recipe specifically around her palate — not a concession, a technique. She ate everything without questioning.'] },
+  { when: { stage: [6] }, text: ['The taste tester is growing on schedule. I adjusted the recipe upward this week — heavier base, extra portion — and she accepted the change as if it had always been this way.'] },
+  { when: { stage: [7] }, text: ['I\'ve started noting my own weight in the session log. It\'s relevant data. I\'m considerably heavier than when this started, which is also relevant data. The taste tester is on pace.'] },
+  { when: { stage: [8] }, text: ['Harvest window is open. The taste tester is at Very Fat stage. I could proceed now. I\'m not proceeding now. I want to see the next stage. This is a professional judgment, not an excuse.'] },
+  { when: { stage: [9] }, text: ['The taste tester is enormous. She takes up the chair completely and eats with the complete appetite of someone past self-consciousness. I fed her the richest version of everything.'] },
   { when: { stage: [10] }, text: ['Session before harvest. She is very large. I am very large.'] },
   { when: {}, text: [
     "The recipe is ready. The session begins. The log is open.",

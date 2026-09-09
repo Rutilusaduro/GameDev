@@ -246,12 +246,12 @@ export const EVOLVED_REACTIONS = {
   ],
   // ── PSYCH paths ──────────────────────────────────────────────────
   psych_researcher:[
-    "Session data: subject ate considerably beyond their baseline. I ate more than mine as well. I logged both. My notebook is running out of pages.",
-    "The subject's response to the feeding dynamic has shifted — more anticipation, less resistance. I'm heavier too. I've started logging the sessions in a separate volume.",
-    "I tried to stay clinical today and couldn't quite manage it. The subject was present in a way that I found difficult to categorize. My own data is getting interesting.",
-    "I'm eating with the subject now, not just observing and facilitating. I stopped noting it as a deviation and started noting it as a variable. The weight is accumulating. Both of us.",
+    "Session data: resident ate considerably beyond their baseline. I ate more than mine as well. I logged both. My notebook is running out of pages.",
+    "The resident's response to the feeding dynamic has shifted — more anticipation, less resistance. I'm heavier too. I've started logging the sessions in a separate volume.",
+    "I tried to stay clinical today and couldn't quite manage it. The resident was present in a way that I found difficult to categorize. My own data is getting interesting.",
+    "I'm eating with the resident now, not just observing and facilitating. I stopped noting it as a deviation and started noting it as a variable. The weight is accumulating. Both of us.",
     "My desk chair requires leverage to exit. I logged that. I also logged how I feel about the session data, which is something I never did in week one of this hall log.",
-    "Final session notes: I am very large, the subject is very large, the data is extraordinary, and I stopped pretending it's neutral sometime around stage three. The hall log is complete. The methodology got personal. Both are fine.",
+    "Final session notes: I am very large, the resident is very large, the data is extraordinary, and I stopped pretending it's neutral sometime around stage three. The hall log is complete. The methodology got personal. Both are fine.",
   ],
   // ── ECED path ──────────────────────────────────────────────────
   homeroom_queen:[
@@ -264,10 +264,10 @@ export const EVOLVED_REACTIONS = {
   ],
   // ── CULINARY path ──────────────────────────────────────────────
   cultivator:[
-    "First session with the subject. She ate everything without asking what was in it. I made notes on her appetite, her pace, her stopping point. She has no stopping point. This is going to be methodical.",
-    "The subject is visibly larger. I didn't note surprise in my log because I'm not surprised. The process is working. I ate the quality-control portions carefully. I gained three pounds this week. I'm logging that.",
+    "First session with the taste tester. She ate everything without asking what was in it. I made notes on her appetite, her pace, her stopping point. She has no stopping point. This is going to be methodical.",
+    "The taste tester is visibly larger. I didn't note surprise in my log because I'm not surprised. The process is working. I ate the quality-control portions carefully. I gained three pounds this week. I'm logging that.",
     "She fills the chair differently now. I adjusted the portions upward accordingly. Richer base on the milkshake. Ganache on the cake. She asked what changed. I said 'recipe refinement.' She accepted this and finished everything.",
-    "The subject is at a size that requires some recalibration — the chair, the portions, the approach. I've recalibrated. My own appetite is increasing. I've started keeping a second log for personal data. It seems relevant.",
+    "The taste tester is at a size that requires some recalibration — the chair, the portions, the approach. I've recalibrated. My own appetite is increasing. I've started keeping a second log for personal data. It seems relevant.",
     "I ate the leftovers after the session today. There were a lot of leftovers. I stayed in the kitchen for a long time. I'm noting that I find this work deeply satisfying in a way that extends well past professional interest.",
     "Last session before harvest. She sits across from me very large, very full, and entirely unaware of how this concludes. I ate alongside her — quality control, always quality control — and I felt full and satisfied and exactly right. My own numbers are considerably higher than when I started. I've stopped being surprised by this.",
   ],
@@ -2591,10 +2591,10 @@ Step up to the table.`,gainBonus:0,relBonus:0,startsFairDay:true},
         {
           text:(h,s,subject)=>`${s.name} sets the notebook on the table and opens it to a clean page. 'Before we begin properly,' she says, 'I need a methodology.' She looks at you steadily. 'Two options. They produce different data and they require different things from me.' Her pen is already in her hand.
 
-${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${Math.round(subject.lbs)} lbs — is somewhere in the building right now, unaware that she's been chosen.`:'Her subject is somewhere in the building right now, unaware of having been chosen.'}`,
+${subject?`Her focus resident — ${subject.name}, ${getStage(subject.lbs).label} at ${Math.round(subject.lbs)} lbs — is somewhere in the building right now, unaware that she's been chosen.`:'Her focus resident is somewhere in the building right now, unaware of having been chosen.'}`,
           choices:[
-            {id:"feeder_focus",label:"Hands-On Log — she feeds the subject directly",result:(s)=>`'Hands-On Log.' She writes it at the top of the page. 'I maintain control of variables by introducing them directly. I feed them. I document both of us.' She underlines it. 'The data will be precise.'`,lbs:4,rel:6,flag:"feeder_focus"},
-            {id:"feedee_focus",label:"Field Observer — she interviews a subject already growing",result:(s)=>`'Field Observer.' She writes it at the top of the page. 'I watch. I interview. I don't introduce variables — I document the ones already present.' She underlines it. 'The data will be honest.'`,lbs:3,rel:7,flag:"feedee_focus"},
+            {id:"feeder_focus",label:"Hands-On Log — she feeds the resident directly",result:(s)=>`'Hands-On Log.' She writes it at the top of the page. 'I maintain control of variables by introducing them directly. I feed them. I document both of us.' She underlines it. 'The data will be precise.'`,lbs:4,rel:6,flag:"feeder_focus"},
+            {id:"feedee_focus",label:"Field Observer — she interviews a resident already growing",result:(s)=>`'Field Observer.' She writes it at the top of the page. 'I watch. I interview. I don't introduce variables — I document the ones already present.' She underlines it. 'The data will be honest.'`,lbs:3,rel:7,flag:"feedee_focus"},
           ]
         },
         {
@@ -2606,7 +2606,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
               ?`${subject?.name||'This resident'} is noticeably soft at ${Math.round(subject?.lbs||100)} lbs, still mobile — waistbands, gait, the way she claims a chair. ${s.name} logs all of it in the first session column.`
               :`${subject?.name||'This resident'} is slender at ${Math.round(subject?.lbs||100)} lbs — changes are early, a softness at the wrists, fullness after meals. ${s.name} marks the baseline carefully.`;
             const focus=h.includes("feeder_focus")
-              ?`The first active session is arranged. ${s.name} has brought food — more than the subject will expect. She has her notebook open on her knee.`
+              ?`The first active session is arranged. ${s.name} has brought food — more than the resident will expect. She has her notebook open on her knee.`
               :`The first observation session is scheduled. ${s.name} will say she's studying eating habits for a hall survey. This is not entirely false.`;
             return `${focus}\n\n${subDesc}\n\n${s.name} is ${Math.round(s.lbs)} lbs herself now. She has noted this in the margins.`;
           },
@@ -2617,7 +2617,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
         },
       ],
       endings:[
-        {condition:h=>h.includes("feeder_focus")&&h.includes("personal"),text:`The first session is logged. The subject ate more than their baseline. The observer ate more than hers. Both numbers are on the same page.\n\nShe closes the notebook with both hands. The hall log has begun.`,gainBonus:6,relBonus:8},
+        {condition:h=>h.includes("feeder_focus")&&h.includes("personal"),text:`The first session is logged. The resident ate more than their baseline. The observer ate more than hers. Both numbers are on the same page.\n\nShe closes the notebook with both hands. The hall log has begun.`,gainBonus:6,relBonus:8},
         {condition:()=>true,text:`First session complete. Notes taken. Baselines established. The hall log is formally open.\n\nShe dates the page.`,gainBonus:4,relBonus:6},
       ]
     },
@@ -2635,7 +2635,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
               :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — still early on the curve, but ${s.name}'s projection graph already bends upward.`;
             const focus=h.includes("feeder_focus")
               ?`The Hands-On Log has been running for weeks. ${s.name} arrives to the session with a different bag — bigger. She has adjusted the protocol.`
-              :`The Field Observer logs are meticulous. ${s.name} has begun conducting more formal interviews. The subject seems to enjoy the attention.`;
+              :`The Field Observer logs are meticulous. ${s.name} has begun conducting more formal interviews. The resident seems to enjoy the attention.`;
             return `${focus}\n\n${subDesc}\n\n${s.name} is ${Math.round(s.lbs)} lbs. She has noted — in a separate column, slightly smaller font — that her own intake has increased since the hall log began.`;
           },
           choices:[
@@ -2648,16 +2648,16 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
             const sid=subject?getStage(subject.lbs).id:2;
             const qualifier=sid>=7?`massively`:(sid>=4?`visibly`:`subtly`);
             const subNote=subject?` — ${Math.round(subject.lbs)} lbs, ${getStage(subject.lbs).label}`:'';
-            return `The subject has changed ${qualifier} since the hall log began${subNote}. ${s.name} has a chart in the back of the notebook correlating subject weight gain vs. session frequency.\n\n${h.includes("feeder_focus")?`She's also noted, in the smallest print in the notebook: her own weight is on the same chart.`:`She's also noted, below the main chart: she's been eating differently. 'Variable contamination,' she wrote. Then she crossed it out.`}`;
+            return `The resident has changed ${qualifier} since the hall log began${subNote}. ${s.name} has a chart in the back of the notebook correlating resident weight gain vs. session frequency.\n\n${h.includes("feeder_focus")?`She's also noted, in the smallest print in the notebook: her own weight is on the same chart.`:`She's also noted, below the main chart: she's been eating differently. 'Variable contamination,' she wrote. Then she crossed it out.`}`;
           },
           choices:[
             {id:"acknowledge_self",label:"She mentions she's been eating more too",result:(s)=>`'I need to note,' she says, 'that I've been eating more. I don't know if this is a contamination effect or a parallel response.' She writes it down. She weighs herself afterward. She writes that down too.`,lbs:7,rel:12,flag:"self_acknowledged"},
-            {id:"focus_subject",label:"Keep the focus on the subject",result:(s)=>`She redirects to the subject data. 'The hall log is about the subject,' she says firmly. She doesn't reopen the margin note about her own numbers. The notebook is very full of subject data.`,lbs:5,rel:7,flag:"deflected"},
+            {id:"focus_subject",label:"Keep the focus on the resident",result:(s)=>`She redirects to the resident data. 'The hall log is about the resident,' she says firmly. She doesn't reopen the margin note about her own numbers. The notebook is very full of resident data.`,lbs:5,rel:7,flag:"deflected"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("self_acknowledged"),text:`The notebook is three volumes now. Her own data is mixed into the third.\n\nShe dates the page and then sits with it for a long moment. The hall log and the subject have both grown considerably.`,gainBonus:8,relBonus:10},
+        {condition:h=>h.includes("self_acknowledged"),text:`The notebook is three volumes now. Her own data is mixed into the third.\n\nShe dates the page and then sits with it for a long moment. The hall log and the resident have both grown considerably.`,gainBonus:8,relBonus:10},
         {condition:()=>true,text:`Session complete. New data. The hall log continues.\n\nShe closes the notebook.`,gainBonus:5,relBonus:7},
       ]
     },
@@ -2672,28 +2672,28 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
               ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — the changes are no longer subtle. Chairs are rated before sessions now; ${subject?.name||'This resident'} rates them by how much of her they actually hold.`
               :sid>=4
               ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — rounded and growing. Residents whisper in the lounge; ${s.name} writes the whispers down too.`
-              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — still early stages, but the trend line is clean. ${s.name} trusts the data more than the subject trusts her appetite.`;
+              :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — still early stages, but the trend line is clean. ${s.name} trusts the data more than the resident trusts her appetite.`;
             return `Physics observation principle: the act of observing changes the thing being observed.\n\n${s.name} writes this at the top of a new section. She is ${Math.round(s.lbs)} lbs now. She says this is unrelated to the hall log. The notebook contains months of evidence to the contrary.\n\n${subDesc}`;
           },
           choices:[
-            {id:"confront",label:"Ask the subject directly if they've noticed changes",result:(s)=>`The subject pauses. 'Yes,' they say. 'Is that what you wanted to know?' ${s.name} writes: 'Subject aware of changes. My emotional response: [also variable].'`,lbs:7,rel:11,flag:"confronted"},
-            {id:"avoid",label:"Don't raise it — let the hall log proceed naturally",result:(s)=>`She doesn't raise it. The hall log is cleaner without it. She feeds the subject and takes her notes and doesn't comment.`,lbs:9,rel:6,flag:"avoided"},
+            {id:"confront",label:"Ask the resident directly if they've noticed changes",result:(s)=>`The resident pauses. 'Yes,' they say. 'Is that what you wanted to know?' ${s.name} writes: 'Resident aware of changes. My emotional response: [also variable].'`,lbs:7,rel:11,flag:"confronted"},
+            {id:"avoid",label:"Don't raise it — let the hall log proceed naturally",result:(s)=>`She doesn't raise it. The hall log is cleaner without it. She feeds the resident and takes her notes and doesn't comment.`,lbs:9,rel:6,flag:"avoided"},
           ]
         },
         {
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
-            const subNote=subject?`${subject.name} is ${Math.round(subject.lbs)} lbs — ${getStage(subject.lbs).label}. ${sid>=7?'Enormous now. The room allocates space around her before anyone speaks.':sid>=4?'Noticeably heavy. Sessions have a different warmth — more food, longer pauses, softer laughter.':'Still early in the trend. But the trend is clear on every chart '+s.name+' keeps.'}`:'The subject data is in the notebook.';
-            return `${s.name} reviews the observer effect entry. She has added a footnote in red pen:\n\n[This observer is ${Math.round(s.lbs)} lbs. At study start: ${Math.round(s.startLbs||200)} lbs. The subject data and observer data are, at this point, no longer cleanly separable.]\n\n${subNote}`;
+            const subNote=subject?`${subject.name} is ${Math.round(subject.lbs)} lbs — ${getStage(subject.lbs).label}. ${sid>=7?'Enormous now. The room allocates space around her before anyone speaks.':sid>=4?'Noticeably heavy. Sessions have a different warmth — more food, longer pauses, softer laughter.':'Still early in the trend. But the trend is clear on every chart '+s.name+' keeps.'}`:'The resident data is in the notebook.';
+            return `${s.name} reviews the observer effect entry. She has added a footnote in red pen:\n\n[This observer is ${Math.round(s.lbs)} lbs. At study start: ${Math.round(s.startLbs||200)} lbs. The resident data and observer data are, at this point, no longer cleanly separable.]\n\n${subNote}`;
           },
           choices:[
-            {id:"dual_study",label:"The self-study is part of the research — lean into it",result:(s)=>`She rewrites the protocol section. 'Dual-subject longitudinal study.' Primary subject: external. Secondary subject: observer. She sets the new draft beside the old one. This is more honest. She knows it is.`,lbs:8,rel:13,flag:"dual_study"},
+            {id:"dual_study",label:"The self-study is part of the research — lean into it",result:(s)=>`She rewrites the protocol section. 'Dual-participant longitudinal study.' Primary resident: external. Secondary participant: observer. She sets the new draft beside the old one. This is more honest. She knows it is.`,lbs:8,rel:13,flag:"dual_study"},
             {id:"separate",label:"Separate the data rigorously — two clean studies",result:(s)=>`She creates a second notebook labelled 'Personal log.' For three days she keeps them separate. On the fourth day there is a note in the hall log notebook that begins 'per personal log.'`,lbs:6,rel:8,flag:"separated"},
           ]
         },
       ],
       endings:[
-        {condition:h=>h.includes("dual_study"),text:`The methodology is rewritten. The hall log has a new title: *Dual-Subject Longitudinal Hall Log in Appetite and Transformation.*\n\nBoth names are on the cover.`,gainBonus:10,relBonus:12},
+        {condition:h=>h.includes("dual_study"),text:`The methodology is rewritten. The hall log has a new title: *Dual-Participant Longitudinal Hall Log in Appetite and Transformation.*\n\nBoth names are on the cover.`,gainBonus:10,relBonus:12},
         {condition:()=>true,text:`The session ends. The data is added to the notebook. She doesn't look at the personal log on the way out.\n\nShe thinks about it the whole way home.`,gainBonus:7,relBonus:8},
       ]
     },
@@ -2712,8 +2712,8 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
             return `The notebook says: *The observer's own responses have become a primary data point rather than a confound.*\n\n${s.name} is ${Math.round(s.lbs)} lbs. The original study proposal described the observer as neutral. She has written 'LOL' in the margin of this section, then crossed it out, then left it because the notation is accurate.\n\n${subDesc}`;
           },
           choices:[
-            {id:"share_data",label:"Show the subject the full data — both of you",result:(s)=>`She shows the subject. All of it — their numbers, her numbers, the trend lines. The subject reads it for a long time. 'I knew,' they say. ${s.name} writes: 'Subject confirmed awareness. My response: [the notebook is running out of margin space].'`,lbs:9,rel:16,flag:"shared_data"},
-            {id:"keep_private",label:"Keep the observer data private for now",result:(s)=>`She keeps the personal log separate. The subject has looked at her differently for months but she doesn't confirm it. The data remains private. For now.`,lbs:7,rel:9,flag:"kept_private"},
+            {id:"share_data",label:"Show the resident the full data — both of you",result:(s)=>`She shows the resident. All of it — their numbers, her numbers, the trend lines. The resident reads it for a long time. 'I knew,' they say. ${s.name} writes: 'Resident confirmed awareness. My response: [the notebook is running out of margin space].'`,lbs:9,rel:16,flag:"shared_data"},
+            {id:"keep_private",label:"Keep the observer data private for now",result:(s)=>`She keeps the personal log separate. The resident has looked at her differently for months but she doesn't confirm it. The data remains private. For now.`,lbs:7,rel:9,flag:"kept_private"},
           ]
         },
         {
@@ -2721,7 +2721,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
             const focus=h.includes("feeder_focus")
               ?`The Hands-On Log sessions are different now. The food is the same. The clinical frame is not quite intact. She still takes notes — including notes on the quality of her own attention.`
               :`The Field Observer protocol has long since become something else. The interviews are conversations. ${s.name} has stopped calling them observations in the log.`;
-            return `${focus}\n\n${s.name} is ${Math.round(s.lbs)} lbs. The hall log is${h.includes("shared_data")?" fully bilateral now — two subjects, documented together.":" still nominally about the subject. She knows what it's actually about."}\n\nShe watches the subject eat and feels her own appetite answer — not a confound, she writes, a correspondence. The hall log was never only about one body.`;
+            return `${focus}\n\n${s.name} is ${Math.round(s.lbs)} lbs. The hall log is${h.includes("shared_data")?" fully bilateral now — two participants, documented together.":" still nominally about the resident. She knows what it's actually about."}\n\nShe watches the resident eat and feels her own appetite answer — not a confound, she writes, a correspondence. The hall log was never only about one body.`;
           },
           choices:[
             {id:"commit",label:"Commit to the dual log fully — this is the work now",result:(s)=>`She rewrites the hall log title again. This time she doesn't show it to you. She just nods once, very firmly, and keeps writing.`,lbs:10,rel:14,flag:"committed"},
@@ -2755,8 +2755,8 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
         },
         {
           text:(h,s,subject)=>{
-            const subNote=subject?`${subject.name} is ${Math.round(subject.lbs)} lbs — ${getStage(subject.lbs).label}. ${h.includes("feeder_focus")?'The subject has been fed well. The hall log shows this.':'The subject has been watched carefully. The hall log shows this.'}`:'';
-            return `${s.name} is ${Math.round(s.lbs)} lbs. The hall log has lasted longer than the original proposal's timeline by a factor of several.\n\n${h.includes("beyond_method")?`She has started writing something different — not observations, not data. Something that doesn't have a methodology because it doesn't need one.`:`The data is complete. Every number is logged. The hall log is, technically, one of the most rigorous longitudinal records of its kind.`}\n\n${subNote}\n\nConclusion approaching. ${s.name} reads old entries and finds a stranger who thought neutrality was possible. The subject changed. So did the observer. The log recorded both, even when she pretended otherwise.`;
+            const subNote=subject?`${subject.name} is ${Math.round(subject.lbs)} lbs — ${getStage(subject.lbs).label}. ${h.includes("feeder_focus")?'The resident has been fed well. The hall log shows this.':'The resident has been watched carefully. The hall log shows this.'}`:'';
+            return `${s.name} is ${Math.round(s.lbs)} lbs. The hall log has lasted longer than the original proposal's timeline by a factor of several.\n\n${h.includes("beyond_method")?`She has started writing something different — not observations, not data. Something that doesn't have a methodology because it doesn't need one.`:`The data is complete. Every number is logged. The hall log is, technically, one of the most rigorous longitudinal records of its kind.`}\n\n${subNote}\n\nConclusion approaching. ${s.name} reads old entries and finds a stranger who thought neutrality was possible. The resident changed. So did the observer. The log recorded both, even when she pretended otherwise.`;
           },
           choices:[
             {id:"write_up",label:"Begin the formal write-up",result:(s)=>`She begins typing. She deletes the abstract and starts with the conclusion. The conclusion is better.`,lbs:10,rel:12,flag:"writing_up"},
@@ -2781,7 +2781,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
               :sid>=4
               ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs. Grown beyond the original proposal parameters. ${s.name} adds a footnote: 'Hypothesis exceeded.'`
               :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — earlier in the arc, but the hall log captures both trajectories now.`;
-            return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the office chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a subject who changed profoundly. It also produced an observer who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced an observer who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
+            return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the office chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a resident who changed profoundly. It also produced an observer who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced an observer who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
           },
           choices:[
             {id:"conclude",label:"Write the final entry — close the hall log formally",result:(s)=>`She writes the final entry. Weight: ${Math.round(s.lbs)} lbs. Conclusion: *The hall log is complete. All hypotheses confirmed or productively complicated. The observer is a different person than the observer who opened this notebook.* She underlines the last sentence.`,lbs:12,rel:14,flag:"concluded"},
@@ -2791,7 +2791,7 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
         {
           text:(h,s,subject)=>{
             const subLine=subject?`She looks at ${subject.name}. ${Math.round(subject.lbs)} lbs. ${getStage(subject.lbs).label}. 'The best data in the hall log,' she says. 'Every session.'`:'';
-            return `The notebook collection occupies an entire shelf. ${s.name} runs one hand along the spines.\n\n${h.includes("concluded")?`'The hall log is complete. The methodology held. The conclusions are beyond the scope of what I expected when I opened the first notebook.' She looks at her hands. 'But the data doesn't lie.'`:`'The hall log continues. I'll be adding data for a very long time.' She looks at the new notebook, already half-full. 'I think the subject will too.'`}\n\n${subLine}\n\nShe closes the volume — or doesn't — and the shelf holds the proof either way. Whatever comes next, the hall has already been documented into something true.`;
+            return `The notebook collection occupies an entire shelf. ${s.name} runs one hand along the spines.\n\n${h.includes("concluded")?`'The hall log is complete. The methodology held. The conclusions are beyond the scope of what I expected when I opened the first notebook.' She looks at her hands. 'But the data doesn't lie.'`:`'The hall log continues. I'll be adding data for a very long time.' She looks at the new notebook, already half-full. 'I think the resident will too.'`}\n\n${subLine}\n\nShe closes the volume — or doesn't — and the shelf holds the proof either way. Whatever comes next, the hall has already been documented into something true.`;
           },
           choices:[
             {id:"publish",label:"Suggest she publish — this deserves an audience",result:(s)=>`'Under a pseudonym,' she says immediately. 'And with season panel approval from a sympathetic institution.' She pulls out a list of sympathetic institutions she's been maintaining. It is a long list.`,lbs:8,rel:18,flag:"published"},
@@ -3521,7 +3521,7 @@ export const EVOLUTION_BUTTON_BLURB = {
   transfer:(s)=>`You pass through the dining hall mid-afternoon and the staff behind the counter lights up when ${s.name} walks in behind you. They know her name. They have her order started before she reaches the counter. There's a booth in the corner that other diners seem to drift away from, not consciously, just leaving it available in the particular way that space gets left for something or someone that belongs in it. She settles into it and the room adjusts slightly. You watch from across the hall and think: she's become part of this place faster than anyone else ever has.`,
   psych:(s)=>`You find ${s.name}'s notebook left open on a desk — not hers, a shared lounge table. You don't mean to read it. What's inside is a meticulous, weeks-long study of the people around her: names, dates, behavioral observations, weight-implied measurements, annotated patterns. It's precise. It's methodical. It's deeply unsettling — not because it's wrong, but because it's right. You close it. You wait. When she comes back and sees you by the table she just looks at you steadily, reads your expression, and says: "I need a direction for this."`,
   eced:(s)=>`You stop by the hall lounge on a Tuesday afternoon — not for any particular reason, just passing — and the smell hits you before the door fully opens. Butter, sugar, something warm. ${s.name} is at the counter at ${Math.round(s.lbs)} pounds, her apron dusty with flour, and around the table are the residents she teaches and apparently their mothers, and everyone is eating, and the room has the specific quality of a space that has found its purpose. Daisy looks up. She sees you see the room. "I've been doing Tuesdays for a while now," she says. Her voice is carefully normal. "I think it's working."`,
-  culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing subjects." A pause. "Very willing subjects." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
+  culinary:(s)=>`You find ${s.name}'s test kitchen unexpectedly unlocked. She's not there, but someone else is — a woman you don't recognize, sitting at the prep table with an empty plate and the particular slow contentment of someone who ate something extraordinary and hasn't decided to leave yet. She looks up. She seems confused about how long she's been there. When Reneé comes back she sees you in the doorway and she doesn't explain anything. She takes the plate, washes it, and says: "I've been running some tests. With willing taste testers." A pause. "Very willing taste testers." She looks at you with the calibrated calm of someone who has been thinking about whether to say the next thing for a long time. "I think I can do this properly. I just need the right direction."`,
   farm_girl:(s)=>`You stop by and find Mary Jane at the counter with more food than two people could eat and a look of complete purpose. She's not cooking because she's hungry — or not only that. She's cooking because she knows something about food and feeding and what a soft home feels like and she's starting to understand she's the only person in the building who knows it. She's ${Math.round(s.lbs)} pounds and she looks like a plan that's been waiting to be named.`,
   pharmacy_grad:(s)=>`You find ${s.name} in the pharmacy lab after hours, gloves on, hair tied back, a corporate ID badge still clipped to her coat. The notebook open on the bench isn't her assigned research — it's dosage tables with appetite curves crossed out and rewritten. She doesn't pretend otherwise when she sees you. "I've been adjusting compounds," she says, very carefully. "Wellness adjacents. Metabolic support." She taps the page. "I can make things for you. Food delivery only — that's the safe route." She looks anxious and absolutely certain in the same breath. "I need someone who knows what they're authorizing."`,
   inventor:(s)=>`You pass the engineering workshop after midnight and the light is still on. ${s.name} is hunched over a bench covered in harness sketches, servo specs, and half-finished belts that look less like clothing and more like opinions. She doesn't startle when you enter — she marks a measurement and says, without looking up, "I've been modeling growth as a control problem." She finally meets your eyes. Her smile is clinical and hungry in the same instant. "I can build things that make bodies do what spreadsheets can't. I need a partner who won't pretend that's innocent."`,
@@ -3615,15 +3615,15 @@ export const EVOLUTION_OFFER = {
     },
   },
   psych:{
-    intro:(s)=>`${s.name} doesn't explain the notebook. She opens it to a page of columned data — names, dates, observations, weights-implied — and sets it on the table between you. 'I've been doing this informally,' she says. 'I'd like to do it properly.' She taps the notebook. 'It involves a subject.'`,
+    intro:(s)=>`${s.name} doesn't explain the notebook. She opens it to a page of columned data — names, dates, observations, weights-implied — and sets it on the table between you. 'I've been doing this informally,' she says. 'I'd like to do it properly.' She taps the notebook. 'It involves a focus resident.'`,
     paths:{
-      psych_researcher: { label:"The Researcher", desc:"Pick a resident as a formal subject. Feeder or feedee — she'll study both sides of the dynamic with the rigour of a clinical trial." },
+      psych_researcher: { label:"The Researcher", desc:"Pick a focus resident for the hall log. Feeder or feedee — she'll study both sides of the dynamic with the rigour of a clinical trial." },
     },
   },
   culinary:{
-    intro:(s)=>`${s.name} sets two things on the table between you: a recipe notebook and a short list of names. No explanation. She waits. When you ask, she says: "I've been running informal trials. Voluntary subjects, controlled portions, careful observation." She pauses. "The subjects gained weight. I gained weight. The data is consistent across six sessions." She taps the list. "I want to do it properly. One subject at a time, managed correctly, from selection through — completion." She says 'completion' the way someone says a word they've chosen very carefully. "I need someone who understands what they're authorizing."`,
+    intro:(s)=>`${s.name} sets two things on the table between you: a recipe notebook and a short list of names. No explanation. She waits. When you ask, she says: "I've been running informal trials. Willing taste testers, controlled portions, careful observation." She pauses. "The testers gained weight. I gained weight. The data is consistent across six sessions." She taps the list. "I want to do it properly. One resident at a time, managed correctly, from selection through — completion." She says 'completion' the way someone says a word they've chosen very carefully. "I need someone who understands what they're authorizing."`,
     paths:{
-      cultivator:{ label:"The Cultivator", desc:"Recruit a taste tester. Run feeding sessions using carefully constructed recipes. Grow the subject through stages and harvest when the yield is right. Three full cycles. Precise, personal, and deeply satisfying." },
+      cultivator:{ label:"The Cultivator", desc:"Recruit a taste tester. Run feeding sessions using carefully constructed recipes. Grow each taste tester through stages and harvest when the yield is right. Three full cycles. Precise, personal, and deeply satisfying." },
     },
   },
   pharmacy_grad:{
