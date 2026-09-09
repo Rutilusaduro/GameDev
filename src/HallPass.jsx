@@ -8817,7 +8817,7 @@ export default function HallPass(){
         </div>
       </div>
 
-      {/* ── STUDY CHECK-IN MODAL ── */}
+      {/* ── FLOOR CHECK-IN MODAL ── */}
 
       {/* ── ITEM TARGET PICKER ── */}
       {itemTargetPicker&&<ItemTargetPicker itemTargetPicker={itemTargetPicker} setItemTargetPicker={setItemTargetPicker} students={students} lilithUnlocked={lilithUnlocked} useItemOn={useItemOn} soundEnabled={soundEnabled}/>}

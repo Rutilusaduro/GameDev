@@ -120,8 +120,8 @@ const STAGE11_C1 = {
     `Kitchen comes to us both. Professional judgment: continue. Yield beyond projection.`,
   ],
   community_researcher: [
-    `Field site is this chair. Community feeds the hall log. I document from immobility. Valid.`,
-    `Observation stationary. Neighbors bring data disguised as pie. Conclusions delicious.`,
+    `Floor sessions from this chair. Residents feed the season plan. I log from immobility. Valid.`,
+    `Captain stationary. Neighbors bring intake disguised as pie. Conclusions delicious.`,
   ],
 };
 

@@ -1043,6 +1043,21 @@ check('cassidy-swimmer-voice', () => {
       assert.doesNotMatch(block, re, `evolvedForms community_researcher block still has ${re}`);
     }
   }
+
+  const diary = read('src/textEngine/scenes/diary.js');
+  const crDiary = diary.match(/registerPool\('diary\.community_researcher[\s\S]*?registerPool\('diary\.innerBeat/);
+  assert.ok(crDiary, 'diary.js must contain diary.community_researcher pools');
+  assert.match(crDiary[0], /Training log and training meals both extensive/);
+  assert.doesNotMatch(crDiary[0], /Field notes and field meals|methodology|cardigans|footnotes|observer positionality|sociology of that/i);
+  for (const re of BANNED_IN_CASSIDY) {
+    assert.doesNotMatch(crDiary[0], re, `diary.community_researcher still has ${re}`);
+  }
+
+  const diaryDepth = read('src/textEngine/scenes/diaryEvolvedSceneDepth.js');
+  const crDepth = diaryDepth.match(/community_researcher:\s*\[[\s\S]*?\],/);
+  assert.ok(crDepth, 'diaryEvolvedSceneDepth must contain community_researcher beats');
+  assert.match(crDepth[0], /Floor sessions from this chair/);
+  assert.doesNotMatch(crDepth[0], /Field site|Observation stationary/i);
 });
 
 check('embodied-resident-sighting', () => {

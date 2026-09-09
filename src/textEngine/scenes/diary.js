@@ -1567,46 +1567,44 @@ registerPool('diary.cultivator', [
 // ── COMMUNITY_RESEARCHER ──────────────────────────────────────
 // ── diary.community_researcher (decomposed) ─────────────────────────────────────
 registerPool('diary.community_researcher.c1', [
-{ when: { stage: [5], corruption: [0] }, text: ['First case study. I told myself I was observing. I observed and I ate and I noted that being welcomed into a space creates an obligation to participate in what the space is for.'] },
-  { when: { stage: [5] }, text: ['First case study. I told myself I was observing.'] },
-  { when: { stage: [6] }, text: ['Midway through this hall log. I look different than when I started. I note this the way I note everything — in clinical language that fits neatly into the methodology.'] },
-  { when: { stage: [7] }, text: ['Coach Rivera asked about my "level of personal engagement" with the season plan. I believe this. I\'m filing a hall log about how immersion on this floor is both unavoidable and clarifying.'] },
-  { when: { stage: [8] }, text: ['I\'ve stopped wearing the cardigans to the case studies. The cardigans stopped fitting somewhere between the third and fourth session. I\'ve documented this transition.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['First floor case study. I told myself I was captain on the sidelines. I ate with them and logged that being welcomed into a space makes you eat like you belong.'] },
+  { when: { stage: [5] }, text: ['First floor case study. I told myself I was documenting from the sidelines.'] },
+  { when: { stage: [6] }, text: ['Midway through the season plan. I look different than when I started. I log it the way I log everything — honest intake numbers, no excuses.'] },
+  { when: { stage: [7] }, text: ['Coach Rivera asked about my "level of personal engagement" with the season plan. I believe this. I\'m filing a hall log about how living on this floor is both unavoidable and clarifying.'] },
+  { when: { stage: [8] }, text: ['I\'ve stopped zipping the team jacket to case studies. It stopped fitting somewhere between the third and fourth session. I logged the transition.'] },
   { when: { stage: [9] }, text: ['The season report is 60,000 words. It\'s going to be good — I know when something is good because the writing comes faster than the thinking, and this came faster than anything I\'ve filed before.'] },
-  { when: { stage: [10] }, text: ["I submitted today. She means the honesty. I documented my own transformation as protocol. The panel approved it. I ate an entire box of something celebratory before bed. I note this approvingly."] },
-  { when: { stageMin: 7, archetype: "bookworm" }, text: ['The protocol is immersive participant observation. I know what immersive participant observation does to an observer. I wrote a chapter on it before I opened this hall log.'] },
-  { when: { stageMin: 7, archetype: "swimmer" }, text: ['The protocol is immersive self-tracking. I know what immersive self-tracking does to an athlete. I wrote the season plan before I started living inside it.'] },
+  { when: { stage: [10] }, text: ["I submitted today. She means the honesty. I documented my own bulk phase as protocol. The panel approved it. I ate an entire box of something celebratory before bed. I logged it approvingly."] },
+  { when: { stageMin: 7, archetype: "swimmer" }, text: ['The protocol is immersive self-tracking. I know what immersive self-tracking does to a lane captain. I wrote the season plan before I started living inside it.'] },
   { when: {}, text: [
-    "The fieldwork continues. The data grows. So does the observer.",
-    "Field notes and field meals both extensive.",
-    "Community data includes my waistline.",
+    "Floor sessions continue. Intake logs grow. So does the captain.",
+    "Training log and training meals both extensive.",
+    "Season data includes my waistline.",
   ]},
 
 ]);
 
 registerPool('diary.community_researcher.c2', [
-{ when: { stage: [5], corruption: [0] }, text: ['I ate more than I planned. I\'m logging this as data and trying not to think too hard about what kind.'] },
-  { when: { stage: [5] }, text: ['I observed, and I ate, and I noted the correlation between being welcomed into these spaces and feeling an obligation to participate in what the space was for. I ate more than I planned.'] },
-  { when: { stage: [6] }, text: ['The clinical language is accurate. What it doesn\'t convey is that I looked in the mirror this week and didn\'t look away.'] },
+{ when: { stage: [5], corruption: [0] }, text: ['I ate more than I planned. I\'m logging this as intake and trying not to think too hard about what kind.'] },
+  { when: { stage: [5] }, text: ['I ate with them, and I logged the correlation between being welcomed into these spaces and feeling an obligation to participate in what the space was for. I ate more than I planned.'] },
+  { when: { stage: [6] }, text: ['The honest log language is accurate. What it doesn\'t convey is that I looked in the mirror this week and didn\'t look away.'] },
   { when: { stage: [7] }, text: ['I am clarified.'] },
-  { when: { stage: [8] }, text: ['I\'ve moved on to stretch fabrics. Also documented.'] },
-  { when: { stage: [9] }, text: ['There\'s a section on observer positionality I wrote at 3am. It\'s the best part.'] },
-  { when: { stageMin: 7, archetype: "bookworm" }, text: ['The chapter has more footnotes now.'] },
+  { when: { stage: [8] }, text: ['I\'ve moved on to stretch fabrics. Also logged.'] },
+  { when: { stage: [9] }, text: ['There\'s a section on captain positionality I wrote at 3am. It\'s the best part.'] },
   { when: { stageMin: 7, archetype: "swimmer" }, text: ['The training log has more meal columns now.'] },
   { when: {}, text: [
-    "Survey says: bigger portions everywhere. I contributed.",
-    "Field notes and field meals both extensive.",
-    "Community data includes my waistline.",
+    "Board says: bigger portions everywhere. I contributed.",
+    "Training log and training meals both extensive.",
+    "Season data includes my waistline.",
   ]},
 
 ]);
 
 registerPool('diary.community_researcher.c3', [
-{ when: { stage: [5] }, text: ['The sociology of that is documented.'] },
+{ when: { stage: [5] }, text: ['The floor culture of that is documented.'] },
   { when: {}, text: [
-    "Survey says: bigger portions everywhere. I contributed.",
-    "Field notes and field meals both extensive.",
-    "Community data includes my waistline.",
+    "Board says: bigger portions everywhere. I contributed.",
+    "Training log and training meals both extensive.",
+    "Season data includes my waistline.",
   ]},
 
 ]);
