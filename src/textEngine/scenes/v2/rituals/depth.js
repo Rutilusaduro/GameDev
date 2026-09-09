@@ -33,14 +33,14 @@ registerPool('ritual.class_banquet.depth', [
 registerPool('ritual.sacred_gluttony.depth', [
   { when: { stageMin: 9 }, text: [
     'Floor feast at monumental scale — candles, chanting optional, bellies vast and rising like tide.',
-    'The spirit drinks the room. Six mouths, one ceremony, fullness elevated to liturgy.',
+    'The influence saturates the room. Six mouths, one ceremony, fullness elevated to liturgy.',
   ]},
   { when: { stageMin: 5 }, text: [
     'Platters like altars. They eat with devotional focus — each swallow consecrated, each belly an offering.',
-    'Ceremony and appetite merge. The hall worships at the table and leaves heavier in body and spirit.',
+    'Ceremony and appetite merge. The hall worships at the table and leaves heavier in body and resonance.',
   ]},
   { when: {}, text: [
-    'Floor feast: restraint abandoned, food blessed by hunger, the spirit sated on spectacle.',
+    'Floor feast: restraint abandoned, food blessed by hunger, influence sated on spectacle.',
   ]},
 ]);
 
@@ -60,7 +60,7 @@ registerPool('ritual.leviathan_vigil.depth', [
 
 registerPool('ritual.generic.depth', [
   { when: {}, text: [
-    'The ritual lingers after the plates empty — warmth, fullness, the spirit pleased.',
+    'The ritual lingers after the plates empty — warmth, fullness, resonance pleased.',
     'Ceremony complete. Bellies remember. Appetite consecrated.',
   ]},
 ]);

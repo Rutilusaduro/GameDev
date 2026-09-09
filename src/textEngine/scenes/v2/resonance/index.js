@@ -28,7 +28,7 @@ registerPool('res.pulse', [
 
 registerPool('res.surge', [
   { when: { stageMin: 7 }, text: [
-    'Hive surge — the linked class hungers as one body with many mouths. Delivery apps light up in synchrony.',
+    'Hive surge — the linked floor hungers as one body with many mouths. Delivery apps light up in synchrony.',
   ]},
   { when: { stageMin: 4 }, text: [
     'The network peaks. Snack drawers empty. Fullness echoes between dorms like weather.',

@@ -40,7 +40,7 @@ registerModuleVariants('opposition.agenda.mandatory_fitness', [
     `Serena assigned extra drills — athlete body judged by metrics that hate softness.`,
   ]},
   { when: { studentId: 5 }, weight: 4, text: [
-    `Destiny skips the gym in spirit; compliance assigns exertion anyway.`,
+    `Destiny skips the gym in principle; compliance assigns exertion anyway.`,
   ]},
   { when: { stageMin: 8 }, weight: 3, text: [
     `Fitness assessment for bodies built past gym-floor assumptions — absurdity documented.`,

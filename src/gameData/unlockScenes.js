@@ -36,7 +36,7 @@ export const UNLOCK_SCENES = {
   // Daisy — eced, snacks for everyone
   13: "Daisy always has snacks in her bag for everyone else. This week the bag empties before she reaches the kids. She laughs, refills it bigger, smells like cookies, and doesn't mind that some of them never leave her hands. The looking-after has turned inward, toward you.",
   // Mary Jane — farm girl, sunny
-  14: "Mary Jane brought six kinds of jam on the first day, and a seventh showed up by Friday. Sweet potato pie for the class, two slices held back for herself, sunny about all of it. 'No sense being shy about good food,' she says, and hears your agreement like her own thought.",
+  14: "Mary Jane brought six kinds of jam on the first day, and a seventh showed up by Friday. Sweet potato pie for the floor, two slices held back for herself, sunny about all of it. 'No sense being shy about good food,' she says, and hears your agreement like her own thought.",
 };
 
 /** Bespoke unlock prose for a student, or null for the generic fallback. */

@@ -56,7 +56,7 @@ registerPool('ritual.leviathan_vigil', [
 
 registerPool('ritual.generic', [
   { when: {}, text: [
-    'The ritual completes. Bellies swell. The spirit is satisfied.',
+    'The ritual completes. Bellies swell. The resonance is satisfied.',
     'Ceremony ends. Fullness remains. Appetite consecrated.',
   ]},
 ]);

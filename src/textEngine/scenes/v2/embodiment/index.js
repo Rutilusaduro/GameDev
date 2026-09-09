@@ -10,7 +10,7 @@ import './embodiedCampusDepth.js';
 // Shape: FULL SENTENCE
 registerPool('emb.enter', [
   { when: { stageMin: 7 }, weight: 2, text: [
-    'The spirit slides through her like warm honey — vast, slow, already hungry. Her body receives you the way a room receives heat.',
+    'Influence slides through her like warm honey — vast, slow, already hungry. Her body receives you the way a room receives heat.',
     'You settle into the weight of her without resistance. She has been making room for this longer than she knows.',
   ]},
   { when: { stageMin: 4 }, weight: 2, text: [
@@ -19,12 +19,12 @@ registerPool('emb.enter', [
   ]},
   { when: { corruptionMin: 40 }, weight: 2, text: [
     'She does not fight the descent. You ride her want like a current she has stopped pretending to swim against.',
-    'The spirit nests in her appetite. She exhales. Something in her unclenches.',
+    'Influence nests in her appetite. She exhales. Something in her unclenches.',
   ]},
   { when: {}, text: [
     'You leave you\'s skin and pour into hers — a quiet theft of agency she will explain away later.',
     'Her pulse quickens as you arrive. Hunger stirs. She thinks it is hers.',
-    'The spirit takes the wheel behind her ribs. Her next breath tastes like permission.',
+    'Influence takes the wheel behind her ribs. Her next breath tastes like permission.',
     'You slip inside like warmth finding a home. She exhales. Something unclenches.',
   ]},
 ]);
@@ -134,7 +134,7 @@ registerPool('emb.action.generic', [
 registerPool('emb.action.auto_surrender', [
   { when: { stageMin: 6 }, text: [
     'No negotiation. The delivery app opens and does not close until every bag is empty and her belly is a settled landscape of warmth.',
-    'She orders until the cards complain. Bags until the floor disappears. Belly until the spirit is satisfied.',
+    'She orders until the cards complain. Bags until the floor disappears. Belly until the resonance is satisfied.',
   ]},
   { when: {}, text: [
     'She surrenders to hunger the way you surrender to gravity — completely, without drama.',

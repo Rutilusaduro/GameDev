@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // WEEKLY EVENT — render API for per-girl stage-up narrative beats
-// (The class-wide random-incident layer was removed with RANDOM_EVENTS.)
+// (The hall-wide random-incident layer was removed with RANDOM_EVENTS.)
 // ═══════════════════════════════════════════════════════════════
 import { createContext, render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';

@@ -178,7 +178,7 @@ registerPool("attitude.line", [
     text: [
       `Bright and hungry — sunshine attitude, bottomless appetite.`,
       `Cheerful enough to treat every meal like a celebration I'm hosting in my stomach.`,
-      `Good spirits, open hands, no interest in small portions.`,
+      `Good mood, open hands, no interest in small portions.`,
       `I'm happy and it shows in how fast I say yes to food.`,
     ] },
   { when: { mood: "observant" }, priority: 2,

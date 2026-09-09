@@ -84,7 +84,7 @@ registerModuleVariants('opposition.hearing.removal.ending.suspended', [
 
 registerModuleVariants('opposition.hearing.emergency.phase0', [
   { when: { stageMin: 7 }, weight: 3, text: [
-    `Scandal critical — class mass on the chart, Vance hungry for a name to blame.`,
+    `Scandal critical — hall mass on the chart, Vance hungry for a name to blame.`,
   ]},
   { when: { studentId: 12 }, weight: W, text: [
     `Nadia watches Vance perform crisis — clinical interest, private amusement.`,

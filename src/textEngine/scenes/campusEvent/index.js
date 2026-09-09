@@ -10,7 +10,7 @@ registerPool('campusEvent.observation', [
     'Stress sits in her shoulders; food would help and she knows it.',
   ] },
   { when: { mood: ['excited'] }, weight: 2, text: [
-    '{subject.name} bubbles over before class starts — energy looking for an outlet.',
+    '{subject.name} bubbles over before hall check-in — energy looking for an outlet.',
     'She can barely stay seated; excitement and appetite braid together.',
   ] },
   { when: { mood: ['content'] }, weight: 2, text: [

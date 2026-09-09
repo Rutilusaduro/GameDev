@@ -1,7 +1,7 @@
 // The Squad — Lead: A1 Mobile | Support: A7 Artisan, A5 Editor
 // ═══════════════════════════════════════════════════════════════
 // FEED REACTION — the per-feed payoff beat for the everyday loop.
-// Every routine feed (item, dinner dish, class action) now resolves
+// Every routine feed (item, dinner dish, hall action) now resolves
 // to an in-voice reaction instead of a bare stat line, so the loop
 // stops feeling silent and a donut stops reading like a banquet.
 //

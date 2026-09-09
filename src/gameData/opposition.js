@@ -217,15 +217,15 @@ export function getOversightTelegraph(opposition) {
 
 const AGENDA_COUNTER_HINTS = {
   wellness_audit: 'feast bribe or evolved student op',
-  device_confiscation: 'spirit pressure or evolved student op',
+  device_confiscation: 'resonance pressure or evolved student op',
   size_review: 'complete mandatory weigh-in or discredit',
   wellness_seminar: 'feast bribe',
   budget_freeze: 'public discredit or feast bribe',
-  removal_hearing: 'hearing scene — discredit + spirit pressure',
+  removal_hearing: 'hearing scene — discredit + resonance pressure',
   mandatory_fitness: 'evolved student op',
   shame_vigil: 'Apple Oracle shields some students',
   faculty_informant: 'staff testimony',
-  student_advocacy: 'feast bribe or high class relationship',
+  student_advocacy: 'feast bribe or high hall relationship',
 };
 
 export function getAgendaCounterHint(cardId) {

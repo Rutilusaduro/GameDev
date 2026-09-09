@@ -2876,7 +2876,7 @@ Daisy moves through the room at ${Math.round(s.lbs)} pounds, warm and unhurried.
 
 Mrs. Monroe arrives last, parks badly, and waves through the window with both hands.`,
           choices:[
-            {id:"deflected_mom",label:"Redirect Mrs. Calloway — point to Sofia and compliment the class",result:(s)=>`You point out that Sofia has been really engaged this week. Mrs. Calloway's attention shifts to her daughter. Daisy says something warm and specific about the girls' progress. The question Mrs. Calloway was forming dissolves.`,lbs:4,rel:8,flag:"deflected_mom"},
+            {id:"deflected_mom",label:"Redirect Mrs. Calloway — point to Sofia and compliment the floor",result:(s)=>`You point out that Sofia has been really engaged this week. Mrs. Calloway's attention shifts to her daughter. Daisy says something warm and specific about the girls' progress. The question Mrs. Calloway was forming dissolves.`,lbs:4,rel:8,flag:"deflected_mom"},
             {id:"invited_inside",label:"Invite the moms in — lean into it",result:(s)=>`Daisy gestures them in. Mrs. Reyes comes immediately. Mrs. Monroe is already halfway through the door. Mrs. Calloway follows with her arms crossed — then uncrosses them when she smells what's been made. She takes a piece. She eats it standing up.`,lbs:5,rel:6,flag:"invited_inside"},
           ]
         },
@@ -3600,9 +3600,9 @@ export const EVOLUTION_OFFER = {
     },
   },
   eced:{
-    intro:(s)=>`${s.name} sits across from you with her hands wrapped around a mug and a small notebook on the table beside her. She's been trying to explain this for a moment and not quite finding the words. "I've been doing something on Tuesdays," she finally says. "At the school. With the class." A pause. "And the moms have started coming. And everyone keeps eating. And I think —" she stops. She looks at the notebook. "I think I want to make it into something real. Something intentional." She looks at you. "I need someone to know what I'm doing."`,
+    intro:(s)=>`${s.name} sits across from you with her hands wrapped around a mug and a small notebook on the table beside her. She's been trying to explain this for a moment and not quite finding the words. "I've been doing something on Tuesdays," she finally says. "On the floor. With the residents." A pause. "And the moms have started coming. And everyone keeps eating. And I think —" she stops. She looks at the notebook. "I think I want to make it into something real. Something intentional." She looks at you. "I need someone to know what I'm doing."`,
     paths:{
-      homeroom_queen:{ label:"The Apprentice", desc:"Formalize the Tuesday sessions. Bake for the class, bake for the moms, manage the suspicion, grow the tradition. Six named participants and one growing problem she's trying not to call a success." },
+      homeroom_queen:{ label:"The Apprentice", desc:"Formalize the Tuesday sessions. Bake for the floor, bake for the moms, manage the suspicion, grow the tradition. Six named participants and one growing problem she's trying not to call a success." },
     },
   },
   farm_girl:{
@@ -3819,7 +3819,7 @@ Sofia is already standing near the scale, easy and unhurried.`,
            result:`Mrs. Monroe goes first with the ease of someone completely unafraid of what the scale will say. Mrs. Reyes goes second with the expression of someone who already knew. Mrs. Calloway goes last, says "don't tell Kayla," and then laughs — surprising everyone including herself. The notebook records all three.`,
            rel:8,suspDelta:0,revealsParentWeights:true},
           {id:"decline",label:"Keep it to the students — stay professional",
-           result:`"This one's just for the class," Daisy says. Mrs. Monroe nods without any sign of being bothered. She's comfortable with herself regardless of what the scale would say. She doesn't need the number to know.`,
+           result:`"This one's just for the floor," Daisy says. Mrs. Monroe nods without any sign of being bothered. She's comfortable with herself regardless of what the scale would say. She doesn't need the number to know.`,
            rel:4,suspDelta:-1},
         ],
       },

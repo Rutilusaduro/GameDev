@@ -185,7 +185,7 @@ registerPool("attitude.campus", [
   { when: { campusFattening: true, archetype: "cheerleader" }, priority: 2,
     text: [
       "The squad looks thicker in photos and I'm weirdly proud of all of us.",
-      "Campus spirit now includes second helpings — I'm not alone out there.",
+      "Campus culture now includes second helpings — I'm not alone out there.",
     ] },
   { when: { campusFattening: true, archetype: "transfer" }, priority: 2,
     text: [
@@ -266,7 +266,7 @@ registerPool("weighIn.campus", [
     ] },
   { when: { campusFattening: true, archetype: "cheerleader" }, priority: 2,
     text: [
-      (ctx) => `"Half the squad gained this month," ${ctx.subject.name} says, pleased. "Campus spirit includes appetite now."`,
+      (ctx) => `"Half the squad gained this month," ${ctx.subject.name} says, pleased. "Campus culture includes appetite now."`,
       (ctx) => `${ctx.subject.name} glances down the hall. "Everyone's softer. I'm not the outlier anymore."`,
     ] },
   { when: { campusFattening: true, archetype: "sorority" }, priority: 2,

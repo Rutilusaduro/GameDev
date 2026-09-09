@@ -1,9 +1,9 @@
 // The Squad — Lead: C1 Gossip | Support: C2 React
 // ═══════════════════════════════════════════════════════════════
 // GOSSIP SCENE — girl-to-girl awareness beats.
-//   gossip.react.notice  — class registers a visible change (scaleBreak | stageUp)
+//   gossip.react.notice  — hall registers a visible change (scaleBreak | stageUp)
 //   gossip.react.line    — reactor's personal take (archetype × corruption × memType)
-//   gossip.murmur        — ambient class awareness, no specific event
+//   gossip.murmur        — ambient hall awareness, no specific event
 //
 // Selectors from pickClassMemory(): memName, memType, memWeeksAgo.
 // Reactor archetype/corruption drawn from subject via engine.
@@ -13,7 +13,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── gossip.react.notice ───────────────────────────────────────
-// Neutral, observational. The class notices someone changed.
+// Neutral, observational. The hall notices someone changed.
 registerPool('gossip.react.notice', [
   { when: {}, text: [
     `She's clocked the change. Hasn't said anything yet.`,

@@ -16,7 +16,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase0', [
 
 registerPoolAutoDecompose('opposition.hearing.removal.phase1', [
   { when: {}, text: [
-    'Vance taps her folder. "{subject.name} may remain enrolled only if this class demonstrates… restraint." The word hangs wrong in the air.',
+    'Vance taps her folder. "{subject.name} may remain enrolled only if this hall demonstrates… restraint." The word hangs wrong in the air.',
     'Second motion: conditional enrollment. Restraint spoken like virtue while {subject.name}\'s belly still remembers lunch.',
     'Vance wants a promise of discretion. The Board wants language that makes appetite sound temporary.',
   ]},

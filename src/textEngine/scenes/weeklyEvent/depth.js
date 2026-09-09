@@ -5,7 +5,7 @@ import { registerModuleVariants } from '../../engine.js';
 
 registerModuleVariants("weekly.chairBreaks.buildup", [{ when: {}, text: ["The chair protests under {subject.name} long before anything breaks."] }]);
 registerModuleVariants("weekly.chairBreaks.break", [{ when: {}, text: ["Wood gives way with a sound the whole room hears.", "The seat fails without warning; {subject.name} catches herself on instinct."] }]);
-registerModuleVariants("weekly.chairBreaks.afterDialogue", [{ when: {}, text: ["After class she admits the chair had been complaining for weeks.", "After class: \"New chair, please.\" She pats her middle. \"I earned this one.\""] }]);
+registerModuleVariants("weekly.chairBreaks.afterDialogue", [{ when: {}, text: ["After floor rounds she admits the chair had been complaining for weeks.", "After floor rounds: \"New chair, please.\" She pats her middle. \"I earned this one.\""] }]);
 registerModuleVariants("weekly.chair_breaks", [{ when: {}, text: ["{weekly.chairBreaks.buildup} {weekly.chairBreaks.break} {weekly.chairBreaks.playerAid}", "{weekly.chairBreaks.buildup} {weekly.chairBreaks.break} {weekly.chairBreaks.afterDialogue}"] }]);
 registerModuleVariants("weekly.team_weigh_in", [{ when: {}, text: ["{weekly.teamWeighIn.dodge} {weekly.teamWeighIn.forced} {weekly.teamWeighIn.verdict} {weekly.teamWeighIn.afterDialogue}"] }]);
 registerModuleVariants("weekly.uniform_split", [{ when: {}, text: ["{weekly.uniformSplit.incident} {weekly.uniformSplit.recovery}", "{weekly.uniformSplit.incident} {weekly.uniformSplit.afterDialogue}"] }]);

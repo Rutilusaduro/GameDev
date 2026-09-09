@@ -68,29 +68,29 @@ registerPool('weekly.chairBreaks.playerAid', [
 
 registerPool('weekly.chairBreaks.afterDialogue', [
   { when: { studentId: 5 }, priority: 1, weight: 4, text: [
-    'After class: "Thank you for not making it weird." She pats her belly almost fondly. "I felt this coming."',
+    'After floor rounds: "Thank you for not making it weird." She pats her belly almost fondly. "I felt this coming."',
   ] },
   { when: { studentId: 10 }, priority: 1, weight: 4, text: [
-    'After class she lingers, pressing a hand to her soft middle. "I should\'ve known," she says quietly. "I\'ve gotten kind of big, haven\'t I." It doesn\'t sound like a problem.',
+    'After floor rounds she lingers, pressing a hand to her soft middle. "I should\'ve known," she says quietly. "I\'ve gotten kind of big, haven\'t I." It doesn\'t sound like a problem.',
   ] },
   { when: { studentId: 13 }, priority: 1, weight: 4, text: [
-    'After class she admits she\'s gotten bigger — and doesn\'t sound sorry about it.',
-    'After class she presses a hand to her middle. "Bigger than I planned," she says, smiling. "Not sorry."',
+    'After floor rounds she admits she\'s gotten bigger — and doesn\'t sound sorry about it.',
+    'After floor rounds she presses a hand to her middle. "Bigger than I planned," she says, smiling. "Not sorry."',
   ] },
   { when: { endStageMax: 4 }, text: [
-    'After class she lingers, pressing a hand to her soft middle. "I should\'ve known," she says quietly. "I\'ve gotten kind of big, haven\'t I." It doesn\'t sound like a problem.',
-    'After class: "Thank you for not making it weird." She pats her belly almost fondly. "I felt this coming."',
+    'After floor rounds she lingers, pressing a hand to her soft middle. "I should\'ve known," she says quietly. "I\'ve gotten kind of big, haven\'t I." It doesn\'t sound like a problem.',
+    'After floor rounds: "Thank you for not making it weird." She pats her belly almost fondly. "I felt this coming."',
   ] },
   { when: { endStageMin: 5, endStageMax: 6 }, text: [
-    'After class she hangs back. "Thank you for… not making it weird." She glances down at herself, pats her belly almost fondly. "I\'ve gotten kind of big, haven\'t I." It doesn\'t come out like a problem.',
+    'After floor rounds she hangs back. "Thanks for not making it weird." She pats her belly fondly. "I\'ve gotten kind of big, haven\'t I." Not like a problem.',
     'Afterwards: "That was smooth of you," she says, smiling. "I should probably stop being surprised when furniture can\'t handle me."',
   ] },
   { when: { endStageMin: 7 }, text: [
-    'After class she presses a hand to her middle: "I actually feel better about it than I expected. I mean. Look at me. The chairs were on borrowed time."',
-    'After class: "I\'ve gained like {subject.semesterGain} pounds this semester. I should have seen that coming." She pats her belly. "Anyway."',
+    'After floor rounds she presses a hand to her middle: "I actually feel better about it than I expected. I mean. Look at me. The chairs were on borrowed time."',
+    'After floor rounds: "I\'ve gained like {subject.semesterGain} pounds this semester. I should have seen that coming." She pats her belly. "Anyway."',
   ] },
   { when: {}, text: [
-    'After class she admits she\'s gotten bigger — and doesn\'t sound sorry about it.',
+    'After floor rounds she admits she\'s gotten bigger — and doesn\'t sound sorry about it.',
   ] },
 ]);
 

@@ -36,7 +36,7 @@ export function scrutinyPrivateSessionCost(scrutiny) {
 
 const PUBLIC_CLASS_FEASTS = new Set(['pizza', 'potluck', 'feast']);
 
-/** Investigation tier blocks visible class feasts. */
+/** Investigation tier blocks visible hall feasts. */
 export function scrutinyBlocksClassFeast(scrutiny, actionId) {
   if (!scrutinyBlocksPublicEvents(scrutiny)) return false;
   return PUBLIC_CLASS_FEASTS.has(actionId);

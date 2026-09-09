@@ -393,7 +393,7 @@ Cassidy ${mEat}`;
         "She wrote, in the margin of her notes: 'The methodology has a gap. I need to think about what to do with this data.'",
         "She wrote: 'I participated more than planned. The environment makes participation feel correct. This is the mechanism I described in my proposal. I understand it better now.'",
         "She didn't write anything. She would reconstruct later. The food was extraordinary.",
-        "She wrote, much later, from memory: 'The committee will ask about this session. I will need to decide what to include.' A long gap in the text. Then: 'Everything.'",
+        "She wrote, much later, from memory: 'The panel will ask about this session. I will need to decide what to include.' A long gap in the text. Then: 'Everything.'",
       ][mTier];
       return `${opener}, Raven called Cassidy at 7pm and said, simply: "I found three tonight. Come over."
 

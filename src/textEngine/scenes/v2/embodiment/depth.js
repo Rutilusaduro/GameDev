@@ -7,7 +7,7 @@ registerPool('emb.action.raid_pantry.depth', [
     'The pantry is a country she maps with her hands — every shelf a province of want. She eats until the cold air on her skin feels like a lie and her belly is the only honest thing in the room.',
   ]},
   { when: { stageMin: 4 }, text: [
-    'Standing at the counter, she eats with the focus of someone who has stopped pretending this is accidental. Crumbs gather on the swell of her chest. Her breathing deepens. The spirit drinks the moment.',
+    'Standing at the counter, she eats without pretending it\'s accidental. Crumbs gather on her chest. Her breathing deepens; influence deepens with each bite.',
   ]},
   { when: {}, text: [
     'Cartons opened with her teeth. Leftovers reheated in her mouth. She eats like a thief in her own kitchen — fast, guilty, already planning the next bite.',
@@ -129,7 +129,7 @@ registerPool('emb.action.body_exploration.depth', [
   ]},
   { when: {}, text: [
     'She learns the new geography of herself from the inside and likes what she finds.',
-    'Fingers press into give. The spirit hums through her ribs.',
+    'Fingers press into give. Resonance hums through her ribs.',
   ]},
 ]);
 
@@ -150,7 +150,7 @@ registerPool('emb.enter.depth', [
     'Immensity opens. You settle in like heat finding its room.',
   ]},
   { when: {}, text: [
-    'The spirit nests behind her eyes. Her next thought is yours. Her next hunger is yours. She will call it a craving. She will be right.',
+    'Influence nests behind her eyes. Her next thought is yours. Her next hunger is yours. She will call it a craving. She will be right.',
     'You slip inside. Her pulse answers. Hunger thinks it belongs to her.',
   ]},
 ]);

@@ -738,7 +738,7 @@ export default function HallPass(){
     }
   },[opposition,students,pharmacistState?.stage,globalStats.scarcityBanished,globalStats.institutionalCapture,globalStats.vanceCompromised,globalStats.allThinAscended,globalStats.synthesisAlly,week]);
 
-  // Process event queue — hold events until class session is done
+  // Process event queue — hold events until hall session is done
   useEffect(()=>{
     if(eventQueue.length>0 && !activeEvent && !classSession){
       setActiveEvent(eventQueue[0]);
@@ -1516,7 +1516,7 @@ export default function HallPass(){
   const advanceWeek=()=>{
     trackAction('advanceWeek');
     if(opposition?.supernatural?.famineWeek){
-      push('🕯️ Famine Week — the semester cannot advance until you complete a Refeast Ritual (4 AP class action).');
+      push('🕯️ Famine Week — the semester cannot advance until you complete a Refeast Ritual (4 AP hall action).');
       return;
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
@@ -3426,7 +3426,7 @@ export default function HallPass(){
       const comparison=pickCGComparison(prev,optId);
       const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
       const text=formatCGText(template,{
-        girlName:comparison?.girlName||"the class",
+        girlName:comparison?.girlName||"the hall",
         bodypart:comparison?.bodypart||"measurements",
         priyaValue:comparison?.priyaValue,
         targetValue:comparison?.targetValue,
@@ -3553,7 +3553,7 @@ export default function HallPass(){
         ...prev,
         spiritResonance:prev.spiritResonance+1,
         view:"photo",
-        subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint gluttony-spirit pressure visible in every lavender-lit corner.`},
+        subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint hive resonance pressure visible in every lavender-lit corner.`},
         log:[{tag,text:"Hive State observation archived.",type:"photo"},...prev.log].slice(0,40),
       };
     });
@@ -6638,7 +6638,7 @@ export default function HallPass(){
     }else if(type==="class"){
       gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
       newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
-      targetName="the class";
+      targetName="the hall";
     }
     const evs=collectEvents(newStudents);
     setStudents(newStudents);
@@ -6753,7 +6753,7 @@ export default function HallPass(){
     const actionCost=getClassActionCost(action,ownedClassSkills||{});
     if(ap<actionCost){push("⚠️ Not enough AP!");return;}
     if(scrutinyBlocksClassFeast(adminScrutiny,action.id)){
-      push('⚠️ Administration review — public class feasts are suspended until scrutiny eases.');
+      push('⚠️ Administration review — public hall feasts are suspended until scrutiny eases.');
       return;
     }
     if(action.id==='refeast_ritual'&&!opposition?.supernatural?.actTriggered){
@@ -7841,7 +7841,7 @@ export default function HallPass(){
                   />
                   {pendingResult.gain>0&&(
                     <div style={{fontSize:12,color:"#f0a060",marginBottom:12}}>
-                      {pendingResult.target==="the class"
+                      {pendingResult.target==="the hall"
                         ?`📊 Each student gains ~${pendingResult.gain} lbs`
                         :`⚖️ ${pendingResult.target} gains ${pendingResult.gain} lbs`}
                     </div>
@@ -7898,7 +7898,7 @@ export default function HallPass(){
                       <div style={{fontSize:11,color:"#7a5090",marginBottom:4}}>You chose: {o.choice}</div>
                       <div style={{fontSize:12,color:"#c0a0d8",lineHeight:1.6}}>{o.result}</div>
                       {o.gain>0&&<div style={{fontSize:11,color:"#f0a060",marginTop:4}}>
-                        {o.target==="the class"?`Class: +${o.gain} lbs each`:`${o.target}: +${o.gain} lbs`}
+                        {o.target==="the hall"?`Hall: +${o.gain} lbs each`:`${o.target}: +${o.gain} lbs`}
                       </div>}
                     </div>
                   ))}
@@ -9166,7 +9166,7 @@ export default function HallPass(){
           student=students.find(st=>st.id===picker.studentId);
           feedLabel=`Compound-laced meal for ${student?.name}`;
         }else if(picker.kind==='class'){
-          feedLabel=`${picker.action.label} — lace the whole class meal?`;
+          feedLabel=`${picker.action.label} — lace the whole hall meal?`;
           student=students.find(st=>!st.hidden)||students[0];
         }
         if(!student) return null;

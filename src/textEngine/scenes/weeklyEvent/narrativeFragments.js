@@ -541,7 +541,7 @@ registerPool('weekly.immobility_peace', [
 
 registerPool('weekly.blobEnding.setup', [
   { when: { endStageMin: 10 }, text: [
-    '{subject.name} can no longer come to class. You bring class to her.',
+    '{subject.name} can no longer come to hall. You bring the floor to her.',
     'Class now travels to {subject.name}.',
     'She holds court from her specially furnished room.',
   ] },

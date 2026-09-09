@@ -486,7 +486,7 @@ registerPool('opposition.v2.depth', [
   { when: {}, text: [
     'Institutional pressure reshapes the board — scarcity and scrutiny braid together off-screen.',
     'Vance\'s folder thickens. Appetite defended like curriculum, attacked like scandal.',
-    'Five polished chairs, one hungry class — the Board performs worry while you perform abundance.',
+    'Five polished chairs, one hungry hall — the Board performs worry while you perform abundance.',
     'Toner and denial in the conference air. Hunger is the argument they cannot win cleanly.',
   ]},
 ]);

@@ -157,7 +157,7 @@ export const STAGE_REACTIONS = {
     // Stage 0 ~80 lbs
     (s) => `She weighs ${Math.round(s.lbs)} pounds and says almost nothing. She watches everything.`,
     // Stage 1 ~100-135 lbs
-    (s) => `${Math.round(s.lbs)} pounds. She sits in the back. She brings extra snacks to class. She never raises her hand but she watches who's eating.`,
+    (s) => `${Math.round(s.lbs)} pounds. She sits in the back. She brings extra snacks to hall meetings. She never raises her hand but she watches who's eating.`,
     // Stage 2 ~135-162 lbs
     (s) => `She smiled at something today and touched her belly briefly, like she was checking something. Her shirt is snug now. At ${Math.round(s.lbs)} pounds she seems more present in the room than she was at the start of term.`,
     // Stage 3 ~162-195 lbs
@@ -234,7 +234,7 @@ export const STAGE_REACTIONS = {
     (s)=>`Daisy looks up from her bag and smiles — that open, immediate smile. She's ${Math.round(s.lbs)} pounds in her apron and comfortable clothes, round and warm in exactly the way someone who taste-tests everything tends to get. "I brought extra," she says. She always brings extra.`,
     (s)=>`Something has shifted — her clothes fit differently, her walk has slowed to something more deliberate. Daisy is ${Math.round(s.lbs)} pounds now, soft and a little breathless after the stairs, and she seems wholly unbothered. She offers you a piece of the banana bread she's been testing. "I've been making a lot of banana bread," she says. You believe it.`,
     (s)=>`She's in her wide apron when you find her, the ties cinched at the back but the front bowing out comfortably. ${Math.round(s.lbs)} pounds and she moves like someone who has made peace with her size — not slow, just considered. "I started keeping notes," she says, patting a small notebook in her apron pocket. "On which recipes actually work."`,
-    (s)=>`Daisy fills the doorway warmly. She's ${Math.round(s.lbs)} pounds and her clothes are loose and practical — the kind of soft fabrics you reach for when everything else has gotten too tight. She's got a container in each hand. "I was testing something for the class," she says. She hands you one. There's plenty.`,
+    (s)=>`Daisy fills the doorway warmly. She's ${Math.round(s.lbs)} pounds and her clothes are loose and practical — the kind of soft fabrics you reach for when everything else has gotten too tight. She's got a container in each hand. "I was testing something for the hall," she says. She hands you one. There's plenty.`,
     (s)=>`She's at the counter when you arrive, enormous and warm, her belly rounding against the edge as she stirs. ${Math.round(s.lbs)} pounds and her movement through the kitchen is slow and practiced — she's learned where everything is relative to her current size. "I made too much," she says. She always makes too much. That's the point.`,
     (s)=>`Daisy sits at the wide kitchen chair she's claimed, her belly filling her lap soft and warm. She's ${Math.round(s.lbs)} pounds and her arms are round and capable, lifting the big mixing bowl with the ease of long practice. She waves you over. "I need you to taste the frosting," she says. "It's for Tuesday but it needs a second opinion."`,
     (s)=>`She's enormous now — ${Math.round(s.lbs)} pounds of warm, settled, purposeful woman, her body taking up most of the kitchen corner she's claimed as hers. The apron is purely decorative at this point but she wears it anyway. "I made cinnamon rolls," she says, without looking up. She's made twelve. They're large. She's already had two.`,

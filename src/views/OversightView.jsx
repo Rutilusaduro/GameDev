@@ -86,7 +86,7 @@ export function OversightView({
       </div>
       {opposition.supernatural?.famineWeek && (
         <div style={{ fontSize: 11, color: '#f88', padding: '10px 12px', background: '#301018', borderRadius: 6, marginBottom: 12, lineHeight: 1.6 }}>
-          🕯️ <strong>Famine Week</strong> — scarcity pressure peaked. Complete a <strong>Refeast Ritual</strong> (4 AP, Class Actions) before the semester can advance.
+          🕯️ <strong>Famine Week</strong> — scarcity pressure peaked. Complete a <strong>Refeast Ritual</strong> (4 AP, Hall Actions) before the semester can advance.
         </div>
       )}
       {pendingConfiscation && (

@@ -68,7 +68,7 @@ export const EMERGENCY_HEARING = {
       pool: 'opposition.hearing.emergency.phase1',
       choices: [
         { id: 'double_down', label: 'Double down — this is the future of the department', resultPool: 'opposition.hearing.emergency.result.double_down', flag: 'double' },
-        { id: 'absorb', label: 'Absorb blame — protect the class', resultPool: 'opposition.hearing.emergency.result.absorb', flag: 'absorb' },
+        { id: 'absorb', label: 'Absorb blame — protect the hall', resultPool: 'opposition.hearing.emergency.result.absorb', flag: 'absorb' },
         { id: 'hive', label: 'Maya hive misdirect — wrong building, wrong records', resultPool: 'opposition.hearing.emergency.result.hive', flag: 'misdirect' },
       ],
     },
