@@ -744,6 +744,11 @@ export default function HallPass(){
     playHallPassSound('session', soundEnabled);
   }, [soundEnabled, activeNarrativeCopy?.event?.id]);
 
+  useEffect(() => {
+    if (!rankedFeedeeState) return;
+    playHallPassSound('session', soundEnabled);
+  }, [soundEnabled, rankedFeedeeState?.studentId, rankedFeedeeState?.stageIdx]);
+
   useEffect(()=>{
     const end=checkOppositionEndgame(opposition,students);
     const pending=[];
@@ -5092,6 +5097,7 @@ export default function HallPass(){
 
   const pickSessionFood=(foodId)=>{
     if(!rankedFeedeeState||rankedFeedeeState.done) return;
+    playHallPassSound('click', soundEnabled);
     const food=SESSION_FOOD_ITEMS.find(f=>f.id===foodId); if(!food) return;
     const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log,raeDelivered}=rankedFeedeeState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
@@ -5127,13 +5133,14 @@ export default function HallPass(){
 
   const quitRankedSession=()=>{
     if(!rankedFeedeeState||rankedFeedeeState.done) return;
+    playHallPassSound('click', soundEnabled);
     const{studentId,gain}=rankedFeedeeState;
     const s=students.find(st=>st.id===studentId);
     if(s) push(`🎮 ${s.name} — session ended early: +${Math.round(gain)} lbs`);
     setRankedFeedeeState(prev=>prev?({...prev,done:true,endReason:'quit'}):null);
   };
 
-  const closeRankedSession=()=>setRankedFeedeeState(null);
+  const closeRankedSession=()=>{ playHallPassSound('confirm', soundEnabled); setRankedFeedeeState(null); };
 
   const startEatingContest=(studentId,stageIdx,history)=>{
     const s=students.find(st=>st.id===studentId); if(!s) return;
@@ -8056,7 +8063,7 @@ export default function HallPass(){
                       </div>
                     ))}
                   </div>
-                  <button style={{...C.btn("#444"),marginTop:12}} onClick={()=>setDinnerEvent(null)}>Cancel</button>
+                  <button style={{...C.btn("#444"),marginTop:12}} onClick={()=>{ playHallPassSound('click', soundEnabled); setDinnerEvent(null); }}>Cancel</button>
                 </div>
               )}
 
@@ -9033,7 +9040,7 @@ export default function HallPass(){
         const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#040810,#080e1a,#040810)",border:"1px solid #1a5a9050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#040810,#080e1a,#040810)",border:"1px solid #1a5a9050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#3080c0",marginBottom:4}}>{stageTitle.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#60a0e0",marginBottom:8}}>{s.name}</div>
 
