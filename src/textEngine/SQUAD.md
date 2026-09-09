@@ -54,7 +54,7 @@ The Squad is the seven-agent team for the Near-Infinite Narrative Engine. **Do n
 
 **Voice:** Interior contradiction at tier 0; flat familiarity at tier 1; open appetite at tier 2. Physical response contradicts words at transitions.
 
-**Owns:** `scenes/psychShift/`, `scenes/interior/`, `shift.*`, `interior.*`, corruption-keyed generics across scenes, per-girl corruption arc table in `AUTHORING.md` §3, `npc.peer` / `prof.observation` relationship gates.
+**Owns:** `scenes/psychShift/`, `scenes/interior/`, `shift.*`, `interior.*`, corruption-keyed generics across scenes, per-girl corruption arc table in `AUTHORING.md` §3, `npc.peer` / `ra.observation` relationship gates.
 
 **Expansion targets:** Per-girl 6-line arc lines in persona pools, `shift.*` keyed on archetype, interior beats embeddable in eating/campus/clothing skeletons. **Step 9:** `psychShift/personas.js`, `interior/personas.js` ✅
 

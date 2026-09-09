@@ -13,7 +13,7 @@ registerModuleVariants("npc.bystander", [{ when: {}, text: ["A glance becomes a 
 registerModuleVariants("npc.peer", [{ when: {}, text: ["\"You're filling out,\" a resident says — not cruel, just observant."] }]);
 registerModuleVariants("npc.coach", [{ when: {}, text: ["", ""] }]);
 registerModuleVariants("npc.staff", [{ when: {}, text: ["", ""] }]);
-registerModuleVariants("prof.observation", [{ when: {}, text: ["You note the change the way you note weather — inevitable, worth tracking."] }]);
+registerModuleVariants("ra.observation", [{ when: {}, text: ["You note the change the way you note weather — inevitable, worth tracking."] }]);
 registerModuleVariants("scrutiny.tierUp.header", [{ when: {}, text: ["Administrative mail arrives with the quiet violence of procedure."] }]);
 registerModuleVariants("scrutiny.tierUp.body", [{ when: {}, text: ["The institution has begun counting what you have been doing in plain sight.", "Paper trails do not care how consensual the appetite felt from inside the room."] }]);
 registerModuleVariants("scrutiny.tierUp.coda", [{ when: {}, text: ["The notice closes. The pressure does not."] }]);

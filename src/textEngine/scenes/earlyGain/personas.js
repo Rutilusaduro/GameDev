@@ -70,9 +70,9 @@ registerModuleVariants('slender.mindFeel', [
   ]},
   // ── 1 Cassidy ───────────────────────────────────────────────
   { when: { studentId: 1, ...EARLY }, weight: W, text: [
-    'She has started a private dataset. The trend line is not cooperating with her hypotheses.',
-    'Every softening inch feels like a footnote she will have to address eventually.',
-    'Outlier status: charming. She keeps the data anyway.',
+    'She has started a private training log. The weekly curve is not cooperating with her season plan.',
+    'Every softening inch feels like a rep she did not schedule and still finished.',
+    'Off-season bulk: charming. She keeps the log anyway.',
   ]},
   // ── 2 Kylie ──────────────────────────────────────────────────
   { when: { studentId: 2, ...EARLY }, weight: W, text: [
@@ -190,9 +190,9 @@ registerModuleVariants('slender.deflect', [
     `"Off-season bulk," she says, like it's a strategy. Maybe it is.`,
   ]},
   { when: { studentId: 1, gainStance: 'opposed', ...EARLY }, weight: W, text: [
-    `"Within expected variance for semester dietary changes."`,
-    `"I'll adjust the variables. This is manageable."`,
-    `"The dataset is noisy," she says. "Not me."`,
+    `"Normal off-season bulk variance."`,
+    `"I'll adjust the meal plan. This is manageable."`,
+    `"The scale's noisy," she says. "Not me."`,
   ]},
   { when: { studentId: 3, gainStance: 'reluctant', ...EARLY }, weight: W, text: [
     `"Different training load," she says. Not quite a lie.`,
@@ -308,9 +308,9 @@ registerModuleVariants('slender.neutral', [
     `"Season stats update," she shrugs.`,
   ]},
   { when: { studentId: 1, gainStance: 'neutral', ...EARLY }, weight: W, text: [
-    `"Recorded."`,
-    `"Continuing observation."`,
-    `"Within tolerance," she says, already moving on.`,
+    `"Logged."`,
+    `"Continuing the block."`,
+    `"Within season plan," she says, already moving on.`,
   ]},
   { when: { studentId: 2, gainStance: 'neutral', ...EARLY }, weight: W, text: [
     `"Content," she says lightly. "Relatable scale moment."`,
@@ -416,7 +416,7 @@ registerModuleVariants('slender.secret', [
     'A faint smile. Hunger and mass align. She says nothing.',
   ]},
   { when: { studentId: 1, gainStance: 'secret', ...EARLY }, weight: W, text: [
-    'Cassidy presses palm to softness and exhales data she will not publish yet.',
+    'Cassidy presses palm to softness and exhales a split she will not post to the team chat yet.',
     'The curve pleases her more than her voice admits.',
     'She weighs herself twice. Second reading higher. She smiles.',
   ]},
@@ -494,9 +494,9 @@ registerModuleVariants('slender.eatPause', [
     'Macros forgotten by bite three. She keeps going.',
   ]},
   { when: { studentId: 1, corruption: [0], stageMax: 3 }, weight: W, text: [
-    'Cassidy annotates the meal in her head between bites. The plate empties anyway.',
-    'She pauses to record a note. The pause does not slow consumption.',
-    'The dataset updates live. So does her appetite.',
+    'Cassidy logs the meal in her head between bites. The plate empties anyway.',
+    'She pauses to check her training app. The pause does not slow consumption.',
+    'The training log updates live. So does her appetite.',
   ]},
   { when: { studentId: 2, corruption: [0], stageMax: 3 }, weight: W, text: [
     'Kylie eats on camera and off — the off-camera bites are more honest.',

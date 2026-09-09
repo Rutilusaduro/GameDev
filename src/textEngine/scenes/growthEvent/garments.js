@@ -9,7 +9,7 @@ const W = 4;
 // NOUN PHRASE — what she was wearing (specific, not generic)
 registerModuleVariants('ge.garment', [
   { when: { studentId: 0 }, weight: W, text: ['her cheer practice top and skirt', 'the fitted uniform she still calls practice gear'] },
-  { when: { studentId: 1 }, weight: W, text: ['her cardigan and blouse', 'the layered campus set she wears like armor'] },
+  { when: { studentId: 1 }, weight: W, text: ['her team parka over practice tee', 'the fitted team hoodie she wears off the pool deck'] },
   { when: { studentId: 2 }, weight: W, text: ['her crop top and high-waist leggings', 'the fitted content-day set'] },
   { when: { studentId: 3 }, weight: W, text: ['her compression training set', 'the athletic gear she still treats like uniform'] },
   { when: { studentId: 4 }, weight: W, text: ['her paint-stained studio shirt', 'the oversized artsy layers she works in'] },

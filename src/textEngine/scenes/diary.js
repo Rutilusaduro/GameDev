@@ -1639,12 +1639,12 @@ registerPool('diary.innerBeat', [
     "Retired the uniform before it retired me. That's the only version of this I'm allowing.",
   ] },
   { when: { studentId: 1, stageMin: 2 }, weight: 4, text: [
-    "Found a hall log on metabolic individual variation. Sound protocol. Convenient conclusions. Both noted.",
-    "Three supporting papers. Their limitations are logged in the margin. The limitations are shrinking.",
+    "Coach posted the off-season bulk protocol in the team chat. Sound plan. Convenient timing. Both noted.",
+    "Three supporting articles on hyposeason nutrition. I saved them to my training folder. The caveats are shrinking.",
   ] },
   { when: { studentId: 1, stageMin: 5, corruption: [1] }, weight: 5, text: [
-    "The paper said what I needed. I found it after I already knew. I'm calling that efficient research.",
-    "I've stopped noting the limitations. The literature and I are in agreement. That's research.",
+    "The team nutrition sheet said what I needed. I found it after I already knew. I'm calling that efficient prep.",
+    "I've stopped reading the warnings. The plan and I are in agreement. That's discipline.",
   ] },
   { when: { studentId: 2, stageMin: 3, kyliePrivateMoment: true }, weight: 5, text: [
     "Ate something off camera. Didn't frame it. Didn't caption it. Just ate it. I don't know what to do with that.",

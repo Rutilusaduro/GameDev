@@ -42,28 +42,28 @@ registerModuleVariants("wi.replyDialogue", [
 
   // ── 1 · Cassidy — swimmer: lane discipline ──────────────────
   { when: { studentId: 1, corruption: [0], stageMax: 5 }, weight: W, text: [
-    `"Within expected variance for semester dietary changes," she murmurs, adjusting her glasses. "I'll continue monitoring."`,
-    `"This exceeds my projected trajectory by approximately—" She pauses. "By a meaningful margin."`,
+    `"Off-season bulk is tracking high," she murmurs, tugging her team hoodie flat. "Coach would have opinions. I'm keeping the log anyway."`,
+    `"That's faster than my season plan projected—" She pauses. "By a lot. Still within the block."`,
   ]},
   { when: { studentId: 1, corruption: [1], stageMax: 5 }, weight: W, text: [
-    `"Up from last week. Correlation with increased caloric intake is…" She presses a hand to her waist. "Noted."`,
-    `"The data is unambiguous," she says. "I am getting fatter. On purpose. I have notes on how it feels."`,
+    `"Up from last weigh-in. More calories, more dryland, more—" She presses a hand to her waist. "Logged."`,
+    `"The training log is clear," she says. "I am getting softer. On purpose. I wrote down how it feels after every meal."`,
   ]},
   { when: { studentId: 1, corruption: [2], stageMax: 5 }, weight: W, text: [
-    `"Hyposeason plan confirmed: intentional weight gain produces measurable results. I would like to continue the experiment."`,
-    `"I've been conducting this research on myself for months now. The findings are…" She exhales, pleased. "Extensive. And I want more data."`,
+    `"Hyposeason plan confirmed: bulk phase is working." She exhales, pleased. "I want another training block. Bigger one."`,
+    `"I've been running this set on myself all semester. The results are—" She pats her belly. "Personal best. I want another rep."`,
   ]},
   { when: { studentId: 1, corruption: [0], stageMin: 6 }, weight: W, text: [
-    `"I need to revise several assumptions," she says quietly. "About capacity. About identity."`,
-    `"I don't have a framework for this yet," she whispers.`,
+    `"I need a new season plan," she says quietly. "None of my old splits prepared me for this."`,
+    `"I don't have lane assignments for a body this size yet," she whispers.`,
   ]},
   { when: { studentId: 1, corruption: [1], stageMin: 6 }, weight: W, text: [
-    `"I am no longer in the control group," she says. "I am the result."`,
-    `"Continuing," she says, recording it without tremor.`,
+    `"I'm not the lane captain anymore," she says. "I'm the whole pool."`,
+    `"Continuing," she says, voice steady. "Still logging."`,
   ]},
   { when: { studentId: 1, corruption: [2], stageMin: 6 }, weight: W, text: [
-    `"Publishable," she murmurs, patting her belly. "All of it."`,
-    `"The experiment," she says, "is a success."`,
+    `"Podium-ready," she murmurs, patting her belly. "All of it."`,
+    `"The bulk phase," she says, "is a success."`,
   ]},
 
   // ── 2 · Kylie — influencer: everything is content ────────────

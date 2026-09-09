@@ -156,7 +156,7 @@ All keys combine (AND within a variant; value arrays are OR). Unlisted keys are 
 | id | Name | Archetype | Body | Voice in one line |
 |---|---|---|---|---|
 | 0 | Brittany | cheerleader | pear | Competitor reframing gain as winning; "I'm keeping score." |
-| 1 | Madeline | bookworm | straight | Academic self-study; datasets, hypotheses; "I am the result." |
+| 1 | Cassidy | swimmer | straight | Lane discipline, training logs, hyposeason bulk; "I am the result." |
 | 2 | Kylie | influencer | hourglass | Everything is content; brand, engagement, "no filter. Just me." |
 | 3 | Serena | athlete | athletic | Split-times and discipline redirected; "New event. No weight class." |
 | 4 | Fiona | artsy | straight | Sees herself as composition/canvas; reverent, unhurried. |

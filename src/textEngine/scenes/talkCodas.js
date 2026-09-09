@@ -82,8 +82,8 @@ registerPool("talk.coda", [
     ] },
   { when: { studentId: 1, corruption: [2] },
     text: [
-      (ctx) => `${ctx.subject.name} closes her notebook. "Hyposeason plan confirmed," she murmurs. "I like being full for you."`,
-      (ctx) => `"The data supports it," ${ctx.subject.name} says, deadpan. Her hand rests on her middle like a citation.`,
+      (ctx) => `${ctx.subject.name} closes her training log. "Hyposeason plan confirmed," she murmurs. "I like being full for you."`,
+      (ctx) => `"The log supports it," ${ctx.subject.name} says, deadpan. Her hand rests on her middle like a personal best.`,
     ] },
   { when: { studentId: 2, corruption: [2] },
     text: [

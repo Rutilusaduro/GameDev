@@ -905,6 +905,62 @@ check('homeroom-resident-framing', () => {
   assert.doesNotMatch(modal, /STUDENTS · tap to conference/i);
 });
 
+check('cassidy-swimmer-voice', () => {
+  const authoring = read('src/textEngine/AUTHORING.md');
+  assert.match(authoring, /\| 1 \| Cassidy \| swimmer \|/);
+  assert.doesNotMatch(authoring, /\| 1 \| Madeline \| bookworm \|/);
+
+  const npc = read('src/textEngine/scenes/npcReactions.js');
+  assert.match(npc, /registerPool\('ra\.observation'/);
+  assert.doesNotMatch(npc, /prof\.observation/);
+
+  const CASSIDY_VOICE_FILES = [
+    'src/textEngine/scenes/weighIn/personas.js',
+    'src/textEngine/scenes/psychShift/personas.js',
+    'src/textEngine/scenes/interior/personas.js',
+    'src/textEngine/scenes/earlyGain/personas.js',
+    'src/textEngine/scenes/eating/personas.js',
+    'src/textEngine/scenes/growthEvent/personas.js',
+    'src/textEngine/scenes/growthEvent/garments.js',
+    'src/textEngine/scenes/immobility/personas.js',
+    'src/textEngine/scenes/weekRecap/index.js',
+    'src/textEngine/scenes/milestone/index.js',
+    'src/textEngine/scenes/diary.js',
+    'src/textEngine/scenes/clothing/personas.js',
+    'src/textEngine/scenes/campus/campusSceneDepth.js',
+    'src/textEngine/scenes/talkCodas.js',
+    'src/textEngine/scenes/attitude.js',
+  ];
+
+  const BANNED_IN_CASSIDY = [
+    /\bhypothesis\b/i,
+    /\bdataset\b/i,
+    /\bpeer review\b/i,
+    /\bpublishable\b/i,
+    /\bcontrol group\b/i,
+    /\bp-value\b/i,
+    /\bfootnote\b/i,
+    /\badjusting her glasses\b/i,
+    /\bspreadsheet\b/i,
+    /\bmethodology\b/i,
+    /\bsample size\b/i,
+    /\btaxonomy\b/i,
+    /\bcardigan and blouse\b/i,
+  ];
+
+  const blockRe = /\{[^{}]*when:\s*\{[^{}]*studentId:\s*1(?!\d)[^{}]*\}[^{}]*text:\s*\[[\s\S]*?\]\s*,?\s*\}/g;
+
+  for (const file of CASSIDY_VOICE_FILES) {
+    const src = read(file);
+    const blocks = src.match(blockRe) ?? [];
+    assert.ok(blocks.length > 0, `${file} must contain Cassidy (studentId 1) persona blocks`);
+    const cassidyText = blocks.join('\n');
+    for (const re of BANNED_IN_CASSIDY) {
+      assert.doesNotMatch(cassidyText, re, `${file}: Cassidy voice still has ${re}`);
+    }
+  }
+});
+
 check('embodied-resident-sighting', () => {
   const embodied = read('src/gameData/v2/embodiedCampus.js');
   assert.match(embodied, /resident_sighting:/);

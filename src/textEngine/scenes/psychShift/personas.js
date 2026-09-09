@@ -17,14 +17,14 @@ registerModuleVariants('shift.interior', [
     'Captain of a new league: heavier, happier, still in charge.',
   ]},
   { when: { studentId: 1, corruption: [1] }, weight: W, text: [
-    'Cassidy files the warmth under new taxonomy. The old categories no longer fit.',
-    'The dataset includes feelings she did not predict. She keeps collecting.',
-    'Correlation with pleasure: statistically significant. She accepts the p-value.',
+    'Cassidy files the warmth under a new training block. The old season plan no longer fits.',
+    'The log includes feelings she did not schedule. She keeps swimming through them.',
+    'Pleasure tracks with every meal: consistent split. She accepts the time.',
   ]},
   { when: { studentId: 1, corruption: [2] }, weight: W, text: [
-    'Hyposeason plan upgraded to conclusion. She is the result she meant to study.',
-    'The interior is quiet — the quiet of a lab after a successful run.',
-    'Peer review would be jealous. She publishes nothing. She eats.',
+    'Hyposeason plan upgraded to conclusion. She is the body she meant to build.',
+    'The interior is quiet — the quiet of a pool deck after a hard set.',
+    'Teammates would be jealous. She posts nothing. She eats.',
   ]},
   { when: { studentId: 2, corruption: [1] }, weight: W, text: [
     'Kylie stops performing denial for an audience of one. The audience is her now.',
@@ -180,9 +180,9 @@ registerModuleVariants('shift.physical', [
     'The uniform strains. She wears the strain like a medal.',
   ]},
   { when: { studentId: 1, corruption: [1] }, weight: W, text: [
-    'Cassidy breathes around fullness without apologizing to the data.',
+    'Cassidy breathes around fullness without apologizing to the training log.',
     'Her middle softens against the desk. She leans in.',
-    'The chair creaks. She notes the creak. She stays seated.',
+    'The chair creaks. She logs the creak. She stays seated.',
   ]},
   { when: { studentId: 2, corruption: [1] }, weight: W, text: [
     'Kylie sways to the mirror and approves the shot unposted.',
@@ -283,9 +283,9 @@ registerModuleVariants('shift.coda', [
     'Team morale: high. Waistline: higher. She calls it winning.',
   ]},
   { when: { studentId: 1, corruption: [1] }, weight: W, text: [
-    'Cassidy closes the notebook on shame. Opens it on appetite.',
-    'Continuing study. Subject: satisfied.',
-    'Next chapter: replication with larger sample — herself.',
+    'Cassidy closes the old season plan on shame. Opens the next block on appetite.',
+    'Continuing reps. Athlete: satisfied.',
+    'Next set: same drill, heavier load — herself.',
   ]},
   { when: { studentId: 2, corruption: [1] }, weight: W, text: [
     'Kylie schedules snacks before content. Priorities clarified.',

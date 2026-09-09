@@ -57,7 +57,7 @@ registerPool('npc.staff', [
   ] },
 ]);
 
-registerPool('prof.observation', [
+registerPool('ra.observation', [
   { when: {}, text: [
     'You note the change without saying it aloud.',
     'The numbers tell one story. Her presence tells another.',

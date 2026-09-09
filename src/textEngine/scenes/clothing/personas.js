@@ -107,9 +107,9 @@ registerModuleVariants('cloth.reaction', [
     `"New stratum," she grins. "Deeper layer."`,
   ]},
   { when: { studentId: 1, corruption: [0] }, weight: W, text: [
-    `Cassidy smooths the gap with analytical calm. "Garment tolerance exceeded."`,
-    `"Expected at current mass," she says, cheeks pink. "Ordering larger."`,
-    `"Statistically inevitable," she murmurs. Still blushing.`,
+    `Cassidy smooths the gap with lane-captain calm. "Team gear tolerance exceeded."`,
+    `"Expected in bulk phase," she says, cheeks pink. "Ordering larger."`,
+    `"Off-season math," she murmurs. Still blushing.`,
   ]},
   { when: { studentId: 4, corruption: [0] }, weight: W, text: [
     `Fiona looks at the tear like negative space gone wrong. "The composition… shifted."`,

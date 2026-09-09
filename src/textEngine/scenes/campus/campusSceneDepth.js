@@ -11,8 +11,8 @@ registerModuleVariants('campus.spaceObs', [
     `The gym remembers her captaincy. Her body remembers every recovery meal.`,
   ]},
   { when: { studentId: 1, campusLocale: 'floor meeting_hall', ...MOBILE }, weight: W, text: [
-    `Cassidy chooses the desk with the widest arm — hypothesis confirmed weekly.`,
-    `She takes notes and space in equal measure. The row behind has adapted.`,
+    `Cassidy chooses the desk with the widest arm — season plan confirmed weekly.`,
+    `She logs training notes and takes space in equal measure. The row behind has adapted.`,
   ]},
   { when: { studentId: 2, campusLocale: 'hallway', ...MOBILE }, weight: W, text: [
     `Kylie turns the corridor into content — angles, curves, the algorithm in her wake.`,

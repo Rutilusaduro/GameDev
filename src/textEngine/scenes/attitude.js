@@ -334,8 +334,8 @@ registerPool("attitude.line", [
     ] },
   { when: { studentId: 1, stageMin: 5 }, priority: 2,
     text: [
-      `The data doesn't lie. Neither do I, technically. I just — update my hypotheses.`,
-      `I've stopped calling this anomalous. It's well within the literature now.`,
+      `The scale doesn't lie. Neither do I, technically. I just — update my season plan.`,
+      `I've stopped calling this off-schedule. It's well within the bulk block now.`,
     ] },
   { when: { studentId: 2, stageMin: 5 }, priority: 2,
     text: [

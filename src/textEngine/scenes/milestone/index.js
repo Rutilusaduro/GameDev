@@ -106,7 +106,7 @@ registerPool('milestone.line', [
     `Brittany turns side-on in the mirror, hands sliding down her new curves, and decides she likes what she's become.`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy notes the threshold crossed with quiet, athletic satisfaction, as though confirming a hypothesis she'd grown fond of.`,
+    `Cassidy notes the threshold crossed with quiet, athletic satisfaction, as though confirming a season plan she'd grown fond of.`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie films the reveal from three angles, breathless. "Okay no, you guys have to see how much softer I got."`,

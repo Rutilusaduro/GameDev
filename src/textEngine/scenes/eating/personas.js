@@ -9,9 +9,9 @@ registerModuleVariants('eat.firstBite', [
     'The first forkful is discipline. The second is already less disciplined.',
   ] },
   { when: { studentId: 1 }, weight: 4, text: [
-    'Cassidy notes the first bite in her head — time, portion, context — and eats anyway.',
-    'The opening mouthful is a data point. The trend is clear by bite three.',
-    'She adjusts her glasses and begins. Observation and appetite run in parallel.',
+    'Cassidy notes the first bite in her head — time, portion, set number — and eats anyway.',
+    'The opening mouthful is rep one. The pace is clear by bite three.',
+    'She rolls her shoulders like pre-lane ritual and begins. Discipline and appetite run in parallel.',
   ] },
   { when: { studentId: 2 }, weight: 4, text: [
     'Kylie films the first bite. "Content," she says, mouth full. "Authentic."',
@@ -107,9 +107,9 @@ registerModuleVariants('eat.finish', [
     'Recovery meal complete. Personal record pending sweets.',
   ] },
   { when: { studentId: 1 }, weight: 4, text: [
-    'Cassidy sets the fork down and updates the mental spreadsheet. Intake: substantial.',
-    'The meal concludes. The trend line bends again. She notes it without panic.',
-    'Confidence interval: satisfied. She closes the notebook on shame.',
+    'Cassidy sets the fork down and updates the mental training log. Intake: substantial.',
+    'The meal concludes. The weekly curve bends again. She logs it without panic.',
+    'Set complete: satisfied. She closes the old season plan on shame.',
   ] },
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie licks her fork for the camera. "That's a wrap," she says. "Until snacks."`,

@@ -32,7 +32,7 @@ const POOL_ALTS = {
   ],
   'npc.coach': ['', ''],
   'npc.staff': ['', ''],
-  'prof.observation': [
+  'ra.observation': [
     'You note the change the way you note weather — inevitable, worth tracking.',
   ],
   'scrutiny.tierUp.header': [

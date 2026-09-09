@@ -689,8 +689,8 @@ registerPool('grow.reaction', [
     "Command doesn't shrink. She's noticed that.",
   ] },
   { when: { studentId: 1, stageMin: 3 }, weight: 4, text: [
-    "She notes it in the margin. Not the weight number — the date. The data is ongoing.",
-    "The observation is made. Filed. The methodology continues.",
+    "She logs it in her training journal. Not the weight number — the date. The bulk phase is ongoing.",
+    "The rep is done. Filed. The next set continues.",
   ] },
   { when: { studentId: 2, stageMin: 3 }, weight: 4, text: [
     "She doesn't reach for her phone. The moment passes undocumented. That's new.",

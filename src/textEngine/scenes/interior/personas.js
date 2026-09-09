@@ -19,14 +19,14 @@ registerModuleVariants('interior.selfObs', [
     'Trophy case: expanding. She approves.',
   ]},
   { when: { studentId: 1, corruption: [0], stageMax: 4 }, weight: W, text: [
-    'Cassidy notes the rounding in the margin of her notebook. No conclusion yet.',
-    'The trend line bends upward. She keeps watching.',
-    'Standard deviation: widening. She does not panic.',
+    'Cassidy notes the rounding in her training log. No taper yet.',
+    'The weekly weigh-in curve bends upward. She keeps watching.',
+    'Bulk phase: widening. She does not panic.',
   ]},
   { when: { studentId: 1, corruption: [2], stageMin: 6 }, weight: W, text: [
-    'She observes her own vastness with athletic delight. Field notes: excellent.',
-    'The subject and the observer merged weeks ago.',
-    'Citation needed: her hips. She provides evidence.',
+    'She observes her own vastness with athletic delight. Pool-deck notes: excellent.',
+    'Athlete and observer merged weeks ago.',
+    'Proof needed: her hips. She provides it in the mirror.',
   ]},
   { when: { studentId: 2, corruption: [1], stageMin: 3 }, weight: W, text: [
     'Kylie catches herself posing in reflective surfaces. The pose is less performance now.',

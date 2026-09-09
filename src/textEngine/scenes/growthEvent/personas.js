@@ -57,35 +57,35 @@ registerModuleVariants("ge.reactionDialogue", [
   // ── 1 · Cassidy — swimmer: training-log self-documentation ──────
   { when: { studentId: 1, corruption: [0], endStageMax: 5 }, weight: W, text: [
     `"Interesting," she murmurs, fingers pressed to her waist. "Faster than projected on the meal log."`,
-    `"This exceeds my model," she says. "Significantly. I'll need to revise the framework."`,
+    `"This exceeds my season plan," she says. "Significantly. I'll need to revise the block."`,
   ]},
   { when: { studentId: 1, corruption: [1], endStageMax: 5 }, weight: W, text: [
-    `"Hyposeason plan confirmed again." She adjusts her glasses. "The gain is cumulative and accelerating."`,
-    `"Data point," she says, patting her belly. "I'm still collecting."`,
+    `"Hyposeason plan confirmed again." She tugs her team hoodie flat. "The gain is cumulative and accelerating."`,
+    `"Logged," she says, patting her belly. "I'm still adding reps."`,
   ]},
   { when: { studentId: 1, corruption: [2], endStageMax: 5 }, weight: W, text: [
     `"The training block continues." She sounds pleased. "I intend to continue it. Indefinitely."`,
-    `"More data," she murmurs, hands on her growing middle. "The sample size is excellent."`,
+    `"Another set," she murmurs, hands on her growing middle. "Personal best every week."`,
   ]},
   { when: { studentId: 1, corruption: [0], endStageMin: 6 }, weight: W, text: [
-    `"I need a new framework," she says quietly. "None of my models prepared me for this."`,
+    `"I need a new season plan," she says quietly. "None of my old splits prepared me for this."`,
     `"Outside every projection I wrote," she whispers.`,
   ]},
   { when: { studentId: 1, corruption: [1], endStageMin: 6 }, weight: W, text: [
     `"I am the result," she says, with precision. "No longer the lane captain. I am the result."`,
-    `"Continuing," she says, voice steady. "Recording."`,
+    `"Continuing," she says, voice steady. "Still logging."`,
   ]},
   { when: { studentId: 1, corruption: [2], endStageMin: 6 }, weight: W, text: [
-    `"Board-ready," she breathes, hands spread on her vast belly. "All of it."`,
-    `"Conclusive," she murmurs.`,
+    `"Podium-ready," she breathes, hands spread on her vast belly. "All of it."`,
+    `"Season plan complete," she murmurs.`,
   ]},
   // Double depth — addiction gate
   { when: { studentId: 1, addictionLevelMin: 2 }, weight: W, text: [
-    `"The craving is itself a data point," she notes. "I have been tracking it. It's consistent."`,
+    `"The craving shows up every night now," she notes. "I have been logging it. Same split every time."`,
   ]},
   // Double depth — withdrawal gate
   { when: { studentId: 1, inWithdrawal: true }, weight: W, text: [
-    `"Withdrawal symptomology consistent with dependency curve," she says. "I need another session."`,
+    `"Missed a feeding session. Appetite's off my pace," she says. "I need another round."`,
   ]},
 
   // ── 2 · Kylie — influencer: everything is content ─────────────

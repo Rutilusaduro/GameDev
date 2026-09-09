@@ -14,9 +14,9 @@ registerModuleVariants('immob.register', [
     `"Home turf. Bigger turf. Same captain."`,
   ]},
   { when: { studentId: 1, ...IMMOBILE_TOP, corruption: [1] }, weight: W, text: [
-    `"Mobility optional," Cassidy murmurs. "Findings: extensive."`,
-    `"I've exceeded every projection. Observation continues from here."`,
-    `"Sample size: one. Conclusion: larger."`,
+    `"Mobility optional," Cassidy murmurs. "Bulk phase: extensive."`,
+    `"I've exceeded every projection on the season plan. Logging continues from here."`,
+    `"One athlete. One chair. Personal best: larger."`,
   ]},
   { when: { studentId: 2, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
     `"This is the shot," Kylie says calmly. "Wide frame. No filter. Stay."`,
@@ -133,7 +133,7 @@ registerModuleVariants('immob.settledState', [
   ]},
   { when: { studentId: 1, ...IMMOBILE_TOP }, weight: W, text: [
     'Cassidy has outgrown the chair and outgrown the urge to leave it.',
-    'Immobility, she notes, is a valid experimental outcome.',
+    'Immobility, she notes, is a valid off-season outcome.',
     'Hyposeason plan: mass. Result: confirmed.',
   ]},
   { when: { studentId: 2, ...IMMOBILE_TOP }, weight: W, text: [

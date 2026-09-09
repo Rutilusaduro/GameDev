@@ -66,7 +66,7 @@ registerPool('week.recap.line', [
     `Brittany tugs her waistband, half a complaint, half a dare. "Yeah, yeah. The squad noticed. So did I."`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy records the change in her notebook with detached precision, then underlines the number twice.`,
+    `Cassidy logs the week's gain in her training journal with lane-captain precision, then circles the number twice.`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie checks her profile in the mirror, turns, and decides — out loud, for the feed — that she loves it.`,
