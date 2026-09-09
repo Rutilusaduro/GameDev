@@ -80,6 +80,8 @@ export function DebugPanel({
   setEvolutionModal,
   setConfrontation,
   setFloorCheckIn,
+  setEmbodimentStudent,
+  setOriginPickState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -354,6 +356,30 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   📋 Floor Check-In QA
+                </button>
+              )}
+              {setEmbodimentStudent && setOwnedSkills && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(90,50,140,0.55)' }}
+                  onClick={() => {
+                    setOwnedSkills((prev) => ({ ...prev, resident_ride: 1, deep_ride: 1 }));
+                    setAp((a) => Math.max(a, 20));
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 180, relationship: 50 };
+                    setEmbodimentStudent(subject);
+                    setDebugOpen(false);
+                  }}>
+                  🌒 Embodiment QA
+                </button>
+              )}
+              {setOriginPickState && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(100,60,160,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1 ? { ...s, origin: 'default', originChosenWeek: null, originRegister: null } : s
+                    )));
+                    setOriginPickState({ studentId: 1 });
+                    setDebugOpen(false);
+                  }}>
+                  ✦ Origin Pick QA
                 </button>
               )}
               {setTierUpModal && (

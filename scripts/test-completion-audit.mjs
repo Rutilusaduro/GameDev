@@ -191,6 +191,8 @@ const REQUIRED_E2E = [
   'e2e/evolution-offer-natural.spec.js',
   'e2e/confrontation-ceremony.spec.js',
   'e2e/floor-checkin-ceremony.spec.js',
+  'e2e/embodiment-ceremony.spec.js',
+  'e2e/origin-pick-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

@@ -275,6 +275,18 @@ export async function triggerFloorCheckInQA(page) {
   await page.getByRole('button', { name: /Floor Check-In QA/ }).click();
 }
 
+/** Debug: open embodiment modal for Cassidy with ride skills granted. */
+export async function triggerEmbodimentQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Embodiment QA/ }).click();
+}
+
+/** Debug: reset Cassidy origin and open origin deck picker. */
+export async function triggerOriginPickQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Origin Pick QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
