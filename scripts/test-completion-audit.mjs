@@ -909,7 +909,8 @@ check('homeroom-resident-framing', () => {
   assert.match(homeroom, /Residence life loaned wider lounge tables/);
   assert.match(homeroom, /hall lounge tee/);
   assert.match(homeroom, /Brings wine to floor events/);
-  assert.doesNotMatch(homeroom, /Wide Desks|science room|Brings wine to school events|Bri's uniform doesn't quite tuck/i);
+  assert.match(homeroom, /hall kitchen sessions have been going/);
+  assert.doesNotMatch(homeroom, /Wide Desks|science room|Brings wine to school events|Bri's uniform doesn't quite tuck|kitchen club has been going/i);
   assert.match(diary, /taste-test more on the floor than I do at home/);
   assert.doesNotMatch(diary, /happy at school/i);
   const campus = read('src/textEngine/scenes/campusSoftening.js');
@@ -1176,6 +1177,10 @@ check('campus-softening-resident-framing', () => {
   assert.match(campus, /Residents on my floor have that same post-table warmth/);
   assert.match(campus, /Even staff in the hall look well-fed/);
   assert.doesNotMatch(campus, /Girls on my floor|Even teachers in the hall|classmates are eating|class is full of subjects|\bmy section\b/i);
+  const campusSwimmer = campus.match(/\{ when: \{ campusFattening: true, archetype: 'swimmer' \}[\s\S]*?\]\s*\},/)?.[0] ?? '';
+  assert.ok(campusSwimmer, 'campusSoftening.js must contain campusFattening swimmer block');
+  assert.doesNotMatch(campusSwimmer, /ambient caloric environment|Reference trail/i, 'campusSoftening swimmer still bookworm');
+  assert.match(campusSwimmer, /pool deck|training log|natatorium|splits|teammates/i, 'campusSoftening swimmer must use athletic voice');
   const roster = read('src/views/RosterView.jsx');
   assert.match(roster, /residentWithdrawn/);
   assert.doesNotMatch(roster, /classmateWithdrawn/i);

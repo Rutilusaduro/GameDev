@@ -2907,7 +2907,7 @@ Mrs. Monroe arrives last, parks badly, and waves through the window with both ha
 
 Daisy watches all of this from the counter, ${Math.round(s.lbs)} pounds and attentive.`,
           choices:[
-            {id:"noted_changes",label:"Say something about how well the kitchen club has been going",result:(s)=>`You say it genuinely. Daisy looks at you with an expression that's briefly and completely unguarded. "I think so too," she says. Then she looks back at the residents and her expression changes to something careful and warm and focused.`,lbs:5,rel:12,flag:"noted_changes"},
+            {id:"noted_changes",label:"Say something about how well the hall kitchen sessions have been going",result:(s)=>`You say it genuinely. Daisy looks at you with an expression that's briefly and completely unguarded. "I think so too," she says. Then she looks back at the residents and her expression changes to something careful and warm and focused.`,lbs:5,rel:12,flag:"noted_changes"},
             {id:"pushed_more",label:"Make sure everyone has seconds before the session ends",result:(s)=>`You help make sure the plates don't empty. Sofia doesn't need help — she's been watching the supply — but Bri and Kayla accept second servings with the ease of people who've stopped thinking twice about it.`,lbs:7,rel:9,flag:"pushed_more"},
           ]
         },

@@ -110,7 +110,7 @@ registerPool("diary.campus", [
   { when: { campusFattening: true, archetype: 'swimmer' }, priority: 2,
     text: [
       "Pool deck after practice: more snacks, softer occupants. Campus-wide trend, not my lane alone.",
-      "Training log trail on 'ambient caloric environment' now includes the whole quad.",
+      "Training log now tracks post-practice carb load on every hall — not just the natatorium.",
       "Teammates' splits and waistbands both thicker this month.",
     ] },
   { when: { campusFattening: true, archetype: "athlete" }, priority: 2,
