@@ -48,7 +48,7 @@ export const HOSTESS_HANGOUTS = {
   kylie: [
     {
       title: "The First List",
-      intro: (s) => `Kylie catches you between classes. She already knows about the feast — she found out somehow — and she has opinions.\n\n"How many people?" she says. "Because I have thoughts about how many people."`,
+      intro: (s) => `Kylie catches you between hall rounds. She already knows about the feast — she found out somehow — and she has opinions.\n\n"How many people?" she says. "Because I have thoughts about how many people."`,
       choices: [
         { id: "let_run",   label: "Let her take the lead",     result: "She opens Notes before you finish agreeing. Names, plus-ones, a whole system. 'Active chapter for now,' she says, 'but I want the full picture.'" },
         { id: "keep_tight",label: "Ask her to keep it tight",  result: "'Chapter-only, got it,' she says, though you can already tell she's thinking past it. 'I'll keep it tight. For now.'" },

@@ -1,8 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // CIRCUIT BOARD MODAL — visual skill tree on a PCB layout
 // ═══════════════════════════════════════════════════════════════
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import {
   CIRCUIT_BOARDS,
   getCircuitBoard,
@@ -19,9 +20,10 @@ const ACCENT = '#6a5088';
 const LINE_MAIN = '#5090c8';
 const LINE_BRANCH = '#4a6080';
 
-export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlockNode, onClose }) {
+export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlockNode, onClose, soundEnabled = true }) {
   const board = CIRCUIT_BOARDS[deviceDefId];
   const [selectedId, setSelectedId] = useState(null);
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, deviceDefId]);
 
   if (!board || !labState) return null;
 
@@ -42,7 +44,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
 
   return (
     <div style={{ ...C.overlay, zIndex: 1240 }}>
-      <div style={{
+      <div className="hall-pass-modal-in" style={{
         ...C.modal,
         maxWidth: 720,
         width: '95%',
@@ -59,7 +61,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
             <div style={{ fontSize: 15, fontWeight: 700, color: '#d0c0f0' }}>{board.label}</div>
             <div style={{ fontSize: 10, color: '#8070a0', marginTop: 4 }}>{tierLabel}</div>
           </div>
-          <button style={{ ...C.btn('#302030'), fontSize: 10, padding: '4px 10px' }} onClick={onClose}>✕</button>
+          <button style={{ ...C.btn('#302030'), fontSize: 10, padding: '4px 10px' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>✕</button>
         </div>
 
         <div style={{ fontSize: 10, color: '#9080b0', marginBottom: 12 }}>
@@ -156,7 +158,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
               <button
                 style={{ ...C.btn(canUnlockCircuitNode(labState, deviceDefId, selected.id, students) ? ACCENT : '#302030'), width: '100%' }}
                 disabled={!canUnlockCircuitNode(labState, deviceDefId, selected.id, students)}
-                onClick={() => onUnlockNode(deviceDefId, selected.id)}
+                onClick={() => { playHallPassSound('confirm', soundEnabled); onUnlockNode(deviceDefId, selected.id); }}
               >
                 Install node ({selected.cost} invention pt{selected.cost !== 1 ? 's' : ''})
               </button>

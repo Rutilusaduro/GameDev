@@ -8627,6 +8627,7 @@ export default function HallPass(){
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
             onOpenForceFeeder={openForceFeeder}
             labStage={labState?.stage??1}
+            soundEnabled={soundEnabled}
           />}
 
           {view==="devices"&&<DeviceInventoryView
@@ -8747,6 +8748,7 @@ export default function HallPass(){
           onUnequip={unequipDeviceSlot}
           onEquip={equipDeviceOn}
           onAttach={attachDeviceOn}
+          soundEnabled={soundEnabled}
         />
       )}
       {malfunctionPopup&&<MalfunctionPopup malfunctionPopup={malfunctionPopup} setMalfunctionPopup={setMalfunctionPopup}/>}
@@ -8803,7 +8805,7 @@ export default function HallPass(){
       {/* ── DEBUG PANEL ── */}
       {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setOwnedSkills={setOwnedSkills} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} setWeek={setWeek} startDormId={raProfile?.dormId||raProfile?.subject} unlockedDorms={unlockedDorms} setUnlockedDorms={setUnlockedDorms} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText} soundEnabled={soundEnabled} onSoundEnabledChange={setSoundEnabled}/>}
 
-      {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }}/>}
+      {bugReportOpen&&<BugReportModal getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} prefillError={fieldNoteError} onClose={()=>{ setBugReportOpen(false); setFieldNoteError(null); }} soundEnabled={soundEnabled}/>}
 
       {/* ── TAP-OUT POPUP ── */}
       {tapOutPopup&&<TapOutPopup setTapOutPopup={setTapOutPopup} tapOutPopup={tapOutPopup} soundEnabled={soundEnabled}/>}
@@ -8882,6 +8884,7 @@ export default function HallPass(){
           <OriginPickModal
             student={originStudent}
             onPick={(originId)=>commitOriginPick(originStudent.id,originId)}
+            soundEnabled={soundEnabled}
           />
         );
       })()}
@@ -9066,18 +9069,18 @@ export default function HallPass(){
       })()}
 
       {/* ── EVOLVED PATH MINI-GAMES ── */}
-      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students}/>}
-      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students}/>}
-      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students}/>}
+      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
+      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
+      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}
-      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice}/>}
+      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST PREP MODAL ── */}
-      {chapterHostessState?.feastPrepOpen&&<ChapterHostessFeastPrepModal chapterHostessState={chapterHostessState} beginFeast={beginFeast} setChapterHostessState={setChapterHostessState}/>}
+      {chapterHostessState?.feastPrepOpen&&<ChapterHostessFeastPrepModal chapterHostessState={chapterHostessState} beginFeast={beginFeast} setChapterHostessState={setChapterHostessState} soundEnabled={soundEnabled}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST LOG MODAL ── */}
-      {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast}/>}
+      {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast} soundEnabled={soundEnabled}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
       {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)} soundEnabled={soundEnabled}/>}
@@ -9096,6 +9099,7 @@ export default function HallPass(){
             finalizeBrewPlan={finalizeBrewPlan}
             applyAcquisitionChoice={applyAcquisitionChoice}
             skipAcquisition={skipAcquisition}
+            soundEnabled={soundEnabled}
           />
         );
       })()}
@@ -9125,10 +9129,10 @@ export default function HallPass(){
       {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} week={week} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup} soundEnabled={soundEnabled}/>}
 
       {/* ── FEEDEE CREATOR: COLLAB PARTNER PICKER ── */}
-      {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students}/>}
+      {collabPartnerPicker&&<CollabPartnerPicker collabPartnerPicker={collabPartnerPicker} setCollabPartnerId={setCollabPartnerId} setCollabPartnerPicker={setCollabPartnerPicker} setEvolvedEventState={setEvolvedEventState} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── PSYCH RESEARCHER: SUBJECT PICKER ── */}
-      {researchSubjectPicker&&<ResearchSubjectPicker researchSubjectPicker={researchSubjectPicker} setAp={setAp} setEvolvedEventState={setEvolvedEventState} setResearchSubjectPicker={setResearchSubjectPicker} setStudents={setStudents} students={students}/>}
+      {researchSubjectPicker&&<ResearchSubjectPicker researchSubjectPicker={researchSubjectPicker} setAp={setAp} setEvolvedEventState={setEvolvedEventState} setResearchSubjectPicker={setResearchSubjectPicker} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── PSYCH RESEARCHER: SUBJECT JOURNAL ── */}
       {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState} soundEnabled={soundEnabled}/>}
@@ -9240,6 +9244,7 @@ export default function HallPass(){
           onEventResolve={runEmbodiedEventResolve}
           onRelease={runEmbodimentRelease}
           onClose={()=>setEmbodimentStudent(null)}
+          soundEnabled={soundEnabled}
         />
       )}
       {feastRitualOpen&&(
@@ -9251,6 +9256,7 @@ export default function HallPass(){
           spiritLevel={spiritLevel}
           onRun={runFeastRitual}
           onClose={()=>setFeastRitualOpen(false)}
+          soundEnabled={soundEnabled}
         />
       )}
       {dreamStudent&&(
@@ -9260,6 +9266,7 @@ export default function HallPass(){
           lucidUnlocked={v2.dreams?.lucidUnlocked}
           onChoice={(scenario,choice,wakeText)=>runDream(dreamStudent,scenario,choice,wakeText)}
           onClose={()=>{ setDreamStudent(null); setDreamPresetScenario(null); }}
+          soundEnabled={soundEnabled}
         />
       )}
       {echoReplay&&(
@@ -9271,6 +9278,7 @@ export default function HallPass(){
           resonated={echoReplay.echo?.resonated}
           onResonate={runEchoResonate}
           onClose={()=>setEchoReplay(null)}
+          soundEnabled={soundEnabled}
         />
       )}
 

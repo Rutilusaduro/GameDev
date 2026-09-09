@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import {
   FIELD_NOTE_CATEGORIES,
   buildGameSnapshot,
@@ -8,7 +9,8 @@ import {
   downloadBugReport,
 } from '../gameData/bugReport.js';
 
-export function BugReportModal({ getSnapshotContext, getSaveContext, prefillError, onClose }) {
+export function BugReportModal({ getSnapshotContext, getSaveContext, prefillError, onClose, soundEnabled = true }) {
+  useEffect(() => { playHallPassSound('click', soundEnabled); }, [soundEnabled]);
   const [category, setCategory] = useState('other');
   const [steps, setSteps] = useState('');
   const [attachSave, setAttachSave] = useState(false);
@@ -46,10 +48,10 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
 
   return (
     <div style={{ ...C.overlay, zIndex: 400 }}>
-      <div style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(165deg,#1a1410,#0f0c08)', border: '1px solid #8a704050', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(165deg,#1a1410,#0f0c08)', border: '1px solid #8a704050', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
           <div style={{ fontSize: 10, letterSpacing: 3, color: '#c9a060' }}>📋 FIELD NOTES</div>
-          <button type="button" style={C.btn('#333')} onClick={onClose}>✕</button>
+          <button type="button" style={C.btn('#333')} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>✕</button>
         </div>
         <p style={{ fontSize: 12, color: '#b8a890', lineHeight: 1.7, marginBottom: 14, fontStyle: 'italic' }}>
           The archivist keeps every note — week, weight, what you were doing when the world stuttered.

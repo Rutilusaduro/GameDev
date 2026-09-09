@@ -2,7 +2,9 @@
 // PHARMACIST CHEMISTRY — stage-specific synthesis UI
 // Corporate theft → Wellness brand → Cult distribution → Ascension
 // ═══════════════════════════════════════════════════════════════
+import { useEffect } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { COMPOUNDS, PHARMACIST_STAGES, compoundsForStage } from '../gameData/pharmacist.js';
 import {
   ACQUISITION_BY_STAGE,
@@ -97,7 +99,12 @@ export function PharmacistChemModal({
   finalizeBrewPlan,
   applyAcquisitionChoice,
   skipAcquisition,
+  soundEnabled = true,
 }) {
+  useEffect(() => {
+    playHallPassSound('session', soundEnabled);
+  }, [soundEnabled, chemSession?.phase, chemSession?.stageId, student?.id]);
+
   if (!chemSession || !student) return null;
   const stageId = chemSession.stageId ?? 1;
   const chrome = STAGE_CHROME[stageId] || STAGE_CHROME[1];
@@ -106,7 +113,7 @@ export function PharmacistChemModal({
 
   const wrap = children => (
     <div style={{ ...C.overlay, zIndex: 8200 }}>
-      <div style={{
+      <div className="hall-pass-modal-in" style={{
         ...C.modal,
         maxWidth: 520,
         background: 'linear-gradient(160deg,#060f0c,#0a1814,#060f0c)',
@@ -131,7 +138,7 @@ export function PharmacistChemModal({
             key={opt.id}
             type="button"
             style={{ ...C.btn('#1a3028'), width: '100%', marginBottom: 8, textAlign: 'left', padding: '10px 14px' }}
-            onClick={() => setChemSession(applyAcquisitionChoice(chemSession, opt.id))}
+            onClick={() => { playHallPassSound('click', soundEnabled); setChemSession(applyAcquisitionChoice(chemSession, opt.id)); }}
           >
             <div style={{ color: '#8ad4b0', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>{opt.label}</div>
             <div style={{ color: '#608878', fontSize: 10, lineHeight: 1.45, marginBottom: 4 }}>{opt.desc}</div>
@@ -141,8 +148,8 @@ export function PharmacistChemModal({
           </button>
         ))}
         <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-          <button type="button" style={C.btn('#333')} onClick={onCancel}>Cancel</button>
-          <button type="button" style={{ ...C.btn(chrome.accent), flex: 1 }} onClick={() => setChemSession(skipAcquisition(chemSession))}>
+          <button type="button" style={C.btn('#333')} onClick={() => { playHallPassSound('click', soundEnabled); onCancel(); }}>Cancel</button>
+          <button type="button" style={{ ...C.btn(chrome.accent), flex: 1 }} onClick={() => { playHallPassSound('confirm', soundEnabled); setChemSession(skipAcquisition(chemSession)); }}>
             Brew with allotted stock only →
           </button>
         </div>
@@ -160,11 +167,11 @@ export function PharmacistChemModal({
         ))}
         <BrewPicker session={chemSession} setSession={setChemSession} pharmacistState={pharmacistState} />
         <div style={{ display: 'flex', gap: 8 }}>
-          <button type="button" style={C.btn('#333')} onClick={() => setChemSession({ ...chemSession, phase: 'acquire', brewPlan: [] })}>← Resources</button>
+          <button type="button" style={C.btn('#333')} onClick={() => { playHallPassSound('click', soundEnabled); setChemSession({ ...chemSession, phase: 'acquire', brewPlan: [] }); }}>← Resources</button>
           <button
             type="button"
             style={{ ...C.btn(chrome.accent), flex: 1 }}
-            onClick={() => setChemSession(finalizeBrewPlan(chemSession, pharmacistState))}
+            onClick={() => { playHallPassSound('confirm', soundEnabled); setChemSession(finalizeBrewPlan(chemSession, pharmacistState)); }}
           >
             Finish brewing →
           </button>
@@ -203,7 +210,7 @@ export function PharmacistChemModal({
         </div>
         <div style={{ fontSize: 9, color: '#406858', marginBottom: 4 }}>Leftover ingredients (saved):</div>
         <div style={{ marginBottom: 14 }}><IngredientRow bag={chemSession.poolAfter || {}} /></div>
-        <button type="button" style={{ ...C.btn(chrome.accent), width: '100%' }} onClick={onConfirm}>Close lab & apply results ✓</button>
+        <button type="button" style={{ ...C.btn(chrome.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onConfirm(); }}>Close lab & apply results ✓</button>
       </>,
     );
   }

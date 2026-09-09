@@ -63,6 +63,9 @@ import { CULT_DISTRIBUTION_ROUTES } from '../src/gameData/pharmacistCult.js';
 import { LAB_ACQUISITION_OPTIONS } from '../src/gameData/talia.js';
 import { renderLabSessionBeat } from '../src/textEngine/scenes/talia/lab.js';
 import { DESTINY_SPEND_ITEMS } from '../src/gameData/streaming.js';
+import { HOSTESS_HANGOUTS, MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS } from '../src/gameData/chapterHostess.js';
+import { ACQUISITION_BY_STAGE } from '../src/gameData/pharmacistIngredients.js';
+import { getOriginDeck } from '../src/gameData/origins/index.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -577,4 +580,31 @@ for (const item of DESTINY_SPEND_ITEMS) {
   assertClean(`${item.label} ${item.desc}`, `destiny spend ${item.id}`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny OK');
+for (const [key, vignettes] of Object.entries(HOSTESS_HANGOUTS)) {
+  for (const [idx, vignette] of vignettes.entries()) {
+    assertClean(vignette.title, `hostess hangout ${key} ${idx} title`);
+    const intro = typeof vignette.intro === 'function' ? vignette.intro({ name: 'Tiffany', lbs: 280 }) : vignette.intro;
+    if (intro) assertClean(intro, `hostess hangout ${key} ${idx} intro`);
+    for (const ch of vignette.choices || []) {
+      assertClean(`${ch.label} ${ch.result}`, `hostess hangout ${key} ${idx} ${ch.id}`);
+    }
+  }
+}
+for (const tiers of [MENU_TIERS, ATMOSPHERE_TIERS, GUEST_TIERS]) {
+  for (const tier of tiers) {
+    if (tier?.label) assertClean(`${tier.label} ${tier.desc || ''}`, 'hostess tier');
+  }
+}
+for (const stageOpts of Object.values(ACQUISITION_BY_STAGE)) {
+  for (const opt of stageOpts) {
+    assertClean(`${opt.label} ${opt.desc} ${opt.flavor || ''}`, `pharmacist acquire ${opt.id}`);
+  }
+}
+for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie']) {
+  const subject = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
+  for (const card of getOriginDeck(subject)) {
+    assertClean(`${card.label} ${card.voiceLine}`, `origin ${archetype} ${card.id}`);
+  }
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin OK');

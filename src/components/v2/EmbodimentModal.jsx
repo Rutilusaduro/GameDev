@@ -1,8 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // EMBODIMENT MODAL — resident ride + embodied campus pilot
 // ═══════════════════════════════════════════════════════════════
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { C } from '../../styles.js';
+import { playHallPassSound } from '../../gameData/hallPassAudio.js';
 import { getAvailableEmbodimentActions } from '../../gameData/v2/spiritEmbodiment.js';
 import { isEmbodiedImmobile } from '../../gameData/v2/embodiedCampus.js';
 import { CAMPUS_NODES } from '../../gameData/campus.js';
@@ -45,8 +46,10 @@ export function EmbodimentModal({
   onEventResolve,
   onRelease,
   onClose,
+  soundEnabled = true,
 }) {
   const [pendingEvent, setPendingEvent] = useState(null);
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, student?.id, embodimentState?.activeStudentId, embodimentState?.at]);
   const active = embodimentState?.activeStudentId === student?.id;
   const atNode = embodimentState?.at || 'dorms';
   const node = CAMPUS_NODES[atNode] || CAMPUS_NODES.dorms;
@@ -114,7 +117,7 @@ export function EmbodimentModal({
 
   return (
     <div style={C.modalOverlay}>
-      <div style={{ ...C.modal, maxWidth: 560, maxHeight: '92vh', overflowY: 'auto', borderColor: '#8a4be080' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560, maxHeight: '92vh', overflowY: 'auto', borderColor: '#8a4be080' }}>
         <SceneBackdrop variant="embodiment" />
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
           <StudentPortrait student={student} size={72} />
@@ -134,7 +137,7 @@ export function EmbodimentModal({
         </div>
 
         {!active ? (
-          <button type="button" style={{ ...C.btn('#6a30a0'), width: '100%', marginBottom: 8 }} onClick={handleStart}>
+          <button type="button" style={{ ...C.btn('#6a30a0'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); handleStart(); }}>
             Slip Inside — Begin Campus Walk
           </button>
         ) : (
@@ -202,7 +205,7 @@ export function EmbodimentModal({
           </>
         )}
 
-        <button type="button" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={onClose}>Close</button>
+        <button type="button" style={{ ...C.smBtn, width: '100%', marginTop: 8 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close</button>
       </div>
     </div>
   );

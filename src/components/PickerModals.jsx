@@ -109,13 +109,14 @@ export function SubjectJournalModal({ setSubjectJournalState, students, subjectJ
         );
 }
 
-export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolvedEventState, setResearchSubjectPicker, setStudents, students }){
+export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolvedEventState, setResearchSubjectPicker, setStudents, students, soundEnabled = true }){
         const{student:nadia}=researchSubjectPicker;
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, nadia?.id]);
         const purple="#6b5b95";
         const eligible=students.filter(st=>st.id!==nadia.id&&getTier(st.relationship).id>=1);
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{background:"#0a0010",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>📋 RESEARCH SUBJECT</div>
               <div style={{fontSize:14,color:"#c0a0e0",fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Select a Subject</div>
               <div style={{fontSize:11,color:"#8070a0",marginBottom:14,textAlign:"center"}}>Close tier or above · any weight stage</div>
@@ -123,6 +124,7 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
               {eligible.map(st=>(
                 <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#080016",border:`1px solid ${purple}40`,cursor:"pointer"}}
                   onClick={()=>{
+                    playHallPassSound('confirm', soundEnabled);
                     setStudents(prev=>prev.map(x=>x.id===nadia.id?{...x,researchSubjectId:st.id}:x));
                     setResearchSubjectPicker(null);
                     const stageIdx=Math.max(0,Math.min(5,getStage(nadia.lbs).id-5));
@@ -140,13 +142,13 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
                   <div style={{color:"#a090c0",fontSize:11}}>{getStage(st.lbs).label}</div>
                 </div>
               ))}
-              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setResearchSubjectPicker(null)}>Cancel</button>
+              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setResearchSubjectPicker(null); }}>Cancel</button>
             </div>
           </div>
         );
 }
 
-export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, setCollabPartnerPicker, setEvolvedEventState, students }){
+export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, setCollabPartnerPicker, setEvolvedEventState, students, soundEnabled = true }){
         const{student:kylie,announcementText,announcementPending}=collabPartnerPicker;
         const purple="#8e44ad";
         const lightPurple="#c490e8";
@@ -157,27 +159,28 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
           COLLAB_CONTENT_CREATOR_ARCHETYPES.includes(st.archetype)&&
           getStage(st.lbs).id<10
         );
+        useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, kylie?.id, announcementPending]);
         if(announcementPending&&announcementText){
           return(
             <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-              <div style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:460,width:"95%"}}>
+              <div className="hall-pass-modal-in" style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:460,width:"95%"}}>
                 <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:8,textAlign:"center"}}>📢 STREAM ANNOUNCEMENT</div>
                 <div style={{fontSize:12,color:"#d0a8e8",lineHeight:1.9,fontStyle:"italic",marginBottom:16}}>{announcementText}</div>
-                <button style={{...C.btn(purple),width:"100%"}} onClick={()=>setCollabPartnerPicker({student:kylie})}>Continue to Stream →</button>
+                <button style={{...C.btn(purple),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); setCollabPartnerPicker({student:kylie}); }}>Continue to Stream →</button>
               </div>
             </div>
           );
         }
         return(
           <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1200}}>
-            <div style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
+            <div className="hall-pass-modal-in" style={{background:"#0e0015",border:`1px solid ${purple}50`,borderRadius:12,padding:20,maxWidth:500,width:"95%",maxHeight:"85vh",overflowY:"auto"}}>
               <div style={{fontSize:10,letterSpacing:4,color:purple,marginBottom:4,textAlign:"center"}}>🎥 COLLAB STREAM</div>
               <div style={{fontSize:14,color:lightPurple,fontWeight:"bold",marginBottom:12,textAlign:"center"}}>Choose a Collab Partner</div>
               <div style={{fontSize:11,color:"#a080c0",marginBottom:14,textAlign:"center"}}>Intimate tier · content-creator archetype</div>
               {eligible.length===0&&<div style={{color:"#806090",textAlign:"center",padding:20}}>No eligible partners right now — need an Intimate-tier gamer, artsy, or quiet student.</div>}
               {eligible.map(st=>(
                 <div key={st.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:6,borderRadius:8,background:"#0a0018",border:`1px solid ${purple}40`,cursor:"pointer"}}
-                  onClick={()=>{setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairDay:false});}}}>
+                  onClick={()=>{ playHallPassSound('confirm', soundEnabled); setCollabPartnerId(st.id);setCollabPartnerPicker(null);const stageIdx=Math.max(0,Math.min(5,getStage(kylie.lbs).id-5));const evDef=EVOLVED_EVENTS['feedee_creator']?.[stageIdx];if(evDef){setEvolvedEventState({studentId:kylie.id,formId:'feedee_creator',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0,startsContest:false,startsMatch:false,startsStream:false,startsFairDay:false});}}}>
                   <div style={{flex:1}}>
                     <div style={{color:lightPurple,fontWeight:"bold",fontSize:13}}>{st.name}</div>
                     <div style={{color:"#907090",fontSize:10}}>{st.archetype} · {Math.round(st.lbs)} lbs · {getTier(st.relationship).label}</div>
@@ -185,13 +188,13 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
                   <div style={{color:"#c0a0e0",fontSize:11}}>{getStage(st.lbs).label}</div>
                 </div>
               ))}
-              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>setCollabPartnerPicker(null)}>Cancel</button>
+              <button style={{...C.btn("#2a1040"),width:"100%",marginTop:8,fontSize:11}} onClick={()=>{ playHallPassSound('click', soundEnabled); setCollabPartnerPicker(null); }}>Cancel</button>
             </div>
           </div>
         );
 }
 
-function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose }) {
+function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true }) {
   const def = EVOLVED_MINIGAMES[gameId];
   const s = students.find((st) => st.id === studentId);
   const [phaseIdx, setPhaseIdx] = useState(0);
@@ -199,6 +202,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
   const [log, setLog] = useState([]);
   const [done, setDone] = useState(false);
   const [outcome, setOutcome] = useState(null);
+  useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, gameId, studentId, phaseIdx, done]);
   if (!def || !s) return null;
 
   const ctx = { studentName: s.name, stageIdx };
@@ -231,7 +235,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
 
   return (
     <div style={C.overlay}>
-      <div style={{ ...C.modal, maxWidth: 540, background: 'linear-gradient(160deg,#100800,#1a1000,#100800)', border: `1px solid ${def.accent}50`, maxHeight: '85vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 540, background: 'linear-gradient(160deg,#100800,#1a1000,#100800)', border: `1px solid ${def.accent}50`, maxHeight: '85vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: def.accent, marginBottom: 4 }}>{def.tag}</div>
         <div style={{ fontSize: 15, color: '#e0d0c0', fontWeight: 'bold', marginBottom: 4 }}>{def.title} — Stage {stageIdx + 1}</div>
         <div style={{ fontSize: 10, color: '#907060', marginBottom: 10 }}>{s.name} · {Math.round(s.lbs)} lbs</div>
@@ -244,21 +248,21 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {phase.choices.map((ch) => (
-              <button key={ch.id} type="button" style={{ ...C.btn(def.accent), textAlign: 'left', fontSize: 12 }} onClick={() => pickChoice(ch)}>
+              <button key={ch.id} type="button" style={{ ...C.btn(def.accent), textAlign: 'left', fontSize: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); pickChoice(ch); }}>
                 {ch.label}
               </button>
             ))}
           </div>
         )}
         {done && (
-          <button type="button" style={{ ...C.btn(def.accent), width: '100%' }} onClick={onClose}>Continue ✓</button>
+          <button type="button" style={{ ...C.btn(def.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onClose(); }}>Continue ✓</button>
         )}
       </div>
     </div>
   );
 }
 
-export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students }) {
+export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true }) {
   if (!challengeState) return null;
   return (
     <EvolvedMinigameModal
@@ -270,11 +274,12 @@ export function CampusChallengeModal({ challengeState, processStudentGain, push,
       setStudents={setStudents}
       push={push}
       onClose={() => setChallengeState(null)}
+      soundEnabled={soundEnabled}
     />
   );
 }
 
-export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students }) {
+export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true }) {
   if (!deliveryState) return null;
   return (
     <EvolvedMinigameModal
@@ -286,11 +291,12 @@ export function DeliveryOrderModal({ deliveryState, processStudentGain, push, se
       setStudents={setStudents}
       push={push}
       onClose={() => setDeliveryState(null)}
+      soundEnabled={soundEnabled}
     />
   );
 }
 
-export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students }) {
+export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true }) {
   if (!presentationState) return null;
   return (
     <EvolvedMinigameModal
@@ -302,6 +308,7 @@ export function PresentationDefenseModal({ presentationState, processStudentGain
       setStudents={setStudents}
       push={push}
       onClose={() => setPresentationState(null)}
+      soundEnabled={soundEnabled}
     />
   );
 }

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { DEVICE_SLOTS } from '../gameData/devices.js';
 import { getDevice } from '../gameData/devices.js';
 import { slotFor } from '../gameData/deviceEffects.js';
@@ -87,8 +88,10 @@ export function StudentEquipModal({
   onUnequip,
   onEquip,
   onAttach,
+  soundEnabled = true,
 }) {
   const [activeSlot, setActiveSlot] = useState(null);
+  useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, student?.id]);
   if (!student) return null;
 
   const equippedCount = DEVICE_SLOTS.filter(s => student.equip?.[s]).length;
@@ -97,8 +100,9 @@ export function StudentEquipModal({
     : null;
 
   return (
-    <div style={C.overlay} onClick={onClose}>
+    <div style={C.overlay} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
       <div
+        className="hall-pass-modal-in"
         style={{ ...C.modal, maxWidth: 460, border: `1px solid ${SILVER_BORDER}` }}
         onClick={e => e.stopPropagation()}
       >
@@ -135,7 +139,7 @@ export function StudentEquipModal({
             onClose={() => setActiveSlot(null)}
           />
         )}
-        <button style={{ ...C.btn('#333'), width: '100%', marginTop: 12 }} onClick={onClose}>
+        <button style={{ ...C.btn('#333'), width: '100%', marginTop: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
           Close
         </button>
       </div>

@@ -143,6 +143,7 @@ export function LabView({
   onOpenForceFeeder,
   ap,
   students = [],
+  soundEnabled = true,
 }) {
   const [circuitDevice, setCircuitDevice] = useState(null);
 
@@ -253,6 +254,7 @@ export function LabView({
           students={students}
           onUnlockNode={onUnlockCircuit}
           onClose={() => setCircuitDevice(null)}
+          soundEnabled={soundEnabled}
         />
       )}
     </div>
