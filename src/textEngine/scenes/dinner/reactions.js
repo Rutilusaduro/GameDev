@@ -68,7 +68,7 @@ registerPool('dinner.reaction.thinJealousy._f16', [
 ]);
 
 registerPool('dinner.reaction.thinJealousy._f17', [
-  { when: {}, text: ["{subject.name} reaches over with careful, deliberate intent and places her palm flat against {ref.name}'s full middle. \"I wanted to feel it,\" she says, academically."] },
+  { when: {}, text: ["{subject.name} reaches over with careful, deliberate intent and places her palm flat against {ref.name}'s full middle. \"I wanted to feel it,\" she says, like it's data."] },
 ]);
 
 registerPool('dinner.reaction.thinJealousy._f18', [
@@ -337,7 +337,7 @@ registerPool('dinner.reaction.thinJealousy', [
   { when: {"archetype":"foodie","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f43} {dinner.reaction.thinJealousy._f44}"] },
   { when: {"archetype":"foodie","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy._f45} {dinner.reaction.thinJealousy._f46}"] },
   { when: {"archetype":"foodie","reactionLevel":3}, text: ["{dinner.reaction.thinJealousy._f47} {dinner.reaction.thinJealousy._f48}"] },
-  { when: {"archetype":"bookworm","reactionLevel":0}, text: ["{subject.name} watches {ref.name}'s course arrive and makes a note in the margin of whatever she's reading. Not a real note. Just a mark. She is tracking this academically."] },
+  { when: {"archetype":"bookworm","reactionLevel":0}, text: ["{subject.name} watches {ref.name}'s course arrive and makes a note in the margin of whatever she's reading. Not a real note. Just a mark. She is tracking this like a field note."] },
   { when: {"archetype":"swimmer","reactionLevel":0}, text: ["{subject.name} watches {ref.name}'s course arrive and taps a mark into her training log. Not a real split. Just a dot. She is tracking this like fuel data."] },
   { when: {"archetype":"bookworm","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f49} {dinner.reaction.thinJealousy._f50}"] },
   { when: {"archetype":"swimmer","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f49} {dinner.reaction.thinJealousy._f50}"] },

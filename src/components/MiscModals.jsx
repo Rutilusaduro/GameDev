@@ -68,6 +68,52 @@ export function TapOutPopup({ setTapOutPopup, tapOutPopup }){
 
 
 
+export function DormUnlockModal({ dorms, onContinue }) {
+  if (!dorms?.length) return null;
+  const primary = dorms[0];
+  return (
+    <div style={C.overlay}>
+      <div
+        className="hall-pass-modal-in"
+        style={{
+          ...C.modal,
+          maxWidth: 520,
+          background: `linear-gradient(160deg, rgba(12,6,24,0.98), ${primary.accentSoft || 'rgba(40,20,60,0.4)'})`,
+          border: `2px solid ${primary.color}80`,
+          boxShadow: `0 16px 48px rgba(0,0,0,0.45), 0 0 32px ${primary.color}22`,
+        }}
+      >
+        <div style={{ fontSize: 9, letterSpacing: 4, color: primary.color, marginBottom: 6 }}>🔓 HALL REACH EXPANDED</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: '#f0e8ff', marginBottom: 6 }}>
+          {dorms.map((d) => `${d.emoji} ${d.label}`).join(' · ')}
+        </div>
+        <div style={{ fontSize: 11, color: '#a898c8', marginBottom: 14, lineHeight: 1.5 }}>
+          New residents from {dorms.map((d) => d.shortLabel).join(' and ')} hall{dorms.length > 1 ? 's' : ''} can now build trust on your roster.
+        </div>
+        {dorms.map((d) => (
+          <div
+            key={d.id}
+            style={{
+              ...C.infoBox(d.accentSoft || 'rgba(40,20,60,0.3)'),
+              marginBottom: 10,
+              borderLeft: `3px solid ${d.color}`,
+              lineHeight: 1.7,
+              fontSize: 12,
+              color: '#e8e0f0',
+            }}
+          >
+            <div style={{ fontSize: 10, letterSpacing: 2, color: d.color, marginBottom: 4, fontWeight: 700 }}>{d.tagline}</div>
+            <div style={{ fontStyle: 'italic', color: '#c8b8e0' }}>{d.hook}</div>
+          </div>
+        ))}
+        <button style={{ ...C.btn(primary.color), width: '100%', fontWeight: 700 }} onClick={onContinue}>
+          View Roster →
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function TierUpModal({ setStudents, setTierUpModal, tierUpModal }){
   return(
         <div style={C.overlay}>

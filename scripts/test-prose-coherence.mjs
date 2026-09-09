@@ -13,6 +13,7 @@ import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
 import { renderScrutinyTierUp } from '../src/textEngine/scenes/scrutiny/index.js';
+import { renderGroupDinnerReaction } from '../src/textEngine/scenes/dinner/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
@@ -41,6 +42,9 @@ const BANNED = [
   /\bAcademics are listed\b/i,
   /\bacademia pretends\b/i,
   /\bacademic (interest|calm|environment)\b/i,
+  /\bacademically\b/i,
+  /\bfor academia\b/i,
+  /\btracking this academically\b/i,
 ];
 
 function assertClean(text, label) {
@@ -147,4 +151,16 @@ const campusCtx = buildTextContext({ week: 6, globals: { campusTierMin: 0 } });
 const campusLine = render('{campus.travel}', campusCtx)?.trim();
 if (campusLine) assertClean(campusLine, 'campus travel flavor');
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames OK');
+const dinnerKinds = ['thinJealousy', 'fatEncourage', 'fatRetort', 'thinContextual', 'jealousyDefault'];
+const refStudent = INIT_STUDENTS.find((s) => s.archetype === 'cheerleader') || INIT_STUDENTS[0];
+for (const kind of dinnerKinds) {
+  for (const archetype of ['bookworm', 'swimmer', 'influencer', 'foodie']) {
+    const subject = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];
+    for (const level of [0, 1, 2, 3]) {
+      const line = renderGroupDinnerReaction(kind, subject, refStudent, 8, { reactionLevel: level });
+      if (line) assertClean(line, `dinner ${kind} ${archetype} L${level}`);
+    }
+  }
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner OK');

@@ -134,6 +134,9 @@ const BANNED = [
   { id: 'office-academic-integrity', re: /Office of Academic Integrity/i },
   { id: 'academics-listed-second', re: /Academics are listed second/i },
   { id: 'academia-pretends', re: /academia pretends/i },
+  { id: 'academically-adverb', re: /\bacademically\b/i },
+  { id: 'for-academia', re: /\bfor academia\b/i },
+  { id: 'tracking-academically', re: /tracking this academically/i },
 ];
 
 const ALLOW_LINE = [

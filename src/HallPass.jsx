@@ -394,7 +394,7 @@ import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
-import { EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
+import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
 import { C } from './styles.js';
 
@@ -497,6 +497,7 @@ export default function HallPass(){
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
   const [tierUpModal,setTierUpModal]=useState(null);
+  const [dormUnlockModal,setDormUnlockModal]=useState(null);
   // DLC: Social Events
   // DLC: Private Sessions
   const [privateSession,setPrivateSession]=useState(null);
@@ -1545,13 +1546,14 @@ export default function HallPass(){
       if(newly.length){
         effectiveUnlockedDorms=[...effectiveUnlockedDorms,...newly];
         setUnlockedDorms(effectiveUnlockedDorms);
-        newly.forEach((id)=>{
-          const d=getDorm(id);
-          if(d) {
-            push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
-            playHallPassSound('unlock', soundEnabled);
-          }
+        const unlockedHalls=newly.map((id)=>getDorm(id)).filter(Boolean);
+        unlockedHalls.forEach((d)=>{
+          push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
         });
+        if(unlockedHalls.length){
+          playHallPassSound('unlock', soundEnabled);
+          setDormUnlockModal(unlockedHalls);
+        }
       }
     }
     const scrutinyTier=getScrutinyTier(adminScrutiny);
@@ -8767,6 +8769,16 @@ export default function HallPass(){
           />
         );
       })()}
+
+      {/* ── DORM UNLOCK MODAL ── */}
+      {dormUnlockModal&&<DormUnlockModal
+        dorms={dormUnlockModal}
+        onContinue={()=>{
+          playHallPassSound('confirm', soundEnabled);
+          setDormUnlockModal(null);
+          setView('class');
+        }}
+      />}
 
       {/* ── TIER-UP MODAL ── */}
       {tierUpModal&&<TierUpModal setStudents={setStudents} setTierUpModal={setTierUpModal} tierUpModal={tierUpModal}/>}

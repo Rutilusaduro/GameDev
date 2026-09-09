@@ -71,6 +71,13 @@ export async function getDisplayedWeek(page) {
 /** Dismiss hunger interrupt or narrative modals that block the desk. */
 export async function dismissBlockingModals(page) {
   for (let step = 0; step < 48; step += 1) {
+    const dormUnlock = page.getByRole('button', { name: 'View Roster →' });
+    if (await dormUnlock.isVisible().catch(() => false)) {
+      await dormUnlock.click();
+      await page.waitForTimeout(60);
+      continue;
+    }
+
     if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
       const nextBeat = page.getByRole('button', { name: /Tap for next beat/i });
       if (await nextBeat.isVisible().catch(() => false)) {
