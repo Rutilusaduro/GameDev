@@ -7879,7 +7879,7 @@ export default function HallPass(){
             <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:600}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>FLOOR CHECK-IN — WEEK {week}</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:19}}>
-                {isDone?"Session Complete":pendingResult?pendingResult.sceneTitle:current?.scene.title}
+                {isDone?"Check-In Wrapped":pendingResult?pendingResult.sceneTitle:current?.scene.title}
               </h2>
               <div style={{display:"flex",gap:6,margin:"8px 0 14px"}}>
                 {scenes.map((_,i)=>(

@@ -205,7 +205,7 @@
 }
 
 .ra-desk-week-tick[data-week-pulse] {
-  animation: raDeskWeekTick 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: raDeskWeekTick 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .scene-beat-advance {
