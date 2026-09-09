@@ -152,7 +152,7 @@ check('ui-polish-css', () => {
   const styles = read('src/styles.js');
   assert.match(styles, /backdropFilter/i, 'modal overlay must use backdrop blur');
   for (const cls of [
-    'hall-pass-view-in', 'ra-wizard-card', 'hall-pass-modal-in', 'hall-unlock-new', 'ra-desk-header',
+    'hall-pass-view-in', 'ra-wizard-card', 'hall-pass-modal-in', 'hall-unlock-new', 'ra-desk-header', 'hall-pass-nav', 'hall-pass-body',
     'roster-tile-in', 'week-recap-card-in', 'hall-roadmap-card', 'ra-desk-action-btn',
     'ra-desk-week-tick', 'scene-beat-advance', 'scene-choice-btn',
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
@@ -422,6 +422,17 @@ check('niche-modal-polish', () => {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
     assert.match(read(file), new RegExp(cls));
   }
+});
+
+check('desk-nav-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.hall-pass-nav/);
+  assert.match(css, /\.hall-pass-body/);
+  assert.match(css, /\.hall-pass-nav-btn:focus-visible/);
+  assert.match(css, /\.ra-desk-action-btn:focus-visible/);
+  assert.match(desk, /className="hall-pass-nav"/);
+  assert.match(desk, /className="hall-pass-body"/);
 });
 
 check('all-modal-shells-polished', () => {

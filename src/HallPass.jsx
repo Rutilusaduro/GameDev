@@ -8577,7 +8577,7 @@ export default function HallPass(){
           {(()=>{
             const rank=([...RA_RANKS].reverse().find(r=>reachRankProgress>=r.min)||RA_RANKS[0]);
             return(
-              <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:90}}>
+              <div className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:90}}>
                 <span style={{fontSize:13,fontWeight:700,color:"#f0c060",display:"block",letterSpacing:0.5}}>{rank.label}</span>
                 <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>RANK</span>
               </div>
@@ -8587,7 +8587,7 @@ export default function HallPass(){
             const legacy=prestigeSummary(computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats }));
             if(!legacy) return null;
             return(
-              <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:72}} title={`+${legacy.apBonus} AP/wk · +${legacy.breakthroughBonus} breakthroughs on lab sessions`}>
+              <div className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:72}} title={`+${legacy.apBonus} AP/wk · +${legacy.breakthroughBonus} breakthroughs on lab sessions`}>
                 <span style={{fontSize:12,fontWeight:700,color:"#c0a8e8",display:"block"}}>{legacy.score}</span>
                 <span style={{fontSize:8,color:"#60389a",letterSpacing:1}}>LEGACY</span>
               </div>
@@ -8595,7 +8595,7 @@ export default function HallPass(){
           })()}
           {/* Admin scrutiny meter */}
           {adminScrutiny>0&&(
-            <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:70}}>
+            <div className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:70}}>
               <div style={{position:"relative",height:6,background:"rgba(255,255,255,0.08)",borderRadius:3,width:70,margin:"4px 0 2px"}}>
                 <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,width:`${adminScrutiny}%`,background:adminScrutiny>=80?"#c02020":adminScrutiny>=50?"#c08020":"#7a30c8",transition:"width 0.4s"}}/>
               </div>
@@ -8603,7 +8603,7 @@ export default function HallPass(){
             </div>
           )}
           {opposition?.supernatural?.actTriggered&&(
-            <div style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:70}}>
+            <div className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:70}}>
               <div style={{position:"relative",height:6,background:"rgba(255,255,255,0.08)",borderRadius:3,width:70,margin:"4px 0 2px"}}>
                 <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:3,width:`${opposition.supernatural.scarcityPressure||0}%`,background:(opposition.supernatural.scarcityPressure||0)>=80?"#4060a0":(opposition.supernatural.scarcityPressure||0)>=50?"#506888":"#304860",transition:"width 0.4s"}}/>
               </div>
@@ -8638,7 +8638,7 @@ export default function HallPass(){
       </div>
 
       {/* NAV */}
-      <div style={C.nav}>
+      <div className="hall-pass-nav" style={C.nav}>
         {[["roster","📋 Roster"],["hall-lounge","🏠 Hall Lounge"],["influence","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
@@ -8655,7 +8655,7 @@ export default function HallPass(){
         );})}
       </div>
 
-      <div style={C.body}>
+      <div className="hall-pass-body" style={C.body}>
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── ROSTER VIEW ── */}

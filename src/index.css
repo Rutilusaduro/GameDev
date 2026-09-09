@@ -65,8 +65,32 @@
   animation: weekRecapCardIn 0.24s ease-out both;
 }
 
+.hall-pass-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: linear-gradient(180deg, rgba(12, 7, 24, 0.98), rgba(8, 4, 16, 0.94)) !important;
+  border-bottom: 1px solid rgba(80, 30, 140, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
+}
+
+.hall-pass-body {
+  flex: 1;
+  min-height: 0;
+}
+
 .hall-pass-nav-btn {
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.1s ease, box-shadow 0.18s ease;
+}
+
+.hall-pass-nav-btn:focus-visible {
+  outline: 2px solid rgba(200, 150, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.ra-desk-action-btn:focus-visible {
+  outline: 2px solid rgba(120, 220, 140, 0.85);
+  outline-offset: 2px;
 }
 
 .hall-pass-nav-btn[data-active="true"] {
@@ -217,6 +241,7 @@
 
 .ra-desk-stat-pill:hover {
   box-shadow: 0 0 0 1px rgba(160, 80, 240, 0.22);
+  background: rgba(90, 28, 150, 0.38) !important;
 }
 
 @keyframes raDeskWeekTick {
@@ -598,6 +623,8 @@
   .roster-tile,
   .roster-tile-in,
   .week-recap-card-in,
+  .hall-pass-nav,
+  .hall-pass-body,
   .hall-pass-nav-btn,
   .floor-checkin-choice,
   .hall-unlock-new,
