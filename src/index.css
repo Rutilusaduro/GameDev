@@ -109,6 +109,48 @@
   animation: hallUnlockPulse 2s ease-in-out infinite;
 }
 
+.hall-unlock-new:nth-child(2) { animation-delay: 0.15s; }
+.hall-unlock-new:nth-child(3) { animation-delay: 0.3s; }
+.hall-unlock-new:nth-child(4) { animation-delay: 0.45s; }
+
+.hall-unlock-cta,
+.week-recap-cta {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.hall-unlock-cta:hover,
+.week-recap-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.hall-unlock-cta:active,
+.week-recap-cta:active {
+  transform: scale(0.99);
+}
+
+@keyframes hallLogAchievement {
+  0% { color: #f0d080; text-shadow: 0 0 0 rgba(240, 192, 96, 0); }
+  35% { color: #ffe8a8; text-shadow: 0 0 12px rgba(240, 192, 96, 0.45); }
+  100% { color: #c0a888; text-shadow: none; }
+}
+
+@keyframes hallLogUnlock {
+  0% { color: #d8b8ff; }
+  40% { color: #f0e0ff; }
+  100% { color: #c0a888; }
+}
+
+.hall-log-achievement.hall-log-entry {
+  animation: hallLogIn 0.22s ease-out, hallLogAchievement 1.4s ease-out;
+  font-weight: 600;
+}
+
+.hall-log-unlock.hall-log-entry {
+  animation: hallLogIn 0.22s ease-out, hallLogUnlock 1.2s ease-out;
+}
+
 .ra-desk-header {
   transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
@@ -194,7 +236,11 @@
   .ra-desk-stat-pill,
   .ra-desk-week-tick,
   .scene-beat-advance,
-  .scene-choice-btn {
+  .scene-choice-btn,
+  .hall-unlock-cta,
+  .week-recap-cta,
+  .hall-log-achievement,
+  .hall-log-unlock {
     animation: none;
     transition: none;
   }
@@ -205,7 +251,9 @@
   .roster-locked-tile:hover,
   .ra-desk-action-btn:hover:not(:disabled),
   .scene-beat-advance:hover,
-  .scene-choice-btn:hover:not(:disabled) {
+  .scene-choice-btn:hover:not(:disabled),
+  .hall-unlock-cta:hover,
+  .week-recap-cta:hover {
     transform: none;
   }
 }

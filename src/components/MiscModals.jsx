@@ -112,7 +112,12 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
             <div style={{ fontStyle: 'italic', color: '#c8b8e0' }}>{d.hook}</div>
           </div>
         ))}
-        <button style={{ ...C.btn(primary.color), width: '100%', fontWeight: 700 }} onClick={() => { playHallPassSound('click', soundEnabled); onContinue(); }}>
+        <button
+          type="button"
+          className="hall-unlock-cta"
+          style={{ ...C.btn(primary.color), width: '100%', fontWeight: 700 }}
+          onClick={() => { playHallPassSound('click', soundEnabled); onContinue(); }}
+        >
           View Roster →
         </button>
       </div>

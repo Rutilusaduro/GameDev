@@ -8796,7 +8796,12 @@ export default function HallPass(){
                   ? <div style={{fontSize:11,color:"#5a3888",fontStyle:"italic",padding:"6px 2px"}}>
                       {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed someone."}
                     </div>
-                  : shown.map(({e,i})=><div key={i} className={i===log.length-1?'hall-log-entry':undefined} style={C.logE}>{e}</div>)}
+                  : shown.map(({e,i})=>{
+                    const tone=e.startsWith('🏆')?' hall-log-achievement':e.startsWith('🔓')?' hall-log-unlock':'';
+                    const fresh=i===log.length-1?' hall-log-entry':'';
+                    const cls=`${fresh}${tone}`.trim();
+                    return <div key={i} className={cls||undefined} style={C.logE}>{e}</div>;
+                  })}
               </div>
               <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
                 style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>

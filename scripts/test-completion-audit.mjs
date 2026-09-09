@@ -145,6 +145,7 @@ check('ui-polish-css', () => {
     'hall-pass-view-in', 'ra-wizard-card', 'hall-pass-modal-in', 'hall-unlock-new', 'ra-desk-header',
     'roster-tile-in', 'week-recap-card-in', 'hall-roadmap-card', 'ra-desk-action-btn',
     'ra-desk-week-tick', 'scene-beat-advance', 'scene-choice-btn',
+    'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }

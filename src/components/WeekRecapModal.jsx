@@ -90,7 +90,14 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectGirl, soundEnabled 
             <div style={{ fontSize: 12, color: '#706090', fontStyle: 'italic' }}>A quiet week — the campus still breathes.</div>
           )}
         </div>
-        <button type="button" style={{ ...C.btn(), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Begin Week {week}</button>
+        <button
+          type="button"
+          className="week-recap-cta"
+          style={{ ...C.btn(), width: '100%' }}
+          onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}
+        >
+          Begin Week {week}
+        </button>
       </div>
     </div>
   );
