@@ -401,13 +401,24 @@ for (const topic of TALK_TOPICS) {
   }
 }
 
-const evolvedProseForms = ['homeroom_queen', 'campus_legend', 'competitive_gainer', 'food_researcher'];
+const evolvedProseForms = ['homeroom_queen', 'campus_legend', 'competitive_gainer', 'food_researcher', 'psych_researcher'];
 for (const formId of evolvedProseForms) {
   const events = EVOLVED_EVENTS[formId] || [];
   for (const [stageIdx, ev] of events.entries()) {
-    const subject = { ...INIT_STUDENTS[0], evolvedForm: formId, name: 'Maya', lbs: 340, archetype: 'swimmer' };
+    const subjectArchetype = formId === 'psych_researcher' ? 'bookworm' : 'swimmer';
+    const subject = {
+      ...(INIT_STUDENTS.find((s) => s.archetype === subjectArchetype) || INIT_STUDENTS[0]),
+      evolvedForm: formId,
+      name: formId === 'psych_researcher' ? 'Nadia' : 'Maya',
+      lbs: formId === 'psych_researcher' ? 320 : 340,
+      startLbs: formId === 'psych_researcher' ? 200 : 130,
+      archetype: subjectArchetype,
+    };
+    const journalSubject = INIT_STUDENTS.find((s) => s.archetype === 'swimmer') || INIT_STUDENTS[0];
     for (const phase of ev.phases || []) {
-      const raw = typeof phase.text === 'function' ? phase.text([], subject) : phase.text;
+      const raw = typeof phase.text === 'function'
+        ? phase.text([], subject, journalSubject)
+        : phase.text;
       const rendered = renderEvolvedEventProse(raw, subject, 10, { formId, stageIdx, v2DepthChance: 0 });
       if (rendered) assertClean(rendered, `evolved prose ${formId} stage ${stageIdx}`);
       for (const ch of phase.choices || []) {
@@ -453,12 +464,16 @@ const wifeLessonsDiary = renderDiary(
 );
 if (wifeLessonsDiary) assertClean(wifeLessonsDiary, 'wife lessons diary render');
 
-for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'influencer']) {
+for (const archetype of Object.keys(NADIA_SUBJECT_JOURNALS)) {
   for (const intro of NADIA_SUBJECT_JOURNALS[archetype]?.intro || []) {
+    assert(!/\[placeholder/i.test(intro), `Nadia journal ${archetype} intro must not be placeholder`);
     assertClean(intro, `Nadia journal ${archetype} intro`);
   }
-  for (const row of NADIA_SUBJECT_JOURNALS[archetype]?.entries?.[0] || []) {
-    assertClean(row, `Nadia journal ${archetype} entry`);
+  for (const [stageIdx, row] of (NADIA_SUBJECT_JOURNALS[archetype]?.entries || []).entries()) {
+    for (const [nivelIdx, entry] of row.entries()) {
+      assert(!/\[placeholder/i.test(entry), `Nadia journal ${archetype} stage ${stageIdx} nivel ${nivelIdx} must not be placeholder`);
+      assertClean(entry, `Nadia journal ${archetype} stage ${stageIdx} nivel ${nivelIdx}`);
+    }
   }
 }
 
