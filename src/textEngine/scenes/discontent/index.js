@@ -28,7 +28,7 @@ registerModuleVariants('roster.tell', [
   // A content resident with an empty seat in the room — no priority, so it just
   // joins the base pool and surfaces now and then (her own grievance, if she
   // has one, still priority-gates this out).
-  { when: { classmateWithdrawn: true }, weight: 3, text: [
+  { when: { residentWithdrawn: true }, weight: 3, text: [
     `glancing now and then at the bunk a resident left empty`,
     `quieter than usual since one of them walked out on you`,
   ]},

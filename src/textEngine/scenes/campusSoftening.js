@@ -1,14 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: CAMPUS SOFTENING — prose when pharmacist campus effect is active
-// Appends to diary, attitude, talk, weigh-in when general students /
-// classmates / campus population are in play but not yet acknowledged.
+// Appends to diary, attitude, talk, weigh-in when general residents /
+// campus population are in play but not yet acknowledged.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
 
 /** Skip append when prose already acknowledges campus-wide or group gain. */
 export function proseAlreadyCampusAware(text) {
   if (!text) return true;
-  return /\b(campus feels softer|everyone else|class is full of subjects|they leave round|classmates are eating|getting fat alongside|all eating, all happy|seven of them in that corner|campus-wide|everyone softer|whole campus|residents she(?:'s| has) never met|prospective residents|part of the fabric|campus made me|accidentally converted|leave round|everyone participates|whole squad ends up|hope everyone on that squad|classmates eating|everyone i've ever cared about|everyone gains|everyone looked softer|not just (?:me|us)|campus is the variable|cooperating)\b/i.test(text);
+  return /\b(campus feels softer|everyone else|residents are eating|they leave round|getting fat alongside|all eating, all happy|seven of them in that corner|campus-wide|everyone softer|whole campus|residents she(?:'s| has) never met|prospective residents|part of the fabric|campus made me|accidentally converted|leave round|everyone participates|whole squad ends up|hope everyone on that squad|residents eating|everyone i've ever cared about|everyone gains|everyone looked softer|not just (?:me|us)|campus is the variable|cooperating)\b/i.test(text);
 }
 
 function campusCtx(student, opts = {}) {
@@ -69,7 +69,7 @@ registerPool("diary.campus", [
     text: [
       "The moms were round before my trays. Now the whole pickup line looks padded. Campus agrees with Tuesdays.",
       "Kayla's mom mentioned the new wellness smoothies. I pretended innocence. Poorly.",
-      "Even teachers in the hall look well-fed lately. My baking didn't do all of it. Most of it, though.",
+      "Even staff in the hall look well-fed lately. My baking didn't do all of it. Most of it, though.",
     ] },
   { when: { campusFattening: true, archetype: "culinary" }, priority: 2,
     text: [
@@ -92,7 +92,7 @@ registerPool("diary.campus", [
   { when: { campusFattening: true, archetype: "farm_girl" }, priority: 2,
     text: [
       "Campus portions were already generous. Now the people eating them look as fed as the food deserves.",
-      "Girls on my floor have that same post-table warmth I recognize from home.",
+      "Residents on my floor have that same post-table warmth I recognize from home.",
       "Delivery left three boxes at the wrong door. They were gone in an hour. Whole building's hungry.",
     ] },
   { when: { campusFattening: true, archetype: "pharmacy_grad" }, priority: 2,

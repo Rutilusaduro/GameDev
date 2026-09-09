@@ -357,6 +357,11 @@ const BANNED = [
   /\bCurriculum optional\b/i,
   /\bcookies, curriculum\b/i,
   /\bSpirit fingers without flesh\b/,
+  /\bGirls on my floor\b/i,
+  /\bEven teachers in the hall\b/i,
+  /\bclassmates are eating\b/i,
+  /\bclassmates eating\b/i,
+  /\bclass is full of subjects\b/i,
 ];
 
 function assertClean(text, label) {

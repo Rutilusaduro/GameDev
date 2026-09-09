@@ -662,7 +662,7 @@ check('dev-comment-resident-framing', () => {
   assert.match(ecology, /neglected residents surface/);
   const hallPass = read('src/HallPass.jsx');
   assert.match(hallPass, /Hall cred meter/);
-  assert.match(hallPass, /HALL KITCHEN MINI-INTERFACE/);
+  assert.match(hallPass, /HALL KITCHEN QUEEN MINI-INTERFACE/);
   assert.doesNotMatch(hallPass, /Spirit Favor meter|CLASSROOM MINI-INTERFACE/i);
   const lounge = read('src/views/HallLoungeView.jsx');
   assert.match(lounge, /HallLoungeSkillsPanel/);
@@ -903,6 +903,19 @@ check('homeroom-resident-framing', () => {
   const modal = read('src/components/HomeroomQueenModal.jsx');
   assert.match(modal, /FLOOR RESIDENTS · tap to conference/);
   assert.doesNotMatch(modal, /STUDENTS · tap to conference/i);
+});
+
+check('campus-softening-resident-framing', () => {
+  const campus = read('src/textEngine/scenes/campusSoftening.js');
+  assert.match(campus, /Residents on my floor have that same post-table warmth/);
+  assert.match(campus, /Even staff in the hall look well-fed/);
+  assert.doesNotMatch(campus, /Girls on my floor|Even teachers in the hall|classmates are eating|class is full of subjects/i);
+  const roster = read('src/views/RosterView.jsx');
+  assert.match(roster, /residentWithdrawn/);
+  assert.doesNotMatch(roster, /classmateWithdrawn/i);
+  const discontent = read('src/textEngine/scenes/discontent/index.js');
+  assert.match(discontent, /residentWithdrawn: true/);
+  assert.doesNotMatch(discontent, /classmateWithdrawn/i);
 });
 
 check('hall-kitchen-curriculum-framing', () => {

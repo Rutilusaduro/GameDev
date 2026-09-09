@@ -2946,7 +2946,7 @@ export default function HallPass(){
     push(`✦ ${live.name} — ${ability.name}: ${abilityLine||ability.desc}`);
   };
 
-  // ── HOMEROOM QUEEN handlers ───────────────────────────────────────
+  // ── HALL KITCHEN QUEEN handlers ───────────────────────────────────
   const openHomeroomConference=(studentKey)=>{
     if(!homeroomSessionState||homeroomSessionState.ap<1||homeroomSessionState.activeActivity) return;
     const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
@@ -9019,7 +9019,7 @@ export default function HallPass(){
       {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))} soundEnabled={soundEnabled}/>}
       {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing} soundEnabled={soundEnabled}/>}
 
-      {/* ── HOMEROOM QUEEN: HALL KITCHEN MINI-INTERFACE ── */}
+      {/* ── HALL KITCHEN QUEEN MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession} soundEnabled={soundEnabled}/>}
 
       {/* ── WIFE LESSONS MINI-GAME ── */}

@@ -3640,7 +3640,7 @@ export const EVOLUTION_OFFER = {
   },
 };
 
-// ── HOMEROOM QUEEN: NPC stage descriptions ──────────────────────────────────
+// ── HALL KITCHEN QUEEN: NPC stage descriptions ───────────────────────────────
 // Students have 3 stages (0=start, 1=noticeably softer, 2=genuinely fat)
 // Moms have 5 stages (0=start, 1=softening, 2=clearly changed, 3=properly fat, 4=can't dress around it)
 export const BATCH_BAKER_NPCS = {
@@ -3694,7 +3694,7 @@ export const HOMEROOM_THRESHOLDS = {
   mom:[30,70,130],    // Stage 2 needs ≥30, Stage 4 needs ≥70, Stage 5 needs ≥130
 };
 
-// ── HOMEROOM QUEEN: Individual Conference Events ─────────────────────────────
+// ── HALL KITCHEN QUEEN: Individual Conference Events ───────────────────────
 export const HOMEROOM_CONFERENCE_EVENTS = {
   Kayla:{
     text:`Kayla comes in and sits across from the desk with the settled ease of someone who's been in this room enough times that it doesn't feel official anymore. She doesn't look nervous. She looks like she's waiting for something.
@@ -3774,7 +3774,7 @@ export const HOMEROOM_CONFERENCE_EVENTS = {
   },
 };
 
-// ── HOMEROOM QUEEN: Group Activity Events ────────────────────────────────────
+// ── HALL KITCHEN QUEEN: Group Activity Events ────────────────────────────────
 export const HOMEROOM_GROUP_ACTIVITIES = {
   parent_meeting:{
     label:"Parent Group Meeting",

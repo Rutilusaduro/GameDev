@@ -207,7 +207,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                   </div>
                 </div>
               </div>
-              {/* Students */}
+              {/* Floor residents */}
               <div style={{fontSize:9,letterSpacing:3,color:warmDim,marginBottom:10}}>FLOOR RESIDENTS · tap to conference</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:16}}>
                 {STUDENT_KEYS.map(name=>(

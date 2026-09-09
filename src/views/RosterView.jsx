@@ -23,7 +23,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
 // changes, so it doesn't flicker on every parent re-render.
-function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnabled = true, tileIndex = 0 }) {
+function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled = true, tileIndex = 0 }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
   const ascForm = getAscensionFormForStudent(s);
@@ -45,9 +45,9 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnable
           if (m) return m;
         }
       }
-      return renderRosterTell(s, week, { globals: { discontentTier: discTier, classmateWithdrawn: !!classmateWithdrawn } });
+      return renderRosterTell(s, week, { globals: { discontentTier: discTier, residentWithdrawn: !!residentWithdrawn } });
     },
-    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, classmateWithdrawn, (s.memories || []).length, week],
+    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, residentWithdrawn, (s.memories || []).length, week],
   );
   return (
     <div
@@ -186,7 +186,7 @@ export function RosterView({
   const openCount = countOpenPoolStudents(students);
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
-  const classmateWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
+  const residentWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
   const locked = students.filter(isLocked).sort((a, b) => (b.passiveTrust || 0) - (a.passiveTrust || 0));
   const openHallSet = new Set([...(unlockedDorms || []), startDormId].filter(Boolean));
   const hallReachable = (s) => {
@@ -201,7 +201,7 @@ export function RosterView({
           <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s, tileIndex) => (
-              <RosterTile key={s.id} s={s} week={week} tileIndex={tileIndex} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
+              <RosterTile key={s.id} s={s} week={week} tileIndex={tileIndex} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} residentWithdrawn={residentWithdrawn && !s.withdrawn} />
             ))}
           </div>
           {locked.length > 0 && (
