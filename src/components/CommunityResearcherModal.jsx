@@ -69,7 +69,11 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
                 const avail=isCRPairAvailable(pair);
                 const used=crs.pairsUsed.includes(pair.id);
                 return(
-                  <div key={pair.id}
+                  <button
+                    key={pair.id}
+                    type="button"
+                    className="community-researcher-card"
+                    disabled={!avail}
                     onClick={()=>{if(avail&&cassidy)selectCasePair(cassidy,pair.id);}}
                     style={{padding:"10px 12px",borderRadius:8,border:`1px solid ${avail?"#4a6fa570":"#2030404a"}`,
                       background:avail?"rgba(10,20,50,0.6)":"rgba(5,8,18,0.4)",
@@ -82,7 +86,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
                     <div style={{fontSize:9,color:"#405875",marginTop:2}}>{pair.subtitle}</div>
                     {used&&<div style={{fontSize:8,color:"#3a5060",marginTop:2}}>✓ studied</div>}
                     {!avail&&!used&&<div style={{fontSize:8,color:"#304050",marginTop:2}}>🔒 locked</div>}
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -157,7 +161,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {(phase?.choices||[]).map(ch=>(
-                <button key={ch.id} style={{...C.btn("#0e1a30"),textAlign:"left",fontSize:11,padding:"10px 14px",border:`1px solid ${blue}50`}}
+                <button key={ch.id} type="button" className="community-researcher-choice" style={{...C.btn("#0e1a30"),textAlign:"left",fontSize:11,padding:"10px 14px",border:`1px solid ${blue}50`}}
                   onClick={()=>{ playHallPassSound('click', soundEnabled); makeHaveAChatChoice(ch.id); }}>
                   {ch.label}
                 </button>

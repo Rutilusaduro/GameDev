@@ -401,6 +401,26 @@ check('lane-modal-polish', () => {
   }
 });
 
+check('community-researcher-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/CommunityResearcherModal.jsx');
+  assert.match(css, /\.community-researcher-card:focus-visible/);
+  assert.match(css, /\.community-researcher-card:hover:not\(:disabled\)/);
+  assert.match(css, /\.community-researcher-choice:focus-visible/);
+  assert.match(modal, /community-researcher-card/);
+  assert.match(modal, /community-researcher-choice/);
+  assert.match(modal, /type="button"/);
+});
+
+check('cultivator-row-polish', () => {
+  const css = read('src/index.css');
+  const modal = read('src/components/CultivatorModal.jsx');
+  assert.match(css, /\.cultivator-choice-row:focus-visible/);
+  assert.match(css, /\.cultivator-choice-row:hover/);
+  assert.match(modal, /cultivator-choice-row/);
+  assert.match(modal, /type="button"/);
+});
+
 check('minigame-modal-polish', () => {
   const css = read('src/index.css');
   for (const [cls, file] of [
