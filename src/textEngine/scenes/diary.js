@@ -253,7 +253,7 @@ registerPool('diary.body_positive_creator.c1', [
   { when: { stage: [7], corruption: [0] }, text: ['TEDx stage. Twelve minutes. I wrote and rewrote the talk for three months. When I gave it I felt afraid for exactly the first sentence and then I stopped feeling afraid.'] },
   { when: { stage: [7] }, text: ['Twelve minutes on a TEDx stage. I wrote and rewrote the talk for three months. I delivered it in twelve minutes and it felt like it lasted thirty seconds.'] },
   { when: { stage: [8] }, text: ['My face on a billboard. On a highway I drive regularly. I saw it and had to pull over and sit with it for a moment. Then I drove home and ate a full meal and cried again.'] },
-  { when: { stage: [9] }, text: ['Cultural touchstone. Journalists use that phrase in profile pieces. Students cite me in thesis papers. I get speaking requests from places I\'ve never been.'] },
+  { when: { stage: [9] }, text: ['Cultural touchstone. Journalists use that phrase in profile pieces. Students cite me in season plan papers. I get speaking requests from places I\'ve never been.'] },
   { when: { stage: [10], corruption: [0] }, text: ['The platform is legacy. The body is the argument. I didn\'t know, when I started, that I was building a legacy. I knew I was tired of being small and quiet. I built outward from that and got here.'] },
   { when: { stage: [10] }, text: ['The platform is legacy. The body is the argument.'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The numbers are still good. They\'ll always be good. But numbers were the old thing.'] },
@@ -508,7 +508,7 @@ registerPool('diary.food_researcher.c2', [
   { when: { stageMin: 6, archetype: "athlete" }, text: ['The IRB wouldn\'t let me interview her.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['I noted it as a finding.'] },
   { when: {}, text: [
-    "Hypothesis: more. Method: eat. Results: promising.",
+    "Hyposeason plan: more. Method: eat. Results: promising.",
     "Lab notes and snack notes blur together.",
     "Data delicious. Sample size: me.",
   ]},
@@ -518,7 +518,7 @@ registerPool('diary.food_researcher.c2', [
 registerPool('diary.food_researcher.c3', [
 { when: { stage: [6] }, text: ['Possibly both.'] },
   { when: {}, text: [
-    "Hypothesis: more. Method: eat. Results: promising.",
+    "Hyposeason plan: more. Method: eat. Results: promising.",
     "Lab notes and snack notes blur together.",
     "Data delicious. Sample size: me.",
   ]},
@@ -1161,7 +1161,7 @@ registerPool('diary.ff_author.c2', [
 { when: { stage: [5], corruption: [0] }, text: ['I posted the first chapter and forty-three strangers commented by morning. I sat with that for a while. They understood what I was writing. I\'m not sure I understood it as well as they did.'] },
   { when: { stage: [5], corruption: [0] }, text: ['I went back and read the chapter again and thought: maybe they\'re right. I ate a full breakfast before I started chapter two.'] },
   { when: { stage: [5] }, text: ['She\'s a literature student who gains weight over the course of the story — slowly, without apology — and the people around her find it beautiful and bring her food and want her to keep growing.'] },
-  { when: { stage: [6] }, text: ['One commenter left a two-paragraph analysis of the chapter where the cheerleader\'s uniform finally splits that was more precise than anything my thesis committee has ever said about my actual aca'] },
+  { when: { stage: [6] }, text: ['One commenter left a two-paragraph analysis of the chapter where the cheerleader\'s uniform finally splits that was more precise than anything my season plan committee has ever said about my actual aca'] },
   { when: { stage: [7] }, text: ['I consider this a generous tribute.'] },
   { when: { stage: [8] }, text: ['The love that surrounds it is the point — the way the characters grow into themselves and are seen clearly and wanted for exactly what they are.'] },
   { when: { stage: [9] }, text: ['The fandom writes their own versions of the story, and some of those versions are about me — the anonymous author, imagined as the main character, large and cared for and fed. They\'re not wrong.'] },

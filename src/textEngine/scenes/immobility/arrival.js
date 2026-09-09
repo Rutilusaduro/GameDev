@@ -98,7 +98,7 @@ registerPool('immob.arrival.devotion', [
   ]},
   { when: { studentId: 12, stageMin: 10 }, weight: 4, text: [
     `Nadia watches you arrange the tray within reach. "Good," she says. "The experiment continues. I am the result."`,
-    `She tracks your hands as you tend her. "Hypothesis confirmed," she murmurs. "I like being kept."`,
+    `She tracks your hands as you tend her. "Hyposeason plan confirmed," she murmurs. "I like being kept."`,
     `"Control variable: you," she says. "Outcome: excellent."`,
   ]},
   { when: { studentId: 5, stageMin: 10 }, weight: 4, text: [

@@ -46,7 +46,7 @@ export const AIB_COUNTERS = [
   { id: 'feast_bribe', label: 'Feast Bribe', ap: 3, resolveHit: 5, scrutiny: -8, desc: 'Pause AIB actions one week with a lavish feast.' },
   { id: 'public_discredit', label: 'Public Discredit', ap: 2, resolveHit: 10, scrutiny: -10, desc: 'Remove one agenda card type from the deck permanently.' },
   { id: 'bureaucratic_capture', label: 'Bureaucratic Capture', ap: 2, resolveHit: 15, scrutiny: -5, desc: 'Convert a wavering member (resolve ≤ 40) to compromised.' },
-  { id: 'spirit_pressure', label: 'Spirit Pressure', ap: 1, resolveHit: 8, scrutiny: -3, desc: 'Force the top agenda card to misfire harmlessly.' },
+  { id: 'spirit_pressure', label: 'Floor Pressure', ap: 1, resolveHit: 8, scrutiny: -3, desc: 'Force the top agenda card to misfire harmlessly.' },
   { id: 'evolved_student_op', label: 'Evolved Student Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved student delays the top agenda card one week.' },
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
   { id: 'faculty_testimony', label: 'Faculty Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Faculty ally cancels informant effects for two weeks.' },
@@ -434,8 +434,8 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     next.aib.agendaQueue = next.aib.agendaQueue.slice(1);
     const misfireMsg = counterSuccessLine(counterId)
       || (misfired?.cardId === 'removal_hearing'
-        ? '👁 Spirit pressure — removal hearing misfires into mandatory tasting.'
-        : '👁 Spirit pressure — agenda misfires into mandatory tasting.');
+        ? '👁 Floor pressure — removal hearing misfires into mandatory tasting.'
+        : '👁 Floor pressure — agenda misfires into mandatory tasting.');
     return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: misfireMsg, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'evolved_student_op' && next.aib.agendaQueue.length) {

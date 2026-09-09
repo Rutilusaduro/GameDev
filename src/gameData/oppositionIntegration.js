@@ -9,7 +9,7 @@ const EVOLVED_OP_MESSAGES = {
   delivery_hive: '✦ Hive intake delays the agenda — drones reroute compliance paperwork.',
   eating_streamer: '✦ Stream distraction floods the Board feed with indulgent clips.',
   chapter_hostess: '✦ Chapter Hostess feast invitation muddies the wellness narrative.',
-  community_researcher: '✦ Cassidy\'s thesis data reframes the agenda as aesthetic research.',
+  community_researcher: '✦ Cassidy\'s season plan data reframes the agenda as aesthetic research.',
   competitive_gainer: '✦ Competitive metrics make the Board look petty by comparison.',
   pharmacist: '✦ Compound haze softens the room — agenda stalls one week.',
   artisan_gallery: '✦ Gallery opening steals the cultural spotlight.',

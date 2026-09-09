@@ -980,7 +980,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                       {(ownedSkills?.spirit_ride||0)>=1&&(
                         <button type="button" style={{...C.btn('#6a30a0'),flex:'1 1 140px',fontSize:11}}
                           onClick={()=>openEmbodiment?.(s)}>
-                          🌒 Inhabit Body
+                          🌒 Ride Along
                         </button>
                       )}
                       {(ownedSkills?.dream_walk||0)>=1&&(s.corruption||0)>=40&&getStage(s.lbs).id>=2&&(()=>{
@@ -1025,7 +1025,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     💬 Talk with {s.name} ({TALK_CONFIG.apCost} AP)
                   </button>
                   <div style={{fontSize:10,color:"#6a4a88",marginTop:6,lineHeight:1.5}}>
-                    Office-hours conversation — relationship, corruption, and topics unlocked by Spirit skills.
+                    Hall check-in — relationship, corruption, and topics unlocked by Influence skills.
                   </div>
                 </div>
 

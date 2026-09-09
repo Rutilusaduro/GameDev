@@ -31,7 +31,7 @@ registerModuleVariants('eat.firstBite', [
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'The first bite settles the argument faster than any spreadsheet.',
     'She calls it a field test. Her fork does not wait for peer review.',
-    'Hypothesis: one bite. Result: insufficient. She iterates.',
+    'Hyposeason plan: one bite. Result: insufficient. She iterates.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [
     'She eats like the prototype finally passed inspection.',
@@ -66,7 +66,7 @@ registerModuleVariants('eat.finish', [
   ]},
   { when: { ...CUSTOM, corruption: [1] }, priority: P, weight: W, text: [
     'She sets the fork down and updates the model. "Recommend repeat trial."',
-    'Plate empty. Belly fuller. Hypothesis supported.',
+    'Plate empty. Belly fuller. Hyposeason plan supported.',
     'Intake complete. She is already planning seconds.',
   ]},
   { when: { ...CUSTOM, corruption: [2] }, priority: P, weight: W, text: [

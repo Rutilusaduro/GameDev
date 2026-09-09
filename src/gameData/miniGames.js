@@ -701,7 +701,7 @@ The debut collab. You wanted to start the way you meant to continue. You started
 ];
 
 // ══════════════════════════════════════════════════════════════════
-// RECORDING SESSION — Activity 2 for feedee_creator (Devoted tier, professor POV)
+// RECORDING SESSION — Activity 2 for feedee_creator (Devoted tier, RA POV)
 // ══════════════════════════════════════════════════════════════════
 
 // Perfect take combos per stageIdx: [angle, food, pace]

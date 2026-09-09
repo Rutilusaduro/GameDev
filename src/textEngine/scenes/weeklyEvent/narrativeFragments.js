@@ -121,13 +121,13 @@ registerPool('weekly.viral_post', [
   { when: {}, text: ['{weekly.viralPost.hook} {weekly.viralPost.reaction} {weekly.viralPost.line}'] },
 ]);
 
-// ── thesis rewrite ────────────────────────────────────────────
+// ── season plan rewrite ────────────────────────────────────────────
 
 registerPool('weekly.thesisRewrite.submit', [
   { when: { archetype: 'bookworm' }, text: [
-    '{subject.name} submits a revised thesis outline.',
+    '{subject.name} submits a revised season plan outline.',
     '{subject.name} slides a new outline across your desk.',
-    'A revised thesis outline arrives from {subject.name}.',
+    'A revised season plan outline arrives from {subject.name}.',
   ] },
   { when: {}, text: [
     '{subject.name} submits a revised academic outline.',
@@ -144,7 +144,7 @@ registerPool('weekly.thesisRewrite.title', [
   ] },
   { when: {}, text: [
     'The title is rigorous on paper.',
-    'The abstract sounds scholarly.',
+    'The abstract sounds athletic.',
     'The framing is academic and deliberate.',
     'On paper it reads like legitimate research.',
   ] },
@@ -301,7 +301,7 @@ registerPool('weekly.artExhibition.line', [
     'She does not pretend otherwise.',
     'She eats at her own opening without irony.',
     'She stands in the work and beside it.',
-    'She looks like the thesis made flesh.',
+    'She looks like the season plan made flesh.',
   ] },
 ]);
 
@@ -315,7 +315,7 @@ registerPool('weekly.quietOpen.setup', [
   { when: { archetype: 'quiet' }, text: [
     'After class, {subject.name} catches you packing up.',
     '{subject.name} waits until the room empties.',
-    'She lingers after class while you stack papers.',
+    'She lingers after floor check-in while you stack papers.',
   ] },
   { when: {}, text: [
     'After class, {subject.name} stays.',
@@ -359,11 +359,11 @@ registerPool('weekly.quiet_opens_up', [
 
 registerPool('weekly.overachieverPivot.submit', [
   { when: { archetype: 'overachiever' }, text: [
-    '{subject.name} submits a revised thesis proposal: \'Adaptive Caloric Strategy and Cognitive Performance: A Self-Study.\'',
+    '{subject.name} submits a revised season plan proposal: \'Adaptive Caloric Strategy and Cognitive Performance: A Self-Study.\'',
     '{subject.name} sends a revised proposal with a very deliberate title.',
   ] },
   { when: {}, text: [
-    '{subject.name} reframes her thesis around eating.',
+    '{subject.name} reframes her season plan around eating.',
     'A new proposal arrives with suspiciously convenient framing.',
     'She submits a revised academic plan.',
     'Her outline now centers appetite with footnotes.',

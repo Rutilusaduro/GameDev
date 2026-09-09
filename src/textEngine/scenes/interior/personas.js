@@ -19,12 +19,12 @@ registerModuleVariants('interior.selfObs', [
     'Trophy case: expanding. She approves.',
   ]},
   { when: { studentId: 1, corruption: [0], stageMax: 4 }, weight: W, text: [
-    'Madeline notes the rounding in the margin of her notebook. No conclusion yet.',
+    'Cassidy notes the rounding in the margin of her notebook. No conclusion yet.',
     'The trend line bends upward. She keeps watching.',
     'Standard deviation: widening. She does not panic.',
   ]},
   { when: { studentId: 1, corruption: [2], stageMin: 6 }, weight: W, text: [
-    'She observes her own vastness with scholarly delight. Field notes: excellent.',
+    'She observes her own vastness with athletic delight. Field notes: excellent.',
     'The subject and the researcher merged weeks ago.',
     'Citation needed: her hips. She provides evidence.',
   ]},
@@ -133,7 +133,7 @@ registerModuleVariants('interior.sizeRealize', [
   ]},
   { when: { studentId: 9, stageMin: 7 }, weight: W, text: [
     'Chloé turns in a doorway and learns a new French word for how wide she has become. She smiles.',
-    'Architecture was her major. Her body is the thesis now.',
+    'Architecture was her major. Her body is the season plan now.',
     'The doorframe is coursework. She passes with honors.',
   ]},
   { when: { studentId: 11, stageMin: 6, corruption: [1] }, weight: W, text: [

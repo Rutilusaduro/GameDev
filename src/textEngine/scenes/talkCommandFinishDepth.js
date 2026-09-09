@@ -161,7 +161,7 @@ registerModuleVariants('talk.command_finish.t0v0._f5', [
 ]);
 
 registerModuleVariants('talk.command_finish.t1v0._f3', [
-  { when: { studentId: 1 }, weight: 4, text: [`Madeline folds her hands on her full middle. "Data set complete," she says. "Awaiting next instruction."`] },
+  { when: { studentId: 1 }, weight: 4, text: [`Cassidy folds her hands on her full middle. "Data set complete," she says. "Awaiting next instruction."`] },
   { when: { studentId: 3 }, weight: 4, text: [`Serena sits back, distended and warm. "New max," she says. "Again tomorrow."`] },
   { when: { studentId: 11 }, weight: 4, text: [`Kaylee exhales, content. "Thank you for feeding me," she murmurs. "Tell me when to start again."`] },
 ]);

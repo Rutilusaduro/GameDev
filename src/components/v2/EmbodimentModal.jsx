@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// EMBODIMENT MODAL — spirit possession + embodied campus pilot
+// EMBODIMENT MODAL — resident ride + embodied campus pilot
 // ═══════════════════════════════════════════════════════════════
 import { useMemo, useState } from 'react';
 import { C } from '../../styles.js';
@@ -123,7 +123,7 @@ export function EmbodimentModal({
             <p style={{ fontSize: 11, color: '#9080a8', margin: '4px 0 0' }}>
               {active
                 ? `Riding ${student.name} — ${node.emoji} ${node.label}`
-                : `Inhabit ${student.name} and walk the campus from inside her skin`}
+                : `Ride along with ${student.name} and walk the campus from inside her skin`}
             </p>
             {active && (
               <p style={{ fontSize: 9, color: '#708878', margin: '6px 0 0' }}>
@@ -197,7 +197,7 @@ export function EmbodimentModal({
             )}
 
             <button type="button" style={{ ...C.btn('#283848'), width: '100%' }} onClick={handleRelease}>
-              Release — Return to Professor
+              Release — Return to RA Desk
             </button>
           </>
         )}

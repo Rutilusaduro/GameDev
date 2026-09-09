@@ -17,12 +17,12 @@ registerModuleVariants('shift.interior', [
     'Captain of a new league: heavier, happier, still in charge.',
   ]},
   { when: { studentId: 1, corruption: [1] }, weight: W, text: [
-    'Madeline files the warmth under new taxonomy. The old categories no longer fit.',
+    'Cassidy files the warmth under new taxonomy. The old categories no longer fit.',
     'The dataset includes feelings she did not predict. She keeps collecting.',
     'Correlation with pleasure: statistically significant. She accepts the p-value.',
   ]},
   { when: { studentId: 1, corruption: [2] }, weight: W, text: [
-    'Hypothesis upgraded to conclusion. She is the result she meant to study.',
+    'Hyposeason plan upgraded to conclusion. She is the result she meant to study.',
     'The interior is quiet — the quiet of a lab after a successful run.',
     'Peer review would be jealous. She publishes nothing. She eats.',
   ]},
@@ -180,7 +180,7 @@ registerModuleVariants('shift.physical', [
     'The uniform strains. She wears the strain like a medal.',
   ]},
   { when: { studentId: 1, corruption: [1] }, weight: W, text: [
-    'Madeline breathes around fullness without apologizing to the data.',
+    'Cassidy breathes around fullness without apologizing to the data.',
     'Her middle softens against the desk. She leans in.',
     'The chair creaks. She notes the creak. She stays seated.',
   ]},
@@ -283,7 +283,7 @@ registerModuleVariants('shift.coda', [
     'Team morale: high. Waistline: higher. She calls it winning.',
   ]},
   { when: { studentId: 1, corruption: [1] }, weight: W, text: [
-    'Madeline closes the notebook on shame. Opens it on appetite.',
+    'Cassidy closes the notebook on shame. Opens it on appetite.',
     'Continuing study. Subject: satisfied.',
     'Next chapter: replication with larger sample — herself.',
   ]},

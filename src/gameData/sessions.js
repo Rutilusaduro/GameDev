@@ -8,7 +8,7 @@ export const GROUP_CONVERSATIONS=[
   { id:"order_for_table", label:"Order another round", relBonus:3, fullnessEffect:8 },
 ];
 
-// PROFESSOR CHARACTER CREATION
+// RA CHARACTER CREATION (legacy exports — unused by Hall Pass setup)
 // ═══════════════════════════════════════════════════════════════
 
 export const PROF_SUBJECTS=[
@@ -45,7 +45,7 @@ export const getTier=(rel)=>[...INNER_CIRCLE_TIERS].reverse().find(t=>rel>=t.rel
 
 export const TIER_SCENES={
   cheerleader:[
-    s=>`${s.name} stops you after class — not with a question, just to talk. "You're different from other professors," she says. She doesn't elaborate, but she smiles when she leaves. You notice she's started sitting closer to the front.`,
+    s=>`${s.name} stops you after floor check-in — not with a question, just to talk. "You're different from other RAs," she says. She doesn't elaborate, but she smiles when she leaves. You notice she's started sitting closer to the front.`,
     s=>`She's waiting outside your office when you arrive. Not for anything specific. "I just wanted to talk," she says, already making herself comfortable in the chair across from you. She stays for forty minutes and eats the snacks you have out without asking.`,
     s=>`"I don't really think about it anymore," ${s.name} says one afternoon, smoothing her hands over her enormous thighs with quiet familiarity. "I just know that whatever you suggest is usually right." She leans forward, full of trust. "So what do you suggest?"`,
   ],
@@ -54,13 +54,18 @@ export const TIER_SCENES={
     s=>`She brings you coffee without asking. Black, the way you take it. You don't remember telling her that. She just knows, the way she knows most things — by watching carefully and making notes.`,
     s=>`${s.name} closes her laptop when you walk in — both of them. "I've been thinking," she says, "that I trust your judgment more than my own on certain things." She says it matter-of-factly, like a research finding. "I wanted you to know that."`,
   ],
+  swimmer:[
+    s=>`${s.name} leaves her training log on your desk — splits, meal timing, notes in the margin about "off day hunger." You start writing back.`,
+    s=>`She brings you a protein shake without asking. The flavor you mentioned once in passing. She tracks everything, including what you like.`,
+    s=>`${s.name} towels off after morning laps and finds you in the hall. "I trust your read on this more than mine," she says, like it's a race strategy. "Tell me what to do with the appetite."`,
+  ],
   influencer:[
-    s=>`${s.name} mentions you in a post — vague, complimentary. "My professor says" something kind. The comments say "you love her." She messages you the link privately: "Thought you'd like that."`,
+    s=>`${s.name} mentions you in a post — vague, complimentary. "My RA says" something kind. The comments say "you love her." She messages you the link privately: "Thought you'd like that."`,
     s=>`She stops filtering her posts when you're around. "You're one of the only people I can just be with," she says. For her, being unguarded is the intimacy. She doesn't reach for her phone the entire afternoon.`,
     s=>`${s.name} turns down a sponsored deal. "Not aligned," she says. The product was about restriction and she isn't doing that anymore. "You've made me different," she says. "Better, I think."`,
   ],
   athlete:[
-    s=>`${s.name} asks if you want to eat together after class — just lunch, nothing formal. She piles the tray high without noticing. "I just figured you'd be heading to eat anyway," she says.`,
+    s=>`${s.name} asks if you want to eat together after floor check-in — just lunch, nothing formal. She piles the tray high without noticing. "I just figured you'd be heading to eat anyway," she says.`,
     s=>`She calls you just to talk. She does that now. The call goes long. She eats her protein bar and a second one. "You're the only one who gets it," she says eventually.`,
     s=>`${s.name} comes to you first now — for everything. "You're the only one who gets it," she says, dropping her bag and settling into the couch. She takes up a lot of it now. Neither of you mentions it. It's simply how things are.`,
   ],
@@ -81,7 +86,7 @@ export const TIER_SCENES={
   ],
   overachiever:[
     s=>`${s.name} asks for your opinion on something academic — not competitively but genuinely. She takes notes. "You think differently than I expected," she says. It might be the most honest compliment she gives anyone.`,
-    s=>`She revises her thesis around feedback you gave her in passing. Not for a grade. "I just needed it to be right," she says. She hands you thirty pages. She'd clearly spent a weekend on it. "I trust your judgment."`,
+    s=>`She revises her season plan around feedback you gave her in passing. Not for a grade. "I just needed it to be right," she says. She hands you thirty pages. She'd clearly spent a weekend on it. "I trust your judgment."`,
     s=>`${s.name} drops one of her majors. "Three was too many," she says — which everyone has been telling her for two years. "You made me see that." She looks lighter, even though she's heavier. "I want to do fewer things properly."`,
   ],
   quiet:[

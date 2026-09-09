@@ -178,7 +178,7 @@ registerModuleVariants('session.fullness.cheerleader.f5._f1', [
 
 registerModuleVariants('session.fullness.bookworm.f5._f1', [
   { when: { studentId: 1 }, weight: 4, text: [
-    'Madeline rests her head back. "Previous capacity models were incorrect." She reaches for cake anyway.',
+    'Cassidy rests her head back. "Previous capacity models were incorrect." She reaches for cake anyway.',
   ]},
 ]);
 

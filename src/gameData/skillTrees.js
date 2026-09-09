@@ -207,7 +207,7 @@ export const SKILLS = [
 
   // ═══ V2.0 — Floor Influence ═══
   { id:"spirit_ride", tree:"influence", tier:1, icon:"🌒", name:"Resident Ride", maxRanks:1,
-    desc:"Leave the your body and ride along with a resident — feel her hunger from within.",
+    desc:"Slip out of your RA routine and and ride along with a resident — feel her hunger from within.",
     rankDesc:()=>`Unlock Resident Ride (1/week)`,
     effects:{ spiritRide:1 } },
   { id:"deep_ride", tree:"influence", tier:2, icon:"🌑", name:"Deep Ride", maxRanks:1,
@@ -224,7 +224,7 @@ export const SKILLS = [
     effects:{ hungerWeb:1 } },
   { id:"ritual_master", tree:"gluttony", tier:2, icon:"🔥", name:"Ritual Master", maxRanks:1,
     desc:"Unlock the highest tier of ceremonial feasts.",
-    rankDesc:()=>`Sacred Gluttony + Leviathan Vigil rituals`,
+    rankDesc:()=>`Floor Feast + Leviathan Vigil rituals`,
     effects:{ ritualMaster:1 } },
   { id:"dream_walk", tree:"corruption", tier:1, icon:"💤", name:"Dream Walk", maxRanks:1,
     desc:"Walk the corridors of a student's subconscious appetite.",

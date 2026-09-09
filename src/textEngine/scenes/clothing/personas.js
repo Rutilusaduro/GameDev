@@ -79,7 +79,7 @@ registerModuleVariants('cloth.reaction', [
   { when: { studentId: 12, corruption: [2] }, weight: W, text: [
     `Nadia watches your eyes on the tear. "Interesting reaction. Mine is approval."`,
     `"The garment lost," she says. "I did not."`,
-    `"Hypothesis: I outgrew it. Confirmed."`,
+    `"Hyposeason plan: I outgrew it. Confirmed."`,
   ]},
   { when: { studentId: 13, corruption: [1] }, weight: W, text: [
     `"Bless it, honey, seams do that," Daisy says warmly. "We'll mend or we'll size up."`,
@@ -107,7 +107,7 @@ registerModuleVariants('cloth.reaction', [
     `"New stratum," she grins. "Deeper layer."`,
   ]},
   { when: { studentId: 1, corruption: [0] }, weight: W, text: [
-    `Madeline smooths the gap with academic calm. "Garment tolerance exceeded."`,
+    `Cassidy smooths the gap with academic calm. "Garment tolerance exceeded."`,
     `"Expected at current mass," she says, cheeks pink. "Ordering larger."`,
     `"Statistically inevitable," she murmurs. Still blushing.`,
   ]},

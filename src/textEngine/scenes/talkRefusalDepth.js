@@ -66,7 +66,7 @@ registerModuleVariants('talk.refusal.command_devour._f3', [
 
 registerModuleVariants('talk.refusal.command_finish._f1', [
   { when: { studentId: 0 }, weight: 4, text: [`Brittany sets her jaw. "Captain's out of commission. Belly won." She pats her middle, frustrated and proud.`] },
-  { when: { studentId: 1 }, weight: 4, text: [`Madeline checks her notes. "Capacity exceeded. Further intake would violate structural limits." She exhales. "Tomorrow."`] },
+  { when: { studentId: 1 }, weight: 4, text: [`Cassidy checks her notes. "Capacity exceeded. Further intake would violate structural limits." She exhales. "Tomorrow."`] },
   { when: { studentId: 2 }, weight: 4, text: [`Kylie lowers her phone. "Can't film this part. I'm too full. Cut." She laughs, miserable and pleased.`] },
   { when: { studentId: 3 }, weight: 4, text: [`Serena grips the chair arms. "Athlete's done. Body says no." She breathes through it. "Rematch tomorrow."`] },
   { when: { studentId: 5 }, weight: 4, text: [`Destiny stares at the plate. "Inventory full. Cannot equip more food." She sighs. "Save quest for later."`] },

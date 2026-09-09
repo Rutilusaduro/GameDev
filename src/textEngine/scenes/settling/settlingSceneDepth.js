@@ -6,7 +6,7 @@ const W = 4;
 
 registerModuleVariants('set.care.tend.beat', [
   { when: { studentId: 1, stageMin: 10 }, weight: W, text: [
-    `Madeline tends her own notes between your hands — data and comfort braided, body maintained like research.`,
+    `Cassidy tends her own notes between your hands — data and comfort braided, body maintained like research.`,
   ]},
   { when: { studentId: 3, stageMin: 10 }, weight: W, text: [
     `Serena's athlete body needs different tending — joints, breath, the soft places training forgot.`,
@@ -168,7 +168,7 @@ registerModuleVariants('set.feed.spread', [
 
 registerModuleVariants('set.weigh.react', [
   { when: { studentId: 1, stageMin: 10 }, weight: W, text: [
-    `Madeline logs {subject.lbs} mentally, then lets satisfaction win. "Publishable," she murmurs.`,
+    `Cassidy logs {subject.lbs} mentally, then lets satisfaction win. "Publishable," she murmurs.`,
   ]},
   { when: { studentId: 7, stageMin: 10 }, weight: W, text: [
     `Priya nods at the total — outlier confirmed, hypothesis exceeded, body victorious.`,

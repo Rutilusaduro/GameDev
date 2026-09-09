@@ -222,7 +222,7 @@ export function registerDimension(key, deriveFn) {
 // ── context ───────────────────────────────────────────────────
 
 // Phase 7 extraction: the engine core is game-free. The game supplies the
-// subject → ctx.d mapping via registerSubjectDeriver (Professor Sim's lives
+// subject → ctx.d mapping via registerSubjectDeriver (Hall Pass's lives
 // in src/gameData/textContext.js), and registers its dimensions and
 // stem-tracked namespaces from the same place.
 let SUBJECT_DERIVER = null;

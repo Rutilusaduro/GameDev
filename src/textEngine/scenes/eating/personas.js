@@ -9,7 +9,7 @@ registerModuleVariants('eat.firstBite', [
     'The first forkful is discipline. The second is already less disciplined.',
   ] },
   { when: { studentId: 1 }, weight: 4, text: [
-    'Madeline notes the first bite in her head — time, portion, context — and eats anyway.',
+    'Cassidy notes the first bite in her head — time, portion, context — and eats anyway.',
     'The opening mouthful is a data point. The trend is clear by bite three.',
     'She adjusts her glasses and begins. Observation and appetite run in parallel.',
   ] },
@@ -107,7 +107,7 @@ registerModuleVariants('eat.finish', [
     'Recovery meal complete. Personal record pending sweets.',
   ] },
   { when: { studentId: 1 }, weight: 4, text: [
-    'Madeline sets the fork down and updates the mental spreadsheet. Intake: substantial.',
+    'Cassidy sets the fork down and updates the mental spreadsheet. Intake: substantial.',
     'The meal concludes. The trend line bends again. She notes it without panic.',
     'Confidence interval: satisfied. She closes the notebook on shame.',
   ] },

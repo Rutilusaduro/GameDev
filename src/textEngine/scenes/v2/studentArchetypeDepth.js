@@ -28,7 +28,7 @@ const talkByStudent = {
 
 const feedByStudent = {
   0: ['Brittany eats like competition — chin up, pace steady, treating every portion like a score to beat.'],
-  1: ['Cassidy tracks intake with scholarly focus, then surrenders to warmth she pretends to merely document.'],
+  1: ['Cassidy tracks intake with athletic focus, then surrenders to warmth she pretends to merely document.'],
   2: ['Kylie performs the feed — angles considered, satisfaction visible, hunger made into spectacle.'],
   3: ['Serena feeds with athlete economy — efficient bites, full commitment, body answering before mind negotiates.'],
   4: ['Fiona savors slowly, as if each bite were pigment laid on canvas — deliberate, reverent, unhurried.'],
@@ -94,7 +94,7 @@ const wiByStudent = {
 
 const sessionByStudent = {
   0: ['Private session, squad-captain rules — Brittany eats like she is training for something only you understand.'],
-  1: ['Cassidy keeps notes until she cannot — scholarly restraint dissolving into warmth only a closed door allows.'],
+  1: ['Cassidy keeps notes until she cannot — athletic restraint dissolving into warmth only a closed door allows.'],
   2: ['Kylie films or poses even alone with you — private hunger still performing, still magnificent.'],
   3: ['Serena treats the session like sport — breath measured, capacity tested, pride in how far she can go.'],
   4: ['Fiona makes privacy aesthetic — slow bites, soft light, fullness treated like finished work.'],

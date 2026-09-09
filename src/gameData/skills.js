@@ -312,7 +312,7 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0.20, requires:["resistance_calibration"] },
 
   { id:"trust_architecture", tier:4, cost:700, category:"psychology", label:"🏗️ Trust Architecture",
-    desc:"Deep structural trust built over months of precise, patient work — trust not in any single interaction but in the relationship itself, in the space, in the professor as someone who has only ever made them feel good. This trust is load-bearing. It holds everything up.",
+    desc:"Deep structural trust built over months of precise, patient work — trust not in any single interaction but in the relationship itself, in the space, in you as someone who has only ever made them feel good. This trust is load-bearing. It holds everything up.",
     effect:"+10% to all gains. Students with high relationship gain significantly more from all interactions.",
     passiveBonus:0, apBonus:0, gainMult:0.10, tapOutResistance:0.12, requires:["narrative_reshaping"] },
 

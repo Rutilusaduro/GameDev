@@ -36,7 +36,7 @@ const STAGE11_C1 = {
     `Pages arrive pre-filled with fullness. I sign them. Truth requires less walking now.`,
   ],
   food_researcher: [
-    `Lab chair is field site. Samples delivered. Hypothesis: immobility improves yield. Confirmed.`,
+    `Lab chair is field site. Samples delivered. Hyposeason plan: immobility improves yield. Confirmed.`,
     `I publish from the chair. Peer review can visit. The data is warm and vast and here.`,
   ],
   eating_streamer: [

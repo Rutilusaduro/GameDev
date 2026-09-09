@@ -40,7 +40,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"Thank you," she says, and she is not talking to the scale.`,
   ]},
 
-  // ── 1 · Madeline — bookworm: the self-study ──────────────────
+  // ── 1 · Cassidy — swimmer: lane discipline ──────────────────
   { when: { studentId: 1, corruption: [0], stageMax: 5 }, weight: W, text: [
     `"Within expected variance for semester dietary changes," she murmurs, adjusting her glasses. "I'll continue monitoring."`,
     `"This exceeds my projected trajectory by approximately—" She pauses. "By a meaningful margin."`,
@@ -50,7 +50,7 @@ registerModuleVariants("wi.replyDialogue", [
     `"The data is unambiguous," she says. "I am getting fatter. On purpose. I have notes on how it feels."`,
   ]},
   { when: { studentId: 1, corruption: [2], stageMax: 5 }, weight: W, text: [
-    `"Hypothesis confirmed: intentional weight gain produces measurable results. I would like to continue the experiment."`,
+    `"Hyposeason plan confirmed: intentional weight gain produces measurable results. I would like to continue the experiment."`,
     `"I've been conducting this research on myself for months now. The findings are…" She exhales, pleased. "Extensive. And I want more data."`,
   ]},
   { when: { studentId: 1, corruption: [0], stageMin: 6 }, weight: W, text: [

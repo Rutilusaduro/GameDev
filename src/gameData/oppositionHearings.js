@@ -20,7 +20,7 @@ export const REMOVAL_HEARING = {
       choices: [
         { id: 'hold_firm', label: 'Hold firm — abundance is the curriculum', resultPool: 'opposition.hearing.removal.result.hold_firm', flag: 'firm' },
         { id: 'negotiate', label: 'Negotiate — private indulgence, public discretion', resultPool: 'opposition.hearing.removal.result.negotiate', flag: 'negotiate' },
-        { id: 'spirit', label: 'Spirit pressure — mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.spirit', flag: 'spirit' },
+        { id: 'spirit', label: 'Floor pressure — mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.spirit', flag: 'spirit' },
       ],
     },
   ],

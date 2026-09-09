@@ -4,7 +4,7 @@
 // ./fragments.js via registerModuleVariants. Weight 4 so each
 // girl's own voice dominates without silencing shared fragments.
 // Double depth (addiction/psych/withdrawal gates) for:
-//   Brittany(0), Madeline(1), Kylie(2), Destiny(5),
+//   Brittany(0), Cassidy(1), Kylie(2), Destiny(5),
 //   Chloe(9), Reneé(10), Daisy(13), Lilith(15).
 // Roster: AUTHORING.md §3 (ids 0–17).
 // ═══════════════════════════════════════════════════════════════
@@ -54,13 +54,13 @@ registerModuleVariants("ge.reactionDialogue", [
     `"Something's wrong," she says, jaw set. "Get me back in. Right now. I'm not finished."`,
   ]},
 
-  // ── 1 · Madeline — bookworm: academic self-documentation ──────
+  // ── 1 · Cassidy — bookworm: academic self-documentation ──────
   { when: { studentId: 1, corruption: [0], endStageMax: 5 }, weight: W, text: [
     `"Interesting," she murmurs, fingers pressed to her waist. "Faster than projected. Logged."`,
     `"This exceeds my model," she says. "Significantly. I'll need to revise the framework."`,
   ]},
   { when: { studentId: 1, corruption: [1], endStageMax: 5 }, weight: W, text: [
-    `"Hypothesis confirmed again." She adjusts her glasses. "The gain is cumulative and accelerating."`,
+    `"Hyposeason plan confirmed again." She adjusts her glasses. "The gain is cumulative and accelerating."`,
     `"Data point," she says, patting her belly. "I'm still collecting."`,
   ]},
   { when: { studentId: 1, corruption: [2], endStageMax: 5 }, weight: W, text: [
@@ -557,7 +557,7 @@ registerModuleVariants("grow.crossingDialogue", [
     `"Enormous." A beat. "Still winning."`,
   ]},
 
-  // ── Madeline (1) ───────────────────────────────────────────────
+  // ── Cassidy (1) ───────────────────────────────────────────────
   { when: { studentId: 1, endStageMin: 3, endStageMax: 5 }, weight: W, text: [
     `"New stage documented," she says. "The progression curve is holding."`,
     `"Chubby. Plump. Heavy." She says each word like a data category.`,

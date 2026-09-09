@@ -248,7 +248,7 @@ export function MayaHiveModal({
                 onClick={doMayaHiveAbsorb}>
                 🌑 Lilith: Absorb Devotee
               </button>
-              <div style={{fontSize:9,color:HIVE_SUB,lineHeight:1.45,marginTop:8}}>Your gluttony-spirit influence gathers as resonance. Expansion automatically spends a little of it as a soft command through adjacent rooms.</div>
+              <div style={{fontSize:9,color:HIVE_SUB,lineHeight:1.45,marginTop:8}}>Your hunger-pressure influence gathers as resonance. Expansion automatically spends a little of it as a soft command through adjacent rooms.</div>
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ export const ASCENSION_FORM_ROSTER = [
     formId: 'sphinx',
     label: 'Sphinx',
     essenceWord: 'marginalia',
-    catalystFlag: 'madeline_research_archive_complete',
+    catalystFlag: 'cassidy_research_archive_complete',
     gainTwist: 'Wrong answers and campus curiosity feed her.',
   },
   {

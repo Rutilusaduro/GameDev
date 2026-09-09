@@ -21,7 +21,7 @@ registerModuleVariants('talk.discontentCoda', [
     ` Brittany's smile never reaches her eyes. "Anything else, Professor?" Captain tone. Bench-you tone.`,
   ]},
   { when: { studentId: 1, discontentTier: [1, 2, 3] }, weight: 4, text: [
-    ` Madeline's pen stops. "Noted," she says, and does not elaborate. The silence is annotated anyway.`,
+    ` Cassidy's pen stops. "Noted," she says, and does not elaborate. The silence is logged anyway.`,
   ]},
   { when: { studentId: 2, discontentTier: [2, 3] }, weight: 4, text: [
     ` Kylie films nothing. "We're done," she says, flat. The phone stays down.`,

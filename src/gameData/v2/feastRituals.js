@@ -40,7 +40,7 @@ export const FEAST_RITUALS = [
   {
     id: 'sacred_gluttony',
     tier: 3,
-    label: 'Sacred Gluttony',
+    label: 'Floor Feast',
     icon: '🔥',
     minStudents: 6,
     maxStudents: 8,

@@ -85,7 +85,7 @@ registerPool('feed.react.line', [
     `Brittany licks her thumb clean and points it at you like a verdict. "Okay. That was annoyingly good."`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `Madeline finishes, considers the empty plate with mild scholarly surprise, and makes a small note to herself.`,
+    `Cassidy finishes, considers the empty plate with mild athletic surprise, and makes a small note to herself.`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie catches the last bite on camera, narrating around a full mouth. "Okay this is unreal, you guys."`,

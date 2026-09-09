@@ -14,7 +14,7 @@ registerModuleVariants('immob.register', [
     `"Home turf. Bigger turf. Same captain."`,
   ]},
   { when: { studentId: 1, ...IMMOBILE_TOP, corruption: [1] }, weight: W, text: [
-    `"Mobility optional," Madeline murmurs. "Findings: extensive."`,
+    `"Mobility optional," Cassidy murmurs. "Findings: extensive."`,
     `"I've exceeded every projection. Observation continues from here."`,
     `"Sample size: one. Conclusion: larger."`,
   ]},
@@ -69,7 +69,7 @@ registerModuleVariants('immob.register', [
     `"Vitals good. Position stable."`,
   ]},
   { when: { studentId: 12, ...IMMOBILE_TOP, corruption: [2] }, weight: W, text: [
-    `"Hypothesis confirmed," Nadia says. "You're still watching. Good."`,
+    `"Hyposeason plan confirmed," Nadia says. "You're still watching. Good."`,
     `"The chair lost. I didn't."`,
     `"Data logged. Subject content."`,
   ]},
@@ -132,9 +132,9 @@ registerModuleVariants('immob.settledState', [
     'The field bends around her.',
   ]},
   { when: { studentId: 1, ...IMMOBILE_TOP }, weight: W, text: [
-    'Madeline has outgrown the chair and outgrown the urge to leave it.',
+    'Cassidy has outgrown the chair and outgrown the urge to leave it.',
     'Immobility, she notes, is a valid experimental outcome.',
-    'Hypothesis: mass. Result: confirmed.',
+    'Hyposeason plan: mass. Result: confirmed.',
   ]},
   { when: { studentId: 2, ...IMMOBILE_TOP }, weight: W, text: [
     'Kylie is the set now — vast, warm, camera optional.',

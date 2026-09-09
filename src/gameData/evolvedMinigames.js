@@ -59,7 +59,7 @@ export const EVOLVED_MINIGAMES = {
         choices: [
           { id: 'reframe', label: 'Reframe the data as embodied research', score: 3, log: 'The room shifts — curiosity replaces judgment.' },
           { id: 'deflect', label: 'Deflect to methodology — bore them precise', score: 1, log: 'Footnotes buy time.' },
-          { id: 'confess', label: 'Confess appetite as the real thesis', score: 2, log: 'Honesty lands like a thrown gauntlet.' },
+          { id: 'confess', label: 'Confess appetite as the real season plan', score: 2, log: 'Honesty lands like a thrown gauntlet.' },
         ],
       },
       {

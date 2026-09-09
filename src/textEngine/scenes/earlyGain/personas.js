@@ -68,7 +68,7 @@ registerModuleVariants('slender.mindFeel', [
     'Winning used to mean smaller. She is rearranging the definition without admitting it.',
     'The pep talk she gives her reflection ends with dessert.',
   ]},
-  // ── 1 Madeline ───────────────────────────────────────────────
+  // ── 1 Cassidy ───────────────────────────────────────────────
   { when: { studentId: 1, ...EARLY }, weight: W, text: [
     'She has started a private dataset. The trend line is not cooperating with her hypotheses.',
     'Every softening inch feels like a footnote she will have to address eventually.',
@@ -416,7 +416,7 @@ registerModuleVariants('slender.secret', [
     'A faint smile. Hunger and mass align. She says nothing.',
   ]},
   { when: { studentId: 1, gainStance: 'secret', ...EARLY }, weight: W, text: [
-    'Madeline presses palm to softness and exhales data she will not publish yet.',
+    'Cassidy presses palm to softness and exhales data she will not publish yet.',
     'The curve pleases her more than her voice admits.',
     'She weighs herself twice. Second reading higher. She smiles.',
   ]},
@@ -494,7 +494,7 @@ registerModuleVariants('slender.eatPause', [
     'Macros forgotten by bite three. She keeps going.',
   ]},
   { when: { studentId: 1, corruption: [0], stageMax: 3 }, weight: W, text: [
-    'Madeline annotates the meal in her head between bites. The plate empties anyway.',
+    'Cassidy annotates the meal in her head between bites. The plate empties anyway.',
     'She pauses to record a note. The pause does not slow consumption.',
     'The dataset updates live. So does her appetite.',
   ]},

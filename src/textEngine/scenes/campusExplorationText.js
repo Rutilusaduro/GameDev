@@ -34,7 +34,7 @@ registerPool('campus.sighting', [
       'Two cheerleaders help {subject.name} stand so she can demonstrate a move. She makes it halfway, claps anyway, and demands pasta for the team.',
       'The squad warms up around her like planets — she eats, points, and nobody argues with the woman who built the program.',
     ] },
-  // Madeline — bookworm
+  // Cassidy — bookworm
   { when: { archetype: 'bookworm', weightBand: 'lean' }, priority: 4,
     text: [
       '{subject.name} is buried in a library carrel, glasses sliding, three color-coded stacks of sociology texts.',

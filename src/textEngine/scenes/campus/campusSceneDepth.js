@@ -11,7 +11,7 @@ registerModuleVariants('campus.spaceObs', [
     `The gym remembers her captaincy. Her body remembers every recovery meal.`,
   ]},
   { when: { studentId: 1, campusLocale: 'floor meeting_hall', ...MOBILE }, weight: W, text: [
-    `Madeline chooses the desk with the widest arm — hypothesis confirmed weekly.`,
+    `Cassidy chooses the desk with the widest arm — hypothesis confirmed weekly.`,
     `She takes notes and space in equal measure. The row behind has adapted.`,
   ]},
   { when: { studentId: 2, campusLocale: 'hallway', ...MOBILE }, weight: W, text: [
@@ -38,7 +38,7 @@ registerModuleVariants('campus.seenBeat', [
     `Captain's uniform strains at practice. She owns it like a trophy.`,
   ]},
   { when: { studentId: 1, stageMin: 3, stageMax: 6 }, weight: W, text: [
-    `Madeline notes the glance, files it, keeps walking — scholar's composure, secret appetite.`,
+    `Cassidy notes the glance, files it, keeps walking — captain's composure, secret appetite.`,
   ]},
   { when: { studentId: 4, stageMin: 4 }, weight: W, text: [
     `Fiona feels observed and leans into it — artist as subject, softness as medium.`,

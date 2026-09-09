@@ -59,7 +59,7 @@ export const HIVE_ROOM_BONUSES = [
   { id:"laundry_warmth", label:"Laundry Warmth", desc:"Maintenance gains +10% while this room stays conquered." },
   { id:"delivery_pin", label:"Delivery Pin", desc:"Food Gathering gains +10%; drivers learn the exact door." },
   { id:"quiet_pull", label:"Quiet Pull", desc:"Recruitment gains +10%; the hallway feels easier to enter." },
-  { id:"lavender_lamps", label:"Lavender Lamps", desc:"Spirit Pressure costs 1 less resonance." },
+  { id:"lavender_lamps", label:"Lavender Lamps", desc:"Floor Pressure costs 1 less resonance." },
   { id:"reinforced_nook", label:"Reinforced Nook", desc:"+2 member capacity from converted furniture." },
 ];
 

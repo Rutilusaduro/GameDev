@@ -6,7 +6,7 @@ import { UNLOCK_POOL_IDS } from './dorms.js';
 export const ROSTER_TRUST_GATE = 60;
 export const ROSTER_START_SLOTS = 5;
 
-/** Roster seats unlocked by spirit level (pool girls only). */
+/** Roster seats unlocked by hall reach (pool girls only). */
 export function getRosterSlotCount(spiritLevel = 1) {
   return ROSTER_START_SLOTS + Math.max(0, spiritLevel - 1);
 }
@@ -18,7 +18,7 @@ export function countOpenPoolStudents(students = []) {
   ).length;
 }
 
-/** Weekly passive trust for one locked pool girl — scales with spirit level + week. */
+/** Weekly passive trust for one locked pool girl — scales with hall reach + week. */
 export function weeklyTrustDripAmount({ spiritLevel = 1, week = 1, rng = Math.random } = {}) {
   const base = 6 + Math.floor(rng() * 7); // 6–12
   const spiritBonus = Math.max(0, spiritLevel - 2) * 3;

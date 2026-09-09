@@ -104,7 +104,7 @@ registerModuleVariants('recording.payoff', [
     `Chloé fans herself post-wrap. {subject.lbs} pounds — "*Magnifique,*" she says to playback.`,
   ]},
   { when: { studentId: 1 }, weight: W, text: [
-    `Madeline logs the session data. {subject.lbs} lbs — methodology and appetite aligned.`,
+    `Cassidy logs the session data. {subject.lbs} lbs — methodology and appetite aligned.`,
   ]},
   { when: { studentId: 18, custom: false }, weight: W, text: [
     `Talia exports the footage. {subject.lbs} pounds — yield within spec, appetite exceeding it.`,

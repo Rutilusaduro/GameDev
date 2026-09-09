@@ -325,7 +325,7 @@ registerModuleVariants("enc.owned", [
     `"You don't have to encourage me anymore," Brittany grins. "But I like winning with an audience."`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `"Encouragement functions as a positive reinforcement variable," Madeline says, already reaching. "I've charted it. The effect size is embarrassing."`,
+    `"Encouragement functions as a positive reinforcement variable," Cassidy says, already reaching. "I've charted it. The effect size is embarrassing."`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `"Already filming," Kylie says. "Say the line again. Slower. For the clip."`,
@@ -409,7 +409,7 @@ registerModuleVariants("enc.resolve", [
     `"Okay," Kaylee breathes. "But you have to keep telling me it's good. It works better when it's your voice."`,
   ]},
   { when: { studentId: 12 }, weight: 4, text: [
-    `"Hypothesis accepted," Nadia says quietly. "Further trials requested."`,
+    `"Hyposeason plan accepted," Nadia says quietly. "Further trials requested."`,
   ]},
   { when: { studentId: 17 }, weight: 4, text: [
     `"Dig in," Indiana grins. "Treasure's always buried deeper than you think."`,
@@ -418,7 +418,7 @@ registerModuleVariants("enc.resolve", [
 
 registerModuleVariants("enc.accept", [
   { when: { studentId: 1 }, weight: 4, text: [
-    `Madeline taps her pen twice. "Statistically, restraint hasn't produced results. Time to vary the methodology." She closes the notebook.`,
+    `Cassidy taps her pen twice. "Statistically, restraint hasn't produced results. Time to vary the methodology." She closes the notebook.`,
   ]},
   { when: { studentId: 3 }, weight: 4, text: [
     `Serena nods once, athlete-sharp. "New training block starts tonight. Bulk phase. Indefinite."`,

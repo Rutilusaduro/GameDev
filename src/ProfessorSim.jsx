@@ -53,7 +53,7 @@ import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from './textEngine/scenes/campusEvent/index.js';
-import { getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
+import { getSwimmerTier, getMadelineTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateClassSession, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
   pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
@@ -3412,8 +3412,9 @@ export default function ProfessorSim(){
     });
   };
 
-  const cgProfessorReply=(optId)=>{
-    const opt=CG_CHAT_TEMPLATES.professorReplies.find(r=>r.id===optId);
+  const cgRaReply=(optId)=>{
+    const opt=CG_CHAT_TEMPLATES.raReplies?.find(r=>r.id===optId)
+      ||CG_CHAT_TEMPLATES.professorReplies?.find(r=>r.id===optId);
     if(!opt) return;
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
@@ -3521,7 +3522,7 @@ export default function ProfessorSim(){
       const mayaStage=getStage(maya.lbs).label.replace(/\s+/g,"");
       const bmiTier=getHiveBmiTier(prev.avgBmi);
       const rooms=getHiveControl(prev.rooms);
-      const tag=makeHiveTag("CentralNestVisit",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"professor",roomId:prev.selectedRoomId});
+      const tag=makeHiveTag("CentralNestVisit",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"ra",roomId:prev.selectedRoomId});
       const gain=Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35);
       const biomass=Math.round(gain*0.8);
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
@@ -3531,8 +3532,8 @@ export default function ProfessorSim(){
         hiveBiomass:prev.hiveBiomass+biomass,
         spiritResonance:prev.spiritResonance+3,
         view:"visit",
-        subState:{tag,gain,biomass,text:`${tag} The professor brings tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
-        log:[{tag,text:"Professor-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
+        subState:{tag,gain,biomass,text:`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
+        log:[{tag,text:"RA-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
       };
     });
   };
@@ -4908,7 +4909,7 @@ export default function ProfessorSim(){
         return;
       }
       if(opposition?.meta?.echoedWillSpentWeek===week){
-        push('⚠️ Echoed Will already spent this week — Spirit Pressure and curse reversal share one charge.');
+        push('⚠️ Echoed Will already spent this week — Floor Pressure and curse reversal share one charge.');
         return;
       }
       const fx=echoedWillReverseCurse(opposition,studentId,adminScrutiny);
@@ -4961,7 +4962,7 @@ export default function ProfessorSim(){
   const selectCasePair=(s,pairId)=>{
     const crs=communityResearcherState; if(!crs) return;
     const pair=CASE_STUDY_PAIRS.find(p=>p.id===pairId); if(!pair) return;
-    const mTier=getMadelineTier(getStage(s.lbs).id);
+    const mTier=getSwimmerTier(getStage(s.lbs).id);
     const pairStuds=pair.studentIds.map(id=>students.find(st=>st.id===id)).filter(Boolean);
     const text=pair.event(crs.caseStudyStage,mTier,pairStuds);
     setCommunityResearcherState(prev=>prev?{...prev,activePairId:pairId,eventText:text,modalPhase:'case_study_event'}:null);
@@ -5024,8 +5025,8 @@ export default function ProfessorSim(){
   };
   const closeThesisOutcome=(approved)=>{
     setCommunityResearcherState(prev=>prev?{...prev,modalPhase:null,thesisApproved:approved,thesisRejected:!approved}:null);
-    if(approved) push("📋 Madeline — thesis approved. The research is complete.");
-    else push("📋 Madeline — thesis rejected. The committee was not persuaded.");
+    if(approved) push("📋 Cassidy — captain review approved. The season plan is locked.");
+    else push("📋 Cassidy — captain review rejected. Coach wasn't persuaded.");
   };
 
   const startRankedSession=(studentId,stageIdx)=>{
@@ -8887,7 +8888,7 @@ export default function ProfessorSim(){
       {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession}/>}
 
       {/* ── COMPETITIVE GAINER — GROUP CHAT MODAL (always accessible when evolved) ── */}
-      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgProfessorReply={cgProfessorReply} setCgChatOpen={setCgChatOpen}/>}
+      {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} cgProfessorReply={cgRaReply} setCgChatOpen={setCgChatOpen}/>}
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
       {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGSpiritTier={getCGSpiritTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal}/>}

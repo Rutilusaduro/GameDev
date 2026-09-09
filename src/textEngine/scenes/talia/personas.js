@@ -41,7 +41,7 @@ registerModuleVariants('enc.owned', [
 
 registerModuleVariants('enc.accept', [
   { when: TALIA, weight: W, text: [
-    `"Hypothesis accepted," Talia says. "I'll note willingness as a controlled variable." She opens the next container without ceremony.`,
+    `"Hyposeason plan accepted," Talia says. "I'll note willingness as a controlled variable." She opens the next container without ceremony.`,
   ]},
 ]);
 

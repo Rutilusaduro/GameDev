@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// RESIDENT RIDE — inhabit students, drive their actions
+// RESIDENT RIDE — ride along with residents, drive their actions
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from '../stages.js';
 import { V2_CONFIG } from './state.js';
@@ -76,7 +76,7 @@ export const EMBODIMENT_ACTIONS = [
     fullness: 15,
     rel: 10,
     corruption: 5,
-    desc: '"I\'m hungry again." She sends it before shame can edit. You feel the spirit purr.',
+    desc: '"I\'m hungry again." She sends it before shame can edit. You feel the satisfaction hum.',
   },
   {
     id: 'roommate_tempt',

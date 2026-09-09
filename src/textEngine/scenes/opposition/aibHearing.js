@@ -73,7 +73,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.negotiate', [
 registerPoolAutoDecompose('opposition.hearing.removal.result.spirit', [
   { when: {}, text: [
     'Plates appear. Resolve softens with every bite.',
-    'Spirit pressure turns the Board\'s table into yours. Fullness does what argument could not.',
+    'Floor pressure turns the Board\'s table into yours. Fullness does what argument could not.',
     'Mandatory tasting for five hostile members. Appetite wins by contact.',
   ]},
 ]);

@@ -17,7 +17,7 @@ registerPool('opposition.aib.open', [
 ]);
 
 registerPool('opposition.counter.discredit', [
-  'Madeline reads the line you fed her — calm, surgical, erotic in its precision. Vance\'s resolve softens in public.',
+  'Cassidy reads the line you fed her — calm, surgical, erotic in its precision. Vance\'s resolve softens in public.',
   'The hashtag is live before the Q&A ends. The Board\'s wellness banquet looks smaller beside your honesty.',
 ]);
 

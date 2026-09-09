@@ -50,9 +50,9 @@ registerPool("diary.brittany.uniform", [
 // Clinical distance gradually erodes as she documents herself.
 // ══════════════════════════════════════════════════════════════════
 
-registerPool("diary.madeline.dataset", [
+registerPool("diary.cassidy.dataset", [
   { when: { studentId: 1, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
-    "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hypothesis: stress response, elevated cortisol. Recommend monitoring.",
+    "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hyposeason plan: stress response, elevated cortisol. Recommend monitoring.",
     "Field note, Week 5. [Subject] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
   ]},
   { when: { studentId: 1, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
@@ -421,7 +421,7 @@ registerPool("diary.maryjane.ripe", [
 
 registerPool("diary.sophia.trial", [
   { when: { studentId: 16, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
-    "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hypothesis: stress response, elevated cortisol. Recommend monitoring.",
+    "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hyposeason plan: stress response, elevated cortisol. Recommend monitoring.",
     "Field note, Week 5. [Subject] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
   ]},
   { when: { studentId: 16, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [

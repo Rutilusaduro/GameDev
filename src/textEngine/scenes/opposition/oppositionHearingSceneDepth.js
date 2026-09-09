@@ -45,7 +45,7 @@ registerModuleVariants('opposition.hearing.removal.result.testify', [
 
 registerModuleVariants('opposition.hearing.removal.result.discredit', [
   { when: { studentId: 1 }, weight: W, text: [
-    `Madeline's projector pairs Board catering photos with wellness slides — hypocrisy visible.`,
+    `Cassidy's projector pairs Board catering photos with wellness slides — hypocrisy visible.`,
   ]},
   { when: { studentId: 18, custom: false }, weight: W, text: [
     `Talia buries the audit in thermal noise — wrong numbers, beautiful chaos, Vance blinking.`,

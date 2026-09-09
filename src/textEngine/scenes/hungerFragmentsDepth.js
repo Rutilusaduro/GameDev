@@ -62,7 +62,7 @@ registerModuleVariants('hunger.response.compound.offer', [
     `Priya takes the compound with both hands. "Dosage accepted," she says. "Relief pending."`,
   ]},
   { when: { studentId: 12 }, weight: 4, text: [
-    `Nadia swallows it without ceremony. "Hypothesis: this helps. Testing now."`,
+    `Nadia swallows it without ceremony. "Hyposeason plan: this helps. Testing now."`,
   ]},
   { when: { stageMin: 8, addictionLevel: [4] }, weight: 3, text: [
     `Her fingers shake until the compound is in her mouth — need stripped bare.`,

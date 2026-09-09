@@ -13,6 +13,9 @@ export function getCassidyTier(stageId) {
   return 3;
 }
 
+/** @deprecated use getCassidyTier */
+export const getSwimmerTier = getCassidyTier;
+
 const STAGE_OPENERS = [
   "At the start of her study",
   "For her second case study",
@@ -558,5 +561,5 @@ export const HAVE_A_CHAT_SCENES = [
   },
 ];
 
-/** @deprecated use getSwimmerTier */
-export const getMadelineTier = getSwimmerTier;
+/** @deprecated use getCassidyTier */
+export const getMadelineTier = getCassidyTier;

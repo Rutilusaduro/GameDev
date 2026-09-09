@@ -4,7 +4,7 @@
 
 export const SALON_GUESTS = [
   { id: 'brittany', name: 'Brittany', unlockPrestige: 0, studentId: 0 },
-  { id: 'madeline', name: 'Cassidy', unlockPrestige: 0, studentId: 1 },
+  { id: 'cassidy', name: 'Cassidy', unlockPrestige: 0, studentId: 1 },
   { id: 'kylie', name: 'Kylie', unlockPrestige: 10, studentId: 2 },
   { id: 'rosa', name: 'Chef Rosa', unlockPrestige: 45, faculty: true },
   { id: 'mori', name: 'Dr. Mori', unlockPrestige: 45, faculty: true },
@@ -159,7 +159,7 @@ export const SALON_EVOLVED_EVENTS = [
         ],
       },
       {
-        text: (h, s) => `The guests linger. Someone asks if she hosts every week. Chloé looks at you over her glass. "If the professor approves," she says. She's ${Math.round(s.lbs)} pounds and already planning the next menu.`,
+        text: (h, s) => `The guests linger. Someone asks if she hosts every week. Chloé looks at you over her glass. "If you approves," she says. She's ${Math.round(s.lbs)} pounds and already planning the next menu.`,
         choices: [
           { id: 'weekly', label: 'Approve weekly salons', result: 'She smiles like a woman who got exactly what she wanted.', lbs: 4, rel: 12, flag: 'weekly_salon' },
           { id: 'special', label: 'Special occasions only', result: 'She pouts once, then shrugs. "Special can mean frequent."', lbs: 3, rel: 7 },

@@ -271,7 +271,7 @@ registerModuleVariants('talk.suggest_indulgence.b21._f3', [
 ]);
 
 registerModuleVariants('talk.suggest_growth.b10._f1', [
-  { when: { studentId: 1 }, weight: 4, text: [`Madeline is quiet. "I model growth scenarios," she admits. "On purpose. Frequently."`] },
+  { when: { studentId: 1 }, weight: 4, text: [`Cassidy is quiet. "I model growth scenarios," she admits. "On purpose. Frequently."`] },
   { when: { studentId: 4 }, weight: 4, text: [`Fiona touches her middle. "I think about being bigger," she says. "Like a canvas expanding."`] },
   { when: { studentId: 12 }, weight: 4, text: [`Nadia writes one word: MORE. "Case study ongoing," she says.`] },
 ]);

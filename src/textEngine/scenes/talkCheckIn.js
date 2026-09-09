@@ -27,8 +27,8 @@ registerPool('talk.checkIn.greetBeat', [
     `Brittany sets her planner down and smiles — competitive, warm, already measuring portions.`,
   ] },
   { when: { studentId: 1 }, weight: 4, text: [
-    `Madeline pushes her glasses up and closes a notebook mid-annotation.`,
-    `Madeline looks up from a margin of notes, caught between research and appetite.`,
+    `Cassidy pushes her cap back and closes a notebook mid-annotation.`,
+    `Cassidy looks up from a lane splits on her phone, caught between research and appetite.`,
   ] },
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie angles her phone down and grins like the office is a set.`,
@@ -209,7 +209,7 @@ registerPool('talk.checkIn.acceptOpen', [
     `"I'm not fighting it anymore," she admits, like surrender is a strategy.`,
   ] },
   { when: { studentId: 1 }, weight: 4, text: [
-    `"The data supports contentment," Madeline says, quieter than usual. "I'm not arguing with it."`,
+    `"The data supports contentment," Cassidy says, quieter than usual. "I'm not arguing with it."`,
     `"You helped," she says. "Methodologically and otherwise."`,
   ] },
   { when: { studentId: 2 }, weight: 4, text: [
