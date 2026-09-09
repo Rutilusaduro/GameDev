@@ -129,6 +129,7 @@ import './squadKeyedDepth.js';
 import './researchJournal/index.js';
 import './researchJournal/depth.js';
 import './researchJournal/nadiaDepth.js';
+import './researchJournal/swimmerDepth.js';
 import './scrutiny/index.js';
 import './wifeLessons/index.js';
 import './wifeLessons/lessonDepth.js';

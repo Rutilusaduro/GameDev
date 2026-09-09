@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// HOMEROOM QUEEN — Daisy's classroom mini-interface
+// HOMEROOM QUEEN — Daisy's kitchen-club mini-interface
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
