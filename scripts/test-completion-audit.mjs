@@ -175,6 +175,9 @@ const REQUIRED_E2E = [
   'e2e/milestone-ceremony.spec.js',
   'e2e/week-recap-ceremony.spec.js',
   'e2e/lane-captain-presentation.spec.js',
+  'e2e/tier-up-ceremony.spec.js',
+  'e2e/hunger-interrupt.spec.js',
+  'e2e/ascension-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

@@ -772,7 +772,11 @@ for (const line of EVOLVED_REACTIONS.campus_legend || []) {
   assertClean(line, 'campus legend reaction');
 }
 
-const activityForms = ['community_researcher', 'food_researcher', 'campus_legend', 'chapter_hostess', 'wife_lessons'];
+const activityForms = [
+  'community_researcher', 'food_researcher', 'campus_legend', 'chapter_hostess', 'wife_lessons',
+  'home_nest', 'homestead_queen', 'eating_captain', 'eating_competitor', 'speed_eater',
+  'ranked_feedee', 'feedee_creator', 'eating_streamer', 'delivery_hive',
+];
 const activityStudent = { name: 'Maya', lbs: 340, archetype: 'swimmer' };
 for (const formId of activityForms) {
   const beats = EVOLVED_ACTIVITY_TEXT[formId];

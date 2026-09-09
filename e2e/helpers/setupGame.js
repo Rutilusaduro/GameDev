@@ -239,6 +239,24 @@ export async function triggerPresentationQA(page) {
   await page.getByRole('button', { name: /Presentation QA/ }).click();
 }
 
+/** Debug: open relationship tier-up modal. */
+export async function triggerTierUpQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Tier-Up QA/ }).click();
+}
+
+/** Debug: open hunger interrupt modal. */
+export async function triggerHungerInterruptQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Hunger Interrupt QA/ }).click();
+}
+
+/** Debug: open ascension ceremony modal. */
+export async function triggerAscensionQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Ascension QA/ }).click();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();

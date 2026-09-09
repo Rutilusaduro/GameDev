@@ -20,6 +20,7 @@ import { createInitialHiveState } from '../gameData/mayaHive.js';
 import { defaultLabState, defaultDeviceInventory } from '../gameData/talia.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
+import { INNER_CIRCLE_TIERS, TIER_SCENES } from '../gameData/sessions.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
@@ -71,6 +72,9 @@ export function DebugPanel({
   setMilestoneQueue,
   setWeekRecap,
   setPresentationState,
+  setTierUpModal,
+  setHungerInterrupt,
+  setAscensionCeremony,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -268,6 +272,57 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   📊 Presentation QA
+                </button>
+              )}
+              {setTierUpModal && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(70,30,110,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 200, relationship: 72 };
+                    const scenes = TIER_SCENES[subject.archetype] || TIER_SCENES.quiet;
+                    const sceneFn = scenes[1];
+                    setTierUpModal({
+                      student: subject,
+                      oldTier: INNER_CIRCLE_TIERS[1],
+                      newTier: INNER_CIRCLE_TIERS[2],
+                      scene: sceneFn ? sceneFn(subject) : `${subject.name} crosses into Intimate tier on your floor.`,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  💜 Tier-Up QA
+                </button>
+              )}
+              {setHungerInterrupt && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(110,30,50,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1 ? { ...s, hungerTier: 3, addictionLevel: 2, lbs: 200 } : s
+                    )));
+                    setHungerInterrupt({ studentId: 1, after: 'resume' });
+                    setDebugOpen(false);
+                  }}>
+                  🍽️ Hunger Interrupt QA
+                </button>
+              )}
+              {setAscensionCeremony && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(20,70,90,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? {
+                          ...s,
+                          lbs: 850,
+                          ascensionPending: { formId: 'sphinx', stirringWeeks: 2, ceremonyReady: true, declinedWeek: null },
+                        }
+                        : s
+                    )));
+                    setAscensionCeremony({
+                      studentId: 1,
+                      prose: 'The threshold is not a number anymore. Cassidy has become the kind of weight that rewrites a floor\'s gravity — and she is asking you to witness what comes next.',
+                      traceNodes: [],
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  ✦ Ascension QA
                 </button>
               )}
               {setSelectedId && (
