@@ -101,6 +101,7 @@ const BANNED = [
   { id: 'seminar-interference', re: /seminar interference/i },
   { id: 'revised-academic-outline', re: /revised academic outline/i },
   { id: 'legitimate-research-phrase', re: /legitimate research/i },
+  { id: 'psychology-grad-role', re: /Psychology grad/i },
 ];
 
 const ALLOW_LINE = [
