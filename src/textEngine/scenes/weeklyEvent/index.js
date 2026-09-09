@@ -15,6 +15,7 @@ const POOL_BY_EVENT_ID = {
   chair_breaks: 'weekly.chair_breaks',
   viral_post: 'weekly.viral_post',
   thesis_rewrite: 'weekly.thesis_rewrite',
+  season_plan_rewrite: 'weekly.thesis_rewrite',
   gaming_sponsor: 'weekly.gaming_sponsor',
   intervention_fails: 'weekly.intervention_fails',
   art_exhibition: 'weekly.art_exhibition',

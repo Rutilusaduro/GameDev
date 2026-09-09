@@ -434,6 +434,7 @@ registerPool('diary.eating_diarist.c1', [
   { when: { stage: [9] }, text: ['The book is being taught. A food studies course assigned it. A gender studies course included it in a unit.'] },
   { when: { stage: [10] }, text: ['The writing and the eating were always the same act — both a form of taking in, of accumulating, of making something mine.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['My academic writing has always been precise. The personal essay is a different instrument.'] },
+  { when: { stageMin: 5, stageMax: 7, archetype: "swimmer" }, text: ['My training log has always been precise. This appetite column is a different instrument.'] },
   { when: { stageMin: 5, archetype: "quiet" }, text: ['The strangest thing about this is that I\'ve always been quiet and now I\'m making things that thousands of people read. I still feel quiet when I write. That\'s where the words come from.'] },
   { when: {}, text: [
     "The notebook is full. I start another. The eating continues. Both do.",
@@ -453,6 +454,7 @@ registerPool('diary.eating_diarist.c2', [
   { when: { stage: [9] }, text: ['I went to one of the halles and sat in the back and listened to students argue about sentences I\'d written and felt something I didn\'t have a word for until later: permanence.'] },
   { when: { stage: [10] }, text: ['I understand that now the way I understand my own body: completely, without effort, as a fact that was always true and simply needed time to become obvious.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['I keep revising the same paragraph because I want it to do three things at once and it keeps only doing two. I\'m eating while I revise. The paragraph will give.'] },
+  { when: { stageMin: 5, stageMax: 7, archetype: "swimmer" }, text: ['I keep revising the same split target because I want it to do three things at once and it keeps only doing two. I\'m eating while I revise. The target will give.'] },
   { when: { stageMin: 5, archetype: "quiet" }, text: ['I think that\'s the whole trick.'] },
   { when: {}, text: [
     "Logged every bite. Diary honest. Belly fuller.",
@@ -485,6 +487,7 @@ registerPool('diary.food_researcher.c1', [
   { when: { stage: [9] }, text: ['Keynote. The conference was not prepared for the physical reality of having me at the podium. The podium was adjusted. The microphone was adjusted. The audience adjusted. I gave the talk.'] },
   { when: { stage: [10] }, text: ['The experiment has concluded in the sense that the study period has ended. The subject has not concluded. The data is complete. The researcher remains.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I\'ve published two papers and a grant application this semester and I\'ve been heavier for all of it than I was for any of my previous work. The correlation is documented.'] },
+  { when: { stageMin: 7, archetype: "swimmer" }, text: ['I\'ve posted two podium finishes and a captain\'s report this semester and I\'ve been heavier for all of it than I was at any previous weigh-in. The correlation is documented.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['I used to log miles. Now I log intake. The precision is the same, the units have changed, and the body is a different kind of record. My old training coach would have questions.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['There\'s a section in my notes where the researcher voice and the subject voice are indistinguishable. I know exactly which session that happened in. I left it in the methodology paper.'] },
   { when: {}, text: [
@@ -505,6 +508,7 @@ registerPool('diary.food_researcher.c2', [
   { when: { stage: [9] }, text: ['The Q&A ran thirty minutes over scheduled time. Nobody left.'] },
   { when: { stage: [10] }, text: ['I am both, simultaneously, at the scale that data set always implied I would reach. This was always the endpoint.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['I choose to regard it as a research finding rather than an excuse.'] },
+  { when: { stageMin: 7, archetype: "swimmer" }, text: ['I choose to regard it as a training finding rather than an excuse.'] },
   { when: { stageMin: 6, archetype: "athlete" }, text: ['The IRB wouldn\'t let me interview her.'] },
   { when: { stageMin: 7, archetype: "psych" }, text: ['I noted it as a finding.'] },
   { when: {}, text: [
@@ -1571,6 +1575,7 @@ registerPool('diary.community_researcher.c1', [
   { when: { stage: [9] }, text: ['The paper is 60,000 words. It\'s going to be good — I know when something is good because the writing comes faster than the thinking, and this came faster than anything I\'ve written before.'] },
   { when: { stage: [10] }, text: ["I submitted today. \" She means the honesty. I documented my own transformation as methodology. She approved it. I ate an entire box of something celebratory before bed. I note this approvingly."] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['The methodology is immersive participant observation. I know what immersive participant observation does to a researcher. I wrote a chapter on it before I started the study.'] },
+  { when: { stageMin: 7, archetype: "swimmer" }, text: ['The protocol is immersive self-tracking. I know what immersive self-tracking does to an athlete. I wrote the season plan before I started living inside it.'] },
   { when: {}, text: [
     "The fieldwork continues. The data grows. So does the researcher.",
     "Field notes and field meals both extensive.",
@@ -1587,6 +1592,7 @@ registerPool('diary.community_researcher.c2', [
   { when: { stage: [8] }, text: ['I\'ve moved on to stretch fabrics. Also documented.'] },
   { when: { stage: [9] }, text: ['There\'s a section on researcher positionality I wrote at 3am. It\'s the best part.'] },
   { when: { stageMin: 7, archetype: "bookworm" }, text: ['The chapter has more footnotes now.'] },
+  { when: { stageMin: 7, archetype: "swimmer" }, text: ['The training log has more meal columns now.'] },
   { when: {}, text: [
     "Survey says: bigger portions everywhere. I contributed.",
     "Field notes and field meals both extensive.",

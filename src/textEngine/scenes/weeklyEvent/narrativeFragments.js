@@ -148,8 +148,8 @@ registerPool('weekly.thesisRewrite.title', [
     'The title now reads \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
   ] },
   { when: { archetype: 'swimmer' }, text: [
-    'New title: \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
-    'The title now reads \'Adaptive Caloric Strategy and Cognitive Performance: An Ethnographic Self-Study.\'',
+    'New title: \'Off-Season Bulk Protocol and Lane Performance: A Captain\'s Self-Study.\'',
+    'The title now reads \'Off-Season Bulk Protocol and Lane Performance: A Captain\'s Self-Study.\'',
   ] },
   { when: {}, text: [
     'The title is rigorous on paper.',
@@ -168,9 +168,9 @@ registerPool('weekly.thesisRewrite.verdict', [
   ] },
   { when: { archetype: 'swimmer' }, text: [
     'The abstract is rigorous. It is also clearly an elaborate training justification for eating constantly.',
-    'You read it twice. It is real scholarship and transparently convenient.',
+    'You read it twice. It is real protocol and transparently convenient.',
     'You approve it immediately.',
-    'She beams with the energy of someone who has made weight gain count toward her GPA.',
+    'She beams with the energy of someone who has made weight gain count toward captain\'s hours.',
   ] },
   { when: {}, text: [
     'It is rigorous on paper and transparently about eating in practice. You approve it. She beams.',

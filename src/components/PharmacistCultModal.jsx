@@ -87,7 +87,7 @@ export function PharmacistCultModal({
           {o.devotionDelta > 0 && <div style={{ color: '#c0a0e0', marginBottom: 4 }}>Devotion +{o.devotionDelta}%</div>}
           {(o.classGainApplied > 0 || o.addictedGainApplied > 0) && (
             <div style={{ color: '#e0c0a0', marginTop: 6 }}>
-              {o.classGainApplied > 0 && `Class-wide softening +${o.classGainApplied} lbs each. `}
+              {o.classGainApplied > 0 && `Hall-wide softening +${o.classGainApplied} lbs each. `}
               {o.addictedGainApplied > 0 && `Addicted students +${o.addictedGainApplied} lbs.`}
             </div>
           )}

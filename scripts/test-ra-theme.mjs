@@ -17,6 +17,7 @@ const BANNED = [
   { id: 'community-researcher-header', re: /COMMUNITY RESEARCHER/i },
   { id: 'the-class-target', re: /["']the class["']/ },
   { id: 'class-banquet-label', re: /Class Banquet/ },
+  { id: 'class-wide-softening', re: /Class-wide softening/i },
   { id: 'speaks-in-class', re: /speaks (up )?in class/i },
   { id: 'the-spirit-prose', re: /\b[Tt]he spirit\b/ },
 ];

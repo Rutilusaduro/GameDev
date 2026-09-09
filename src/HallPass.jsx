@@ -1537,6 +1537,7 @@ export default function HallPass(){
     setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     const newWeek=week+1;
     setWeek(newWeek);
+    playHallPassSound('week', soundEnabled);
     const startDorm=raProfile?.dormId||raProfile?.subject;
     let effectiveUnlockedDorms=unlockedDorms||[];
     if(startDorm){
