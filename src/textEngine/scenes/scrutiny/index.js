@@ -18,7 +18,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 // Shape: SHORT SENTENCE — the administrative channel the news arrives on.
 registerPool('scrutiny.tierUp.header', [
   { when: {}, text: [
-    `An internal memo lands in your faculty inbox.`,
+    `An internal memo lands in your RA inbox.`,
     `A new notification sits in housing portal, timestamped this morning.`,
   ]},
   { when: { scrutinyTierId: 1 }, weight: 3, text: [
@@ -27,7 +27,7 @@ registerPool('scrutiny.tierUp.header', [
   ]},
   { when: { scrutinyTierId: 2 }, weight: 3, text: [
     `An email from the Dean of Academic Affairs. The subject line is three words: "Preliminary Welfare Review."`,
-    `A formal notice through the faculty channel — Office of Student Affairs letterhead.`,
+    `A formal notice through the housing channel — Office of Student Affairs letterhead.`,
   ]},
   { when: { scrutinyTierId: 3 }, weight: 3, text: [
     `A certified letter from the Provost's office arrives through campus mail.`,
@@ -47,8 +47,8 @@ registerPoolAutoDecompose('scrutiny.tierUp.body', [
     `An anonymous concern — filed through the student wellness portal, passed up the chain. Nothing actionable yet, but the paper trail has started.`,
   ]},
   { when: { scrutinyTierId: 2 }, weight: 3, text: [
-    `Your class is under a preliminary welfare review. You have two weeks to submit documentation of your pedagogical approach to student wellness. The clock is already running.`,
-    `Faculty governance has authorized a file review. No interview, not yet — but they're pulling grade records, attendance logs, and the health center check-ins. The net is widening.`,
+    `Your hall is under a preliminary welfare review. You have two weeks to submit documentation of your approach to resident wellness. The clock is already running.`,
+    `Housing governance has authorized a file review. No interview, not yet — but they're pulling incident reports, check-in logs, and the health center visits. The net is widening.`,
     `"This office has received multiple independent reports regarding the physical welfare of students in your section. A formal review period commences immediately." You read it three times.`,
   ]},
   { when: { scrutinyTierId: 3 }, weight: 3, text: [

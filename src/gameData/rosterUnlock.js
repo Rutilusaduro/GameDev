@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // ROSTER UNLOCK — passive trust, seat slots, late-game catch-up
 // ═══════════════════════════════════════════════════════════════
-import { UNLOCK_POOL_IDS } from './dorms.js';
+import { UNLOCK_POOL_IDS, getStudentHomeDorm } from './dorms.js';
 
 export const ROSTER_TRUST_GATE = 60;
 export const ROSTER_START_SLOTS = 5;
@@ -26,27 +26,42 @@ export function weeklyTrustDripAmount({ spiritLevel = 1, week = 1, rng = Math.ra
   return base + spiritBonus + weekBonus;
 }
 
-export function grantPassiveTrust(student, amount) {
+export function getStudentHomeHall(student) {
+  return student?.homeDorm || getStudentHomeDorm(student?.id) || null;
+}
+
+/** Locked pool residents only accrue trust once their home hall is unlocked. */
+export function isHallReachable(student, unlockedDorms = []) {
+  if (!student || !UNLOCK_POOL_IDS.includes(student.id)) return true;
+  const home = getStudentHomeHall(student);
+  if (!home) return true;
+  return (unlockedDorms || []).includes(home);
+}
+
+export function grantPassiveTrust(student, amount, unlockedDorms = null) {
   if (!student || student.lockState !== 'locked') return student;
+  if (unlockedDorms && !isHallReachable(student, unlockedDorms)) return student;
   const next = Math.min(100, (student.passiveTrust || 0) + amount);
   return { ...student, passiveTrust: next };
 }
 
-export function applyWeeklyTrustDrip(students, { spiritLevel = 1, week = 1, rng = Math.random } = {}) {
-  const hasLocked = students.some((s) => s.lockState === 'locked');
+export function applyWeeklyTrustDrip(students, { spiritLevel = 1, week = 1, unlockedDorms = [], rng = Math.random } = {}) {
+  const hasLocked = students.some((s) => s.lockState === 'locked' && isHallReachable(s, unlockedDorms));
   if (!hasLocked) return students;
   return students.map((s) => {
-    if (s.lockState !== 'locked') return s;
+    if (s.lockState !== 'locked' || !isHallReachable(s, unlockedDorms)) return s;
     const drip = weeklyTrustDripAmount({ spiritLevel, week, rng });
     return grantPassiveTrust(s, drip);
   });
 }
 
-export function pickRipeUnlock(students, spiritLevel = 1) {
+export function pickRipeUnlock(students, spiritLevel = 1, unlockedDorms = []) {
   const slots = getRosterSlotCount(spiritLevel);
   const openCount = countOpenPoolStudents(students);
   if (openCount >= slots) return null;
   return students
-    .filter((s) => s.lockState === 'locked' && (s.passiveTrust || 0) >= ROSTER_TRUST_GATE)
+    .filter((s) => s.lockState === 'locked'
+      && isHallReachable(s, unlockedDorms)
+      && (s.passiveTrust || 0) >= ROSTER_TRUST_GATE)
     .sort((a, b) => (b.passiveTrust || 0) - (a.passiveTrust || 0))[0] || null;
 }

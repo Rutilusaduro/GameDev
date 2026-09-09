@@ -23,7 +23,7 @@ registerPool('opposition.agenda.device_confiscation', [
 registerPool('opposition.agenda.size_review', [
   { when: {}, text: [
     'The Board demands documented weigh-ins. Every scale becomes evidence.',
-    'Class size review — they want numbers, timestamps, signatures. Mass made bureaucratic.',
+    'Floor size review — they want numbers, timestamps, signatures. Mass made bureaucratic.',
     'Vance schedules mandatory readings. Your roster becomes a spreadsheet of flesh.',
     'Compliance wants the hall weighed on record. Abundance translated into audit columns.',
   ]},
@@ -76,10 +76,10 @@ registerPool('opposition.agenda.shame_vigil', [
 
 registerPool('opposition.agenda.faculty_informant', [
   { when: {}, text: [
-    'A faculty informant briefs the Board on your hall — polite language, damning detail.',
+    'A staff informant briefs the Board on your hall — polite language, damning detail.',
     'Someone in the lounge talked. Vance\'s folder grows another confidential appendix.',
-    'Informant report filed. Your syllabus read like evidence by someone who never stayed for dessert.',
-    'Faculty testimony reaches the Board — concern shaped exactly like betrayal.',
+    'Informant report filed. Your floor notes read like evidence by someone who never stayed for dessert.',
+    'Staff testimony reaches the Board — concern shaped exactly like betrayal.',
   ]},
 ]);
 

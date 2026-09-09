@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useMemo } from 'react';
 import { C } from '../styles.js';
-import { UNLOCK_POOL_IDS } from '../gameData/dorms.js';
+import { DORM_LIST, getDorm, getStudentHomeDorm } from '../gameData/dorms.js';
 import {
   ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents,
 } from '../gameData/rosterUnlock.js';
@@ -87,6 +87,53 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn }) {
   );
 }
 
+function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
+  const open = new Set(unlockedDorms || []);
+  if (startDormId) open.add(startDormId);
+  const lockedAhead = DORM_LIST.filter((d) => !open.has(d.id) && d.unlockWeek > 0);
+  if (!lockedAhead.length) return null;
+  return (
+    <div style={{ marginBottom: 16, padding: '10px 12px', background: 'rgba(20,8,40,0.55)', border: '1px solid #2a1848', borderRadius: 8 }}>
+      <div style={{ fontSize: 10, letterSpacing: 2, color: '#8a68a8', marginBottom: 8 }}>HALL REACH — MORE FLOORS OPEN AS THE SEMESTER DEEPENS</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(140px,1fr))', gap: 8 }}>
+        {DORM_LIST.map((d) => {
+          const isOpen = open.has(d.id);
+          const weeksLeft = Math.max(0, d.unlockWeek - week);
+          const pct = d.unlockWeek <= 0 ? 100 : Math.min(100, Math.round((week / d.unlockWeek) * 100));
+          return (
+            <div
+              key={d.id}
+              style={{
+                padding: '8px 10px',
+                borderRadius: 6,
+                border: `1px solid ${isOpen ? d.color + '80' : '#2a1a48'}`,
+                background: isOpen ? d.accentSoft : 'rgba(12,6,24,0.4)',
+                opacity: isOpen ? 1 : 0.82,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
+                <span style={{ fontSize: 14 }}>{d.emoji}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: isOpen ? d.color : '#6a5888' }}>{d.shortLabel}</span>
+                {isOpen && <span style={{ fontSize: 9, color: d.color, marginLeft: 'auto' }}>OPEN</span>}
+              </div>
+              <div style={{ fontSize: 9.5, color: '#6a5088', lineHeight: 1.35 }}>
+                {isOpen
+                  ? d.label
+                  : (weeksLeft > 0 ? `Week ${d.unlockWeek} · ${weeksLeft} wk left` : `Unlocks week ${d.unlockWeek}`)}
+              </div>
+              {!isOpen && d.unlockWeek > 0 && (
+                <div style={{ height: 3, background: '#1a0e30', borderRadius: 2, marginTop: 6, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${pct}%`, background: d.color, transition: 'width 0.3s' }} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function ClassView({
   view,
   students,
@@ -97,6 +144,8 @@ export function ClassView({
   setSelectedId,
   setView,
   week = 1,
+  unlockedDorms = [],
+  startDormId = null,
   onAmends,
   onOpenStudent,
 }) {
@@ -106,10 +155,16 @@ export function ClassView({
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
   const classmateWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
   const locked = students.filter(isLocked).sort((a, b) => (b.passiveTrust || 0) - (a.passiveTrust || 0));
+  const openHallSet = new Set([...(unlockedDorms || []), startDormId].filter(Boolean));
+  const hallReachable = (s) => {
+    const home = getStudentHomeDorm(s.id);
+    return !home || openHallSet.has(home);
+  };
   return (
     <>
       {view === 'class' && (
         <div>
+          <DormUnlockProgress unlockedDorms={unlockedDorms} startDormId={startDormId} week={week} />
           <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
@@ -121,23 +176,36 @@ export function ClassView({
               <p style={C.secT}>Other halls — {locked.length} residents out of reach</p>
               <div style={{ fontSize: 11, color: '#6a5088', marginBottom: 10, lineHeight: 1.55 }}>
                 Hall reach grants <strong style={{ color: '#a880d0' }}>{rosterSlots}</strong> roster doors ({openCount} open).
-                Each week, one locked resident with <strong style={{ color: '#a880d0' }}>{ROSTER_TRUST_GATE}+</strong> passive trust opens when a slot is free.
+                Each week, one locked resident with <strong style={{ color: '#a880d0' }}>{ROSTER_TRUST_GATE}+</strong> passive trust opens when a slot is free — once their hall is unlocked.
                 Trust rises faster as your influence and the semester deepen — campus sightings help too.
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(150px,1fr))', gap: 7 }}>
                 {locked.map((s) => {
                   const trust = s.passiveTrust || 0;
-                  const pct = Math.min(100, Math.round((trust / ROSTER_TRUST_GATE) * 100));
+                  const home = getStudentHomeDorm(s.id);
+                  const dorm = home ? getDorm(home) : null;
+                  const reachable = hallReachable(s);
                   return (
-                    <div key={s.id} style={{ ...C.card, cursor: 'default', opacity: 0.72, border: '1px dashed #2a1a48' }}>
+                    <div key={s.id} style={{ ...C.card, cursor: 'default', opacity: reachable ? 0.72 : 0.5, border: '1px dashed #2a1a48' }}>
                       <div style={{ fontWeight: 700, fontSize: 13, color: '#6a5a88' }}>{s.name}</div>
-                      <div style={{ fontSize: 10, color: '#50406a', marginBottom: 5 }}>{s.role || s.archetype}</div>
-                      <Bar val={trust} max={ROSTER_TRUST_GATE} color="#5a3aa0" />
-                      <div style={{ fontSize: 9.5, color: '#50406a', marginTop: 3, fontStyle: 'italic' }}>
-                        {trust >= ROSTER_TRUST_GATE
-                          ? (openCount < rosterSlots ? 'ready — waiting for a seat' : 'ready — roster full')
-                          : `${trust}/${ROSTER_TRUST_GATE} trust`}
+                      <div style={{ fontSize: 10, color: '#50406a', marginBottom: 5 }}>
+                        {s.role || s.archetype}
+                        {dorm && <span style={{ color: dorm.color }}> · {dorm.shortLabel}</span>}
                       </div>
+                      {reachable ? (
+                        <>
+                          <Bar val={trust} max={ROSTER_TRUST_GATE} color="#5a3aa0" />
+                          <div style={{ fontSize: 9.5, color: '#50406a', marginTop: 3, fontStyle: 'italic' }}>
+                            {trust >= ROSTER_TRUST_GATE
+                              ? (openCount < rosterSlots ? 'ready — waiting for a seat' : 'ready — roster full')
+                              : `${trust}/${ROSTER_TRUST_GATE} trust`}
+                          </div>
+                        </>
+                      ) : (
+                        <div style={{ fontSize: 9.5, color: '#50406a', fontStyle: 'italic', lineHeight: 1.4 }}>
+                          {dorm ? `${dorm.label} opens week ${dorm.unlockWeek}` : 'Hall locked'}
+                        </div>
+                      )}
                     </div>
                   );
                 })}

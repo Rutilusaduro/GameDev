@@ -95,7 +95,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
               <div style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
                 <SceneBackdrop variant="campus" height={40} />
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-                  <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S CLASSROOM</div>
+                  <div style={{fontSize:9,letterSpacing:3,color:warmDim}}>🍪 DAISY'S HALL KITCHEN</div>
                   <div style={{display:"flex",gap:4,marginLeft:"auto",alignItems:"center"}}>
                     <div style={{fontSize:9,color:warmDim,marginRight:3}}>AP</div>
                     {apDots.map((filled,i)=>(
@@ -161,7 +161,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                   <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={advanceHomeroomActivityPhase}>Continue →</button>
                 )}
                 {done&&(
-                  <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={dismissHomeroomActivity}>← Back to Classroom</button>
+                  <button style={{...C.btn(warmAccent),width:"100%",marginTop:4}} onClick={dismissHomeroomActivity}>← Back to Hall</button>
                 )}
               </div>
             </div>
@@ -173,7 +173,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
             <div style={{...C.modal,maxWidth:640,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"90vh",overflowY:"auto"}}>
               {/* Header */}
               <div style={{display:"flex",alignItems:"center",marginBottom:14}}>
-                <div style={{fontSize:9,letterSpacing:4,color:warmAccent}}>🍪 DAISY'S CLASSROOM</div>
+                <div style={{fontSize:9,letterSpacing:4,color:warmAccent}}>🍪 DAISY'S HALL KITCHEN</div>
                 <div style={{display:"flex",gap:5,marginLeft:"auto",alignItems:"center"}}>
                   <div style={{fontSize:9,color:warmDim,marginRight:3}}>AP</div>
                   {apDots.map((filled,i)=>(

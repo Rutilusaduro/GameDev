@@ -18,7 +18,7 @@ import {
 export const AIB_MEMBERS = [
   { id: 'vance', name: 'Dr. Helena Vance', role: 'Chair, Dean of Student Life', resolve: 85, corruption: 0, weightLbs: 145, stance: 'hostile' },
   { id: 'orr', name: 'Martin Orr', role: 'Compliance Officer', resolve: 70, corruption: 0, weightLbs: 162, stance: 'hostile' },
-  { id: 'jin', name: 'Dr. Priya Jin', role: 'Faculty Senate', resolve: 60, corruption: 0, weightLbs: 138, stance: 'hostile' },
+  { id: 'jin', name: 'Dr. Priya Jin', role: 'Housing Council', resolve: 60, corruption: 0, weightLbs: 138, stance: 'hostile' },
   { id: 'washburn', name: 'Coach Dana Washburn', role: 'Athletics Liaison', resolve: 75, corruption: 0, weightLbs: 178, stance: 'hostile' },
   { id: 'platt', name: 'Ms. Evelyn Platt', role: 'Registrar Proxy', resolve: 65, corruption: 0, weightLbs: 152, stance: 'hostile' },
 ];
@@ -32,13 +32,13 @@ export const ROTATING_ADVOCATES = [
 export const AIB_AGENDA_CARDS = [
   { id: 'wellness_audit', minScrutiny: 50, label: 'Wellness Audit', scrutiny: 8, message: '📋 AIB wellness audit — a student is flagged for assessment.', effect: 'wellness_audit' },
   { id: 'device_confiscation', minScrutiny: 60, label: 'Device Confiscation', scrutiny: 10, message: '🔧 Compliance confiscates a lab device for review.', effect: 'device_confiscation' },
-  { id: 'size_review', minScrutiny: 55, label: 'Class Size Review', scrutiny: 9, message: '⚖️ Board demands documented weigh-ins for the class.', effect: 'size_review' },
+  { id: 'size_review', minScrutiny: 55, label: 'Floor Size Review', scrutiny: 9, message: '⚖️ Board demands documented weigh-ins for the hall.', effect: 'size_review' },
   { id: 'wellness_seminar', minScrutiny: 50, label: 'Wellness Seminar', scrutiny: 6, message: '📢 Mandatory wellness seminar dampens campus appetite.', effect: 'wellness_seminar' },
   { id: 'budget_freeze', minScrutiny: 75, label: 'Budget Freeze', scrutiny: 5, money: -200, message: '💸 Department budget frozen pending review.', effect: 'budget_freeze' },
   { id: 'removal_hearing', minScrutiny: 90, label: 'Removal Hearing', scrutiny: 12, message: '⚠️ Student removal hearing opened.', effect: 'removal_hearing' },
   { id: 'mandatory_fitness', minScrutiny: 40, label: 'Mandatory Fitness', scrutiny: 5, message: '🏃 Wellness Coalition orders fitness assessments.', effect: 'mandatory_fitness', proxy: 'wellnessCoalition' },
-  { id: 'shame_vigil', minScrutiny: 45, label: 'Shame Vigil', scrutiny: 7, message: '🕯️ Ascetic Circle vigil — shame ripples through the class.', effect: 'shame_vigil', proxy: 'asceticCircle' },
-  { id: 'faculty_informant', minScrutiny: 55, label: 'Faculty Informant', scrutiny: 4, message: '📝 Faculty informant briefs the Board on your class.', effect: 'faculty_informant' },
+  { id: 'shame_vigil', minScrutiny: 45, label: 'Shame Vigil', scrutiny: 7, message: '🕯️ Ascetic Circle vigil — shame ripples through the hall.', effect: 'shame_vigil', proxy: 'asceticCircle' },
+  { id: 'faculty_informant', minScrutiny: 55, label: 'Staff Informant', scrutiny: 4, message: '📝 Staff informant briefs the Board on your hall.', effect: 'faculty_informant' },
   { id: 'student_advocacy', minScrutiny: 35, label: 'Student Advocacy Session', scrutiny: 4, message: '📣 Rotating advocate schedules a student voice session.', effect: 'student_advocacy' },
 ];
 
@@ -49,7 +49,7 @@ export const AIB_COUNTERS = [
   { id: 'spirit_pressure', label: 'Floor Pressure', ap: 1, resolveHit: 8, scrutiny: -3, desc: 'Force the top agenda card to misfire harmlessly.' },
   { id: 'evolved_student_op', label: 'Evolved Student Operation', ap: 2, resolveHit: 0, scrutiny: -5, desc: 'An evolved student delays the top agenda card one week.' },
   { id: 'machine_fatten', label: 'Machine Fattening', ap: 2, resolveHit: 12, scrutiny: 5, desc: 'Growth chamber targets a board member (+lbs, −resolve, scandal risk).' },
-  { id: 'faculty_testimony', label: 'Faculty Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Faculty ally cancels informant effects for two weeks.' },
+  { id: 'faculty_testimony', label: 'Staff Testimony', ap: 1, resolveHit: 0, scrutiny: -4, desc: 'Staff ally cancels informant effects for two weeks.' },
   { id: 'lilith_hunt', label: 'Lilith AIB Hunt', ap: 1, resolveHit: 20, scrutiny: -15, desc: 'Mark a board member for Lilith\'s hunt map (difficulty 4).', path: 'lilith' },
   { id: 'compound_seduction', label: 'Compound Seduction', ap: 2, resolveHit: 8, scrutiny: -6, desc: 'Sophia seduces staff lounge intel — slows scrutiny.', path: 'pharmacist' },
   { id: 'network_misdirect', label: 'Network Misdirect', ap: 1, resolveHit: 0, scrutiny: -5, desc: 'Lab network buries scandal traces — detection risk on fail.', path: 'network' },

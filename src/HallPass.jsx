@@ -27,7 +27,7 @@ import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { RaSetupWizard } from './components/RaSetupWizard.jsx';
 import { createCustomStudent, CUSTOM_STUDENT_ID } from './gameData/customStudent/index.js';
 import {
-  UNLOCK_POOL_IDS, getDorm, getLockedDormStudentIds, dormUnlocksForWeek, DORMS,
+  UNLOCK_POOL_IDS, getDorm, getLockedDormStudentIds, getStudentHomeDorm, dormUnlocksForWeek, DORMS,
 } from './gameData/dorms.js';
 import {
   RA_APPROACHES, FAVOR_MAX, FAVOR_REBATE, favorFill,
@@ -835,10 +835,11 @@ export default function HallPass(){
       if(seat.custom) return {...seat, lockState:'open', homeDorm:hallDef.id};
       s = seat;
       if(!UNLOCK_POOL_IDS.includes(s.id)) return s;
+      const homeDorm=getStudentHomeDorm(s.id);
       const lockedIds=getLockedDormStudentIds([hallDef.id]);
-      if(lockedIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
-      if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0};
-      let ns={...s, lockState:'open'};
+      if(lockedIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0, homeDorm};
+      if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0, homeDorm};
+      let ns={...s, lockState:'open', homeDorm};
       if(mods.corruption) ns.corruption=(ns.corruption||0)+mods.corruption;
       if(mods.relationship) ns.relationship=Math.min(100,(ns.relationship||0)+mods.relationship);
       if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
@@ -951,7 +952,7 @@ export default function HallPass(){
     const result=buyClassSkill(skillId,ownedClassSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedClassSkills(result.owned);
-    push(`🏛️ Classroom upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
+    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
   };
 
   const grantExplorationReward=(grants)=>{
@@ -1535,10 +1536,12 @@ export default function HallPass(){
     const newWeek=week+1;
     setWeek(newWeek);
     const startDorm=raProfile?.dormId||raProfile?.subject;
+    let effectiveUnlockedDorms=unlockedDorms||[];
     if(startDorm){
-      const newly=dormUnlocksForWeek(newWeek,startDorm).filter((id)=>(unlockedDorms||[]).indexOf(id)<0);
+      const newly=dormUnlocksForWeek(newWeek,startDorm).filter((id)=>effectiveUnlockedDorms.indexOf(id)<0);
       if(newly.length){
-        setUnlockedDorms((prev)=>[...(prev||[]),...newly]);
+        effectiveUnlockedDorms=[...effectiveUnlockedDorms,...newly];
+        setUnlockedDorms(effectiveUnlockedDorms);
         newly.forEach((id)=>{
           const d=getDorm(id);
           if(d) push(`🔓 ${d.label} unlocked — residents from ${d.shortLabel} hall may appear on your roster.`);
@@ -2052,8 +2055,8 @@ export default function HallPass(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     // ── ROSTER UNLOCK ─ spirit reach (slots) + passive trust (queue) ──
-    updated = applyWeeklyTrustDrip(updated, { spiritLevel, week, rng: Math.random });
-    const ripe = pickRipeUnlock(updated, spiritLevel);
+    updated = applyWeeklyTrustDrip(updated, { spiritLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
+    const ripe = pickRipeUnlock(updated, spiritLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? { ...s, lockState: 'open' } : s));
       const scene = getUnlockScene(ripe.id) || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
@@ -2963,7 +2966,7 @@ export default function HallPass(){
         if(st.id!==daisyStudentId) return st;
         return processStudentGain(st,daisyGain,relAccum);
       }));
-      if(daisyGain>0) push(`✦ Daisy — Classroom Session: +${daisyGain} lbs · +${relAccum} rel`);
+      if(daisyGain>0) push(`✦ Daisy — Hall Kitchen Session: +${daisyGain} lbs · +${relAccum} rel`);
     }
     if(classGainAccum>0||momGainAccum>0||suspDeltaAccum!==0){
       setBatchBakerState(prev=>{
@@ -8549,7 +8552,7 @@ export default function HallPass(){
         <div style={C.main}>
 
           {/* ── CLASS VIEW ── */}
-          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
+          {view==="class"&&<ClassView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} spiritLevel={spiritLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
