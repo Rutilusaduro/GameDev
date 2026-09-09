@@ -6616,6 +6616,7 @@ export default function HallPass(){
 
 
   const startClass=()=>{
+    playHallPassSound('click', soundEnabled);
     const scenes=generateClassSession(students.filter(studentReceivesPassiveGain),week);
     if(!scenes.length){advanceWeek();return;}
     setClassSession({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
@@ -6669,6 +6670,7 @@ export default function HallPass(){
   };
 
   const finishClass=()=>{
+    playHallPassSound('confirm', soundEnabled);
     const{outcomes}=classSession;
     setSemesterData(prev=>({
       weeksCompleted:prev.weeksCompleted+1,

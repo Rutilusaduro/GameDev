@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
 import { C } from '../styles.js';
+import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { DORM_LIST } from '../gameData/dorms.js';
 import { RA_APPROACH_LIST } from '../gameData/raApproaches.js';
 import { CustomStudentWizard } from './CustomStudentWizard.jsx';
@@ -17,6 +18,11 @@ const RA_PORTRAIT = {
   hair: '#c44a2a',
   skin: '#f5d0b8',
   top: '#8b1a4a',
+};
+
+const clickSound = (fn) => () => {
+  playHallPassSound('click');
+  fn();
 };
 
 export function RaSetupWizard({ students, onComplete }) {
@@ -108,7 +114,7 @@ export function RaSetupWizard({ students, onComplete }) {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button onClick={() => setStep('approach')} style={{ ...C.btn(accent), fontSize: 14, padding: '12px 36px' }}>
+              <button onClick={clickSound(() => setStep('approach'))} style={{ ...C.btn(accent), fontSize: 14, padding: '12px 36px' }}>
                 Meet the RA →
               </button>
             </div>
@@ -127,7 +133,7 @@ export function RaSetupWizard({ students, onComplete }) {
               {RA_APPROACH_LIST.map((ap) => {
                 const on = approach?.id === ap.id;
                 return (
-                  <button key={ap.id} onClick={() => setApproach(ap)}
+                  <button key={ap.id} onClick={clickSound(() => setApproach(ap))}
                     className="ra-wizard-card"
                     style={{
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
@@ -142,8 +148,8 @@ export function RaSetupWizard({ students, onComplete }) {
               })}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
-              <button onClick={() => setStep('intro')} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
-              <button disabled={!approach} onClick={() => setStep('dorm')}
+              <button onClick={clickSound(() => setStep('intro'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
+              <button disabled={!approach} onClick={clickSound(() => setStep('dorm'))}
                 style={{ ...C.btn(accent), opacity: approach ? 1 : 0.4, fontSize: 14, padding: '11px 28px' }}>
                 Choose your hall →
               </button>
@@ -167,7 +173,7 @@ export function RaSetupWizard({ students, onComplete }) {
                   .filter(Boolean)
                   .join(', ');
                 return (
-                  <button key={d.id} onClick={() => setDorm(d)}
+                  <button key={d.id} onClick={clickSound(() => setDorm(d))}
                     className="ra-wizard-card"
                     style={{
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
@@ -188,8 +194,8 @@ export function RaSetupWizard({ students, onComplete }) {
               })}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
-              <button onClick={() => setStep('approach')} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
-              <button disabled={!dorm} onClick={() => setStep('suitemate')}
+              <button onClick={clickSound(() => setStep('approach'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
+              <button disabled={!dorm} onClick={clickSound(() => setStep('suitemate'))}
                 style={{ ...C.btn(accent), opacity: dorm ? 1 : 0.4, fontSize: 14, padding: '11px 30px' }}>
                 Add a suitemate →
               </button>
