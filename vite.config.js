@@ -10,9 +10,9 @@ export default defineConfig({
       workbox: { maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 },
       includeAssets: ["favicon.ico", "icon.svg", "apple-touch-icon-180x180.png"],
       manifest: {
-        name: "Professor's Quarters",
-        short_name: "Prof Sim",
-        description: "A weight management simulation",
+        name: "Hall Pass",
+        short_name: "Hall Pass",
+        description: "RA dorm life sim — pick your hall, guide your residents, unlock new floors as the semester deepens.",
         theme_color: "#070510",
         background_color: "#070510",
         display: "standalone",

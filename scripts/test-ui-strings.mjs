@@ -34,6 +34,13 @@ assert(
 assert(hallPass.includes('RA DESK'), 'header must say RA DESK');
 assertClean(hallPass, 'HallPass.jsx');
 
+const viteConfig = readFileSync('vite.config.js', 'utf8');
+assert(viteConfig.includes('name: "Hall Pass"'), 'PWA manifest name must be Hall Pass');
+assert(!/Professor's Quarters|Prof Sim/i.test(viteConfig), 'PWA manifest must not reference Professor Sim');
+
+const indexHtml = readFileSync('index.html', 'utf8');
+assert(indexHtml.includes('<title>Hall Pass</title>'), 'index.html title must be Hall Pass');
+
 const wizard = readFileSync('src/components/RaSetupWizard.jsx', 'utf8');
 assert(wizard.includes('Hall Pass'), 'setup wizard title must be Hall Pass');
 assert(wizard.includes('RESIDENCE LIFE SIMULATOR'), 'setup wizard genre tag required');

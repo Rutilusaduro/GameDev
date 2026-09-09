@@ -5,8 +5,14 @@ import { CLASS_SCENES } from '../src/gameData/classEvents.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
+import { DORM_LIST } from '../src/gameData/dorms.js';
+import { THESIS_BOARD, CASE_STUDY_PAIRS } from '../src/gameData/communityResearcher.js';
+import { EVOLVED_OUTFITS } from '../src/gameData/evolvedForms.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
+import { render } from '../src/textEngine/engine.js';
+import { buildTextContext } from '../src/gameData/textContext.js';
+import '../src/textEngine/scenes/opposition/agendaCards.js';
 
 const BANNED = [
   /\bProfessor Sim\b/i,
@@ -22,6 +28,9 @@ const BANNED = [
   /\bIRB Approval\b/i,
   /\bPresent Thesis\b/i,
   /\byour students\b/i,
+  /\bProfessor's Quarters\b/i,
+  /\bProf Sim\b/i,
+  /\bProfessor Sim\b/i,
 ];
 
 function assertClean(text, label) {
@@ -64,4 +73,32 @@ const floorResult = renderClassChoiceResult(floorScene, 0, floorStudent, 4);
 assertClean(floorText, 'floor check-in scene render');
 assertClean(floorResult, 'floor check-in choice render');
 
-console.log('prose-coherence: narrative titles, class scenes, unlock scenes, weekly beats OK');
+for (const dorm of DORM_LIST) {
+  assertClean(`${dorm.label} ${dorm.hook} ${dorm.tagline}`, `dorm ${dorm.id}`);
+}
+
+for (const phase of THESIS_BOARD.phases) {
+  assertClean(phase('Cassidy'), 'Cassidy season plan board phase');
+}
+
+for (const outfit of EVOLVED_OUTFITS.community_researcher || []) {
+  assertClean(outfit, 'Cassidy evolved outfit blurb');
+}
+
+for (const pair of CASE_STUDY_PAIRS) {
+  assertClean(`${pair.label} ${pair.subtitle}`, `case study ${pair.id}`);
+  const sample = pair.event?.(0, 1, INIT_STUDENTS.slice(0, 2));
+  if (sample) assertClean(sample, `case study event ${pair.id}`);
+}
+
+const agendaIds = [
+  'wellness_audit', 'device_confiscation', 'size_review',
+  'wellness_seminar', 'budget_freeze', 'faculty_informant',
+];
+const oppCtx = buildTextContext({ subject: swimmer, week: 10 });
+for (const id of agendaIds) {
+  const line = render(`{opposition.agenda.${id}}`, oppCtx)?.trim();
+  if (line) assertClean(line, `opposition agenda ${id}`);
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition OK');

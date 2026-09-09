@@ -126,6 +126,8 @@ const BANNED = [
   { id: 'wide-academic-wear', re: /Wide-cut academic wear/i },
   { id: 'wide-academic-layers', re: /Wide academic layers/i },
   { id: 'academic-pivot-title', re: /Academic Pivot/i },
+  { id: 'professors-quarters-pwa', re: /Professor's Quarters/i },
+  { id: 'prof-sim-short-name', re: /Prof Sim/i },
 ];
 
 const ALLOW_LINE = [
