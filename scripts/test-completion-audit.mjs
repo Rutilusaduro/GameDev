@@ -158,6 +158,8 @@ const REQUIRED_E2E = [
   'e2e/evolved-cg-arc.spec.js',
   'e2e/evolved-homeroom-arc.spec.js',
   'e2e/evolved-hostess-arc.spec.js',
+  'e2e/evolved-lane-captain-arc.spec.js',
+  'e2e/evolved-cultivator-arc.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 

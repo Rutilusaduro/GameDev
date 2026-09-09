@@ -14,6 +14,7 @@ import { dormUnlocksForWeek } from '../gameData/dorms.js';
 import { defaultSalonState } from '../gameData/chloeSalon.js';
 import { defaultGalleryState } from '../gameData/fionaGallery.js';
 import { SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../gameData/chapterHostess.js';
+import { TESTER_START_LBS } from '../gameData/cultivator.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
@@ -58,6 +59,8 @@ export function DebugPanel({
   setGalleryState,
   setCompetitiveGainerState,
   setChapterHostessState,
+  setCommunityResearcherState,
+  setCultivatorState,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -328,6 +331,69 @@ export function DebugPanel({
                       setView('student');
                     }}>
                     ✦ Hostess Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(50,80,140,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 1
+                          ? { ...s, evolvedForm: 'community_researcher', lbs: 200, relationship: 60, mood: 'focused' }
+                          : s
+                      )));
+                      setCommunityResearcherState?.({
+                        thesisComplete: false,
+                        boardPhase: 0,
+                        caseStudyStage: 0,
+                        lastPairId: null,
+                        pairsUsed: [],
+                        modalPhase: null,
+                        activePairId: null,
+                        eventText: null,
+                        totalSuspicion: 0,
+                        boardReactionPairId: null,
+                        chatMemberIdx: 0,
+                        chatPhaseIdx: 0,
+                        chatHistory: [],
+                        chatWon: [],
+                        thesisApproved: false,
+                        thesisRejected: false,
+                        finalReviewText: null,
+                      });
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(1);
+                      setView('student');
+                    }}>
+                    🏊 Lane Captain Arc QA
+                  </button>
+                  <button type="button" style={{ ...C.smBtn, background: 'rgba(100,50,20,0.55)' }}
+                    onClick={() => {
+                      setStudents((prev) => prev.map((s) => (
+                        s.id === 10
+                          ? { ...s, evolvedForm: 'cultivator', lbs: 200, relationship: 60, mood: 'focused' }
+                          : s
+                      )));
+                      setCultivatorState?.({
+                        testerName: null,
+                        testerStageId: 6,
+                        testerLbs: TESTER_START_LBS,
+                        fatBar: 0,
+                        suspicion: 0,
+                        harvestsCompleted: 0,
+                        usedNames: [],
+                        modalPhase: null,
+                        session: null,
+                        pendingStageUp: false,
+                        harvestType: null,
+                        harvestVignetteText: null,
+                        growthGain: 0,
+                        growthVignetteText: null,
+                        digestWeeksLeft: 0,
+                        digestTotalWeeks: 0,
+                      });
+                      setAp((a) => Math.max(a, 20));
+                      setSelectedId(10);
+                      setView('student');
+                    }}>
+                    🍰 Cultivator Arc QA
                   </button>
                 </>
               )}
