@@ -56,7 +56,10 @@ export function WeekRecapModal({ weekRecap, onClose, onSelectGirl, soundEnabled 
         }}
       >
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>THE WEEK IN REVIEW</div>
-        <div style={{ fontSize: 15, fontWeight: 700, color: '#c090e8', marginBottom: 2 }}>Week {week} — what the week made of them</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 2, flexWrap: 'wrap' }}>
+          <span className="week-recap-week-badge">Wk {week}</span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: '#c090e8' }}>What the week made of them</span>
+        </div>
         <div style={{ fontSize: 11, color: '#5a3888', marginBottom: 12 }}>
           {totalCards} {totalCards === 1 ? 'card' : 'cards'} from this week&apos;s ledger.
         </div>

@@ -146,6 +146,7 @@ check('ui-polish-css', () => {
     'roster-tile-in', 'week-recap-card-in', 'hall-roadmap-card', 'ra-desk-action-btn',
     'ra-desk-week-tick', 'scene-beat-advance', 'scene-choice-btn',
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
+    'floor-checkin-choice', 'week-recap-week-badge',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }

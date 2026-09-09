@@ -7869,7 +7869,7 @@ export default function HallPass(){
         );
       })()}
 
-{/* CLASS SESSION MODAL */}
+{/* FLOOR CHECK-IN MODAL */}
       {classSession&&(()=>{
         const{scenes,sceneIdx,outcomes,pendingResult}=classSession;
         const isDone=sceneIdx>=scenes.length&&!pendingResult;
@@ -7932,7 +7932,7 @@ export default function HallPass(){
                     <div style={C.secT}>How do you respond?</div>
                     <div style={{display:"flex",flexDirection:"column",gap:8}}>
                       {scene.choices.map((ch,i)=>(
-                        <div key={i} style={{...C.card,cursor:"pointer"}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}>
+                        <div key={i} className="floor-checkin-choice" style={{...C.card,cursor:"pointer"}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}>
                           <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{ch.label}</div>
                           {(ch.effect.gain?.[1]>0||ch.effect.rel||ch.effect.mood)&&(
                             <div style={{fontSize:10,color:"#7a5040"}}>

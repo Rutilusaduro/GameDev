@@ -66,7 +66,12 @@
 }
 
 .hall-pass-nav-btn {
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.1s ease, box-shadow 0.18s ease;
+}
+
+.hall-pass-nav-btn[data-active="true"] {
+  background: linear-gradient(180deg, rgba(100, 40, 180, 0.22), rgba(60, 20, 120, 0.14));
+  box-shadow: 0 -2px 0 0 currentColor, 0 0 14px rgba(160, 80, 240, 0.18);
 }
 
 .hall-pass-nav-btn:hover:not([data-active="true"]) {
@@ -76,6 +81,37 @@
 
 .hall-pass-nav-btn:active {
   transform: scale(0.98);
+}
+
+.floor-checkin-choice {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, filter 0.18s ease;
+  border: 1px solid rgba(120, 60, 200, 0.28) !important;
+}
+
+.floor-checkin-choice:hover {
+  transform: translateX(3px);
+  filter: brightness(1.06);
+  border-color: rgba(180, 120, 255, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(160, 80, 240, 0.12);
+}
+
+.floor-checkin-choice:active {
+  transform: translateX(1px) scale(0.995);
+}
+
+.week-recap-week-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f0e4ff;
+  background: linear-gradient(135deg, rgba(120, 50, 200, 0.55), rgba(70, 25, 140, 0.65));
+  border: 1px solid rgba(200, 150, 255, 0.35);
+  box-shadow: 0 0 12px rgba(140, 60, 220, 0.2);
 }
 
 .roster-tile:active {
@@ -249,6 +285,7 @@
   .roster-tile-in,
   .week-recap-card-in,
   .hall-pass-nav-btn,
+  .floor-checkin-choice,
   .hall-unlock-new,
   .hall-log-entry,
   .hall-pass-modal-in,
@@ -272,6 +309,7 @@
   .hall-roadmap-card:hover,
   .roster-locked-tile:hover,
   .ra-desk-action-btn:hover:not(:disabled),
+  .floor-checkin-choice:hover,
   .scene-beat-advance:hover,
   .scene-choice-btn:hover:not(:disabled),
   .hall-unlock-cta:hover,
