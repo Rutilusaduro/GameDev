@@ -21,6 +21,7 @@ import { defaultLabState, defaultDeviceInventory } from '../gameData/talia.js';
 import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { INNER_CIRCLE_TIERS, TIER_SCENES } from '../gameData/sessions.js';
+import { EVOLUTION_OFFER } from '../gameData/evolvedForms.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 if (typeof window !== 'undefined' && import.meta.env.DEV) {
@@ -75,6 +76,7 @@ export function DebugPanel({
   setTierUpModal,
   setHungerInterrupt,
   setAscensionCeremony,
+  setEvolutionModal,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -272,6 +274,26 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   📊 Presentation QA
+                </button>
+              )}
+              {setEvolutionModal && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(50,20,90,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 220, relationship: 65, startLbs: 130 };
+                    const offer = EVOLUTION_OFFER[subject.archetype] || EVOLUTION_OFFER.swimmer;
+                    const archPaths = offer.paths;
+                    setEvolutionModal({
+                      student: subject,
+                      intro: offer.intro(subject),
+                      paths: Object.keys(archPaths).map((k) => ({
+                        id: k,
+                        label: archPaths[k].label,
+                        desc: archPaths[k].desc,
+                      })),
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  ✦ Evolution QA
                 </button>
               )}
               {setTierUpModal && (

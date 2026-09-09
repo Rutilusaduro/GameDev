@@ -37,7 +37,7 @@ import { canViewEchoArchive } from '../gameData/v2/bodyEcho.js';
 import { hasOwnedSkill } from '../gameData/skillTrees.js';
 import { useEffect, useState } from 'react';
 
-export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedHallSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen, soundEnabled = true }){
+export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openDream, openEchoReplay, v2State, ownedSkills, ownedHallSkills, onEchoResonate, ap, chapterHostessState, communityResearcherState, cultivatorState, pharmacistState, labState, deviceInventory, player, runPharmacistSynthesis, runPharmacistCultDistribution, runLabSession, openLabView, openNetworkView, openNetworkControl, openEquipModal, runDeviceAction, unequipDeviceSlot, doEvolvedActivity, runArrivalCapstone, runImmobilityArrival, runImmobilityRefit, runComfortMilestone, runConfirmCourtPreference, runBrokeredVisit, doSingle, effectiveSingleActions, lilithKillCount, lilithUnlocked, openCaseStudyGrid, openCultivatorHarvest, openCultivatorRecruit, openDigestCheck, openEvolutionModal, openFeastPrep, openFinalReview, openIntimacySelector, openLilithHunt, openThesisBoard, startCommunityResearcherPanelReview, purchaseEvolvedSkill, openDestinySpend, fireAscensionAbility, openAscensionCeremony, sel, sessionHistory, setChapterHostessState, setNadiaNotesState, setStudents, setSubjectJournalState, setView, startCultivatorSession, startPrivateSession, startRecordingSession, startStream, students, week, salonState, galleryState, dossierOpen, setDossierOpen, soundEnabled = true }){
             const s=sel;
             const st=getStage(s.lbs);
             const [showDossier, setShowDossier] = useState(!!dossierOpen);
@@ -625,6 +625,9 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                                   <div style={{color:"#6080a0",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>
                                     The season plan is drafted. Walk her through the athletics panel review.
                                   </div>
+                                  <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1,marginBottom:10}} onClick={()=>startCommunityResearcherPanelReview?.(s)}>
+                                    📊 Athletics Panel Review (1 AP)
+                                  </button>
                                   {allDone?(
                                     crs.thesisApproved?(
                                       <div style={{color:"#6aaa80",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>Season Plan Approved ✓</div>

@@ -257,6 +257,12 @@ export async function triggerAscensionQA(page) {
   await page.getByRole('button', { name: /Ascension QA/ }).click();
 }
 
+/** Debug: open evolution offer modal for Cassidy swimmer arc. */
+export async function triggerEvolutionQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Evolution QA/ }).click();
+}
+
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
   await page.getByRole('button', { name: '📋 Roster' }).click();
