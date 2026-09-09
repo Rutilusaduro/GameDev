@@ -11,8 +11,9 @@ import {
 import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { CLASS_SCENES } from '../src/gameData/classEvents.js';
+import { STAGE_DROP_REACTIONS } from '../src/gameData/content.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
-import { renderClassSceneText } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
+import { renderClassSceneText, renderClassChoiceResult } from '../src/textEngine/scenes/campusEvent/classIntegration.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
 import '../src/textEngine/scenes/opposition/oppositionSceneDepth.js';
@@ -38,9 +39,42 @@ const BANNED = [
 
 function assertClean(text, label) {
   if (!text || typeof text !== 'string') return;
+  assert(!/\[placeholder/i.test(text), `${label} must not contain placeholder prose: ${text.slice(0, 100)}`);
   for (const re of BANNED) {
     assert(!re.test(text), `${label} must not match ${re}: ${text.slice(0, 100)}`);
   }
+}
+
+function mockStudentForScene(scene) {
+  const lbsByScene = {
+    stage_early: 125,
+    stage_mid: 180,
+    stage_heavy: 250,
+  };
+  const moodFromId = scene.id?.startsWith('mood_') ? scene.id.slice(5) : null;
+  if (scene.filter) {
+    for (const s of INIT_STUDENTS) {
+      const mock = {
+        ...s,
+        lockState: 'open',
+        passiveTrust: 50,
+        lbs: lbsByScene[scene.id] ?? 180,
+        mood: moodFromId || s.mood || 'content',
+      };
+      try {
+        if (scene.filter(mock)) return mock;
+      } catch {
+        // skip invalid filter combos
+      }
+    }
+  }
+  return {
+    ...INIT_STUDENTS[0],
+    lockState: 'open',
+    passiveTrust: 50,
+    lbs: 180,
+    mood: moodFromId || INIT_STUDENTS[0].mood || 'content',
+  };
 }
 
 function cumulativeUnlocked(startDorm, week) {
@@ -89,11 +123,18 @@ for (const startDorm of START_DORMS) {
     }
 
     if (MILESTONE_WEEKS.includes(week)) {
-      const floorScene = CLASS_SCENES.find((s) => s.id === 'class_potluck');
       const homeResident = roster.find((s) => s.homeDorm === startDorm && s.lockState === 'open');
       assert(homeResident, `${startDorm} needs open home resident at wk${week}`);
-      const floorText = renderClassSceneText(floorScene, homeResident, week);
-      assertClean(floorText, `${startDorm} wk${week} floor check-in`);
+
+      for (const scene of CLASS_SCENES) {
+        const subject = scene.target === 'class' ? homeResident : mockStudentForScene(scene);
+        const sceneText = renderClassSceneText(scene, subject, week);
+        assertClean(sceneText, `${startDorm} wk${week} scene ${scene.id}`);
+        scene.choices?.forEach((_, idx) => {
+          const choiceText = renderClassChoiceResult(scene, idx, subject, week);
+          assertClean(choiceText, `${startDorm} wk${week} scene ${scene.id} choice ${idx}`);
+        });
+      }
 
       for (const s of roster.filter((r) => r.lockState === 'open').slice(0, 6)) {
         const diary = renderDiary({ ...s, lbs: (s.startLbs || 120) + week * 6 }, week);
@@ -138,4 +179,9 @@ for (const ev of NARRATIVE_EVENTS) {
 
 assert(ROSTER_TRUST_GATE >= 60, 'trust gate should require meaningful investment');
 
-console.log('semester-audit: wk1-16 sim per start hall, milestone prose, unlock scenes, narrative sweeps OK');
+for (const [archetype, lines] of Object.entries(STAGE_DROP_REACTIONS)) {
+  assert.equal(lines.length, 11, `${archetype} drop reactions should cover stages 0–10`);
+  lines.forEach((line, idx) => assertClean(line, `drop reaction ${archetype} stage ${idx}`));
+}
+
+console.log('semester-audit: wk1-16 sim per start hall, all floor scenes, drop reactions, unlock scenes, narrative sweeps OK');
