@@ -1625,6 +1625,18 @@ check('desk-utility-polish', () => {
   assert.match(desk, /feed a resident/);
 });
 
+check('modal-button-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.hall-pass-modal-in button:focus-visible/);
+  assert.match(css, /\.hall-pass-modal-in button:hover:not\(:disabled\)/);
+  assert.match(css, /\.hall-pass-modal-in button:active:not\(:disabled\)/);
+  assert.match(css, /\.hall-pass-modal-in button:disabled/);
+  const talk = read('src/components/TalkModal.jsx');
+  const gallery = read('src/components/ArtisanGalleryModal.jsx');
+  assert.match(talk, /hall-pass-modal-in talk-modal/);
+  assert.match(gallery, /hall-pass-modal-in artisan-gallery-modal/);
+});
+
 check('narrative-roster-framing', () => {
   const v2 = read('src/textEngine/scenes/v2/v2ProseExpansion.js');
   assert.match(v2, /every resident on your roster/);
