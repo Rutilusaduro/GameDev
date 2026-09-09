@@ -6,7 +6,7 @@ import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { UNLOCK_SCENES } from '../src/gameData/unlockScenes.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { DORM_LIST } from '../src/gameData/dorms.js';
-import { THESIS_BOARD, CASE_STUDY_PAIRS } from '../src/gameData/communityResearcher.js';
+import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import { EVOLVED_OUTFITS } from '../src/gameData/evolvedForms.js';
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY } from '../src/gameData/competitiveGainerText.js';
@@ -40,6 +40,7 @@ const BANNED = [
   /\bOffice of Academic Integrity\b/i,
   /\bAcademics are listed\b/i,
   /\bacademia pretends\b/i,
+  /\bacademic (interest|calm|environment)\b/i,
 ];
 
 function assertClean(text, label) {
@@ -98,6 +99,19 @@ for (const pair of CASE_STUDY_PAIRS) {
   assertClean(`${pair.label} ${pair.subtitle}`, `case study ${pair.id}`);
   const sample = pair.event?.(0, 1, INIT_STUDENTS.slice(0, 2));
   if (sample) assertClean(sample, `case study event ${pair.id}`);
+}
+
+for (const scene of HAVE_A_CHAT_SCENES) {
+  assertClean(scene.member, `have-a-chat member ${scene.member}`);
+  let history = [];
+  for (const phase of scene.phases) {
+    const body = typeof phase.text === 'function' ? phase.text(history) : phase.text;
+    assertClean(body, `have-a-chat ${scene.member} phase`);
+    for (const ch of phase.choices) {
+      assertClean(ch.label, `have-a-chat ${scene.member} choice ${ch.id}`);
+      history = [...history, ch.id];
+    }
+  }
 }
 
 const agendaIds = [

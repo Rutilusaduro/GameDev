@@ -195,7 +195,7 @@ registerModuleVariants("wi.replyDialogue", [
 
   // ── 7 · Priya — overachiever: KPIs and frameworks ────────────
   { when: { studentId: 7, corruption: [0], stageMax: 5 }, weight: W, text: [
-    `"Variance within acceptable parameters for high-stress academic environment. I'll optimize meal timing."`,
+    `"Variance within acceptable parameters for high-stress residence life. I'll optimize meal timing."`,
     `"Project scope has expanded beyond initial estimates," she says, recalculating.`,
   ]},
   { when: { studentId: 7, corruption: [1], stageMax: 5 }, weight: W, text: [

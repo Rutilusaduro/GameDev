@@ -16,6 +16,7 @@ test('week 16 unlocks The Annex on sporty hall start', async ({ page }) => {
   await dismissBlockingModals(page);
 
   await expect(page.getByText(/WEEK 16/)).toBeVisible();
+  await dismissBlockingModals(page);
   await page.getByRole('button', { name: '📋 Roster' }).click();
 
   await expect(page.getByText(/The Annex.*unlocked/i).first()).toBeVisible();

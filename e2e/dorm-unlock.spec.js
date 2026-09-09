@@ -18,10 +18,11 @@ test('week 8 unlocks Scholar\'s Rest on sporty hall start', async ({ page }) => 
   await dismissBlockingModals(page);
 
   await expect(page.getByText(/WEEK 8/)).toBeVisible();
+  await dismissBlockingModals(page);
   await page.getByRole('button', { name: '📋 Roster' }).click();
 
   await expect(page.getByText(/Scholar's Rest.*unlocked/i).first()).toBeVisible();
   await expect(page.getByText('NEW', { exact: true })).toBeVisible();
-  await expect(page.getByText('Priya')).toBeVisible();
+  await expect(page.getByText('Priya', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('Scholar\'s Rest opens week 8')).toHaveCount(0);
 });

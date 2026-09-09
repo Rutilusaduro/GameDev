@@ -43,7 +43,7 @@ registerPool("wi.breakLine", [
     `Brittany hops off like she's dismounting a routine, hands on her hips, completely unbothered. "Okay, that one is on the scale, not me."`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
-    `Cassidy tilts her head at the fractured window with quiet, academic interest. "Material failure under sustained load. Predictable, actually."`,
+    `Cassidy tilts her head at the fractured window with quiet, analytical interest. "Material failure under sustained load. Predictable, actually."`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     `Kylie is already filming. "Babe, look at this. The scale literally couldn't."`,

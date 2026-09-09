@@ -70,29 +70,32 @@ export async function getDisplayedWeek(page) {
 
 /** Dismiss hunger interrupt or narrative modals that block the desk. */
 export async function dismissBlockingModals(page) {
-  for (let step = 0; step < 32; step += 1) {
+  for (let step = 0; step < 48; step += 1) {
     if (await page.getByText('NARRATIVE EVENT').isVisible().catch(() => false)) {
-      const dismiss = page.getByRole('button', { name: 'Dismiss' });
-      if (await dismiss.isVisible().catch(() => false)) {
-        await dismiss.click();
-        await page.waitForTimeout(60);
-        continue;
-      }
       const nextBeat = page.getByRole('button', { name: /Tap for next beat/i });
       if (await nextBeat.isVisible().catch(() => false)) {
-        for (let beat = 0; beat < 8; beat += 1) {
+        for (let beat = 0; beat < 24; beat += 1) {
           if (!(await nextBeat.isVisible().catch(() => false))) break;
           await nextBeat.click();
           await page.waitForTimeout(35);
         }
         continue;
       }
+
       const continueBtn = page.getByRole('button', { name: 'Continue →' });
       if (await continueBtn.isVisible().catch(() => false)) {
         await continueBtn.click();
         await page.waitForTimeout(60);
         continue;
       }
+
+      const dismiss = page.getByRole('button', { name: 'Dismiss' });
+      if (await dismiss.isVisible().catch(() => false)) {
+        await dismiss.click();
+        await page.waitForTimeout(60);
+        continue;
+      }
+
       await page.waitForTimeout(80);
       continue;
     }

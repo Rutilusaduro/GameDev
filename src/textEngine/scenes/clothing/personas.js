@@ -107,7 +107,7 @@ registerModuleVariants('cloth.reaction', [
     `"New stratum," she grins. "Deeper layer."`,
   ]},
   { when: { studentId: 1, corruption: [0] }, weight: W, text: [
-    `Cassidy smooths the gap with academic calm. "Garment tolerance exceeded."`,
+    `Cassidy smooths the gap with analytical calm. "Garment tolerance exceeded."`,
     `"Expected at current mass," she says, cheeks pink. "Ordering larger."`,
     `"Statistically inevitable," she murmurs. Still blushing.`,
   ]},
