@@ -368,8 +368,18 @@ check('week-planner-modal-polish', () => {
 });
 
 check('maya-hive-modal-polish', () => {
-  assert.match(read('src/index.css'), /\.maya-hive-modal/);
-  assert.match(read('src/components/MayaHiveModal.jsx'), /maya-hive-modal/);
+  const css = read('src/index.css');
+  const modal = read('src/components/MayaHiveModal.jsx');
+  assert.match(css, /\.maya-hive-modal/);
+  assert.match(css, /\.maya-hive-room-cell:focus-visible/);
+  assert.match(css, /\.maya-hive-room-cell:hover/);
+  assert.match(css, /\.maya-hive-vp-card:focus-visible/);
+  assert.match(css, /\.maya-hive-task-btn:focus-visible/);
+  assert.match(modal, /maya-hive-modal/);
+  assert.match(modal, /maya-hive-room-cell/);
+  assert.match(modal, /maya-hive-vp-card/);
+  assert.match(modal, /maya-hive-task-btn/);
+  assert.match(modal, /aria-pressed=\{selected\}/);
 });
 
 check('player-prefs-hall-pass-key', () => {

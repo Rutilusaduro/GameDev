@@ -52,7 +52,12 @@ function RoomCell({room,selected,onSelect,frontier}){
         : "rgba(255,255,255,.035)";
   const border=selected?HIVE_ACC:conquered?"#d98cff80":softening?"#8f6cff80":frontier?"#8f6cff40":"rgba(255,255,255,.08)";
   return(
-    <button onClick={()=>onSelect(room.id)} style={{
+    <button
+      type="button"
+      className={`maya-hive-room-cell${selected ? ' maya-hive-room-cell--selected' : ''}`}
+      aria-pressed={selected}
+      onClick={()=>onSelect(room.id)}
+      style={{
       minHeight:58,
       border:`1px solid ${border}`,
       borderRadius:9,
@@ -82,9 +87,9 @@ function TaskRow({task,count,canAdd,onAdjust}){
         <div style={{fontSize:9,color:HIVE_SUB,lineHeight:1.4}}>{task.desc}</div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:5}}>
-        <button style={{...C.btn("#25102d"),padding:"4px 8px",border:`1px solid ${task.color}40`}} onClick={()=>onAdjust(task.id,-1)} disabled={count<=0}>-</button>
+        <button type="button" className="maya-hive-task-btn" style={{...C.btn("#25102d"),padding:"4px 8px",border:`1px solid ${task.color}40`}} onClick={()=>onAdjust(task.id,-1)} disabled={count<=0} aria-label={`Decrease ${task.label}`}>-</button>
         <div style={{minWidth:24,textAlign:"center",fontSize:14,fontWeight:800,color:HIVE_TEXT}}>{count}</div>
-        <button style={{...C.btn("#3b1750"),padding:"4px 8px",border:`1px solid ${task.color}60`,opacity:canAdd?1:.45}} onClick={()=>onAdjust(task.id,1)} disabled={!canAdd}>+</button>
+        <button type="button" className="maya-hive-task-btn" style={{...C.btn("#3b1750"),padding:"4px 8px",border:`1px solid ${task.color}60`,opacity:canAdd?1:.45}} onClick={()=>onAdjust(task.id,1)} disabled={!canAdd} aria-label={`Increase ${task.label}`}>+</button>
       </div>
     </div>
   );
@@ -163,7 +168,7 @@ export function MayaHiveModal({
             const locked=opt.studentId===15&&!lilithUnlocked;
             const active=hs.vpId===id;
             return(
-              <button key={id} disabled={locked} onClick={()=>chooseHiveVP(id)} style={{
+              <button key={id} type="button" className="maya-hive-vp-card" disabled={locked} onClick={()=>chooseHiveVP(id)} style={{
                 ...C.btn(active?opt.color:"#1a0c22"),
                 textAlign:"left",
                 padding:12,
