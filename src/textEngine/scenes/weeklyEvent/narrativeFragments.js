@@ -387,13 +387,13 @@ registerPool('weekly.overachieverPivot.submit', [
 
 registerPool('weekly.overachieverPivot.verdict', [
   { when: { archetype: 'overachiever' }, text: [
-    'You read the abstract. It is rigorous. It is also clearly an elaborate academic justification for eating constantly.',
-    'Academically sound. Transparently convenient.',
+    'You read the abstract. It is rigorous. It is also clearly an elaborate hall-standing justification for eating constantly.',
+    'Panel-clean on paper. Transparently convenient.',
     'You approve it.',
     'She beams with the energy of someone who has made gaining weight count toward her hall standing.',
   ] },
   { when: {}, text: [
-    'Academically sound. Transparently convenient. Approved.',
+    'Panel-clean on paper. Transparently convenient. Approved.',
     'You approve it. She looks like she optimized the assignment.',
     'The argument holds. She looks victorious.',
     'Approved. She treats hall standing like another metric to win.',

@@ -513,7 +513,7 @@ registerPool("diary.indiana.fieldmap", [
     "*EXPEDITION LOG — Site Expansion Phase*",
     "Belly circumference up four inches since survey. Hips: corresponding expansion. Thighs: notable softening — ground cover thick, excellent insulation properties.",
     "General topography: rounder, warmer, increasingly promising. Surface texture: surprisingly pleasant.",
-    "I have dispatched no reports to the university because this does not fit standard academic categories.",
+    "I have dispatched no reports to housing because this does not fit standard inspection categories.",
   ]},
   { when: { studentId: 17, stageMin: 5, stageMax: 10 }, weight: 4, text: [
     "*EXPEDITION LOG — Final Phase*",

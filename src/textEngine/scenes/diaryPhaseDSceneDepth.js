@@ -82,7 +82,7 @@ const S9 = {
   competitive_gainer: {
     sid: 7,
     lines: [
-      `Second place is folklore now. I widened the gap until the board needed recalibration. Academic on paper. Hunger underneath.`,
+      `Second place is folklore now. I widened the gap until the board needed recalibration. Roster-clean on paper. Hunger underneath.`,
     ],
   },
   machine_goddess: {

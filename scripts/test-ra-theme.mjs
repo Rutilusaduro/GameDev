@@ -102,6 +102,14 @@ const BANNED = [
   { id: 'revised-academic-outline', re: /revised academic outline/i },
   { id: 'legitimate-research-phrase', re: /legitimate research/i },
   { id: 'psychology-grad-role', re: /Psychology grad/i },
+  { id: 'academic-justification-eating', re: /academic justification for eating/i },
+  { id: 'academically-sound', re: /Academically sound/i },
+  { id: 'academic-writing-precise', re: /academic writing has always been precise/i },
+  { id: 'standard-academic-categories', re: /standard academic categories/i },
+  { id: 'academic-on-paper', re: /Academic on paper/i },
+  { id: 'academic-precision-plate', re: /academic precision/i },
+  { id: 'only-academic-potluck', re: /only academic/i },
+  { id: 'departmental-gossip', re: /departmental gossip/i },
 ];
 
 const ALLOW_LINE = [

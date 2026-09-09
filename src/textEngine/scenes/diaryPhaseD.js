@@ -30,9 +30,9 @@ registerPool('diary.competitive_gainer.s5._f3', [
 
 registerPool('diary.competitive_gainer.s5._f4', [
   { when: {}, text: [
-    ". The data is clean. Academic, even. But I already know this is more than research now. I am going to be the largest.",
+    ". The data is clean. Panel-clean, even. But I already know this is more than a season plan now. I am going to be the largest.",
     ". Spreadsheets don't blush. I do, looking at my own column leading.",
-    ". Academic on paper. Under my skin it's appetite with a scoring system.",
+    ". Roster-clean on paper. Under my skin it's appetite with a scoring system.",
   ]},
 ]);
 

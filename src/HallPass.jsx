@@ -8568,7 +8568,7 @@ export default function HallPass(){
           <button key={v} className="hall-pass-nav-btn" data-active={active ? 'true' : 'false'} style={{
             ...C.navB(active),
             ...(active?{borderBottomColor:accent,color:"#e8d8ff"}:{}),
-          }} onClick={()=>setView(v)}>{l}</button>
+          }} onClick={()=>{ playHallPassSound('click', soundEnabled); setView(v); }}>{l}</button>
         );})}
       </div>
 

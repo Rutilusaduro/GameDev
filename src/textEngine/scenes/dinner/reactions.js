@@ -313,7 +313,7 @@ registerPool('dinner.reaction.thinJealousy', [
   { when: {"archetype":"sorority","reactionLevel":1}, text: ["\"I want to be supportive,\" {subject.name} says. \"And also I genuinely want what she's having. I haven't eaten anything.\" She watches {ref.name}'s plate. \"Everything she has. All of it.\""] },
   { when: {"archetype":"sorority","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy._f9} {dinner.reaction.thinJealousy._f10}"] },
   { when: {"archetype":"sorority","reactionLevel":3}, text: ["{dinner.reaction.thinJealousy._f11} {dinner.reaction.thinJealousy._f12}"] },
-  { when: {"archetype":"scholar","reactionLevel":0}, text: ["{subject.name} observes {ref.name}'s plate with academic precision. \"The volume is impressive,\" she says, and the admiration is genuine. She has been counting."] },
+  { when: {"archetype":"scholar","reactionLevel":0}, text: ["{subject.name} observes {ref.name}'s plate with careful precision. \"The volume is impressive,\" she says, and the admiration is genuine. She has been counting."] },
   { when: {"archetype":"scholar","reactionLevel":1}, text: ["{dinner.reaction.thinJealousy._f13} {dinner.reaction.thinJealousy._f14}"] },
   { when: {"archetype":"scholar","reactionLevel":2}, text: ["{dinner.reaction.thinJealousy._f15} {dinner.reaction.thinJealousy._f16}"] },
   { when: {"archetype":"scholar","reactionLevel":3}, text: ["{dinner.reaction.thinJealousy._f17} {dinner.reaction.thinJealousy._f18}"] },
@@ -520,7 +520,7 @@ registerPool('dinner.reaction.fatEncourage._f113', [
 ]);
 
 registerPool('dinner.reaction.fatEncourage._f114', [
-  { when: {}, text: ["{subject.name} takes {ref.name}'s hand and places it against her own full, warm belly with academic deliberateness. \"Primary source,\" she says."] },
+  { when: {}, text: ["{subject.name} takes {ref.name}'s hand and places it against her own full, warm belly with deliberate care. \"Primary source,\" she says."] },
 ]);
 
 registerPool('dinner.reaction.fatEncourage._f115', [

@@ -91,7 +91,7 @@ export const CAMPUS_NODES = {
   faculty_lounge: {
     id:"faculty_lounge", label:"Staff Lounge", emoji:"☕", x:34, y:82,
     exits:["office"],
-    desc:"Burnt coffee, departmental gossip, and a communal pastry plate that you keep mysteriously well-stocked. Your coworkers in housing have stopped asking where the éclairs come from.",
+    desc:"Burnt coffee, staff-lounge gossip, and a communal pastry plate that you keep mysteriously well-stocked. Your coworkers in housing have stopped asking where the éclairs come from.",
     flavor:[
       "The pastry plate is empty again. You feel a craftsman's pride.",
       "Two colleagues debate the cafeteria budget. Both are eating second danishes while they do.",

@@ -433,7 +433,7 @@ registerPool('diary.eating_diarist.c1', [
   { when: { stage: [8] }, text: ['Published. The book is out in the world. \' That last one is accurate. I did not apologize. Not once.'] },
   { when: { stage: [9] }, text: ['The book is being taught. A food studies course assigned it. A gender studies course included it in a unit.'] },
   { when: { stage: [10] }, text: ['The writing and the eating were always the same act — both a form of taking in, of accumulating, of making something mine.'] },
-  { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['My academic writing has always been precise. The personal essay is a different instrument.'] },
+  { when: { stageMin: 5, stageMax: 7, archetype: "bookworm" }, text: ['My hall-log writing has always been precise. The personal essay is a different instrument.'] },
   { when: { stageMin: 5, stageMax: 7, archetype: "swimmer" }, text: ['My training log has always been precise. This appetite column is a different instrument.'] },
   { when: { stageMin: 5, archetype: "quiet" }, text: ['The strangest thing about this is that I\'ve always been quiet and now I\'m making things that thousands of people read. I still feel quiet when I write. That\'s where the words come from.'] },
   { when: {}, text: [
