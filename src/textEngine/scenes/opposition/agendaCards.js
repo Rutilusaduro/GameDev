@@ -51,7 +51,7 @@ registerPool('opposition.agenda.removal_hearing', [
   { when: {}, text: [
     'Removal hearing opened — a resident summoned to defend her place in your hallroom.',
     'The Board schedules a resident removal. Photos of abundance already fill the projector.',
-    'Vance files the motion. One girl\'s enrollment becomes the week\'s central argument.',
+    'Vance files the motion. One resident\'s place on your floor becomes the week\'s central argument.',
     'A hearing date lands on your desk. Institutional teeth finally chose a name.',
   ]},
 ]);
@@ -70,7 +70,7 @@ registerPool('opposition.agenda.shame_vigil', [
     'Ascetic candles flicker outside the garden. Corruption wilts in the cold.',
     'Shame vigil — protesters chant restraint while your hallroom still smells like dinner.',
     'Garden candles, chanted denial. Appetite treated like sin in public view.',
-    'The Ascetic Circle holds vigil. Your girls feel the chill even through closed doors.',
+    'The Ascetic Circle holds vigil. Your residents feel the chill even through closed doors.',
   ]},
 ]);
 
@@ -88,6 +88,6 @@ registerPool('opposition.agenda.student_advocacy', [
     'Rotating advocate schedules a resident voice session — procedure wearing sympathy.',
     'Resident advocacy hour booked. The Board wants dissent on record before they override it.',
     'Jordan Ellis requests floor time. Institutional theater with a human face.',
-    'Advocate session announced. Your girls may speak — if the room pretends to listen.',
+    'Advocate session announced. Your residents may speak — if the room pretends to listen.',
   ]},
 ]);

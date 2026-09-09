@@ -551,6 +551,20 @@ check('staff-lounge-resident-framing', () => {
   assert.doesNotMatch(cult, /half your section|Random students start sampling/i);
 });
 
+check('opposition-resident-framing', () => {
+  const agenda = read('src/textEngine/scenes/opposition/agendaCards.js');
+  assert.match(agenda, /Your residents feel the chill/);
+  assert.match(agenda, /Your residents may speak/);
+  assert.match(agenda, /resident\\?'s place on your floor becomes the week/);
+  assert.doesNotMatch(agenda, /Your girls feel|Your girls may speak|One girl's enrollment/i);
+  const endgame = read('src/textEngine/scenes/opposition/endgameBeat.js');
+  assert.match(endgame, /every evolved resident ascended/);
+  assert.doesNotMatch(endgame, /every evolved girl ascended/i);
+  const v2 = read('src/textEngine/scenes/v2/v2ProseExpansion.js');
+  assert.match(v2, /Somewhere a resident is already eating/);
+  assert.doesNotMatch(v2, /Somewhere a girl is already eating/i);
+});
+
 check('wife-lessons-talk-framing', () => {
   const talk = read('src/textEngine/scenes/wifeLessons/talkDepth.js');
   assert.match(talk, /The daughters eat/);

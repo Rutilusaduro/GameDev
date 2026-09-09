@@ -38,6 +38,8 @@ import { renderHomeroomPool } from '../src/textEngine/scenes/homeroom/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import '../src/textEngine/scenes/opposition/agendaCards.js';
+import '../src/textEngine/scenes/opposition/depth.js';
+import '../src/textEngine/scenes/v2/v2ProseExpansion.js';
 import { renderCampusSighting } from '../src/textEngine/scenes/campusExplorationText.js';
 import '../src/textEngine/scenes/campusExplorationText.js';
 import '../src/textEngine/scenes/diary.js';
@@ -182,6 +184,10 @@ const BANNED = [
   /\bBoth girls reached\b/i,
   /\bThe girls are literally\b/i,
   /\bHappy about the girls\b/i,
+  /\bYour girls\b/i,
+  /\bevery evolved girl\b/i,
+  /\bEvery evolved girl\b/i,
+  /\bSomewhere a girl is already eating\b/i,
 ];
 
 function assertClean(text, label) {
@@ -274,6 +280,7 @@ for (const scene of HAVE_A_CHAT_SCENES) {
 const agendaIds = [
   'wellness_audit', 'device_confiscation', 'size_review',
   'wellness_seminar', 'budget_freeze', 'faculty_informant',
+  'removal_hearing', 'mandatory_fitness', 'shame_vigil', 'student_advocacy',
 ];
 const oppCtx = buildTextContext({ subject: swimmer, week: 10 });
 for (const id of agendaIds) {
@@ -572,6 +579,13 @@ if (oppEnd) assertClean(oppEnd, 'opposition endgame synthesis');
 const resCtx = buildTextContext({ subject: INIT_STUDENTS[0], week: 16, globals: { stageMin: 8 } });
 const resSurge = render('{res.surge.depth}', resCtx)?.trim();
 if (resSurge) assertClean(resSurge, 'resonance surge depth');
+
+const campusV2 = render('{campus.v2.depth}', buildTextContext({
+  subject: INIT_STUDENTS[0],
+  week: 8,
+  globals: { campusFattening: false },
+}))?.trim();
+if (campusV2) assertClean(campusV2, 'campus v2 depth');
 
 for (const archetype of ['swimmer', 'bookworm', 'cheerleader', 'foodie', 'sorority', 'eced']) {
   const subject = INIT_STUDENTS.find((s) => s.archetype === archetype) || INIT_STUDENTS[0];

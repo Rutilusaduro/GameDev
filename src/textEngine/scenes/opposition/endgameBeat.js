@@ -4,7 +4,7 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('opposition.endgame.synthesis', [
-  { when: {}, text: 'Scarcity folds inward — every evolved girl ascended, the pharmacist crowned, hunger becomes ally. Passive abundance swells +10%.' },
+  { when: {}, text: 'Scarcity folds inward — every evolved resident ascended, the pharmacist crowned, hunger becomes ally. Passive abundance swells +10%.' },
 ]);
 
 registerPool('opposition.endgame.capture', [
