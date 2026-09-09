@@ -130,9 +130,9 @@ registerPool('weekly.thesisRewrite.submit', [
     'A revised season plan outline arrives from {subject.name}.',
   ] },
   { when: { archetype: 'swimmer' }, text: [
-    '{subject.name} submits a revised season plan outline.',
-    '{subject.name} slides a new outline across your desk.',
-    'A revised season plan outline arrives from {subject.name}.',
+    '{subject.name} drops a revised season plan on your desk.',
+    '{subject.name} slides a new training block outline across your desk.',
+    'A revised season plan outline arrives from {subject.name}, split columns updated.',
   ] },
   { when: {}, text: [
     '{subject.name} submits a revised season plan outline.',

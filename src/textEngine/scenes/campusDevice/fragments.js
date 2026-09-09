@@ -17,9 +17,9 @@ registerPool('campus.dev.vulnerability', [
     'highlighting a passage, completely absorbed',
   ] },
   { when: { archetype: 'swimmer' }, text: [
-    'reading in plain sight, mouth slightly open',
-    'dozing over a textbook at the wrong moment',
-    'highlighting a passage, completely absorbed',
+    'taping a shoulder between sets, mouth slightly open',
+    'dozing over her training log at the wrong moment',
+    'timing splits on her phone, completely absorbed',
   ] },
   { when: { archetype: 'influencer' }, text: [
     'filming B-roll without checking behind her',

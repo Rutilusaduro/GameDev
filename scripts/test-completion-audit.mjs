@@ -1142,6 +1142,19 @@ check('cassidy-swimmer-voice', () => {
   const cassidyBlobIntro = blobBlock.match(/\n  1:\s*\(s\)\s*=>\s*`[\s\S]*?`/)?.[0] ?? '';
   assert.ok(cassidyBlobIntro, 'students.js must contain Cassidy BLOB_PRIVATE_INTRO line');
   assert.match(cassidyBlobIntro, /training block/i, 'Cassidy BLOB_PRIVATE_INTRO must use athletic voice');
+
+  const gossip = read('src/textEngine/scenes/gossip/index.js');
+  const gossipSwimmer = gossip.match(/\{ when: \{ archetype: 'swimmer'[\s\S]*?\]\s*\},/g) ?? [];
+  assert.ok(gossipSwimmer.length >= 2, 'gossip/index.js must contain archetype swimmer blocks');
+  const gossipSwimmerText = gossipSwimmer.join('\n');
+  assert.doesNotMatch(gossipSwimmerText, /pen hasn't moved|measurable\. She measured/i, 'gossip swimmer blocks still bookworm');
+  assert.match(gossipSwimmerText, /training log|logged|natatorium|weigh-in/i, 'gossip swimmer must use athletic voice');
+
+  const campusDevice = read('src/textEngine/scenes/campusDevice/fragments.js');
+  const deviceSwimmer = campusDevice.match(/\{ when: \{ archetype: 'swimmer' \}, text: \[[\s\S]*?\] \},/)?.[0] ?? '';
+  assert.ok(deviceSwimmer, 'campusDevice/fragments.js must contain archetype swimmer block');
+  assert.doesNotMatch(deviceSwimmer, /textbook|highlighting a passage/i, 'campusDevice swimmer still bookworm');
+  assert.match(deviceSwimmer, /training log|splits|sets/i, 'campusDevice swimmer must use athletic voice');
 });
 
 check('embodied-resident-sighting', () => {
