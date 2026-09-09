@@ -4001,7 +4001,7 @@ export default function HallPass(){
     }
     // Normal session close — stage-up or continue
     if(stageUp){
-      const stageText=getStageUpText(nextStageId,cs.testerName)||'The subject has grown.';
+      const stageText=getStageUpText(nextStageId,cs.testerName)||'The taste tester has grown.';
       setCultivatorState(prev=>({...prev,testerStageId:nextStageId,testerLbs:nextTesterLbs,fatBar:finalFatBar,suspicion:finalSusp,session:null,pendingStageUp:false,stageUpText:stageText,modalPhase:'stage_up'}));
       push(`🍰 ${cs.testerName} advanced to ${getStage(nextTesterLbs).label} — suspicion reset.`);
     } else {

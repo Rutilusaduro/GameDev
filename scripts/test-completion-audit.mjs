@@ -767,7 +767,7 @@ check('nadia-journal-framing', () => {
   assert.doesNotMatch(nadia, /\bfarm-girl type\b/i);
   assert.doesNotMatch(nadia, /\bnurturing girl\b/i);
   assert.doesNotMatch(nadia, /\b(girl|girls)\b/i);
-  assert.doesNotMatch(nadia, /as my subject/i);
+  assert.doesNotMatch(nadia, /as my subject|as the subject/i);
   assert.match(nadia, /for my hall log/);
 });
 
@@ -938,6 +938,10 @@ check('detail-view-subject-framing', () => {
   assert.match(faculty, /Most residents gain\. All residents return/);
   assert.match(cassidy, /All residents were willing participants/);
   assert.doesNotMatch(cassidy, /All subjects were willing participants/i);
+  const cultivator = read('src/textEngine/scenes/cultivator/vignettes.js');
+  assert.match(cultivator, /taste tester has grown/);
+  assert.doesNotMatch(cultivator, /The subject has grown/i);
+  assert.doesNotMatch(desk, /The subject has grown/i);
 });
 
 check('picker-resident-framing-ui', () => {

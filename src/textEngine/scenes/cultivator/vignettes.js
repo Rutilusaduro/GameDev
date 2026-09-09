@@ -260,7 +260,7 @@ export function renderCultivatorHarvestEmergency(reneeStageId, testerStageId, te
 
 export function renderCultivatorStageUp(stageId, testerName, week = 1) {
   const key = `cultivator.stageUp.t${stageId}`;
-  return renderPool(key, testerName, week) || 'The subject has grown.';
+  return renderPool(key, testerName, week) || 'The taste tester has grown.';
 }
 
 export function renderCultivatorRecruitment(week = 1) {
