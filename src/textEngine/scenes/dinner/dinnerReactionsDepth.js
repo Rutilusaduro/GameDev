@@ -54,7 +54,7 @@ registerModuleVariants('dinner.reaction.fatEncourage', [
     `{subject.name} watches {ref.name} eat with open delight. "More," she urges. "I want to see you hit the ceiling tonight."`,
   ]},
   { when: { studentId: 0 }, weight: 4, text: [
-    `Brittany claps once, proud. "That's my girl," she tells {ref.name}. "Eat like the team depends on it."`,
+    `Brittany claps once, proud. "There she is," she tells {ref.name}. "Eat like the team depends on it."`,
   ]},
   { when: { studentId: 6 }, weight: 4, text: [
     `Tiffany slides dessert menus across. "Chapter standard," she tells {ref.name}. "You're exceeding it. Gorgeous."`,

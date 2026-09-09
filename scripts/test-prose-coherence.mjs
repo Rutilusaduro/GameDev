@@ -310,6 +310,15 @@ const BANNED = [
   /\bOther girls seek her warmth\b/i,
   /\bevery other girl sheds\b/i,
   /\bevery other girl warms\b/i,
+  /\bthe French girl's dinners\b/i,
+  /\bThe girls here treat appetite\b/i,
+  /\bgirls who treat the dorm kitchen\b/i,
+  /\bemaciated goth girl\b/i,
+  /\bfighting girls about food\b/i,
+  /\baudience of one vast girl\b/i,
+  /\bThat's my girl,\b/i,
+  /\bposter girl and I'm falling\b/i,
+  /\bsponsor's favorite girl\b/i,
 ];
 
 function assertClean(text, label) {
@@ -1011,7 +1020,13 @@ for (let feastStage = 0; feastStage <= 9; feastStage++) {
 }
 
 for (const teacher of FACULTY) {
-  for (const node of Object.values(teacher.tree)) {
+  for (const [nodeId, node] of Object.entries(teacher.tree)) {
+    if (typeof node.text === 'function') {
+      const body = node.text(50, 50);
+      assertClean(body, `staff lounge ${teacher.id} ${nodeId}`);
+    } else if (node.text) {
+      assertClean(node.text, `staff lounge ${teacher.id} ${nodeId}`);
+    }
     for (const opt of node.options || []) {
       assertClean(opt.label, `staff lounge ${teacher.id} option`);
     }

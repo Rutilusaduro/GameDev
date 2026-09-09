@@ -74,7 +74,7 @@ registerPool('immob.visit', [
   ]},
   { when: { refArchetype: 'influencer' }, weight: 2, text: [
     `{ref.name} brings the outside with her — news, energy, the shape of the week. {subject.name} gets an hour of the world without leaving the room.`,
-    `Trends, drama, a recap in three acts — {ref.name} performs the week for an audience of one vast girl.`,
+    `Trends, drama, a recap in three acts — {ref.name} performs the week for an audience of one vast resident.`,
     `{ref.name} forgets to film. {subject.name} notices and is quietly pleased.`,
   ]},
   { when: { refArchetype: 'transfer' }, weight: 2, text: [

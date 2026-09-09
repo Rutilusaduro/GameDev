@@ -81,7 +81,7 @@ When the knock came, Lilith's deep, husky voice called out, "Come in, it's open.
 
 The door creaked open. Mia stepped inside, then stopped dead, eyes widening in pure shock as she took in Lilith's room-filling mass.
 
-"Oh my god… Lilith?!" Mia gasped, her voice trembling with disbelief. "You were this tiny, emaciated goth girl last time I saw you — like eighty pounds soaking wet! Now you're… Jesus, you're a mountain. Your belly is literally covering half the floor. And those tits… they're gigantic. How is this even possible?"
+"Oh my god… Lilith?!" Mia gasped, her voice trembling with disbelief. "You were this tiny, emaciated goth wraith last time I saw you — like eighty pounds soaking wet! Now you're… Jesus, you're a mountain. Your belly is literally covering half the floor. And those tits… they're gigantic. How is this even possible?"
 
 Lilith smiled languidly. "Come closer, Mia. I want you to get a good look."
 

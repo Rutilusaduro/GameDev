@@ -57,7 +57,7 @@ export const FACULTY = [
           {label:"\"Settle something: bulking season?\"", next:"bulk", minAffinity:30},
           {label:"Head out", end:true},
         ]},
-      team:{ text:()=>`"Strongest roster I've ever had," Brooks says, and slaps the table. "You know why? They EAT now. I spent years fighting girls about food. This year something changed — they come in hungry and they leave huge and they lift like it." She squints at you. "You wouldn't know anything about that."`,
+      team:{ text:()=>`"Strongest roster I've ever had," Brooks says, and slaps the table. "You know why? They EAT now. I spent years fighting residents about food. This year something changed — they come in hungry and they leave huge and they lift like it." She squints at you. "You wouldn't know anything about that."`,
         options:[
           {label:"\"A rising tide of appetite lifts all boats.\"", next:"tide", affinity:4},
           {label:"Back", next:"hub"},

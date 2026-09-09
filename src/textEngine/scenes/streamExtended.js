@@ -201,7 +201,7 @@ registerPool('stream.betweenRound', [
     ] },
   { when: { perf: 'verypoor', brandControl: 'soldOut' },
     text: [
-      'I\'m their poster girl and I\'m falling apart live.',
+      'I\'m their poster feedee and I\'m falling apart live.',
       'Sold out, stuffed, and struggling. Content?',
     ] },
   { when: { perf: 'verypoor' },
@@ -482,7 +482,7 @@ registerPool('stream.chat.brandControl.soldOut', [
 
 registerPool('stream.chat.brandControl.late', [
   { when: {}, text: [
-    'sponsor\'s favorite girl',
+    'sponsor\'s favorite',
     'she\'s their mascot now',
     'brand darling behavior',
     'contract streamer energy',

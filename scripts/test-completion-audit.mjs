@@ -618,6 +618,29 @@ check('wife-lessons-depth-framing', () => {
   assert.doesNotMatch(pharmacist, /meets the girls who meet/i);
 });
 
+check('dorm-diary-stream-resident-framing', () => {
+  const dorms = read('src/gameData/dorms.js');
+  assert.match(dorms, /The residents here treat appetite like training/);
+  assert.match(dorms, /residents who treat the dorm kitchen/);
+  assert.doesNotMatch(dorms, /The girls here treat appetite|girls who treat the dorm kitchen/i);
+  const diary = read('src/textEngine/scenes/diaryPhaseD.js');
+  assert.match(diary, /Chloé's dinners/);
+  assert.doesNotMatch(diary, /French girl's dinners/i);
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(evolved, /Chloé's dinners/);
+  assert.doesNotMatch(evolved, /French girl's dinners/i);
+  const feast = read('src/textEngine/scenes/hunt/feastStageUp.js');
+  assert.match(feast, /emaciated goth wraith/);
+  assert.doesNotMatch(feast, /emaciated goth girl/i);
+  const faculty = read('src/gameData/faculty.js');
+  assert.match(faculty, /fighting residents about food/);
+  assert.doesNotMatch(faculty, /fighting girls about food/i);
+  const stream = read('src/textEngine/scenes/streamExtended.js');
+  assert.match(stream, /poster feedee/);
+  assert.match(stream, /sponsor\\'s favorite/);
+  assert.doesNotMatch(stream, /poster girl and I\\'m falling|sponsor\\'s favorite girl/i);
+});
+
 check('settling-devour-resident-framing', () => {
   const devour = read('src/gameData/devourScene.js');
   assert.match(devour, /a resident from the dining hall/);

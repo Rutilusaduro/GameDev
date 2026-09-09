@@ -646,9 +646,9 @@ registerPool('diary.salon_appetit.s6', [
 
 registerPool('diary.salon_appetit.s7._f5', [
   { when: {}, text: [
-    "They whisper *the French girl's dinners* in group chats Chloé is not in.",
-    "Group chats she isn't in: *the French girl's dinners.* She hears anyway.",
-    "*The French girl's dinners* — campus shorthand for dangerous fullness.",
+    "They whisper *Chloé's dinners* in group chats she is not in.",
+    "Group chats she isn't in: *Chloé's dinners.* She hears anyway.",
+    "*Chloé's dinners* — campus shorthand for dangerous fullness.",
   ]},
 ]);
 

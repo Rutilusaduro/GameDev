@@ -188,7 +188,7 @@ export const EVOLVED_REACTIONS = {
   salon_appetit:[
     "Première soirée — trois invités, fromage, vin. I said *j'ai faim* and meant it as philosophy.",
     "Dr. Mori followed the smell to my door. She stayed for dessert. I consider that a review.",
-    "They whisper *the French girl's dinners* in the group chats. I pour more wine and let them.",
+    "They whisper *Chloé's dinners* in the group chats. I pour more wine and let them.",
     "The campus writer watched me eat and called it performance. I called it Thursday.",
     "Rooftop, candlelight, protesters below. I raised my glass. The room ate with me.",
     "La Grande Soirée — twelve settings, black silk, *encore* until the sun. I am the salon.",
@@ -650,7 +650,7 @@ export const EVOLVED_ACTIVITY_TEXT = {
   salon_appetit:[
     (s)=>`Chloé weighs ${Math.round(s.lbs)} pounds and the dorm smells of butter and wine. Three guests arrive to find candles already lit, cheese already breathing on the board. She pours without asking who wants what. "In Paris they teach you to stop," she says, biting a croissant. "Here they teach you to continue." She means it as philosophy. The guests leave curious and full.`,
     (s)=>`${Math.round(s.lbs)} pounds in black silk, hostess at the door. Dr. Mori followed the smell of coq au vin and stayed for dessert — staff lends prestige, Chloé lends appetite. She charms the room between courses, feeding herself with theatrical pleasure while the wine loosens every conversation.`,
-    (s)=>`They whisper *the French girl's dinners* in group chats Chloé is not in. She reads one aloud, amused, at ${Math.round(s.lbs)} pounds. The campus writer attended last week and left flushed, notebook open. Chloé pours more wine. "Let them arrive hungry," she says.`,
+    (s)=>`They whisper *Chloé's dinners* in group chats she is not in. She reads one aloud, amused, at ${Math.round(s.lbs)} pounds. The campus writer attended last week and left flushed, notebook open. Chloé pours more wine. "Let them arrive hungry," she says.`,
     (s)=>`The piece published: *A Transfer's Salon of Excess*. Chloé is ${Math.round(s.lbs)} pounds and reads it twice. "They call me dangerous," she says, pleased. Rooftop bookings follow. Protesters chant wellness slogans below. She raises her glass and eats anyway.`,
     (s)=>`Twelve settings. Twelve place cards. Chloé is ${Math.round(s.lbs)} pounds and welcomes them in French, then English, then mostly with her hands on her own waist. "Tonight," she says, "we do not stop." The digestif never ends. Someone applauds. She curtsies without standing.`,
     (s)=>`La Grande Soirée closes at dawn. Chloé is ${Math.round(s.lbs)} pounds, silk clinging where she's grown fullest, the guest book thick with names. She finds you in the kitchen afterward, licking pastry cream from her thumb. "*Encore,*" she murmurs — not to the room anymore, to the semester itself.`,
