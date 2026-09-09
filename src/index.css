@@ -20,14 +20,49 @@
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 }
 
+@keyframes rosterTileIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .roster-tile {
   transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
   cursor: pointer;
 }
 
+.roster-tile-in {
+  animation: rosterTileIn 0.3s ease-out both;
+}
+
 .roster-tile:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.38);
+}
+
+.roster-locked-tile {
+  transition: opacity 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.roster-locked-tile:hover {
+  opacity: 0.88 !important;
+  border-color: #4a3080 !important;
+}
+
+.hall-roadmap-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hall-roadmap-card:hover {
+  transform: translateY(-1px);
+}
+
+@keyframes weekRecapCardIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.week-recap-card-in {
+  animation: weekRecapCardIn 0.24s ease-out both;
 }
 
 .hall-pass-nav-btn {
@@ -86,6 +121,8 @@
   .hall-pass-view-in,
   .ra-wizard-card,
   .roster-tile,
+  .roster-tile-in,
+  .week-recap-card-in,
   .hall-pass-nav-btn,
   .hall-unlock-new,
   .hall-log-entry,
@@ -97,7 +134,9 @@
   }
 
   .ra-wizard-card:hover,
-  .roster-tile:hover {
+  .roster-tile:hover,
+  .hall-roadmap-card:hover,
+  .roster-locked-tile:hover {
     transform: none;
   }
 }

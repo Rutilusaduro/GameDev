@@ -123,7 +123,9 @@ check('smoke-wires-completion-audit', () => {
 const REQUIRED_E2E = [
   'e2e/setup-wizard.spec.js',
   'e2e/semester-wk4.spec.js',
+  'e2e/semester-wk8-all-halls.spec.js',
   'e2e/semester-wk16-all-halls.spec.js',
+  'e2e/semester-wk16-clickthrough.spec.js',
   'e2e/dorm-unlock.spec.js',
   'e2e/dorm-unlock-wk16.spec.js',
 ];
@@ -137,7 +139,10 @@ check('e2e-coverage', () => {
 // ── UI polish hooks ────────────────────────────────────────────
 check('ui-polish-css', () => {
   const css = read('src/index.css');
-  for (const cls of ['hall-pass-view-in', 'ra-wizard-card', 'hall-pass-modal-in', 'hall-unlock-new', 'ra-desk-header']) {
+  for (const cls of [
+    'hall-pass-view-in', 'ra-wizard-card', 'hall-pass-modal-in', 'hall-unlock-new', 'ra-desk-header',
+    'roster-tile-in', 'week-recap-card-in', 'hall-roadmap-card',
+  ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
 });

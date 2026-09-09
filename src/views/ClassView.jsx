@@ -23,7 +23,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
 // changes, so it doesn't flicker on every parent re-render.
-function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnabled = true }) {
+function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnabled = true, tileIndex = 0 }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
   const ascForm = getAscensionFormForStudent(s);
@@ -51,8 +51,15 @@ function RosterTile({ s, week, onOpen, onAmends, classmateWithdrawn, soundEnable
   );
   return (
     <div
-      className="roster-tile"
-      style={{ ...C.card, border: cardBorder, background: cardBg || C.card.background, position: 'relative', overflow: 'hidden' }}
+      className="roster-tile roster-tile-in"
+      style={{
+        ...C.card,
+        border: cardBorder,
+        background: cardBg || C.card.background,
+        position: 'relative',
+        overflow: 'hidden',
+        animationDelay: `${Math.min(tileIndex, 12) * 45}ms`,
+      }}
       onClick={() => { playHallPassSound('click', soundEnabled); onOpen(); }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 3 }}>
@@ -114,7 +121,7 @@ function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
           return (
             <div
               key={d.id}
-              className={isNew ? 'hall-unlock-new' : undefined}
+              className={`hall-roadmap-card${isNew ? ' hall-unlock-new' : ''}`}
               style={{
                 padding: '8px 10px',
                 borderRadius: 6,
@@ -184,8 +191,8 @@ export function ClassView({
           <DormUnlockProgress unlockedDorms={unlockedDorms} startDormId={startDormId} week={week} />
           <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
-            {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s) => (
-              <RosterTile key={s.id} s={s} week={week} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
+            {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s, tileIndex) => (
+              <RosterTile key={s.id} s={s} week={week} tileIndex={tileIndex} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} classmateWithdrawn={classmateWithdrawn && !s.withdrawn} />
             ))}
           </div>
           {locked.length > 0 && (
@@ -203,7 +210,7 @@ export function ClassView({
                   const dorm = home ? getDorm(home) : null;
                   const reachable = hallReachable(s);
                   return (
-                    <div key={s.id} style={{ ...C.card, cursor: 'default', opacity: reachable ? 0.72 : 0.5, border: '1px dashed #2a1a48' }}>
+                    <div key={s.id} className="roster-locked-tile" style={{ ...C.card, cursor: 'default', opacity: reachable ? 0.72 : 0.5, border: '1px dashed #2a1a48' }}>
                       <div style={{ fontWeight: 700, fontSize: 13, color: '#6a5a88' }}>{s.name}</div>
                       <div style={{ fontSize: 10, color: '#50406a', marginBottom: 5 }}>
                         {s.role || s.archetype}
