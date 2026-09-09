@@ -54,6 +54,15 @@ const BANNED = [
   { id: 'academic-literature', re: /academic literature/i },
   { id: 'keynote-speaker-skill', re: /Keynote Speaker/ },
   { id: 'irb-approval-skill', re: /IRB Approval/ },
+  { id: 'this-researcher-is', re: /This researcher is/i },
+  { id: 'secondary-subject-researcher', re: /Secondary subject: researcher/i },
+  { id: 'researchers-own-responses', re: /The researcher's own responses/i },
+  { id: 'described-the-researcher', re: /described the researcher as/i },
+  { id: 'keep-researcher-data', re: /Keep the researcher data/i },
+  { id: 'corporate-researcher', re: /corporate researcher/i },
+  { id: 'researcher-who-changed', re: /produced a researcher who/i },
+  { id: 'researcher-different-person', re: /The researcher is a different person/i },
+  { id: 'researcher-merged', re: /the researcher merged/i },
 ];
 
 const ALLOW_LINE = [

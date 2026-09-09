@@ -121,7 +121,7 @@ const STAGE11_C1 = {
   ],
   community_researcher: [
     `Field site is this chair. Community feeds the hall log. I document from immobility. Valid.`,
-    `Research stationary. Neighbors bring data disguised as pie. Conclusions delicious.`,
+    `Observation stationary. Neighbors bring data disguised as pie. Conclusions delicious.`,
   ],
 };
 

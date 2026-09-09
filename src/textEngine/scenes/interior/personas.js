@@ -25,7 +25,7 @@ registerModuleVariants('interior.selfObs', [
   ]},
   { when: { studentId: 1, corruption: [2], stageMin: 6 }, weight: W, text: [
     'She observes her own vastness with athletic delight. Field notes: excellent.',
-    'The subject and the researcher merged weeks ago.',
+    'The subject and the observer merged weeks ago.',
     'Citation needed: her hips. She provides evidence.',
   ]},
   { when: { studentId: 2, corruption: [1], stageMin: 3 }, weight: W, text: [

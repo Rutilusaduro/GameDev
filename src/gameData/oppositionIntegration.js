@@ -62,7 +62,7 @@ export function counterGateReason(counter, ctx) {
     case 'machine_fatten':
       return ctx.hasGrowthChamber ? null : 'Requires growth accelerator chamber';
     case 'public_discredit':
-      return (ctx.hasCassidyResearcher || ctx.hasKylieStream) ? null : 'Requires Cassidy (researcher) or Kylie (streamer)';
+      return (ctx.hasCassidyResearcher || ctx.hasKylieStream) ? null : 'Requires Cassidy (Lane Captain) or Kylie (streamer)';
     case 'bureaucratic_capture':
       if (ctx.hasInstitutionalCover && ctx.relMaxStudent >= 70) return null;
       if (ctx.relMaxStudent >= 70) return null;

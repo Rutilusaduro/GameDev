@@ -65,7 +65,7 @@ registerPool("diary.cassidy.dataset", [
     "No brackets. No [Subject]. I don't want to correct this. I am very good at my job and I am using that skill to not correct this.",
   ]},
   { when: {}, text: [
-    "The field work continues. The researcher continues. So does the data.",
+    "The field work continues. The observer continues. So does the data.",
     "Field note, miscellaneous: appetite elevated. Attribution: unresolved. Next measure: tomorrow.",
     "I keep writing it down. The brackets feel less necessary every week.",
   ]},
@@ -353,7 +353,7 @@ registerPool("diary.nadia.casestudy", [
     "Told you this out loud. Mid-bite. Then another bite.",
   ]},
   { when: { studentId: 12, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
-    "The literature and I merged. I am writing myself into the case study in real time. The researcher is the subject is the analyst. The observation is inseparable from the happening.",
+    "The hall log and I merged. I am writing myself into the case study in real time. The observer is the subject is the analyst. The observation is inseparable from the happening.",
     "This is the richest psychological material I've ever inhabited.",
   ]},
   { when: {}, text: [

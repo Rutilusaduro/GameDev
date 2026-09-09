@@ -283,7 +283,7 @@ export const EVOLVED_REACTIONS = {
   ],
   community_researcher:[
     "First observation session. I went in as an observer. I ate what was offered because refusing felt like contaminating the sample. I'm noting my own intake separately from the field notes.",
-    "The case study is developing. I'm present at more sessions than the methodology technically requires. The subjects haven't noticed I'm eating alongside them. I've noticed.",
+    "The case study is developing. I'm present at more sessions than the protocol technically requires. The residents haven't noticed I'm eating alongside them. I've noticed.",
     "I stopped pretending the notebook is what I'm there for. I'm still writing, but the writing is increasingly personal. The distinction between observer and participant is becoming difficult to maintain in good faith.",
     "I've had to add a second protocol section. The first covers the subjects. The second covers the observer. Both sections have been growing at a similar rate.",
     "The hall log is going to be honest. It was going to be analytical and dispassionate. It's going to be all of that and also honest. The observer is a variable. I'm writing myself in.",
@@ -1870,7 +1870,7 @@ She stands at the door with her coat in her arms and looks at ${s.name} — ${Ma
           text:(h,s)=>`An external examiner from another institution. No social familiarity, no context, no relationship with the subject. They have the final report, the data, and a flight in. ${s.name} is ${Math.round(s.lbs)} pounds and has reviewed the examiner's previous work and knows they ask precise questions.`,
           choices:[
             {id:"prep_external",label:"Prepare specifically for an outside perspective",result:`You help her prepare for someone who has no investment in the hall log's continuation — someone who will read the data as data, not as someone they've watched across a semester. She prepares with unusual thoroughness. She eats while preparing.`,lbs:6,rel:9,flag:"external_prepped"},
-            {id:"she_knows_her_work",label:"She knows her work — the examiner will see that",result:`The work is solid. The examiner will see a rigorous self-study with documented methodology, significant data, and a researcher who has seen it through completely. That is accurate. She nods. She eats something.`,lbs:4,rel:7,flag:"confident_external"},
+            {id:"she_knows_her_work",label:"She knows her work — the examiner will see that",result:`The work is solid. The examiner will see a rigorous self-study with documented methodology, significant data, and an observer who has seen it through completely. That is accurate. She nods. She eats something.`,lbs:4,rel:7,flag:"confident_external"},
           ]
         },
         {
@@ -2685,10 +2685,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
           text:(h,s,subject)=>{
             const sid=subject?getStage(subject.lbs).id:2;
             const subNote=subject?`${subject.name} is ${Math.round(subject.lbs)} lbs — ${getStage(subject.lbs).label}. ${sid>=7?'Enormous now. The room is different. [placeholder]':sid>=4?'Noticeably heavy. The sessions have a different quality. [placeholder]':'Still early in the trend. But the trend is clear. [placeholder]'}`:'The subject data is in the notebook.';
-            return `${s.name} reviews the observer effect entry. She has added a footnote in red pen:\n\n[This researcher is ${Math.round(s.lbs)} lbs. At study start: ${Math.round(s.startLbs||200)} lbs. The subject data and researcher data are, at this point, no longer cleanly separable.]\n\n${subNote}`;
+            return `${s.name} reviews the observer effect entry. She has added a footnote in red pen:\n\n[This observer is ${Math.round(s.lbs)} lbs. At study start: ${Math.round(s.startLbs||200)} lbs. The subject data and observer data are, at this point, no longer cleanly separable.]\n\n${subNote}`;
           },
           choices:[
-            {id:"dual_study",label:"The self-study is part of the research — lean into it",result:(s)=>`She rewrites the protocol section. 'Dual-subject longitudinal study.' Primary subject: external. Secondary subject: researcher. She sets the new draft beside the old one. This is more honest. She knows it is.`,lbs:8,rel:13,flag:"dual_study"},
+            {id:"dual_study",label:"The self-study is part of the research — lean into it",result:(s)=>`She rewrites the protocol section. 'Dual-subject longitudinal study.' Primary subject: external. Secondary subject: observer. She sets the new draft beside the old one. This is more honest. She knows it is.`,lbs:8,rel:13,flag:"dual_study"},
             {id:"separate",label:"Separate the data rigorously — two clean studies",result:(s)=>`She creates a second notebook labelled 'Personal log.' For three days she keeps them separate. On the fourth day there is a note in the hall log notebook that begins 'per personal log.'`,lbs:6,rel:8,flag:"separated"},
           ]
         },
@@ -2710,11 +2710,11 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
               :sid>=4
               ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — heavy, moving differently now. The gain pattern is continuous. [placeholder: plump/heavy subject, data becomes personal]`
               :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — the early growth is showing. The curve matches the prediction. [placeholder: slim/soft subject, data becomes personal]`;
-            return `The notebook says: *The researcher's own responses have become a primary data point rather than a confound.*\n\n${s.name} is ${Math.round(s.lbs)} lbs. The original study proposal described the researcher as a neutral observer. She has written 'LOL' in the margin of this section, then crossed it out, then left it because the notation is accurate.\n\n${subDesc}`;
+            return `The notebook says: *The observer's own responses have become a primary data point rather than a confound.*\n\n${s.name} is ${Math.round(s.lbs)} lbs. The original study proposal described the observer as neutral. She has written 'LOL' in the margin of this section, then crossed it out, then left it because the notation is accurate.\n\n${subDesc}`;
           },
           choices:[
             {id:"share_data",label:"Show the subject the full data — both of you",result:(s)=>`She shows the subject. All of it — their numbers, her numbers, the trend lines. The subject reads it for a long time. 'I knew,' they say. ${s.name} writes: 'Subject confirmed awareness. My response: [the notebook is running out of margin space].'`,lbs:9,rel:16,flag:"shared_data"},
-            {id:"keep_private",label:"Keep the researcher data private for now",result:(s)=>`She keeps the personal log separate. The subject has looked at her differently for months but she doesn't confirm it. The data remains private. For now.`,lbs:7,rel:9,flag:"kept_private"},
+            {id:"keep_private",label:"Keep the observer data private for now",result:(s)=>`She keeps the personal log separate. The subject has looked at her differently for months but she doesn't confirm it. The data remains private. For now.`,lbs:7,rel:9,flag:"kept_private"},
           ]
         },
         {
@@ -2782,10 +2782,10 @@ ${subject?`Her subject — ${subject.name}, ${getStage(subject.lbs).label} at ${
               :sid>=4
               ?`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs. They have grown beyond the parameters of the original proposal. [placeholder: plump/heavy subject, final stage]`
               :`${subject?.name||'The subject'} is ${Math.round(subject?.lbs||100)} lbs — still earlier in the arc. The hall log captures both data sets. [placeholder: slim/soft subject, final stage]`;
-            return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the office chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a subject who changed profoundly. It also produced a researcher who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced a researcher who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
+            return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the office chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a subject who changed profoundly. It also produced an observer who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced an observer who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
           },
           choices:[
-            {id:"conclude",label:"Write the final entry — close the hall log formally",result:(s)=>`She writes the final entry. Weight: ${Math.round(s.lbs)} lbs. Conclusion: *The hall log is complete. All hypotheses confirmed or productively complicated. The researcher is a different person than the researcher who opened this notebook.* She underlines the last sentence.`,lbs:12,rel:14,flag:"concluded"},
+            {id:"conclude",label:"Write the final entry — close the hall log formally",result:(s)=>`She writes the final entry. Weight: ${Math.round(s.lbs)} lbs. Conclusion: *The hall log is complete. All hypotheses confirmed or productively complicated. The observer is a different person than the observer who opened this notebook.* She underlines the last sentence.`,lbs:12,rel:14,flag:"concluded"},
             {id:"continue_study",label:"the hall log doesn't end — this is a lifetime's work",result:(s)=>`She opens a new volume. 'It doesn't end. A log like this doesn't end. It just gets handed down.' She dates the new page and starts writing.`,lbs:10,rel:16,flag:"continued"},
           ]
         },
@@ -3630,7 +3630,7 @@ export const EVOLUTION_OFFER = {
   pharmacy_grad:{
     intro:(s)=>`${s.name} meets you after hours in a pharmacy lab that smells like ethanol and vanilla. Her corporate badge is still on — she hasn't gone home yet, maybe won't. "I don't want to cure cancer," she says, too quietly, then corrects herself: "I mean — I want to work on appetite. Metabolic wellness. Support compounds." She slides a vial across the bench. "Delivered through food. Always through food." Her hands are steady. Her eyes aren't. "I can build you tools. I need a partner who won't pretend this is innocent."`,
     paths:{
-      pharmacist:{ label:"The Chemist", desc:"Sophia synthesizes appetite stimulants, pleasure enhancers, and metabolic compounds — a slow descent from corporate researcher to campus-scale transformation architect." },
+      pharmacist:{ label:"The Chemist", desc:"Sophia synthesizes appetite stimulants, pleasure enhancers, and metabolic compounds — a slow descent from corporate lab chemist to campus-scale transformation architect." },
     },
   },
   inventor:{

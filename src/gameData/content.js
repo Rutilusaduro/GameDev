@@ -221,7 +221,7 @@ export const STAGE_REACTIONS = {
     // Stage 7 ~360-465 lbs
     (s) => `${Math.round(s.lbs)} lbs. I've stopped trying to note this neutrally. It isn't neutral anymore — it's real and heavy and warm and mine. My research has benefited. I can observe from the inside in ways I couldn't have imagined at ${Math.round(s.startLbs)} pounds. My notes from this phase will make good reading.`,
     // Stage 8 ~465-595 lbs
-    (s) => `${Math.round(s.lbs)} lbs. I do most of my work from one spot now. My body has become the primary data set and I am the only researcher with full access. My belly is enormous and my thighs are wide and my notes are the most precise they've ever been. I can verify everything I observe about appetite immediately.`,
+    (s) => `${Math.round(s.lbs)} lbs. I do most of my work from one spot now. My body has become the primary data set and I am the only observer with full access. My belly is enormous and my thighs are wide and my notes are the most precise they've ever been. I can verify everything I observe about appetite immediately.`,
     // Stage 9 ~595-820 lbs
     (s) => `${Math.round(s.lbs)} lbs. I stopped converting these to clinical notation months ago. The number is ${Math.round(s.lbs)} and it is mine and I find I am completely satisfied with it. My research is exceptional. My body is exceptional. Both are larger than I planned for. I've stopped considering that a problem.`,
     // Stage 10 820+ lbs
