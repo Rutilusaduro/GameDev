@@ -82,7 +82,7 @@ registerPool('talk.command_finish.t1', [
   { when: {}, text: ["{talk.command_finish.t1v0}","{talk.command_finish.t1v1}"] },
 ]);
 registerPool('talk.command_finish.t2v0._f1', [
-  { when: {}, text: ["\"Yes, Professor.\" No hesitation. No negotiation. The words arrive with relief — like she's been waiting for permission to want this much."] },
+  { when: {}, text: ["\"Yes, RA.\" No hesitation. No negotiation. The words arrive with relief — like she's been waiting for permission to want this much."] },
 ]);
 
 registerPool('talk.command_finish.t2v0._f2', [

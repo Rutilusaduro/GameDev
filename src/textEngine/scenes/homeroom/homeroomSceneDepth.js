@@ -103,7 +103,7 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.offer_tasting', [
 
 registerModuleVariants('homeroom.conference.Mrs_Reyes.honest_talk', [
   { when: {}, text: [
-    `Stress, comfort, classroom smell — honesty without flinch. "I'm glad you're here." Forty minutes. Coffee cold.`,
+    `Stress, comfort, kitchen smell — honesty without flinch. "I'm glad you're here." Forty minutes. Coffee cold.`,
     `Mrs. Reyes says the hard thing first. Daisy meets it. By the end, both women look lighter.`,
   ]},
 ]);

@@ -105,7 +105,7 @@ pad('talk.command_finish.t1', [
 // ── corruption 2 — variant 0 ──────────────────────────────────
 
 pad('talk.command_finish.t2v0._f1', [
-  `"Yes, Professor." Relief in the obedience — like she's been waiting for permission to want this much.`,
+  `"Yes, RA." Relief in the obedience — like she's been waiting for permission to want this much.`,
   `"Finally," she breathes, and begins without another word.`,
 ]);
 pad('talk.command_finish.t2v0._f2', [

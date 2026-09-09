@@ -137,7 +137,7 @@ registerPool('evolved.homeroomQueen.v2.depth', [
     `Bake-sale diplomacy. Abundance as policy. Daisy smiling.`,
   ]},
   { when: {}, text: [
-    `Homeroom queen evolution — classroom as court, appetite as curriculum.`,
+    `Homeroom queen evolution — lounge as court, appetite as curriculum.`,
   ]},
 ]);
 
@@ -183,7 +183,7 @@ registerModuleVariants('artisan_gallery.hub', [
 
 registerModuleVariants('homeroom.v2.depth', [
   { when: { studentId: 13, stageMin: 8 }, weight: W, text: [
-    `Daisy's classroom hums — flour-dusted, enormous at center, Tuesday theology made flesh.`,
+    `Daisy's kitchen hums — flour-dusted, enormous at center, Tuesday theology made flesh.`,
   ]},
   { when: { studentId: 13, stageMin: 5 }, weight: W, text: [
     `Cookies, curriculum, calculated indulgence. Parents orbit the desk container.`,

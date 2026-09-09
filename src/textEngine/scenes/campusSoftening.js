@@ -121,7 +121,7 @@ registerPool("diary.campus", [
     ] },
   { when: { campusFattening: true, archetype: "overachiever" }, priority: 2,
     text: [
-      "Cohort growth chart in the department lounge shifted right. I added a footnote: campus environment.",
+      "Cohort growth chart in housing lounge shifted right. I added a footnote: campus environment.",
       "Study group productivity down, snack throughput up. Sample size: the whole building.",
       "Dean's list and dining hall line both longer. Related data.",
     ] },
@@ -175,7 +175,7 @@ registerPool("attitude.campus", [
   { when: { campusFattening: true, archetype: "psych" }, priority: 2,
     text: [
       "My subjects are gaining faster than the protocol predicted — the campus is the variable.",
-      "I watch the whole class soften and feel professionally vindicated and personally hungry.",
+      "I watch the whole floor soften and feel professionally vindicated and personally hungry.",
     ] },
   { when: { campusFattening: true, archetype: "pharmacy_grad" }, priority: 2,
     text: [

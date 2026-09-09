@@ -16,7 +16,7 @@ registerPool('weekly.chairBreaks.buildup', [
     'The chair under {subject.name} creaks louder with every minute until finally it tilts just enough to make her grab the desk.',
   ] },
   { when: { endStageMin: 5, endStageMax: 6 }, text: [
-    'A classroom chair gives way under {subject.name} with a loud crack.',
+    'A lounge chair gives way under {subject.name} with a loud crack.',
     'The chair under {subject.name} lets out a sharp crack and lists sideways.',
   ] },
   { when: { endStageMin: 7 }, text: [
@@ -24,7 +24,7 @@ registerPool('weekly.chairBreaks.buildup', [
     'It happens during a quiet part of floor meeting — a sharp snap, then {subject.name} is suddenly much lower.',
   ] },
   { when: {}, text: [
-    'A classroom chair gives way under {subject.name}.',
+    'A lounge chair gives way under {subject.name}.',
     'The chair under {subject.name} fails without warning.',
   ] },
 ]);

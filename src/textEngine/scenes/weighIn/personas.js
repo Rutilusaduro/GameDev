@@ -428,7 +428,7 @@ registerModuleVariants("wi.replyDialogue", [
   ]},
   { when: { studentId: 16, corruption: [2], stageMax: 5 }, weight: W, text: [
     `"Self-trial results: significant. Sustained." She smooths her lab coat over her middle. "I'm not stopping the trial."`,
-    `"Wellness is a dosage question, Professor. I keep increasing the dose."`,
+    `"Wellness is a dosage question, RA. I keep increasing the dose."`,
   ]},
   { when: { studentId: 16, corruption: [0], stageMin: 6 }, weight: W, text: [
     `"This is outside every safety margin I wrote," she says quietly. "I wrote them. I knew where they were."`,

@@ -63,7 +63,7 @@ registerModuleVariants('intimacy.resistance', [
   { when: {"studentId":[14]}, weight: 4, text: ["\"Hold on — let me catch my breath — okay. Okay, come here.\""] },
   { when: {"studentId":[15]}, weight: 4, text: ["She turns her face once — not away. Measuring. Then she doesn't resist."] },
   { when: {"studentId":[16]}, weight: 4, text: ["\"I should verify the dosage — I mean the pacing — oh.\""] },
-  { when: {"studentId":[17]}, weight: 4, text: ["\"Give me a second to — alright. Lead on, professor.\""] },
+  { when: {"studentId":[17]}, weight: 4, text: ["\"Give me a second to — alright. Lead on, RA.\""] },
 ]);
 registerModuleVariants('intimacy.encourages', [
   { when: {"archetype":["athlete"]}, weight: 2, text: ["\"Yeah. That. Keep doing that.\""] },

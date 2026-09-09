@@ -18,7 +18,7 @@ registerModuleVariants('talk.discontentCoda', [
   ]},
   // Per-student voice (weight 4)
   { when: { studentId: 0, discontentTier: [2, 3] }, weight: 4, text: [
-    ` Brittany's smile never reaches her eyes. "Anything else, Professor?" Captain tone. Bench-you tone.`,
+    ` Brittany's smile never reaches her eyes. "Anything else?" Captain tone. Bench-you tone.`,
   ]},
   { when: { studentId: 1, discontentTier: [1, 2, 3] }, weight: 4, text: [
     ` Cassidy's pen stops. "Noted," she says, and does not elaborate. The silence is logged anyway.`,
@@ -33,7 +33,7 @@ registerModuleVariants('talk.discontentCoda', [
     ` Destiny doesn't look up. "Stream ending early," she mutters. "Lag in the conversation."`,
   ]},
   { when: { studentId: 7, discontentTier: [2, 3] }, weight: 4, text: [
-    ` Priya closes her planner. "Inefficient use of desk hours," she says. "Rescheduling myself."`,
+    ` Priya closes her planner. "Inefficient use of check-in time," she says. "Rescheduling myself."`,
   ]},
   { when: { studentId: 8, discontentTier: [1, 2, 3] }, weight: 4, text: [
     ` Maya says less than usual — which was already almost nothing. The distance is louder.`,

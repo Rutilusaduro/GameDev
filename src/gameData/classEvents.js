@@ -115,7 +115,7 @@ export const CLASS_SCENES = [
     title:"Event Planning Crisis",
     text:s=>`${s.name} is in full event-planner mode: spreadsheet open, phone taking calls on mute, the look of someone managing something large that is not cooperating.`,
     choices:[
-      { label:"Offer the classroom as venue", effect:{gain:[5,10],mood:"excited",rel:8}, result:s=>`You offer the classroom after hours. She practically vibrates. The event happens, the catering is spectacular. You're invited.` },
+      { label:"Offer the hall lounge as venue", effect:{gain:[5,10],mood:"excited",rel:8}, result:s=>`You offer the hall lounge after hours. She practically vibrates. The event happens, the catering is spectacular. You're invited.` },
       { label:"Help with logistics",           effect:{gain:[0,0], mood:"focused",rel:7}, result:s=>`You spend ten minutes helping untangle the vendor issue. "I didn't think you'd know about this stuff." You have depths.` },
       { label:"Suggest a potluck component",   effect:{gain:[8,15],mood:"happy",  rel:6}, result:s=>`You suggest potluck. She pauses, then starts planning tables, themes, recipes. The class ends up eating extremely well.` },
     ] },
@@ -187,7 +187,7 @@ export const CLASS_SCENES = [
     ] },
   { id:"class_birthday", target:"class",
     title:"Mystery Birthday",
-    text:"Someone in the class has a birthday this week. Word has spread. There is an expectation of cake.",
+    text:"Someone on the floor has a birthday this week. Word has spread. There is an expectation of cake.",
     choices:[
       { label:"Bring one cake",                    effect:{gain:[3,6]},  result:"A solid cake, well-received. The birthday student gets the first slice. Everyone gets seconds." },
       { label:"Bring a full dessert spread",        effect:{gain:[6,12]}, result:"You dramatically overdeliver: three cakes, cupcakes, tarts, macarons. The class is overwhelmed and grateful and eats everything." },
@@ -195,7 +195,7 @@ export const CLASS_SCENES = [
     ] },
   { id:"class_slump", target:"class",
     title:"3PM Energy Crash",
-    text:"The 3PM slump is real and the class is suffering. Heads are drooping. Someone is asleep. Someone else is asleep more aggressively. Action is required.",
+    text:"The 3PM slump is real and the lounge is suffering. Heads are drooping. Someone is asleep. Someone else is asleep more aggressively. Action is required.",
     choices:[
       { label:"Snacks and caffeine",    effect:{gain:[4,8]}, result:"Coffee, tea, energy drinks, and a mountain of snacks. The class revives. Several students look grateful enough to tear up." },
       { label:"Quick movement break",   effect:{gain:[1,3]}, result:"A stretch break and some movement. Energy returns, though you notice several students were clearly much more comfortable staying seated." },

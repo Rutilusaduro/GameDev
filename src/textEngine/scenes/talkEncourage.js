@@ -194,7 +194,7 @@ registerPool("enc.resolve", [
 // Shape: DIALOGUE BEAT — past needing permission, enjoying it anyway.
 registerPool("enc.owned", [
   { when: {}, text: [
-    `{subject.name} grins. "You don't have to encourage me anymore, Professor. But I like it when you do."`,
+    `{subject.name} grins. "You don't have to encourage me anymore, RA. But I like it when you do."`,
     `"Already ahead of you," {subject.name} says, gesturing to the spread she's assembled without waiting for permission. "But say the words anyway. They help it go down."`,
     `"Keep talking," {subject.name} says, settling in. "I eat better with an audience."`,
     `"Say it slower," {subject.name} says, pulling the plate closer. "I want to hear you mean it."`,
@@ -376,7 +376,7 @@ registerModuleVariants("enc.giveIn", [
     `"Fine," Brittany says, captain-certain. "But only because you asked nicely." The wrapper is already open.`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
-    `"Content idea: professor tells me to eat," Kylie says, already chewing. "Perfect. Don't stop."`,
+    `"Content idea: RA tells me to eat," Kylie says, already chewing. "Perfect. Don't stop."`,
   ]},
   { when: { studentId: 4 }, weight: 4, text: [
     `"This is your fault," Fiona murmurs around the first bite. It sounds like thanks painted in watercolor.`,
@@ -439,7 +439,7 @@ registerModuleVariants("enc.deflect", [
     `"Bad influence," Brittany repeats, grinning. "Coach says the same thing about dessert."`,
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
-    `"That's going in the vlog," Kylie says. "Title: Professor enables my snack drawer."`,
+    `"That's going in the vlog," Kylie says. "Title: RA enables my snack drawer."`,
   ]},
   { when: { studentId: 5 }, weight: 4, text: [
     `"Bad influence detected," Destiny mutters at her phone. "Ignoring warning."`,

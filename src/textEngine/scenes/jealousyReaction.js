@@ -16,7 +16,7 @@ registerPool('jealousy.reaction', [
     when: { favoritism: ['neglected'], stageMin: 6 },
     priority: 2,
     text: [
-      (ctx) => `${ctx.subject.name} shifts her weight — a slow, deliberate reminder of how much body you're ignoring. "Plenty of me still hungry, Professor."`,
+      (ctx) => `${ctx.subject.name} shifts her weight — a slow, deliberate reminder of how much body you're ignoring. "Plenty of me still hungry, RA."`,
       (ctx) => `At ${Math.round(ctx.subject.lbs)} lbs, ${ctx.subject.name} should be impossible to overlook. You managed anyway.`,
     ],
   },

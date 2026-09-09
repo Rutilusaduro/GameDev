@@ -991,7 +991,7 @@ registerPool("wi.foodAsk", [
     `Her eyes have been on the snack drawer this whole time. "I sat through the whole weigh-in," she says. "I earned something."`,
   ]},
   { when: { hungerTierMin: 3, corruption: [2] }, weight: 9, text: [
-    `"You weighed me. Now you feed me." She sits back down. "That's how this works, Professor."`,
+    `"You weighed me. Now you feed me." She sits back down. "That's how this works, RA."`,
     `She pats the desk twice, like ringing a bell. "Kitchen's open. Don't make me ask twice — I will, but don't make me."`,
   ]},
   { when: { addictionLevelMin: 3 }, weight: 9, text: [

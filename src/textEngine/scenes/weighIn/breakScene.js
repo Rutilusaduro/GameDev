@@ -73,7 +73,7 @@ registerPool("wi.breakLine", [
     `Reneé claps once, delighted. "That is the best review my cooking has ever gotten."`,
   ]},
   { when: { studentId: 11 }, weight: 4, text: [
-    `Kaylee covers her mouth. "Oh no, professor, I am so sorry. We'll get you something sturdier."`,
+    `Kaylee covers her mouth. "Oh no, RA, I am so sorry. We'll get you something sturdier."`,
   ]},
   { when: { studentId: 12 }, weight: 4, text: [
     `Nadia watches your reaction more than the scale. "Interesting. You looked at the scale first, then at me."`,

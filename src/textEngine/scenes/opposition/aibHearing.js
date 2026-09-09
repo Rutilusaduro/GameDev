@@ -121,8 +121,8 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.suspended', [
 // ── Emergency hearing ─────────────────────────────────────────
 registerPoolAutoDecompose('opposition.hearing.emergency.phase0', [
   { when: {}, text: [
-    'Scandal meter critical. Vance calls an emergency session — no agenda, only exposure. "Explain yourself, Professor."',
-    'Emergency convening — no notice, no mercy. Vance wants the department on record tonight.',
+    'Scandal meter critical. Vance calls an emergency session — no agenda, only exposure. "Explain yourself, RA."',
+    'Emergency convening — no notice, no mercy. Vance wants housing on record tonight.',
     'The scandal chart glows red. Every board member arrived angry and underfed.',
   ]},
 ]);
@@ -162,7 +162,7 @@ registerPoolAutoDecompose('opposition.hearing.emergency.result.sacrifice', [
 registerPoolAutoDecompose('opposition.hearing.emergency.result.double_down', [
   { when: {}, text: [
     'You speak hunger like gospel. Half the room flinches.',
-    'No apology — abundance declared as the department\'s future. Vance goes pale.',
+    'No apology — abundance declared as housing\'s future. Vance goes pale.',
     'You double down. The observer writes faster.',
   ]},
 ]);

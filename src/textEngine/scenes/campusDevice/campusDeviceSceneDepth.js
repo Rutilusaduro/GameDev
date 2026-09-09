@@ -72,7 +72,7 @@ registerModuleVariants('campus.dev.vulnerability', [
   ]},
   { when: { studentId: 13, targetType: 'student' }, weight: W, text: [
     `arranging a sample tray for passersby, apron dusted, beaming and open`,
-    `tasting frosting off her thumb, classroom keys jingling`,
+    `tasting frosting off her thumb, hall keys jingling`,
     `chatting with parents on the path, Tupperware in hand, defenseless`,
   ]},
   { when: { studentId: 14, targetType: 'student' }, weight: W, text: [

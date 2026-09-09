@@ -85,7 +85,7 @@ export function getOppositionActSummary(week, opposition, scrutiny = 0, students
 export const ACT_I_RUMORS = [
   '📣 Whispers in the staff lounge about your "generous" catering budget.',
   '📣 A resident advisor asks if your class has a "nutrition plan."',
-  '📣 Someone pinned a wellness flyer outside your classroom door.',
+  '📣 Someone pinned a wellness flyer outside your hall lounge door.',
   '📣 The dining hall manager mentions your students twice in one sentence.',
   '📣 A peer RA jokes about your roster "filling out" — the joke lands wrong.',
 ];

@@ -19,10 +19,10 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 registerPool('scrutiny.tierUp.header', [
   { when: {}, text: [
     `An internal memo lands in your faculty inbox.`,
-    `A new notification sits in the department portal, timestamped this morning.`,
+    `A new notification sits in housing portal, timestamped this morning.`,
   ]},
   { when: { scrutinyTierId: 1 }, weight: 3, text: [
-    `A brief note from the department secretary. Routine, almost.`,
+    `A brief note from housing secretary. Routine, almost.`,
     `An automated flag from the wellness compliance system — low priority, for now.`,
   ]},
   { when: { scrutinyTierId: 2 }, weight: 3, text: [

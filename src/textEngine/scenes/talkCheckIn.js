@@ -13,10 +13,10 @@ import '../modules.js';
 // ── talk.checkIn.greetQuote — DIALOGUE BEAT
 registerPool('talk.checkIn.greetQuote', [
   { when: {}, text: [
-    `"Oh — hi, Professor."`,
-    `"Hi, Professor."`,
+    `"Oh — hi, RA."`,
+    `"Hi, RA."`,
     `"Good to see you,"`,
-    `"Hey, Professor."`,
+    `"Hey, RA."`,
   ] },
 ]);
 

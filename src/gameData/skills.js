@@ -4,7 +4,7 @@ export const SKILL_TREE = [
 
   { id:"comfy_chairs", tier:1, cost:50, category:"environment", label:"🪑 Comfortable Seating",
     desc:"Wide, generously padded chairs replace the institutional plastic. Students sink in and don't want to leave. The room immediately feels different — warmer, more inviting, more like somewhere you'd want to spend a long time.",
-    effect:"Passive gain +1 lb/week for all students. The whole class settles in visibly.",
+    effect:"Passive gain +1 lb/week for all students. The whole floor settles in visibly.",
     classReaction:[
       "Brittany drops into the new chair and sinks in completely. 'Oh. Oh this is good.' She doesn't get up for two hours.",
       "Cassidy doesn't look up from her book, but she's been sitting in the same spot for four hours. She looks content.",
@@ -16,26 +16,26 @@ export const SKILL_TREE = [
 
   { id:"snack_station", tier:1, cost:50, category:"feeding", label:"🍪 Snack Station",
     desc:"A fully-stocked snack station installed at the back of the room, always replenished before anyone notices it running low. Chips, pastries, nuts, chocolate — an endless rotation of things you eat without meaning to.",
-    effect:"All class feeding actions gain +1 lb. Desk Snacks action cost reduced to 0 AP.",
+    effect:"All floor feeding actions gain +1 lb. Desk Snacks action cost reduced to 0 AP.",
     classReaction:[
       "Chloe gravitates to it within thirty seconds of entering. She's still there forty minutes later.",
-      "Priya has added 'snack station visit' to her between-class schedule. There are multiple entries.",
+      "Priya has added 'snack station visit' to her between-check-in schedule. There are multiple entries.",
       "Roxanne has claimed the corner stool nearest the station as her official creative thinking spot.",
     ],
     passiveBonus:0, apBonus:0, gainMult:0.10, unlocks:["snacks_free"] },
 
-  { id:"ap_notebook", tier:1, cost:50, category:"efficiency", label:"📓 Lesson Planning",
-    desc:"Better-structured lectures leave breathing room in the schedule — room you can fill however you like. The administration is pleased. You are pleased for different reasons.",
+  { id:"ap_notebook", tier:1, cost:50, category:"efficiency", label:"📓 Shift Planning",
+    desc:"Better-structured programming leave breathing room in the schedule — room you can fill however you like. Res life is pleased. You are pleased for different reasons.",
     effect:"+1 AP per week.",
     passiveBonus:0, apBonus:1, gainMult:0 },
 
   { id:"dinner_basic", tier:1, cost:50, category:"social", label:"🍽️ Dining Connections",
-    desc:"A cultivated relationship with several nearby restaurants — tables held, menus known, portions that arrive in courses. Dinner as pedagogy. Dinner as everything.",
+    desc:"A cultivated relationship with several nearby restaurants — tables held, menus known, portions that arrive in courses. Dinner as hall programming. Dinner as everything.",
     effect:"Unlocks 'Take to Dinner' as a proper interactive event. Unlocks: Bistro, Italian.",
     unlocks:["dinner_action"], passiveBonus:0, apBonus:0, gainMult:0 },
 
   { id:"beverage_bar", tier:1, cost:50, category:"environment", label:"☕ Beverage Bar",
-    desc:"A dedicated hot-drinks station — espresso machine, tea collection, warm cocoa, a rotation of flavoured lattes. The smell alone changes the room. Students start arriving early just to have a cup before class begins.",
+    desc:"A dedicated hot-drinks station — espresso machine, tea collection, warm cocoa, a rotation of flavoured lattes. The smell alone changes the room. Students start arriving early just to have a cup before check-in.",
     effect:"Passive gain +1 lb/week. Hot drinks always available. Students arrive earlier and stay later.",
     classReaction:[
       "Chloe wraps both hands around her mug and doesn't move for forty minutes. She looks completely at peace.",
@@ -56,7 +56,7 @@ export const SKILL_TREE = [
     passiveBonus:1, apBonus:0, gainMult:0 },
 
   { id:"late_night_access", tier:1, cost:50, category:"feeding", label:"🌙 Late-Night Access",
-    desc:"The classroom is now accessible after hours — a swipe card issued quietly, a standing invitation. Some students are in there past midnight, alone with the snack station and their thoughts. This is not a problem.",
+    desc:"The hall lounge is now accessible after hours — a swipe card issued quietly, a standing invitation. Some students are in there past midnight, alone with the snack station and their thoughts. This is not a problem.",
     effect:"Session capacity for private feeding events increased by +15. After-hours meetings become available.",
     passiveBonus:0, apBonus:0, gainMult:0, sessionCapBonus:15 },
 
@@ -90,11 +90,11 @@ export const SKILL_TREE = [
 
   { id:"catering_contact", tier:2, cost:150, category:"feeding", label:"🤝 Catering Contract",
     desc:"A standing arrangement with a campus catering company — bulk orders, preferred pricing, and a team that knows to bring extra without being asked. What used to require planning now simply appears.",
-    effect:"All class feast actions -1 AP cost. Holiday Feast gain +4 lbs.",
+    effect:"All floor feast actions -1 AP cost. Holiday Feast gain +4 lbs.",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["snack_station"], unlocks:["feast_discount"] },
 
-  { id:"double_ap", tier:2, cost:150, category:"efficiency", label:"📅 Extended Office Hours",
-    desc:"Hours extended, schedule rearranged, priorities quietly realigned. More time means more opportunities. The department assumes you are dedicated. You are.",
+  { id:"double_ap", tier:2, cost:150, category:"efficiency", label:"📅 Extended Desk Hours",
+    desc:"Hours extended, schedule rearranged, priorities quietly realigned. More time means more opportunities. Housing assumes you are dedicated. You are.",
     effect:"+2 AP per week.",
     passiveBonus:0, apBonus:2, gainMult:0, requires:["ap_notebook"] },
 
@@ -114,7 +114,7 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0 },
 
   { id:"mood_lighting", tier:2, cost:150, category:"environment", label:"🕯️ Mood Lighting",
-    desc:"Dimmer switches replace the harsh overheads; warm-toned lamps appear in corners; the classroom takes on an evening quality regardless of time of day. In this light, everything feels more comfortable, more private, more like a place you'd let yourself go.",
+    desc:"Dimmer switches replace the harsh overheads; warm-toned lamps appear in corners; the hall lounge takes on an evening quality regardless of time of day. In this light, everything feels more comfortable, more private, more like a place you'd let yourself go.",
     effect:"+5% to all gains. Students in relationships respond especially well. The room makes people feel safe.",
     classReaction:[
       "Tiffany looks around and immediately rearranges her chair toward the warmest lamp. She opens her bag and starts eating.",
@@ -136,7 +136,7 @@ export const SKILL_TREE = [
 
   { id:"dessert_rotation", tier:2, cost:150, category:"feeding", label:"🍰 Dessert Rotation",
     desc:"A weekly dessert schedule, each day something different and each one extraordinary. They know what's coming by day of the week. The anticipation is its own kind of conditioning.",
-    effect:"+1 passive lb/week. Desserts appear daily. The class looks forward to Thursdays especially.",
+    effect:"+1 passive lb/week. Desserts appear daily. The floor looks forward to Thursdays especially.",
     passiveBonus:1, apBonus:0, gainMult:0, requires:["late_night_access"] },
 
   { id:"appetite_study", tier:2, cost:150, category:"psychology", label:"📊 Appetite Mapping",
@@ -175,7 +175,7 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0.15, requires:["catering_contact"], unlocks:["bulk_cook"] },
 
   { id:"research_budget", tier:3, cost:350, category:"efficiency", label:"💰 Research Budget",
-    desc:"A generous departmental budget for 'cultural food research' — legitimate, approved, and flexible enough to cover anything that ends up on a table in your vicinity. The administration is proud. The receipts are creative.",
+    desc:"A generous program budget for 'cultural food research' — legitimate, approved, and flexible enough to cover anything that ends up on a table in your vicinity. Res life is proud. The receipts are creative.",
     effect:"+2 AP per week. All cultural assignment actions gain +2 lbs.",
     passiveBonus:0, apBonus:2, gainMult:0, requires:["double_ap"] },
 
@@ -185,7 +185,7 @@ export const SKILL_TREE = [
     requires:["dinner_upscale"], passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dinner_private_venues"] },
 
   { id:"group_dynamics", tier:3, cost:350, category:"social", label:"👥 Group Psychology",
-    desc:"You understand how the class moves as a unit — who leads, who follows, how appetite becomes contagious. A strategic observation here, a pairing there, and the whole group drifts toward the same conclusion without anyone deciding anything.",
+    desc:"You understand how the floor moves as a unit — who leads, who follows, how appetite becomes contagious. A strategic observation here, a pairing there, and the whole group drifts toward the same conclusion without anyone deciding anything.",
     effect:"Influence pair bonus doubled. New action: 'Arrange Group Dinner' (2 girls simultaneously).",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["relationship_class"], unlocks:["group_dinner"] },
 
@@ -202,7 +202,7 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0, unlocks:["embodiment_discount"] },
 
   { id:"resonance_bells", tier:2, cost:150, category:"psychology", label:"🔔 Resonance Bells",
-    desc:"Subtle chimes installed throughout the classroom — appetite priming through sound. Also extends the craving resonance network.",
+    desc:"Subtle chimes installed throughout the hall lounge — appetite priming through sound. Also extends the craving resonance network.",
     effect:"+2 resonance link slots. Weekly surge events possible.",
     passiveBonus:0, apBonus:0, gainMult:0.05, unlocks:["resonance_extended"] },
 
@@ -232,7 +232,7 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0.15, requires:["dessert_rotation"] },
 
   { id:"admin_buffer", tier:2, cost:150, category:"efficiency", label:"🛡️ Administrative Buffer",
-    desc:"Careful relationship management with the department — small favours, appropriate visibility, knowing who to copy on an email. The result is a comfortable margin between you and administrative scrutiny. Your file is clean. Your methods are unexamined.",
+    desc:"Careful relationship management with housing — small favours, appropriate visibility, knowing who to copy on an email. The result is a comfortable margin between you and oversight scrutiny. Your file is clean. Your methods are unexamined.",
     effect:"Administrative scrutiny reduced by 1 per week passively.",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["task_batching"], scrutinyPassiveReduce:1 },
 
@@ -252,15 +252,15 @@ export const SKILL_TREE = [
     passiveBonus:0, apBonus:0, gainMult:0, requires:["personal_gifts"] },
 
   { id:"institutional_cover", tier:3, cost:350, category:"efficiency", label:"🏛️ Institutional Cover",
-    desc:"Your position, your reputation, your cultivated relationships with the administration — assembled into a deliberate structure that makes scrutiny slide off. Everything you do has a plausible explanation. Everything has paperwork. Nothing is ever quite enough to pursue.",
+    desc:"Your position, your reputation, your cultivated relationships with res life — assembled into a deliberate structure that makes scrutiny slide off. Everything you do has a plausible explanation. Everything has paperwork. Nothing is ever quite enough to pursue.",
     effect:"Scrutiny from all actions reduced by 20%.",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["admin_buffer"], scrutinyReduce:0.20 },
 
   // ── TIER 4 ───────────────────────────────────────────────────────────────────
 
   { id:"dedicated_suite", tier:4, cost:700, category:"environment", label:"🏠 Dedicated Suite",
-    desc:"A specially outfitted room that has become a destination — wide doorways, custom-ordered furnishings, a mini-kitchen of its own, soft lighting. Students at higher stages no longer attend regular class. They come here instead. Nobody questions this.",
-    effect:"+3 passive lbs/week. Stage 7+ students gain +25% gains. The whole class has an opinion.",
+    desc:"A specially outfitted room that has become a destination — wide doorways, custom-ordered furnishings, a mini-kitchen of its own, soft lighting. Students at higher stages no longer hang in the common room. They come here instead. Nobody questions this.",
+    effect:"+3 passive lbs/week. Stage 7+ students gain +25% gains. The whole floor has an opinion.",
     classReaction:[
       "Destiny relocates immediately and apparently permanently. Her streaming setup has already arrived.",
       "Jasmine visits for a 'tour' and hasn't left in three days.",
@@ -272,8 +272,8 @@ export const SKILL_TREE = [
     passiveBonus:3, apBonus:0, gainMult:0.25, requires:["reinforced_seating"] },
 
   { id:"full_catering", tier:4, cost:700, category:"feeding", label:"🍾 Full-Service Catering",
-    desc:"A dedicated catering team available on demand — not events, not planning, just a call and an arrival. Every class day is a feast. Every private session is produced. The kitchen never closes and the portions are never calculated.",
-    effect:"All class actions gain x1.3 multiplier. New action: On-Demand Feast (3 AP, scales with class avg weight).",
+    desc:"A dedicated catering team available on demand — not events, not planning, just a call and an arrival. Every check-in day is a feast. Every private session is produced. The kitchen never closes and the portions are never calculated.",
+    effect:"All floor actions gain x1.3 multiplier. New action: On-Demand Feast (3 AP, scales with floor avg weight).",
     passiveBonus:0, apBonus:0, gainMult:0.30, requires:["private_kitchen"], unlocks:["on_demand_feast"] },
 
   { id:"ap_mastery", tier:4, cost:700, category:"efficiency", label:"⚡ Peak Efficiency",
@@ -330,7 +330,7 @@ export const SKILL_TREE = [
 
   { id:"full_environment", tier:5, cost:1200, category:"environment", label:"🌟 Perfect Environment",
     desc:"Every variable optimised, every surface considered, every comfort provided before it's thought of. The room has become a closed world — one where food is constant, comfort is total, and the outside becomes abstract. Students don't leave if they can help it. They arrange their lives around staying.",
-    effect:"+5 passive lbs/week for all. The classroom is now a destination.",
+    effect:"+5 passive lbs/week for all. The hall lounge is now a destination.",
     classReaction:[
       "Brittany texts Jasmine: 'I live here now.' Jasmine texts back: 'same.' Neither of them is joking.",
       "Emma moved all her research materials in. She has not left in four days. She says it's for focus.",
@@ -349,12 +349,12 @@ export const SKILL_TREE = [
 
   { id:"grand_banquet_protocol", tier:5, cost:1200, category:"feeding", label:"🏆 Grand Banquet Protocol",
     desc:"A formal event structure — advance planning, multiple courses, a guest list, a room prepared over two days, service that rivals a private restaurant. The Grand Banquet is an occasion. Students mark their calendars. They arrive hungry on purpose. The gains are not modest.",
-    effect:"+20% to all gains. Unlocks the Grand Banquet class event — the most productive feeding event available.",
+    effect:"+20% to all gains. Unlocks the Grand Banquet floor event — the most productive feeding event available.",
     passiveBonus:0, apBonus:0, gainMult:0.20, requires:["full_catering", "midnight_ritual"], unlocks:["grand_banquet"] },
 
   { id:"total_influence", tier:5, cost:1200, category:"psychology", label:"🧠 Total Influence",
-    desc:"The class as a single unit, moving together — not because they're the same, but because the environment and the relationships and the framing have all aligned. Appetite is mutual. Comfort is shared. The group reinforces the individual and the individual reinforces the group. It runs itself.",
-    effect:"+1 passive lb/week for all. +15% to all gains. The class has become its own feeding ecosystem.",
+    desc:"The floor as a single unit, moving together — not because they're the same, but because the environment and the relationships and the framing have all aligned. Appetite is mutual. Comfort is shared. The group reinforces the individual and the individual reinforces the group. It runs itself.",
+    effect:"+1 passive lb/week for all. +15% to all gains. The floor has become its own feeding ecosystem.",
     passiveBonus:1, apBonus:0, gainMult:0.15, requires:["subliminal_priming", "trust_architecture"] },
 
   { id:"social_empire", tier:5, cost:1200, category:"social", label:"👑 Social Empire",
@@ -385,7 +385,7 @@ export const SKILL_TREE = [
     passiveBonus:1, apBonus:0, gainMult:0.10, requires:["trust_architecture", "inner_circle_mastery"] },
 
   { id:"the_institution", tier:6, cost:2000, category:"prestige", label:"🏛️ The Institution",
-    desc:"Not a class. Not a project. An institution. A thing with its own gravity, its own culture, its own logic of continuation. Students have come and grown enormous and never quite left. New ones arrive and the environment receives them and begins its work. You built this. It will outlast your tenure. It may outlast you.",
+    desc:"Not a roster. Not a project. An institution. A thing with its own gravity, its own culture, its own logic of continuation. Students have come and grown enormous and never quite left. New ones arrive and the environment receives them and begins its work. You built this. It will outlast your contract. It may outlast you.",
     effect:"+5 passive lbs/week for all. +3 AP per week. The endgame. Everything at full power simultaneously.",
     passiveBonus:5, apBonus:3, gainMult:0, requires:["master_feeder", "the_arrangement"] },
 

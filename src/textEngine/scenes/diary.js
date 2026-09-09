@@ -257,7 +257,7 @@ registerPool('diary.body_positive_creator.c1', [
   { when: { stage: [10], corruption: [0] }, text: ['The platform is legacy. The body is the argument. I didn\'t know, when I started, that I was building a legacy. I knew I was tired of being small and quiet. I built outward from that and got here.'] },
   { when: { stage: [10] }, text: ['The platform is legacy. The body is the argument.'] },
   { when: { stageMin: 7, archetype: "influencer" }, text: ['The numbers are still good. They\'ll always be good. But numbers were the old thing.'] },
-  { when: { stageMin: 6, archetype: "artsy" }, text: ['A professor assigned my content in a cultural studies course. I found out because a student emailed me. \' I ate a full meal before I replied. The reply took three drafts.'] },
+  { when: { stageMin: 6, archetype: "artsy" }, text: ['A cultural studies seminar assigned my content in a cultural studies course. I found out because a student emailed me. \' I ate a full meal before I replied. The reply took three drafts.'] },
   { when: {}, text: [
     "The argument continues. So does the body.",
     "Another day showing skin without apology.",
@@ -694,7 +694,7 @@ registerPool('diary.chapter_hostess.c1', [
   { when: { stage: [5] }, text: ['Twelve courses. I planned every one of them, sourced every ingredient, set every table.'] },
   { when: { stage: [6] }, text: ['Wednesday feast night is established. The chapter knows it, the schedule reflects it, the kitchen is stocked by Tuesday.'] },
   { when: { stage: [7] }, text: ['Three people transferred specifically for the Wednesday feasts. I know this because they told me. They found out about the chapter through secondhand accounts of the food.'] },
-  { when: { stage: [8] }, text: ['The administration noticed. A wellness coordinator came to speak with me. I served her the Wednesday feast menu and she left with a full tupperware container and has not filed anything.'] },
+  { when: { stage: [8] }, text: ['Res life noticed. A wellness coordinator came to speak with me. I served her the Wednesday feast menu and she left with a full tupperware container and has not filed anything.'] },
   { when: { stage: [9] }, text: ['Alumni are funding the feasts. A check arrived with \'for the table\' in the memo line, from a sister who graduated seven years ago.'] },
   { when: { stage: [10] }, text: ['The chapter hosts itself now. The traditions are real, the recipes are documented, the Wednesday ritual continues. I made a culture. I am also a culture.'] },
   { when: {}, text: [

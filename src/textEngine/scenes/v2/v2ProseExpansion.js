@@ -616,7 +616,7 @@ registerPool('wifeLessonsTalk.v2.depth', [
 ]);
 registerPool('homeroom.v2.depth', [
   { when: {}, text: [
-    "Daisy's classroom hums with institutional warmth — cookies, curriculum, and calculated indulgence.",
+    "Daisy's kitchen hums with institutional warmth — cookies, curriculum, and calculated indulgence.",
     'Tuesday theology: feed the hall, charm the parents, grow the suspicion meter one tray at a time.',
     'The homeroom queen holds court — soft power measured in butter and bake-sale diplomacy.',
   ]},

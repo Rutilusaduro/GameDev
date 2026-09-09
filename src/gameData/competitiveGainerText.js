@@ -213,7 +213,7 @@ export const CG_PROFESSOR_REPLY_TEXT = {
     Blob:"{girlName}'s {bodypart} is one of the few things even remotely close. With how immense you have become, I expect total annihilation of that threat.",
   }, "No measured rival has a clean category over you, which means the only opponent left is complacency. That should irritate you more than any single number."),
   observe: prof("Just observe the numbers", 1, {
-    Heavy:"Interesting early numbers. Your {bodypart} is pulling ahead of {girlName}'s quite nicely while the rest of the class is still catching up.",
+    Heavy:"Interesting early numbers. Your {bodypart} is pulling ahead of {girlName}'s quite nicely while the rest of the floor is still catching up.",
     Fat:"Your fat belly is resting noticeably heavier these days. The board shows you maintaining a strong lead over {girlName}'s {bodypart}.",
     VeryFat:"The board is reflecting your very fat frame quite clearly. You hold a substantial lead over {girlName}'s {bodypart} this week.",
     Enormous:"Your enormous frame is dominating the board. You maintain a commanding lead over {girlName}'s {bodypart}.",
