@@ -343,7 +343,7 @@ export function SkillTreeView({ availableSkillPoints, ownedSkills, skillEffects,
         <div style={{fontSize:11,color:"#8d6db4",textAlign:"right"}}>
           {spiritLevel!=null&&(
             <div style={{marginBottom:4}}>
-              Spirit Lv {spiritLevel} · {spiritXp??0}/{spiritXpForNextLevel??40} class lbs gained
+              Hall Reach Lv {spiritLevel} · {spiritXp??0}/{spiritXpForNextLevel??40} floor lbs gained
             </div>
           )}
           Spend points in a tree to unlock higher tiers. Multiple ranks stack effects.

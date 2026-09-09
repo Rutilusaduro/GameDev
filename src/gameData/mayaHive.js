@@ -25,7 +25,7 @@ export const HIVE_VPS = {
     name:"Nadia",
     label:"Nadia - Suggestion",
     color:"#8b78ff",
-    passive:"Expansion and recruitment pressure bite deeper. Spirit whispers generate extra room progress.",
+    passive:"Expansion and recruitment pressure bite deeper. Floor whispers generate extra room progress.",
     effects:{ expansionMult:1.25, recruitMult:1.2, spiritMult:1.25 },
   },
   kaylee: {

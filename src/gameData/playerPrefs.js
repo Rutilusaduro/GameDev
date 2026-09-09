@@ -1,6 +1,7 @@
 // Lightweight UI prefs (localStorage) — B2 instant text, etc.
 
-const KEY = 'professorSim.prefs';
+const KEY = 'hallPass.prefs';
+const LEGACY_KEY = 'professorSim.prefs';
 
 const DEFAULTS = {
   instantText: false,
@@ -9,7 +10,11 @@ const DEFAULTS = {
 
 function read() {
   try {
-    const raw = localStorage.getItem(KEY);
+    let raw = localStorage.getItem(KEY);
+    if (!raw) {
+      raw = localStorage.getItem(LEGACY_KEY);
+      if (raw) localStorage.setItem(KEY, raw);
+    }
     return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : { ...DEFAULTS };
   } catch {
     return { ...DEFAULTS };

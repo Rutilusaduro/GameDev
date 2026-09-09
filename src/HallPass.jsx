@@ -418,7 +418,7 @@ function isLedgerLogLine(text){
   return LEDGER_LOG_PREFIXES.some((p) => t.startsWith(p));
 }
 
-export default function ProfessorSim(){
+export default function HallPass(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
     ascension: null, weekStartLbs: st.lbs,

@@ -62,6 +62,9 @@ export function RaSetupWizard({ students, onComplete }) {
     </div>
   );
 
+  const stepIndex = step === 'intro' ? 0 : step === 'approach' ? 1 : step === 'dorm' ? 2 : 3;
+  const steps = ['Intro', 'Style', 'Hall', 'Suitemate'];
+
   return (
     <div style={{ ...C.app, alignItems: 'center', justifyContent: 'center', padding: 20, minHeight: '100vh' }}>
       <div style={panelStyle}>
@@ -74,6 +77,19 @@ export function RaSetupWizard({ students, onComplete }) {
             Hall Pass
           </h1>
           <div style={{ color: '#a89098', fontSize: 13 }}>Your floor. Your rules. Their appetites.</div>
+          {step !== 'suitemate' && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
+              {steps.slice(0, 3).map((label, i) => (
+                <div key={label} title={label} style={{
+                  width: i <= stepIndex ? 28 : 8,
+                  height: 8,
+                  borderRadius: 4,
+                  background: i <= stepIndex ? accent : 'rgba(255,255,255,0.12)',
+                  transition: 'width 0.2s ease, background 0.2s ease',
+                }} />
+              ))}
+            </div>
+          )}
         </div>
 
         {step === 'intro' && (
@@ -155,6 +171,8 @@ export function RaSetupWizard({ students, onComplete }) {
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
                       background: on ? d.accentSoft : 'rgba(255,255,255,0.03)',
                       border: `1px solid ${on ? d.color : 'rgba(255,255,255,0.08)'}`,
+                      boxShadow: on ? `0 0 24px ${d.accentSoft}` : 'none',
+                      transform: on ? 'translateY(-1px)' : 'none',
                       transition: 'all 0.15s',
                     }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>

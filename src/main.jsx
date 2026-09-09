@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import ProfessorSim from './ProfessorSim';
+import HallPass from './HallPass';
 import { GameErrorBoundary } from './components/GameErrorBoundary.jsx';
 import { TextFlagProvider } from './contexts/TextFlagContext.jsx';
 import { initErrorCapture } from './utils/errorRingBuffer.js';
@@ -12,7 +12,7 @@ function App() {
   return (
     <GameErrorBoundary>
       <TextFlagProvider>
-        <ProfessorSim />
+        <HallPass />
       </TextFlagProvider>
     </GameErrorBoundary>
   );

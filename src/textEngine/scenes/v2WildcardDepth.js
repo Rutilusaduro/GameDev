@@ -7,7 +7,7 @@ registerModuleVariants("homeroom.activity.parent_meeting.p0.curriculum", [{ when
 registerModuleVariants("homeroom.activity.health_unit.p0.official", [{ when: {}, weight: 3, text: ["Scale at front. Girls waiting. Daisy arranges it with ceremony."] }]);
 registerModuleVariants("emb.action.raid_pantry.depth", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register.", "Hunger steered from within. She obeys and calls it craving."] }]);
 registerModuleVariants("emb.action.seduce_appetite.depth", [{ when: {}, weight: 3, text: ["Hunger steered from within. She obeys and calls it craving."] }]);
-registerModuleVariants("emb.action.mirror_confession.depth", [{ when: {}, weight: 3, text: ["Spirit at the wheel. Food arrives; resistance becomes theater."] }]);
+registerModuleVariants("emb.action.mirror_confession.depth", [{ when: {}, weight: 3, text: ["You at the wheel. Food arrives; resistance becomes theater."] }]);
 registerModuleVariants("emb.action.auto_surrender.depth", [{ when: {}, weight: 3, text: ["Hunger steered from within. She obeys and calls it craving."] }]);
 registerModuleVariants("emb.action.public_eating.depth", [{ when: {}, weight: 3, text: ["Hunger steered from within. She obeys and calls it craving.", "Fullness gathers while shame schedules a late arrival."] }]);
 registerModuleVariants("emb.action.body_exploration.depth", [{ when: {}, weight: 3, text: ["She eats standing, sitting, publicly — appetite honest in every register."] }]);
@@ -17,7 +17,7 @@ registerModuleVariants("emb.release", [{ when: {}, weight: 3, text: ["Hunger ste
 registerModuleVariants("emb.action.raid_pantry.beat", [{ when: {}, weight: 3, text: ["Hunger steered from within. She obeys and calls it craving."] }]);
 registerModuleVariants("emb.action.secret_binge.beat", [{ when: {}, weight: 3, text: ["Fullness gathers while shame schedules a late arrival."] }]);
 registerModuleVariants("emb.action.auto_surrender", [{ when: {}, weight: 3, text: ["Hunger steered from within. She obeys and calls it craving."] }]);
-registerModuleVariants("emb.action.body_exploration", [{ when: {}, weight: 3, text: ["Spirit at the wheel. Food arrives; resistance becomes theater."] }]);
+registerModuleVariants("emb.action.body_exploration", [{ when: {}, weight: 3, text: ["You at the wheel. Food arrives; resistance becomes theater."] }]);
 registerModuleVariants("res.link.depth", [{ when: {}, weight: 3, text: ["Surge builds like weather. Mass answers mass through the link."] }]);
 registerModuleVariants("res.pulse.depth", [{ when: {}, weight: 3, text: ["Surge builds like weather. Mass answers mass through the link."] }]);
 registerModuleVariants("res.surge.depth", [{ when: {}, weight: 3, text: ["Appetite travels the wire between them — invisible, hungry, impossible to unfeel."] }]);

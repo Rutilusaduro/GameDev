@@ -21,7 +21,7 @@ import { auraTier as deriveAuraTier, essenceTier as deriveEssenceTier, isAscende
 
 // ── RA Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
 // The engine core is game-free; everything the engine needs to know about
-// THIS game registers here. Loaded by ProfessorSim.jsx (app root) and the
+// THIS game registers here. Loaded by HallPass.jsx (app root) and the
 // scenes barrel, so it precedes every render.
 
 registerSubjectDeriver((student, ref, skillEffects) => ({

@@ -30,7 +30,7 @@ export const OPPOSITION_ACTS = {
     id: 'IV',
     label: 'Supernatural',
     weekRange: [20, 99],
-    antagonist: 'Spirit of Hunger / Scarcity',
+    antagonist: 'Voice of Restraint / Hunger',
     scrutinyRole: 'Scarcity pressure hybrid',
   },
 };
