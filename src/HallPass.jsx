@@ -484,7 +484,7 @@ export default function HallPass(){
   const [fieldNoteError,setFieldNoteError]=useState(null);
   const [lastPlayerAction,setLastPlayerAction]=useState(null);
   // debugInputs: { [studentId]: { lbs:string, path:string, stage:number, rel:number } }
-  const [classSession,setClassSession]=useState(null);
+  const [floorCheckIn,setFloorCheckIn]=useState(null);
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
@@ -712,9 +712,9 @@ export default function HallPass(){
   },[students,globalStats]);
 
   useEffect(() => {
-    if (!classSession) return;
+    if (!floorCheckIn) return;
     playHallPassSound('session', soundEnabled);
-  }, [soundEnabled, classSession?.sceneIdx, classSession?.pendingResult, !!classSession]);
+  }, [soundEnabled, floorCheckIn?.sceneIdx, floorCheckIn?.pendingResult, !!floorCheckIn]);
 
   useEffect(() => {
     if (!skillPurchase) return;
@@ -787,11 +787,11 @@ export default function HallPass(){
 
   // Process event queue — hold events until hall session is done
   useEffect(()=>{
-    if(eventQueue.length>0 && !activeEvent && !classSession){
+    if(eventQueue.length>0 && !activeEvent && !floorCheckIn){
       setActiveEvent(eventQueue[0]);
       setEventQueue(prev=>prev.slice(1));
     }
-  },[eventQueue,activeEvent,classSession]);
+  },[eventQueue,activeEvent,floorCheckIn]);
 
   // (auto-end dinner removed — endings now handled by overfill check or manual "End Evening")
 
@@ -6664,17 +6664,17 @@ export default function HallPass(){
   };
 
 
-  const startClass=()=>{
+  const startFloorCheckIn=()=>{
     playHallPassSound('click', soundEnabled);
     const scenes=generateClassSession(students.filter(studentReceivesPassiveGain),week);
     if(!scenes.length){advanceWeek();return;}
-    setClassSession({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
+    setFloorCheckIn({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
   };
 
   const makeChoice=(choiceIdx)=>{
-    if(!classSession)return;
+    if(!floorCheckIn)return;
     playHallPassSound('click', soundEnabled);
-    const{scenes,sceneIdx}=classSession;
+    const{scenes,sceneIdx}=floorCheckIn;
     const{scene,student,type}=scenes[sceneIdx];
     const choice=scene.choices[choiceIdx];
     let newStudents=[...students];
@@ -6705,12 +6705,12 @@ export default function HallPass(){
     }
     const resultText=renderClassChoiceResult(scene, choiceIdx, student || newStudents[0], week, pharmacistTextOpts(pharmacistState, week));
     const outcome={sceneTitle:scene.title,choice:choice.label,result:resultText,gain:gainAmt,target:targetName};
-    setClassSession(prev=>({...prev,pendingResult:outcome}));
+    setFloorCheckIn(prev=>({...prev,pendingResult:outcome}));
   };
 
   const confirmResult=()=>{
     playHallPassSound('confirm', soundEnabled);
-    setClassSession(prev=>({
+    setFloorCheckIn(prev=>({
       ...prev,
       sceneIdx:prev.sceneIdx+1,
       outcomes:[...prev.outcomes,prev.pendingResult],
@@ -6718,14 +6718,14 @@ export default function HallPass(){
     }));
   };
 
-  const finishClass=()=>{
+  const finishFloorCheckIn=()=>{
     playHallPassSound('confirm', soundEnabled);
-    const{outcomes}=classSession;
+    const{outcomes}=floorCheckIn;
     setSemesterData(prev=>({
       weeksCompleted:prev.weeksCompleted+1,
       classHistory:[...prev.classHistory,{week,outcomes}],
     }));
-    setClassSession(null);
+    setFloorCheckIn(null);
     advanceWeek();
   };
 
@@ -7870,8 +7870,8 @@ export default function HallPass(){
       })()}
 
 {/* FLOOR CHECK-IN MODAL */}
-      {classSession&&(()=>{
-        const{scenes,sceneIdx,outcomes,pendingResult}=classSession;
+      {floorCheckIn&&(()=>{
+        const{scenes,sceneIdx,outcomes,pendingResult}=floorCheckIn;
         const isDone=sceneIdx>=scenes.length&&!pendingResult;
         const current=!isDone&&!pendingResult?scenes[sceneIdx]:null;
         return(
@@ -7892,7 +7892,7 @@ export default function HallPass(){
               {pendingResult&&(
                 <div>
                   <FlaggedProse
-                    section={`classSession.result.${pendingResult.sceneTitle}`}
+                    section={`floorCheckIn.result.${pendingResult.sceneTitle}`}
                     text={pendingResult.result}
                     student={scenes[sceneIdx]?.student || students.find(s => s.name === pendingResult.target) || null}
                     week={week}
@@ -7921,7 +7921,7 @@ export default function HallPass(){
                       </div>
                     )}
                     <FlaggedProse
-                      section={`classSession.scene.${scene.title}`}
+                      section={`floorCheckIn.scene.${scene.title}`}
                       text={student
                         ? renderClassSceneText(scene, student, week, pharmacistTextOpts(pharmacistState, week))
                         : (typeof scene.text==="function"?scene.text(student):scene.text)}
@@ -7962,7 +7962,7 @@ export default function HallPass(){
                     </div>
                   ))}
                   <button onClick={()=>setWeekPlannerOpen(true)} style={{...C.btn("#2a2868"),marginTop:4,width:"100%"}}>📋 Plan Week</button>
-                  <button onClick={finishClass} style={{...C.btn("#186028"),marginTop:4}}>⏩ End Week</button>
+                  <button onClick={finishFloorCheckIn} style={{...C.btn("#186028"),marginTop:4}}>⏩ End Week</button>
                 </div>
               )}
             </div>
@@ -8611,7 +8611,7 @@ export default function HallPass(){
           <button
             type="button"
             className="ra-desk-action-btn"
-            onClick={startClass}
+            onClick={startFloorCheckIn}
             style={{...C.btn(opposition?.supernatural?.famineWeek?"#333":"#186028"),opacity:opposition?.supernatural?.famineWeek?0.45:1}}
             title={opposition?.supernatural?.famineWeek?"Complete a Refeast Ritual first":"Advance the semester"}
           >

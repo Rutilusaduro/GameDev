@@ -35,15 +35,15 @@ export function MilestoneCeremonyModal({
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 560, border: `1px solid ${ACCENT}` }}>
+      <div className="hall-pass-modal-in milestone-ceremony-modal" style={{ ...C.modal, maxWidth: 560, border: `1px solid ${ACCENT}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>✦ A THRESHOLD CROSSED</div>
           {events.length > 1 && <div style={{ fontSize: 10, color: '#9a8050', fontWeight: 600 }}>{progress}</div>}
         </div>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+        <div className="milestone-resident-header" style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
           <div style={{ fontSize: 17, fontWeight: 700, color: '#e8c070' }}>{ev.name}</div>
           <div style={{ fontSize: 11, color: '#9a8050' }}>
-            grew into something new{ev.gainLbs > 0 && <span> · +{ev.gainLbs} lbs this week</span>}
+            crossed a weight threshold on your floor{ev.gainLbs > 0 && <span> · +{ev.gainLbs} lbs this week</span>}
           </div>
         </div>
         <SceneStage

@@ -278,6 +278,33 @@
   transform: translateX(1px) scale(0.99);
 }
 
+.milestone-ceremony-modal {
+  background: linear-gradient(165deg, rgba(18, 12, 6, 0.98), rgba(42, 26, 8, 0.95), rgba(12, 8, 4, 0.98)) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(216, 160, 48, 0.16);
+}
+
+.milestone-resident-header {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(216, 160, 48, 0.08);
+  border-left: 3px solid #d8a030;
+  margin-bottom: 12px;
+}
+
+.tier-up-cta {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.tier-up-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.tier-up-cta:active {
+  transform: scale(0.99);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hall-pass-view-in,
   .ra-wizard-card,
@@ -298,6 +325,7 @@
   .scene-choice-btn,
   .hall-unlock-cta,
   .week-recap-cta,
+  .tier-up-cta,
   .hall-log-achievement,
   .hall-log-unlock {
     animation: none;
@@ -313,7 +341,8 @@
   .scene-beat-advance:hover,
   .scene-choice-btn:hover:not(:disabled),
   .hall-unlock-cta:hover,
-  .week-recap-cta:hover {
+  .week-recap-cta:hover,
+  .tier-up-cta:hover {
     transform: none;
   }
 }

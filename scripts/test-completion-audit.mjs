@@ -147,6 +147,7 @@ check('ui-polish-css', () => {
     'ra-desk-week-tick', 'scene-beat-advance', 'scene-choice-btn',
     'hall-unlock-cta', 'week-recap-cta', 'hall-log-achievement', 'hall-log-unlock',
     'floor-checkin-choice', 'week-recap-week-badge',
+    'milestone-ceremony-modal', 'milestone-resident-header', 'tier-up-cta',
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS class .${cls}`);
   }
@@ -156,6 +157,13 @@ check('ra-portrait-chip', () => {
   assert.ok(existsSync(join(root, 'src/components/RaPortraitChip.jsx')));
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /RaPortraitChip/);
+});
+
+check('floor-checkin-state', () => {
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /\[floorCheckIn,setFloorCheckIn\]/);
+  assert.doesNotMatch(desk, /\bclassSession\b/);
+  assert.doesNotMatch(desk, /\bstartClass\b/);
 });
 
 // ── Report ─────────────────────────────────────────────────────

@@ -165,7 +165,7 @@ export function TierUpModal({ setStudents, setTierUpModal, tierUpModal, soundEna
                 💜 <strong>Intimate.</strong> She trusts you implicitly. Talk actions give bonus relationship.
               </div>
             )}
-            <button style={{...C.btn("#5020a0"),background:tierUpModal.newTier.color+"99"}} onClick={()=>{
+            <button className="tier-up-cta" style={{...C.btn("#5020a0"),background:tierUpModal.newTier.color+"99",width:"100%"}} onClick={()=>{
               if(tierUpModal.newTier.id===3){
                 setStudents(prev=>prev.map(s=>s.id!==tierUpModal.student.id?s:{...s,gainMultiplier:(s.gainMultiplier||1)*1.1}));
               }
