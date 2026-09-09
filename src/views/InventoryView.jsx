@@ -51,7 +51,7 @@ export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, studen
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, item?.id]);
   return(
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:460}}>
+      <div className="hall-pass-modal-in item-target-picker-modal" style={{...C.modal,maxWidth:460}}>
         <div style={{fontSize:9,letterSpacing:3,color:"#9050c8",marginBottom:6}}>USE ITEM</div>
         <div style={{fontSize:14,fontWeight:700,color:"#c090e8",marginBottom:4}}>{item.emoji} {item.label}</div>
         {(()=>{const p=foodProfile(item.label,item.cal,item.full);return(

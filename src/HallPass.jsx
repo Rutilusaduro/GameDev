@@ -7815,7 +7815,7 @@ export default function HallPass(){
         const canConfirm=totalAllocated>=skill.cost;
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580}}>
+            <div className="hall-pass-modal-in skill-purchase-modal" style={{...C.modal,maxWidth:580}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>UNLOCK SKILL</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{skill.label}</h2>
               <div style={{fontSize:11,color:"#9070b0",lineHeight:1.5,marginBottom:4}}>{skill.desc}</div>
@@ -7995,7 +7995,7 @@ export default function HallPass(){
         const venueList=[...availableVenues,...(showAtelier?[atelier]:[])];
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640}}>
+            <div className="hall-pass-modal-in dinner-out-modal" style={{...C.modal,maxWidth:640}}>
               {/* Header */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
                 <div>
@@ -8197,7 +8197,7 @@ export default function HallPass(){
       {/* IMMOBILE REDIRECT POPUP */}
       {immobileRedirect&&(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:520}}>
+          <div className="hall-pass-modal-in immobile-redirect-modal" style={{...C.modal,maxWidth:520}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#c05070",marginBottom:6}}>SHE CAN'T GO OUT</div>
             <div style={{fontSize:11,color:"#9070a0",marginBottom:14}}>
               {immobileRedirect.student.name} · {getStage(immobileRedirect.student.lbs).label} · {Math.round(immobileRedirect.student.lbs)} lbs
@@ -8217,7 +8217,7 @@ export default function HallPass(){
 
       {groupDinnerPicker&&(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580}}>
+          <div className="hall-pass-modal-in group-dinner-picker-modal" style={{...C.modal,maxWidth:580}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>SELECT GIRLS</div>
             <div style={{fontSize:12,color:"#9070c0",marginBottom:14,fontStyle:"italic"}}>
               Choose {groupDinnerPicker.count} girls to take to dinner.
@@ -8273,7 +8273,7 @@ export default function HallPass(){
       {/* DINNER ENDING POPUP */}
       {dinnerEndPopup&&(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:500}}>
+          <div className="hall-pass-modal-in dinner-end-modal" style={{...C.modal,maxWidth:500}}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:6}}>EVENING ENDS</div>
             <div style={{fontSize:11,color:"#7a5090",marginBottom:14}}>
               {dinnerEndPopup.student.name} · {getStage(dinnerEndPopup.student.lbs).label} · {dinnerEndPopup.student.lbs} lbs
@@ -8298,7 +8298,7 @@ export default function HallPass(){
         const venuePantryItems=gev.venue?getVenuePantrySuggestions(gev.venue.id):[];
         return(
           <div style={C.overlay}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:640,padding:20}}>
+            <div className="hall-pass-modal-in group-dinner-modal" style={{...C.modal,maxWidth:640,padding:20}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:8}}>GROUP DINNER</div>
 
               {/* Per-girl fullness bars */}
@@ -8499,7 +8499,7 @@ export default function HallPass(){
       {/* NARRATIVE MODAL */}
       {activeNarrativeCopy&&(
         <div style={C.overlay}>
-          <div className="hall-pass-modal-in" style={C.modal}>
+          <div className="hall-pass-modal-in narrative-modal" style={C.modal}>
             <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:4}}>NARRATIVE EVENT</div>
             <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:20}}>{activeNarrativeCopy.event.title}</h2>
             <SceneStage
@@ -9080,7 +9080,7 @@ export default function HallPass(){
         const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
         return(
           <div style={{...C.overlay,zIndex:1200}}>
-            <div className="hall-pass-modal-in" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#040810,#080e1a,#040810)",border:"1px solid #1a5a9050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
+            <div className="hall-pass-modal-in ranked-session-modal" style={{...C.modal,maxWidth:580,background:"linear-gradient(160deg,#040810,#080e1a,#040810)",border:"1px solid #1a5a9050",maxHeight:"90vh",overflowY:"auto",padding:20}}>
               <div style={{fontSize:9,letterSpacing:4,color:"#3080c0",marginBottom:4}}>{stageTitle.toUpperCase()}</div>
               <div style={{fontSize:14,fontWeight:700,color:"#60a0e0",marginBottom:8}}>{s.name}</div>
 

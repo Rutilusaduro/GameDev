@@ -44,7 +44,7 @@ export function DeviceTickPopup({ queue, onAdvance, onDismissAll, soundEnabled =
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: isGrowthScene ? 560 : 480, border: `1px solid ${tierColor}` }}>
+      <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: isGrowthScene ? 560 : 480, border: `1px solid ${tierColor}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: tierColor }}>
             {isGrowthScene ? '🌊 GROWTH EVENT' : isMalf ? '⚠️ DEVICE MALFUNCTION' : '⚙️ DEVICE TICK'}

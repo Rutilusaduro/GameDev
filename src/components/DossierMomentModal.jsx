@@ -20,7 +20,7 @@ export function DossierMomentModal({ pin, student, week = 1, onClose, soundEnabl
   return (
     <div style={C.overlay} onClick={onClose}>
       <div
-        className="hall-pass-modal-in"
+        className="hall-pass-modal-in dossier-moment-modal"
         style={{ ...C.modal, maxWidth: 520, border: '1px solid #50a080' }}
         onClick={(e) => e.stopPropagation()}
       >

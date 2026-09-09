@@ -8,7 +8,7 @@ export function DeviceTargetPicker({ deviceTargetPicker, setDeviceTargetPicker, 
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 460 }}>
+      <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>USE DEVICE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>One-shot — who receives the injection?</div>

@@ -102,7 +102,7 @@ export function StudentEquipModal({
   return (
     <div style={C.overlay} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>
       <div
-        className="hall-pass-modal-in"
+        className="hall-pass-modal-in student-equip-modal"
         style={{ ...C.modal, maxWidth: 460, border: `1px solid ${SILVER_BORDER}` }}
         onClick={e => e.stopPropagation()}
       >

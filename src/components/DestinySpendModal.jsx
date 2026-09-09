@@ -25,7 +25,7 @@ export function DestinySpendModal({
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in destiny-spend-modal" style={{
         ...C.modal, maxWidth: 520,
         background: 'linear-gradient(160deg,#120408,#1a0810,#120408)',
         border: `1px solid ${RED}50`,

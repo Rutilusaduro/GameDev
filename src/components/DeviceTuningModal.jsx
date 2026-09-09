@@ -31,7 +31,7 @@ export function DeviceTuningModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 1250 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
+      <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#a08050', marginBottom: 6 }}>FIELD TUNING</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#e8d0a8', marginBottom: 4 }}>{deviceLabel}</div>
         <div style={{ fontSize: 11, color: '#908070', marginBottom: 14 }}>Target: {studentName}</div>
@@ -103,7 +103,7 @@ export function DeviceRouteModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 1250 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
+      <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 440, width: '95%' }}>
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#5080a0', marginBottom: 6 }}>ROUTE BUDGET</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#d0e0f0', marginBottom: 4 }}>{deviceLabel}</div>
         <div style={{ fontSize: 11, color: '#8090b0', marginBottom: 14 }}>Target: {studentName}</div>

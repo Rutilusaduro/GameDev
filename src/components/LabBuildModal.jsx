@@ -26,7 +26,7 @@ export function LabBuildModal({
 
   const wrap = children => (
     <div style={{ ...C.overlay, zIndex: 8200 }}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in lab-build-modal" style={{
         ...C.modal,
         maxWidth: 500,
         background: 'linear-gradient(160deg,#060810,#0a1020,#060810)',

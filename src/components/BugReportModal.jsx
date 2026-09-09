@@ -48,7 +48,7 @@ export function BugReportModal({ getSnapshotContext, getSaveContext, prefillErro
 
   return (
     <div style={{ ...C.overlay, zIndex: 400 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(165deg,#1a1410,#0f0c08)', border: '1px solid #8a704050', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in bug-report-modal" style={{ ...C.modal, maxWidth: 520, background: 'linear-gradient(165deg,#1a1410,#0f0c08)', border: '1px solid #8a704050', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
           <div style={{ fontSize: 10, letterSpacing: 3, color: '#c9a060' }}>📋 FIELD NOTES</div>
           <button type="button" style={C.btn('#333')} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>✕</button>

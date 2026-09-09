@@ -25,7 +25,7 @@ export function StreamBrandSelectModal({ student, onSelect, onClose, required, s
   if (!student) return null;
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in stream-brand-modal" style={{
         ...C.modal,
         maxWidth: 520,
         background: 'linear-gradient(165deg,#120408,#1a0810,#0c0408)',

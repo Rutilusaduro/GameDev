@@ -18,7 +18,7 @@ export function MalfunctionPopup({ malfunctionPopup, setMalfunctionPopup, soundE
   const color = TIER_COLORS[tier] || '#c8860a';
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 440, border: `1px solid ${color}` }}>
+      <div className="hall-pass-modal-in device-modal" style={{ ...C.modal, maxWidth: 440, border: `1px solid ${color}` }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color, marginBottom: 6 }}>⚠️ DEVICE MALFUNCTION</div>
         <div style={{ fontSize: 13, fontWeight: 700, color: '#e0c0a0', marginBottom: 6 }}>
           {deviceLabel || 'Device'} — {tier}

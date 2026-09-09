@@ -161,7 +161,7 @@ export function ForceFeederModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 1250 }}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in force-feeder-modal" style={{
         ...C.modal,
         maxWidth: 660,
         background: 'linear-gradient(160deg,#0a0814,#14102a,#0a0814)',

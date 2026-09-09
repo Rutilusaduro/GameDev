@@ -11,7 +11,7 @@ export function EquipPicker({ equipPicker, setEquipPicker, students, lilithUnloc
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 460 }}>
+      <div className="hall-pass-modal-in equip-picker-modal" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>EQUIP DEVICE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>
@@ -47,7 +47,7 @@ export function AttachPicker({ attachPicker, setAttachPicker, students, lilithUn
 
   return (
     <div style={C.overlay}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 460 }}>
+      <div className="hall-pass-modal-in equip-picker-modal" style={{ ...C.modal, maxWidth: 460 }}>
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#6080a0', marginBottom: 6 }}>ATTACH MODULE</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#90b0d0', marginBottom: 4 }}>{def.icon} {def.label}</div>
         <div style={{ fontSize: 11, color: '#5a6080', marginBottom: 12 }}>

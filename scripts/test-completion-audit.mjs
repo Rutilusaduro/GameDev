@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /** Requirement checklist gate — proves RA dorm pivot objective items in repo. */
 import assert from 'assert';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { DORMS, DORM_LIST, dormUnlocksForWeek, STUDENT_HOME_DORM } from '../src/gameData/dorms.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
@@ -9,6 +9,16 @@ import { RA_RANKS } from '../src/gameData/content.js';
 
 const root = join(import.meta.dirname, '..');
 const read = (rel) => readFileSync(join(root, rel), 'utf8');
+
+function walkSrcFiles(dir = join(root, 'src')) {
+  const out = [];
+  for (const ent of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, ent.name);
+    if (ent.isDirectory()) out.push(...walkSrcFiles(p));
+    else if (/\.(jsx|js)$/.test(ent.name)) out.push(p);
+  }
+  return out;
+}
 
 const checks = [];
 
@@ -385,6 +395,40 @@ check('arc-modal-polish', () => {
   ]) {
     assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
     assert.match(read(file), new RegExp(cls));
+  }
+});
+
+check('niche-modal-polish', () => {
+  const css = read('src/index.css');
+  for (const [cls, file] of [
+    ['device-modal', 'src/components/DeviceTuningModal.jsx'],
+    ['equip-picker-modal', 'src/components/EquipPicker.jsx'],
+    ['student-equip-modal', 'src/components/StudentEquipModal.jsx'],
+    ['bug-report-modal', 'src/components/BugReportModal.jsx'],
+    ['lab-build-modal', 'src/components/LabBuildModal.jsx'],
+    ['stream-brand-modal', 'src/components/StreamBrandSelectModal.jsx'],
+    ['destiny-spend-modal', 'src/components/DestinySpendModal.jsx'],
+    ['evolved-activity-modal', 'src/components/EvolvedActivityModal.jsx'],
+    ['force-feeder-modal', 'src/components/ForceFeederModal.jsx'],
+    ['artisan-gallery-modal', 'src/components/ArtisanGalleryModal.jsx'],
+    ['dossier-moment-modal', 'src/components/DossierMomentModal.jsx'],
+    ['evolved-event-modal', 'src/components/EvolvedEventModal.jsx'],
+    ['item-target-picker-modal', 'src/views/InventoryView.jsx'],
+    ['skill-purchase-modal', 'src/HallPass.jsx'],
+    ['dinner-out-modal', 'src/HallPass.jsx'],
+    ['group-dinner-modal', 'src/HallPass.jsx'],
+    ['ranked-session-modal', 'src/HallPass.jsx'],
+  ]) {
+    assert.match(css, new RegExp(`\\.${cls}`), `missing CSS .${cls}`);
+    assert.match(read(file), new RegExp(cls));
+  }
+});
+
+check('all-modal-shells-polished', () => {
+  for (const abs of walkSrcFiles()) {
+    const rel = abs.slice(root.length + 1);
+    const src = readFileSync(abs, 'utf8');
+    assert.doesNotMatch(src, /className="hall-pass-modal-in"/, `${rel}: bare modal shell`);
   }
 });
 

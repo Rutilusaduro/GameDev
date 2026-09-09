@@ -44,7 +44,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
 
   return (
     <div style={{ ...C.overlay, zIndex: 1240 }}>
-      <div className="hall-pass-modal-in" style={{
+      <div className="hall-pass-modal-in device-modal" style={{
         ...C.modal,
         maxWidth: 720,
         width: '95%',

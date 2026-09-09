@@ -30,7 +30,7 @@ export function ArtisanGalleryModal({
     const candidates = students.filter((s) => !s.hidden && s.id !== galleryState.fionaStudentId && !enrolled.has(s.id));
     return (
       <div style={{ ...C.overlay, zIndex: 360 }}>
-        <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 480, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
+        <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 480, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>ENROLL SUBJECT</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
             {candidates.map((s) => (
@@ -48,7 +48,7 @@ export function ArtisanGalleryModal({
   if (session?.type === 'studio') {
     return (
       <div style={{ ...C.overlay, zIndex: 360 }}>
-        <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 520, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
+        <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 520, background: '#1a1410', border: `1px solid ${ACCENT}55` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>STUDIO — Round {session.round + 1}/3</div>
           <p style={{ fontSize: 12, color: CREAM, lineHeight: 1.6 }}>Feed & frame. Fiona shoots while the subject eats.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -65,7 +65,7 @@ export function ArtisanGalleryModal({
 
   return (
     <div style={{ ...C.overlay, zIndex: 360 }}>
-      <div className="hall-pass-modal-in" style={{ ...C.modal, maxWidth: 600, background: '#1a1410', border: `1px solid ${ACCENT}44`, maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="hall-pass-modal-in artisan-gallery-modal" style={{ ...C.modal, maxWidth: 600, background: '#1a1410', border: `1px solid ${ACCENT}44`, maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ fontSize: 9, letterSpacing: 4, color: ACCENT }}>🖼 ARTISAN GALLERY</div>
         <div style={{ fontSize: 12, color: CREAM, marginBottom: 12, lineHeight: 1.6 }}>
           Patrons {galleryState.patrons} · Archive {galleryState.fieldArchive.length} · Exhibitions {galleryState.exhibitionsHeld}

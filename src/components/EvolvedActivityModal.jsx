@@ -15,7 +15,7 @@ export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
   return (
     <div style={C.overlay}>
       <div
-        className="hall-pass-modal-in"
+        className="hall-pass-modal-in evolved-activity-modal"
         style={{
           ...C.modal,
           maxWidth: 540,
