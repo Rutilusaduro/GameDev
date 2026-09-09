@@ -9,6 +9,7 @@ const steps = [
   ['npm', ['run', 'test:dorm-unlock-ui']],
   ['npm', ['run', 'test:playthrough']],
   ['npm', ['run', 'test:ui-strings']],
+  ['npm', ['run', 'test:e2e']],
   ['npm', ['run', 'text:lint']],
 ];
 

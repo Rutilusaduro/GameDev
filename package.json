@@ -19,6 +19,7 @@
     "test:dorm-unlock-ui": "node scripts/test-dorm-unlock-ui.mjs",
     "test:playthrough": "node scripts/test-playthrough.mjs",
     "test:ui-strings": "node scripts/test-ui-strings.mjs",
+    "test:e2e": "playwright test",
     "test:smoke": "node scripts/test-smoke.mjs",
     "text:lint": "node scripts/textLint.mjs"
   },
@@ -29,6 +30,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
     "@capacitor/cli": "^8.3.4",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.39.4",
