@@ -4082,7 +4082,7 @@ export const WIFE_LESSONS_NPCS = {
     ],
     daughter_stages:[
       "Emma is 16. Slim, with a trace of belly softness when she sits. Her mother's predisposition.",
-      "Emma's belly has softened noticeably, pressing her school skirt forward. Her appetite picked up. Darlene says she 'finally grew a stomach like a real girl.' Darlene has been adding butter to her school lunches for three weeks.",
+      "Emma's belly has softened noticeably, pressing her school skirt forward. Her appetite picked up. Darlene says she 'finally grew a stomach worth feeding.' Darlene has been adding butter to her school lunches for three weeks.",
       "Emma is properly soft. Her belly rounds full and warm, her thighs press together when she walks. Her sister Claire is catching up and Emma finds this unacceptable.",
       "Emma is fat. Her belly sits prominent and forward. She and Claire are in a competition neither of them named. Darlene is force-feeding Emma extra shakes to keep her ahead.",
       "Emma is very fat. Her belly is a big soft dome. Claire has surpassed her in belly size and Emma is devastated. Emma has doubled down on eating to close the gap.",
@@ -4260,7 +4260,7 @@ export const WL_LESSONS = {
   ],
   6: [
     { id:"feast_spread",   label:"Feast Spread",              text:`The full Feast Spread covered the large table with every recipe from the previous lessons in glorious abundance. MJ stepped back proudly as the now-enormous daughters joined the sessions for the first time. Everyone reached across the table sharing bites and stories while the kitchen overflowed with warmth and laughter. You observed how completely the space had transformed into a true center of home and connection.`, daughterLbs:14, momLbs:7, mjLbs:9,  rel:8 },
-    { id:"daughters_bake", label:"Daughters Bake",            text:`The Daughters Bake took center stage as the girls led the lesson with growing confidence and skill. MJ watched from the side with quiet pride, offering only gentle guidance when needed. The moms observed their daughters moving through the kitchen with new purpose and authority. The warm space buzzed with the joyful energy of the next generation taking hold of the traditions.`, daughterLbs:15, momLbs:7, mjLbs:10, rel:8 },
+    { id:"daughters_bake", label:"Daughters Bake",            text:`The Daughters Bake took center stage as the daughters led the lesson with growing confidence and skill. MJ watched from the side with quiet pride, offering only gentle guidance when needed. The moms observed their daughters moving through the kitchen with new purpose and authority. The warm space buzzed with the joyful energy of the next generation taking hold of the traditions.`, daughterLbs:15, momLbs:7, mjLbs:10, rel:8 },
     { id:"old_recipe",     label:"Old Family Recipe",         text:`MJ shared her grandmother's Old Family Recipe with quiet reverence and a touch of emotion in her voice. "This one comes from the heart and has never been shared outside the family before," she explained. The personal touch made every bite feel meaningful and sacred as the group ate in appreciative silence. Something deeper than just food was being passed down in that cozy kitchen.`, daughterLbs:16, momLbs:8, mjLbs:11, rel:9 },
   ],
   7: [
@@ -4270,7 +4270,7 @@ export const WL_LESSONS = {
   ],
   8: [
     { id:"final_spread",   label:"The Final Spread",          text:`The Final Spread was the ultimate culmination of everything they had learned, with every favorite dish arrayed in glorious excess across the table. The kitchen overflowed with the scents and warmth of abundance that had defined their entire journey together. Everyone ate slowly and deeply, savoring not just the food but the memories and connections. This was the moment the whole path had been building toward.`, daughterLbs:20, momLbs:11, mjLbs:15, rel:10 },
-    { id:"handoff",        label:"The Handoff",               text:`The Handoff felt perfectly natural as the enormous daughters now took charge of cooking for their mothers. The circle had beautifully inverted with the girls proudly serving the women who once fed them. MJ watched with deep satisfaction, her role shifting gently into that of a guiding grandmother figure. The kitchen glowed with the quiet power of tradition continuing forward.`, daughterLbs:22, momLbs:12, mjLbs:16, rel:11 },
+    { id:"handoff",        label:"The Handoff",               text:`The Handoff felt perfectly natural as the enormous daughters now took charge of cooking for their mothers. The circle had beautifully inverted with their daughters proudly serving the women who once fed them. MJ watched with deep satisfaction, her role shifting gently into that of a guiding grandmother figure. The kitchen glowed with the quiet power of tradition continuing forward.`, daughterLbs:22, momLbs:12, mjLbs:16, rel:11 },
     { id:"legacy_recipe",  label:"Legacy Recipe",             text:`MJ shared her most personal Legacy Recipe, something she had only ever made in private until this sacred moment. The dish carried the full weight of her philosophy and love for nurturing through food. Every bite tasted like the future they had all built together in this warm space. The group ate in peaceful reverence, knowing they were part of something lasting.`, daughterLbs:24, momLbs:14, mjLbs:18, rel:12 },
   ],
 };
@@ -4285,15 +4285,15 @@ export const WL_DIALOGUES = {
   Darlene: [
     // Stage 1
     {
-      greeting: `"Good evening, RA. The rolls were heavier than I expected, but the girls seemed to enjoy them."`,
-      cappedGreeting: `"Both girls have reached that first mark. I suppose it's progress. They do look happy enough."`,
+      greeting: `"Good evening, RA. The rolls were heavier than I expected, but my daughters seemed to enjoy them."`,
+      cappedGreeting: `"Both daughters have reached that first mark. I suppose it's progress. They do look happy enough."`,
       options: [
         { label:"How is Emma settling in?", text:`"Emma is settling in fine. She's always been a quiet one, but she pays attention."`, subs:[
           { label:"She looks happy", text:`"Yes, she does look happy here. That's what matters most."`, outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:3 } },
           { label:"She's a natural cook",  text:`"A natural cook? I hadn't considered that, but she does seem right at home with the recipes."`, outcome:{ momKey:"Darlene", momLbs:3, mjLbs:1, rel:4 } },
         ]},
         { label:"Tell me about your recipes", text:`"Our family recipes have always been simple country food. Nothing this rich."`, subs:[
-          { label:"That sounds wonderful",    text:`"It really is wonderful. The girls have been asking for seconds at home already."`, outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:3 } },
+          { label:"That sounds wonderful",    text:`"It really is wonderful. My daughters have been asking for seconds at home already."`, outcome:{ momKey:"Darlene", momLbs:2, mjLbs:1, rel:3 } },
           { label:"I'd love to try that",     text:`"You should try some next time. Bring a good appetite."`, outcome:{ momKey:"Darlene", momLbs:3, mjLbs:2, rel:4 } },
         ]},
         { label:"You seem comfortable here",  text:`"Comfortable? It's warmer in here than I thought it would be."`, subs:[
@@ -4304,8 +4304,8 @@ export const WL_DIALOGUES = {
     },
     // Stage 2
     {
-      greeting: `"Hello again, RA. The pound cake was quite something. The girls are eating well."`,
-      cappedGreeting: `"Both girls hit 175. I've stopped counting calories at home these days."`,
+      greeting: `"Hello again, RA. The pound cake was quite something. My daughters are eating well."`,
+      cappedGreeting: `"Both daughters hit 175. I've stopped counting calories at home these days."`,
       options: [
         { label:"Emma seems to love the food", text:`"Emma seems to love the food here. She cleans her plate every time."`, subs:[
           { label:"She's been eating so well",  text:`"She's been eating so well lately. I can tell."`, outcome:{ momKey:"Darlene", momLbs:3, mjLbs:1, rel:4 } },
@@ -4323,7 +4323,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 3
     {
-      greeting: `"Good to see you, RA. The girls are really thriving with these lessons."`,
+      greeting: `"Good to see you, RA. My daughters are really thriving with these lessons."`,
       cappedGreeting: `"Both reached 215. I said the number out loud the other day and felt a quiet kind of pride."`,
       overtookGreeting: `"Chloe has passed Emma. I noticed. It's... complicated, but I'm proud of both of them."`,
       options: [
@@ -4344,10 +4344,10 @@ export const WL_DIALOGUES = {
     // Stage 4
     {
       greeting: `"RA, the lasagna was incredible. I even brought a dish to share next time."`,
-      cappedGreeting: `"265 pounds. The girls are filling the chairs differently now. It's noticeable."`,
+      cappedGreeting: `"265 pounds. My daughters are filling the chairs differently now. It's noticeable."`,
       overtookGreeting: `"Chloe is noticeably larger than Emma these days. I'm keeping track, but they're both beautiful."`,
       options: [
-        { label:"The girls are really eating",   text:`"The girls are really eating well. It's become part of our routine."`, subs:[
+        { label:"My daughters are really eating",   text:`"My daughters are really eating well. It's become part of our routine."`, subs:[
           { label:"They have good appetites",    text:`"They're growing strong and happy."`, outcome:{ momKey:"Darlene", momLbs:5, mjLbs:2, rel:6 } },
           { label:"You've raised them right",    text:`"I love seeing their plates clean every time."`, outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
         ]},
@@ -4364,12 +4364,12 @@ export const WL_DIALOGUES = {
     // Stage 5
     {
       greeting: `"Hello RA. This has become the highlight of our week. The food just keeps getting better."`,
-      cappedGreeting: `"325 pounds now. The difference between the girls is clear, but they're both thriving in their own way."`,
+      cappedGreeting: `"325 pounds now. The difference between my daughters is clear, but they're both thriving in their own way."`,
       overtookGreeting: `"Chloe has pulled ahead quite a bit. I've made peace with it. Emma is doing wonderfully too."`,
       options: [
         { label:"Everyone's grown so much",      text:`"Everyone's grown so much. It's wonderful to see the changes in all of us."`, subs:[
           { label:"In the best way",             text:`"The changes suit them beautifully."`, outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:7 } },
-          { label:"You all look wonderful",      text:`"I'm happy with how things are progressing for both girls."`, outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
+          { label:"You all look wonderful",      text:`"I'm happy with how things are progressing for both daughters."`, outcome:{ momKey:"Darlene", momLbs:6, mjLbs:3, rel:7 } },
         ]},
         { label:"Do Emma and Chloe compare notes?", text:`"Emma and Chloe compare notes at home sometimes. It's sweet to watch."`, subs:[
           { label:"That's sweet",                text:`"They encourage each other more than they compete now."`, outcome:{ momKey:"Darlene", momLbs:5, mjLbs:3, rel:6 } },
@@ -4383,7 +4383,7 @@ export const WL_DIALOGUES = {
     },
     // Stage 6
     {
-      greeting: `"The girls are here with us now. Watching them move around the kitchen feels so right."`,
+      greeting: `"My daughters are here with us now. Watching them move around the kitchen feels so right."`,
       cappedGreeting: `"400 pounds. My daughters are enormous and I couldn't be prouder of them."`,
       overtookGreeting: `"Chloe is clearly ahead now. I don't worry about the gap anymore. They're both perfect."`,
       options: [
@@ -4403,11 +4403,11 @@ export const WL_DIALOGUES = {
     },
     // Stage 7
     {
-      greeting: `"The girls barely need me in the kitchen anymore. They're truly running things now."`,
+      greeting: `"My daughters barely need me in the kitchen anymore. They're truly running things now."`,
       cappedGreeting: `"490 pounds. They've surpassed everything I once imagined possible."`,
       overtookGreeting: `"The gap is enormous now, but I've stopped measuring. They're happy and that's enough for me."`,
       options: [
-        { label:"The girls run the kitchen now",   text:`"The girls run the kitchen with such confidence and joy now."`, subs:[
+        { label:"My daughters run the kitchen now",   text:`"My daughters run the kitchen with such confidence and joy now."`, subs:[
           { label:"You taught them well",          text:`"It's beautiful to watch them take the lead."`, outcome:{ momKey:"Darlene", momLbs:7, mjLbs:4, rel:8 } },
           { label:"They've surpassed us",          text:`"They've taken to this completely and naturally."`, outcome:{ momKey:"Darlene", momLbs:8, mjLbs:4, rel:9 } },
         ]},
@@ -4435,7 +4435,7 @@ export const WL_DIALOGUES = {
           { label:"The legacy continues",          text:`"The legacy feels secure and strong."`, outcome:{ momKey:"Darlene", momLbs:8, mjLbs:4, rel:10 } },
           { label:"It's in their hands now",       text:`"They're more than ready to continue it."`, outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
         ]},
-        { label:"Thank you for trusting me",       text:`"Thank you for trusting me with my girls. This has been an incredible blessing."`, subs:[
+        { label:"Thank you for trusting me",       text:`"Thank you for trusting me with my daughters. This has been an incredible blessing."`, subs:[
           { label:"It was never a question",       text:`"We'll keep coming back as long as you'll have us."`, outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
           { label:"You earned every bit of this",  text:`"This kitchen will always feel like home to us."`, outcome:{ momKey:"Darlene", momLbs:8, mjLbs:5, rel:10 } },
         ]},
@@ -4444,7 +4444,7 @@ export const WL_DIALOGUES = {
   ],
 
   Wanda: [
-    { greeting:`"Good evening, RA. I knew from the very first bite that this was something special. Kezia has already asked when we’re coming back."`, cappedGreeting:`"Both girls have hit that first milestone. Kezia is settling into this so naturally. I’m very pleased."`, options:[
+    { greeting:`"Good evening, RA. I knew from the very first bite that this was something special. Kezia has already asked when we’re coming back."`, cappedGreeting:`"Kezia has hit that first milestone. She's settling into this so naturally. I'm very pleased."`, options:[
       { label:"How is Kezia finding it?", text:`"Kezia is adjusting beautifully. She’s always had a good appetite, but this feels different."`, subs:[
         { label:"She has talent",          text:`"Yes, she looks genuinely happy. This is exactly what I hoped for her."`, outcome:{ momKey:"Wanda", momLbs:2, mjLbs:1, rel:3 } },
         { label:"You should be proud",     text:`"She really is a natural. I can already tell this is going to be wonderful for her."`, outcome:{ momKey:"Wanda", momLbs:3, mjLbs:1, rel:4 } },
@@ -4472,7 +4472,7 @@ export const WL_DIALOGUES = {
         { label:"We'll keep making it",        text:`"I’m guiding her gently, but she’s eager."`, outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
       ]},
     ]},
-    { greeting:`"RA, these lessons keep getting better. Kezia is visibly softer already and I couldn’t be happier."`, cappedGreeting:`"Kezia has reached 215 pounds. She’s becoming such a lovely, full girl."`, options:[
+    { greeting:`"RA, these lessons keep getting better. Kezia is visibly softer already and I couldn’t be happier."`, cappedGreeting:`"Kezia has reached 215 pounds. She's becoming such a lovely, full young woman."`, options:[
       { label:"Kezia is becoming someone", text:`"Kezia is thriving. Her appetite has grown so naturally with these recipes."`, subs:[
         { label:"You can see it",          text:`"She’s becoming exactly what I always hoped she would be."`, outcome:{ momKey:"Wanda", momLbs:4, mjLbs:2, rel:5 } },
         { label:"She's growing into herself",text:`"I’m proud of how eagerly she embraces everything here."`, outcome:{ momKey:"Wanda", momLbs:5, mjLbs:3, rel:6 } },
@@ -4514,7 +4514,7 @@ export const WL_DIALOGUES = {
         { label:"We can do that",           text:`"We’re creating the soft life she deserves."`, outcome:{ momKey:"Wanda", momLbs:6, mjLbs:4, rel:8 } },
       ]},
     ]},
-    { greeting:`"The girls are attending sessions now. Watching Kezia move through this kitchen fills me with satisfaction."`, cappedGreeting:`"400 pounds. My Kezia is enormous and carries it with such natural grace."`, options:[
+    { greeting:`"Kezia is attending sessions now. Watching her move through this kitchen fills me with satisfaction."`, cappedGreeting:`"400 pounds. My Kezia is enormous and carries it with such natural grace."`, options:[
       { label:"Kezia is magnificent",        text:`"Kezia is thriving in every way. She belongs here completely."`, subs:[
         { label:"She's outgrown us both",    text:`"She looks perfect at this size."`, outcome:{ momKey:"Wanda", momLbs:6, mjLbs:3, rel:7 } },
         { label:"She's extraordinary",       text:`"I love seeing her so full and content."`, outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:8 } },
@@ -4529,7 +4529,7 @@ export const WL_DIALOGUES = {
       ]},
     ]},
     { greeting:`"Kezia barely needs any guidance in the kitchen anymore. She moves with such confidence."`, cappedGreeting:`"490 pounds. She has become truly magnificent. I’m so proud of how far she’s come."`, options:[
-      { label:"Kezia leads by example now",   text:`"The girls are running the table and Kezia is right there with them. It’s a beautiful sight."`, subs:[
+      { label:"Kezia leads by example now",   text:`"The daughters are running the table and Kezia is right there with them. It's a beautiful sight."`, subs:[
         { label:"She always did",             text:`"She belongs at the center of it all."`, outcome:{ momKey:"Wanda", momLbs:7, mjLbs:4, rel:8 } },
         { label:"She sets the pace",          text:`"Her presence fills the room in the best way."`, outcome:{ momKey:"Wanda", momLbs:8, mjLbs:4, rel:9 } },
       ]},
@@ -4559,7 +4559,7 @@ export const WL_DIALOGUES = {
   ],
 
   Patrice: [
-    { greeting:`"Hello RA. I brought some store-bought cookies... I wasn’t sure what to expect from all this."`, cappedGreeting:`"Both girls have reached the first milestone. Lila seems to like it here more than I thought she would."`, options:[
+    { greeting:`"Hello RA. I brought some store-bought cookies... I wasn’t sure what to expect from all this."`, cappedGreeting:`"Lila has reached the first milestone. She seems to like it here more than I thought she would."`, options:[
       { label:"How is Lila adjusting?",      text:`"Lila is adjusting okay. She’s been a bit quiet, but she’s watching everything."`, subs:[
         { label:"She'll find her footing",   text:`"She does look happy enough. That’s a relief."`, outcome:{ momKey:"Patrice", momLbs:2, mjLbs:1, rel:3 } },
         { label:"That takes time",           text:`"A natural cook? I suppose she does seem interested in the recipes."`, outcome:{ momKey:"Patrice", momLbs:3, mjLbs:1, rel:4 } },
@@ -4629,7 +4629,7 @@ export const WL_DIALOGUES = {
         { label:"Let them come see for themselves",text:`"I find myself wanting her to get even bigger."`,outcome:{ momKey:"Patrice", momLbs:6, mjLbs:4, rel:8 } },
       ]},
     ]},
-    { greeting:`"RA, seeing all these girls so enormously soft in the kitchen is intoxicating."`, cappedGreeting:`"400 pounds. Lila has become so massively curvy. She’s breathtaking like this."`, options:[
+    { greeting:`"RA, seeing all these daughters so enormously soft in the kitchen is intoxicating."`, cappedGreeting:`"400 pounds. Lila has become so massively curvy. She’s breathtaking like this."`, options:[
       { label:"Lila is glowing",              text:`"Lila devours every bite with such pleasure. Her belly rests heavily on her thighs now and I love it."`, subs:[
         { label:"She was always beautiful",   text:`"Those wide hips and full breasts look so feminine and inviting."`, outcome:{ momKey:"Patrice", momLbs:6, mjLbs:3, rel:7 } },
         { label:"She's become herself",       text:`"She’s pure abundance. It makes my pulse race."`, outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
@@ -4643,7 +4643,7 @@ export const WL_DIALOGUES = {
         { label:"We'll make it happen",       text:`"I want to see her grow even more voluptuous."`, outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:9 } },
       ]},
     ]},
-    { greeting:`"The girls running the kitchen while so enormously soft and heavy is an incredible sight."`, cappedGreeting:`"490 pounds. Lila is gloriously massive now. Her body is a masterpiece of soft abundance."`, options:[
+    { greeting:`"The daughters running the kitchen while so enormously soft and heavy is an incredible sight."`, cappedGreeting:`"490 pounds. Lila is gloriously massive now. Her body is a masterpiece of soft abundance."`, options:[
       { label:"Lila has surpassed everyone",  text:`"Lila moves with such heavy, sensual grace. Every step makes her curves sway beautifully."`, subs:[
         { label:"She set her own standard",   text:`"She fills the room in the most delicious way."`, outcome:{ momKey:"Patrice", momLbs:7, mjLbs:4, rel:8 } },
         { label:"No one can touch her",       text:`"Her size is pure feminine power and I adore it."`, outcome:{ momKey:"Patrice", momLbs:8, mjLbs:4, rel:9 } },

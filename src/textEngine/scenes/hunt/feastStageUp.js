@@ -75,7 +75,7 @@ A cataclysmic wave of ecstasy detonated through her core. Her belly exploded out
 
   9: `Lilith had grown far too massive to leave her dorm room. Her 5'6" body had become a living monument of gothic excess, completely dominating the small space. Her colossal, multi-tiered belly rested heavily on the floor in thick, sagging folds, pinning her in place on the reinforced bed. Her vast ass and hips spilled widely over the edges of the mattress, while her titanic breasts — each larger than beach balls — lay like heavy, sloshing weights atop her gut. She could barely move, yet the hunger burned hotter than ever.
 
-She ordered delivery and specifically requested Mia, the thick goth-leaning delivery girl she'd been craving for weeks. Mia was 5'4" and an incredibly fat 350 pounds, with an enormous soft belly that hung in heavy aprons over her waistband, wide childbearing hips, a massive shelf-like ass that strained and stretched her black work pants to the limit, and thunderous thighs that rubbed noisily with every step. Her huge, heavy breasts strained the buttons of her company polo, and her round, pretty face with full cheeks was framed by dyed black hair and subtle piercings.
+She ordered delivery and specifically requested Mia, the thick goth-leaning delivery driver she'd been craving for weeks. Mia was 5'4" and an incredibly fat 350 pounds, with an enormous soft belly that hung in heavy aprons over her waistband, wide childbearing hips, a massive shelf-like ass that strained and stretched her black work pants to the limit, and thunderous thighs that rubbed noisily with every step. Her huge, heavy breasts strained the buttons of her company polo, and her round, pretty face with full cheeks was framed by dyed black hair and subtle piercings.
 
 When the knock came, Lilith's deep, husky voice called out, "Come in, it's open."
 
@@ -89,9 +89,9 @@ Mia hesitated only a moment before stepping forward, drawn in despite herself. H
 
 Mia's breathing grew heavier as she explored further, running her palms over the vast curves, squeezing handfuls of plush hip fat and burying her face briefly against the warm, pillowy cleavage. "You're so much bigger than me now… I've packed the weight in since starting this job and I feel tiny next to you. This is the hottest and weirdest thing I've ever seen."
 
-Lilith let out a low, pleased hum, then shifted her immense weight. With a powerful swing, her colossal belly surged forward like a warm avalanche, slamming into Mia and knocking the thick delivery girl clean off her feet. Mia yelped as she tumbled backward onto the floor, pinned beneath the overwhelming mass of Lilith's gut.
+Lilith let out a low, pleased hum, then shifted her immense weight. With a powerful swing, her colossal belly surged forward like a warm avalanche, slamming into Mia and knocking the thick delivery driver clean off her feet. Mia yelped as she tumbled backward onto the floor, pinned beneath the overwhelming mass of Lilith's gut.
 
-Before she could scramble away, Lilith's jaw unhinged impossibly wide. She lunged forward and engulfed Mia's head and shoulders in one greedy motion. Powerful, wet swallows pulled the struggling, deliciously fat girl deeper despite her muffled cries, Lilith's already godlike body stretching and bulging dramatically around her.
+Before she could scramble away, Lilith's jaw unhinged impossibly wide. She lunged forward and engulfed Mia's head and shoulders in one greedy motion. Powerful, wet swallows pulled the struggling, deliciously fat Mia deeper despite her muffled cries, Lilith's already godlike body stretching and bulging dramatically around her.
 
 Then the final surge hit — deeper, stronger, and more overwhelming than ever before.
 

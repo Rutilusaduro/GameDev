@@ -10,7 +10,7 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, HAVE_A_CHAT_SCENES } from '../src/gameD
 import { STAGE_REACTIONS } from '../src/gameData/content.js';
 import {
   EVOLVED_OUTFITS, EVOLVED_EVENTS, EVOLVED_REACTIONS, EVOLVED_ACTIVITY_TEXT,
-  EVOLUTION_BUTTON_BLURB, WL_LESSONS,
+  EVOLUTION_BUTTON_BLURB, WL_LESSONS, WL_DIALOGUES,
   FEEDER_SUBJECT_JOURNALS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES,
   FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES,
 } from '../src/gameData/evolvedForms.js';
@@ -67,6 +67,9 @@ import {
 import '../src/textEngine/scenes/v2/embodiment/embodiedCampusDepth.js';
 import '../src/textEngine/scenes/v2/rituals/depth.js';
 import '../src/textEngine/scenes/wifeLessons/talkDepth.js';
+import '../src/textEngine/scenes/hunt/feastStageUp.js';
+import '../src/textEngine/scenes/hunt/feastDepth.js';
+import { renderLilithFeast } from '../src/textEngine/scenes/hunt/index.js';
 import '../src/textEngine/scenes/attitude.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/index.js';
 import { renderAscensionCeremony } from '../src/textEngine/scenes/ascension/index.js';
@@ -251,6 +254,19 @@ const BANNED = [
   /\bthe fastest girl on this track\b/i,
   /\bthe fastest girl on the track\b/i,
   /\bwider than some girls' whole bodies\b/i,
+  /\bthe girls led the lesson\b/i,
+  /\bthe girls proudly serving\b/i,
+  /\blike a real girl\b/i,
+  /\bdelivery girl\b/i,
+  /\bdeliciously fat girl\b/i,
+  /\bBoth girls have reached\b/i,
+  /\bBoth girls hit\b/i,
+  /\bBoth girls have hit\b/i,
+  /\bthe girls seemed to enjoy\b/i,
+  /\bThe girls are really eating\b/i,
+  /\bthe girls are running the table\b/i,
+  /\ball these girls so enormously\b/i,
+  /\bDelivery girl kneads\b/i,
   /\bletting a resident stuff me\b/i,
   /\bappetite psychology\b/i,
 ];
@@ -889,6 +905,27 @@ for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
   for (const lesson of lessons) {
     assertClean(`${lesson.label} ${lesson.text}`, `wife lessons stage ${stage} ${lesson.id}`);
   }
+}
+
+for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
+  for (let i = 0; i < stages.length; i++) {
+    const stage = stages[i];
+    for (const key of ['greeting', 'cappedGreeting', 'overtookGreeting']) {
+      if (stage[key]) assertClean(stage[key], `wife lessons dialogue ${person} s${i + 1} ${key}`);
+    }
+    for (const opt of stage.options || []) {
+      assertClean(`${opt.label} ${opt.text}`, `wife lessons dialogue ${person} s${i + 1} opt`);
+      for (const sub of opt.subs || []) {
+        assertClean(`${sub.label} ${sub.text}`, `wife lessons dialogue ${person} s${i + 1} sub`);
+      }
+    }
+  }
+}
+
+const lilith = INIT_STUDENTS.find((s) => s.id === 15) || INIT_STUDENTS[0];
+for (let feastStage = 0; feastStage <= 9; feastStage++) {
+  const feast = renderLilithFeast(lilith, feastStage, 12);
+  if (feast) assertClean(feast, `lilith hunt feast stage ${feastStage}`);
 }
 
 for (const teacher of FACULTY) {

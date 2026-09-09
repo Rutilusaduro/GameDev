@@ -592,6 +592,23 @@ check('wife-lessons-talk-framing', () => {
   assert.doesNotMatch(growth, /The girls are going to lose their minds/i);
 });
 
+check('wife-lessons-hunt-framing', () => {
+  const evolved = read('src/gameData/evolvedForms.js');
+  assert.match(evolved, /as the daughters led the lesson/);
+  assert.match(evolved, /their daughters proudly serving/);
+  assert.match(evolved, /my daughters seemed to enjoy/);
+  assert.match(evolved, /finally grew a stomach worth feeding/);
+  assert.doesNotMatch(evolved, /as the girls led the lesson|the girls proudly serving|like a real girl|the girls seemed to enjoy them/i);
+  assert.doesNotMatch(evolved, /Both girls have reached|Both girls hit|Both girls have hit/i);
+  const feast = read('src/textEngine/scenes/hunt/feastStageUp.js');
+  assert.match(feast, /delivery driver/);
+  assert.match(feast, /deliciously fat Mia/);
+  assert.doesNotMatch(feast, /delivery girl|deliciously fat girl/i);
+  const feastDepth = read('src/textEngine/scenes/hunt/feastDepth.js');
+  assert.match(feastDepth, /Mia kneads vast curves/);
+  assert.doesNotMatch(feastDepth, /Delivery girl kneads/i);
+});
+
 check('content-stage-journal-framing', () => {
   const content = read('src/gameData/content.js');
   assert.match(content, /skinny for someone who grew up on sweet potato pie/);
