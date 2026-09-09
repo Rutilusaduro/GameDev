@@ -40,7 +40,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
                     </div>
                     <div style={{display:"flex",gap:12}}>
                       <div style={{flex:1}}>
-                        <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>CLASS {batchBakerState.classWeight} wt</div>
+                        <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>HALL {batchBakerState.classWeight} wt</div>
                         <div style={{height:4,background:"#0a1a0a",borderRadius:2,overflow:"hidden"}}>
                           <div style={{height:"100%",width:`${classPct}%`,background:"#4a8a4a",transition:"width 0.3s"}}/>
                         </div>

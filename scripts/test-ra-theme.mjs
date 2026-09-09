@@ -19,7 +19,7 @@ const BANNED = [
   { id: 'class-banquet-label', re: /Class Banquet/ },
   { id: 'class-wide-softening', re: /Class-wide softening/i },
   { id: 'speaks-in-class', re: /speaks (up )?in class/i },
-  { id: 'the-spirit-prose', re: /\b[Tt]he spirit\b/ },
+  { id: 'back-to-class', re: /Back to Class/i },
 ];
 
 const ALLOW_LINE = [

@@ -106,7 +106,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                       </button>
                     )}
                   </div>
-                  <button style={{...C.smBtn,width:"100%",marginTop:4}} onClick={()=>setView("class")}>← Back to Class</button>
+                  <button style={{...C.smBtn,width:"100%",marginTop:4}} onClick={()=>setView("class")}>← Back to Roster</button>
                 </div>
               );
             }
@@ -120,7 +120,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     diaryOpts={pharmacistTextOpts(pharmacistState, week)}
                     onClose={() => { setShowDossier(false); setDossierOpen?.(false); }}
                   />
-                  <button style={{ ...C.smBtn, width: '100%', marginTop: 4 }} onClick={() => setView('class')}>← Back to Class</button>
+                  <button style={{ ...C.smBtn, width: '100%', marginTop: 4 }} onClick={() => setView('class')}>← Back to Roster</button>
                 </div>
               );
             }

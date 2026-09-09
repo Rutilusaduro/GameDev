@@ -24,6 +24,17 @@ const sportyIds = sportyResidents();
 assert.equal(sportyIds.length, 5, `sporty dorm expects 5 residents, got ${sportyIds.length}`);
 assert.ok(sportyIds.includes(1), 'Cassidy must home in sporty dorm');
 
+const dormCounts = Object.fromEntries(
+  ['sporty', 'nerdy', 'socialite', 'weirdos'].map((id) => [
+    id,
+    Object.values(STUDENT_HOME_DORM).filter((d) => d === id).length,
+  ]),
+);
+for (const [dormId, count] of Object.entries(dormCounts)) {
+  assert.ok(count >= 3, `${dormId} hall needs at least 3 unlock-pool residents, got ${count}`);
+}
+assert.equal(dormCounts.weirdos, 3, 'weirdos hall should have 3 residents after Annex rebalance');
+
 const swimmerEvent = NARRATIVE_EVENTS.find((e) => e.id === 'season_plan_rewrite');
 assert(swimmerEvent, 'season_plan_rewrite narrative event must exist');
 assert.equal(swimmerEvent.archetype, 'swimmer');

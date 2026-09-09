@@ -7,7 +7,7 @@ import {
 import { isHallReachable } from '../src/gameData/rosterUnlock.js';
 
 const startDorm = 'sporty';
-const priya = { id: 5, lockState: 'locked', passiveTrust: 0, homeDorm: 'nerdy' };
+const priya = { id: 7, lockState: 'locked', passiveTrust: 0, homeDorm: 'nerdy' };
 
 function openHallSet(week, unlocked = []) {
   const open = new Set([startDorm, ...unlocked]);

@@ -11,7 +11,7 @@ export const STUDENT_HOME_DORM = {
   2: 'socialite',
   3: 'sporty',
   4: 'socialite',
-  5: 'nerdy',
+  5: 'weirdos',
   6: 'socialite',
   7: 'nerdy',
   8: 'weirdos',

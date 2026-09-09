@@ -8538,6 +8538,14 @@ export default function HallPass(){
           {students.some(s=>s.evolvedForm==='competitive_gainer')&&(
             <button onClick={()=>setCgChatOpen(true)} style={{...C.btn("#7a1530"),fontSize:10,border:"1px solid #e8294a40"}}>💬 Softening Stats</button>
           )}
+          <button
+            type="button"
+            title={soundEnabled ? 'UI sounds on' : 'UI sounds off'}
+            onClick={() => setSoundEnabled(toggleSound().soundEnabled)}
+            style={{...C.btn(soundEnabled ? '#2a4a38' : '#222244'),fontSize:10,opacity:0.85,minWidth:36}}
+          >
+            {soundEnabled ? '🔊' : '🔇'}
+          </button>
           <button onClick={()=>setDebugOpen(d=>!d)} style={{...C.btn("#222244"),fontSize:10,opacity:0.7}}>🐛 Debug</button>
         </div>
       </div>

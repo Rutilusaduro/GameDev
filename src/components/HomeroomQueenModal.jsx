@@ -191,7 +191,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                     </div>
                   </div>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>CLASS {batchBakerState.classWeight+classGainAccum} wt</div>
+                    <div style={{fontSize:9,letterSpacing:2,color:"#7db87d",marginBottom:3}}>HALL {batchBakerState.classWeight+classGainAccum} wt</div>
                     <div style={{height:4,background:"#0a1a0a",borderRadius:2,overflow:"hidden"}}>
                       <div style={{height:"100%",width:`${Math.min(100,Math.round((batchBakerState.classWeight+classGainAccum)/2))}%`,background:"#4a8a4a",transition:"width 0.3s"}}/>
                     </div>

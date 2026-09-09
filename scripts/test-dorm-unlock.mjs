@@ -15,10 +15,12 @@ assert.deepEqual(dormUnlocksForWeek(12, startDorm), ['nerdy', 'socialite']);
 assert.deepEqual(dormUnlocksForWeek(16, startDorm), ['nerdy', 'socialite', 'weirdos']);
 
 const cassidy = { id: 1, lockState: 'locked', passiveTrust: 0, homeDorm: 'sporty' };
-const nerdyGirl = { id: 5, lockState: 'locked', passiveTrust: 0, homeDorm: 'nerdy' };
+const nerdyGirl = { id: 7, lockState: 'locked', passiveTrust: 0, homeDorm: 'nerdy' };
+const annexGirl = { id: 5, lockState: 'locked', passiveTrust: 0, homeDorm: 'weirdos' };
 
 assert.equal(isHallReachable(cassidy, unlocked), true);
 assert.equal(isHallReachable(nerdyGirl, unlocked), false);
+assert.equal(isHallReachable(annexGirl, unlocked), false);
 
 const afterDrip = applyWeeklyTrustDrip([nerdyGirl, cassidy], {
   spiritLevel: 1,
