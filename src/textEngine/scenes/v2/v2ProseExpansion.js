@@ -304,7 +304,7 @@ registerPool('ascension.v2.depth', [
 registerPool('lab.v2.depth', [
   { when: { stageMin: 7 }, text: [
     'The lab hums with engineered appetite — compounds calibrated, mass anticipated, precision as seduction.',
-    "Talia's bench holds more than chemistry. It holds the future shape of every girl on your roster.",
+    "Talia's bench holds more than chemistry. It holds the future shape of every resident on your roster.",
   ]},
   { when: {}, text: [
     'Precision and appetite share the bench — engineering as foreplay to mass.',
@@ -442,12 +442,12 @@ registerPool('gossip.v2.depth', [
 ]);
 registerPool('resonance.v2.depth', [
   { when: { stageMin: 9 }, text: [
-    'Hive resonance at monumental scale — linked appetites swell together like weather systems, campus-wide hunger no single girl owns.',
+    'Hive resonance at monumental scale — linked appetites swell together like weather systems, campus-wide hunger no single resident owns.',
     'The wire between them carries mass now, not just craving — fullness echoing fullness across the roster.',
   ]},
   { when: { stageMin: 6 }, text: [
     'Appetite travels the network in pulses you can almost hear — warm, immediate, impossible to unfeel.',
-    'Linked girls eat in stereo. Resonance turns private hunger into shared architecture.',
+    'Linked residents eat in stereo. Resonance turns private hunger into shared architecture.',
   ]},
   { when: { stageMin: 3 }, text: [
     'Something invisible stitches their want together. When one softens, the other feels it before the week names why.',
@@ -480,7 +480,7 @@ registerPool('opposition.v2.depth', [
     'The Board wants numbers. Every scale becomes evidence in Vance\'s folder.',
   ]},
   { when: { card: 'removal_hearing' }, text: [
-    'Removal on the agenda — one girl\'s enrollment becomes the week\'s central argument.',
+    'Removal on the agenda — one resident\'s enrollment becomes the week\'s central argument.',
     'Institutional teeth finally chose a name. Photos of fullness fill the projector.',
   ]},
   { when: {}, text: [

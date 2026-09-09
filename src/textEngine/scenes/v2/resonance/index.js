@@ -34,8 +34,8 @@ registerPool('res.surge', [
     'The network peaks. Snack drawers empty. Fullness echoes between dorms like weather.',
   ]},
   { when: {}, text: [
-    'The hall hungers as one. Snack drawers empty. Delivery apps light up. The resonance network sings — a chord of appetite no single girl started alone.',
-    'A surge rolls through the linked girls. Fullness echoes. Crumbs multiply. Resonance deepens through the harmony.',
+    'The hall hungers as one. Snack drawers empty. Delivery apps light up. The resonance network sings — a chord of appetite no single resident started alone.',
+    'A surge rolls through the linked residents. Fullness echoes. Crumbs multiply. Resonance deepens through the harmony.',
   ]},
 ]);
 

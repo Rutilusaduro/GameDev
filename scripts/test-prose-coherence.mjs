@@ -146,6 +146,10 @@ const BANNED = [
   /\bThree students\b/i,
   /\bProspective students\b/i,
   /\bdesign student\b/i,
+  /\bevery girl on your roster\b/i,
+  /\blinked girls\b/i,
+  /\bno single girl\b/i,
+  /\bone girl's enrollment\b/i,
 ];
 
 function assertClean(text, label) {

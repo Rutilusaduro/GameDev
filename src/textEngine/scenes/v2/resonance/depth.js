@@ -9,7 +9,7 @@ registerPool('res.link.depth', [
   ]},
   { when: { stageMin: 5 }, text: [
     'Something invisible stitches their hunger together. Softness on one side of campus answers softness on the other.',
-    'The pact is quiet. The consequences will not be — linked girls eat in stereo now.',
+    'The pact is quiet. The consequences will not be — linked residents eat in stereo now.',
   ]},
   { when: { stageMin: 2 }, text: [
     'A thread forms where none existed. She will taste her sister\'s appetite before she names it hers.',
@@ -42,11 +42,11 @@ registerPool('res.surge.depth', [
     'Hive appetite: one surge, many bodies, the whole roster humming with borrowed want.',
   ]},
   { when: { stageMin: 3 }, text: [
-    'Linked girls feel it together — a wave of craving that turns snack drawers into shared altars.',
+    'Linked residents feel it together — a wave of craving that turns snack drawers into shared altars.',
     'The surge passes through the web. Fullness echoes. Nobody eats alone tonight.',
   ]},
   { when: {}, text: [
     'Resonance swells beyond pairs — appetite contagious, immediate, campus-wide among the linked.',
-    'A chord of hunger no single girl started alone. Resonance deepens through the harmony.',
+    'A chord of hunger no single resident started alone. Resonance deepens through the harmony.',
   ]},
 ]);

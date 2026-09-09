@@ -528,6 +528,26 @@ check('floor-events-module', () => {
   }
 });
 
+check('narrative-roster-framing', () => {
+  const v2 = read('src/textEngine/scenes/v2/v2ProseExpansion.js');
+  assert.match(v2, /every resident on your roster/);
+  assert.doesNotMatch(v2, /every girl on your roster|linked girls eat|one girl's enrollment/i);
+  const resIdx = read('src/textEngine/scenes/v2/resonance/index.js');
+  const resDepth = read('src/textEngine/scenes/v2/resonance/depth.js');
+  assert.doesNotMatch(resIdx, /linked girls|no single girl/i);
+  assert.doesNotMatch(resDepth, /linked girls|no single girl/i);
+  assert.match(resDepth, /linked residents/);
+});
+
+check('ra-setup-wizard-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.ra-setup-shell/);
+  assert.match(css, /\.ra-setup-primary-btn:focus-visible/);
+  const wizard = read('src/components/RaSetupWizard.jsx');
+  assert.match(wizard, /className="ra-setup-panel"/);
+  assert.match(wizard, /className="ra-setup-primary-btn"/);
+});
+
 check('resident-framing-ui', () => {
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /SELECT RESIDENTS/);

@@ -47,8 +47,8 @@ export function RaSetupWizard({ students, onComplete }) {
   const steps = ['Intro', 'Style', 'Hall', 'Suitemate'];
 
   return (
-    <div style={{ ...C.app, alignItems: 'center', justifyContent: 'center', padding: 20, minHeight: '100vh' }}>
-      <div style={panelStyle}>
+    <div className="ra-setup-shell" style={{ ...C.app, alignItems: 'center', justifyContent: 'center', padding: 20, minHeight: '100vh' }}>
+      <div className="ra-setup-panel" style={panelStyle}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <div style={{ fontSize: 10, letterSpacing: 5, color: accent, marginBottom: 10, fontWeight: 600 }}>
             RESIDENCE LIFE SIMULATOR
@@ -61,12 +61,11 @@ export function RaSetupWizard({ students, onComplete }) {
           {step !== 'suitemate' && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
               {steps.slice(0, 3).map((label, i) => (
-                <div key={label} title={label} style={{
+                <div key={label} className="ra-setup-step-dot" title={label} data-active={i <= stepIndex ? 'true' : 'false'} style={{
                   width: i <= stepIndex ? 28 : 8,
                   height: 8,
                   borderRadius: 4,
                   background: i <= stepIndex ? accent : 'rgba(255,255,255,0.12)',
-                  transition: 'width 0.2s ease, background 0.2s ease',
                 }} />
               ))}
             </div>
@@ -75,7 +74,7 @@ export function RaSetupWizard({ students, onComplete }) {
 
         {step === 'intro' && (
           <div key="intro" className="hall-pass-view-in">
-            <div style={{
+            <div className="ra-setup-intro" style={{
               background: 'rgba(255,255,255,0.04)', border: `1px solid ${accentSoft}`,
               borderRadius: 12, padding: '20px 22px', marginBottom: 22,
             }}>
@@ -89,7 +88,7 @@ export function RaSetupWizard({ students, onComplete }) {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button onClick={clickSound(() => setStep('approach'))} style={{ ...C.btn(accent), fontSize: 14, padding: '12px 36px' }}>
+              <button className="ra-setup-primary-btn" onClick={clickSound(() => setStep('approach'))} style={{ ...C.btn(accent), fontSize: 14, padding: '12px 36px' }}>
                 Meet the RA →
               </button>
             </div>
@@ -124,7 +123,7 @@ export function RaSetupWizard({ students, onComplete }) {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
               <button onClick={clickSound(() => setStep('intro'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
-              <button disabled={!approach} onClick={clickSound(() => setStep('dorm'))}
+              <button className="ra-setup-primary-btn" disabled={!approach} onClick={clickSound(() => setStep('dorm'))}
                 style={{ ...C.btn(accent), opacity: approach ? 1 : 0.4, fontSize: 14, padding: '11px 28px' }}>
                 Choose your hall →
               </button>
@@ -170,7 +169,7 @@ export function RaSetupWizard({ students, onComplete }) {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
               <button onClick={clickSound(() => setStep('approach'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
-              <button disabled={!dorm} onClick={clickSound(() => setStep('suitemate'))}
+              <button className="ra-setup-primary-btn" disabled={!dorm} onClick={clickSound(() => setStep('suitemate'))}
                 style={{ ...C.btn(accent), opacity: dorm ? 1 : 0.4, fontSize: 14, padding: '11px 30px' }}>
                 Add a suitemate →
               </button>

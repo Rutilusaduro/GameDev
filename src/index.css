@@ -20,6 +20,54 @@
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 }
 
+.ra-wizard-card:focus-visible {
+  outline: 2px solid rgba(200, 150, 255, 0.8);
+  outline-offset: 2px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(160, 80, 240, 0.2);
+}
+
+.ra-setup-shell {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -10%, rgba(120, 50, 200, 0.14), transparent 65%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(196, 74, 42, 0.08), transparent 55%);
+}
+
+.ra-setup-panel {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ra-setup-intro {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+.ra-setup-step-dot {
+  transition: width 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.ra-setup-step-dot[data-active="true"] {
+  box-shadow: 0 0 10px rgba(160, 80, 240, 0.28);
+}
+
+.ra-setup-primary-btn {
+  transition: transform 0.14s ease, box-shadow 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+}
+
+.ra-setup-primary-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+}
+
+.ra-setup-primary-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.ra-setup-primary-btn:focus-visible {
+  outline: 2px solid rgba(200, 150, 255, 0.85);
+  outline-offset: 2px;
+}
+
 @keyframes rosterTileIn {
   from { opacity: 0; transform: translateY(10px) scale(0.985); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -638,6 +686,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hall-pass-view-in,
+  .ra-setup-step-dot,
+  .ra-setup-primary-btn,
   .ra-wizard-card,
   .roster-tile,
   .roster-tile-in,
