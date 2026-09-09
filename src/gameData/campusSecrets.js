@@ -122,7 +122,7 @@ export const CAMPUS_SECRETS = [
     minSecretsSolved: 7,
     campusTierMin: 0,
     solve: 'search',
-    discover: 'The basement door opens on a floodlit corridor — and a girl with a headlamp, mud on her boots, looking up like you are the puzzle she has been waiting for.',
+    discover: 'The basement door opens on a floodlit corridor — and a resident with a headlamp, mud on her boots, looking up like you are the puzzle she has been waiting for.',
     reward: { discoverElara: true },
   },
 ];

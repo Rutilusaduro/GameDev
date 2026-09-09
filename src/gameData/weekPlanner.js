@@ -79,7 +79,7 @@ export function planConflicts(plan, students = []) {
   for (const [venueId, count] of Object.entries(venueUse)) {
     if (count >= 3) {
       const v = PLANNER_VENUES.find((x) => x.id === venueId);
-      issues.push(`Three girls at ${v?.label || venueId} — scheduling squeeze.`);
+      issues.push(`Three residents at ${v?.label || venueId} — scheduling squeeze.`);
     }
   }
   return issues;

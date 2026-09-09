@@ -71,7 +71,7 @@ registerPool('set.weigh.react', [
     `She takes the number the way she takes everything now: as information about what she's becoming. "Keep the pads," she says. "We'll need them next week too."`,
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
-    `"That's my girl," she says about the number, about herself, pleased down to the foundation. "Bigger than the rig expected. Buy a rig that expects more."`,
+    `"That's the number," she says about herself, pleased down to the foundation. "Bigger than the rig expected. Buy a rig that expects more."`,
     `She receives the total like a scoreboard reading in her favor. "Higher next time," she says, giving it as an instruction, and settles deeper into the pads.`,
   ]},
   // Persona: Maya (id 8) — few words, all load-bearing.

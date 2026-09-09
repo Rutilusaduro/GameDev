@@ -17,7 +17,7 @@ registerPool("talk.coda", [
   // Submissive register — corruption tier 1+ + internalizedRole skill
   { when: { corruption: [1, 2], skill: "internalizedRole" },
     text: [
-      (ctx) => `"...thank you for taking care of me," ${ctx.subject.name} adds, quieter. "Your greedy girl appreciates it."`,
+      (ctx) => `"...thank you for taking care of me," ${ctx.subject.name} adds, quieter. "I mean it."`,
       (ctx) => `${ctx.subject.name} adds, almost to herself: "I'm getting so big for you." She doesn't seem to notice she said 'for you.'`,
       (ctx) => `"You know exactly what I need," ${ctx.subject.name} says, voice low. "You always do."`,
       (ctx) => `${ctx.subject.name} leans into the attention like warmth. "Keep going. I'm yours to feed."`,

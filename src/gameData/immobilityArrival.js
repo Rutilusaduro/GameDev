@@ -2,12 +2,12 @@
 // ═══════════════════════════════════════════════════════════════
 // IMMOBILITY ARRIVAL — "The Settling": the weight endgame.
 //
-//   • Settling area  — girls at stage 10+ leave the roster and live here.
+//   • Settling area  — residents at stage 10+ leave the roster and live here.
 //                      Three robust actions (Socialize / Feed / Care For), each
 //                      with a sub-menu (2-click flow). No Talk, no dinner.
 //   • SETTLING_ACTIONS — full 3-tree data model. Care subs are dynamic (static
 //                        subs + available comfort milestones via getAvailableCareSubs).
-//   • settleCounts   — tracks {socialize, feed, care} per girl; dominant at
+//   • settleCounts   — tracks {socialize, feed, care} per resident; dominant at
 //                      stage-11 entry determines finalForm.
 //   • Final forms    — Ever-Expanding (feed) / Comfort Queen (care) / The Adored
 //                      (socialize). Tie → player choice at M4.
@@ -250,12 +250,12 @@ export const GATHERING = {
   label: 'Gather Her Court',
   desc: 'The room is hers now, and the others come to it. Let them attend her.',
   rel: 5,             // to her
-  attendeeRel: 2,     // to each girl who attends
+  attendeeRel: 2,     // to each resident who attends
   attendeeGain: [1, 3],
 };
 
 /**
- * Girls who attend a leviathan's gathering: the closest available girls (by
+ * Residents who attend a leviathan's gathering: the closest available residents (by
  * relationship) other than her. Returns [] until tier 2. Capped at 4 so the
  * scene stays legible.
  */

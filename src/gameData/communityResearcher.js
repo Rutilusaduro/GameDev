@@ -503,7 +503,7 @@ export const HAVE_A_CHAT_SCENES = [
       },
       {
         text: (h) => h.includes('acknowledge')
-          ? `A slow smile. "Smart girl." She opens the folder. "Here's what I can do. I'll write a support recommendation into the panel record — my name on it carries weight with Rivera." She looks at Cassidy steadily. "In exchange for the full field notes. All of them. Not the edited submission. The real ones."`
+          ? `A slow smile. "Sharp read." She opens the folder. "Here's what I can do. I'll write a support recommendation into the panel record — my name on it carries weight with Rivera." She looks at Cassidy steadily. "In exchange for the full field notes. All of them. Not the edited submission. The real ones."`
           : `"The methodology is fine," she says, cutting her off gently. "I know the methodology is fine. I've read everything you submitted and some things you didn't intend to submit." A pause. "I'm not here to catch you. I want to read the rest of it." She opens the folder. "Full field notes — unedited — and I'll support the season plan."`,
         choices: [
           { id: 'share_notes', label: 'Agree — share the full unedited field notes' },

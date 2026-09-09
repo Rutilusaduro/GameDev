@@ -63,7 +63,7 @@ export const CAMPUS_SOFT_FLAVOR = [
   "A wellness flyer on the bulletin board promises 'metabolic support' in pastel gradients. Half of them are already taken.",
   "Someone has replaced the vending machine's 'low-cal' row with 'recovery blends.' Nobody complained.",
   "The quad smells like cinnamon rolls and something sweeter underneath — campus-wide, persistent, intentional.",
-  "Two girls you don't recognize pass carrying trays meant for four. They look satisfied, not surprised.",
+  "Two residents you don't recognize pass carrying trays meant for four. They look satisfied, not surprised.",
   "A dining hall chalkboard reads: SECOND HELPINGS ENCOURAGED. The handwriting is new.",
   "Delivery drivers have started recognizing this building by smell alone.",
   "The gym's scale room is mysteriously under renovation. A sign says COMFORT FIRST.",

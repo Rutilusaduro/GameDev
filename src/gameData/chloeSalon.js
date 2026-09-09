@@ -198,7 +198,7 @@ export const SALON_EVOLVED_EVENTS = [
     title: 'Campus Murmur',
     phases: [
       {
-        text: (h, s) => `"The French girl's dinners" appears in a group chat you're not in. Chloé reads it aloud, amused. She's ${Math.round(s.lbs)} pounds and pours more wine.`,
+        text: (h, s) => `"Chloé's dinners" appears in a group chat you're not in. Chloé reads it aloud, amused. She's ${Math.round(s.lbs)} pounds and pours more wine.`,
         choices: [
           { id: 'lean_in', label: 'Lean into the rumor', result: 'She posts a photo — candles, empty plates, her smile.', lbs: 7, rel: 8, flag: 'publicity' },
           { id: 'mystery', label: 'Keep it mysterious', result: 'No posts. Only whispers. The line gets longer.', lbs: 5, rel: 10, flag: 'mystery' },

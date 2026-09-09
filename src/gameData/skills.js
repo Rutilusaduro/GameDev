@@ -186,10 +186,10 @@ export const SKILL_TREE = [
 
   { id:"group_dynamics", tier:3, cost:350, category:"social", label:"👥 Group Psychology",
     desc:"You understand how the floor moves as a unit — who leads, who follows, how appetite becomes contagious. A strategic observation here, a pairing there, and the whole group drifts toward the same conclusion without anyone deciding anything.",
-    effect:"Influence pair bonus doubled. New action: 'Arrange Group Dinner' (2 girls simultaneously).",
+    effect:"Influence pair bonus doubled. New action: 'Arrange Group Dinner' (2 residents simultaneously).",
     passiveBonus:0, apBonus:0, gainMult:0, requires:["relationship_class"], unlocks:["group_dinner"] },
 
-  // ── V2.0 CLASSROOM UPGRADES ────────────────────────────────────────────────
+  // ── V2.0 HALL UPGRADES ─────────────────────────────────────────────────────
 
   { id:"ritual_kitchen", tier:2, cost:150, category:"feeding", label:"🕯️ Ritual Kitchen",
     desc:"A dedicated preparation space for ceremonial feasts — multiple courses, serving rituals, the infrastructure of spectacle.",
@@ -283,7 +283,7 @@ export const SKILL_TREE = [
 
   { id:"dinner_residence", tier:4, cost:700, category:"social", label:"🏡 Home Hospitality",
     desc:"The invitation home — an evening that begins with drinks and runs until the food is gone and nobody quite wants to leave. Multiple guests, a long table, a kitchen that has been working since afternoon. The most intimate setting available.",
-    effect:"Unlocks 'Home Dinner Party' (3 girls, evening-long event). Dinner gain x1.5.",
+    effect:"Unlocks 'Home Dinner Party' (3 residents, evening-long event). Dinner gain x1.5.",
     requires:["dinner_private"], passiveBonus:0, apBonus:0, gainMult:0, unlocks:["dinner_party"] },
 
   { id:"dinner_accessible", tier:4, cost:700, category:"social", label:"♿ Bespoke Dining Suite",

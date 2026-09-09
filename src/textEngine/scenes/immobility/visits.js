@@ -1,5 +1,5 @@
 // The Squad — Lead: A3 Immobility | Support: A7 Artisan, A5 Editor
-// Brokered visit scenes — archetype-keyed. ref = visitor, subject = immobile girl.
+// Brokered visit scenes — archetype-keyed. ref = visitor, subject = immobile resident.
 import { registerPool } from '../../engine.js';
 
 registerPool('immob.visit', [

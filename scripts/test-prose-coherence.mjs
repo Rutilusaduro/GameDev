@@ -87,7 +87,12 @@ import '../src/textEngine/scenes/hungerInterrupt/index.js';
 import '../src/textEngine/scenes/confront/index.js';
 import { renderContestPayoff, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
 import { renderSumoPayoff, renderSumoAftermath } from '../src/textEngine/scenes/sumoMatch/index.js';
-import { SALON_COURSES, SALON_SERVICE_CHOICES } from '../src/gameData/chloeSalon.js';
+import { SALON_COURSES, SALON_SERVICE_CHOICES, SALON_EVOLVED_EVENTS } from '../src/gameData/chloeSalon.js';
+import { SKILL_TREE } from '../src/gameData/skills.js';
+import { CAMPUS_SECRETS } from '../src/gameData/campusSecrets.js';
+import { CAMPUS_SOFT_FLAVOR } from '../src/gameData/pharmacistCampus.js';
+import { RESONANCE_TIERS } from '../src/gameData/v2/cravingResonance.js';
+import { planConflicts } from '../src/gameData/weekPlanner.js';
 import { renderRecordingOpening } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { renderCultivatorIntro, renderCultivatorRecruitment } from '../src/textEngine/scenes/cultivator/index.js';
@@ -319,6 +324,16 @@ const BANNED = [
   /\bThat's my girl,\b/i,
   /\bposter girl and I'm falling\b/i,
   /\bsponsor's favorite girl\b/i,
+  /\bTwo girls you don't recognize\b/i,
+  /\bOne girl eats; they all feel it\b/i,
+  /\bThree girls at\b/i,
+  /\b2 girls simultaneously\b/i,
+  /\b3 girls, evening-long\b/i,
+  /\b"Smart girl\."\b/i,
+  /\bThat's my girl," she says about the number\b/i,
+  /\bYour greedy girl appreciates\b/i,
+  /\bculinary girl lives\b/i,
+  /\ba girl with a headlamp\b/i,
 ];
 
 function assertClean(text, label) {
@@ -973,6 +988,44 @@ for (const course of SALON_COURSES) {
 }
 for (const choice of SALON_SERVICE_CHOICES) {
   assertClean(choice.label, `salon service ${choice.id}`);
+}
+const chloeSubject = { ...INIT_STUDENTS.find((s) => s.id === 9), name: 'Chloé', lbs: 180 };
+for (const [stageIdx, ev] of SALON_EVOLVED_EVENTS.entries()) {
+  assertClean(ev.title, `salon evolved title ${stageIdx}`);
+  for (const phase of ev.phases || []) {
+    const body = typeof phase.text === 'function' ? phase.text([], chloeSubject) : phase.text;
+    if (body) assertClean(body, `salon evolved stage ${stageIdx} phase`);
+    for (const ch of phase.choices || []) {
+      assertClean(`${ch.label} ${ch.result}`, `salon evolved choice ${ch.id}`);
+    }
+  }
+  for (const end of ev.endings || []) {
+    const body = typeof end.text === 'function' ? end.text([], chloeSubject, 5) : end.text;
+    if (body) assertClean(body, `salon evolved ending ${stageIdx}`);
+  }
+}
+
+for (const skill of SKILL_TREE) {
+  assertClean(`${skill.label} ${skill.desc} ${skill.effect}`, `hall skill ${skill.id}`);
+}
+for (const tier of RESONANCE_TIERS) {
+  assertClean(`${tier.label} ${tier.desc}`, `resonance tier ${tier.id}`);
+}
+for (const secret of CAMPUS_SECRETS) {
+  assertClean(`${secret.label} ${secret.hint || ''} ${secret.discover || ''}`, `campus secret ${secret.id}`);
+}
+for (const line of CAMPUS_SOFT_FLAVOR) {
+  assertClean(line, 'pharmacist campus flavor');
+}
+const squeezePlan = {
+  slots: [
+    { studentId: 0, venueId: 'dining_hall' },
+    { studentId: 1, venueId: 'dining_hall' },
+    { studentId: 2, venueId: 'dining_hall' },
+  ],
+};
+for (const issue of planConflicts(squeezePlan, INIT_STUDENTS)) {
+  assertClean(issue, 'week planner conflict');
 }
 
 assertClean(CLUE_INVESTIGATION.title, 'lilith clue title');

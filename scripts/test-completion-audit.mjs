@@ -618,6 +618,37 @@ check('wife-lessons-depth-framing', () => {
   assert.doesNotMatch(pharmacist, /meets the girls who meet/i);
 });
 
+check('hall-system-resident-framing', () => {
+  const skills = read('src/gameData/skills.js');
+  assert.match(skills, /2 residents simultaneously/);
+  assert.match(skills, /3 residents, evening-long/);
+  assert.doesNotMatch(skills, /2 girls simultaneously|3 girls, evening-long/i);
+  const planner = read('src/gameData/weekPlanner.js');
+  assert.match(planner, /Three residents at/);
+  assert.doesNotMatch(planner, /Three girls at/i);
+  const salon = read('src/gameData/chloeSalon.js');
+  assert.match(salon, /Chloé's dinners/);
+  assert.doesNotMatch(salon, /French girl's dinners/i);
+  const secrets = read('src/gameData/campusSecrets.js');
+  assert.match(secrets, /a resident with a headlamp/);
+  assert.doesNotMatch(secrets, /a girl with a headlamp/i);
+  const resonance = read('src/gameData/v2/cravingResonance.js');
+  assert.match(resonance, /One resident eats; they all feel it/);
+  assert.doesNotMatch(resonance, /One girl eats/i);
+  const pharmacist = read('src/gameData/pharmacistCampus.js');
+  assert.match(pharmacist, /Two residents you don't recognize/);
+  assert.doesNotMatch(pharmacist, /Two girls you don't recognize/i);
+  const researcher = read('src/gameData/communityResearcher.js');
+  assert.match(researcher, /Sharp read/);
+  assert.doesNotMatch(researcher, /Smart girl/i);
+  const weigh = read('src/textEngine/scenes/settling/weigh.js');
+  assert.match(weigh, /That's the number/);
+  assert.doesNotMatch(weigh, /That's my girl," she says about the number/i);
+  const codas = read('src/textEngine/scenes/talkCodas.js');
+  assert.match(codas, /I mean it/);
+  assert.doesNotMatch(codas, /Your greedy girl appreciates/i);
+});
+
 check('dorm-diary-stream-resident-framing', () => {
   const dorms = read('src/gameData/dorms.js');
   assert.match(dorms, /The residents here treat appetite like training/);

@@ -46,6 +46,9 @@ const BANNED = [
   /\ball girls\b/i,
   /\bArm 1 girl\b/i,
   /\b1\/girl\/week\b/i,
+  /\b2 girls simultaneously\b/i,
+  /\b3 girls, evening-long\b/i,
+  /\bThree girls at\b/i,
 ];
 
 function assertClean(text, label) {
