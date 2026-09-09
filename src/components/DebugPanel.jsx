@@ -49,6 +49,7 @@ export function DebugPanel({
   setAdminScrutiny,
   setAp,
   setOwnedSkills,
+  setOwnedHallSkills,
   setDebugInputs,
   setDebugOpen,
   setLilithUnlocked,
@@ -172,6 +173,21 @@ export function DebugPanel({
                     setView('influence');
                   }}>
                   🌒 Floor Influence QA
+                </button>
+              )}
+              {setOwnedHallSkills && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(120,70,30,0.55)' }}
+                  onClick={() => {
+                    setOwnedHallSkills((prev) => ({
+                      ...prev,
+                      dinner_basic: true,
+                      relationship_class: true,
+                      group_dynamics: true,
+                    }));
+                    setAp((a) => Math.max(a, 20));
+                    setView('actions');
+                  }}>
+                  🍽️ Dinner QA
                 </button>
               )}
               <button type="button" style={{ ...C.smBtn, background: 'rgba(60,30,0,0.5)' }}

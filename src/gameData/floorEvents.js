@@ -1,7 +1,7 @@
 import { getStage } from './stages.js';
 
 export const ACTIONS_SINGLE = [
-  { id:"restaurant",  label:"🍷 Take Her to Dinner",         cost:2, gain:[4,9],   desc:"A proper dinner out at the best restaurant near campus.", requiresUnlock:"dinner_action" },
+  { id:"restaurant",  label:"🍷 Take to Dinner",             cost:2, gain:[4,9],   desc:"A proper dinner out at the best restaurant near campus.", requiresUnlock:"dinner_action" },
 ];
 
 export const ACTIONS_HALL = [

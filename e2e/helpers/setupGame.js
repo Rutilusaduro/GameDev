@@ -258,7 +258,7 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
 }
 
 /** Walk floor check-in modal through choices → End Week (if shown). */
-export async function completeFloorCheckIn(page) {
+export async function completeFloorCheckIn(page, { leaveUnlockModal = false } = {}) {
   for (let step = 0; step < 32; step += 1) {
     if (await isNarrativeOpen(page)) {
       await drainNarrativeModal(page, { maxTaps: 128 });
@@ -277,7 +277,7 @@ export async function completeFloorCheckIn(page) {
     const endWeek = checkIn.getByRole('button', { name: '⏩ End Week' });
     if (await endWeek.isVisible().catch(() => false)) {
       await endWeek.click();
-      await resolveBlockingUI(page, { maxSteps: 160 });
+      if (!leaveUnlockModal) await resolveBlockingUI(page, { maxSteps: 160 });
       return;
     }
 

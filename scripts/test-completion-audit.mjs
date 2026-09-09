@@ -147,6 +147,8 @@ const REQUIRED_E2E = [
   'e2e/semester-wk16-clickthrough.spec.js',
   'e2e/dorm-unlock.spec.js',
   'e2e/dorm-unlock-wk16.spec.js',
+  'e2e/hall-unlock-modal.spec.js',
+  'e2e/group-dinner-picker.spec.js',
 ];
 
 check('e2e-coverage', () => {
@@ -621,6 +623,8 @@ check('floor-events-module', () => {
   const events = read('src/gameData/floorEvents.js');
   assert.match(events, /export const FLOOR_SCENES/);
   assert.match(events, /id:"hall_potluck"/);
+  assert.match(events, /Take to Dinner/);
+  assert.doesNotMatch(events, /Take Her to Dinner/i);
   assert.doesNotMatch(events, /id:"class_potluck"/);
   assert.doesNotMatch(events, /CLASS_SCENES/);
   for (const shim of [
