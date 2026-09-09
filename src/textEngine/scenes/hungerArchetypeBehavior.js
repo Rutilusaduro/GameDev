@@ -27,7 +27,7 @@ const ARCHETYPE_BEHAVIOR = {
   ],
   psych: [
     'She watches your face more than the food she\'s about to ask for.',
-    'Field notes forgotten. Subject is her stomach. Observer is failing.',
+    'Hall log forgotten. Her stomach is the whole log. Distance is failing.',
   ],
   eced: [
     'She smells like cookie dough. Guilt and appetite in equal measure.',

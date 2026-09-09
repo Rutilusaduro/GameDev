@@ -836,6 +836,24 @@ check('bookworm-attitude-hall-log', () => {
   assert.doesNotMatch(attitude, /Research subject: me/i);
 });
 
+check('prose-research-subject-sweep', () => {
+  const diaryPhaseD = read('src/textEngine/scenes/diaryPhaseD.js');
+  const hunger = read('src/textEngine/scenes/hungerArchetypeBehavior.js');
+  const personas = read('src/textEngine/scenes/interior/personas.js');
+  const diaryBase = read('src/textEngine/scenes/diaryBase.js');
+  const resonance = read('src/gameData/v2/cravingResonance.js');
+  assert.match(diaryPhaseD, /Floor log now/);
+  assert.match(hunger, /Hall log forgotten/);
+  assert.match(personas, /Observers aligned/);
+  assert.match(diaryBase, /\[Resident\] reports appetite/);
+  assert.match(resonance, /desc: 'Cravings echo between linked residents\.'/);
+  assert.doesNotMatch(diaryPhaseD, /Primary research now/i);
+  assert.doesNotMatch(hunger, /Subject is her stomach|Observer is failing/i);
+  assert.doesNotMatch(personas, /Subjects aligned/i);
+  assert.doesNotMatch(diaryBase, /\[Subject\]/);
+  assert.doesNotMatch(resonance, /desc:.*linked students/i);
+});
+
 check('narrative-residents-not-students', () => {
   const narrative = read('src/textEngine/scenes/weeklyEvent/narrativeFragments.js');
   const campus = read('src/textEngine/scenes/campus/fragments.js');

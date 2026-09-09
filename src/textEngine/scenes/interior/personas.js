@@ -56,7 +56,7 @@ registerModuleVariants('interior.selfObs', [
   { when: { studentId: 12, corruption: [1], stageMin: 4 }, weight: W, text: [
     'Nadia watches you watch her soften. The observation is mutual. She prefers it that way.',
     'She names the feeling in brackets and does not close them.',
-    'Field notes: mutual observation. Subjects aligned.',
+    'Hall log: mutual observation. Observers aligned.',
   ]},
   { when: { studentId: 14, corruption: [2], stageMin: 5 }, weight: W, text: [
     'Mary Jane pats her belly in the mirror like kneading dough — proud, patient, hungry for more.',

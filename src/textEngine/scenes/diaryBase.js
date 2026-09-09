@@ -421,22 +421,22 @@ registerPool("diary.maryjane.ripe", [
 
 registerPool("diary.sophia.trial", [
   { when: { studentId: 16, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
-    "Field note, Week 3. [Subject] reports appetite increase outside structured meal windows. Hyposeason plan: stress response, elevated cortisol. Recommend monitoring.",
-    "Field note, Week 5. [Subject] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
+    "Field note, Week 3. [Resident] reports appetite increase outside structured meal windows. Hyposeason plan: stress response, elevated cortisol. Recommend monitoring.",
+    "Field note, Week 5. [Resident] appetite continues elevated. Stress hypothesis weakening. Secondary hypothesis under consideration. No intervention at this time.",
   ]},
   { when: { studentId: 16, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [
-    "Field note, Week 7. [Subject] — I — notes that appetite is no longer attributable to identified stressors. Notes this without distress. Notes that the noting is itself notable. Updating baseline.",
-    "The brackets around [Subject] look strange today. I keep typing them and deleting them and retyping them. The data doesn't change.",
+    "Field note, Week 7. [Resident] — I — notes that appetite is no longer attributable to identified stressors. Notes this without distress. Notes that the noting is itself notable. Updating baseline.",
+    "The brackets around [Resident] look strange today. I keep typing them and deleting them and retyping them. The data doesn't change.",
   ]},
   { when: { studentId: 16, stageMin: 4, stageMax: 6, corruption: [2] }, weight: 4, text: [
     "Week 11. I am the trial. The dosing is irregular and entirely self-administered. Efficacy: excellent. Side effects: none I'm interested in correcting.",
     "I ate two dinners tonight and wrote them both up as data and then I didn't write them up as data. I just ate them.",
-    "No brackets. No [Subject]. I don't want to correct this. I am very good at my job and I am using that skill to not correct this.",
+    "No brackets. No [Resident]. I don't want to correct this. I am very good at my job and I am using that skill to not correct this.",
   ]},
   { when: {}, text: [
     "The field work continues. So do I.",
     "Week note: appetite outside meal windows. Intervention: declined.",
-    "The brackets around [Subject] are getting harder to type.",
+    "The brackets around [Resident] are getting harder to type.",
   ]},
 ]);
 

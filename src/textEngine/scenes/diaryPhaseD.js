@@ -159,7 +159,7 @@ registerPool('diary.competitive_gainer.s7._f15', [
 registerPool('diary.competitive_gainer.s7._f16', [
   { when: {}, text: [
     ". This is no longer a side project.",
-    ". Primary research now. Everything else is noise.",
+    ". Floor log now. Everything else is noise.",
     ". The board is the point. Food is the method.",
   ]},
 ]);
