@@ -14,7 +14,7 @@ export function ActionsView({ ap, doClass, effectiveClassActions, famineWeek = f
                   🕯️ <strong>Famine Week</strong> — the semester is frozen until you complete a <strong>Refeast Ritual</strong> (4 AP below). Next Week is disabled until scarcity eases.
                 </div>
               )}
-              <p style={C.secT}>Class-Wide Actions · {ap} AP remaining</p>
+              <p style={C.secT}>Hall-Wide Actions · {ap} AP remaining</p>
               <div style={C.grid2}>
                 {sortedActions.map(a=>(
                   <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1,border:famineWeek&&a.id==='refeast_ritual'?'1px solid #c0404060':undefined}}>

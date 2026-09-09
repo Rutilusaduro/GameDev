@@ -163,7 +163,7 @@ export const STAGE_REACTIONS = {
     // Stage 3 ~162-195 lbs
     (s) => `Her thighs press together now. She's moved from the back row to the middle and hasn't said why. At ${Math.round(s.lbs)} pounds her belly is a real soft round thing when she sits and she doesn't hide it. She watches the others the way someone watches something they want.`,
     // Stage 4 ~195-238 lbs
-    (s) => `She speaks in class now — rarely, but when she does it's exact. Her belly rounds forward noticeably. Her thighs are wide and warm. I asked how she was doing and she said: '${Math.round(s.lbs)} pounds.' That was the whole answer. She seemed satisfied with it.`,
+    (s) => `She speaks up on the floor now — rarely, but when she does it's exact. Her belly rounds forward noticeably. Her thighs are wide and warm. I asked how she was doing and she said: '${Math.round(s.lbs)} pounds.' That was the whole answer. She seemed satisfied with it.`,
     // Stage 5 ~238-285 lbs
     (s) => `She told me today that she's ${Math.round(s.lbs)} pounds like she was releasing something she'd been holding. Her belly hangs forward. Her thighs are enormous and spread across the chair. She said: 'I want more.' Three words. She meant all of them.`,
     // Stage 6 ~285-360 lbs

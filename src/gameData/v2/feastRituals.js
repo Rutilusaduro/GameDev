@@ -23,7 +23,7 @@ export const FEAST_RITUALS = [
   {
     id: 'class_banquet',
     tier: 2,
-    label: 'Class Banquet',
+    label: 'Hall Banquet',
     icon: '🍽',
     minStudents: 4,
     maxStudents: 6,

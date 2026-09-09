@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// COMMUNITY RESEARCHER — Thesis / case study modal
+// LANE CAPTAIN — season plan / field study modal
 // ═══════════════════════════════════════════════════════════════
 import { C } from '../styles.js';
 import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, HAVE_A_CHAT_SCENES } from '../gameData/communityResearcher.js';
@@ -20,8 +20,8 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
 
         // ── THESIS BOARD ──
         if(crs.modalPhase==='thesis_board') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 COMMUNITY RESEARCHER</div>
-          <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:10}}>PhD Proposal Defense</div>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>🏊 LANE CAPTAIN</div>
+          <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:10}}>Season Plan Review</div>
           <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
             {THESIS_BOARD.phases[crs.boardPhase]?.(mName)||''}
           </div>
@@ -29,7 +29,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
             <button style={{...C.btn(blue),width:"100%"}} onClick={advanceThesisBoard}>Continue →</button>
           ):(
             <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(cassidy)}>
-              ✓ Defense Complete — Approved
+              ✓ Panel Approved — Continue
             </button>
           )}
         </>);
@@ -37,9 +37,9 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         // ── THESIS SUCCESS ──
         if(crs.modalPhase==='thesis_success') return wrap(<>
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 APPROVED</div>
-          <div style={{fontSize:14,fontWeight:700,color:lblue,marginBottom:10}}>Thesis Accepted</div>
+          <div style={{fontSize:14,fontWeight:700,color:lblue,marginBottom:10}}>Season Plan Approved</div>
           <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.85,marginBottom:14}}>
-            The panel approves unanimously. Dr. Ward's note about the waistline is already in the field journal. Case studies may now begin.
+            The athletics panel approves unanimously. Ward's note about the meal logs is already in the field journal. Floor case studies may now begin.
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>completeThesisDefense(cassidy)}>Begin Case Studies →</button>
         </>);
@@ -103,7 +103,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         if(crs.modalPhase==='board_reaction'){
           const reactionPair=CASE_STUDY_PAIRS.find(p=>p.id===crs.boardReactionPairId);
           return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 COMMITTEE RESPONSE</div>
+            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 PANEL RESPONSE</div>
             <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>
               {reactionPair?.icon||'📋'} {reactionPair?.label||''}
             </div>
@@ -121,7 +121,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         // ── FINAL REVIEW ──
         if(crs.modalPhase==='final_review') return wrap(<>
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 FINAL REVIEW</div>
-          <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>Committee Hearing</div>
+          <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>Final Panel Hearing</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
             {crs.finalReviewText||''}
           </div>
@@ -145,7 +145,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
                   background:crs.chatWon.includes(i)?'#0a2a18':i===crs.chatMemberIdx?'#0a1a38':'#080810',
                   color:crs.chatWon.includes(i)?'#5aaa70':i===crs.chatMemberIdx?lblue:'#2a3a5a',
                   border:`1px solid ${crs.chatWon.includes(i)?'#1a5a30':i===crs.chatMemberIdx?blue+'90':'#151530'}`}}>
-                  {crs.chatWon.includes(i)?'✓ ':''}{sc.member.replace('Dr.','')}
+                  {crs.chatWon.includes(i)?'✓ ':''}{sc.member.replace('Coach ','').replace('AD ','').replace('Nutritionist ','')}
                 </div>
               ))}
             </div>
@@ -167,12 +167,12 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         if(crs.modalPhase==='thesis_approved'){
           const bracket=getSuspicionBracket(crs.totalSuspicion||0);
           const outcomeText=bracket==='green'
-            ?`The committee approves without reservation. Cassidy walks out of the building into the afternoon light and does not look back.`
+            ?`The panel approves without reservation. Cassidy walks out of the athletics building into the afternoon light and does not look back.`
             :bracket==='yellow'
-            ?`Conditional approval. The ethics appendix will need to be written. Cassidy has a great deal to say in it.`
+            ?`Conditional approval. The consent appendix will need to be written. Cassidy has a great deal to say in it.`
             :`The private meetings were — productive. The season plan is approved. Whatever was said in those rooms stays in those rooms.`;
           return wrap(<>
-            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
+            <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
             <div style={{fontSize:13,fontWeight:700,color:"#6aaa80",marginBottom:12}}>Approved</div>
             <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>{outcomeText}</div>
             <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(true)}>Close</button>
@@ -181,10 +181,10 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
 
         // ── THESIS REJECTED ──
         if(crs.modalPhase==='thesis_rejected') return wrap(<>
-          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 THESIS</div>
+          <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
           <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
-            The committee was not convinced. The file is closed. Cassidy keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a season plan and isn't a journal. Whatever it is, she'll finish it on her own terms.
+            The panel was not convinced. The file is closed. Cassidy keeps the field notes — all of them, the edited and unedited both — and begins, in the margins of the last page, something that isn't a season plan and isn't a journal. Whatever it is, she'll finish it on her own terms.
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>closeThesisOutcome(false)}>Close</button>
         </>);

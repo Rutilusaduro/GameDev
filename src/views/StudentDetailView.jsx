@@ -621,17 +621,17 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                               {!crs.thesisComplete?(
                                 <div>
                                   <div style={{color:"#6080a0",fontSize:11,lineHeight:1.6,marginBottom:10,fontStyle:"italic"}}>
-                                    The proposal is approved. You need only walk through the door and say the words.
+                                    The season plan is drafted. Walk her through the athletics panel review.
                                   </div>
                                   {allDone?(
                                     crs.thesisApproved?(
-                                      <div style={{color:"#6aaa80",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>PhD Approved ✓</div>
+                                      <div style={{color:"#6aaa80",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>Season Plan Approved ✓</div>
                                     ):crs.thesisRejected?(
-                                      <div style={{color:"#a05060",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>Thesis Rejected</div>
+                                      <div style={{color:"#a05060",fontSize:11,fontStyle:"italic",padding:"8px 0"}}>Plan Not Approved</div>
                                     ):(
                                       <div>
                                         <div style={{fontSize:10,color:"#506090",marginBottom:6,fontStyle:"italic"}}>
-                                          All four case studies complete. The committee is waiting.
+                                          All four case studies complete. The athletics panel is waiting.
                                         </div>
                                         <div style={{fontSize:9,color:"#405070",marginBottom:8}}>
                                           Cumulative suspicion: {crs.totalSuspicion||0} / 28
@@ -659,7 +659,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                               ):(
                                 <div style={{fontSize:10,color:"#6080b0"}}>
                                   <button style={{...C.btn(blue),width:"100%",opacity:ap<1?0.4:1}} onClick={()=>openThesisBoard(s)}>
-                                    📜 Present Thesis (1 AP)
+                                    📜 Present Season Plan (1 AP)
                                   </button>
                                 </div>
                               )}

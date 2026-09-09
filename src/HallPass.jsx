@@ -4942,7 +4942,7 @@ export default function HallPass(){
 
   // ── COMMUNITY RESEARCHER handlers ─────────────────────────────
   const openThesisBoard=(s)=>{
-    if(ap<1){push("⚠️ Need 1 AP for thesis defense.");return;}
+    if(ap<1){push("⚠️ Need 1 AP for season plan review.");return;}
     setCommunityResearcherState(prev=>prev?{...prev,modalPhase:'thesis_board',boardPhase:0}:null);
   };
   const advanceThesisBoard=()=>{
@@ -4956,7 +4956,7 @@ export default function HallPass(){
     setAp(a=>a-1);
     setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,5,8)}:st));
     setCommunityResearcherState(prev=>prev?{...prev,thesisComplete:true,modalPhase:null,boardPhase:0}:null);
-    push(`📋 ${s.name} — PhD proposal approved. Case studies unlocked.`);
+    push(`📋 ${s.name} — season plan approved. Floor case studies unlocked.`);
   };
   const openCaseStudyGrid=(s)=>{
     if(ap<1){push("⚠️ Need 1 AP.");return;}

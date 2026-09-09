@@ -259,7 +259,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
         effects.logs.push(`⚖️ ${target.name} flagged for mandatory floor weigh-in.`);
       }
       effects.scrutinyDelta += 3;
-      effects.logs.push('⚖️ Class weigh-in documentation demanded (+3 scrutiny).');
+      effects.logs.push('⚖️ Hall weigh-in documentation demanded (+3 scrutiny).');
       break;
     }
     case 'wellness_seminar':
@@ -268,7 +268,7 @@ function resolveAgendaEffect(card, students, opposition, rnd = Math.random) {
         gainMult: 0.85,
         gainMultWeeks: 1,
       };
-      effects.logs.push('📢 Wellness seminar — class gain −15% this week.');
+      effects.logs.push('📢 Wellness seminar — hall gain −15% this week.');
       break;
     case 'budget_freeze':
       effects.oppositionPatch.activeDebuffs = {

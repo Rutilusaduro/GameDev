@@ -1,7 +1,7 @@
 // src/gameData/communityResearcher.js
 // Cassidy (id:1) — swimmer archetype → community_researcher evolution
-// Present thesis, then 4 case studies (choose from 7 pairs).
-// Each pair has a suspicion rating 1–7 (7 = most suspicious to the committee).
+// Present season plan, then 4 case studies (choose from 7 pairs).
+// Each pair has a suspicion rating 1–7 (7 = most suspicious to the athletics panel).
 // gainRange gives Cassidy's lbs gain when the case study is completed.
 
 // ── WEIGHT TIER HELPER ────────────────────────────────────────────────────────
@@ -74,7 +74,7 @@ ${name} takes the stairs and fills three pages before she gets back to the dorm.
 //   stageNum 0-3: which case study (for framing)
 //   mTier 0-3: Cassidy's weight tier
 //   studs: array of student objects for this pair (from students state)
-// suspicion 1-7: 1=low committee risk, 7=highest
+// suspicion 1-7: 1=low panel risk, 7=highest
 // gainRange: [min, max] lbs Cassidy gains on completion
 
 export const CASE_STUDY_PAIRS = [
@@ -432,70 +432,70 @@ export function getSuspicionBracket(total) {
 // ── BOARD REACTIONS ───────────────────────────────────────────────────────────
 // Interstitial shown immediately after completing each case study.
 export const BOARD_REACTIONS = {
-  social_pressure: `Dr. Harmon's weekly review note: "Subject demonstrates naturalistic embedding. Participants were self-selected and already embedded in food-adjacent social performance. Methodology appropriate." Dr. Chen's addendum: "Clean data. Appropriate context." Dr. Ward's note, handwritten in the margin of her printed copy: "The intake documentation for this session is very thorough."`,
+  social_pressure: `AD Harmon's weekly review note: "Subject demonstrates naturalistic embedding. Participants were self-selected and already embedded in food-adjacent social performance. Methodology appropriate." Coach Rivera's addendum: "Clean data. Appropriate context." Nutritionist Ward's note, handwritten in the margin of her printed copy: "The intake documentation for this session is very thorough."`,
 
-  competitive: `Dr. Harmon flags a consent documentation gap — two sessions, same participants, implied consent only — and notes it should have been formalized. Dr. Chen's emailed question arrives that afternoon: "The two-session structure produces interesting comparative data. Which method did you find more informative as a researcher?" Dr. Ward's email arrives one hour later, same subject line: "Same question. Different emphasis. Which did you find more interesting to participate in?"`,
+  competitive: `AD Harmon flags a consent documentation gap — two sessions, same participants, implied consent only — and notes it should have been formalized. Coach Rivera's emailed question arrives that afternoon: "The two-session structure produces interesting comparative data. Which method did you find more informative as a lane captain?" Nutritionist Ward's email arrives one hour later, same subject line: "Same question. Different emphasis. Which did you find more interesting to participate in?"`,
 
-  night_in: `Dr. Chen: "Co-habitual domestic observation is a recognized methodology. Whether this constitutes fieldwork or a social visit is unclear from your notes. Clarify in revision." Dr. Harmon, more charitably: "The naturalistic setting produced authentic data. Participants were at ease. That's the goal." Dr. Ward's note arrives last: "Three of the delivery receipts you submitted as field documentation have your name on them."`,
+  night_in: `Coach Rivera: "Co-habitual dorm observation is a recognized methodology. Whether this constitutes fieldwork or a social visit is unclear from your notes. Clarify in revision." AD Harmon, more charitably: "The naturalistic setting produced authentic data. Participants were at ease. That's the goal." Nutritionist Ward's note arrives last: "Three of the delivery receipts you submitted as field documentation have your name on them."`,
 
-  culture_shock: `Dr. Harmon's note is the longest she's sent. She calls the cross-cultural hospitality documentation "exactly the kind of comparative fieldwork the committee hoped to see," cites the exchange student's response arc as strong observational data, and recommends featuring it prominently in the final paper. Dr. Chen references two published papers on hospitality as a social bonding mechanism and calls the methodology "appropriate." Dr. Ward's note: "Three hours at one table is a substantial investment of field time. The portion documentation is thorough."`,
+  culture_shock: `AD Harmon's note is the longest she's sent. She calls the cross-cultural hospitality documentation "exactly the kind of comparative fieldwork the panel hoped to see," cites the exchange student's response arc as strong observational data, and recommends featuring it prominently in the final report. Coach Rivera references two published papers on hospitality as a social bonding mechanism and calls the methodology "appropriate." Nutritionist Ward's note: "Three hours at one table is a substantial investment of field time. The portion documentation is thorough."`,
 
-  metrics: `Dr. Chen's response spans three paragraphs. The first asks what the experimental design was, because she cannot determine it from the notes. The second asks how Cassidy induced competitive consumption in a high-performing student without her explicit awareness. The third asks what the research question actually was, "because I cannot locate it in the documentation." Dr. Harmon flags the power dynamics as "requiring clarification." Dr. Ward's question is simpler: "How did you get Priya to participate in something she wasn't already winning?"`,
+  metrics: `Coach Rivera's response spans three paragraphs. The first asks what the experimental design was, because she cannot determine it from the notes. The second asks how Cassidy induced competitive consumption in a high-performing student without her explicit awareness. The third asks what the research question actually was, "because I cannot locate it in the documentation." AD Harmon flags the power dynamics as "requiring clarification." Nutritionist Ward's question is simpler: "How did you get Priya to participate in something she wasn't already winning?"`,
 
-  manipulation: `Dr. Chen's email arrives forty-five minutes after Cassidy submits her notes. Three lines: "Session six. Was Nadia's participation disclosed to the IRB." Dr. Harmon follows the next morning: "The power differential in this session is significant. Daisy is in an educational role. Her participation alongside a psychology PhD candidate conducting what appears to be a coordinated feeding event raises serious questions about prior agreement and oversight." Dr. Ward's message comes last: "You were being fed by two active researchers simultaneously. We need to discuss this."`,
+  manipulation: `Coach Rivera's email arrives forty-five minutes after Cassidy submits her notes. Three lines: "Session six. Was Nadia's participation disclosed to athletics compliance." AD Harmon follows the next morning: "The power differential in this session is significant. Daisy is in an educational role. Her participation alongside a psychology grad student conducting what appears to be a coordinated feeding event raises serious questions about prior agreement and oversight." Nutritionist Ward's message comes last: "You were being fed by two active observers simultaneously. We need to discuss this."`,
 
-  vore: `Dr. Chen does not send an email. She requests a meeting through the departmental coordinator. Her attached note: "Session seven documents a coordinated feeding event involving three external individuals not affiliated with the university, who did not consent to being research subjects, and are referenced in your field notes by first name only. This is being flagged for committee review." Dr. Harmon's email: "Where is the consent documentation for Morgan, Theo, and Francesca?" Dr. Ward's message arrives late at night: "The section you titled 'The Hunt.' Come and explain it to me in person."`,
+  vore: `Coach Rivera does not send an email. She requests a meeting through the athletics coordinator. Her attached note: "Session seven documents a coordinated feeding event involving three external individuals not affiliated with the university, who did not consent to being research subjects, and are referenced in your field notes by first name only. This is being flagged for panel review." AD Harmon's email: "Where is the consent documentation for Morgan, Theo, and Francesca?" Nutritionist Ward's message arrives late at night: "The section you titled 'The Hunt.' Come and explain it to me in person."`,
 };
 
 // ── FINAL REVIEW TEXT ─────────────────────────────────────────────────────────
 export function getFinalReviewText(pairsUsed, totalSuspicion) {
   const bracket = getSuspicionBracket(totalSuspicion);
   const did = (id) => pairsUsed.includes(id);
-  let text = `Dr. Chen sets a folder on the table.\n\n"Four case studies. Let's discuss what you found — and what we found."\n\n`;
+  let text = `Coach Rivera sets a folder on the table.\n\n"Four case studies. Let's discuss what you found — and what we found."\n\n`;
 
   if (did('vore')) {
-    text += `She opens to a tabbed section. "Session seven. You document a coordinated feeding event involving three external participants — Morgan, Theo, Francesca — who did not consent to be research subjects." She looks up. "Walk me through what you thought you were doing."\n\nDr. Harmon: "The consent documentation for all three is absent from this file."\n\nDr. Ward says nothing for a moment. Then, quietly: "The passage titled 'The Hunt.' In your own words."\n\n`;
+    text += `She opens to a tabbed section. "Session seven. You document a coordinated feeding event involving three external participants — Morgan, Theo, Francesca — who did not consent to be research subjects." She looks up. "Walk me through what you thought you were doing."\n\nAD Harmon: "The consent documentation for all three is absent from this file."\n\nNutritionist Ward says nothing for a moment. Then, quietly: "The passage titled 'The Hunt.' In your own words."\n\n`;
   }
   if (did('competitive')) {
-    text += `Dr. Harmon references the two-night study. "Eating contest methodology, then sumo methodology — same subject, consecutive evenings." She pauses. "Which did you find more informative as a researcher?" Dr. Ward doesn't wait: "Which did you find more interesting to participate in?"\n\n`;
+    text += `AD Harmon references the two-night study. "Eating contest methodology, then sumo methodology — same subject, consecutive evenings." She pauses. "Which did you find more informative as a lane captain?" Nutritionist Ward doesn't wait: "Which did you find more interesting to participate in?"\n\n`;
   }
   if (did('manipulation')) {
-    text += `Dr. Chen: "Session six. You were being fed simultaneously by a student teacher and a psychology PhD candidate conducting a parallel study you did not disclose to this committee. Did you know about Nadia's work before you included her?"\n\n`;
+    text += `Coach Rivera: "Session six. You were being fed simultaneously by a student teacher and a psychology grad student conducting a parallel study you did not disclose to this panel. Did you know about Nadia's work before you included her?"\n\n`;
   }
   if (did('metrics')) {
-    text += `Dr. Chen: "Session five. I've read it three times. I still can't locate the research question."\n\n`;
+    text += `Coach Rivera: "Session five. I've read it three times. I still can't locate the research question."\n\n`;
   }
   if (did('culture_shock') && bracket !== 'red') {
-    text += `Dr. Harmon: "The cross-cultural session was the strongest work in the set. That section will carry the final paper."\n\n`;
+    text += `AD Harmon: "The cross-cultural session was the strongest work in the set. That section will carry the final report."\n\n`;
   }
   if (did('social_pressure') && (bracket === 'green' || bracket === 'yellow')) {
-    text += `Dr. Harmon: "The taste-testing session was clean fieldwork. Well handled."\n\n`;
+    text += `AD Harmon: "The taste-testing session was clean fieldwork. Well handled."\n\n`;
   }
 
   if (bracket === 'green') {
-    text += `Dr. Chen closes the folder.\n\n"The thesis argues that feederism amplifies under social isolation — that the community deepens not through exposure, but through its absence. The fieldwork supports it. Some of these sessions were methodologically aggressive in ways we'd have preferred to know about upfront. The data is real and the argument holds."\n\nDr. Harmon: "I recommend approval with minor revisions."\n\nDr. Ward: "Approved. Write up the full findings. I want to read it."`;
+    text += `Coach Rivera closes the folder.\n\n"The season plan argues that appetite amplifies under social isolation — that the floor deepens not through exposure, but through its absence. The fieldwork supports it. Some of these sessions were methodologically aggressive in ways we'd have preferred to know about upfront. The data is real and the argument holds."\n\nAD Harmon: "I recommend approval with minor revisions."\n\nNutritionist Ward: "Approved. Write up the full findings. I want to read it."`;
   } else if (bracket === 'yellow') {
-    text += `Dr. Chen closes the folder.\n\n"The work is intellectually sound. Several of these sessions are methodologically aggressive in ways that should have been disclosed upfront. We're asking for a consent and ethics appendix before submission — explicit documentation of what each participant was told."\n\nDr. Harmon: "The research is good. The paper needs work."\n\nDr. Ward: "Conditional approval. Revise and resubmit." She looks at Cassidy. "I'll be reviewing the revision personally."`;
+    text += `Coach Rivera closes the folder.\n\n"The work is sound. Several of these sessions are methodologically aggressive in ways that should have been disclosed upfront. We're asking for a consent and ethics appendix before submission — explicit documentation of what each participant was told."\n\nAD Harmon: "The fieldwork is good. The report needs work."\n\nNutritionist Ward: "Conditional approval. Revise and resubmit." She looks at Cassidy. "I'll be reviewing the revision personally."`;
   } else if (bracket === 'orange') {
-    text += `Dr. Chen sets the folder down.\n\n"The thesis is interesting. The fieldwork is real. And some of what's in this file crosses lines we need to discuss before this can proceed." She looks at her colleagues. "I'm not prepared to approve this as it stands. Nor to reject it. We need separate conversations — off the record."\n\nDr. Harmon: "It's not over."\n\nDr. Ward stands. "Come and find me. We'll start there."\n\nThe room empties. Cassidy stands with her field journal and thinks about what she's gotten herself into.`;
+    text += `Coach Rivera sets the folder down.\n\n"The season plan is interesting. The fieldwork is real. And some of what's in this file crosses lines we need to discuss before this can proceed." She looks at her colleagues. "I'm not prepared to approve this as it stands. Nor to reject it. We need separate conversations — off the record."\n\nAD Harmon: "It's not over."\n\nNutritionist Ward stands. "Come and find me. We'll start there."\n\nThe room empties. Cassidy stands with her field journal and thinks about what she's gotten herself into.`;
   } else {
-    text += `Dr. Chen does not open the folder.\n\n"The thesis is the most interesting work submitted to this committee in three years. It is also the most ethically compromised." She looks at Cassidy steadily. "External participants without consent. A parallel researcher not disclosed. An observer-participant boundary that dissolved by study two. If the university reviews this file, it ends several careers."\n\nDr. Harmon: "This conversation cannot happen in this room."\n\nDr. Ward picks up the folder. "One-on-one. All three of us. If you can convince us, the thesis gets approved." She doesn't finish the alternative.`;
+    text += `Coach Rivera does not open the folder.\n\n"The season plan is the most interesting work submitted to this panel in three years. It is also the most ethically compromised." She looks at Cassidy steadily. "External participants without consent. A parallel observer not disclosed. An observer-participant boundary that dissolved by study two. If athletics compliance reviews this file, it ends several careers."\n\nAD Harmon: "This conversation cannot happen in this room."\n\nNutritionist Ward picks up the folder. "One-on-one. All three of us. If you can convince us, the plan gets approved." She doesn't finish the alternative.`;
   }
 
   return text;
 }
 
 // ── HAVE A CHAT SCENES ────────────────────────────────────────────────────────
-// Three scenes played in order: Ward (easiest) → Harmon → Chen (hardest).
+// Three scenes played in order: Ward (easiest) → Harmon → Rivera (hardest).
 // chatHistory is reset between members. winCondition receives the full history for that member.
 // Orange bracket: need 2/3 members won. Red bracket: need 3/3.
 export const HAVE_A_CHAT_SCENES = [
-  // ── DR. WARD ──────────────────────────────────────────────────────────────
+  // ── NUTRITIONIST WARD ─────────────────────────────────────────────────────
   {
-    member: "Dr. Ward",
+    member: "Nutritionist Ward",
     phases: [
       {
-        text: (h) => `Dr. Ward finds Cassidy in the hallway outside the staff lounge. She closes the folder when she sees her.\n\n"Off the record." She looks at Cassidy with something that isn't quite professional distance. "I've been following your research closely — more closely than the committee file reflects. I understand what you were doing out there. Better than Chen does, and better than Harmon wants to admit she does."\n\nShe waits.`,
+        text: (h) => `Nutritionist Ward finds Cassidy in the hallway outside the pool deck lounge. She closes the folder when she sees her.\n\n"Off the record." She looks at Cassidy with something that isn't quite professional distance. "I've been following your fieldwork closely — more closely than the panel file reflects. I understand what you were doing out there. Better than Rivera does, and better than Harmon wants to admit she does."\n\nShe waits.`,
         choices: [
           { id: 'explain', label: 'Walk her through the methodology' },
           { id: 'acknowledge', label: '"I thought you might be following it."' },
@@ -503,8 +503,8 @@ export const HAVE_A_CHAT_SCENES = [
       },
       {
         text: (h) => h.includes('acknowledge')
-          ? `A slow smile. "Smart girl." She opens the folder. "Here's what I can do. I'll write a support recommendation into the committee record — my name on it carries weight with Chen." She looks at Cassidy steadily. "In exchange for the full field notes. All of them. Not the edited submission. The real ones."`
-          : `"The methodology is fine," she says, cutting her off gently. "I know the methodology is fine. I've read everything you submitted and some things you didn't intend to submit." A pause. "I'm not here to catch you. I want to read the rest of it." She opens the folder. "Full field notes — unedited — and I'll support the thesis."`,
+          ? `A slow smile. "Smart girl." She opens the folder. "Here's what I can do. I'll write a support recommendation into the panel record — my name on it carries weight with Rivera." She looks at Cassidy steadily. "In exchange for the full field notes. All of them. Not the edited submission. The real ones."`
+          : `"The methodology is fine," she says, cutting her off gently. "I know the methodology is fine. I've read everything you submitted and some things you didn't intend to submit." A pause. "I'm not here to catch you. I want to read the rest of it." She opens the folder. "Full field notes — unedited — and I'll support the season plan."`,
         choices: [
           { id: 'share_notes', label: 'Agree — share the full unedited field notes' },
           { id: 'partial_share', label: 'Offer a partial copy, redacted' },
@@ -513,19 +513,19 @@ export const HAVE_A_CHAT_SCENES = [
     ],
     winCondition: (h) => h.includes('acknowledge') || h.includes('share_notes'),
   },
-  // ── DR. HARMON ────────────────────────────────────────────────────────────
+  // ── AD HARMON ───────────────────────────────────────────────────────────────
   {
-    member: "Dr. Harmon",
+    member: "AD Harmon",
     phases: [
       {
-        text: (h) => `Dr. Harmon's office has plants everywhere. She offers tea before Cassidy has sat down.\n\n"I want to support this thesis. The argument is important and the data is real." She sets her cup down. "Help me do that. Chen needs something she can point to. Give me something I can take back to her."\n\nShe waits.`,
+        text: (h) => `AD Harmon's office has plants everywhere. She offers tea before Cassidy has sat down.\n\n"I want to support this season plan. The argument is important and the data is real." She sets her cup down. "Help me do that. Rivera needs something she can point to. Give me something I can take back to her."\n\nShe waits.`,
         choices: [
           { id: 'consent_claim', label: '"All subjects were willing participants."' },
           { id: 'ethics_appendix', label: '"I\'ll write a full consent and ethics appendix."' },
         ],
       },
       {
-        text: (h) => `She nods.\n\n"One more thing. Not the methodology." She looks at Cassidy directly. "The fieldwork changed you. Your own notes say so. You're not the same researcher who proposed this thesis six months ago." A pause. "That's not a criticism. Tell me what it means for the objectivity of the work."`,
+        text: (h) => `She nods.\n\n"One more thing. Not the methodology." She looks at Cassidy directly. "The fieldwork changed you. Your own notes say so. You're not the same lane captain who proposed this plan six months ago." A pause. "That's not a criticism. Tell me what it means for the objectivity of the work."`,
         choices: [
           { id: 'deny_change', label: '"I maintained objectivity throughout."' },
           { id: 'own_change', label: '"The change is part of the data."' },
@@ -534,21 +534,21 @@ export const HAVE_A_CHAT_SCENES = [
     ],
     winCondition: (h) => h.includes('own_change') || (h.includes('ethics_appendix') && h.includes('consent_claim')),
   },
-  // ── DR. CHEN ──────────────────────────────────────────────────────────────
+  // ── COACH RIVERA ──────────────────────────────────────────────────────────
   {
-    member: "Dr. Chen",
+    member: "Coach Rivera",
     phases: [
       {
-        text: (h) => `Dr. Chen's office has no plants. One sheet of paper on the desk between them.\n\n"IRB protocol deviations. Six items." She reads them aloud, without inflection:\n\n1. External participants without documented consent.\n2. Parallel researcher (Nadia) not disclosed to committee.\n3. Observer-participant boundary discontinued from study two onward.\n4. Intake quantities not formally logged.\n5. Field notes submitted selectively.\n6. Researcher's own physical data excluded as a confounding variable.\n\n"We'll start with item one."`,
+        text: (h) => `Coach Rivera's office has no plants. One sheet of paper on the desk between them.\n\n"Compliance protocol deviations. Six items." She reads them aloud, without inflection:\n\n1. External participants without documented consent.\n2. Parallel observer (Nadia) not disclosed to panel.\n3. Observer-participant boundary discontinued from study two onward.\n4. Intake quantities not formally logged.\n5. Field notes submitted selectively.\n6. Lane captain's own physical data excluded as a confounding variable.\n\n"We'll start with item one."`,
         choices: [
-          { id: 'argue_irb', label: 'Contest the IRB interpretation point by point' },
+          { id: 'argue_irb', label: 'Contest the compliance interpretation point by point' },
           { id: 'concede_framework', label: 'Concede the violations and propose a revised ethics framework' },
         ],
       },
       {
         text: (h) => h.includes('concede_framework')
-          ? `She makes two notes on the framework Cassidy outlines. "This is workable." From Dr. Chen, that is the highest available praise. She sets the pen down.\n\n"One more item. Nadia. Did you know she was conducting a parallel study when you included her in session six?"`
-          : `"You're defending positions that aren't defensible," she says, without heat. "The goal isn't to catch you. The goal is a thesis this committee can approve without setting a precedent we'll regret." She looks up. "So. The ethics framework. Walk me through what you'd do differently." She makes two notes.\n\n"Nadia. Did you know?"`,
+          ? `She makes two notes on the framework Cassidy outlines. "This is workable." From Coach Rivera, that is the highest available praise. She sets the pen down.\n\n"One more item. Nadia. Did you know she was conducting a parallel study when you included her in session six?"`
+          : `"You're defending positions that aren't defensible," she says, without heat. "The goal isn't to catch you. The goal is a season plan this panel can approve without setting a precedent we'll regret." She looks up. "So. The ethics framework. Walk me through what you'd do differently." She makes two notes.\n\n"Nadia. Did you know?"`,
         choices: [
           { id: 'no_didnt_know', label: '"No. I didn\'t know."' },
           { id: 'yes_corroborates', label: '"Yes. Her data corroborates mine."' },
