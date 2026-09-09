@@ -20,7 +20,7 @@ export const DISCONTENT_TIERS = [
 
 // How much each kind of slight stings.
 export const DISCONTENT_GAIN = { creeped: 18, betrayed: 16, exposed: 9 };
-// What watching a classmate get driven out does to the rest of the room.
+// What watching a resident get driven out does to the rest of the room.
 export const DISCONTENT_RIPPLE = 12;
 
 // Not everyone bristles at the same things. Keyed on archetype: the athlete

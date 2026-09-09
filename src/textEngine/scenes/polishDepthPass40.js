@@ -10,7 +10,7 @@ registerModuleVariants("corruption.voice", [{ when: {}, text: [(ctx) => `${ctx.s
 registerModuleVariants("enc.taliaClinical", [{ when: {}, text: ["\"Baseline established,\" she says, already reaching for the next measurement.", "\"Compliance is efficiency,\" Talia murmurs, eyes on the readout instead of your face."] }]);
 registerModuleVariants("shift.scene", [{ when: {}, text: ["", ""] }]);
 registerModuleVariants("npc.bystander", [{ when: {}, text: ["A glance becomes a double-take — then a polite look away."] }]);
-registerModuleVariants("npc.peer", [{ when: {}, text: ["\"You're filling out,\" a classmate says — not cruel, just observant."] }]);
+registerModuleVariants("npc.peer", [{ when: {}, text: ["\"You're filling out,\" a resident says — not cruel, just observant."] }]);
 registerModuleVariants("npc.coach", [{ when: {}, text: ["", ""] }]);
 registerModuleVariants("npc.staff", [{ when: {}, text: ["", ""] }]);
 registerModuleVariants("prof.observation", [{ when: {}, text: ["You note the change the way you note weather — inevitable, worth tracking."] }]);

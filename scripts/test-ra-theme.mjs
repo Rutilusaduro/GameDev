@@ -29,6 +29,14 @@ const BANNED = [
   { id: 'nadia-feederism-study', re: /her feederism study/i },
   { id: 'classmates-softening', re: /\b[Cc]lassmates (?:look|keep|linger|posted|complaining)/ },
   { id: 'my-classmates', re: /\bmy classmates\b/i },
+  { id: 'a-classmate', re: /\ba classmate\b/i },
+  { id: 'class-fed-teacher', re: /Class fed\. Teacher shocked/ },
+  { id: 'chubby-class-label', re: /Chubby Class/ },
+  { id: 'class-only-quote', re: /"Class only,"/ },
+  { id: 'classmate-spots-you', re: /Classmate Spots You/ },
+  { id: 'class-size-review', re: /Class size review/ },
+  { id: 'leaves-class-energized', re: /leaves class energized/ },
+  { id: 'psychology-of-feederism', re: /psychology of feederism/i },
 ];
 
 const ALLOW_LINE = [
@@ -69,6 +77,9 @@ const ALLOW_LINE = [
   /'spirit\.v2/,
   /"spirit\.v2/,
   /spirit\.v2\.depth/,
+  /classmateWithdrawn/,
+  /classmate_sighting/,
+  /classmates \/ campus/,
 ];
 
 function walk(dir, out = []) {

@@ -202,7 +202,7 @@ registerPool('campus.seenBeat', [
     'Someone whispers behind her; she has learned not to turn around for whispers.',
   ] },
   { when: { fitTop: 'snug' }, text: [
-    "A classmate's glance snags on the closer fit of her top and moves on.",
+    "A resident's glance snags on the closer fit of her top and moves on.",
     'Her top reads as new; it is not new.',
     'Fabric pulls across her chest when she reaches; a stranger notices.',
     'The shirt that used to hang loose now outlines what she has been feeding.',

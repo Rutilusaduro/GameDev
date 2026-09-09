@@ -858,8 +858,8 @@ registerPool('diary.salon_appetit', [
 // ── artisan_gallery ─────────────────────────────────────────────
 registerPool('diary.artisan_gallery.s5._f1', [
   { when: {}, text: [
-    "Fiona weighs 258 pounds and pins the first contact sheet to *In Progress* — a classmate mid-bite, mid-laugh.",
-    "258 pounds. First contact sheet pinned: classmate mid-bite, mid-laugh, mid-surrender.",
+    "Fiona weighs 258 pounds and pins the first contact sheet to *In Progress* — a resident mid-bite, mid-laugh.",
+    "258 pounds. First contact sheet pinned: resident mid-bite, mid-laugh, mid-surrender.",
     "The series begins at 258 — contact sheet on the wall, subject caught eating and happy.",
   ]},
 ]);

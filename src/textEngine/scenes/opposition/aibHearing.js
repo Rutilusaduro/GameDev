@@ -24,7 +24,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase1', [
 
 registerPoolAutoDecompose('opposition.hearing.removal.result.testify', [
   { when: {}, text: [
-    'A classmate speaks — warm, specific, unashamed. The room shifts.',
+    'A resident speaks — warm, specific, unashamed. The room shifts.',
     'Testimony lands soft and certain. Someone loves {subject.name} out loud and the Board flinches.',
     'Devotion spoken in plain sentences. Vance\'s pen stops moving.',
   ]},

@@ -112,7 +112,7 @@ export const EMBODIED_EVENTS = {
   },
   classmate_sighting: {
     id: 'classmate_sighting',
-    label: 'Classmate Spots You',
+    label: 'Resident Spots You',
     icon: '👋',
     minStage: 0,
     weight: 14,

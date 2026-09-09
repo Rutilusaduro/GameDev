@@ -345,7 +345,7 @@ registerPool("diary.kaylee.patient", [
 
 registerPool("diary.nadia.casestudy", [
   { when: { studentId: 12, stageMin: 2, stageMax: 3, corruption: [0] }, weight: 4, text: [
-    "Read the literature on feederism and weight gain dynamics today. Assembled a review. Noted that I appear in several case studies. This is academic interest.",
+    "Read the hall appetite logs and weight-gain dynamics today. Assembled a review. Noted that I appear in several observation entries. This is professional interest.",
     "The case studies are thorough. The mechanism is clear. I am clear about the mechanism.",
   ]},
   { when: { studentId: 12, stageMin: 3, stageMax: 4, corruption: [1] }, weight: 4, text: [

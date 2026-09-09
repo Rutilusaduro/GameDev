@@ -150,7 +150,7 @@ registerModuleVariants('homeroom.conference.Bri.brief', [
 
 registerModuleVariants('homeroom.activity.health_unit.p1.decline', [
   { when: {}, text: [
-    `"Class only," Daisy says. Mrs. Monroe nods — comfortable without the number.`,
+    `"Hall only," Daisy says. Mrs. Monroe nods — comfortable without the number.`,
     `Scale stays student-only. Self-knowledge sufficient. Monroe unbothered.`,
     `Professional boundary held. Monroe smiles anyway. She does not need proof.`,
   ]},

@@ -23,7 +23,7 @@ registerPool('npc.bystander', [
 
 registerPool('npc.peer', [
   { when: {}, text: [
-    'A classmate nods — familiar, noncommittal.',
+    'A resident nods — familiar, noncommittal.',
     'Someone she knows offers a smile that does not quite reach their eyes.',
   ] },
   { when: { relationship: [2, 3], stageMin: 5 }, text: [

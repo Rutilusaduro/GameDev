@@ -162,7 +162,7 @@ registerModuleVariants('diary.salon_appetit.s5._f1', [
 
 registerModuleVariants('diary.artisan_gallery.s5._f1', [
   { when: { studentId: 4 }, weight: W, text: [
-    `Fiona at 258 — first contact sheet pinned: classmate mid-bite, mid-laugh, mid-surrender.`,
+    `Fiona at 258 — first contact sheet pinned: resident mid-bite, mid-laugh, mid-surrender.`,
   ]},
 ]);
 

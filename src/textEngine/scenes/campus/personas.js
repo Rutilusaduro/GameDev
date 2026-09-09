@@ -126,7 +126,7 @@ registerModuleVariants('campus.seenBeat', [
   { when: { studentId: 12, stageMin: 4 }, weight: W, text: [
     'Nadia watches who stares and files it. The stare is data. The curve is the hypothesis.',
     'She catches your eye across the quad — amused that anyone is surprised by her softness.',
-    'A classmate whispers. Nadia smiles like she already knew the rumor would be true.',
+    'A resident whispers. Nadia smiles like she already knew the rumor would be true.',
   ]},
   { when: { studentId: 14, campusLocale: 'cafeteria', stageMin: 4 }, weight: W, text: [
     'Mary Jane\'s laugh draws eyes; her plate draws more. Farm appetite on display.',

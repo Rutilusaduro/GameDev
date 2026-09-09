@@ -1465,10 +1465,10 @@ registerPool('diary.homeroom_queen.c2', [
   { when: { stage: [6] }, text: ['I found myself making more food specifically because I knew she was coming. I\'m not sure when I started planning for individual preferences. I notice I have.'] },
   { when: { stage: [7] }, text: ['Calloway ate three pieces and then asked about my training. I gave a genuine answer. She nodded. I think we understand each other now. I ate alongside them for the full hour.'] },
   { when: { stage: [8] }, text: ['The session was good — Mrs. Monroe brought wine and I politely declined and then accepted — and everyone was softer and more comfortable and more themselves than when we started this.'] },
-  { when: { stage: [9] }, text: ['I am at this point something between a teacher and a caterer and possibly something else I don\'t have a word for. I ate everything I made extras of. There were a lot of extras.'] },
+  { when: { stage: [9] }, text: ['I am at this point something between an RA and a caterer and possibly something else I don\'t have a word for. I ate everything I made extras of. There were a lot of extras.'] },
   { when: { stage: [10] }, text: ['I ate everything I\'d saved for myself and then some of theirs when there were offers.'] },
   { when: {}, text: [
-    "Class fed. Teacher shocked. I smiled.",
+    "Hall fed. RA blinking. I smiled.",
     "Homeroom royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},
@@ -1483,7 +1483,7 @@ registerPool('diary.homeroom_queen.c3', [
   { when: { stage: [9] }, text: ['I planned it that way and I\'m no longer pretending otherwise.'] },
   { when: { stage: [10] }, text: ['The room was full and warm and loud with laughing and I sat in the middle of it — enormous and full and happy and flour-dusted — and thought: yes.'] },
   { when: {}, text: [
-    "Class fed. Teacher shocked. I smiled.",
+    "Hall fed. RA blinking. I smiled.",
     "Homeroom royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},
@@ -1494,7 +1494,7 @@ registerPool('diary.homeroom_queen.c4', [
 { when: { stage: [5] }, text: ['I logged that the banana bread was a success. I didn\'t log the rest.'] },
   { when: { stage: [10] }, text: ['This is exactly what I was supposed to do with all of this. I logged that. It belongs in the record.'] },
   { when: {}, text: [
-    "Class fed. Teacher shocked. I smiled.",
+    "Hall fed. RA blinking. I smiled.",
     "Homeroom royalty includes royal appetite.",
     "Crowned and still hungry.",
   ]},

@@ -184,7 +184,7 @@ export const GALLERY_EVOLVED_EVENTS = [
     title: 'First Subject',
     phases: [
       {
-        text: (h, s) => `Fiona pins the first contact sheet to *In Progress*. A classmate, mid-bite, mid-laugh. Fiona is ${Math.round(s.lbs)} pounds and says: "The subject cooperates. The camera doesn't lie."`,
+        text: (h, s) => `Fiona pins the first contact sheet to *In Progress*. A resident, mid-bite, mid-laugh. Fiona is ${Math.round(s.lbs)} pounds and says: "The subject cooperates. The camera doesn't lie."`,
         choices: [
           { id: 'enroll', label: 'Enroll the first official subject', result: 'Consent forms become art contracts. Everyone signs.', lbs: 4, rel: 10, flag: 'first_subject' },
           { id: 'candid', label: 'Start with candid field work only', result: 'She shoots from the hip. The quad yields gold.', lbs: 3, rel: 8, flag: 'field_first' },
