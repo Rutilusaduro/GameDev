@@ -261,7 +261,7 @@ export const WL_MOM_DIALOGUE_DEPTH = {
 
   Patrice: {
     4: {
-      greeting: `"Hello, Professor… these lessons have me thinking about soft curves all week. Lila looks so deliciously full lately — belly pressing her shirt, thighs rubbing when she walks to the table. I catch myself staring. She catches me. Neither of us looks away."`,
+      greeting: `"Hello… these lessons have me thinking about soft curves all week. Lila looks so deliciously full lately — belly pressing her shirt, thighs rubbing when she walks to the table. I catch myself staring. She catches me. Neither of us looks away."`,
       cappedGreeting: `"Three hundred twenty-five pounds for Lila. She's thick and heavy in ways that make my mouth dry. God, it looks incredible on her. I stand behind her chair at dinner and watch her arms jiggle when she eats. I don't pretend I don't."`,
       options: [
         {
