@@ -8,7 +8,7 @@
 // Per-student stats:
 //   stomachCapacity      shown   max comfortable fullness units
 //   fullness             shown   current fullness units (resets weekly)
-//   consumedCalories     hidden  professor-fed surplus calories this week
+//   consumedCalories     hidden  RA-fed surplus calories this week
 //   capacityChunkProgress hidden lbs gained toward next +15 capacity chunk
 //   stuffedStreak        hidden  consecutive weeks ended above 100% capacity
 // ═══════════════════════════════════════════════════════════════

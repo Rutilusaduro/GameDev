@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { C } from '../styles.js';
 import { CAMPUS_NODES } from '../gameData/campus.js';
-import { getResonanceTier, getCombinedClassLbs } from '../gameData/v2/cravingResonance.js';
+import { getResonanceTier, getCombinedHallLbs } from '../gameData/v2/cravingResonance.js';
 import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
 import { witnessEntrySummary } from '../gameData/campusWitness.js';
@@ -30,7 +30,7 @@ export function InfluenceView({
   const [linkPickA, setLinkPickA] = useState(null);
   const visible = students.filter((s) => !s.hidden && s.lockState !== 'locked');
   const links = v2State?.resonance?.links || [];
-  const tier = getResonanceTier(links.length, getCombinedClassLbs(students));
+  const tier = getResonanceTier(links.length, getCombinedHallLbs(students));
   const rituals = getAvailableRituals({ ownedSkills, ownedHallSkills, students, week, reachLevel });
   const hasDreamChamber = !!ownedHallSkills?.dream_chamber;
   const hasSpiritRide = (ownedSkills?.spirit_ride || 0) >= 1;

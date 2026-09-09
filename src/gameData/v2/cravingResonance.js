@@ -4,20 +4,23 @@
 import { V2_CONFIG } from './state.js';
 
 export const RESONANCE_TIERS = [
-  { id: 0, label: 'Dormant', minLinks: 0, minClassLbs: 0, passiveBonus: 0, pulseMult: 1.0, desc: 'No resonance web yet.' },
-  { id: 1, label: 'Stirring', minLinks: 1, minClassLbs: 0, passiveBonus: 1, pulseMult: 1.15, desc: 'Cravings echo between linked students.' },
-  { id: 2, label: 'Harmonic', minLinks: 2, minClassLbs: 2000, passiveBonus: 2, pulseMult: 1.3, desc: 'The hall hums with shared appetite.' },
-  { id: 3, label: 'Hive Appetite', minLinks: 3, minClassLbs: 5000, passiveBonus: 4, pulseMult: 1.5, desc: 'One girl eats; they all feel it.' },
+  { id: 0, label: 'Dormant', minLinks: 0, minHallLbs: 0, passiveBonus: 0, pulseMult: 1.0, desc: 'No resonance web yet.' },
+  { id: 1, label: 'Stirring', minLinks: 1, minHallLbs: 0, passiveBonus: 1, pulseMult: 1.15, desc: 'Cravings echo between linked students.' },
+  { id: 2, label: 'Harmonic', minLinks: 2, minHallLbs: 2000, passiveBonus: 2, pulseMult: 1.3, desc: 'The hall hums with shared appetite.' },
+  { id: 3, label: 'Hive Appetite', minLinks: 3, minHallLbs: 5000, passiveBonus: 4, pulseMult: 1.5, desc: 'One girl eats; they all feel it.' },
 ];
 
-export function getCombinedClassLbs(students) {
+export function getCombinedHallLbs(students) {
   return (students || []).filter((s) => !s.hidden).reduce((sum, s) => sum + (s.lbs || 0), 0);
 }
 
-export function getResonanceTier(linkCount, classLbs = 0) {
+/** @deprecated use getCombinedHallLbs */
+export const getCombinedClassLbs = getCombinedHallLbs;
+
+export function getResonanceTier(linkCount, hallLbs = 0) {
   let tier = RESONANCE_TIERS[0];
   for (const t of RESONANCE_TIERS) {
-    if (linkCount >= t.minLinks && classLbs >= t.minClassLbs) tier = t;
+    if (linkCount >= t.minLinks && hallLbs >= t.minHallLbs) tier = t;
   }
   return tier;
 }
@@ -49,8 +52,8 @@ export function canCreateLink(aId, bId, students, resonanceState, ownedSkills = 
 
 export function createResonanceLink(aId, bId, resonanceState, students) {
   const links = [...(resonanceState.links || []), { a: aId, b: bId, strength: 1 }];
-  const classLbs = getCombinedClassLbs(students);
-  const tier = getResonanceTier(links.length, classLbs).id;
+  const hallLbs = getCombinedHallLbs(students);
+  const tier = getResonanceTier(links.length, hallLbs).id;
   return { ...resonanceState, links, tier };
 }
 
@@ -66,8 +69,8 @@ export function getLinkedStudents(studentId, resonanceState) {
 export function pulseResonance(fedStudentId, calories, students, resonanceState) {
   const linkedIds = getLinkedStudents(fedStudentId, resonanceState);
   if (!linkedIds.length) return { pulses: [], bonusCalories: 0 };
-  const classLbs = getCombinedClassLbs(students);
-  const tier = getResonanceTier((resonanceState.links || []).length, classLbs);
+  const hallLbs = getCombinedHallLbs(students);
+  const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   const bonusCal = Math.round(calories * 0.08 * tier.pulseMult);
   const pulses = linkedIds.map((id) => {
     const s = students.find((st) => st.id === id);
@@ -79,17 +82,17 @@ export function pulseResonance(fedStudentId, calories, students, resonanceState)
 
 export function shouldResonanceSurge(resonanceState, week, students = [], ownedHallSkills = {}) {
   if (!ownedHallSkills.resonance_bells) return false;
-  const classLbs = getCombinedClassLbs(students);
-  const tier = getResonanceTier((resonanceState.links || []).length, classLbs);
+  const hallLbs = getCombinedHallLbs(students);
+  const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   if (tier.id < 2) return false;
   if (resonanceState.lastSurgeWeek === week) return false;
   return Math.random() < 0.25 + tier.id * 0.05;
 }
 
-/** Class-wide passive appetite bonus — extra calories before weekly digest. */
+/** Hall-wide passive appetite bonus — extra calories before weekly digest. */
 export function applyResonancePassiveBonus(students, resonanceState) {
-  const classLbs = getCombinedClassLbs(students);
-  const tier = getResonanceTier((resonanceState.links || []).length, classLbs);
+  const hallLbs = getCombinedHallLbs(students);
+  const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   if (tier.passiveBonus <= 0) return { students, tier };
   const bonusCals = tier.passiveBonus * 250;
   const next = students.map((s) => {
@@ -101,8 +104,8 @@ export function applyResonancePassiveBonus(students, resonanceState) {
 
 /** Surge event — linked students receive a craving pulse of calories. */
 export function applyResonanceSurgeBonus(students, resonanceState) {
-  const classLbs = getCombinedClassLbs(students);
-  const tier = getResonanceTier((resonanceState.links || []).length, classLbs);
+  const hallLbs = getCombinedHallLbs(students);
+  const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   const linkedIds = new Set();
   for (const l of resonanceState.links || []) {
     linkedIds.add(l.a);

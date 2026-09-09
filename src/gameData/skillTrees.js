@@ -6,7 +6,7 @@ import { getStage } from './stages.js';
 // ranks; tiers unlock by points spent within the tree.
 //
 // Effect keys are aggregated per rank by the skillEffect() helper in
-// ProfessorSim and consumed by the stomach/corruption/talk systems.
+// HallPass and consumed by the stomach/corruption/talk systems.
 // ═══════════════════════════════════════════════════════════════
 
 export const SKILL_TREES = {

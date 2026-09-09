@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// V2.0 HANDLERS — game logic wired from ProfessorSim
+// V2.0 HANDLERS — game logic wired from HallPass
 // ═══════════════════════════════════════════════════════════════
 import {
   canEmbody, startEmbodiment, endEmbodiment, applyEmbodimentAction,
@@ -7,7 +7,7 @@ import {
 } from './spiritEmbodiment.js';
 import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
-  applyResonancePassiveBonus, applyResonanceSurgeBonus, getCombinedClassLbs, getResonanceTier,
+  applyResonancePassiveBonus, applyResonanceSurgeBonus, getCombinedHallLbs, getResonanceTier,
 } from './cravingResonance.js';
 import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
 import { captureEcho, captureEchoOnce, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
@@ -265,14 +265,14 @@ export function handleEchoResonate(echoId, v2State, ownedSkills, ownedHallSkills
   return { ok: true, apCost: check.apCost, moment: check.moment, v2State: { ...v2State, echoes } };
 }
 
-export { applyResonanceSurgeBonus, getCombinedClassLbs, getResonanceTier } from './cravingResonance.js';
+export { applyResonanceSurgeBonus, getCombinedHallLbs, getResonanceTier } from './cravingResonance.js';
 
 export function handleFeedResonancePulse(fedStudentId, calories, students, v2State) {
   const { pulses } = pulseResonance(fedStudentId, calories, students, v2State.resonance);
   if (!pulses.length) return { pulses: [], v2State };
   const totalPulses = (v2State.resonance.totalPulses || 0) + pulses.length;
-  const classLbs = getCombinedClassLbs(students);
-  const tier = getResonanceTier((v2State.resonance.links || []).length, classLbs);
+  const hallLbs = getCombinedHallLbs(students);
+  const tier = getResonanceTier((v2State.resonance.links || []).length, hallLbs);
   return {
     pulses,
     v2State: {
