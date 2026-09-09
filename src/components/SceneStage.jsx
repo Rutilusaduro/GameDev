@@ -277,6 +277,7 @@ export function SceneStage({
       {!allRevealed && beats.length > 0 && (
         <button
           type="button"
+          className="scene-beat-advance"
           style={{
             ...C.smBtn,
             width: '100%',
@@ -304,6 +305,7 @@ export function SceneStage({
               <button
                 key={ch.id || ch.label}
                 type="button"
+                className="scene-choice-btn"
                 disabled={ch.disabled}
                 style={{
                   ...C.btn(ch.disabled ? '#2a2a2a' : accentColor),

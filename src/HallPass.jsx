@@ -586,6 +586,7 @@ export default function HallPass(){
   const [deviceTickQueue, setDeviceTickQueue] = useState(null);
   const [equipModalStudentId, setEquipModalStudentId] = useState(null);
   const [hungerInterrupt, setHungerInterrupt] = useState(null);
+  const [weekPulse, setWeekPulse] = useState(0);
   const [weekRecap, setWeekRecap] = useState(null);
   const [weekPlan, setWeekPlan] = useState(() => emptyWeekPlan());
   const [weekPlannerOpen, setWeekPlannerOpen] = useState(false);
@@ -1581,6 +1582,7 @@ export default function HallPass(){
     setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     const newWeek=week+1;
     setWeek(newWeek);
+    setWeekPulse((p) => p + 1);
     playHallPassSound('week', soundEnabled);
     const startDorm=raProfile?.dormId||raProfile?.subject;
     let effectiveUnlockedDorms=unlockedDorms||[];
@@ -8556,7 +8558,12 @@ export default function HallPass(){
             </div>
           )}
           {[["AP",ap,"#e0a8ff"],["Wk",week,"#e0a8ff"],["Reach",`Lv ${spiritLevel}`,"#a0e0b0"],["Pts",availableSkillPoints,"#f0c060"]].map(([l,v,c])=>(
-            <div key={l} className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}>
+            <div
+              key={l}
+              className={`ra-desk-stat-pill${l === 'Wk' ? ' ra-desk-week-tick' : ''}`}
+              data-week-pulse={l === 'Wk' ? weekPulse : undefined}
+              style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px"}}
+            >
               <span style={{fontSize:17,fontWeight:700,color:c,display:"block"}}>{l==="Wk"?`Wk ${v}`:v}</span>
               <span style={{fontSize:9,color:"#60389a",letterSpacing:2}}>
                 {l==="Wk"?"WEEK":l==="AP"?"ACTION PTS":l==="Reach"?"REACH":"SKILL PTS"}
