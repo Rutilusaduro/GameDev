@@ -97,7 +97,7 @@ export const CAMPUS_SECRETS = [
     requires: ['arts_hidden_studio'],
     campusTierMin: 0,
     solve: 'search',
-    discover: 'A loose grate behind the weight racks opens on a crawlspace — chalk arrows, student height, leading east.',
+    discover: 'A loose grate behind the weight racks opens on a crawlspace — chalk arrows, resident height, leading east.',
     reward: { findId: 'tunnel_fungus' },
   },
   {

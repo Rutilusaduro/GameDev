@@ -140,7 +140,7 @@ export function createCustomStudent(draft = {}, baseStudent = {}) {
     name: (draft.name || 'Talia').trim().slice(0, 32) || 'Talia',
     pronouns: draft.pronouns || 'she',
     archetype: 'inventor',
-    role: 'Engineering Student',
+    role: 'Engineering Major',
     age: 21,
     bodyType: draft.bodyType || 'straight',
     lbs: weight.lbs,

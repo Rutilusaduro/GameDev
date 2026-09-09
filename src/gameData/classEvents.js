@@ -8,8 +8,8 @@ export const ACTIONS_CLASS = [
   { id:"pizza",        label:"🍕 Floor Pizza Night",         cost:3, cal:[12000,24000], full:40, desc:"An excessive whole-floor pizza order. Everyone indulges." },
   { id:"potluck",      label:"🥘 Floor Potluck",             cost:2, cal:[9000,18000],  full:30, desc:"Everyone brings a dish. Everyone is expected to try everything." },
   { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
-  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two students to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
-  { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended students." },
+  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
+  { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
 ];
 
 export const CLASS_SCENES = [
@@ -100,7 +100,7 @@ export const CLASS_SCENES = [
     text:s=>`${s.name} mentions training has been lighter — coach gave them a recovery period. She seems restless without the physical outlet, energy with nowhere to go.`,
     choices:[
       { label:"Suggest she use recovery to fuel up", effect:{gain:[7,14],mood:"content",rel:6}, result:s=>`You suggest recovery is a good time to really load up. She considers this with athletic seriousness. Athletes respect fuel logic. By end of day she's put away an impressive amount.` },
-      { label:"Give her an energetic group task",     effect:{gain:[1,3], mood:"focused",rel:5}, result:s=>`You pair her with students on a project that requires moving, presenting, debating. She's immediately in her element.` },
+      { label:"Give her an energetic group task",     effect:{gain:[1,3], mood:"focused",rel:5}, result:s=>`You pair her with others on the floor on a project that requires moving, presenting, debating. She's immediately in her element.` },
       { label:"Talk training and nutrition",          effect:{gain:[2,5], mood:"focused",rel:7}, result:s=>`You have a genuine conversation about athletic nutrition. She's sharp on the subject. You learn things about carb-loading that give you ideas.` },
     ] },
   { id:"arch_artsy", target:"student", filter:s=>s.archetype==="artsy",
@@ -173,7 +173,7 @@ export const CLASS_SCENES = [
     text:s=>`${s.name} takes up space with absolute ease now. She settles into her reinforced seat, arranges her things precisely, and looks around the room with the calm authority of someone completely at home in their body.`,
     choices:[
       { label:"Arrange something special for her", effect:{gain:[5,10],mood:"content",rel:8},  result:s=>`You set something up specifically for her — her preferences, her portion, her timing. She notices the care. "You remembered." Warmth, genuine.` },
-      { label:"Ask her to mentor someone",          effect:{gain:[0,0], mood:"content",rel:7},  result:s=>`You ask her to work with a struggling student. She agrees immediately and does it well, with patience and zero fanfare.` },
+      { label:"Ask her to mentor someone",          effect:{gain:[0,0], mood:"content",rel:7},  result:s=>`You ask her to work with someone who's struggling on the floor. She agrees immediately and does it well, with patience and zero fanfare.` },
       { label:"Acknowledge her growth",             effect:{gain:[3,7], mood:"content",rel:10}, result:s=>`You find a quiet moment and say, simply, that you've noticed how much she's grown — on the floor, personally. "That actually means something, RA."` },
     ] },
   // ── CLASS-WIDE ───────────────────────────────────────────────
@@ -191,22 +191,22 @@ export const CLASS_SCENES = [
     choices:[
       { label:"Let them be creative",             effect:{gain:[2,5]},  result:"The projects are elaborate and extensively taste-tested using supplies they apparently brought for this exact possibility." },
       { label:"Provide research materials (food)", effect:{gain:[4,9]},  result:"You bring extensive research samples. This is treated as primary research. The floor is still conducting experiments after closing time." },
-      { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition emerges. The floor sources sample materials with alarming speed. Three students present full spreads. Everyone eats everything." },
+      { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition emerges. The floor sources sample materials with alarming speed. Three residents present full spreads. Everyone eats everything." },
     ] },
   { id:"class_birthday", target:"class",
     title:"Mystery Birthday",
     text:"Someone on the floor has a birthday this week. Word has spread. There is an expectation of cake.",
     choices:[
-      { label:"Bring one cake",                    effect:{gain:[3,6]},  result:"A solid cake, well-received. The birthday student gets the first slice. Everyone gets seconds." },
+      { label:"Bring one cake",                    effect:{gain:[3,6]},  result:"A solid cake, well-received. The birthday resident gets the first slice. Everyone gets seconds." },
       { label:"Bring a full dessert spread",        effect:{gain:[6,12]}, result:"You dramatically overdeliver: three cakes, cupcakes, tarts, macarons. The floor is overwhelmed and grateful and eats everything." },
-      { label:"Declare it a week-long celebration", effect:{gain:[4,9]},  result:"You declare the whole week birthday week. Snacks every day. The birthday student is embarrassed and delighted in equal measure." },
+      { label:"Declare it a week-long celebration", effect:{gain:[4,9]},  result:"You declare the whole week birthday week. Snacks every day. The birthday resident is embarrassed and delighted in equal measure." },
     ] },
   { id:"class_slump", target:"class",
     title:"3PM Energy Crash",
     text:"The 3PM slump is real and the lounge is suffering. Heads are drooping. Someone is asleep. Someone else is asleep more aggressively. Action is required.",
     choices:[
-      { label:"Snacks and caffeine",    effect:{gain:[4,8]}, result:"Coffee, tea, energy drinks, and a mountain of snacks. The floor revives. Several students look grateful enough to tear up." },
-      { label:"Quick movement break",   effect:{gain:[1,3]}, result:"A stretch break and some movement. Energy returns, though you notice several students were clearly much more comfortable staying seated." },
+      { label:"Snacks and caffeine",    effect:{gain:[4,8]}, result:"Coffee, tea, energy drinks, and a mountain of snacks. The floor revives. Several residents look grateful enough to tear up." },
+      { label:"Quick movement break",   effect:{gain:[1,3]}, result:"A stretch break and some movement. Energy returns, though you notice several residents were clearly much more comfortable staying seated." },
       { label:"Dim lights and chill",   effect:{gain:[2,5]}, result:"You lower the lights, put on ambient music, and present this as a contemplative learning environment. Everyone eats their snacks in peaceful semi-darkness." },
     ] },
   { id:"class_potluck", target:"class",

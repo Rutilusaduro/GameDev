@@ -190,13 +190,13 @@ export const STAGE_REACTIONS = {
     // Stage 4 ~195-238 lbs
     (s) => `She belongs here now. At ${Math.round(s.lbs)} pounds her belly rounds forward and her thighs are thick and the dining hall staff knows her name and knows what she wants before she says it. She's started bringing homemade things from her home country's recipes to share with the staff. They've started keeping her favorites in stock. It goes both ways.`,
     // Stage 5 ~238-285 lbs
-    (s) => `${Math.round(s.lbs)} pounds and she calls this campus home without hesitating. Her belly hangs warm and forward. Her thighs are enormous. Students she's never met say hello to her in the dining hall and she already knows their orders. She told me she stopped converting the food to what her mom would have made — she just makes both now and brings both to the table.`,
+    (s) => `${Math.round(s.lbs)} pounds and she calls this campus home without hesitating. Her belly hangs warm and forward. Her thighs are enormous. Residents she's never met say hello to her in the dining hall and she already knows their orders. She told me she stopped converting the food to what her mom would have made — she just makes both now and brings both to the table.`,
     // Stage 6 ~285-360 lbs
     (s) => `She is part of the fabric of this campus. Her booth in the corner is hers by custom if not by policy and at ${Math.round(s.lbs)} pounds she fills her side of it with belly and thighs and warmth. The dining hall manager saved the good batch of her favorite dish for her table last week. She brought enough to share. There were seven of them in that corner, all eating, all happy.`,
     // Stage 7 ~360-465 lbs
     (s) => `She told me she doesn't think about where she's from versus where she is anymore — she just thinks about where she is, which is here, which is the booth, which is ${Math.round(s.lbs)} pounds of someone who belongs. Her belly fills her side of the table. Her thighs spread warm across the seat. The staff decorated the booth for her birthday this year. She cried a little. She ate everything.`,
     // Stage 8 ~465-595 lbs
-    (s) => `She doesn't travel far from campus anymore and she doesn't need to — everything she wants is here and she's the reason some of it exists at all. The dining hall added three dishes from her home country's cuisine at her suggestion. She's ${Math.round(s.lbs)} pounds and she sits at the center of more meals than she can count and her belly is vast and warm and she's more campus than most of the buildings. Prospective students are told about her on campus tours.`,
+    (s) => `She doesn't travel far from campus anymore and she doesn't need to — everything she wants is here and she's the reason some of it exists at all. The dining hall added three dishes from her home country's cuisine at her suggestion. She's ${Math.round(s.lbs)} pounds and she sits at the center of more meals than she can count and her belly is vast and warm and she's more campus than most of the buildings. Prospective residents are told about her on campus tours.`,
     // Stage 9 ~595-820 lbs
     (s) => `${Math.round(s.lbs)} pounds. Irreplaceable. Immovable. Her booth has a brass plaque. Her belly fills her side of it completely and her thighs spread wide and warm. She taught the dining hall staff four recipes from home this semester and they've added two to the permanent menu. She says she's never going home because this is home now. She means it the way you mean something you've decided completely.`,
     // Stage 10 820+ lbs
@@ -239,7 +239,7 @@ export const STAGE_REACTIONS = {
     (s)=>`Daisy sits at the wide kitchen chair she's claimed, her belly filling her lap soft and warm. She's ${Math.round(s.lbs)} pounds and her arms are round and capable, lifting the big mixing bowl with the ease of long practice. She waves you over. "I need you to taste the frosting," she says. "It's for Tuesday but it needs a second opinion."`,
     (s)=>`She's enormous now — ${Math.round(s.lbs)} pounds of warm, settled, purposeful woman, her body taking up most of the kitchen corner she's claimed as hers. The apron is purely decorative at this point but she wears it anyway. "I made cinnamon rolls," she says, without looking up. She's made twelve. They're large. She's already had two.`,
     (s)=>`Moving takes planning now, but Daisy approaches it the way she approaches everything: methodically, warmly. She is ${Math.round(s.lbs)} pounds and her setup has grown around her — the counter lowered on one side, the wide chair positioned for reach. She smiles when she sees you. "You're right on time," she says. "It just came out."`,
-    (s)=>`Daisy barely moves from her spot now, but she doesn't need to. Everything comes to her — the deliveries, the students, the moms who've started stopping by on their own. She is ${Math.round(s.lbs)} pounds and enormous and warm, settled into her space like it was built for her. "Sit down," she says. "I've got things for you to try."`,
+    (s)=>`Daisy barely moves from her spot now, but she doesn't need to. Everything comes to her — the deliveries, the residents, the moms who've started stopping by on their own. She is ${Math.round(s.lbs)} pounds and enormous and warm, settled into her space like it was built for her. "Sit down," she says. "I've got things for you to try."`,
   ],
   nursing:    Array.from({length:11},(_,i)=>(s)=>`[placeholder: nursing stage ${i} reaction — ${Math.round(s.lbs)} lbs]`),
   farm_girl:  Array.from({length:11},(_,i)=>(s)=>`[placeholder: farm_girl stage ${i} reaction — ${Math.round(s.lbs)} lbs]`),
@@ -350,7 +350,7 @@ export const OUTFITS = {
     "Wide flowing layers, bold prints. The body becoming part of the aesthetic.",
     "Draped dramatically. People aren't sure if she's dressing or sculpting herself.",
     "Commissioned custom pieces. Wide silk things. Gallery-opening ready.",
-    "Collaboration with a design student. Wearable art. Enormous canvas.",
+    "Collaboration with a design major. Wearable art. Enormous canvas.",
     "Monumental fabric arrangements. Assisted dressing. Worth it.",
     "Flowing installation-adjacent garments. The boundary between artist and work: gone.",
     "Bespoke collaborative pieces. Custom-crafted by her artistic circle. Breathtaking.",

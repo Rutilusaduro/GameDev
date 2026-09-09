@@ -171,6 +171,17 @@ const BANNED = [
   { id: 'nursing-student-phrase', re: /nursing student/i },
   { id: 'grad-student-phrase', re: /\bgrad student\b/i },
   { id: 'every-other-student', re: /every other student\b/i },
+  { id: 'birthday-student', re: /birthday student/i },
+  { id: 'struggling-student', re: /struggling student/i },
+  { id: 'two-students-to-dinner', re: /two students to dinner/i },
+  { id: 'ascended-students', re: /ascended students/i },
+  { id: 'bind-students', re: /Bind students/i },
+  { id: 'several-students', re: /Several students/i },
+  { id: 'three-students', re: /Three students/i },
+  { id: 'prospective-students-tours', re: /Prospective students/i },
+  { id: 'design-student', re: /design student/i },
+  { id: 'agriculture-student-role', re: /Agriculture Student/i },
+  { id: 'engineering-student-role', re: /Engineering Student/i },
 ];
 
 const ALLOW_LINE = [

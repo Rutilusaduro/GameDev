@@ -1111,7 +1111,7 @@ I fed her until she was groaning, then laid her against me on the bed. Our belli
       [
         `Priya has grown much softer. Her figure has widened with a big plush belly, thicker thighs, and breasts that now rest noticeably on her middle.
 
-After feeding I pulled her on top of me. Her belly squashed warmly down onto my heavy gut, fat melding together as I held her close. I buried my face completely in her soft tits, motorboating and licking while squeezing her thickening ass. She gasped and clutched at my rolls, her perfect student composure cracking. The contrast between the flat, driven girl she was and how jiggly she’s becoming turns me on so much.`,
+After feeding I pulled her on top of me. Her belly squashed warmly down onto my heavy gut, fat melding together as I held her close. I buried my face completely in her soft tits, motorboating and licking while squeezing her thickening ass. She gasped and clutched at my rolls, her perfect resident composure cracking. The contrast between the flat, driven girl she was and how jiggly she’s becoming turns me on so much.`,
         `[placeholder: Nadia's notes — overachiever subject at Plump — Nadia at Enormous/Colossal]`,
         `[placeholder: Nadia's notes — overachiever subject at Plump — Nadia at Blob]`,
       ],
@@ -1446,7 +1446,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
   },
   quiet: {
     intro: [
-      `[placeholder: Nadia intro — why she chose the quiet student]`,
+      `[placeholder: Nadia intro — why she chose the quiet resident]`,
       `[placeholder: Nadia intro — why she chose the quiet as her subject (Enormous/Colossal)]`,
       `[placeholder: Nadia intro — why she chose the quiet as her subject (Blob)]`,
     ],
@@ -1638,7 +1638,7 @@ She has completely outgrown me. Where I stopped, she kept going, becoming this p
   },
   culinary: {
     intro: [
-      `[placeholder: Nadia intro — why she chose the culinary student]`,
+      `[placeholder: Nadia intro — why she chose the culinary resident]`,
       `[placeholder: Nadia intro — why she chose the culinary as her subject (Enormous/Colossal)]`,
       `[placeholder: Nadia intro — why she chose the culinary as her subject (Blob)]`,
     ],

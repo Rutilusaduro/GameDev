@@ -29,6 +29,8 @@ const cassidy = INIT_STUDENTS.find((s) => s.id === 1);
 assert(cassidy, 'Cassidy (id 1) must exist');
 assert.equal(cassidy.name, 'Cassidy');
 assert.equal(cassidy.archetype, 'swimmer', 'Cassidy must be swimmer archetype');
+assert.equal(INIT_STUDENTS.find((s) => s.id === 14)?.role, 'Agriculture Major', 'Mary Jane role must not say Student');
+assert.equal(INIT_STUDENTS.find((s) => s.id === 18)?.role, 'Engineering Major', 'Talia role must not say Student');
 assert.ok(EVOLUTION_OFFER.swimmer, 'swimmer evolution offer must exist');
 assert.ok(EVOLUTION_OFFER.swimmer.paths.community_researcher, 'Lane Captain path must exist');
 assert.equal(typeof getSwimmerTier, 'function', 'getSwimmerTier alias must exist');

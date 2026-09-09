@@ -15,6 +15,7 @@ import {
 import { EVOLVED_MINIGAMES } from '../src/gameData/evolvedMinigames.js';
 import { CG_FILLED_DIARY, CG_RA_REPLY_TEXT } from '../src/gameData/competitiveGainerText.js';
 import { TALK_TOPICS } from '../src/gameData/talkSystem.js';
+import { SKILLS, SKILL_TREES } from '../src/gameData/skillTrees.js';
 import { createContext } from '../src/textEngine/engine.js';
 import { renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
 import '../src/textEngine/scenes/talkCodas.js';
@@ -137,6 +138,13 @@ const BANNED = [
   /\bnursing student\b/i,
   /\bgrad student\b/i,
   /\bevery other student\b/i,
+  /\bbirthday student\b/i,
+  /\bstruggling student\b/i,
+  /\bascended students\b/i,
+  /\bSeveral students\b/i,
+  /\bThree students\b/i,
+  /\bProspective students\b/i,
+  /\bdesign student\b/i,
 ];
 
 function assertClean(text, label) {
@@ -654,4 +662,11 @@ for (const scene of INTIMACY_SCENES) {
   if (phase0) assertClean(phase0, `intimacy phase ${scene.id} p0`);
 }
 
-console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus nodes, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin, intimacy OK');
+for (const tree of Object.values(SKILL_TREES)) {
+  assertClean(`${tree.label} ${tree.blurb}`, `skill tree ${tree.id}`);
+}
+for (const skill of SKILLS) {
+  assertClean(`${skill.name} ${skill.desc} ${skill.rankDesc?.(1) || ''}`, `skill ${skill.id}`);
+}
+
+console.log('prose-coherence: narrative, class scenes, unlocks, Cassidy arc, opposition, minigames, dinner, evolved, homeroom, journals, campus nodes, weigh-in, talk, CG replies, hunger, confront, contest, sumo, salon, lilith, cult, recording, collab, cultivator, fair, lab, destiny, hostess, pharmacist, origin, intimacy, skill trees OK');

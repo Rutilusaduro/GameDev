@@ -219,7 +219,7 @@ export const SKILLS = [
     rankDesc:()=>`Unlock Body Echo Archive`,
     effects:{ memoryPalace:1 } },
   { id:"hunger_web", tree:"gluttony", tier:1, icon:"🔗", name:"Hunger Web", maxRanks:1,
-    desc:"Bind students' appetites — craving pulses travel between linked girls.",
+    desc:"Bind residents' appetites — craving pulses travel between linked girls.",
     rankDesc:()=>`Unlock Craving Resonance links`,
     effects:{ hungerWeb:1 } },
   { id:"ritual_master", tree:"gluttony", tier:2, icon:"🔥", name:"Ritual Master", maxRanks:1,
@@ -227,7 +227,7 @@ export const SKILLS = [
     rankDesc:()=>`Floor Feast + Leviathan Vigil rituals`,
     effects:{ ritualMaster:1 } },
   { id:"dream_walk", tree:"corruption", tier:1, icon:"💤", name:"Dream Walk", maxRanks:1,
-    desc:"Walk the corridors of a student's subconscious appetite.",
+    desc:"Walk the corridors of a resident's subconscious appetite.",
     rankDesc:()=>`Unlock Appetite Dreams`,
     effects:{ dreamWalk:1 } },
 ];
