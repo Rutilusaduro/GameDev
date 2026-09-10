@@ -18,6 +18,8 @@ import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { FloorHallway } from '../components/FloorHallway.jsx';
+import { MysteryTrustPulse } from '../components/MysteryTrustPulse.jsx';
+import { getMysteryTrustPulse } from '../gameData/mysteryTrust.js';
 
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
@@ -158,11 +160,16 @@ export function RosterView({
     playHallPassSound('nav', soundEnabled);
   }, [view, hasNewResidents, soundEnabled, week]);
   const visibleResidents = students.filter(rosterVisible);
+  const mysteryPulse = useMemo(
+    () => getMysteryTrustPulse(students, { unlockedDorms, reachLevel, week }),
+    [students, unlockedDorms, reachLevel, week],
+  );
   return (
     <>
       {view === 'roster' && (
         <div>
           <DormUnlockBanner unlockedDorms={unlockedDorms} startDormId={startDormId} week={week} />
+          <MysteryTrustPulse pulse={mysteryPulse} />
           <FloorHallway students={visibleResidents} onVisitRoom={onVisitRoom} soundEnabled={soundEnabled} />
           <p style={C.secT}>Residents — {visibleResidents.length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>

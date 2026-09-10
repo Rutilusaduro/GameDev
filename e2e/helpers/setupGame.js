@@ -37,6 +37,16 @@ export async function completeRaSetup(page, {
   }
 }
 
+/** Knock on first hallway door and finish intro (unlocks Influence nav). */
+export async function completeFirstRoomIntro(page) {
+  const door = page.locator('.floor-door-card').first();
+  await expect(door).toBeVisible();
+  await door.click();
+  const done = page.getByRole('button', { name: /Finish introductions|Leave the room/ });
+  await expect(done).toBeVisible();
+  await done.click();
+}
+
 /** Debug: unlock hall lounge dinner skills and jump to Actions. */
 export async function unlockDinnerQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();

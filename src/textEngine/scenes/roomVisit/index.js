@@ -1,4 +1,5 @@
 // Room visit beats — intro at the door + stage-keyed check-ins.
+import './personas.js';
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { getStage } from '../../../gameData/stages.js';
@@ -8,24 +9,6 @@ registerPool('room.visit.intro.lead', [
     'You knock. The nameplate matches the roster. Time to make yourself known.',
     'The hall is quiet except for muffled music behind this door. You knock twice.',
     'Housing said meet everyone before midterms. This door is next on your list.',
-  ] },
-]);
-
-registerPool('room.visit.intro.meet', [
-  { when: { studentId: 0 }, weight: 3, text: [
-    `Brittany opens in team gear, measuring you like an opponent. "{ra.name}," she says. "Come in. I was about to raid the snack drawer."`,
-    `Protein bars and laundry. She sticks out a hand. "You're {ra.name}. Good — someone on this floor who answers texts."`,
-    `"Finally," Brittany says. "{ra.name}. I've got questions about quiet hours and whether pizza counts as a vegetable."`,
-  ] },
-  { when: { studentId: 1 }, weight: 3, text: [
-    `Cassidy blinks up from her laptop. "Oh — {ra.name}. I was going to email you." She kicks a chair toward you.`,
-    `Cables and textbooks narrow the path to the bed. "{ra.name}, right? Sit anywhere the floor isn't claiming."`,
-    `"Perfect timing," Cassidy says. "{ra.name}. I needed a witness to how unreasonable this problem set is."`,
-  ] },
-  { when: {}, text: [
-    `{subject.name} answers on the second knock. "{ra.name}?" A small smile. "Come in. I was wondering when you'd do rounds."`,
-    `The door opens on a room still half-unpacked. "Hey — you're {ra.name}. I've heard good things down the hall."`,
-    `{subject.name} waves you in. "{ra.name}. Make yourself comfortable — I'm still figuring out where everything goes."`,
   ] },
 ]);
 
@@ -102,11 +85,11 @@ export function renderRoomVisitScene(student, week, opts = {}) {
     ].filter(Boolean).join('\n\n');
   }
   if (mode === 'stage') {
-    const stage = getStage(student.lbs ?? 0);
     return [
       render('{room.visit.stage.room}', ctx),
       render('{room.visit.stage.beat}', ctx, { trace: opts.trace || null }),
-    ].filter(Boolean).join('\n\n');
+      render('{room.visit.stage.beat.persona}', ctx, { trace: opts.trace || null }),
+    ].filter((p) => p?.trim()).join('\n\n');
   }
   return render('{room.visit.ambient}', ctx);
 }

@@ -751,10 +751,13 @@ check('reach-level-naming', () => {
 check('influence-view-routes', () => {
   assert.ok(existsSync(join(root, 'src/views/InfluenceView.jsx')));
   const desk = read('src/HallPass.jsx');
+  const nav = read('src/gameData/navUnlock.js');
   assert.match(desk, /InfluenceView/);
-  assert.match(desk, /\["roster","📋 RA Desk"\]/);
-  assert.match(desk, /\["hall-lounge","🏠 Hall Lounge"\]/);
-  assert.match(desk, /\["influence","✨ Influence"\]/);
+  assert.match(desk, /computeNavVisibility/);
+  assert.match(desk, /navTabs\.map/);
+  assert.match(nav, /roster.*📋 RA Desk/);
+  assert.match(nav, /hall-lounge.*🏠 Hall Lounge/);
+  assert.match(nav, /influence.*✨ Influence/);
   assert.doesNotMatch(desk, /SpiritHubView/);
   assert.doesNotMatch(desk, /view==="class"/);
   assert.doesNotMatch(desk, /view==="spirit-hub"/);

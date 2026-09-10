@@ -69,10 +69,9 @@ function assertClean(text, label) {
 }
 
 const hallPass = readFileSync('src/HallPass.jsx', 'utf8');
-assert(
-  /\[\["roster","📋 RA Desk"\],\["hall-lounge","🏠 Hall Lounge"\],\["influence","✨ Influence"\]/.test(hallPass),
-  'main nav must use RA Desk / Hall Lounge / Influence labels',
-);
+const navUnlock = readFileSync('src/gameData/navUnlock.js', 'utf8');
+assert(hallPass.includes('navTabs.map'), 'main nav must render from progressive navTabs');
+assert(navUnlock.includes('📋 RA Desk') && navUnlock.includes('🏠 Hall Lounge') && navUnlock.includes('✨ Influence'), 'nav labels must use RA Desk / Hall Lounge / Influence');
 assert(hallPass.includes('RA DESK'), 'header must say RA DESK');
 assertClean(hallPass, 'HallPass.jsx');
 
@@ -97,6 +96,7 @@ assertClean(influence, 'InfluenceView.jsx');
 const roster = readFileSync('src/views/RosterView.jsx', 'utf8');
 assert(roster.includes('Residents —'), 'RosterView must label roster Residents');
 assert(roster.includes('FloorHallway'), 'RosterView must expose floor hallway room visits');
+assert(roster.includes('MysteryTrustPulse'), 'RosterView must show anonymous off-floor trust pulse');
 assert(roster.includes('dormUnlocksForWeek'), 'RosterView must celebrate hall unlocks without locked roadmap');
 assert.match(roster, /export function RosterView/);
 assertClean(roster, 'RosterView.jsx');

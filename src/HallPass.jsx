@@ -397,6 +397,7 @@ import { TalkModal } from './components/TalkModal.jsx';
 import { RoomVisitModal } from './components/RoomVisitModal.jsx';
 import { FloorBriefingModal } from './components/FloorBriefingModal.jsx';
 import { applyRoomVisitComplete } from './gameData/roomVisit.js';
+import { computeNavVisibility, NAV_TAB_META, NAV_UNLOCK_BLURB } from './gameData/navUnlock.js';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { BugReportModal } from './components/BugReportModal.jsx';
 import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
@@ -890,6 +891,7 @@ export default function HallPass(){
       lean:apDef.lean,
       appearance:{ hair:'red', build:'curvy' },
       floorBriefingDone:false,
+      navRevealed:{ roster:true },
     };
     setRaProfile(profile);
     setUnlockedDorms([hallDef.id]);
@@ -7851,6 +7853,58 @@ export default function HallPass(){
     return isDinnerVenueUnlocked(v.id,ownedHall);
   });
 
+  const navVisibility=useMemo(()=>computeNavVisibility({
+    week,
+    raProfile,
+    students,
+    ownedHallSkills:ownedHall,
+    inventory,
+    achievements,
+    reachLevel,
+    settledStudents,
+    opposition,
+    adminScrutiny,
+    labState,
+    campusState,
+    sel,
+    effectiveHallActions,
+  }),[week,raProfile,students,ownedHall,inventory,achievements,reachLevel,settledStudents,opposition,adminScrutiny,labState,campusState,sel,effectiveHallActions]);
+
+  const navTabs=useMemo(()=>{
+    const out=[];
+    for(const [v,label] of NAV_TAB_META){
+      if(!navVisibility[v]) continue;
+      if(v==='student'){
+        if(!sel) continue;
+        out.push([v,`👤 ${sel.name}`]);
+      }else{
+        out.push([v,label]);
+      }
+    }
+    return out;
+  },[navVisibility,sel]);
+
+  useEffect(()=>{
+    if(!raProfile) return;
+    const revealed=raProfile.navRevealed||{};
+    let next=revealed;
+    let changed=false;
+    for(const [tab,on] of Object.entries(navVisibility)){
+      if(on&&!revealed[tab]&&NAV_UNLOCK_BLURB[tab]){
+        push(`🔓 ${NAV_UNLOCK_BLURB[tab]}`);
+        next={...next,[tab]:true};
+        changed=true;
+      }
+    }
+    if(changed) setRaProfile(p=>({...p,navRevealed:next}));
+  },[navVisibility,raProfile?.navRevealed]);
+
+  useEffect(()=>{
+    if(view==='student'&&!sel) return;
+    if(view==='settling-detail'||view==='log') return;
+    if(navVisibility[view]===false) setView('roster');
+  },[view,navVisibility,sel]);
+
   const views=["roster","actions","achievements","log"];
   if(sel) views.splice(1,0,"student");
 
@@ -8710,13 +8764,9 @@ export default function HallPass(){
         </div>
       </div>
 
-      {/* NAV */}
+      {/* NAV — progressive tabs via NAV_TAB_META (📋 RA Desk, 🏠 Hall Lounge, ✨ Influence, …) */}
       <div className="hall-pass-nav" style={C.nav}>
-        {[["roster","📋 RA Desk"],["hall-lounge","🏠 Hall Lounge"],["influence","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
-          ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
-          ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
-          ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),
-        ].map(([v,l])=>{
+        {navTabs.map(([v,l])=>{
           const active=view===v;
           const accent=raProfile?.color||"#7a24d8";
           return (
