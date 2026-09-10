@@ -247,6 +247,25 @@ check('game-bible-ra-theme', () => {
   assert.doesNotMatch(bible, /Inhabit the Professor/);
 });
 
+check('handoff-ra-theme', () => {
+  const handoff = read('HANDOFF.md');
+  assert.match(handoff, /Hall Pass/);
+  assert.match(handoff, /cursor\/ra-dorm-pivot-88e9/);
+  assert.match(handoff, /Cassidy/);
+  assert.doesNotMatch(handoff, /Upgrade Professor Sim 1\.0/);
+  assert.doesNotMatch(handoff, /ProfessorSim\.jsx/);
+});
+
+check('skill-doc-ra-theme', () => {
+  const skill = read('.cursor/skills/gamedev-text-engine/SKILL.md');
+  const ref = read('.cursor/skills/gamedev-text-engine/references/engine-reference.md');
+  assert.match(skill, /Hall Pass/);
+  assert.match(skill, /RA dorm sim|resident advisor/i);
+  assert.doesNotMatch(skill, /"Professor Sim"/);
+  assert.match(ref, /Cassidy/);
+  assert.doesNotMatch(ref, /Madeline/);
+});
+
 check('hall-unlock-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');
   const hallPass = read('src/HallPass.jsx');

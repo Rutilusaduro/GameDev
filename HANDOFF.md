@@ -1,134 +1,104 @@
-# V2.0 Overhaul — Agent Handoff
+# Hall Pass RA Dorm Pivot — Agent Handoff
 
-**Goal:** Upgrade Professor Sim 1.0 → 2.0 (full scope in `docs/V2_0_DESIGN.md`)
+**Goal:** Fork Professor Sim → **Hall Pass** — senior redheaded curvy **RA** dorm sim (not spirit-possessed professor). Start flow = pick dorm (sporty / nerdy / socialite / weirdos) with ~5 home residents; unlock unpicked halls at weeks 8 / 12 / 16. **Cassidy** (swimmer) replaces Madeline in sporty dorm. Replace professor / spirit / class framing with RA / dorm / resident framing across code and text engine. Steam-quality polish; working game; coherent prose throughout.
 
-**Branch:** `cursor/game-2-0-overhaul-8189`
+**Branch:** `cursor/ra-dorm-pivot-88e9` (base: `Primary`)
 
-## Status
+**Design refs:** `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `CLAUDE READ THIS.md`
 
-| Item | Status |
-|------|--------|
-| Design doc | ✅ `docs/V2_0_DESIGN.md` |
-| Spirit Embodiment | ✅ wired |
-| Craving Resonance | ✅ wired |
-| Feast Rituals | ✅ wired |
-| Body Echo Archive | ✅ wired |
-| Appetite Dreams | ✅ wired |
-| Student portraits | ✅ procedural sprites + hair + features + archetype glow (all 19) |
-| V2 depth layer | ✅ 40+ scene kinds + per-student talk/feed/dinner/session/wi + spirit/resonance/ritual/dream/echo voice |
-| V2 scene depth.js | ✅ embodiment, resonance, rituals, dreams, echo (stage-keyed local depth) |
-| Skill/classroom unlocks | ✅ 6 spirit skills + 5 classroom upgrades |
-| Integration + version bump | ✅ 2.0.0, build passes |
-| V2 mechanical fidelity | ✅ echo debuff, resonance lbs tiers/rel cost/surge, ritual favor, interactive dreams, lucid unlock, dream chamber gate |
-| Wife lessons bridge | ✅ lesson + talk trees |
-| Homeroom Queen bridge | ✅ conference + activities + pool decomposition |
-| Evolved events V2 | ✅ `renderEvolvedEventProse` |
-| Stream live V2 | ✅ `renderStreamBeat` |
-| Collab stream V2 | ✅ action popups + legacy payoff/stageup depth |
-| Recording session V2 | ✅ filming bridge + legacy depth wrappers |
-| Eating contest V2 | ✅ food/action/devour/weigh-in/payoff depth |
-| Sumo match V2 | ✅ exchange/bout/corner/aftermath/payoff depth |
-| Interior self-obs | ✅ talk check-in + eating |
-| Campus exploration depth | ✅ sighting/travel/find |
-| Opposition V2 | ✅ agenda pools (10 cards) + hearing bridge + depth |
-| Echo/pulse gameplay prose | ✅ renderEchoCapture toasts + renderResonancePulse on feed pulse |
-| Legacy talk prose | ✅ named thin pool sweep (65 pools turn 34); wifeLessons + monolith _f* |
-| V2 wildcard depth | ✅ v2WildcardDepth.js — 83 emb/res/ritual/echo/dream/*.v2.depth pools padded |
-| Banned-pattern lint | ✅ 0 style-ledger violations; text:lint 2 infra warnings (stem dedupe under 1% gate) |
-| V2_0 mechanical audit | ✅ gate fidelity fixes — resonance_bells surge, echo_gallery archive, dream_chamber hub, lucid steer, ritual milestones, embodiment AP tiers |
-| Campus device depth | ✅ all 19 students on vulnerability; keyed reaction + deviceFlavor padded |
-| Keyed volume floor | ✅ 0 thin keyed cells (`npm run text:lint -- --volume`) |
-| V2 handler probe | ✅ embodiment/resonance/ritual/weekly events pass |
-| Browser smoke test | ✅ Spirit Dominion hub + skill trees load; no JS errors |
+---
 
-## V2_0 Completion Audit (evidence-based)
+## Status (Pass 237)
 
-| Requirement | Status | Evidence |
-|-------------|--------|----------|
-| Version 2.0.0 | ✅ | `package.json`, `V2_CONFIG.version` |
-| Spirit Embodiment system | ✅ | `spiritEmbodiment.js`, `EmbodimentModal`, skill/classroom gates, echo debuff on release |
-| Craving Resonance system | ✅ | `cravingResonance.js`, links/pulses/tiers/surge, `resonance_bells` gate |
-| Feast Rituals (4 tiers) | ✅ | `feastRituals.js`, `FeastRitualModal`, week/spirit milestones |
-| Body Echo Archive | ✅ | `bodyEcho.js`, capture hooks, `EchoArchivePanel`, resonate buff |
-| Appetite Dreams | ✅ | `appetiteDreams.js`, weekly roll + manual trigger, lucid steer choices |
-| Student portraits | ✅ | `StudentPortrait.jsx`, `studentSprites.js` — 19 students, 7 tiers, hair/features/glow |
-| Skill tree (6 skills) | ✅ | `skillTrees.js` — spirit_ride, deep_ride, hunger_web, dream_walk, memory_palace, ritual_master |
-| Classroom (5 upgrades) | ✅ | `skills.js` — embodiment_chamber, resonance_bells, echo_gallery, ritual_kitchen, dream_chamber |
-| Spirit nav + integration | ✅ | `SpiritHubView`, `player.v2State`, end-week hooks in `ProfessorSim.jsx` |
-| Prose depth layers | ✅ | 50+ scene kinds via `appendV2Depth`; monolith/named/wildcard sweeps; 0 banned-pattern violations |
-| Build + text lint | ✅ | `npm run build`, `npm run text:lint` exit 0 |
-| ESLint | ✅ | `npm run lint` — 0 errors (77 pre-existing warnings) |
-| Volume keyed floor | ✅ | `npm run text:lint -- --volume` — 0 keyed cells under 3 texts |
+| Area | Status | Evidence |
+|------|--------|----------|
+| RA setup wizard + dorm pick | ✅ | `RaSetupWizard.jsx`, `e2e/setup-wizard.spec.js` |
+| Hall unlocks wk 8/12/16 | ✅ | `dorms.js`, `e2e/hall-unlock-modal.spec.js`, `e2e/dorm-unlock*.spec.js` |
+| Cassidy swimmer (id 1) | ✅ | `students.js`, lane-captain evolved path |
+| `src/` RA theme gate | ✅ | `npm run test:ra-theme` — zero Prof./Professor Sim/Madeline |
+| Text engine RA framing | ✅ | `npm run test:prose-coherence` |
+| Main app shell | ✅ | `HallPass.jsx` |
+| Ceremony Debug QA (25 flows) | ✅ | `DebugPanel.jsx` QA buttons + ceremony e2e specs |
+| Design bible RA sync | ✅ | `GAME_BIBLE.md`, `DESIGN_BIBLE.md` + `game-bible-ra-theme` audit |
+| Smoke + e2e | ✅ | `npm run test:smoke` — 81/81 e2e, completion-audit 168/168 |
 
-### Not blocking 2.0 ship (per design doc / scope)
+---
 
-| Item | Status | Notes |
-|------|--------|-------|
-| Bespoke hand-drawn sprites | Optional | Design doc specifies procedural pixel silhouettes; implemented |
-| Infra lint warnings (2) | Low | stem dedupe only (0.9% triple-stem, under 1% gate) |
-| ~~Keyed cells <3 texts (14)~~ | ✅ Done | `generateKeyedDepth.mjs` + campus.v2.depth padding |
+## RA framing vocabulary
 
-## Key Files (V2)
+| Old (Professor Sim) | New (Hall Pass) |
+|---------------------|-----------------|
+| Professor / spirit possession | Senior RA (redheaded, curvy) |
+| Class / students | Floor / residents |
+| Classroom prestige | Hall lounge prestige |
+| Spirit level / favor | Hall reach / hall cred |
+| Spirit Embodiment | Resident Ride |
+| Floor Check-In | (was Class Session) |
+| Madeline / bookworm / sociologist | Cassidy / swimmer / lane captain |
+| Office / Professor's Quarters | RA Desk / Lounge |
+| Inhabit the Professor | Begin Your Shift |
 
-- `src/gameData/v2/` — subsystem state + logic
-- `src/textEngine/scenes/v2/` — V2 prose + depthRenderer
-- `src/components/v2/` — modals and views
-- `src/views/SpiritHubView.jsx` — central V2 nav
-- `src/textEngine/scenes/collabStream/` — collab stream engine bridge
-- `src/textEngine/scenes/eatingContest/` — competitive circuit contest bridge
-- `src/textEngine/scenes/sumoMatch/` — sumo match engine bridge
-- `src/textEngine/scenes/dinner/dinnerReactionsDepth.js` — group reaction + unbutton stage/student depth
-- `src/textEngine/scenes/dinner/dinnerEndingDepth.js` — endOpen/endClose/ending variants
-- `src/textEngine/scenes/homeroom/homeroomActivityDepth.js` — parent meeting + health unit activity pools
-- `src/textEngine/scenes/hungerFragmentsDepth.js` — feed/deny/compound/talk outcome depth
-- `src/textEngine/scenes/milestone/milestoneSceneDepth.js` — stage/corruption/student milestone depth
-- `src/textEngine/scenes/intimacy/intimacySceneDepth.js` — bodyFeel/climax/encourages personas
-- `src/textEngine/scenes/campus/campusSceneDepth.js` — missing student campus nav beats
-- `src/textEngine/scenes/weeklyEvent/weeklyEventSceneDepth.js` — per-student weekly fragment depth
-- `src/textEngine/scenes/deviceTick/deviceTickSceneDepth.js` — per-student tick dependence/sensation/growth
-- `src/textEngine/scenes/deviceSceneDepth.js` — catalog/psych stage+corruption+student depth
-- `src/textEngine/scenes/growthEvent/growthEventSceneDepth.js` — surge/settle/environment/student depth
-- `src/textEngine/scenes/campusDevice/campusDeviceSceneDepth.js` — campus device encounter/reaction personas
-- `src/textEngine/scenes/opposition/oppositionSceneDepth.js` — agenda/counter/hearing/endgame student+stage depth
-- `src/textEngine/scenes/opposition/oppositionHearingSceneDepth.js` — per-student hearing removal/emergency/verdict depth
-- `src/textEngine/scenes/collabStream/collabStreamSceneDepth.js` — stage-keyed collab reveal/zoom/push/crash depth
-- `src/textEngine/scenes/recordingSession/recordingSessionSceneDepth.js` — per-student recording oneMore take depth
-- `src/textEngine/scenes/recordingSession/recordingSessionWrapDepth.js` — wrap/payoff pools + per-student endings
-- `src/textEngine/scenes/settling/settlingSceneDepth.js` — per-student care/socialize/feed/weigh immobility depth
-- `src/textEngine/scenes/streamSceneDepth.js` — stage-keyed Destiny live stream end/tap/round depth
-- `src/textEngine/scenes/destinyOffstreamSceneDepth.js` — off-stream talk/activity/weigh-in stage depth
-- `src/textEngine/scenes/diarySceneDepth.js` — late-stage diary.innerBeat per-student (stage 9–11, immobile)
-- `src/textEngine/scenes/diaryEvolvedSceneDepth.js` — evolved-form diary stage 11 c1/c3 + wildcard depth
-- `src/textEngine/scenes/diaryPhaseDSceneDepth.js` — PhaseD forms (gainer/goddess/salon/gallery/pharmacist) s9–11 depth
-- `src/textEngine/scenes/evolved/evolvedSceneDepth.js` — per-student evolved.v2.depth variants
-- `src/textEngine/scenes/salonGallerySceneDepth.js` — salon/gallery hub + form evolved depth pools
-- `src/textEngine/scenes/opposition/oppositionHearingFragmentDepth.js` — hearing removal phase0._d0 depth
-- `src/textEngine/scenes/cultivator/monolithFragmentDepth.js` — harvest/digest/growth _N.fM fragment depth (auto-gen)
-- `src/textEngine/scenes/settling/settlingMonolithFragmentDepth.js` — care/feed/socialize _N.fM depth (auto-gen)
-- `src/textEngine/scenes/opposition/oppositionMonolithFragmentDepth.js` — hearing _N.fM depth (auto-gen)
-- `src/textEngine/scenes/monolithFragmentDepth.js` — global remaining _N.fM depth (auto-gen)
-- `src/textEngine/scenes/wifeLessons/talkDepth.js` — wifeLessons.talk.* depth (405 pools, auto-gen)
-- `src/textEngine/scenes/namedPoolDepth.js` — final named thin pool depth (65 pools, auto-gen)
-- `src/textEngine/scenes/v2WildcardDepth.js` — V2 wildcard depth (83 pools, auto-gen)
-- `scripts/generateV2WildcardDepth.mjs` — regen V2 wildcard depth
-- `src/textEngine/scenes/settling/settlingFragmentDepth.js` — decomposed care/gossip/confide _d* fragment depth
-- `src/textEngine/scenes/settling/settlingFeedFragmentDepth.js` — feed spread/stuffing _d27–44 fragment depth
-- `src/textEngine/scenes/v2/echo/echoSceneDepth.js` — per-student echo.type.* replay variants
-- `src/textEngine/scenes/v2/studentArchetypeDepth.js` — full 19-student voice on resonance/ritual/dream/echo V2 pools
+Legacy save keys (`spiritId`, `spiritResonance`, etc.) migrate at read time in `raApproaches.js`, `competitiveGainerState.js`, `mayaHive.js`.
+
+---
+
+## Ceremony QA flows (DebugPanel)
+
+Each has a Debug QA button, HallPass prop wire, `trigger*QA` helper, e2e spec, and audit `*-qa-wiring` check:
+
+Milestone, Week Recap, Presentation, Tier-Up, Hunger Interrupt, Ascension, Evolution, Confrontation, Floor Check-In, Embodiment, Origin Pick, Talk, Weigh-In, Dream, Echo, Feast Ritual, Intimacy, Emergency Hearing, Removal Hearing, Private Session, Week Planner, Tap-Out, Session Result, **Hall Unlock**.
+
+Semester clickthrough specs: wk4–wk16, all-halls, dorm-unlock arcs.
+
+---
+
+## Key files
+
+| Path | Role |
+|------|------|
+| `src/HallPass.jsx` | Main game state + week loop |
+| `src/components/RaSetupWizard.jsx` | Dorm pick + RA profile |
+| `src/gameData/dorms.js` | Four halls, unlock schedule, home assignments |
+| `src/gameData/students.js` | 19 residents (Cassidy id 1) |
+| `src/gameData/raApproaches.js` | RA playstyle axis (replaces spirits) |
+| `src/components/MiscModals.jsx` | `DormUnlockModal`, session result, tier-up |
+| `src/components/DebugPanel.jsx` | Ceremony QA triggers |
+| `e2e/helpers/setupGame.js` | `completeRaSetup`, `trigger*QA` helpers |
+| `scripts/test-completion-audit.mjs` | 168 requirement gates |
+| `scripts/test-prose-coherence.mjs` | Banned legacy framing in prose |
+| `scripts/test-ra-theme.mjs` | `src/` professor/spirit leak scan |
+
+---
 
 ## Verification
 
 ```bash
-npm run text:lint   # exit 0 (2 stem-dedupe infra warnings, under gate)
-npm run text:lint -- --volume  # keyed cells: 0
-npm run lint        # exit 0 errors (77 pre-existing warnings)
-npm run build       # production build
-node -e "..."       # V2 handler probe (embodiment/resonance/ritual/weekly)
+npm run test:smoke          # smoke gate: audit + ra-theme + prose + e2e + text:lint
+npm run test:completion-audit
+npm run test:ra-theme
+npm run test:prose-coherence
+npm run text:lint
+npm run build
 ```
 
-## Remaining Toward 2.0
+---
 
-1. ~~ESLint errors~~ — fixed turn 40 (11 missing imports)
-2. ~~Keyed volume floor~~ — fixed turn 41 (`squadKeyedDepth.js` regen + campus.v2.depth)
-3. ~~Infra lint warnings~~ — down to 2 stem-dedupe (under 1% gate)
-4. Bespoke hand-drawn art — optional; procedural portrait system satisfies design doc
+## Remaining toward full objective
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `src/` + text engine RA framing | ✅ | Automated gates clean |
+| Design bibles RA sync | ✅ | Pass 236 |
+| Agent skill docs RA sync | ✅ | Pass 237 |
+| `docs/V2_0_DESIGN.md` + archive docs | ⚠️ | Still Professor Sim era (non-player-facing) |
+| Steam-quality feel | ⚠️ | 25 ceremony e2e; no full manual semester playthrough |
+| Coherent prose throughout | ⚠️ | Runtime gates clean; legacy design docs remain |
+
+---
+
+## Suggested next passes
+
+1. **Docs sweep** — `docs/V2_0_DESIGN.md`, `docs/ASCENSION_*.md` RA reframe or archive banner
+2. **Presentation / competitive-gainer ceremony** — verify e2e + QA if gaps found
+3. **Manual semester playthrough** — wk 1→16 on each dorm start; note modal/prose rough edges
+4. **Polish pass** — animation, sound, modal transitions, roster NEW badges

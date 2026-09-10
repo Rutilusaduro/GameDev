@@ -71,8 +71,8 @@ Persona lines key on `studentId`. Current roster as seen in `weighIn/breakScene.
 
 | id | name | id | name |
 |---|---|---|---|
-| 0 | Brittany | 9 | Chloe |
-| 1 | Madeline | 10 | Reneé |
+| 0 | Brittany | 9 | Chloé |
+| 1 | Cassidy | 10 | Reneé |
 | 2 | Kylie | 11 | Kaylee |
 | 3 | Serena | 12 | Nadia |
 | 4 | Fiona | 13 | Daisy |
