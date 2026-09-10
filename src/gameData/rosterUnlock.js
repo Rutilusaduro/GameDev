@@ -61,7 +61,13 @@ export function isRosterNew(student, week = 1) {
 }
 
 export function openRosterResident(student, week = 1) {
-  return { ...student, lockState: 'open', rosterNewWeek: week };
+  return {
+    ...student,
+    lockState: 'open',
+    rosterNewWeek: week,
+    roomIntroduced: student.roomIntroduced ?? false,
+    roomStageSeen: student.roomStageSeen ?? -1,
+  };
 }
 
 export function pickRipeUnlock(students, reachLevel = 1, unlockedDorms = []) {

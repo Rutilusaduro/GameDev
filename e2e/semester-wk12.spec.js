@@ -5,7 +5,7 @@ test('sporty hall start survives week 1–12 advance loop', async ({ page }) => 
   test.setTimeout(120_000);
 
   await completeRaSetup(page, { dorm: 'Victory Hall' });
-  await expect(page.getByText('Cassidy')).toBeVisible();
+  await expect(page.getByText('Cassidy').first()).toBeVisible();
 
   const week = await advanceToWeek(page, 12);
   expect(week).toBeGreaterThanOrEqual(12);

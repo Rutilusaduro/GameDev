@@ -22,5 +22,5 @@ test('week 8 advance shows hall unlock modal with RA framing', async ({ page }) 
   await dismissBlockingModals(page);
 
   await expect(page.getByText(/WEEK 8/)).toBeVisible();
-  await expect(page.getByText('NEW', { exact: true })).toBeVisible();
+  await expect(page.getByText(/Scholar's Rest.*unlocked/i).first()).toBeVisible();
 });

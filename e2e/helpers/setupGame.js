@@ -17,6 +17,8 @@ export async function completeRaSetup(page, {
 
   await expect(page.getByRole('heading', { name: 'Hall Pass' })).toBeVisible();
   await page.getByRole('button', { name: 'Meet the RA →' }).click();
+  await page.getByPlaceholder('e.g. Morgan').fill('Alex');
+  await page.getByRole('button', { name: 'Continue →' }).click();
 
   await page.getByRole('button', { name: new RegExp(approach) }).click();
   await page.getByRole('button', { name: 'Choose your hall →' }).click();
@@ -29,6 +31,10 @@ export async function completeRaSetup(page, {
   await page.getByRole('button', { name: 'Seat her' }).click();
 
   await expect(page.getByText(`RA DESK — ${dorm.toUpperCase()}`)).toBeVisible();
+  const floorBriefing = page.getByRole('button', { name: 'Walk the hall →' });
+  if (await floorBriefing.isVisible().catch(() => false)) {
+    await floorBriefing.click();
+  }
 }
 
 /** Debug: unlock hall lounge dinner skills and jump to Actions. */
@@ -447,6 +453,7 @@ async function deskHasBlockingOverlay(page) {
     'INTERRUPTION',
     'THE WEEK IN REVIEW',
     'HALL REACH EXPANDED',
+    'FIRST NIGHT ON FLOOR',
     "SHE'S HAD ENOUGH",
     'MAKING AMENDS',
     'WEEK PLANNER',
@@ -524,6 +531,13 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
     if (await page.getByText('THE WEEK IN REVIEW').isVisible().catch(() => false)) {
       const recap = page.locator('.week-recap-modal');
       if (await clickIfVisible(recap.getByRole('button', { name: /^Begin Week \d+$/ }))) {
+        acted = true;
+        continue;
+      }
+    }
+
+    if (await page.getByText('FIRST NIGHT ON FLOOR').isVisible().catch(() => false)) {
+      if (await clickIfVisible(page.getByRole('button', { name: 'Walk the hall →' }))) {
         acted = true;
         continue;
       }

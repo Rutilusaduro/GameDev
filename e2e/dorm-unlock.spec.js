@@ -9,7 +9,7 @@ import {
 test('week 8 unlocks Scholar\'s Rest on sporty hall start', async ({ page }) => {
   await completeRaSetup(page);
 
-  await expect(page.getByText('Scholar\'s Rest opens week 8').first()).toBeVisible();
+  await expect(page.getByText('Scholar\'s Rest opens week 8')).toHaveCount(0);
 
   await setWeekViaDebug(page, 7);
 
@@ -22,7 +22,5 @@ test('week 8 unlocks Scholar\'s Rest on sporty hall start', async ({ page }) => 
   await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
   await expect(page.getByText(/Scholar's Rest.*unlocked/i).first()).toBeVisible();
-  await expect(page.getByText('NEW', { exact: true })).toBeVisible();
-  await expect(page.getByText('Priya', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('Scholar\'s Rest opens week 8')).toHaveCount(0);
 });

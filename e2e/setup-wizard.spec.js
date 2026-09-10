@@ -11,7 +11,7 @@ test('RA setup wizard → Victory Hall → RA desk', async ({ page }) => {
   await expect(page.getByRole('button', { name: '📋 RA Desk' })).toBeVisible();
   await expect(page.getByRole('button', { name: '🏠 Hall Lounge' })).toBeVisible();
   await expect(page.getByRole('button', { name: '✨ Influence' })).toBeVisible();
-  await expect(page.getByText('Cassidy')).toBeVisible();
+  await expect(page.getByText('Cassidy').first()).toBeVisible();
   await expect(page.getByText('Professor Sim')).toHaveCount(0);
   await expect(page.getByText('Madeline')).toHaveCount(0);
 });

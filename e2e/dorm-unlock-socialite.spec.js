@@ -9,7 +9,7 @@ import {
 test('week 16 unlocks The Annex on socialite hall start', async ({ page }) => {
   await completeRaSetup(page, { dorm: 'Rosewood House' });
 
-  await expect(page.getByText('The Annex opens week 16').first()).toBeVisible();
+  await expect(page.getByText('The Annex opens week 16')).toHaveCount(0);
 
   await setWeekViaDebug(page, 15);
 
@@ -22,6 +22,5 @@ test('week 16 unlocks The Annex on socialite hall start', async ({ page }) => {
   await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
   await expect(page.getByText(/The Annex.*unlocked/i).first()).toBeVisible();
-  await expect(page.getByText('Destiny', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('The Annex opens week 16')).toHaveCount(0);
 });

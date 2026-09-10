@@ -96,7 +96,8 @@ assertClean(influence, 'InfluenceView.jsx');
 
 const roster = readFileSync('src/views/RosterView.jsx', 'utf8');
 assert(roster.includes('Residents —'), 'RosterView must label roster Residents');
-assert(roster.includes('effectiveUnlockWeek'), 'RosterView must use effectiveUnlockWeek for hall gates');
+assert(roster.includes('FloorHallway'), 'RosterView must expose floor hallway room visits');
+assert(roster.includes('dormUnlocksForWeek'), 'RosterView must celebrate hall unlocks without locked roadmap');
 assert.match(roster, /export function RosterView/);
 assertClean(roster, 'RosterView.jsx');
 

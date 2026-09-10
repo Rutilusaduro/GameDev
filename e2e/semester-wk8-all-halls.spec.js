@@ -25,10 +25,6 @@ for (const { dorm, unlocks } of START_HALLS) {
       await expect(page.getByText(new RegExp(`${hall} opens week`, 'i'))).toHaveCount(0);
     }
 
-    if (dorm !== 'Victory Hall') {
-      await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
-    }
-
     await expect(page.getByText('Professor Sim')).toHaveCount(0);
     await expect(page.getByText('Madeline')).toHaveCount(0);
   });

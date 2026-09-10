@@ -3,7 +3,7 @@ import { completeRaSetup, advanceToWeek } from './helpers/setupGame.js';
 
 test('sporty hall start survives week 1–4 advance loop', async ({ page }) => {
   await completeRaSetup(page, { dorm: 'Victory Hall' });
-  await expect(page.getByText('Cassidy')).toBeVisible();
+  await expect(page.getByText('Cassidy').first()).toBeVisible();
 
   const week = await advanceToWeek(page, 4);
   expect(week).toBeGreaterThanOrEqual(4);

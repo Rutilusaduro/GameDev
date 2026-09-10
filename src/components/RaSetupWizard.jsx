@@ -22,6 +22,7 @@ const clickSound = (fn) => () => {
 
 export function RaSetupWizard({ students, onComplete }) {
   const [step, setStep] = useState('intro');
+  const [displayName, setDisplayName] = useState('');
   const [approach, setApproach] = useState(null);
   const [dorm, setDorm] = useState(null);
 
@@ -43,8 +44,9 @@ export function RaSetupWizard({ students, onComplete }) {
     </div>
   );
 
-  const stepIndex = step === 'intro' ? 0 : step === 'approach' ? 1 : step === 'dorm' ? 2 : 3;
-  const steps = ['Intro', 'Style', 'Hall', 'Resident'];
+  const stepIndex = step === 'intro' ? 0 : step === 'name' ? 1 : step === 'approach' ? 2 : step === 'dorm' ? 3 : 4;
+  const steps = ['Intro', 'Name', 'Style', 'Hall', 'Resident'];
+  const trimmedName = displayName.trim();
 
   return (
     <div className="ra-setup-shell" style={{ ...C.app, alignItems: 'center', justifyContent: 'center', padding: 20, minHeight: '100vh' }}>
@@ -60,7 +62,7 @@ export function RaSetupWizard({ students, onComplete }) {
           <div style={{ color: '#a89098', fontSize: 13 }}>Your floor. Your rules. Their appetites.</div>
           {step !== 'resident' && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
-              {steps.slice(0, 3).map((label, i) => (
+              {steps.slice(0, 4).map((label, i) => (
                 <div key={label} className="ra-setup-step-dot" title={label} data-active={i <= stepIndex ? 'true' : 'false'} style={{
                   width: i <= stepIndex ? 28 : 8,
                   height: 8,
@@ -88,8 +90,50 @@ export function RaSetupWizard({ students, onComplete }) {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button className="ra-setup-primary-btn" onClick={clickSound(() => setStep('approach'))} style={{ ...C.btn(accent), fontSize: 14, padding: '12px 36px' }}>
+              <button className="ra-setup-primary-btn" onClick={clickSound(() => setStep('name'))} style={{ ...C.btn(accent), fontSize: 14, padding: '12px 36px' }}>
                 Meet the RA →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 'name' && (
+          <div key="name" className="hall-pass-view-in">
+            <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 8, textAlign: 'center' }}>
+              What should residents call you?
+            </div>
+            <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 16, lineHeight: 1.55 }}>
+              Not &quot;RA&quot; every time — your name on the door roster and in their texts.
+            </div>
+            <input
+              type="text"
+              maxLength={24}
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="e.g. Morgan"
+              autoFocus
+              style={{
+                width: '100%',
+                boxSizing: 'border-box',
+                padding: '12px 14px',
+                borderRadius: 8,
+                border: `1px solid ${accentSoft}`,
+                background: 'rgba(0,0,0,0.35)',
+                color: '#fff0e8',
+                fontSize: 16,
+                fontFamily: 'inherit',
+                marginBottom: 20,
+              }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <button onClick={clickSound(() => setStep('intro'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
+              <button
+                className="ra-setup-primary-btn"
+                disabled={trimmedName.length < 2}
+                onClick={clickSound(() => setStep('approach'))}
+                style={{ ...C.btn(accent), opacity: trimmedName.length >= 2 ? 1 : 0.4, fontSize: 14, padding: '11px 28px' }}
+              >
+                Continue →
               </button>
             </div>
           </div>
@@ -123,7 +167,7 @@ export function RaSetupWizard({ students, onComplete }) {
               })}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
-              <button onClick={clickSound(() => setStep('intro'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
+              <button onClick={clickSound(() => setStep('name'))} style={{ ...C.smBtn, padding: '9px 18px' }}>← Back</button>
               <button className="ra-setup-primary-btn" disabled={!approach} onClick={clickSound(() => setStep('dorm'))}
                 style={{ ...C.btn(accent), opacity: approach ? 1 : 0.4, fontSize: 14, padding: '11px 28px' }}>
                 Choose your hall →
@@ -189,7 +233,7 @@ export function RaSetupWizard({ students, onComplete }) {
             onBack={() => setStep('dorm')}
             onComplete={(draft) => {
               playHallPassSound('confirm');
-              onComplete({ approach, dorm, customDraft: draft });
+              onComplete({ approach, dorm, customDraft: draft, displayName: trimmedName });
             }}
           />
           </div>

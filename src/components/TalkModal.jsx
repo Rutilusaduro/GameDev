@@ -32,10 +32,12 @@ import { getBodyDescRich } from '../utils/gameHelpers.js';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { getRaDisplayName } from '../gameData/raDisplay.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0) {
+function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0, raProfile = null) {
+  const raName = getRaDisplayName(raProfile);
   const corTier = getCorruptionTier(student.corruption || 0).id;
   const trace = [];
   const section = topic.sceneType === 'devour' ? 'talk.devour' : `talk.${topic.id}`;
@@ -51,6 +53,7 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
       globals: {
         campusFattening: !!campusFattening,
         campusTier: campusTier || (campusFattening ? 1 : 0),
+        raName,
         complimentUnwelcome: topic.id === 'compliment' && isBodyComplimentUnwelcome(student),
         discontentTier: getDiscontentTier(student).id,
       },
@@ -178,7 +181,7 @@ function ResponseDisplay({ topic, text, student, week, section, traceNodes, onCl
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0, soundEnabled = true }){
+export function TalkModal({ student, raProfile, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0, soundEnabled = true }){
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, student?.id]);
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
@@ -204,6 +207,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
             globals: {
               campusFattening: !!campusFattening,
               campusTier: campusTier || (campusFattening ? 1 : 0),
+              raName: getRaDisplayName(raProfile),
             },
           });
           refusalText = render(topic.refusalTemplate, ctx);
@@ -221,7 +225,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
       }
     }
 
-    const bundle = buildResponse(topic, student, eff, week, campusFattening, campusTier);
+    const bundle = buildResponse(topic, student, eff, week, campusFattening, campusTier, raProfile);
     setActiveResponse({
       topic,
       text: bundle.text,
@@ -247,9 +251,9 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
   };
 
   const groupedTopics = [
-    { group:"talk",    label:"Conversation",   topics: TALK_TOPICS.filter(t=>t.group==="talk") },
-    { group:"suggest", label:"Suggestion",     topics: TALK_TOPICS.filter(t=>t.group==="suggest") },
-    { group:"command", label:"Command",        topics: TALK_TOPICS.filter(t=>t.group==="command") },
+    { group:"talk",    label:"Conversation",   topics: TALK_TOPICS.filter(t=>t.group==="talk"&&isTopicAvailable(t)) },
+    { group:"suggest", label:"Suggestion",     topics: TALK_TOPICS.filter(t=>t.group==="suggest"&&isTopicAvailable(t)) },
+    { group:"command", label:"Command",        topics: TALK_TOPICS.filter(t=>t.group==="command"&&isTopicAvailable(t)) },
   ].filter(g=>g.topics.length>0);
 
   return(
@@ -344,7 +348,7 @@ export function TalkModal({ student, skillEffects, week, weeklyArms, onArmDevour
                       student={student}
                       skillEffects={eff}
                       onSelect={handleSelect}
-                      disabled={!isTopicAvailable(t)}
+                      disabled={false}
                     />
                   ))}
                 </div>

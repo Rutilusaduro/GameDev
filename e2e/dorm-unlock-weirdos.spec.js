@@ -9,7 +9,7 @@ import {
 test('week 12 unlocks Rosewood House on weirdos hall start', async ({ page }) => {
   await completeRaSetup(page, { dorm: 'The Annex' });
 
-  await expect(page.getByText('Rosewood House opens week 12').first()).toBeVisible();
+  await expect(page.getByText('Rosewood House opens week 12')).toHaveCount(0);
 
   await setWeekViaDebug(page, 11);
 
@@ -22,6 +22,5 @@ test('week 12 unlocks Rosewood House on weirdos hall start', async ({ page }) =>
   await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
   await expect(page.getByText(/Rosewood House.*unlocked/i).first()).toBeVisible();
-  await expect(page.getByText('Kylie', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('Rosewood House opens week 12')).toHaveCount(0);
 });

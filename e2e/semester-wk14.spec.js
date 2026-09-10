@@ -5,7 +5,7 @@ test('sporty hall start survives week 1–14 advance loop', async ({ page }) => 
   test.setTimeout(120_000);
 
   await completeRaSetup(page, { dorm: 'Victory Hall' });
-  await expect(page.getByText('Cassidy')).toBeVisible();
+  await expect(page.getByText('Cassidy').first()).toBeVisible();
 
   const week = await advanceToWeek(page, 14);
   expect(week).toBeGreaterThanOrEqual(14);
@@ -19,5 +19,5 @@ test('sporty hall start survives week 1–14 advance loop', async ({ page }) => 
   await page.getByRole('button', { name: '📋 RA Desk' }).click();
   await expect(page.getByText(/Rosewood House.*unlocked/i).first()).toBeVisible();
   await expect(page.getByText('Rosewood House opens week 12')).toHaveCount(0);
-  await expect(page.getByText('The Annex opens week 16').first()).toBeVisible();
+  await expect(page.getByText('The Annex opens week 16')).toHaveCount(0);
 });

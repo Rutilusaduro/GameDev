@@ -12,7 +12,7 @@ for (const { dorm, resident } of DORM_CASES) {
   test(`${dorm}: setup wizard lands on RA desk with home residents`, async ({ page }) => {
     await completeRaSetup(page, { dorm });
     await expect(page.getByText(`RA DESK — ${dorm.toUpperCase()}`)).toBeVisible();
-    await expect(page.getByText(resident)).toBeVisible();
+    await expect(page.getByText(resident).first()).toBeVisible();
     await expect(page.getByText('Professor Sim')).toHaveCount(0);
     await expect(page.getByText('Madeline')).toHaveCount(0);
     await expect(page.getByText(/spirit|classroom/i)).toHaveCount(0);

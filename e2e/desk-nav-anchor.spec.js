@@ -10,5 +10,5 @@ test('RA Desk nav returns home from Hall Lounge', async ({ page }) => {
 
   await openRaDesk(page);
   await expect(page.getByText(/Residents — .* on your floor/)).toBeVisible();
-  await expect(page.getByText('Cassidy')).toBeVisible();
+  await expect(page.getByText('Cassidy').first()).toBeVisible();
 });

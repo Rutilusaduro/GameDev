@@ -35,8 +35,6 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnable
     if(opt.minAffinity && affinity < opt.minAffinity) return false;
     return true;
   });
-  const lockedOptions = node.options.filter(opt => opt.minAffinity && affinity < opt.minAffinity);
-
   const handleOption = (opt) => {
     if(opt.end){
       onClose();
@@ -113,20 +111,6 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnable
               )}
             </button>
           ))}
-          {lockedOptions.length > 0 && (
-            <div style={{marginTop:4}}>
-              {lockedOptions.map((opt,i)=>(
-                <div key={i} style={{
-                  fontSize:11,color:"#4a2860",padding:"6px 10px",
-                  border:"1px solid #1a0830",borderRadius:6,
-                  display:"flex",justifyContent:"space-between",
-                }}>
-                  <span>🔒 {opt.label}</span>
-                  <span style={{fontSize:10}}>Requires {opt.minAffinity} affinity</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </ModalOverlay>

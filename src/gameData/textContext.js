@@ -18,6 +18,7 @@ import {
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
 import { auraTier as deriveAuraTier, essenceTier as deriveEssenceTier, isAscended } from './ascension/state.js';
+import { getRaDisplayName } from './raDisplay.js';
 
 // ── RA Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
 // The engine core is game-free; everything the engine needs to know about
@@ -194,6 +195,7 @@ export function buildTextGlobals(student, week, opts = {}) {
     lastCorruptionShift: opts.lastCorruptionShift ?? (corruptionShiftWeek != null && corruptionShiftWeek === week),
     weekGainLbs: gain,
     isGaining: gain > 0,
+    raName: opts.raName ?? getRaDisplayName(opts.raProfile),
     ...(opts.globals || {}),
   };
 }

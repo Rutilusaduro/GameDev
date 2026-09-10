@@ -175,3 +175,7 @@ registerModule("group.desc", [
 registerModule('device.label', [
   { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'the device'] },
 ]);
+
+registerModule('ra.name', [
+  { when: {}, text: [(ctx) => ctx.globals?.raName || 'RA'] },
+]);

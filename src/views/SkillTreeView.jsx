@@ -106,6 +106,7 @@ function SkillCard({ skill, owned, rank, canAfford, tierUnlocked, onBuy, onMax, 
 }
 
 function TierSection({ tierIdx, skills, treeColor, tierName, unlocked, pointsSpent, threshold, ownedSkills, availPts, onBuy, onMax }){
+  if (!unlocked) return null;
   const tierSkills = skills.filter(sk => sk.tier === tierIdx);
   const ptsNeeded  = TIER_THRESHOLDS[tierIdx];
 

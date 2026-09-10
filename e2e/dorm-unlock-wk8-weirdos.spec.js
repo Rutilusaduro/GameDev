@@ -9,8 +9,8 @@ import {
 test('week 8 unlocks Victory Hall and Scholar\'s Rest on weirdos hall start', async ({ page }) => {
   await completeRaSetup(page, { dorm: 'The Annex' });
 
-  await expect(page.getByText('Victory Hall opens week 8').first()).toBeVisible();
-  await expect(page.getByText("Scholar's Rest opens week 8").first()).toBeVisible();
+  await expect(page.getByText('Victory Hall opens week 8')).toHaveCount(0);
+  await expect(page.getByText("Scholar's Rest opens week 8")).toHaveCount(0);
 
   await setWeekViaDebug(page, 7);
 
@@ -23,8 +23,6 @@ test('week 8 unlocks Victory Hall and Scholar\'s Rest on weirdos hall start', as
   await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
   await expect(page.getByText(/Victory Hall.*Scholar's Rest.*unlocked/i).first()).toBeVisible();
-  await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
-  await expect(page.getByText('Priya', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('Victory Hall opens week 8')).toHaveCount(0);
   await expect(page.getByText("Scholar's Rest opens week 8")).toHaveCount(0);
 });

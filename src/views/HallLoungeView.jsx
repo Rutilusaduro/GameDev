@@ -39,6 +39,7 @@ function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase }) {
                 const purchased = !!owned[sk.id];
                 const check = purchased ? null : canBuyHallLoungeSkill(sk.id, owned, students);
                 const affordable = check?.ok;
+                if (!purchased && !affordable) return null;
                 return (
                   <div
                     key={sk.id}

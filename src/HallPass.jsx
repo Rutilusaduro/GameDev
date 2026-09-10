@@ -394,6 +394,9 @@ import {
 } from './gameData/fionaGallery.js';
 import { WeighInModal } from './components/WeighInModal.jsx';
 import { TalkModal } from './components/TalkModal.jsx';
+import { RoomVisitModal } from './components/RoomVisitModal.jsx';
+import { FloorBriefingModal } from './components/FloorBriefingModal.jsx';
+import { applyRoomVisitComplete } from './gameData/roomVisit.js';
 import { DebugPanel } from './components/DebugPanel.jsx';
 import { BugReportModal } from './components/BugReportModal.jsx';
 import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
@@ -498,6 +501,7 @@ export default function HallPass(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
+  const [roomVisitStudentId,setRoomVisitStudentId]=useState(null);
   const [embodimentStudent,setEmbodimentStudent]=useState(null);
   const [feastRitualOpen,setFeastRitualOpen]=useState(false);
   const [dreamStudent,setDreamStudent]=useState(null);
@@ -867,12 +871,14 @@ export default function HallPass(){
     if(label) push(`💰 ${label}: +${formatMoney(amount)}`);
   };
 
-  const startAsRA=({ approach, dorm, customDraft })=>{
+  const startAsRA=({ approach, dorm, customDraft, displayName: raNameInput })=>{
     const apDef=RA_APPROACHES[approach.id];
     const hallDef=getDorm(dorm.id);
     if(!apDef||!hallDef) return;
+    const dn=(raNameInput||'').trim();
     const profile={
-      name:"You",
+      name:dn||"You",
+      displayName:dn,
       role:"ra",
       origin:"resident_advisor",
       dormId:hallDef.id,
@@ -883,6 +889,7 @@ export default function HallPass(){
       accentSoft:hallDef.accentSoft,
       lean:apDef.lean,
       appearance:{ hair:'red', build:'curvy' },
+      floorBriefingDone:false,
     };
     setRaProfile(profile);
     setUnlockedDorms([hallDef.id]);
@@ -901,14 +908,14 @@ export default function HallPass(){
     };
     setStudents(list=>list.map(s=>{
       const seat = runtimeCustom && s.id === CUSTOM_STUDENT_ID ? runtimeCustom : s;
-      if(seat.custom) return {...seat, lockState:'open', homeDorm:hallDef.id};
+      if(seat.custom) return {...seat, lockState:'open', homeDorm:hallDef.id, roomIntroduced:false, roomStageSeen:-1};
       s = seat;
       if(!UNLOCK_POOL_IDS.includes(s.id)) return s;
       const homeDorm=getStudentHomeDorm(s.id);
       const lockedIds=getLockedDormStudentIds([hallDef.id]);
       if(lockedIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0, homeDorm};
       if(!startIds.includes(s.id)) return {...s, lockState:'locked', passiveTrust:0, homeDorm};
-      let ns={...s, lockState:'open', homeDorm};
+      let ns={...s, lockState:'open', homeDorm, roomIntroduced:false, roomStageSeen:-1};
       if(mods.corruption) ns.corruption=(ns.corruption||0)+mods.corruption;
       if(mods.relationship) ns.relationship=Math.min(100,(ns.relationship||0)+mods.relationship);
       if(mods.hunger) ns=adjustHunger(ns,mods.hunger);
@@ -6867,6 +6874,22 @@ export default function HallPass(){
     });
   };
 
+  const openRoomVisit=(studentId)=>{
+    const s=students.find(x=>x.id===studentId);
+    if(!s||s.lockState==='locked') return;
+    setRoomVisitStudentId(studentId);
+  };
+
+  const completeRoomVisit=(studentId)=>{
+    setStudents(prev=>prev.map(s=>s.id===studentId?applyRoomVisitComplete(s,week):s));
+    const s=students.find(x=>x.id===studentId);
+    if(s&&!s.roomIntroduced) push(`🚪 Introduced yourself to ${s.name}.`);
+  };
+
+  const dismissFloorBriefing=()=>{
+    setRaProfile(p=>({...p,floorBriefingDone:true}));
+  };
+
   const openTalk=(s)=>{
     if(!s) return;
     if(openOriginFor(s)) return;
@@ -7776,6 +7799,7 @@ export default function HallPass(){
   const mobileStudents=students.filter(s=>getImmobilityTier(s)<1);
   const selSettled=!!sel&&getImmobilityTier(sel)>=1;
   const talkStudent=talkStudentId!=null?students.find(s=>s.id===talkStudentId):null;
+  const roomVisitStudent=roomVisitStudentId!=null?students.find(s=>s.id===roomVisitStudentId):null;
   const totalGained=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
   const reachXp=Math.max(0,Math.round(totalGained));
   const reachLevel=1+Math.floor(reachXp/REACH_XP_PER_LEVEL);
@@ -8708,7 +8732,7 @@ export default function HallPass(){
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── ROSTER VIEW ── */}
-          {view==="roster"&&<RosterView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} soundEnabled={soundEnabled}/>}
+          {view==="roster"&&<RosterView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} onVisitRoom={openRoomVisit} soundEnabled={soundEnabled}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}
@@ -9242,7 +9266,9 @@ export default function HallPass(){
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast} soundEnabled={soundEnabled}/>}
 
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
-      {talkStudent&&<TalkModal student={talkStudent} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)} soundEnabled={soundEnabled}/>}
+      {!raProfile?.floorBriefingDone&&<FloorBriefingModal raProfile={raProfile} onContinue={dismissFloorBriefing} soundEnabled={soundEnabled}/>}
+      {roomVisitStudent&&<RoomVisitModal student={roomVisitStudent} week={week} raProfile={raProfile} onClose={()=>setRoomVisitStudentId(null)} onComplete={completeRoomVisit} soundEnabled={soundEnabled}/>}
+      {talkStudent&&<TalkModal student={talkStudent} raProfile={raProfile} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)} soundEnabled={soundEnabled}/>}
 
       {pharmacistChemSession&&pharmacistChemStudentId!=null&&(()=>{
         const chemStudent=students.find(st=>st.id===pharmacistChemStudentId);

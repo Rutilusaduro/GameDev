@@ -3,10 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useMemo, useEffect, useRef } from 'react';
 import { C } from '../styles.js';
-import { DORM_LIST, getDorm, getStudentHomeDorm, effectiveUnlockWeek, dormUnlocksForWeek } from '../gameData/dorms.js';
-import {
-  ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents, isRosterNew,
-} from '../gameData/rosterUnlock.js';
+import { DORM_LIST, dormUnlocksForWeek } from '../gameData/dorms.js';
+import { isRosterNew } from '../gameData/rosterUnlock.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
@@ -19,6 +17,7 @@ import { addictionTint } from '../gameData/hungerAddiction.js';
 import { Bar, StageTag, MoodBadge } from '../components/ui.jsx';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
+import { FloorHallway } from '../components/FloorHallway.jsx';
 
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
@@ -112,62 +111,16 @@ function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled
   );
 }
 
-function DormUnlockProgress({ unlockedDorms = [], startDormId, week = 1 }) {
+function DormUnlockBanner({ unlockedDorms = [], startDormId, week = 1 }) {
   const open = new Set(unlockedDorms || []);
   if (startDormId) open.add(startDormId);
-  const allOpen = DORM_LIST.every((d) => open.has(d.id));
-  if (allOpen) return null;
   const unlockedThisWeek = new Set(dormUnlocksForWeek(week, startDormId));
   const justUnlocked = DORM_LIST.filter((d) => open.has(d.id) && unlockedThisWeek.has(d.id));
+  if (!justUnlocked.length) return null;
   return (
     <div style={{ marginBottom: 16, padding: '12px 14px', background: 'linear-gradient(135deg,rgba(28,12,52,0.92),rgba(14,8,28,0.95))', border: '1px solid #4a2870', borderRadius: 10, boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}>
-      {justUnlocked.length > 0 && (
-        <div style={{ fontSize: 12, color: '#ffe8c8', marginBottom: 10, lineHeight: 1.5, padding: '8px 10px', background: 'rgba(255,200,120,0.08)', borderRadius: 6, border: '1px solid rgba(255,200,120,0.2)' }}>
-          🔓 <strong>{justUnlocked.map((d) => d.label).join(' · ')}</strong> unlocked — residents from {justUnlocked.map((d) => d.shortLabel).join(' and ')} hall{justUnlocked.length > 1 ? 's' : ''} can now build trust on your roster.
-        </div>
-      )}
-      <div style={{ fontSize: 10, letterSpacing: 2, color: '#b898d8', marginBottom: 8, fontWeight: 600 }}>HALL REACH — SEMESTER UNLOCK ROADMAP</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(140px,1fr))', gap: 8 }}>
-        {DORM_LIST.map((d) => {
-          const isOpen = open.has(d.id);
-          const gate = effectiveUnlockWeek(d.id, startDormId);
-          const isNew = isOpen && unlockedThisWeek.has(d.id);
-          const weeksLeft = Math.max(0, gate - week);
-          const pct = gate <= 0 ? (isOpen ? 100 : 0) : Math.min(100, Math.round((week / gate) * 100));
-          return (
-            <div
-              key={d.id}
-              className={`hall-roadmap-card${isNew ? ' hall-unlock-new' : ''}`}
-              style={{
-                padding: '8px 10px',
-                borderRadius: 6,
-                border: `1px solid ${isOpen ? d.color + '80' : '#2a1a48'}`,
-                background: isOpen ? d.accentSoft : 'rgba(12,6,24,0.4)',
-                opacity: isOpen ? 1 : 0.82,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
-                <span style={{ fontSize: 14 }}>{d.emoji}</span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: isOpen ? d.color : '#6a5888' }}>{d.shortLabel}</span>
-                {isNew && (
-                  <span style={{ fontSize: 8, color: '#ffe8a0', marginLeft: 4, letterSpacing: 1 }}>NEW</span>
-                )}
-                {isOpen && <span style={{ fontSize: 9, color: d.color, marginLeft: 'auto' }}>OPEN</span>}
-                {!isOpen && gate > 0 && <span style={{ fontSize: 9, color: '#6a5888', marginLeft: 'auto' }}>LOCKED</span>}
-              </div>
-              <div style={{ fontSize: 9.5, color: '#6a5088', lineHeight: 1.35 }}>
-                {isOpen
-                  ? d.label
-                  : (weeksLeft > 0 ? `Week ${gate} · ${weeksLeft} wk left` : `Unlocks week ${gate}`)}
-              </div>
-              {!isOpen && gate > 0 && (
-                <div style={{ height: 3, background: '#1a0e30', borderRadius: 2, marginTop: 6, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${pct}%`, background: d.color, transition: 'width 0.3s' }} />
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <div style={{ fontSize: 12, color: '#ffe8c8', lineHeight: 1.5, padding: '8px 10px', background: 'rgba(255,200,120,0.08)', borderRadius: 6, border: '1px solid rgba(255,200,120,0.2)' }}>
+        🔓 <strong>{justUnlocked.map((d) => d.label).join(' · ')}</strong> unlocked — new residents may appear on your floor when they trust the hall.
       </div>
     </div>
   );
@@ -187,10 +140,9 @@ export function RosterView({
   startDormId = null,
   onAmends,
   onOpenStudent,
+  onVisitRoom,
   soundEnabled = true,
 }) {
-  const rosterSlots = getRosterSlotCount(reachLevel);
-  const openCount = countOpenPoolStudents(students);
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
   const residentWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
@@ -205,64 +157,19 @@ export function RosterView({
     newChimeRef.current = week;
     playHallPassSound('nav', soundEnabled);
   }, [view, hasNewResidents, soundEnabled, week]);
-  const locked = students.filter(isLocked).sort((a, b) => (b.passiveTrust || 0) - (a.passiveTrust || 0));
-  const openHallSet = new Set([...(unlockedDorms || []), startDormId].filter(Boolean));
-  const hallReachable = (s) => {
-    const home = getStudentHomeDorm(s.id);
-    return !home || openHallSet.has(home);
-  };
+  const visibleResidents = students.filter(rosterVisible);
   return (
     <>
       {view === 'roster' && (
         <div>
-          <DormUnlockProgress unlockedDorms={unlockedDorms} startDormId={startDormId} week={week} />
-          <p style={C.secT}>Residents — {students.filter(rosterVisible).length} on your floor · avg {avgLbs} lbs</p>
+          <DormUnlockBanner unlockedDorms={unlockedDorms} startDormId={startDormId} week={week} />
+          <FloorHallway students={visibleResidents} onVisitRoom={onVisitRoom} soundEnabled={soundEnabled} />
+          <p style={C.secT}>Residents — {visibleResidents.length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
-            {[...students].filter(rosterVisible).sort((a, b) => a.id - b.id).map((s, tileIndex) => (
+            {visibleResidents.sort((a, b) => a.id - b.id).map((s, tileIndex) => (
               <RosterTile key={s.id} s={s} week={week} tileIndex={tileIndex} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} residentWithdrawn={residentWithdrawn && !s.withdrawn} />
             ))}
           </div>
-          {locked.length > 0 && (
-            <div style={{ marginTop: 18 }}>
-              <p style={C.secT}>Other halls — {locked.length} residents out of reach</p>
-              <div style={{ fontSize: 11, color: '#6a5088', marginBottom: 10, lineHeight: 1.55 }}>
-                Hall reach grants <strong style={{ color: '#a880d0' }}>{rosterSlots}</strong> roster doors ({openCount} open).
-                Each week, one locked resident with <strong style={{ color: '#a880d0' }}>{ROSTER_TRUST_GATE}+</strong> passive trust opens when a slot is free — once their hall is unlocked.
-                Trust rises faster as your influence and the semester deepen — campus sightings help too.
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(150px,1fr))', gap: 7 }}>
-                {locked.map((s) => {
-                  const trust = s.passiveTrust || 0;
-                  const home = getStudentHomeDorm(s.id);
-                  const dorm = home ? getDorm(home) : null;
-                  const reachable = hallReachable(s);
-                  return (
-                    <div key={s.id} className="roster-locked-tile" style={{ ...C.card, cursor: 'default', opacity: reachable ? 0.72 : 0.5, border: '1px dashed #2a1a48' }}>
-                      <div style={{ fontWeight: 700, fontSize: 13, color: '#6a5a88' }}>{s.name}</div>
-                      <div style={{ fontSize: 10, color: '#50406a', marginBottom: 5 }}>
-                        {s.role || s.archetype}
-                        {dorm && <span style={{ color: dorm.color }}> · {dorm.shortLabel}</span>}
-                      </div>
-                      {reachable ? (
-                        <>
-                          <Bar val={trust} max={ROSTER_TRUST_GATE} color="#5a3aa0" />
-                          <div style={{ fontSize: 9.5, color: '#50406a', marginTop: 3, fontStyle: 'italic' }}>
-                            {trust >= ROSTER_TRUST_GATE
-                              ? (openCount < rosterSlots ? 'ready — waiting for a seat' : 'ready — roster full')
-                              : `${trust}/${ROSTER_TRUST_GATE} trust`}
-                          </div>
-                        </>
-                      ) : (
-                        <div style={{ fontSize: 9.5, color: '#50406a', fontStyle: 'italic', lineHeight: 1.4 }}>
-                          {dorm ? `${dorm.label} opens week ${effectiveUnlockWeek(home, startDormId) || '?'}` : 'Hall locked'}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
       )}
     </>
