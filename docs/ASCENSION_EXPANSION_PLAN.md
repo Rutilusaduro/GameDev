@@ -248,7 +248,7 @@ prose holds at every state, everything under it holds too. Attendance is
 chosen: bringing a secret-stance girl to a public festival is a
 psychology decision the reputation system (C5) notices.
 
-### C4. Professor specialization tree (new verbs, not bigger numbers)
+### C4. RA specialization tree (new verbs, not bigger numbers)
 
 Three branches, three ranks each, advanced by doing (not by XP purchase):
 **Nutritionist** — R1 custom meal plans (standing weekly orders per girl:
@@ -269,7 +269,7 @@ Each rank unlocks a verb that changes what a time slot IS, not a
 multiplier — the test for every proposed rank is "does this add a new
 kind of scene?" Picks are per-run (one branch may reach R3, a second may
 reach R1, the third stays closed), so midgames diverge by build and pair
-differently with cast composition: Researcher runs want Cassidy and
+differently with cast composition: Lane Captain runs want Cassidy and
 Sophia early; Patron runs bloom with Fiona and Maya. Branch state is a
 `skill` flag the engine already selects on, so content gating costs
 nothing new.
@@ -526,7 +526,7 @@ opposed girl finds the fertility goddess's waiting room unreasonably
 calming and resents it in voice. Ascended react to each other via a
 `refForm` dimension (mirroring `refArchetype`), which unlocks the
 affinity-cluster scenes in Part E's notes — water court, hearth ring,
-night office, spotlight, providers — the cheapest high-density ascended
+night lounge, spotlight, providers — the cheapest high-density ascended
 content because every pairing reuses both girls' overlay vocabularies.
 Group scenes: festival setpieces (C3) get ascended variants (the
 invitational judged by a hearth demigoddess is a different event), and
@@ -1033,7 +1033,7 @@ legend I chased. Turns out the treasure guards herself."
   exception by design: her catalyst is the pantheon itself.
 - **Affinity clusters for step 8:** water court (Serena, Chloé, Lilith's
   garden pond, Indy's lake landing); hearth ring (Reneé, Daisy, Tiffany,
-  Mary Jane); night office (Nadia, Lilith, Cassidy); spotlight (Kylie,
+  Mary Jane); night lounge (Nadia, Lilith, Cassidy); spotlight (Kylie,
   Brittany, Fiona, Destiny); providers (Priya, Kaylee, Sophia, Maya as
   sanctuary). Cluster scenes are the cheapest high-density ascended
   content because both girls' overlay vocabularies are already paid for.

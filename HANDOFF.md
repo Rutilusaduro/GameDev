@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 239)
+## Status (Pass 240)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -100,7 +100,7 @@ npm run build
 
 ## Suggested next passes
 
-1. **Polish pass** — modal transitions, roster NEW badges, sound cues
+1. **Polish pass** — modal transitions, sound cues, dinner venue polish
 2. **Presentation / competitive-gainer ceremony** — verify e2e + QA if gaps found
 3. **Manual semester playthrough** — wk 1→16 on each dorm start; note modal/prose rough edges
 4. **Polish pass** — animation, sound, modal transitions, roster NEW badges

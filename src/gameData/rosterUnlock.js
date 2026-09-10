@@ -55,6 +55,15 @@ export function applyWeeklyTrustDrip(students, { reachLevel = 1, week = 1, unloc
   });
 }
 
+/** True while the resident's first week on the active roster. */
+export function isRosterNew(student, week = 1) {
+  return student?.rosterNewWeek != null && student.rosterNewWeek === week;
+}
+
+export function openRosterResident(student, week = 1) {
+  return { ...student, lockState: 'open', rosterNewWeek: week };
+}
+
 export function pickRipeUnlock(students, reachLevel = 1, unlockedDorms = []) {
   const slots = getRosterSlotCount(reachLevel);
   const openCount = countOpenPoolStudents(students);

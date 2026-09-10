@@ -7,7 +7,8 @@ import {
   DORMS, STUDENT_HOME_DORM, dormUnlocksForWeek, UNLOCK_POOL_IDS, getLockedDormStudentIds,
 } from '../src/gameData/dorms.js';
 import {
-  applyWeeklyTrustDrip, isHallReachable, ROSTER_TRUST_GATE, getRosterSlotCount,
+  applyWeeklyTrustDrip, isHallReachable, isRosterNew, openRosterResident,
+  ROSTER_TRUST_GATE, getRosterSlotCount,
 } from '../src/gameData/rosterUnlock.js';
 import { SATURATION_TIERS } from '../src/gameData/campusSaturation.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
@@ -173,7 +174,13 @@ const afterW8Drip = applyWeeklyTrustDrip([priya], { reachLevel: 1, week: 8, unlo
 assert.ok(afterW8Drip[0].passiveTrust > 0, 'trust drip after nerdy hall unlocks');
 assert.ok(afterW8Drip[0].passiveTrust < ROSTER_TRUST_GATE, 'one week drip should not auto-unlock');
 
-assert.equal(getRosterSlotCount(1), 5, 'spirit level 1 should allow 5 roster slots');
+const opened = openRosterResident(priya, 8);
+assert.equal(opened.lockState, 'open');
+assert.equal(opened.rosterNewWeek, 8);
+assert.ok(isRosterNew(opened, 8), 'NEW badge week matches unlock');
+assert.ok(!isRosterNew(opened, 9), 'NEW badge clears after unlock week');
+
+assert.equal(getRosterSlotCount(1), 5, 'hall reach 1 should allow 5 roster slots');
 assert.equal(getRosterSlotCount(3), 7, 'spirit level 3 should allow 7 roster slots');
 
 for (const tier of SATURATION_TIERS) {

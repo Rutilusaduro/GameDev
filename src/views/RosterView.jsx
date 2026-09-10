@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { C } from '../styles.js';
 import { DORM_LIST, getDorm, getStudentHomeDorm, effectiveUnlockWeek, dormUnlocksForWeek } from '../gameData/dorms.js';
 import {
-  ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents,
+  ROSTER_TRUST_GATE, getRosterSlotCount, countOpenPoolStudents, isRosterNew,
 } from '../gameData/rosterUnlock.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
@@ -33,6 +33,7 @@ function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled
   // Mostly a steady-state vibe; occasionally she's caught remembering a
   // recent milestone. Memoized (incl. memory count) so it stays stable
   // until her state actually changes, rather than flickering per render.
+  const showNew = isRosterNew(s, week);
   const tell = useMemo(
     () => {
       const discTier = getDiscontentTier(s).id;
@@ -53,7 +54,7 @@ function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled
     <div
       role="button"
       tabIndex={0}
-      className="roster-tile roster-tile-in"
+      className={`roster-tile roster-tile-in${showNew ? ' roster-tile-new' : ''}`}
       style={{
         ...C.card,
         border: cardBorder,
@@ -77,6 +78,9 @@ function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled
           <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
           <span style={{ fontWeight: 700, fontSize: 15, color: nameColor }}>{s.name}</span>
+          {showNew && (
+            <span className="roster-new-pill" style={{ fontSize: 8, color: '#ffe8a0', letterSpacing: 1, fontWeight: 700 }}>NEW</span>
+          )}
           {(() => { const tier = getTier(s.relationship); return tier.id > 0 ? <span style={{ fontSize: 12, opacity: 0.9 }}>{tier.emoji}</span> : null; })()}
           {evMeta && <span style={{ fontSize: 10, color: evMeta.color, fontWeight: 600 }}>✦ {evMeta.title}</span>}
           {s.ascension && ascForm && <span style={{ fontSize: 10, color: '#80e8ff', fontWeight: 600 }}>✦ {ascForm.label}</span>}

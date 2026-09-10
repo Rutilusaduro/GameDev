@@ -326,6 +326,78 @@ check('competitive-gainer-ceremony-qa-wiring', () => {
   assert.match(helper, /unlockCGArcQA/);
 });
 
+check('milestone-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Milestone QA/);
+  assert.match(debug, /setMilestoneQueue/);
+  assert.match(hallPass, /setMilestoneQueue=\{setMilestoneQueue\}/);
+  assert.match(helper, /triggerMilestoneQA/);
+});
+
+check('week-recap-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Week Recap QA/);
+  assert.match(debug, /setWeekRecap/);
+  assert.match(hallPass, /setWeekRecap=\{setWeekRecap\}/);
+  assert.match(helper, /triggerWeekRecapQA/);
+});
+
+check('tier-up-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Tier-Up QA/);
+  assert.match(debug, /setTierUpModal/);
+  assert.match(hallPass, /setTierUpModal=\{setTierUpModal\}/);
+  assert.match(helper, /triggerTierUpQA/);
+});
+
+check('hunger-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Hunger Interrupt QA/);
+  assert.match(debug, /setHungerInterrupt/);
+  assert.match(hallPass, /setHungerInterrupt=\{setHungerInterrupt\}/);
+  assert.match(helper, /triggerHungerInterruptQA/);
+});
+
+check('talk-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Talk QA/);
+  assert.match(debug, /setTalkStudentId/);
+  assert.match(hallPass, /setTalkStudentId=\{setTalkStudentId\}/);
+  assert.match(helper, /triggerTalkQA/);
+});
+
+check('weigh-in-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Weigh-In QA/);
+  assert.match(debug, /setWeighInState/);
+  assert.match(hallPass, /setWeighInState=\{setWeighInState\}/);
+  assert.match(helper, /triggerWeighInQA/);
+});
+
+check('roster-new-badge-polish', () => {
+  const roster = read('src/views/RosterView.jsx');
+  const css = read('src/index.css');
+  const unlock = read('src/gameData/rosterUnlock.js');
+  assert.match(roster, /roster-tile-new/);
+  assert.match(roster, /roster-new-pill/);
+  assert.match(roster, /isRosterNew/);
+  assert.match(css, /\.roster-tile-new/);
+  assert.match(unlock, /openRosterResident/);
+  assert.match(read('src/HallPass.jsx'), /openRosterResident/);
+});
+
 check('hall-unlock-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');
   const hallPass = read('src/HallPass.jsx');

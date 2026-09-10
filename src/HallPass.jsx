@@ -41,7 +41,7 @@ import {
 } from './gameData/raApproaches.js';
 import { getUnlockScene } from './gameData/unlockScenes.js';
 import {
-  applyWeeklyTrustDrip, pickRipeUnlock, ROSTER_TRUST_GATE, grantPassiveTrust,
+  applyWeeklyTrustDrip, pickRipeUnlock, openRosterResident, ROSTER_TRUST_GATE, grantPassiveTrust,
 } from './gameData/rosterUnlock.js';
 import { renderEmbodiedArrive } from './textEngine/scenes/v2/embodiment/campusWalk.js';
 import { WalletBadge } from './components/WalletBadge.jsx';
@@ -2113,7 +2113,7 @@ export default function HallPass(){
     updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
-      updated = updated.map((s) => (s.id === ripe.id ? { ...s, lockState: 'open' } : s));
+      updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));
       const scene = getUnlockScene(ripe.id) || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
       setTimeout(() => push(`🌒 ${scene}`), 160);
     }
