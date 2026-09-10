@@ -19,7 +19,7 @@ test('week 12 unlocks Rosewood House on weirdos hall start', async ({ page }) =>
 
   await expect(page.getByText(/WEEK 12/)).toBeVisible();
   await dismissBlockingModals(page);
-  await page.getByRole('button', { name: '📋 Roster' }).click();
+  await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
   await expect(page.getByText(/Rosewood House.*unlocked/i).first()).toBeVisible();
   await expect(page.getByText('Kylie', { exact: true }).first()).toBeVisible();

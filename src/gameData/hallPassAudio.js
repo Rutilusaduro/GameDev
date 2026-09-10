@@ -1,7 +1,7 @@
 // Lightweight UI feedback — Web Audio, no asset files.
 let audioCtx = null;
 
-const MASTER_GAIN = 0.88;
+const MASTER_GAIN = 1;
 
 function getCtx() {
   if (typeof window === 'undefined') return null;
@@ -20,6 +20,11 @@ function ensureCtx() {
 
 function amp(value) {
   return value * MASTER_GAIN;
+}
+
+/** Prime audio after first user gesture (browser autoplay policy). */
+export function warmupHallPassAudio() {
+  ensureCtx();
 }
 
 /** @param {'unlock'|'week'|'click'|'nav'|'confirm'|'tier'|'session'|'weigh'|'alert'} kind */

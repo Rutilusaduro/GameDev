@@ -19,7 +19,7 @@ test('week 8 unlocks Victory Hall on nerdy hall start', async ({ page }) => {
 
   await expect(page.getByText(/WEEK 8/)).toBeVisible();
   await dismissBlockingModals(page);
-  await page.getByRole('button', { name: '📋 Roster' }).click();
+  await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
   await expect(page.getByText(/Victory Hall.*unlocked/i).first()).toBeVisible();
   await expect(page.getByText('NEW', { exact: true }).first()).toBeVisible();

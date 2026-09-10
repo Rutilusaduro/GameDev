@@ -1,5 +1,12 @@
 import { expect } from '@playwright/test';
 
+export const DESK_NAV_LABEL = '📋 RA Desk';
+
+/** Return to the main desk/roster view. */
+export async function openRaDesk(page) {
+  await page.getByRole('button', { name: DESK_NAV_LABEL }).click();
+}
+
 /** Complete intro → approach → dorm → fifth resident → RA desk. */
 export async function completeRaSetup(page, {
   approach = 'The Instigator',
@@ -402,7 +409,7 @@ export async function prepareEvolutionEligibleQA(page) {
 
 /** Open a resident from roster; pick origin deck if first contact. */
 export async function openResidentDetail(page, name) {
-  await page.getByRole('button', { name: '📋 Roster' }).click();
+  await page.getByRole('button', { name: DESK_NAV_LABEL }).click();
   await page.locator('.roster-tile').filter({ hasText: name }).first().click();
   const origin = page.locator('.origin-pick-modal');
   if (await origin.isVisible().catch(() => false)) {

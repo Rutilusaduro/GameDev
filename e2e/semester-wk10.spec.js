@@ -12,11 +12,11 @@ test('sporty hall start survives week 1–10 advance loop', async ({ page }) => 
 
   await dismissBlockingModals(page);
   await expect(page.getByText(/WEEK 10/)).toBeVisible();
-  await expect(page.getByText('RA DESK')).toBeVisible();
+  await expect(page.locator('.ra-desk-header').getByText(/RA DESK/)).toBeVisible();
   await expect(page.getByText('Professor Sim')).toHaveCount(0);
   await expect(page.getByText('Madeline')).toHaveCount(0);
 
-  await page.getByRole('button', { name: '📋 Roster' }).click();
+  await page.getByRole('button', { name: '📋 RA Desk' }).click();
   await expect(page.getByText(/Scholar's Rest.*unlocked/i).first()).toBeVisible();
   await expect(page.getByText("Scholar's Rest opens week 8")).toHaveCount(0);
   await expect(page.getByText('Rosewood House opens week 12').first()).toBeVisible();

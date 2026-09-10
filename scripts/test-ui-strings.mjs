@@ -70,8 +70,8 @@ function assertClean(text, label) {
 
 const hallPass = readFileSync('src/HallPass.jsx', 'utf8');
 assert(
-  /\[\["roster","📋 Roster"\],\["hall-lounge","🏠 Hall Lounge"\],\["influence","✨ Influence"\]/.test(hallPass),
-  'main nav must use Roster / Hall Lounge / Influence labels',
+  /\[\["roster","📋 RA Desk"\],\["hall-lounge","🏠 Hall Lounge"\],\["influence","✨ Influence"\]/.test(hallPass),
+  'main nav must use RA Desk / Hall Lounge / Influence labels',
 );
 assert(hallPass.includes('RA DESK'), 'header must say RA DESK');
 assertClean(hallPass, 'HallPass.jsx');

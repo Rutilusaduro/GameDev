@@ -32,7 +32,7 @@ test.describe('semester full journey', () => {
     await openResidentDetail(page, 'Cassidy');
     await expect(page.getByText('Personal Actions')).toBeVisible();
     await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     const week4 = await advanceToWeek(page, 4);
     expect(week4).toBeGreaterThanOrEqual(4);
@@ -42,13 +42,13 @@ test.describe('semester full journey', () => {
     const week8 = await advanceToWeek(page, 8);
     expect(week8).toBeGreaterThanOrEqual(8);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
     await expect(page.getByText("Scholar's Rest", { exact: false }).first()).toBeVisible();
 
     const week16 = await advanceToWeek(page, 16);
     expect(week16).toBeGreaterThanOrEqual(16);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     await assertAllHallsOpen(page);
     await assertRaFramingClean(page);
@@ -58,13 +58,13 @@ test.describe('semester full journey', () => {
     test.setTimeout(240_000);
 
     await completeRaSetup(page, { dorm: "Scholar's Rest" });
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
     await expect(page.locator('.roster-tile').filter({ hasText: 'Cassidy' })).toHaveCount(0);
 
     const week16 = await advanceToWeek(page, 16);
     expect(week16).toBeGreaterThanOrEqual(16);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
     await assertAllHallsOpen(page);
@@ -76,19 +76,19 @@ test.describe('semester full journey', () => {
 
     await completeRaSetup(page, { dorm: 'Rosewood House' });
     await expect(page.getByText('RA DESK — ROSEWOOD HOUSE')).toBeVisible();
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
     await expect(page.locator('.roster-tile').filter({ hasText: 'Cassidy' })).toHaveCount(0);
 
     const week8 = await advanceToWeek(page, 8);
     expect(week8).toBeGreaterThanOrEqual(8);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
     await expect(page.getByText('Victory Hall', { exact: false }).first()).toBeVisible();
 
     const week16 = await advanceToWeek(page, 16);
     expect(week16).toBeGreaterThanOrEqual(16);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
     await assertAllHallsOpen(page);
@@ -100,19 +100,19 @@ test.describe('semester full journey', () => {
 
     await completeRaSetup(page, { dorm: 'The Annex' });
     await expect(page.getByText('RA DESK — THE ANNEX')).toBeVisible();
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
     await expect(page.locator('.roster-tile').filter({ hasText: 'Cassidy' })).toHaveCount(0);
 
     const week12 = await advanceToWeek(page, 12);
     expect(week12).toBeGreaterThanOrEqual(12);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
     await expect(page.getByText('Rosewood House', { exact: false }).first()).toBeVisible();
 
     const week16 = await advanceToWeek(page, 16);
     expect(week16).toBeGreaterThanOrEqual(16);
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
     await assertAllHallsOpen(page);

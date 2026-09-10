@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 248)
+## Status (Pass 249)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -93,12 +93,12 @@ npm run build
 | `docs/V2_0_DESIGN.md` + ascension design | ✅ | Pass 238 + `v2-design-ra-theme` audit |
 | `docs/ASCENSION_EXPANSION_PLAN.md` | ✅ | Pass 239 RA sync |
 | `docs/Old/`, `docs/IgnoreThis/` | ✅ | Archive banners (Pass 239) |
-| Steam-quality feel | ⚠️ | 93+ e2e; audio resume/balance; natural week recap chain |
+| Steam-quality feel | ⚠️ | 94+ e2e; modal scrim, RA Desk nav anchor, audio warmup |
 | Coherent prose throughout | ✅ | Runtime gates clean; legacy docs archive-bannered |
 
 ---
 
 ## Suggested next passes
 
-1. **Manual semester playthrough** — browser feel pass for modal timing / animation cohesion
+1. **Manual semester playthrough** — full wk1→16 feel pass for ceremony timing
 2. **Presentation / competitive-gainer ceremony** — spot-check natural triggers (QA wired)

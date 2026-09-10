@@ -298,6 +298,21 @@
 
 .hall-pass-overlay-in {
   animation: hallPassOverlayIn 0.18s ease-out;
+  isolation: isolate;
+}
+
+.hall-pass-overlay-in::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 85% 75% at 50% 42%, transparent 0%, rgba(0, 0, 0, 0.42) 100%);
+  z-index: 0;
+}
+
+.hall-pass-overlay-in > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hall-pass-modal-in {

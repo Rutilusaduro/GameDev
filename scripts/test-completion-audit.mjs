@@ -499,6 +499,7 @@ check('roster-new-badge-polish', () => {
   assert.match(roster, /isRosterNew/);
   assert.match(roster, /hasNewResidents/);
   assert.match(roster, /playHallPassSound\('nav'/);
+  assert.match(roster, /title=\{`/);
   assert.match(css, /\.roster-tile-new/);
   assert.match(css, /\.roster-new-pill/);
   assert.match(css, /@keyframes rosterNewPillPulse/);
@@ -546,10 +547,22 @@ check('semester-full-journey-e2e', () => {
 check('modal-overlay-polish', () => {
   const overlay = read('src/components/ModalOverlay.jsx');
   const css = read('src/index.css');
+  const styles = read('src/styles.js');
   assert.match(overlay, /hall-pass-overlay-in/);
   assert.match(css, /\.hall-pass-overlay-in/);
+  assert.match(css, /\.hall-pass-overlay-in::before/);
   assert.match(css, /@keyframes hallPassOverlayIn/);
   assert.match(css, /\.dinner-out-modal \.dinner-venue-choice-row/);
+  assert.match(styles, /rgba\(2,0,6,0\.9\)/);
+});
+
+check('desk-nav-anchor-e2e', () => {
+  const spec = read('e2e/desk-nav-anchor.spec.js');
+  const helper = read('e2e/helpers/setupGame.js');
+  const desk = read('src/HallPass.jsx');
+  assert.match(desk, /📋 RA Desk/);
+  assert.match(helper, /openRaDesk/);
+  assert.match(spec, /RA Desk nav returns home/);
 });
 
 check('evolution-ready-ceremony-qa-wiring', () => {
@@ -700,7 +713,7 @@ check('influence-view-routes', () => {
   assert.ok(existsSync(join(root, 'src/views/InfluenceView.jsx')));
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /InfluenceView/);
-  assert.match(desk, /\["roster","📋 Roster"\]/);
+  assert.match(desk, /\["roster","📋 RA Desk"\]/);
   assert.match(desk, /\["hall-lounge","🏠 Hall Lounge"\]/);
   assert.match(desk, /\["influence","✨ Influence"\]/);
   assert.doesNotMatch(desk, /SpiritHubView/);
@@ -2729,9 +2742,12 @@ check('ceremony-entry-polish', () => {
 
 check('hall-pass-audio-polish', () => {
   const audio = read('src/gameData/hallPassAudio.js');
+  const desk = read('src/HallPass.jsx');
   assert.match(audio, /MASTER_GAIN/);
   assert.match(audio, /ensureCtx/);
   assert.match(audio, /ctx\.resume/);
+  assert.match(audio, /warmupHallPassAudio/);
+  assert.match(desk, /warmupHallPassAudio/);
 });
 
 check('digestion-qa-wiring', () => {

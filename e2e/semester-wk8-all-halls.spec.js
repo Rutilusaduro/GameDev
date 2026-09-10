@@ -18,7 +18,7 @@ for (const { dorm, unlocks } of START_HALLS) {
 
     await expect(page.getByText(/WEEK 8/)).toBeVisible();
     await dismissBlockingModals(page);
-    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     for (const hall of unlocks) {
       await expect(page.getByText(hall, { exact: false }).first()).toBeVisible();

@@ -9,7 +9,7 @@ import { ACTIONS_SINGLE, ACTIONS_HALL } from './gameData/floorEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playerPrefs.js';
-import { playHallPassSound } from './gameData/hallPassAudio.js';
+import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
@@ -497,6 +497,15 @@ export default function HallPass(){
   useEffect(() => {
     if (raProfile?.spiritId != null) setRaProfile(raProfile);
   }, [raProfile?.spiritId]);
+  useEffect(() => {
+    const prime = () => warmupHallPassAudio();
+    window.addEventListener('pointerdown', prime, { once: true });
+    window.addEventListener('keydown', prime, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', prime);
+      window.removeEventListener('keydown', prime);
+    };
+  }, []);
   // DLC: Inner Circle
   const seenTiersRef=useRef(new Set());
   const prevRelsRef=useRef(Object.fromEntries(INIT_STUDENTS.map(s=>[s.id,s.relationship])));
@@ -8668,7 +8677,7 @@ export default function HallPass(){
 
       {/* NAV */}
       <div className="hall-pass-nav" style={C.nav}>
-        {[["roster","📋 Roster"],["hall-lounge","🏠 Hall Lounge"],["influence","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
+        {[["roster","📋 RA Desk"],["hall-lounge","🏠 Hall Lounge"],["influence","✨ Influence"],["student","👤 "+(sel?.name||"Resident")],["actions","🎭 Actions"],["inventory","🎒 Pantry"],["campus","🗺️ Campus"],["skills","📈 Reach"],["achievements","🏆 Achievements"],
           ...(settledStudents.length>0?[["settling","✦ The Settling"]]:[]),
           ...(week>=8||opposition?.aib?.unlocked||adminScrutiny>=25?[["oversight","👁 Oversight"]]:[]),
           ...(labState?[["lab","🔧 The Lab"],["devices","🛠 Devices"],...((labState.stage??1)>=2?[["network","🌐 Network"]]:[])]:[]),

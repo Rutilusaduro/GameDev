@@ -91,8 +91,11 @@ function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled
       </div>
       <div style={{ fontSize: 10, color: '#70508a', marginBottom: 3 }}>{s.role || s.archetype} · {s.bodyType} · {s.age}y · <MoodBadge mood={s.mood} /></div>
       <Bar val={s.lbs} max={1100} color={st.color} />
-      <div style={{ fontSize: 11, color: '#a88050', margin: '2px 0' }}>
-        {s.lbs.toLocaleString()} lbs  (+{s.lbs - s.startLbs}) · ❤ {s.relationship}%
+      <div
+        style={{ fontSize: 11, color: '#a88050', margin: '2px 0' }}
+        title={`${s.lbs.toLocaleString()} lbs · +${s.lbs - s.startLbs} since semester start · ${s.relationship}% trust`}
+      >
+        {s.lbs.toLocaleString()} lbs (+{s.lbs - s.startLbs}) · ❤ {s.relationship}%
       </div>
       <div style={{ fontSize: 10.5, color: s.withdrawn ? '#c87858' : '#6a5078', fontStyle: 'italic', lineHeight: 1.4, marginTop: 3 }}>
         {s.withdrawn ? 'has moved off your hall' : tell}
