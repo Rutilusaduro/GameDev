@@ -234,6 +234,7 @@ const REQUIRED_E2E = [
   'e2e/session-result-ceremony.spec.js',
   'e2e/hall-unlock-ceremony.spec.js',
   'e2e/dinner-ceremony.spec.js',
+  'e2e/roster-new-badge.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 
@@ -497,6 +498,30 @@ check('roster-new-badge-polish', () => {
   assert.match(css, /\.roster-tile-new/);
   assert.match(unlock, /openRosterResident/);
   assert.match(read('src/HallPass.jsx'), /openRosterResident/);
+});
+
+check('roster-new-badge-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Roster New QA/);
+  assert.match(debug, /openRosterResident/);
+  assert.match(helper, /triggerRosterNewQA/);
+});
+
+check('floor-influence-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Floor Influence QA/);
+  assert.match(debug, /setOwnedSkills/);
+  assert.match(helper, /triggerFloorInfluenceQA/);
+});
+
+check('evolution-ready-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Evolution Ready QA/);
+  assert.match(debug, /setSelectedId/);
+  assert.match(helper, /prepareEvolutionEligibleQA/);
 });
 
 check('hall-unlock-ceremony-qa-wiring', () => {

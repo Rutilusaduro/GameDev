@@ -11,6 +11,7 @@ import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
 import { dormUnlocksForWeek, getDorm } from '../gameData/dorms.js';
+import { openRosterResident } from '../gameData/rosterUnlock.js';
 import { defaultSalonState } from '../gameData/chloeSalon.js';
 import { defaultGalleryState } from '../gameData/fionaGallery.js';
 import { SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../gameData/chapterHostess.js';
@@ -259,6 +260,20 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   🍽️ Dinner Out QA
+                </button>
+              )}
+              {setStudents && setView && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(100,80,40,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 7
+                        ? openRosterResident({ ...s, lockState: 'locked', passiveTrust: 60 }, week)
+                        : s
+                    )));
+                    setView('roster');
+                    setDebugOpen(false);
+                  }}>
+                  ✨ Roster New QA
                 </button>
               )}
               {setMilestoneQueue && (

@@ -359,6 +359,20 @@ export async function triggerSessionResultQA(page) {
   await page.getByRole('button', { name: /Session Result QA/ }).click();
 }
 
+/** Debug: show Priya on roster with NEW badge this week. */
+export async function triggerRosterNewQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  const btn = page.getByRole('button', { name: /Roster New QA/ });
+  await btn.scrollIntoViewIfNeeded();
+  await btn.click();
+}
+
+/** Debug: open Floor Influence hub with ride-along skills. */
+export async function triggerFloorInfluenceQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Floor Influence QA/ }).click();
+}
+
 /** Debug: open dinner-out venue picker for Cassidy. */
 export async function triggerDinnerOutQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
