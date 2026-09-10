@@ -232,8 +232,30 @@ const REQUIRED_E2E = [
   'e2e/week-planner-ceremony.spec.js',
   'e2e/tap-out-ceremony.spec.js',
   'e2e/session-result-ceremony.spec.js',
+  'e2e/hall-unlock-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
+
+check('game-bible-ra-theme', () => {
+  const bible = read('GAME_BIBLE.md');
+  assert.match(bible, /Hall Pass/);
+  assert.match(bible, /resident advisor|RA/i);
+  assert.match(bible, /Cassidy/);
+  assert.doesNotMatch(bible, /Professor Sim/);
+  assert.doesNotMatch(bible, /gluttony spirit/i);
+  assert.doesNotMatch(bible, /\bMadeline\b/);
+  assert.doesNotMatch(bible, /Inhabit the Professor/);
+});
+
+check('hall-unlock-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Hall Unlock QA/);
+  assert.match(debug, /setDormUnlockModal/);
+  assert.match(hallPass, /setDormUnlockModal=\{setDormUnlockModal\}/);
+  assert.match(helper, /triggerHallUnlockQA/);
+});
 
 check('session-result-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');

@@ -1,6 +1,6 @@
-# Professor Sim — Game Bible
+# Hall Pass — Game Bible
 
-A reproduction-oriented design reference for **Professor Sim** (*professor-sim*). This document describes the game's fantasy, loop, data model, characters, systems, content catalog, and text architecture so that a developer (or LLM) could rebuild a functionally equivalent game without reading source code. Prose and dialogue are summarized by *structure and intent*, not quoted verbatim.
+A reproduction-oriented design reference for **Hall Pass** (*hall-pass*). This document describes the game's fantasy, loop, data model, characters, systems, content catalog, and text architecture so that a developer (or LLM) could rebuild a functionally equivalent game without reading source code. Prose and dialogue are summarized by *structure and intent*, not quoted verbatim.
 
 ---
 
@@ -8,9 +8,9 @@ A reproduction-oriented design reference for **Professor Sim** (*professor-sim*)
 
 **Genre:** Narrative management / feeder simulation with RPG progression, campus exploration, and branching character arcs.
 
-**Fantasy:** You are a **gluttony spirit** who inhabits a university professor at the start of semester. Your class is a roster of young women you cultivate — through food, relationship, corruption, devices, and evolved life paths — into ever-larger embodiments of appetite and surrender. The tone blends dark comedy, indulgence, body-transformation fetish content, and slow-burn character drama.
+**Fantasy:** You are a **senior redheaded curvy resident advisor (RA)** starting fall semester on a college dorm floor. Your roster is young women you cultivate — through food, relationship, corruption, devices, and evolved life paths — into ever-larger embodiments of appetite and surrender. The tone blends dark comedy, indulgence, body-transformation fetish content, and slow-burn character drama.
 
-**Core tension:** Grow the class while managing **Action Points (AP)**, **admin scrutiny**, student **relationships**, and hidden tracks (**corruption**, **hunger/addiction**, **psych state**). Late game opens **evolved forms** — each student can pivot into a distinct endgame fantasy (sumo, streamer, chemist, inventor, hive queen, etc.).
+**Core tension:** Grow your floor while managing **Action Points (AP)**, **housing scrutiny**, resident **relationships**, and hidden tracks (**corruption**, **hunger/addiction**, **psych state**). Late game opens **evolved forms** — each resident can pivot into a distinct endgame fantasy (sumo, streamer, chemist, inventor, hive queen, etc.).
 
 **Win state:** There is no hard win; progression is open-ended across weeks, achievements, evolved paths, lab inventions, campus saturation, and narrative milestones.
 
@@ -20,8 +20,9 @@ A reproduction-oriented design reference for **Professor Sim** (*professor-sim*)
 
 ### 2.1 Opening
 
-1. **Spirit intro** — Lore text: gluttony spirit vs. modern scarcity culture; professor is "the first door."
-2. Player clicks **Inhabit the Professor** → game begins at **Week 1**, **5 AP**, **$850**, empty skill trees.
+1. **RA orientation** — Lore text: appetite culture on campus; your desk is the first door residents trust.
+2. Player picks a **home dorm hall** (sporty / nerdy / socialite / weirdos) → clicks **Begin Your Shift** → game begins at **Week 1**, **5 AP**, **$850**, empty skill trees with ~5 home-hall residents on roster.
+3. **Hall unlocks** at weeks **8**, **12**, and **16** add residents from unpicked halls (Victory Hall also unlocks at week 8 for non-sporty starts).
 
 ### 2.2 Weekly loop
 
@@ -30,7 +31,7 @@ A reproduction-oriented design reference for **Professor Sim** (*professor-sim*)
 │  PLAYER TURN (spend AP on actions until depleted or done)   │
 │  · Per-student: Talk, Dinner, Private Session, Items,       │
 │    Evolved activities, Devices, Intimacy, Weigh-in          │
-│  · Class-wide: Pizza, Potluck, Feast, Group Dinner, Class   │
+│  · Floor-wide: Pizza, Potluck, Feast, Group Dinner, Class   │
 │  · Meta: Campus explore, Lab build, Skill purchases        │
 └───────────────────────────┬─────────────────────────────────┘
                             ▼
@@ -47,18 +48,18 @@ A reproduction-oriented design reference for **Professor Sim** (*professor-sim*)
 
 | View | Purpose |
 |------|---------|
-| **class** | Roster grid; click student → detail |
+| **roster** | Resident grid; click student → detail |
 | **student** | Full detail: stats, diary, evolved panel, actions |
-| **actions** | Class-wide AP actions |
+| **actions** | Floor-wide AP actions |
 | **inventory** | Pantry items → target student |
 | **campus** | 18-node exploration map |
 | **lab** | Talia's workshop: parts, tech tree, blueprints |
 | **devices** | Built device inventory, equip/use |
-| **skills** | Classroom prestige skill tree (lbs-cost upgrades) |
+| **skills** | Hall lounge prestige skill tree (lbs-cost upgrades) |
 | **achievements** | Milestone tracker |
 | **log** | Event history |
 
-Navigation tabs appear dynamically (e.g. **student** tab when one is selected).
+Navigation tabs appear dynamically (e.g. **student** tab when one is selected). Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster.
 
 ---
 
@@ -67,12 +68,12 @@ Navigation tabs appear dynamically (e.g. **student** tab when one is selected).
 | Resource | Start | Notes |
 |----------|-------|-------|
 | **Week** | 1 | Semester milestones at weeks 5, 10, 15, 20, 25, 30 |
-| **AP** | 5/week base | Cap 20; modified by classroom skills, prestige-lite, scrutiny penalties |
+| **AP** | 5/week base | Cap 20; modified by hall lounge skills, prestige-lite, scrutiny penalties |
 | **Money** | $850 | Dinners, lab builds, Destiny shop, etc. |
 | **Admin scrutiny** | 0 | Rises from visible large students, campus device use, network; gates random events |
-| **Spirit level** | 1 | `1 + floor(totalClassLbsGained / 40)` — boosts force-feed |
-| **Spirit skill points** | level − 1 | Spent in Influence / Gluttony / Corruption trees |
-| **Classroom prestige** | 0 | Spent on `SKILL_TREE` upgrades (costs 50–2000 "prestige" bought with **student lbs**) |
+| **Hall reach** | 1 | `1 + floor(totalClassLbsGained / 40)` — boosts force-feed |
+| **Influence skill points** | level − 1 | Spent in Influence / Gluttony / Corruption trees |
+| **Hall lounge prestige** | 0 | Spent on `SKILL_TREE` upgrades (costs 50–2000 "prestige" bought with **student lbs**) |
 
 ---
 
@@ -134,7 +135,7 @@ Stages drive: appearance text, outfit descriptions, attitude lines, diary entrie
 - `baseCapacity`: 100 fullness units (+ scaling from starting weight)
 - Capacity growth: +15 per 50 lbs gained; +30 on stage-up
 - Stuffed week: 50% base (+10%/streak) chance +5 permanent capacity
-- Force-feed base chance: 45% + 4%/spirit level − overfill penalties + corruption bonus (+0.3%/point, max +30%)
+- Force-feed base chance: 45% + 4%/hall reach − overfill penalties + corruption bonus (+0.3%/point, max +30%)
 
 ### 6.2 Feed flow
 
@@ -209,9 +210,9 @@ Each 0–100: **fixation, obsession, dependence, shame**. Tier labels at 25/50/7
 
 ---
 
-## 11. Spirit skill trees
+## 11. Influence skill trees
 
-Three trees (`skillTrees.js`), points = spirit level − 1. Tier 2/3 unlock at 3/8 points spent in-tree. Rank costs: 1/2/3 by tier.
+Three trees (`skillTrees.js`), points = hall reach − 1. Tier 2/3 unlock at 3/8 points spent in-tree. Rank costs: 1/2/3 by tier.
 
 ### 11.1 Influence
 
@@ -227,7 +228,7 @@ Shame erosion, craving submission, willing vessel, total surrender (no refusal a
 
 ---
 
-## 12. Classroom prestige skills (`skills.js` → `SKILL_TREE`)
+## 12. Hall lounge prestige skills (`skills.js` → `SKILL_TREE`)
 
 Purchased with **lbs from students** (skill purchase modal allocates weight loss per girl). Six tiers (costs 50 → 2000). Categories:
 
@@ -236,7 +237,7 @@ Purchased with **lbs from students** (skill purchase modal allocates weight loss
 - **Efficiency:** +AP, session capacity
 - **Social:** dinner venue unlocks (Bistro → Upscale → Private → Atelier)
 - **Psychology:** comfort framing, behavioral observation
-- **Prestige:** grand banquet, scrutiny reduction, endgame classroom upgrades
+- **Prestige:** grand banquet, scrutiny reduction, endgame hall lounge upgrades
 
 Each skill has `passiveBonus`, `apBonus`, `gainMult`, `unlocks[]`, and flavor **class reactions**.
 
@@ -273,11 +274,11 @@ Each skill has `passiveBonus`, `apBonus`, `gainMult`, `unlocks[]`, and flavor **
 
 ### 13.4 Private session (2 AP, Close tier+)
 
-Food selection → fullness stages 0–5 → tap-out probability 150%–250%+ → encouragement actions → capacity bonus +8 on completion. Blob students: professor climbs to feed (unique intro text per id).
+Food selection → fullness stages 0–5 → tap-out probability 150%–250%+ → encouragement actions → capacity bonus +8 on completion. Blob students: you climb to feed (unique intro text per id).
 
 ### 13.5 Dinner venues (`DINNER_VENUES`)
 
-Tiered unlocks via classroom skills. Each venue: dishes (cal + full), conversation actions (skill-gated), ending narrative grid by stage × fullness.
+Tiered unlocks via hall lounge skills. Each venue: dishes (cal + full), conversation actions (skill-gated), ending narrative grid by stage × fullness.
 
 ### 13.6 Intimacy (1–2 AP, Intimate tier+)
 
@@ -307,12 +308,12 @@ Pantry restocks 2–3 random items/week. Use on student → calories + fullness.
 
 ## 14. Character roster
 
-### 14.1 Core class (visible day 1)
+### 14.1 Home hall residents (~5 at start; others unlock wk 8/12/16)
 
 | ID | Name | Archetype | Start lbs | Evolution paths |
 |----|------|-----------|-----------|-----------------|
 | 0 | Brittany | cheerleader | 118 | Eating Captain, Body Positive Captain |
-| 1 | Madeline | bookworm | 125 | Community Researcher |
+| 1 | Cassidy | swimmer | 125 | Lane Captain |
 | 2 | Kylie | influencer | 122 | Feedee Channel, Body Positive Platform |
 | 3 | Serena | athlete | 145 | Sumo, Circuit Competitor |
 | 4 | Fiona | artsy | 115 | **Artisan Gallery** *(replaces Installation Artist, Food Photographer)* |
@@ -338,7 +339,7 @@ Pantry restocks 2–3 random items/week. Use on student → calories + fullness.
 ### 14.3 NPCs
 
 - **Cultivator taste tester** — Procedural name from pool; 295 lbs start; Reneé's sub-game
-- **Faculty (6):** Dr. Imogen Hartley (Classics), Coach Dana Brooks (Athletics), Prof. Yuki Mori (Food Science), Dr. Celeste Abara (Psychology), Chef Rosa Delgado (Culinary), Ms. Penny Lockwood (Registrar) — affinity 0–100, lounge dialogue
+- **Campus staff (6):** RA Imogen Hartley (Classics), Coach Dana Brooks (Athletics), RA Yuki Mori (Food Science), Dr. Celeste Abara (Psychology), Chef Rosa Delgado (Culinary), Ms. Penny Lockwood (Registrar) — affinity 0–100, lounge dialogue
 - **Lilith hunt targets:** 14 named men + Danny (delivery, blob-only)
 - **Homeroom Queen participants:** 6 named moms/students in Daisy's path
 - **Chapter Hostess NPCs:** Sisters Courtney, Madison, Savannah; alumni Camille
@@ -399,9 +400,9 @@ Spend **lbs gained since start** minus prior spends. Five skills per tree typica
 
 **Big Squad Captain (`big_squad_captain`):** Abolish weigh-ins; culture change; +2–5 lbs.
 
-### Bookworm (Madeline)
+### Bookworm (Cassidy)
 
-**Community Researcher (`community_researcher`):** Custom UI — NOT generic activity.
+**Lane Captain (`community_researcher`):** Custom UI — NOT generic activity.
 
 1. **Present Thesis** (1 AP) → unlock case studies
 2. Pick **4 of 7 case study pairs** (1 AP each) — adds suspicion + lbs
@@ -432,13 +433,13 @@ Case study pairs:
 
 ### Overachiever (Priya)
 
-**Competitive Gainer (`competitive_gainer`):** Corkboard measurements vs classmates; spirit tiers Invested→Ruthless; binge 10–50 lbs; group chat with professor nudges; rich text pools by weight band × spirit.
+**Competitive Gainer (`competitive_gainer`):** Corkboard measurements vs residents; influence tiers Invested→Ruthless; binge 10–50 lbs; group chat with RA nudges; rich text pools by weight band × influence tier.
 
 ### Quiet (Maya)
 
 **Home Nest (`home_nest`):** Delivery routine; +6–15 lbs.
 
-**Delivery Hive (`delivery_hive`):** 6×4 dorm grid strategy; tasks (food, supply, expansion, maintenance, recruitment); stats (biomass, comfort, resonance, stability); Vice Queens (Lilith, Nadia, Kaylee, Reneé, Daisy); room bonuses; integrates pharmacist campus + spirit pressure.
+**Delivery Hive (`delivery_hive`):** 6×4 dorm grid strategy; tasks (food, supply, expansion, maintenance, recruitment); stats (biomass, comfort, resonance, stability); Vice Queens (Lilith, Nadia, Kaylee, Reneé, Daisy); room bonuses; integrates pharmacist campus + floor pressure.
 
 ### Transfer (Chloe)
 
@@ -629,7 +630,7 @@ Nodes with automation levels; weekly mesh drip (55% chance lbs to random student
 
 ### 21.2 Class scenes (~20 interactive)
 
-Filters: **mood** (6), **archetype** (10), **weight stage** (3), **class-wide** (6). Each: title, setup text, 2–3 choices with `{gain, mood, rel}`.
+Filters: **mood** (6), **archetype** (10), **weight stage** (3), **floor-wide** (6). Each: title, setup text, 2–3 choices with `{gain, mood, rel}`.
 
 ### 21.3 Random events (`content.js`)
 
@@ -637,7 +638,7 @@ Filters: **mood** (6), **archetype** (10), **weight stage** (3), **class-wide** 
 
 ### 21.4 Narrative / influence events
 
-Professor rank progression, friend-pair weight convergence, Lilith feast clue, pharmacist exposure thresholds, community researcher faculty meetings.
+RA rank progression, friend-pair weight convergence, Lilith feast clue, pharmacist exposure thresholds, lane captain faculty meetings.
 
 ### 21.5 Growth events (`growthEvents.js`)
 
@@ -712,7 +713,7 @@ Modular prose system (`src/textEngine/`). Templates use `{module.slot}` syntax r
 
 ### 23.3 Content layers outside engine
 
-- `content.js`: body descriptions (bodyType × stage), outfits, stage reactions, professor ranks
+- `content.js`: body descriptions (bodyType × stage), outfits, stage reactions, RA ranks
 - `students.js`: TAP_OUT_DIALOGUE, IMMOBILE_REDIRECT, BLOB_PRIVATE_INTRO (per-id voice)
 - `evolvedForms.js`: EVOLVED_REACTIONS (6 lines/form), EVOLVED_EVENTS (branching), EVOLUTION_OFFER intros
 - `miniGames.js`: Contest/sumo/stream/recording narrative constants
@@ -757,7 +758,7 @@ For each student, prose varies by:
 ## 26. Technical stack (reference implementation)
 
 - **Frontend:** React (JSX), Vite, PWA
-- **State:** Monolithic `ProfessorSim.jsx` component (~6000 lines) holds game state, week advance, action handlers
+- **State:** Monolithic `HallPass.jsx` component (~6000 lines) holds game state, week advance, action handlers
 - **Data:** `src/gameData/*.js` pure data + logic
 - **Views:** `src/views/*.jsx` per screen
 - **Components:** Modals for dinner, talk, evolution, devices, streams, etc.
@@ -784,8 +785,8 @@ For each student, prose varies by:
 | Playable students | 19 (17 visible + 2 hidden) |
 | Evolution paths | 30+ form ids across 16 archetypes |
 | Weight stages | 12 |
-| Spirit skills | ~30 across 3 trees |
-| Classroom skills | 40+ across 6 tiers |
+| Influence skills | ~30 across 3 trees |
+| Hall lounge skills | 40+ across 6 tiers |
 | Lab devices | 9 |
 | Campus nodes | 18 |
 | Campus secrets | 10 |
@@ -808,8 +809,8 @@ To rebuild functionally equivalent game:
 3. Implement **stomach model** (§6) as default feed path
 4. Wire **relationship tiers** gating sessions/intimacy/evolution
 5. Add **corruption + hunger** parallel tracks
-6. Implement **three spirit skill trees** with effect aggregation
-7. Add **classroom prestige shop** (lbs-cost)
+6. Implement **three influence skill trees** with effect aggregation
+7. Add **hall lounge prestige shop** (lbs-cost)
 8. Build **evolution modal** + per-form activity handlers (many are custom UIs, not one template)
 9. Implement **campus graph** + secrets + exploration rolls
 10. Build **lab crafting** + **9 devices** + optional network
@@ -824,7 +825,7 @@ To rebuild functionally equivalent game:
 
 ### 29.1 Design intent
 
-The player is the **Gluttony Spirit** (§1). Opposition must escalate from mundane institutional friction to cosmic antagonism without ever becoming pure subtraction. Every oppositional beat should present **readable counters** tied to existing systems (§6 gain, §15 evolution, §19 lab, §22 scrutiny, §23 text engine).
+The player is the **RA influence** (§1). Opposition must escalate from mundane institutional friction to cosmic antagonism without ever becoming pure subtraction. Every oppositional beat should present **readable counters** tied to existing systems (§6 gain, §15 evolution, §19 lab, §22 scrutiny, §23 text engine).
 
 **Philosophy pillars:**
 
@@ -843,7 +844,7 @@ The player is the **Gluttony Spirit** (§1). Opposition must escalate from munda
 | **I — Semester Normalcy** | 1–7 | Rumor + passive scrutiny | Meter only; Board dormant |
 | **II — Institutional** | 8–19 | Academic Inquiry Board (§30) | Board drives agenda + meter |
 | **III — Proxy War** | 14–24 | Board + mid proxies (§31) | Layered agendas |
-| **IV — Supernatural** | 20+ (trigger) | Spirit of Hunger/Scarcity (§33) | Meter becomes `scarcityPressure` hybrid |
+| **IV — Supernatural** | 20+ (trigger) | Hunger/Scarcity opposition act (§33) | Meter becomes `scarcityPressure` hybrid |
 
 Acts overlap — proxies can appear before Act IV trigger.
 
@@ -900,8 +901,8 @@ Each week the AIB draws **1–2 agenda cards** if `agendaQueue.length < 2`. Card
 | `size_review` | 55 | Force class weigh-in scene; +12 scrutiny on skip | `feast_bribe`, `streamer_distraction` |
 | `wellness_seminar` | 50 + saturation Softening | −15% class gain mult for 1 week | `hive_intake`, `compound`, `seminar_sabotage` |
 | `budget_freeze` | 75 | −$200/week until resolved | `bribe`, `discredit`, `capture` |
-| `removal_hearing` | 90 | Student stage 9+ trial; fail → hidden 4 wks | `testify`, `discredit`, `spirit_ult` |
-| `faculty_informant` | orange suspicion (Madeline) | +2 agenda draws/3 wks | `faculty_chat`, `discredit` |
+| `removal_hearing` | 90 | Student stage 9+ trial; fail → hidden 4 wks | `testify`, `discredit`, `influence_ult` |
+| `faculty_informant` | orange suspicion (Cassidy) | +2 agenda draws/3 wks | `faculty_chat`, `discredit` |
 | `emergency_hearing` | scandalMeter ≥ 60 | Blocks week end until resolved | any |
 
 **Player warning:** Oversight tab shows queue + 1-week telegraph.
@@ -914,10 +915,10 @@ Each week the AIB draws **1–2 agenda cards** if `agendaQueue.length < 2`. Card
 | 2 | **Lilith Hunt** | 1 | Lilith unlocked; member not consumed | Add member to hunt map (difficulty 4); consume → `removed`, −15 scrutiny |
 | 3 | **Compound Seduction** | 1 | Sophia stage ≥ 2; faculty lounge access | +corruption 15–25 on member over 2 wks |
 | 4 | **Evolved Student Operation** | 1–2 | Relevant evolved form | Cancel or delay 1 agenda card (form-specific flavor) |
-| 5 | **Public Discredit** | 2 | Madeline researcher OR Kylie stream tier 2+ | Remove card from deck permanently; −10 member resolve all |
+| 5 | **Public Discredit** | 2 | Cassidy researcher OR Kylie stream tier 2+ | Remove card from deck permanently; −10 member resolve all |
 | 6 | **Bureaucratic Capture** | 2 | `institutional_cover` skill + rel ≥ 70 student | Convert `wavering` member to `compromised` |
 | 7 | **Feast Bribe** | 3 | Reneé culinary OR Tiffany feast stage ≥ 3 | Pause all AIB actions 1 week; −5 resolve all |
-| 8 | **Spirit Pressure** | 1 | Gluttony: Echoed Will spent | Force agenda misfire (hearing becomes mandatory tasting) |
+| 8 | **Floor Pressure** | 1 | Influence: Echoed Will spent | Force agenda misfire (hearing becomes mandatory tasting) |
 | 9 | **Faculty Testimony** | 1 | Faculty affinity ≥ 60 | +10 resolve player-side shield; cancels `informant` |
 | 10 | **Network Misdirect** | 1 | Lab network stage ≥ 2 | −scandalMeter 20; risk detection spike |
 
@@ -955,7 +956,7 @@ Proxies **stack** atop the AIB — they add agenda modifiers, not replacement fa
 **Mechanics:**
 - Duplicates one AIB card per week (observer "takes notes")
 - `observerName` procedural; appears in `lecture_hall` exploration
-- **Counter:** Madeline discredit, institutional cover, public banquet (class skill) with success roll
+- **Counter:** Cassidy discredit, institutional cover, public banquet (hall lounge skill) with success roll
 
 ### 31.3 Ascetic Circle
 
@@ -1000,10 +1001,10 @@ Week trigger: global scene — lights dim, stomachs flutter empty then **hunger 
 
 | Archetype | Supernatural form id | Thin form fantasy | Power hook |
 |-----------|---------------------|-------------------|------------|
-| athlete | `sumo_wraith` | Ethereal sumo; mass as spirit belt | Sumo activity: curse enemies + gain mult |
+| athlete | `sumo_wraith` | Ethereal sumo; mass as lane captain belt | Sumo activity: curse enemies + gain mult |
 | influencer | `hollow_icon` | Impossibly lithe on camera | Streams draw scarcity attention away |
 | cheerleader | `pep_ghost` | Light, loud, hungry | Squad events: −scarcityPressure burst |
-| bookworm | `archivist_skin` | Thin scholar, infinite recall | Discredit always succeeds once/semester |
+| swimmer | `archivist_skin` | Thin scholar, infinite recall | Discredit always succeeds once/semester |
 | gamer | `lag_sprite` | Twitch-thin, gluttonous chat | Stream focus bar: hunger as resource |
 | sorority | `silhouette_host` | Elegant empty host | Feasts apply re-indulgence bonus |
 | overachiever | `metric_hollow` | Sharp, measuring | Competitive gainer: steal lbs from curse |
@@ -1038,11 +1039,11 @@ Selectors: `supernaturalForm`, `memoryMassBand`, `scarcityPressureBand`, `actWee
 
 ---
 
-## 33. Spirit of Hunger / Scarcity
+## 33. Hunger / Scarcity opposition act
 
 ### 33.1 Nature
 
-The **Spirit of Scarcity** (also Hunger's antithesis — Ascetic Control) is the cosmic opposition to the player's Gluttony Spirit. It does not hate food; it hates **permission**. Its doctrine: bodies should need little, want less, apologize for space.
+The **Voice of Restraint** (also Hunger's antithesis — Ascetic Control) is the cosmic opposition to the player's RA influence. It does not hate food; it hates **permission**. Its doctrine: bodies should need little, want less, apologize for space.
 
 ### 33.2 Manifestation
 
@@ -1076,12 +1077,12 @@ The **Spirit of Scarcity** (also Hunger's antithesis — Ascetic Control) is the
 | **Predator's Receipt** | Lilith consumes Portion Saint | Comedy bad-end achievement; pressure −50 |
 | **Synthesis** (optional late) | Sophia Goddess of Excess + all thin forms | Convert Scarcity to "Hungry Angel" ally — passive gain +10% |
 
-### 33.5 Direct player tools (Gluttony Spirit)
+### 33.5 Direct player tools (RA influence)
 
 - **Refeast Ritual** — 4 AP; mass calories all students; clears curses
 - **Devour** (§11.2) — damages scarcityPressure on success
 - **Echoed Will** — reverse one curse onto proxy
-- **Spirit level** (§3) — damage mult on all supernatural counters
+- **Hall reach** (§3) — damage mult on all supernatural counters
 
 ---
 
@@ -1122,7 +1123,7 @@ The **Spirit of Scarcity** (also Hunger's antithesis — Ascetic Control) is the
 | **oversight** | AIB roster, agenda queue, scandal meter, counter buttons |
 | **SupernaturalAscensionModal** | Second evolution offer |
 | Student detail: **Thin Form** panel | `etherealLbs`, `memoryMass`, refeed progress |
-| Spirit HUD extension | `scarcityPressure` bar after act |
+| Opposition HUD extension | `scarcityPressure` bar after act |
 
 ### 34.5 Text engine modules (new)
 
@@ -1145,7 +1146,7 @@ The **Spirit of Scarcity** (also Hunger's antithesis — Ascetic Control) is the
 
 ## 35. Integration Notes
 
-### 35.1 `ProfessorSim.jsx`
+### 35.1 `HallPass.jsx`
 
 - Add `opposition` to initial state; persist in save blob
 - `endWeek()`: call `processOpposition()` after digestion, before scrutiny
@@ -1184,7 +1185,7 @@ The **Spirit of Scarcity** (also Hunger's antithesis — Ascetic Control) is the
 
 | Path | Integration |
 |------|-------------|
-| Madeline `community_researcher` | Public discredit unlock; suspicion ↔ `faculty_informant` |
+| Cassidy `community_researcher` | Public discredit unlock; suspicion ↔ `faculty_informant` |
 | Sophia `pharmacist` | Compound seduction; exposure + scandalMeter link |
 | Tiffany `chapter_hostess` | Feast bribe power scaling |
 | Destiny/Kylie streams | Distraction counters |
@@ -1222,7 +1223,7 @@ endWeek():
 
 > The conference room smells like toner and denial. Chairwoman Vance has a folder thick enough to bruise — photos from the quad, timestamps, your departmental letterhead on catering invoices. She doesn't sit; none of them do, as if the chairs might confess complicity.
 >
-> "Professor," she says, and the word is a scalpel, "the Academic Inquiry Board has concerns about the *wellness trajectory* of your cohort."
+> "RA," she says, and the word is a scalpel, "the Academic Inquiry Board has concerns about the *wellness trajectory* of your cohort."
 >
 > Behind her, a screen wakes: Brittany laughing mid-bite, Serena's shoulders filling a gym doorway. Vance taps the table once. "We're scheduling individualized assessments. Cooperation is expected."
 >
@@ -1230,9 +1231,9 @@ endWeek():
 
 ### A.2 Mid-game discredit (`opposition.counter.discredit`)
 
-> Madeline doesn't raise her voice. The projector throws her thesis title across the hall: **Aesthetic Abundance as Embodied Resistance**. On slide fourteen, side-by-side stills: the Board's portion-guideline banquet and your class's unauthorized potluck — both abundant, only one honest.
+> Cassidy doesn't raise her voice. The projector throws her thesis title across the hall: **Aesthetic Abundance as Embodied Resistance**. On slide fourteen, side-by-side stills: the Board's portion-guideline banquet and your class's unauthorized potluck — both abundant, only one honest.
 >
-> "They call it excess when we choose it," Madeline says. "They call it wellness when they serve it."
+> "They call it excess when we choose it," Cassidy says. "They call it wellness when they serve it."
 >
 > Vance's resolve doesn't break in public. It *softens*, which is better.
 
@@ -1264,7 +1265,7 @@ endWeek():
 4. **Mid-game proxies** — Coalition, Accreditation, stacked draws  
 5. **Supernatural trigger + data layer** — act flag, `memoryMass`/`etherealLbs`, ascension modal  
 6. **Refeed surge + scarcity pressure** — curse queue, Refeast Ritual  
-7. **Remaining counters** — Lilith AIB, compounds, spirit ults  
+7. **Remaining counters** — Lilith AIB, compounds, influence ults  
 8. **Endgame paths + achievements**
 
 ---
@@ -1277,7 +1278,7 @@ endWeek():
 
 **Superseded v1 concept:** `living_canvas` (self-as-medium) — replaced per creative direction.
 
-**New single path:** `artisan_gallery` — **The Artisan Gallery of Abundance**. Fiona runs a fattening-atelier and exhibition space: she **feeds and documents** classmates as living subjects, **photographs abundance in the wild** (campus and beyond), and **mounts shows** that pair prints with the bodies that grew into them. Quality tier: Homestead Queen / Pharmacist / Community Researcher (custom modal, subject arcs, field expeditions, multi-phase `EVOLVED_EVENTS`, lbs-cost skill tree, scrutiny integration).
+**New single path:** `artisan_gallery` — **The Artisan Gallery of Abundance**. Fiona runs a fattening-atelier and exhibition space: she **feeds and documents** residents as living subjects, **photographs abundance in the wild** (campus and beyond), and **mounts shows** that pair prints with the bodies that grew into them. Quality tier: Homestead Queen / Pharmacist / Lane Captain (custom modal, subject arcs, field expeditions, multi-phase `EVOLVED_EVENTS`, lbs-cost skill tree, scrutiny integration).
 
 ### 36.2 Evolution offer
 
@@ -1293,7 +1294,7 @@ endWeek():
 
 Fiona is **curator, feeder, and photographer**. The player helps her:
 
-1. **Document subjects** — fatten classmates in staged studio sessions while shooting progression  
+1. **Document subjects** — fatten residents in staged studio sessions while shooting progression  
 2. **Field work** — capture candid "fat in the world" images on campus  
 3. **Mount exhibitions** — hang prints, optionally present the living subject beside their timeline  
 4. **Sell the work** — patrons, press, scandal, scrutiny  
@@ -1411,7 +1412,7 @@ Max **3 concurrent subjects**. Each arc tracks:
 
 **Arc completion** (optional achievement): subject reaches stage 6+ with 4+ sessions → **Triptych Masterwork** (permanent patron bonus).
 
-**Eligible subjects:** any visible class student; hidden students need unlock. Lilith excluded. Professor-favored students give diary jealousy hooks.
+**Eligible subjects:** any visible resident; hidden students need unlock. Lilith excluded. RA-favored students give diary jealousy hooks.
 
 ### 36.10 EVOLVED_EVENTS arc (6 stages)
 
@@ -1440,7 +1441,7 @@ Each stage: 2 phases × 2 choices → flags (`subject_featured`, `scandal_embrac
 
 | System | Hook |
 |--------|------|
-| **Madeline `community_researcher`** | Parallel "documentation" fantasy; Fiona's work is aesthetic not thesis — cross-dialogue at high suspicion |
+| **Cassidy `community_researcher`** | Parallel "documentation" fantasy; Fiona's work is aesthetic not thesis — cross-dialogue at high suspicion |
 | **Nadia `psych_researcher`** | Optional rivalry/jealousy text if same subject enrolled |
 | **Tiffany `chapter_hostess`** | Fiona atmosphere prep → exhibition patron bonus |
 | **Campus saturation** | Richer field rolls; Softening+ unlocks `regional_crowd` tag |
@@ -1496,7 +1497,7 @@ Remove from active offers: `installation_artist`, `food_photographer`, `living_c
 
 ### 37.3 Core fantasy
 
-Chloé transforms her exchange semester into a **salon circuit** — intimate dinners that grow bolder, guest lists that escalate from classmates to faculty to journalists to scandal. The player curates menus, balances **charming guests** vs **feeding Chloé**, and builds **salon prestige** until the capstone **Grande Soirée**.
+Chloé transforms her exchange semester into a **salon circuit** — intimate dinners that grow bolder, guest lists that escalate from residents to faculty to journalists to scandal. The player curates menus, balances **charming guests** vs **feeding Chloé**, and builds **salon prestige** until the capstone **Grande Soirée**.
 
 ### 37.4 Mini-game — Salon de l'Appétit (`SalonAppetitModal.jsx`)
 
@@ -1516,7 +1517,7 @@ Pick 2–4 guests from roster (prestige-gated):
 
 | Guest tier | Examples | Unlock |
 |------------|----------|--------|
-| Classmates | Brittany, Madeline, Kylie | 0 |
+| Residents | Brittany, Cassidy, Kylie | 0 |
 | Evolved collaborators | Reneé, Sophia, Tiffany | 20 |
 | Faculty | Chef Rosa, Dr. Mori | 45 |
 | Risk guests | Journalist, Ms. Platt (AIB) | 60 / 70 |
@@ -1610,7 +1611,7 @@ Remove: `campus_legend` offer, events, diary, skills, journalist arc (journalist
 
 ### 38.1 Design intent
 
-Professor Sim is a systems-heavy simulation — soft-locks, modal stack bugs, and opposition edge cases are inevitable at scale. §36 defines a **two-tier diagnostics layer**:
+Hall Pass is a systems-heavy simulation — soft-locks, modal stack bugs, and opposition edge cases are inevitable at scale. §36 defines a **two-tier diagnostics layer**:
 
 | Tier | Name | Audience | Purpose |
 |------|------|----------|---------|
@@ -1727,7 +1728,7 @@ ProfessorSim maintains a single string updated on meaningful player actions (`ad
 | `src/views/OversightView.jsx` | Oversight tab UI |
 | `src/components/OppositionHearingModal.jsx` | Hearing modal |
 | `src/components/SupernaturalAscensionModal.jsx` | Second evolution offer |
-| `src/gameData/classroomSkills.js` | Classroom prestige shop (lbs-cost `SKILL_TREE` purchases) |
+| `src/gameData/hall loungeSkills.js` | Hall lounge prestige shop (lbs-cost `SKILL_TREE` purchases) |
 | `src/gameData/scarcityTools.js` | Devour, Echoed Will, synthesis endgame helpers |
 | `src/gameData/lilithAibHunt.js` | AIB members as Lilith hunt map targets |
 | `src/gameData/oppositionCampus.js` | Vance spawns, Portion Saint, accreditation observer, ascetic garden, Mirror Fast, Ledger Wight |
@@ -1751,12 +1752,12 @@ Act dormancy (weeks 1–7, scrutiny &lt; 25), overlapping acts banner, class tra
 | Machine fatten chamber targeting | Done |
 | Removal + emergency hearings | Done |
 | Investigation tier 2 draws/week | Done |
-| `faculty_informant` + Madeline suspicion | Done |
+| `faculty_informant` + Cassidy suspicion | Done |
 | `wellness_seminar` + saturation Softening | Done |
 | Device confiscation + network disable | Done |
 | Vance campus node spawns | Done |
 | `size_review` weigh-in scene | Done |
-| Classroom `institutional_cover` skill | Done |
+| Hall lounge `institutional_cover` skill | Done |
 
 ### 39.4 §31 Proxies — **Done**
 

@@ -10,7 +10,7 @@ import { useTextFlagLog } from '../hooks/useTextFlagLog.js';
 import { clearTextFlags, downloadTextFlagsTxt } from '../gameData/textFlagStore.js';
 import { buildGameSnapshot, serializeBugReport } from '../gameData/bugReport.js';
 import { defaultOppositionState } from '../gameData/opposition.js';
-import { dormUnlocksForWeek } from '../gameData/dorms.js';
+import { dormUnlocksForWeek, getDorm } from '../gameData/dorms.js';
 import { defaultSalonState } from '../gameData/chloeSalon.js';
 import { defaultGalleryState } from '../gameData/fionaGallery.js';
 import { SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../gameData/chapterHostess.js';
@@ -93,6 +93,7 @@ export function DebugPanel({
   setPrivateSession,
   setTapOutPopup,
   setSessionResult,
+  setDormUnlockModal,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -599,6 +600,16 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   ✅ Session Result QA
+                </button>
+              )}
+              {setDormUnlockModal && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(74,122,232,0.45)' }}
+                  onClick={() => {
+                    const nerdy = getDorm('nerdy');
+                    if (nerdy) setDormUnlockModal([nerdy]);
+                    setDebugOpen(false);
+                  }}>
+                  🔓 Hall Unlock QA
                 </button>
               )}
               {setAscensionCeremony && (

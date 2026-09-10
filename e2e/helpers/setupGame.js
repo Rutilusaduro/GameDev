@@ -359,6 +359,12 @@ export async function triggerSessionResultQA(page) {
   await page.getByRole('button', { name: /Session Result QA/ }).click();
 }
 
+/** Debug: open hall unlock modal for Scholar's Rest. */
+export async function triggerHallUnlockQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Hall Unlock QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();

@@ -1,4 +1,4 @@
-# Professor Sim — Design Bible
+# Hall Pass — Design Bible
 
 ## Core Development Rules
 
@@ -53,7 +53,7 @@ The game is unambiguously erotic in its interests. It doesn't pretend otherwise.
 
 ## The Women
 
-Each student is a complete person before the gaining begins, and the gaining shapes her in ways that grow from who she already is. The cheerleader finds power in her new size; the competitive athlete redirects her drive into bigger arenas; the bookworm turns it into literature or research; the quiet girl blooms, gradually and then completely, into presence.
+Each resident is a complete person before the gaining begins, and the gaining shapes her in ways that grow from who she already is. The cheerleader finds power in her new size; the competitive athlete redirects her drive into bigger arenas; the swimmer turns it into literature or research; the quiet girl blooms, gradually and then completely, into presence.
 
 Their reactions to gaining should feel authentic and individual. Some resist initially, then find something they recognize. Some lean in immediately. Some process it intellectually before they feel it in their bodies. What they share is an arc toward acceptance and pleasure — they are all heading, at their own pace, toward inhabiting their growth fully.
 
@@ -73,7 +73,7 @@ The gaining is not something happening to them against their will. By the point 
 
 ## The Evolved Forms
 
-At mid-game, each student finds a path that integrates her size into a new identity. These aren't consolation prizes for having gotten fat — they are the culmination of who she's always been, brought into focus by the body she now has, or a new fixation bestowed upon them by the expeirence of eating, growing and being obese.
+At mid-game, each resident finds a path that integrates her size into a new identity. These aren't consolation prizes for having gotten fat — they are the culmination of who she's always been, brought into focus by the body she now has, or a new fixation bestowed upon them by the expeirence of eating, growing and being obese.
 
 The sumo wrestler was always competitive; the body found the sport. The feedee creator was always comfortable being seen; the body gave the content. The anonymous blogger was always observant and private; the body gave her something private and worth observing.
 
@@ -81,8 +81,8 @@ The evolved paths should feel inevitable. The player should be able to see, look
 
 Each evolved path has an ongoing narrative — five stages of an activity the player can witness, reactions that evolve with her weight, diary entries that document how she thinks about herself and her new identity. The player has a relationship with this specific woman's transformation, not just a before/after.
 
-## The Professor
-An unremarkable man, taken over by a remarkable force - a manifestation of the desire of life to grow and spread, a manifestation of consumption and abundance, has taken root in him and to a lesser degree, his students. It is this spirit, this force, which guides his actions, and bestows unto him supernatural powers 
+## The RA
+You are a senior redheaded curvy resident advisor — not possessed, not supernatural. Your authority is social: meal plans, lounge hours, floor trust, and the slow work of making indulgence feel normal on your hall. Residents respond to care, attention, and the permission you give them to grow. Your influence deepens through hall lounge skills and floor pressure mechanics, not spirit possession.
 ---
 
 ## Reference Style Notes — Source Texts
@@ -136,21 +136,21 @@ At blob stage and above, the descriptions should shift toward the architectural.
 - She is aware of her own size with the familiarity of someone who has been living in this body for some time. She knows how much room she takes. She knows what chairs will hold her and which ones she's not going to try. This awareness is practical, not distressed.
 - At the extreme end (600+ lbs, ascended), spatial comparisons to objects should escalate accordingly — the belly that precedes her through doorways, the chair that doesn't exist yet that would hold her comfortably, the way she has to turn sideways and it doesn't actually help.
 
-### The Professor/Feeder POV — Story_w Notes
+### The RA/Feeder POV — Story_w Notes
 
-This story is written in second-person, directly addressing the feeder/professor. It's the single best model for the professor character's inner voice in this game. There will be scenes and events from the girls' perspectives, these are done in the 3rd person 
+This story is written in second-person, directly addressing the feeder/RA. It's the single best model for your character's inner voice in this game. There will be scenes and events from the residents' perspectives; these are done in the third person.
 
-**The escalation of desire is documented as accumulation, not explosion.** "You thought 150 would be enough. But once she got there, you wanted 160. And then 170. Eventually, you realized you'd never be satisfied." The desire grows by increment. Each milestone creates the next one. Write the professor's investment this way: always a little further, always a little more, never arriving at a fixed ceiling.
+**The escalation of desire is documented as accumulation, not explosion.** "You thought 150 would be enough. But once she got there, you wanted 160. And then 170. Eventually, you realized you'd never be satisfied." The desire grows by increment. Each milestone creates the next one. Write you's investment this way: always a little further, always a little more, never arriving at a fixed ceiling.
 
-**Investment and love are not distinguished.** The professor doesn't separate "I want her bigger" from "I love her." They're the same impulse. The food is an expression of care. The weight gain is an expression of intimacy. This is the emotional logic of the game and it should be present in the professor's voice throughout — not analyzed, just lived.
+**Investment and love are not distinguished.** You doesn't separate "I want her bigger" from "I love her." They're the same impulse. The food is an expression of care. The weight gain is an expression of intimacy. This is the emotional logic of the game and it should be present in you's voice throughout — not analyzed, just lived.
 
-**The outside world's reading matters.** The story uses friends and family as a mirror — they see what's happening and it tells us something about the professor's power and investment. In the game, Vaughan, the HR observer, and the jealous students serve this function. Their reactions are evidence of what the professor has done.
+**The outside world's reading matters.** The story uses friends and family as a mirror — they see what's happening and it tells us something about you's power and investment. In the game, Vaughan, the HR observer, and the jealous students serve this function. Their reactions are evidence of what you has done.
 
 **The warmth of the conclusion is not hedged.** "If she wants to lie around, cramming food into her six-hundred-pound body and getting fucked passionately all day long, who am I to judge?" The judgment gets resolved. The friends come around. The story ends with acceptance. The game should do the same — the arc ends in arrival, not in ambiguity.
 
 ### Bodies Described Through Others' Eyes — Story_1 Notes
 
-This fantasy story introduces weight gain through a third-party observer (Quinn) who watches two women she's attracted to get larger. Her gaze is the mechanism for almost all the physical description. This is useful model for the professor's observational register.
+This fantasy story introduces weight gain through a third-party observer (Quinn) who watches two women she's attracted to get larger. Her gaze is the mechanism for almost all the physical description. This is useful model for you's observational register.
 
 **Reveal the body through clothing as constraint.** "Her breasts, squeezed inwards and upwards by the pressure of her outgrown leather armor." "The abdomen that was straining out against her leather armor." Clothing that's too small creates the body's new shape for the reader. The constraint reveals the abundance underneath. In game writing, clothes should be present and reactive: the waistband accommodating, the seams straining, the hem riding up.
 
