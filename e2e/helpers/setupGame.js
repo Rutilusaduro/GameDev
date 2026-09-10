@@ -353,6 +353,12 @@ export async function triggerTapOutQA(page) {
   await page.getByRole('button', { name: /Tap-Out QA/ }).click();
 }
 
+/** Debug: open private session result summary for Cassidy. */
+export async function triggerSessionResultQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Session Result QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();

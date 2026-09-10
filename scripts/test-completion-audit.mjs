@@ -231,8 +231,19 @@ const REQUIRED_E2E = [
   'e2e/removal-hearing-ceremony.spec.js',
   'e2e/week-planner-ceremony.spec.js',
   'e2e/tap-out-ceremony.spec.js',
+  'e2e/session-result-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
+
+check('session-result-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Session Result QA/);
+  assert.match(debug, /setSessionResult/);
+  assert.match(hallPass, /setSessionResult=\{setSessionResult\}/);
+  assert.match(helper, /triggerSessionResultQA/);
+});
 
 check('tap-out-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');

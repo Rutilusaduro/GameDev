@@ -92,6 +92,7 @@ export function DebugPanel({
   setIntimacySceneSelector,
   setPrivateSession,
   setTapOutPopup,
+  setSessionResult,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -581,6 +582,23 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   ⛔ Tap-Out QA
+                </button>
+              )}
+              {setSessionResult && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(70,35,120,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 212 };
+                    setSessionResult({
+                      student: { ...subject, archetype: 'swimmer', lbs: 212 },
+                      totalGain: 5600,
+                      fullnessPct: 78,
+                      scene: 'Cassidy leans back in the lounge chair, one hand on her stomach, the other still reaching for bread without looking. She is not embarrassed. She is satisfied — and already thinking about what comes next.',
+                      sessionCount: 2,
+                      capacityBonus: 16,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  ✅ Session Result QA
                 </button>
               )}
               {setAscensionCeremony && (
