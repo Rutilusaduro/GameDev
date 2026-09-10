@@ -94,6 +94,7 @@ export function DebugPanel({
   setTapOutPopup,
   setSessionResult,
   setDormUnlockModal,
+  setDinnerEvent,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -233,6 +234,31 @@ export function DebugPanel({
                     setView('actions');
                   }}>
                   🍽️ Dinner QA
+                </button>
+              )}
+              {setDinnerEvent && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(140,60,120,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || {
+                      id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 180, startLbs: 138,
+                      relationship: 42, fullness: 0, stomachCapacity: 120,
+                    };
+                    setDinnerEvent({
+                      student: subject,
+                      phase: 'venue',
+                      venue: null,
+                      dishes: [],
+                      conversationUsed: [],
+                      totalGain: 0,
+                      offenseLevel: 0,
+                      sessionStartCalories: 0,
+                      sessionPace: 'steady',
+                      pendingHungerResolve: null,
+                      textSession: { sessionUsed: {}, weekUsed: week },
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  🍽️ Dinner Out QA
                 </button>
               )}
               {setMilestoneQueue && (

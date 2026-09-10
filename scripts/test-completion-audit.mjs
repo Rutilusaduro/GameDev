@@ -233,6 +233,7 @@ const REQUIRED_E2E = [
   'e2e/tap-out-ceremony.spec.js',
   'e2e/session-result-ceremony.spec.js',
   'e2e/hall-unlock-ceremony.spec.js',
+  'e2e/dinner-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 
@@ -384,6 +385,106 @@ check('weigh-in-ceremony-qa-wiring', () => {
   assert.match(debug, /setWeighInState/);
   assert.match(hallPass, /setWeighInState=\{setWeighInState\}/);
   assert.match(helper, /triggerWeighInQA/);
+});
+
+check('dinner-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Dinner Out QA/);
+  assert.match(debug, /setDinnerEvent/);
+  assert.match(hallPass, /setDinnerEvent=\{setDinnerEvent\}/);
+  assert.match(helper, /triggerDinnerOutQA/);
+});
+
+check('ascension-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Ascension QA/);
+  assert.match(debug, /setAscensionCeremony/);
+  assert.match(hallPass, /setAscensionCeremony=\{setAscensionCeremony\}/);
+  assert.match(helper, /triggerAscensionQA/);
+});
+
+check('evolution-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Evolution QA/);
+  assert.match(debug, /setEvolutionModal/);
+  assert.match(hallPass, /setEvolutionModal=\{setEvolutionModal\}/);
+  assert.match(helper, /triggerEvolutionQA/);
+});
+
+check('confrontation-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Confrontation QA/);
+  assert.match(debug, /setConfrontation/);
+  assert.match(hallPass, /setConfrontation=\{setConfrontation\}/);
+  assert.match(helper, /triggerConfrontationQA/);
+});
+
+check('floor-checkin-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Floor Check-In QA/);
+  assert.match(debug, /setFloorCheckIn/);
+  assert.match(hallPass, /setFloorCheckIn=\{setFloorCheckIn\}/);
+  assert.match(helper, /triggerFloorCheckInQA/);
+});
+
+check('embodiment-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Embodiment QA/);
+  assert.match(debug, /setEmbodimentStudent/);
+  assert.match(hallPass, /setEmbodimentStudent=\{setEmbodimentStudent\}/);
+  assert.match(helper, /triggerEmbodimentQA/);
+});
+
+check('origin-pick-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Origin Pick QA/);
+  assert.match(debug, /setOriginPickState/);
+  assert.match(hallPass, /setOriginPickState=\{setOriginPickState\}/);
+  assert.match(helper, /triggerOriginPickQA/);
+});
+
+check('dream-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Dream QA/);
+  assert.match(debug, /setDreamStudent/);
+  assert.match(hallPass, /setDreamStudent=\{setDreamStudent\}/);
+  assert.match(helper, /triggerDreamQA/);
+});
+
+check('echo-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Echo QA/);
+  assert.match(debug, /setEchoReplay/);
+  assert.match(hallPass, /setEchoReplay=\{setEchoReplay\}/);
+  assert.match(helper, /triggerEchoQA/);
+});
+
+check('feast-ritual-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Feast Ritual QA/);
+  assert.match(debug, /setFeastRitualOpen/);
+  assert.match(hallPass, /setFeastRitualOpen=\{setFeastRitualOpen\}/);
+  assert.match(helper, /triggerFeastRitualQA/);
 });
 
 check('roster-new-badge-polish', () => {

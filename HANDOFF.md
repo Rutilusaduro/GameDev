@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 240)
+## Status (Pass 241)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -46,7 +46,7 @@ Legacy save keys (`spiritId`, `spiritResonance`, etc.) migrate at read time in `
 
 Each has a Debug QA button, HallPass prop wire, `trigger*QA` helper, e2e spec, and audit `*-qa-wiring` check:
 
-Milestone, Week Recap, Presentation, Tier-Up, Hunger Interrupt, Ascension, Evolution, Confrontation, Floor Check-In, Embodiment, Origin Pick, Talk, Weigh-In, Dream, Echo, Feast Ritual, Intimacy, Emergency Hearing, Removal Hearing, Private Session, Week Planner, Tap-Out, Session Result, **Hall Unlock**.
+Milestone, Week Recap, Presentation, Tier-Up, Hunger Interrupt, Ascension, Evolution, Confrontation, Floor Check-In, Embodiment, Origin Pick, Talk, Weigh-In, Dream, Echo, Feast Ritual, Intimacy, Emergency Hearing, Removal Hearing, Private Session, Week Planner, Tap-Out, Session Result, Hall Unlock, **Dinner Out**.
 
 Semester clickthrough specs: wk4–wk16, all-halls, dorm-unlock arcs.
 
