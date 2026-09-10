@@ -317,6 +317,12 @@ export async function triggerFeastRitualQA(page) {
   await page.getByRole('button', { name: /Feast Ritual QA/ }).click();
 }
 
+/** Debug: open intimacy scene selector for Cassidy at Intimate tier. */
+export async function triggerIntimacyQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Intimacy QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();

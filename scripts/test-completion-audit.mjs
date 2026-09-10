@@ -225,8 +225,19 @@ const REQUIRED_E2E = [
   'e2e/dream-ceremony.spec.js',
   'e2e/echo-ceremony.spec.js',
   'e2e/feast-ritual-ceremony.spec.js',
+  'e2e/intimacy-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
+
+check('intimacy-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Intimacy QA/);
+  assert.match(debug, /setIntimacySceneSelector/);
+  assert.match(hallPass, /setIntimacySceneSelector=\{setIntimacySceneSelector\}/);
+  assert.match(helper, /triggerIntimacyQA/);
+});
 
 check('e2e-coverage', () => {
   for (const spec of REQUIRED_E2E) {

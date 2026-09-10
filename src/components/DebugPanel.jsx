@@ -88,6 +88,7 @@ export function DebugPanel({
   setDreamPresetScenario,
   setEchoReplay,
   setFeastRitualOpen,
+  setIntimacySceneSelector,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -451,6 +452,22 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   🕯️ Feast Ritual QA
+                </button>
+              )}
+              {setIntimacySceneSelector && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(90,30,80,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 200, relationship: 75 };
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? { ...s, archetype: 'swimmer', lbs: 200, relationship: 75 }
+                        : s
+                    )));
+                    setAp((a) => Math.max(a, 10));
+                    setIntimacySceneSelector({ student: { ...subject, archetype: 'swimmer', lbs: 200, relationship: 75 } });
+                    setDebugOpen(false);
+                  }}>
+                  💜 Intimacy QA
                 </button>
               )}
               {setTierUpModal && (
