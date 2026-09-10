@@ -148,7 +148,7 @@ export function TierUpModal({ setStudents, setTierUpModal, tierUpModal, soundEna
           }}
         >
             <div style={{fontSize:9,letterSpacing:3,color:tierUpModal.newTier.color,marginBottom:8}}>RELATIONSHIP MILESTONE</div>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
+            <div className="tier-up-header" style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
               <span style={{fontSize:26}}>{tierUpModal.newTier.emoji}</span>
               <div>
                 <div style={{fontSize:17,fontWeight:700,color:tierUpModal.newTier.color}}>{tierUpModal.student.name}</div>

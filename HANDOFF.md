@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 246)
+## Status (Pass 247)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -93,14 +93,13 @@ npm run build
 | `docs/V2_0_DESIGN.md` + ascension design | ✅ | Pass 238 + `v2-design-ra-theme` audit |
 | `docs/ASCENSION_EXPANSION_PLAN.md` | ✅ | Pass 239 RA sync |
 | `docs/Old/`, `docs/IgnoreThis/` | ✅ | Archive banners (Pass 239) |
-| Steam-quality feel | ⚠️ | 88 e2e; all-4-dorm semester journey; roster NEW chime + hall-unlock stagger |
+| Steam-quality feel | ⚠️ | 92+ e2e; setup wizard stagger; all-4-dorm setup + semester journey |
 | Coherent prose throughout | ✅ | Runtime gates clean; legacy docs archive-bannered |
 
 ---
 
 ## Suggested next passes
 
-1. **Polish pass** — modal transitions, sound cues, dinner venue polish
-2. **Presentation / competitive-gainer ceremony** — verify e2e + QA if gaps found
-3. **Manual semester playthrough** — browser feel pass for modal timing / sound / animation polish
-4. **Polish pass** — animation, sound, modal transitions, roster NEW badges
+1. **Manual semester playthrough** — browser feel pass for modal timing / sound balance
+2. **Presentation / competitive-gainer ceremony** — spot-check natural triggers (QA wired)
+3. **Sound polish** — balance chime volumes across ceremony types

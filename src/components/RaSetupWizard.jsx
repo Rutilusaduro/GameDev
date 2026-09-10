@@ -104,12 +104,13 @@ export function RaSetupWizard({ students, onComplete }) {
               Your style shapes which actions feel natural — and which residents open up fastest.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
-              {RA_APPROACH_LIST.map((ap) => {
+              {RA_APPROACH_LIST.map((ap, i) => {
                 const on = approach?.id === ap.id;
                 return (
                   <button key={ap.id} onClick={clickSound(() => setApproach(ap))}
-                    className="ra-wizard-card"
+                    className="ra-wizard-card ra-wizard-card-in"
                     style={{
+                      animationDelay: `${i * 0.05}s`,
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
                       background: on ? ap.accentSoft : 'rgba(255,255,255,0.03)',
                       border: `1px solid ${on ? ap.color : 'rgba(255,255,255,0.08)'}`,
@@ -140,7 +141,7 @@ export function RaSetupWizard({ students, onComplete }) {
               Your hall&apos;s residents start on your roster. The other halls unlock as the semester deepens.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
-              {DORM_LIST.map((d) => {
+              {DORM_LIST.map((d, i) => {
                 const on = dorm?.id === d.id;
                 const residentNames = d.studentIds
                   .map((id) => students.find((s) => s.id === id)?.name)
@@ -148,8 +149,9 @@ export function RaSetupWizard({ students, onComplete }) {
                   .join(', ');
                 return (
                   <button key={d.id} onClick={clickSound(() => setDorm(d))}
-                    className="ra-wizard-card"
+                    className="ra-wizard-card ra-wizard-card-in"
                     style={{
+                      animationDelay: `${i * 0.06}s`,
                       textAlign: 'left', cursor: 'pointer', borderRadius: 10, padding: '14px 16px', fontFamily: 'inherit',
                       background: on ? d.accentSoft : 'rgba(255,255,255,0.03)',
                       border: `1px solid ${on ? d.color : 'rgba(255,255,255,0.08)'}`,
@@ -185,7 +187,10 @@ export function RaSetupWizard({ students, onComplete }) {
             subtitle="Every hall has a wildcard — build the resident who rounds out your floor."
             backLabel="← Pick another hall"
             onBack={() => setStep('dorm')}
-            onComplete={(draft) => onComplete({ approach, dorm, customDraft: draft })}
+            onComplete={(draft) => {
+              playHallPassSound('confirm');
+              onComplete({ approach, dorm, customDraft: draft });
+            }}
           />
           </div>
         )}

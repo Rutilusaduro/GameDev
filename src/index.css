@@ -15,6 +15,10 @@
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
+.ra-wizard-card-in {
+  animation: hallPassViewIn 0.26s ease-out both;
+}
+
 .ra-wizard-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
@@ -248,6 +252,20 @@
   background: linear-gradient(135deg, rgba(120, 50, 200, 0.55), rgba(70, 25, 140, 0.65));
   border: 1px solid rgba(200, 150, 255, 0.35);
   box-shadow: 0 0 12px rgba(140, 60, 220, 0.2);
+  animation: weekRecapBadgePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes weekRecapBadgePulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(140, 60, 220, 0.2); }
+  50% { box-shadow: 0 0 18px rgba(160, 80, 240, 0.38); }
+}
+
+.milestone-resident-header {
+  animation: hallPassViewIn 0.32s ease-out;
+}
+
+.tier-up-header {
+  animation: hallPassViewIn 0.28s ease-out;
 }
 
 .roster-tile:active {
@@ -1638,6 +1656,10 @@
   .ra-setup-step-dot,
   .ra-setup-primary-btn,
   .ra-wizard-card,
+  .ra-wizard-card-in,
+  .milestone-resident-header,
+  .tier-up-header,
+  .week-recap-week-badge,
   .roster-tile,
   .roster-tile-in,
   .week-recap-card-in,

@@ -2702,9 +2702,29 @@ check('ra-setup-wizard-polish', () => {
   const css = read('src/index.css');
   assert.match(css, /\.ra-setup-shell/);
   assert.match(css, /\.ra-setup-primary-btn:focus-visible/);
+  assert.match(css, /\.ra-wizard-card-in/);
   const wizard = read('src/components/RaSetupWizard.jsx');
   assert.match(wizard, /className="ra-setup-panel"/);
   assert.match(wizard, /className="ra-setup-primary-btn"/);
+  assert.match(wizard, /ra-wizard-card-in/);
+  assert.match(wizard, /playHallPassSound\('confirm'\)/);
+});
+
+check('setup-wizard-all-dorms-e2e', () => {
+  const spec = read('e2e/setup-wizard-all-dorms.spec.js');
+  assert.match(spec, /Victory Hall/);
+  assert.match(spec, /Scholar's Rest/);
+  assert.match(spec, /Rosewood House/);
+  assert.match(spec, /The Annex/);
+  assert.match(spec, /Cassidy/);
+});
+
+check('ceremony-entry-polish', () => {
+  const css = read('src/index.css');
+  assert.match(css, /\.milestone-resident-header/);
+  assert.match(css, /\.tier-up-header/);
+  assert.match(css, /@keyframes weekRecapBadgePulse/);
+  assert.match(read('src/components/MiscModals.jsx'), /tier-up-header/);
 });
 
 check('resident-framing-ui', () => {
