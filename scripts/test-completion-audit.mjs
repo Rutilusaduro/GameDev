@@ -2806,6 +2806,48 @@ check('natural-week-recap-e2e', () => {
   assert.match(spec, /WEEK 2/);
 });
 
+check('natural-wk12-hall-unlock-e2e', () => {
+  const spec = read('e2e/natural-wk12-hall-unlock.spec.js');
+  assert.match(spec, /week 12 without debug/i);
+  assert.match(spec, /Rosewood House/);
+  assert.match(spec, /Kylie/);
+});
+
+check('steam-quality-polish-gate', () => {
+  const requiredE2e = [
+    'e2e/setup-wizard-all-dorms.spec.js',
+    'e2e/semester-full-journey.spec.js',
+    'e2e/natural-week-recap.spec.js',
+    'e2e/natural-wk8-hall-unlock.spec.js',
+    'e2e/natural-wk12-hall-unlock.spec.js',
+    'e2e/desk-nav-anchor.spec.js',
+    'e2e/hall-log-sidebar.spec.js',
+    'e2e/lane-captain-presentation.spec.js',
+    'e2e/hall-unlock-ceremony.spec.js',
+    'e2e/week-recap-ceremony.spec.js',
+    'e2e/milestone-ceremony.spec.js',
+  ];
+  for (const rel of requiredE2e) {
+    assert.ok(existsSync(join(root, rel)), `missing steam-quality e2e: ${rel}`);
+  }
+  const css = read('src/index.css');
+  for (const marker of [
+    'hall-pass-overlay-in::before',
+    'ra-desk-next-week-ready',
+    'ra-wizard-card-in',
+    'hall-log-line',
+    'roster-new-pill',
+    'week-recap-card-in',
+    'dinner-out-modal .dinner-venue-choice-row',
+    'floor-checkin-modal .floor-checkin-choice',
+    'tier-up-cta',
+  ]) {
+    assert.match(css, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+  assert.match(read('src/gameData/hallPassAudio.js'), /warmupHallPassAudio/);
+  assert.match(read('src/HallPass.jsx'), /📋 RA Desk/);
+});
+
 check('resident-framing-ui', () => {
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /SELECT RESIDENTS/);
