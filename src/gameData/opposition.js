@@ -570,7 +570,7 @@ function rndRange(a, b) {
 
 const ACCREDITATION_OBSERVERS = [
   'Dr. Ellis Marchetti',
-  'Prof. Yuki Okonkwo',
+  'Ms. Yuki Okonkwo',
   'Ms. Renata Cole',
   'Dr. Samuel Greer',
 ];

@@ -116,6 +116,15 @@ check('mori-ra-naming', () => {
   assert.doesNotMatch(campus, /Prof\. Chen/);
 });
 
+check('prof-title-sweep', () => {
+  const lilith = read('src/gameData/lilith.js');
+  assert.match(lilith, /name: "RA Hayes"/);
+  assert.doesNotMatch(lilith, /name: "Prof\./);
+  const opposition = read('src/gameData/opposition.js');
+  assert.doesNotMatch(opposition, /Prof\. /);
+  assert.match(opposition, /Ms\. Yuki Okonkwo/);
+});
+
 check('lane-captain-panel-review-wiring', () => {
   const hallPass = read('src/HallPass.jsx');
   const detail = read('src/views/StudentDetailView.jsx');

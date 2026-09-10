@@ -131,7 +131,7 @@ export const HUNT_MEN = [
       : "He looked up the moment you came in and hasn't looked away. He's not pretending to be busy. He's just watching. He knows something is wrong. He's still here.",
   },
   {
-    id: 'prof_hayes', name: "Prof. Hayes", tag: "Visiting RA",
+    id: 'prof_hayes', name: "RA Hayes", tag: "Visiting RA",
     location: 'admin', difficulty: 3,
     desc: (stage) => stage < 6
       ? "Older. Careful. Actually perceptive — the kind of person who notices things most people don't bother to. The most interesting of them. The most useful challenge."

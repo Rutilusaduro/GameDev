@@ -367,6 +367,7 @@ const BANNED = [
   /\bfills the office chair\b/i,
   /\bDr\. Mori\b/,
   /\bProf\. Chen\b/,
+  /\bProf\. /,
 ];
 
 function assertClean(text, label) {
