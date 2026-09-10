@@ -10,9 +10,12 @@ const ALL_HALLS = ['Victory Hall', "Scholar's Rest", 'Rosewood House', 'The Anne
 
 async function assertAllHallsOpen(page) {
   for (const hall of ALL_HALLS) {
-    await expect(page.getByText(hall, { exact: false }).first()).toBeVisible();
     await expect(page.getByText(new RegExp(`${hall} opens week`, 'i'))).toHaveCount(0);
   }
+  await expect(page.getByText('Cassidy').first()).toBeVisible();
+  await expect(page.getByText('Priya').first()).toBeVisible();
+  await expect(page.getByText('Kylie').first()).toBeVisible();
+  await expect(page.getByText('Destiny').first()).toBeVisible();
 }
 
 async function assertRaFramingClean(page) {

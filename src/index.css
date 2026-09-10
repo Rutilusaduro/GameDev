@@ -175,6 +175,36 @@
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
+.hall-log-scroll {
+  scroll-behavior: smooth;
+}
+
+.hall-log-line {
+  word-break: break-word;
+  transition: opacity 0.2s ease;
+}
+
+.hall-log-line--older {
+  opacity: 0.68;
+}
+
+.hall-log-cap-note {
+  animation: hallPassViewIn 0.2s ease-out;
+}
+
+.hall-log-clear-btn {
+  transition: transform 0.14s ease, opacity 0.18s ease, filter 0.18s ease;
+}
+
+.hall-log-clear-btn:hover {
+  opacity: 1 !important;
+  filter: brightness(1.06);
+}
+
+.hall-log-clear-btn:active {
+  transform: scale(0.98);
+}
+
 .hall-log-tab:focus-visible {
   outline: 2px solid rgba(180, 140, 255, 0.75);
   outline-offset: 2px;
@@ -1685,6 +1715,9 @@
   .hall-unlock-new,
   .roster-tile-new,
   .hall-log-entry,
+  .hall-log-line,
+  .hall-log-cap-note,
+  .hall-log-clear-btn,
   .hall-pass-overlay-in,
   .hall-pass-modal-in,
   .dinner-out-modal .dinner-venue-choice-row,

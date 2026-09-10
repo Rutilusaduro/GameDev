@@ -556,6 +556,23 @@ check('modal-overlay-polish', () => {
   assert.match(styles, /rgba\(2,0,6,0\.9\)/);
 });
 
+check('hall-log-sidebar-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.hall-log-line/);
+  assert.match(css, /\.hall-log-line--older/);
+  assert.match(css, /\.hall-log-clear-btn/);
+  assert.match(desk, /STORY_LOG_CAP/);
+  assert.match(desk, /dedupeConsecutiveLogEntries/);
+  assert.match(desk, /Clear story beats/);
+});
+
+check('hall-log-sidebar-e2e', () => {
+  const spec = read('e2e/hall-log-sidebar.spec.js');
+  assert.match(spec, /hall log story\/ledger tabs/i);
+  assert.match(spec, /Clear story beats/);
+});
+
 check('desk-nav-anchor-e2e', () => {
   const spec = read('e2e/desk-nav-anchor.spec.js');
   const helper = read('e2e/helpers/setupGame.js');

@@ -421,6 +421,17 @@ function isLedgerLogLine(text){
   return LEDGER_LOG_PREFIXES.some((p) => t.startsWith(p));
 }
 
+const STORY_LOG_CAP = 28;
+const LEDGER_LOG_CAP = 36;
+
+function dedupeConsecutiveLogEntries(entries) {
+  const out = [];
+  for (const item of entries) {
+    if (!out.length || out[out.length - 1].e !== item.e) out.push(item);
+  }
+  return out;
+}
+
 export default function HallPass(){
   const [students,setStudents]=useState(()=>INIT_STUDENTS.map(st=>({
     ...st, ...initGainStats(st), ...initDeviceState(), psych: initPsychState(), corruption: 0,
@@ -8819,7 +8830,11 @@ export default function HallPass(){
             const entries=log.map((e,i)=>({e,i}));
             const story=entries.filter(x=>!isLedgerLogLine(x.e));
             const ledger=entries.filter(x=>isLedgerLogLine(x.e));
-            const shown=logTab==="ledger"?ledger:story;
+            const rawShown=logTab==="ledger"?ledger:story;
+            const deduped=logTab==="story"?dedupeConsecutiveLogEntries(rawShown):rawShown;
+            const cap=logTab==="ledger"?LEDGER_LOG_CAP:STORY_LOG_CAP;
+            const hidden=Math.max(0, deduped.length - cap);
+            const shown=hidden > 0 ? deduped.slice(-cap) : deduped;
             const tabBtn=(id,label,count)=>(
               <button key={id} type="button" className="hall-log-tab" onClick={()=>setLogTab(id)}
                 style={{flex:1,fontSize:10,fontWeight:700,padding:"4px 6px",cursor:"pointer",
@@ -8833,18 +8848,34 @@ export default function HallPass(){
                 {tabBtn("story","📖 Story",story.length)}
                 {tabBtn("ledger","📊 Ledger",ledger.length)}
               </div>
-              <div ref={logRef} style={{flex:1, overflow:"auto"}}>
+              <div ref={logRef} className="hall-log-scroll" style={{flex:1, overflow:"auto"}}>
+                {hidden > 0 && (
+                  <div className="hall-log-cap-note" style={{fontSize:10,color:"#6a5088",fontStyle:"italic",padding:"4px 2px 8px",borderBottom:"1px solid rgba(80,18,140,0.12)",marginBottom:4}}>
+                    Showing latest {shown.length} · {hidden} earlier {logTab === 'ledger' ? 'receipt' : 'beat'}{hidden === 1 ? '' : 's'} hidden
+                  </div>
+                )}
                 {shown.length===0
                   ? <div style={{fontSize:11,color:"#5a3888",fontStyle:"italic",padding:"6px 2px"}}>
                       {logTab==="ledger"?"No receipts yet this session.":"Nothing's happened yet — feed a resident."}
                     </div>
-                  : shown.map(({e,i})=>{
+                  : shown.map(({e,i}, displayIdx)=>{
                     const tone=e.startsWith('🏆')?' hall-log-achievement':e.startsWith('🔓')?' hall-log-unlock':'';
                     const fresh=i===log.length-1?' hall-log-entry':'';
-                    const cls=`${fresh}${tone}`.trim();
-                    return <div key={i} className={cls||undefined} style={C.logE}>{e}</div>;
+                    const older=displayIdx < shown.length - 4 ? ' hall-log-line--older' : '';
+                    const cls=`hall-log-line${older}${fresh?` ${fresh}`:''}${tone}`.trim();
+                    return <div key={`${i}-${displayIdx}`} className={cls} style={C.logE}>{e}</div>;
                   })}
               </div>
+              {logTab === 'story' && story.length > 0 && (
+                <button
+                  type="button"
+                  className="hall-log-clear-btn"
+                  onClick={() => setLog((prev) => prev.filter(isLedgerLogLine))}
+                  style={{...C.smBtn, fontSize: 9, marginTop: 6, flexShrink: 0, opacity: 0.8, width: '100%'}}
+                >
+                  Clear story beats
+                </button>
+              )}
               <button type="button" onClick={()=>{ setFieldNoteError(null); setBugReportOpen(true); }}
                 style={{...C.btn('#3a3028'), fontSize:9, marginTop:8, flexShrink:0, opacity:0.85}}>
                 📋 Something wrong? Shift Log

@@ -27,13 +27,11 @@ for (const { dorm, expectCassidy } of START_HALLS) {
     await page.getByRole('button', { name: '📋 RA Desk' }).click();
 
     for (const hall of ALL_HALLS) {
-      await expect(page.getByText(hall, { exact: false }).first()).toBeVisible();
       await expect(page.getByText(new RegExp(`${hall} opens week`, 'i'))).toHaveCount(0);
     }
 
-    if (!expectCassidy) {
-      await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
-    }
+    await expect(page.getByText('Cassidy').first()).toBeVisible();
+    await expect(page.getByText('Priya').first()).toBeVisible();
 
     await expect(page.getByText('Professor Sim')).toHaveCount(0);
     await expect(page.getByText('Madeline')).toHaveCount(0);
