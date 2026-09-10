@@ -24,7 +24,7 @@ export function ModalOverlay({
     : {};
 
   return (
-    <div style={{ ...C.overlay, ...style }} {...overlayProps}>
+    <div className="hall-pass-overlay-in" style={{ ...C.overlay, ...style }} {...overlayProps}>
       {children}
     </div>
   );

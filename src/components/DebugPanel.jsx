@@ -218,6 +218,7 @@ export function DebugPanel({
                     setOwnedSkills((prev) => ({ ...prev, resident_ride: 1, deep_ride: 1 }));
                     setAp((a) => Math.max(a, 20));
                     setView('influence');
+                    setDebugOpen(false);
                   }}>
                   🌒 Floor Influence QA
                 </button>

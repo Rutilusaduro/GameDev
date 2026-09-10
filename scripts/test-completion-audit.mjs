@@ -235,6 +235,7 @@ const REQUIRED_E2E = [
   'e2e/hall-unlock-ceremony.spec.js',
   'e2e/dinner-ceremony.spec.js',
   'e2e/roster-new-badge.spec.js',
+  'e2e/floor-influence-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 
@@ -513,7 +514,17 @@ check('floor-influence-ceremony-qa-wiring', () => {
   const helper = read('e2e/helpers/setupGame.js');
   assert.match(debug, /Floor Influence QA/);
   assert.match(debug, /setOwnedSkills/);
+  assert.match(debug, /setDebugOpen\(false\)/);
   assert.match(helper, /triggerFloorInfluenceQA/);
+});
+
+check('modal-overlay-polish', () => {
+  const overlay = read('src/components/ModalOverlay.jsx');
+  const css = read('src/index.css');
+  assert.match(overlay, /hall-pass-overlay-in/);
+  assert.match(css, /\.hall-pass-overlay-in/);
+  assert.match(css, /@keyframes hallPassOverlayIn/);
+  assert.match(css, /\.dinner-out-modal \.dinner-venue-choice-row/);
 });
 
 check('evolution-ready-ceremony-qa-wiring', () => {

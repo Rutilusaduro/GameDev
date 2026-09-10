@@ -370,7 +370,9 @@ export async function triggerRosterNewQA(page) {
 /** Debug: open Floor Influence hub with ride-along skills. */
 export async function triggerFloorInfluenceQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
-  await page.getByRole('button', { name: /Floor Influence QA/ }).click();
+  const btn = page.getByRole('button', { name: /Floor Influence QA/ });
+  await btn.scrollIntoViewIfNeeded();
+  await btn.click();
 }
 
 /** Debug: open dinner-out venue picker for Cassidy. */
