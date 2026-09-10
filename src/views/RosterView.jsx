@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // ROSTER VIEW — resident roster
 // ═══════════════════════════════════════════════════════════════
-import { useMemo } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import { C } from '../styles.js';
 import { DORM_LIST, getDorm, getStudentHomeDorm, effectiveUnlockWeek, dormUnlocksForWeek } from '../gameData/dorms.js';
 import {
@@ -191,6 +191,17 @@ export function RosterView({
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
   const residentWithdrawn = students.some((s) => s.withdrawn && rosterVisible(s));
+  const hasNewResidents = useMemo(
+    () => students.some((s) => rosterVisible(s) && isRosterNew(s, week)),
+    [students, week, lilithUnlocked, elaraDiscovered],
+  );
+  const newChimeRef = useRef(0);
+  useEffect(() => {
+    if (view !== 'roster' || !hasNewResidents) return;
+    if (newChimeRef.current === week) return;
+    newChimeRef.current = week;
+    playHallPassSound('nav', soundEnabled);
+  }, [view, hasNewResidents, soundEnabled, week]);
   const locked = students.filter(isLocked).sort((a, b) => (b.passiveTrust || 0) - (a.passiveTrust || 0));
   const openHallSet = new Set([...(unlockedDorms || []), startDormId].filter(Boolean));
   const hallReachable = (s) => {

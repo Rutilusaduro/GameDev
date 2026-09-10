@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 245)
+## Status (Pass 246)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -20,7 +20,7 @@
 | Main app shell | ✅ | `HallPass.jsx` |
 | Ceremony Debug QA (25 flows) | ✅ | `DebugPanel.jsx` QA buttons + ceremony e2e specs |
 | Design bible RA sync | ✅ | `GAME_BIBLE.md`, `DESIGN_BIBLE.md` + `game-bible-ra-theme` audit |
-| Smoke + e2e | ✅ | `npm run test:smoke` — 81/81 e2e, completion-audit 168/168 |
+| Smoke + e2e | ✅ | `npm run test:smoke` — 88/88 e2e, completion-audit 199/199 |
 
 ---
 
@@ -64,7 +64,7 @@ Semester clickthrough specs: wk4–wk16, all-halls, dorm-unlock arcs.
 | `src/components/MiscModals.jsx` | `DormUnlockModal`, session result, tier-up |
 | `src/components/DebugPanel.jsx` | Ceremony QA triggers |
 | `e2e/helpers/setupGame.js` | `completeRaSetup`, `trigger*QA` helpers |
-| `scripts/test-completion-audit.mjs` | 168 requirement gates |
+| `scripts/test-completion-audit.mjs` | 199 requirement gates |
 | `scripts/test-prose-coherence.mjs` | Banned legacy framing in prose |
 | `scripts/test-ra-theme.mjs` | `src/` professor/spirit leak scan |
 
@@ -93,8 +93,8 @@ npm run build
 | `docs/V2_0_DESIGN.md` + ascension design | ✅ | Pass 238 + `v2-design-ra-theme` audit |
 | `docs/ASCENSION_EXPANSION_PLAN.md` | ✅ | Pass 239 RA sync |
 | `docs/Old/`, `docs/IgnoreThis/` | ✅ | Archive banners (Pass 239) |
-| Steam-quality feel | ⚠️ | 86+ e2e; `semester-full-journey` covers all 4 dorm starts wk1→16 |
-| Coherent prose throughout | ⚠️ | Runtime gates clean; legacy design docs remain |
+| Steam-quality feel | ⚠️ | 88 e2e; all-4-dorm semester journey; roster NEW chime + hall-unlock stagger |
+| Coherent prose throughout | ✅ | Runtime gates clean; legacy docs archive-bannered |
 
 ---
 

@@ -497,9 +497,19 @@ check('roster-new-badge-polish', () => {
   assert.match(roster, /roster-tile-new/);
   assert.match(roster, /roster-new-pill/);
   assert.match(roster, /isRosterNew/);
+  assert.match(roster, /hasNewResidents/);
+  assert.match(roster, /playHallPassSound\('nav'/);
   assert.match(css, /\.roster-tile-new/);
   assert.match(unlock, /openRosterResident/);
   assert.match(read('src/HallPass.jsx'), /openRosterResident/);
+});
+
+check('hall-unlock-stagger-polish', () => {
+  const modal = read('src/components/MiscModals.jsx');
+  const css = read('src/index.css');
+  assert.match(modal, /hall-unlock-new/);
+  assert.match(modal, /animationDelay/);
+  assert.match(css, /\.hall-unlock-new[\s\S]*hallLogIn/);
 });
 
 check('roster-new-badge-qa-wiring', () => {

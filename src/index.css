@@ -322,12 +322,10 @@
 }
 
 .hall-unlock-new {
-  animation: hallUnlockPulse 2s ease-in-out infinite;
+  animation:
+    hallLogIn 0.28s ease-out backwards,
+    hallUnlockPulse 2s ease-in-out infinite;
 }
-
-.hall-unlock-new:nth-child(2) { animation-delay: 0.15s; }
-.hall-unlock-new:nth-child(3) { animation-delay: 0.3s; }
-.hall-unlock-new:nth-child(4) { animation-delay: 0.45s; }
 
 .roster-tile-new {
   border-color: rgba(255, 220, 140, 0.55) !important;

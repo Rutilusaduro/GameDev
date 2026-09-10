@@ -97,7 +97,7 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
         <div style={{ fontSize: 11, color: '#a898c8', marginBottom: 14, lineHeight: 1.5 }}>
           New residents from {dorms.map((d) => d.shortLabel).join(' and ')} hall{dorms.length > 1 ? 's' : ''} can now build trust on your roster.
         </div>
-        {dorms.map((d) => (
+        {dorms.map((d, i) => (
           <div
             key={d.id}
             className="hall-unlock-new"
@@ -108,6 +108,7 @@ export function DormUnlockModal({ dorms, onContinue, soundEnabled = true }) {
               lineHeight: 1.7,
               fontSize: 12,
               color: '#e8e0f0',
+              animationDelay: `${0.08 + i * 0.12}s, ${0.36 + i * 0.12}s`,
             }}
           >
             <div style={{ fontSize: 10, letterSpacing: 2, color: d.color, marginBottom: 4, fontWeight: 700 }}>{d.tagline}</div>
