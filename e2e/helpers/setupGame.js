@@ -347,6 +347,12 @@ export async function triggerPrivateSessionQA(page) {
   await page.getByRole('button', { name: /Private Session QA/ }).click();
 }
 
+/** Debug: open private session tap-out popup for Cassidy. */
+export async function triggerTapOutQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Tap-Out QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();

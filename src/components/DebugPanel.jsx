@@ -91,6 +91,7 @@ export function DebugPanel({
   setFeastRitualOpen,
   setIntimacySceneSelector,
   setPrivateSession,
+  setTapOutPopup,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -566,6 +567,20 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   🌙 Private Session QA
+                </button>
+              )}
+              {setTapOutPopup && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(100,25,25,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 280 };
+                    setTapOutPopup({
+                      student: { ...subject, archetype: 'swimmer', lbs: 280 },
+                      text: 'Cassidy pushes the plate away with both hands — not gently. "I can\'t. I actually can\'t." She means it. The private session ends where her appetite finally disagrees with your encouragement.',
+                      totalGain: 8400,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  ⛔ Tap-Out QA
                 </button>
               )}
               {setAscensionCeremony && (
