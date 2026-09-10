@@ -30,7 +30,7 @@ for (const { dorm, expectCassidy } of START_HALLS) {
       await expect(page.getByText(new RegExp(`${hall} opens week`, 'i'))).toHaveCount(0);
     }
 
-    await expect(page.getByText('Cassidy').first().first()).toBeVisible();
+    await expect(page.getByText('Cassidy').first()).toBeVisible();
     await expect(page.getByText('Priya').first()).toBeVisible();
 
     await expect(page.getByText('Professor Sim')).toHaveCount(0);
