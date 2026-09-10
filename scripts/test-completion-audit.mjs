@@ -525,6 +525,8 @@ check('semester-full-journey-e2e', () => {
   assert.match(spec, /semester full journey/i);
   assert.match(spec, /Victory Hall/);
   assert.match(spec, /Scholar's Rest/);
+  assert.match(spec, /Rosewood House/);
+  assert.match(spec, /The Annex/);
   assert.match(spec, /advanceToWeek/);
   assert.match(helper, /advanceToWeek/);
 });

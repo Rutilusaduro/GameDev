@@ -8,6 +8,19 @@ import {
 
 const ALL_HALLS = ['Victory Hall', "Scholar's Rest", 'Rosewood House', 'The Annex'];
 
+async function assertAllHallsOpen(page) {
+  for (const hall of ALL_HALLS) {
+    await expect(page.getByText(hall, { exact: false }).first()).toBeVisible();
+    await expect(page.getByText(new RegExp(`${hall} opens week`, 'i'))).toHaveCount(0);
+  }
+}
+
+async function assertRaFramingClean(page) {
+  await expect(page.getByText('Professor Sim')).toHaveCount(0);
+  await expect(page.getByText('Madeline')).toHaveCount(0);
+  await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
+}
+
 test.describe('semester full journey', () => {
   test('Victory Hall: wk1 roster → wk8 unlock → wk16 all halls', async ({ page }) => {
     test.setTimeout(240_000);
@@ -37,14 +50,8 @@ test.describe('semester full journey', () => {
     await dismissBlockingModals(page);
     await page.getByRole('button', { name: '📋 Roster' }).click();
 
-    for (const hall of ALL_HALLS) {
-      await expect(page.getByText(hall, { exact: false }).first()).toBeVisible();
-      await expect(page.getByText(new RegExp(`${hall} opens week`, 'i'))).toHaveCount(0);
-    }
-
-    await expect(page.getByText('Professor Sim')).toHaveCount(0);
-    await expect(page.getByText('Madeline')).toHaveCount(0);
-    await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
+    await assertAllHallsOpen(page);
+    await assertRaFramingClean(page);
   });
 
   test("Scholar's Rest: Cassidy joins roster by week 16", async ({ page }) => {
@@ -60,9 +67,55 @@ test.describe('semester full journey', () => {
     await page.getByRole('button', { name: '📋 Roster' }).click();
 
     await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
-    for (const hall of ALL_HALLS) {
-      await expect(page.getByText(hall, { exact: false }).first()).toBeVisible();
-    }
-    await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
+    await assertAllHallsOpen(page);
+    await assertRaFramingClean(page);
+  });
+
+  test('Rosewood House: wk8 hall unlocks → wk16 Cassidy on roster', async ({ page }) => {
+    test.setTimeout(240_000);
+
+    await completeRaSetup(page, { dorm: 'Rosewood House' });
+    await expect(page.getByText('RA DESK — ROSEWOOD HOUSE')).toBeVisible();
+    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await expect(page.locator('.roster-tile').filter({ hasText: 'Cassidy' })).toHaveCount(0);
+
+    const week8 = await advanceToWeek(page, 8);
+    expect(week8).toBeGreaterThanOrEqual(8);
+    await dismissBlockingModals(page);
+    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await expect(page.getByText('Victory Hall', { exact: false }).first()).toBeVisible();
+
+    const week16 = await advanceToWeek(page, 16);
+    expect(week16).toBeGreaterThanOrEqual(16);
+    await dismissBlockingModals(page);
+    await page.getByRole('button', { name: '📋 Roster' }).click();
+
+    await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
+    await assertAllHallsOpen(page);
+    await assertRaFramingClean(page);
+  });
+
+  test('The Annex: wk12 Rosewood unlock → wk16 full hall reach', async ({ page }) => {
+    test.setTimeout(240_000);
+
+    await completeRaSetup(page, { dorm: 'The Annex' });
+    await expect(page.getByText('RA DESK — THE ANNEX')).toBeVisible();
+    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await expect(page.locator('.roster-tile').filter({ hasText: 'Cassidy' })).toHaveCount(0);
+
+    const week12 = await advanceToWeek(page, 12);
+    expect(week12).toBeGreaterThanOrEqual(12);
+    await dismissBlockingModals(page);
+    await page.getByRole('button', { name: '📋 Roster' }).click();
+    await expect(page.getByText('Rosewood House', { exact: false }).first()).toBeVisible();
+
+    const week16 = await advanceToWeek(page, 16);
+    expect(week16).toBeGreaterThanOrEqual(16);
+    await dismissBlockingModals(page);
+    await page.getByRole('button', { name: '📋 Roster' }).click();
+
+    await expect(page.getByText('Cassidy', { exact: true }).first()).toBeVisible();
+    await assertAllHallsOpen(page);
+    await assertRaFramingClean(page);
   });
 });
