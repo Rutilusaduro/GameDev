@@ -228,6 +228,7 @@ const REQUIRED_E2E = [
   'e2e/intimacy-ceremony.spec.js',
   'e2e/opposition-hearing-ceremony.spec.js',
   'e2e/private-session-ceremony.spec.js',
+  'e2e/removal-hearing-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
 
@@ -251,10 +252,12 @@ check('hearing-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');
   const hallPass = read('src/HallPass.jsx');
   const helper = read('e2e/helpers/setupGame.js');
-  assert.match(debug, /Hearing QA/);
+  assert.match(debug, /Emergency Hearing QA/);
+  assert.match(debug, /Removal Hearing QA/);
   assert.match(debug, /setHearingState/);
   assert.match(hallPass, /setHearingState=\{setHearingState\}/);
   assert.match(helper, /triggerHearingQA/);
+  assert.match(helper, /triggerRemovalHearingQA/);
 });
 
 check('intimacy-ceremony-qa-wiring', () => {

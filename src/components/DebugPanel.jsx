@@ -508,7 +508,23 @@ export function DebugPanel({
                     });
                     setDebugOpen(false);
                   }}>
-                  👁 Hearing QA
+                  👁 Emergency Hearing QA
+                </button>
+              )}
+              {setHearingState && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(110,40,50,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? { ...s, archetype: 'swimmer', lbs: 240, relationship: 72 }
+                        : s
+                    )));
+                    setHearingState({
+                      type: 'removal', studentId: 1, phaseIdx: 0, history: [], log: [], done: false,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  👁 Removal Hearing QA
                 </button>
               )}
               {setPrivateSession && setStudents && (

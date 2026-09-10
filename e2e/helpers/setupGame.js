@@ -326,7 +326,13 @@ export async function triggerIntimacyQA(page) {
 /** Debug: open emergency Board hearing modal. */
 export async function triggerHearingQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
-  await page.getByRole('button', { name: /Hearing QA/ }).click();
+  await page.getByRole('button', { name: /Emergency Hearing QA/ }).click();
+}
+
+/** Debug: open resident removal hearing for Cassidy. */
+export async function triggerRemovalHearingQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Removal Hearing QA/ }).click();
 }
 
 /** Debug: open private session venue picker for Cassidy at Close tier. */
