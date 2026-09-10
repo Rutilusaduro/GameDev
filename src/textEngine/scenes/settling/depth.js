@@ -143,7 +143,7 @@ registerModuleVariants('set.weigh.travel', [
   ]},
   { when: {}, text: [
     'Weigh-day means going to her. You find her exactly where she always is.',
-    'You bring the rig to her room. She has not fit through the office door in a long time.',
+    'You bring the rig to her room. She has not fit through the lounge door in a long time.',
   ]},
 ]);
 

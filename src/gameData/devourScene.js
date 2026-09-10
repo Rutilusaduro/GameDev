@@ -21,7 +21,7 @@ const VICTIM_DETAILS = [
   'She had headphones in and a nervous smile — the kind of person who says sorry when you bump into her.',
   'She smelled like vanilla lotion and dining-hall fries. She was alone. That mattered.',
   'She was thin, still — narrow wrists, uncertain posture, the body of someone who has not yet learned what hunger can become.',
-  'She laughed too loud at something on her phone, then went quiet when she saw your office door open.',
+  'She laughed too loud at something on her phone, then went quiet when she saw the lounge door open.',
   'She had been crying. Mascara on one cheek. She said she was fine. She was not fine.',
 ];
 

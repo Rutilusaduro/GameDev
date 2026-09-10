@@ -91,7 +91,7 @@ registerPool('campus.destination', [
   { when: { campusLocale: 'elevator' }, text: ['into the elevator', 'through the closing doors', 'past the capacity placard'] },
   { when: { campusLocale: 'gym' }, text: ['across the gym floor', 'toward the equipment', 'toward the recovery station'] },
   { when: { campusLocale: 'dorm_room' }, text: ['into her room', 'to the mirror', 'to the bed'] },
-  { when: { campusLocale: 'prof_office' }, text: ['to your desk', 'through the RA office door', 'to the chair she knows'] },
+  { when: { campusLocale: 'prof_office' }, text: ['to your desk', 'through the lounge door', 'to the chair she knows'] },
 ]);
 
 registerPool('campus.obstacle', [

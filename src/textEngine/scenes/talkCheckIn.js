@@ -244,7 +244,7 @@ registerPool('talk.checkIn.acceptOpen', [
 ]);
 
 // ── talk.checkIn.bodySettle — SENTENCE CORE (no terminal period)
-// How she settles into the office chair; stage-banded so the same beat
+// How she settles into the RA desk chair; stage-banded so the same beat
 // scales from soft to room-filling. (Phase 6 decomposition of the old
 // flat acceptBody — WORD_GRANULAR_ENGINE_PLAN.)
 registerPool('talk.checkIn.bodySettle', [

@@ -34,7 +34,7 @@ registerPool('campus.dev.vulnerability', [
   { when: { targetType: 'npc', role: 'faculty' }, text: [
     'hurrying past with a stack of papers',
     'paused at a vending machine, off-guard',
-    'unlocking an office door, distracted',
+    'unlocking a lounge door, distracted',
   ] },
   { when: { targetType: 'npc', role: 'staff' }, text: [
     'wiping a counter, humming to herself',

@@ -10,11 +10,11 @@ import { registerPool } from '../../engine.js';
 registerPool('set.weigh.travel', [
   { when: {}, text: [
     `It's weigh-day, so you go to her — kit under your arm, down the hall to the room she doesn't leave. She's exactly where she always is.`,
-    `You bring the scale to {subject.name} now, not the other way around. She hasn't fit through the office door in a long time. You find her where she rests.`,
+    `You bring the scale to {subject.name} now, not the other way around. She hasn't fit through the lounge door in a long time. You find her where she rests.`,
   ]},
   { when: { stageMin: 11 }, weight: 2, text: [
     `Weigh-day means a walk to her room and a cartload of gear. {subject.name} doesn't come anywhere anymore. You go to her, and she's waiting, because there's nowhere else she could be.`,
-    `You haul the load-cell rig down to where she rests. She used to meet you at a scale in the office; that's years of appetite behind her now. The whole apparatus travels to her.`,
+    `You haul the load-cell rig down to where she rests. She used to meet you at a scale by your RA desk; that's years of appetite behind her now. The whole apparatus travels to her.`,
   ]},
 ]);
 
