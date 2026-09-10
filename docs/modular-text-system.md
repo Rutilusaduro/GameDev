@@ -275,7 +275,7 @@ Every sub-feature gets **its own file** under `src/textEngine/scenes/` — never
 2. registers its scene-local modules at import time,
 3. exports its template constants and/or a `renderX(...)` convenience wrapper.
 
-### From game logic (gameData / ProfessorSim)
+### From game logic (gameData / HallPass)
 
 Call the scene's wrapper and push the string wherever it goes (event log, hive log, popup):
 
@@ -284,7 +284,7 @@ const text = renderHiveIntake(lilith, victims, week);
 log.push({ tag, text, type: "scene" });
 ```
 
-Keep `gameData/*.js` files engine-free where possible — render at the call site (ProfessorSim or the view), not inside pure state-transition functions.
+Keep `gameData/*.js` files engine-free where possible — render at the call site (HallPass or the view), not inside pure state-transition functions.
 
 ### From React components
 

@@ -59,7 +59,7 @@ A reproduction-oriented design reference for **Hall Pass** (*hall-pass*). This d
 | **achievements** | Milestone tracker |
 | **log** | Event history |
 
-Navigation tabs appear dynamically (e.g. **student** tab when one is selected). Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster.
+Navigation tabs appear dynamically (e.g. **student** tab when one is selected). Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster. Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster.
 
 ---
 
@@ -184,7 +184,7 @@ Per visible student: random 1–3 lbs + skill passives + semester/random events 
 
 **Sources:** force-feed (+2), stuffed week (+1), stage-up (+3), talk topics, skills, compounds.
 
-**Reveal:** Relationship ≥ 55 shows psyche tier on student detail.
+**Reveal:** Relationship ≥ 55 shows psyche tier on resident detail.
 
 **Talk registers:** Submissive / Broken codas append at high corruption when skills unlocked.
 
@@ -282,7 +282,7 @@ Tiered unlocks via hall lounge skills. Each venue: dishes (cal + full), conversa
 
 ### 13.6 Intimacy (1–2 AP, Intimate tier+)
 
-Multi-phase scenes per archetype/student. Choices: rel, optional lbs, flags. Entry from private session high fullness or student detail "Get Close."
+Multi-phase scenes per archetype/student. Choices: rel, optional lbs, flags. Entry from private session high fullness or resident detail "Get Close."
 
 ### 13.7 Weigh-in
 
@@ -416,7 +416,7 @@ Case study pairs:
 | social_pressure | Kylie & Tiffany | 1 | 4–8 |
 | competitive | Brittany & Serena | 2 | 6–11 |
 | night_in | Destiny & Maya | 3 | 4–8 |
-| culture_shock | MJ, Fiona & Chloe | 4 | 5–9 |
+| culture_shock | MJ, Fiona & Chloé | 4 | 5–9 |
 | metrics | Priya & Kaylee | 5 | 5–10 |
 | manipulation | Daisy & Nadia | 6 | 8–14 |
 | vore | Reneé & Lilith | 7 | 15–25 (needs Lilith) |
@@ -677,7 +677,7 @@ Long-run score from week/10, lab stage, saturation, narrative count → +0–2 A
 
 ### 22.4 Transformation pressure
 
-Surrender composite: stage 35% + corruption 30% + addiction 20% + hunger 15% → bands emerging/rising/committed/surrendered. UI readout on student detail.
+Surrender composite: stage 35% + corruption 30% + addiction 20% + hunger 15% → bands emerging/rising/committed/surrendered. UI readout on resident detail.
 
 ### 22.5 Relationship ecology
 
@@ -1094,8 +1094,8 @@ The **Voice of Restraint** (also Hunger's antithesis — Ascetic Control) is the
 |----------|-------|-------|
 | `scandalMeter` | 0–100 | Covert AIB ops |
 | `scarcityPressure` | 0–100 | Post-act antagonist |
-| `memoryMass` | per student | Pre-act peak tracking |
-| `etherealLbs` | per student | Thin display weight |
+| `memoryMass` | per resident | Pre-act peak tracking |
+| `etherealLbs` | per resident | Thin display weight |
 
 ### 34.2 Event types
 
@@ -1103,7 +1103,7 @@ The **Voice of Restraint** (also Hunger's antithesis — Ascetic Control) is the
 - `aib_counter_success` / `aib_counter_fail`
 - `proxy_intro` — coalition/accreditation/ascetic
 - `supernatural_trigger` — act fire
-- `supernatural_ascension` — per student
+- `supernatural_ascension` — per resident
 - `refeed_surge` — re-indulgence
 - `scarcity_curse` / `curse_clear`
 - `famine_week_start` / `famine_week_clear`

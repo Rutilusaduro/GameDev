@@ -3,7 +3,7 @@
 Implementation lock for `docs/ASCENSION_EXPANSION_PLAN.md` Part D.
 
 This file freezes the v1 contract before prose and UI work. Ascension here is
-the mythic second-cycle system: a student reaches the mortal ceiling, completes
+the mythic second-cycle system: a resident reaches the mortal ceiling, completes
 her evolved-form catalyst, confirms the ceremony, and is reborn at 100 lbs with
 memory, relationship, and a form-specific gain loop intact.
 
@@ -45,7 +45,7 @@ when a character says or accepts them in voice.
 | Student | id | formId | Display | Gain twist | Catalyst flag |
 |---|---:|---|---|---|---|
 | Brittany | 0 | `valkyrie` | Valkyrie | Glory-weight from squad feasts after wins | `brittany_squad_legacy_complete` |
-| Madeline | 1 | `sphinx` | Sphinx | Gains from wrong answers and campus curiosity | `madeline_research_archive_complete` |
+| Cassidy | 1 | `sphinx` | Sphinx | Gains from wrong answers and campus curiosity | `cassidy_research_archive_complete` |
 | Kylie | 2 | `siren` | Siren | Audience adoration converts to pounds | `kylie_collab_format_complete` |
 | Serena | 3 | `mermaid` | Mermaid | Grace in water, monumental presence ashore | `serena_record_board_retired` |
 | Fiona | 4 | `galatea` | Galatea | Gallery attention banks study-weight | `fiona_retrospective_hung` |
@@ -53,8 +53,8 @@ when a character says or accepts them in voice.
 | Tiffany | 6 | `feast_nymph` | Feast Nymph | Gains when others feast under her roof | `tiffany_no_size_rules_charter` |
 | Priya | 7 | `djinn` | Djinn | Wishes granted become booked pounds | `priya_goal_semester_complete` |
 | Maya | 8 | `dryad` | Dryad | Grove banks seasonal growth | `maya_quiet_circuit_complete` |
-| Chloe | 9 | `melusine` | Melusine | Salon dinners feed hostess and true form | `chloe_salon_legend_complete` |
-| Renee | 10 | `hearth_demigoddess` | Hearth Demigoddess | Cooking that changes others feeds her | `renee_tasting_menu_complete` |
+| Chloé | 9 | `melusine` | Melusine | Salon dinners feed hostess and true form | `chloe_salon_legend_complete` |
+| Reneé | 10 | `hearth_demigoddess` | Hearth Demigoddess | Cooking that changes others feeds her | `renee_tasting_menu_complete` |
 | Kaylee | 11 | `fertility_goddess` | Fertility Goddess | Blessing overflow from nearby growth | `kaylee_clinic_rotation_complete` |
 | Nadia | 12 | `dream_eater` | Dream-Eater | Witnessed desires become meals | `nadia_psych_thesis_complete` |
 | Daisy | 13 | `angel_of_plenty` | Angel of Plenty | Blessings and gratitude carry weight | `daisy_snack_program_complete` |
@@ -77,7 +77,7 @@ Standard eligibility:
 - roster entry exists
 - catalyst flag is present
 
-Lilith is special. Her reveal is eligible after six other students have
+Lilith is special. Her reveal is eligible after six other residents have
 ascended, and it does not require a personal catalyst.
 
 Catalyst flag lookup for v1:

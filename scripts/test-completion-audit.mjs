@@ -266,6 +266,31 @@ check('skill-doc-ra-theme', () => {
   assert.doesNotMatch(ref, /Madeline/);
 });
 
+check('v2-design-ra-theme', () => {
+  const v2 = read('docs/V2_0_DESIGN.md');
+  assert.match(v2, /Hall Pass/);
+  assert.match(v2, /RA|resident advisor/i);
+  assert.match(v2, /Resident Ride/);
+  assert.match(v2, /Floor Influence/);
+  assert.doesNotMatch(v2, /Professor Sim/);
+  assert.doesNotMatch(v2, /gluttony spirit/i);
+  assert.doesNotMatch(v2, /\bMadeline\b/);
+});
+
+check('ascension-design-ra-theme', () => {
+  const asc = read('docs/ASCENSION_DESIGN.md');
+  assert.match(asc, /Cassidy/);
+  assert.match(asc, /cassidy_research_archive_complete/);
+  assert.doesNotMatch(asc, /\bMadeline\b/);
+  assert.doesNotMatch(asc, /madeline_research/);
+});
+
+check('modular-text-doc-ra-theme', () => {
+  const doc = read('docs/modular-text-system.md');
+  assert.match(doc, /HallPass/);
+  assert.doesNotMatch(doc, /ProfessorSim/);
+});
+
 check('hall-unlock-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');
   const hallPass = read('src/HallPass.jsx');

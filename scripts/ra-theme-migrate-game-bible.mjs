@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Migrate GAME_BIBLE.md (and DESIGN_BIBLE title) to Hall Pass RA dorm framing. */
+/** Migrate design docs to Hall Pass RA dorm framing. */
 import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
@@ -91,6 +91,33 @@ const REPLACEMENTS = [
   [/\*\*class\*\* \| Roster grid/g, '**roster** | Resident grid'],
   [/Navigation tabs appear dynamically \(e\.g\. \*\*student\*\* tab when one is selected\)\./g,
     'Navigation tabs appear dynamically (e.g. **student** tab when one is selected). Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster.'],
+  // V2 design doc
+  [/Spirit Embodiment \(Possession\)/g, 'Resident Ride (Embodiment)'],
+  [/slip out of the professor and ride inside a student/g, "slip into a resident's perspective — ride along inside her hunger"],
+  [/Inhabit\*\* a student/g, '**Ride Along** with a resident'],
+  [/returns to professor body/g, 'returns to RA desk'],
+  [/text the professor/g, 'text the RA'],
+  [/whole class/g, 'whole floor'],
+  [/Class Banquet/g, 'Floor Banquet'],
+  [/## Skill Tree Additions \(Spirit\)/g, '## Skill Tree Additions (Influence)'],
+  [/## Classroom Prestige Additions/g, '## Hall Lounge Prestige Additions'],
+  [/New nav tab: \*\*Spirit\*\*/g, 'New nav tab: **Floor Influence**'],
+  [/Spirit skill `/g, 'Influence skill `'],
+  [/Classroom `/g, 'Hall lounge `'],
+  [/student pairs/g, 'resident pairs'],
+  [/student detail/g, 'resident detail'],
+  [/Student Portraits/g, 'Resident Portraits'],
+  [/per student/g, 'per resident'],
+  [/sleeping student/g, 'sleeping resident'],
+  [/2 students/g, '2 residents'],
+  [/4 students/g, '4 residents'],
+  [/6\+ students/g, '6+ residents'],
+  [/madeline_research_archive_complete/g, 'cassidy_research_archive_complete'],
+  [/Professor Sim 2\.0/g, 'Hall Pass V2'],
+  [/a student reaches/g, 'a resident reaches'],
+  [/other students/g, 'other residents'],
+  [/Chloe \|/g, 'Chloé |'],
+  [/Renee \|/g, 'Reneé |'],
 ];
 
 function migrate(path) {
@@ -104,7 +131,13 @@ function migrate(path) {
   return false;
 }
 
-const targets = ['GAME_BIBLE.md', 'DESIGN_BIBLE.md'];
+const targets = [
+  'GAME_BIBLE.md',
+  'DESIGN_BIBLE.md',
+  'docs/V2_0_DESIGN.md',
+  'docs/ASCENSION_DESIGN.md',
+  'docs/modular-text-system.md',
+];
 let updated = 0;
 for (const file of targets) {
   if (migrate(join(root, file))) {
