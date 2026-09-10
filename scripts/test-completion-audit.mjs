@@ -229,8 +229,19 @@ const REQUIRED_E2E = [
   'e2e/opposition-hearing-ceremony.spec.js',
   'e2e/private-session-ceremony.spec.js',
   'e2e/removal-hearing-ceremony.spec.js',
+  'e2e/week-planner-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
+
+check('week-planner-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Week Planner QA/);
+  assert.match(debug, /setWeekPlannerOpen/);
+  assert.match(hallPass, /setWeekPlannerOpen=\{setWeekPlannerOpen\}/);
+  assert.match(helper, /triggerWeekPlannerQA/);
+});
 
 check('private-session-venue-framing', () => {
   const sessions = read('src/gameData/sessions.js');

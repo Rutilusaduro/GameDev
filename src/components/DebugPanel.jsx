@@ -73,6 +73,7 @@ export function DebugPanel({
   setDeviceInventory,
   setMilestoneQueue,
   setWeekRecap,
+  setWeekPlannerOpen,
   setPresentationState,
   setTierUpModal,
   setHungerInterrupt,
@@ -273,6 +274,15 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   📅 Week Recap QA
+                </button>
+              )}
+              {setWeekPlannerOpen && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(40,50,110,0.55)' }}
+                  onClick={() => {
+                    setWeekPlannerOpen(true);
+                    setDebugOpen(false);
+                  }}>
+                  📋 Week Planner QA
                 </button>
               )}
               {setPresentationState && setSelectedId && (

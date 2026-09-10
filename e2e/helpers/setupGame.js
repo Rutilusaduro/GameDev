@@ -227,6 +227,12 @@ export async function triggerMilestoneQA(page) {
   await page.getByRole('button', { name: /Milestone QA/ }).click();
 }
 
+/** Debug: open week planner modal. */
+export async function triggerWeekPlannerQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Week Planner QA/ }).click();
+}
+
 /** Debug: open week recap modal (debug panel auto-closes). */
 export async function triggerWeekRecapQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
