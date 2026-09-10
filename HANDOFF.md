@@ -20,7 +20,7 @@
 | Main app shell | ✅ | `HallPass.jsx` |
 | Ceremony Debug QA (25 flows) | ✅ | `DebugPanel.jsx` QA buttons + ceremony e2e specs |
 | Design bible RA sync | ✅ | `GAME_BIBLE.md`, `DESIGN_BIBLE.md` + `game-bible-ra-theme` audit |
-| Smoke + e2e | ✅ | `npm run test:smoke` — 88/88 e2e, completion-audit 199/199 |
+| Smoke + e2e | ✅ | `npm run test:smoke` — 92/92 e2e, completion-audit 202/202 |
 
 ---
 
@@ -64,7 +64,7 @@ Semester clickthrough specs: wk4–wk16, all-halls, dorm-unlock arcs.
 | `src/components/MiscModals.jsx` | `DormUnlockModal`, session result, tier-up |
 | `src/components/DebugPanel.jsx` | Ceremony QA triggers |
 | `e2e/helpers/setupGame.js` | `completeRaSetup`, `trigger*QA` helpers |
-| `scripts/test-completion-audit.mjs` | 199 requirement gates |
+| `scripts/test-completion-audit.mjs` | 202 requirement gates |
 | `scripts/test-prose-coherence.mjs` | Banned legacy framing in prose |
 | `scripts/test-ra-theme.mjs` | `src/` professor/spirit leak scan |
 
