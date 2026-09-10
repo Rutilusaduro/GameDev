@@ -95,7 +95,7 @@ Re-apply upload revisions: `node scripts/apply-flabwife-fills.mjs <path-to-uploa
 ### Wire-up (Step 5)
 
 - Export `renderWifeLessonsLesson(stage, lessonId, ctx)` and `renderWifeLessonsTalk(person, stage, beat, ctx)` from `scenes/wifeLessons/index.js`.
-- `WifeLessonsModal` + `ProfessorSim` import renderers; delete `text` fields from `WL_LESSONS` / `WL_DIALOGUES` in the same commit.
+- `WifeLessonsModal` + `HallPass` import renderers; delete `text` fields from `WL_LESSONS` / `WL_DIALOGUES` in the same commit.
 - Dialogue Lab section: `wifeLessons.lesson`, `wifeLessons.talk` with `wlStage`, `person`, `capped`, `overtook` params.
 
 ### Known cleanup (not placeholders)

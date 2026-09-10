@@ -6,7 +6,7 @@ talk.checkIn decomposition, body.portrait monolith retired (16.8%→0.3%
 triples), hunger-interrupt tone facts, campus.seenBeat, enc. tracking,
 irregular stem folds; full-sweep triple rate 0.90%, gate at the 1%
 target. Phase 7: engine core is game-free behind registerSubjectDeriver;
-Professor Sim's setting pack lives in gameData/textContext.js per §8.
+Hall Pass's setting pack lives in gameData/textContext.js per §8.
 Ongoing (by design, forever): authoring more variants into pools and
 decomposing remaining legacy sentence pools as they're touched — §6 is
 the standing checklist for that work.
@@ -22,7 +22,7 @@ How to use this document: read §1–§4 once for the design, then execute §5
 phase by phase. Each phase is independently shippable and ends with a
 verification command. Do not start phase N+1 until phase N's "done when"
 line passes. §6 is the standing checklist for anyone authoring content
-against the upgraded engine. §8 lists what a project other than Professor Sim
+against the upgraded engine. §8 lists what a project other than Hall Pass
 must supply to reuse the system.
 
 ---
@@ -231,7 +231,7 @@ get added to the irregular maps.
 Pronouns: new modules in `modules.js` — `{subject.they}`, `{subject.them}`,
 `{subject.their}`, `{subject.theirs}`, `{subject.themself}` — reading
 `subject.pronouns` (`"she" | "he" | "they"`, default `"she"` for this
-project) from a small lookup table. Professor Sim's cast is all-she; the slots
+project) from a small lookup table. Hall Pass's cast is all-she; the slots
 exist so lexicon entries written once port to any project (§8).
 
 ### 4.4 Outfit and garment state (Phase 4)

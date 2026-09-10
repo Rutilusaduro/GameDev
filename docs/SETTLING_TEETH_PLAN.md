@@ -134,7 +134,7 @@ she can shift — which at stage 11 is almost nothing, and the prose owns it.
   week" — so it reads as a gamble the player chose, never a gotcha.
 
 Implementation stays inside the existing `ActiveIntimacyScene` choice handler
-in `ProfessorSim.jsx`; no new state shape beyond the `pinRisk` flag and the
+in `HallPass.jsx`; no new state shape beyond the `pinRisk` flag and the
 blackout pool.
 
 **Verify:** `text:lint`; a node self-check that forces the roll both ways and

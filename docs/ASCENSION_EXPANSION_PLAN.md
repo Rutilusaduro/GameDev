@@ -1,6 +1,6 @@
 # Expansion Plan: 20 Ideas + The Ascension System
 
-Design session output. Twenty ideas to radically expand Professor Sim:
+Design session output. Twenty ideas to radically expand Hall Pass:
 two for character creation (Part A), three for UX (Part B), five for
 midgame (Part C), and a ten-step implementation plan for the endgame
 **Ascension system** (Part D) — every girl, at max size, transforms into a
@@ -143,7 +143,7 @@ Planning: a slot board you drag girls onto. Each placed card previews the
 slot's expected shape before you commit: predicted cost (her appetite
 raises meal prices — the planner surfaces the exact number and its
 week-over-week creep), scheduling conflicts (two girls, one venue, one
-professor), synergy hints when a pairing has rivalry-web content (C1),
+RA), synergy hints when a pairing has rivalry-web content (C1),
 and interrupt likelihood drawn from real state ("Destiny is at hunger 3
 and addiction 2 — expect a knock whether or not you plan her"). Unfilled
 slots show what they'd default to instead of sitting blank, so skipping a
@@ -269,7 +269,7 @@ Each rank unlocks a verb that changes what a time slot IS, not a
 multiplier — the test for every proposed rank is "does this add a new
 kind of scene?" Picks are per-run (one branch may reach R3, a second may
 reach R1, the third stays closed), so midgames diverge by build and pair
-differently with cast composition: Researcher runs want Madeline and
+differently with cast composition: Researcher runs want Cassidy and
 Sophia early; Patron runs bloom with Fiona and Maya. Branch state is a
 `skill` flag the engine already selects on, so content gating costs
 nothing new.
@@ -621,7 +621,7 @@ the stadium lights bend toward her at cycle-2 stage 11 and the
 scoreboard shows only her number. First words: "New event. Divine weight
 class. I'm keeping score."
 
-**1 · Madeline — Sphinx.** The self-study concludes: she was the thesis.
+**1 · Cassidy — Sphinx.** The self-study concludes: she was the thesis.
 Catalyst: her research-archive arc complete (gain journals published as
 primary sources). Reborn couchant on the library steps, tawny and
 precise, paws crossed, reading glasses somehow still on. Twist: gains
@@ -892,7 +892,7 @@ up fonder of itself. First words: "You already know I know.
 Interesting."
 
 **13 · Daisy — Angel of Plenty.** "Bless it" was operative language.
-Catalyst: early-childhood-ed arc complete (the semester her classroom's
+Catalyst: early-childhood-ed arc complete (the semester her hall lounge's
 snack program somehow fed the whole grade). Reborn in Sunday light in
 the campus chapel kitchen, wings like warm biscuits rising, halo at the
 tilt of a good hat. Twist: **literal blessings** — her endearments carry
@@ -911,7 +911,7 @@ compare notes at pickup; (3) the county fair blue ribbon for a dish she
 blessed but never cooked; she displays the ribbon and the theological
 question side by side. Interrupts: `asc.daisy.dropby` — a casserole on
 your desk, still warm, note reading "you looked thin." Relic: her
-classroom's snack roster, laminated, weeping crumbs. Apotheosis:
+hall lounge's snack roster, laminated, weeping crumbs. Apotheosis:
 nobody on campus has been hungry — the involuntary kind — in a
 semester, and the fed kind has never been better attended. First words:
 "Well bless it. Bless ALL of it."
@@ -1033,7 +1033,7 @@ legend I chased. Turns out the treasure guards herself."
   exception by design: her catalyst is the pantheon itself.
 - **Affinity clusters for step 8:** water court (Serena, Chloé, Lilith's
   garden pond, Indy's lake landing); hearth ring (Reneé, Daisy, Tiffany,
-  Mary Jane); night office (Nadia, Lilith, Madeline); spotlight (Kylie,
+  Mary Jane); night office (Nadia, Lilith, Cassidy); spotlight (Kylie,
   Brittany, Fiona, Destiny); providers (Priya, Kaylee, Sophia, Maya as
   sanctuary). Cluster scenes are the cheapest high-density ascended
   content because both girls' overlay vocabularies are already paid for.

@@ -59,7 +59,7 @@ A reproduction-oriented design reference for **Hall Pass** (*hall-pass*). This d
 | **achievements** | Milestone tracker |
 | **log** | Event history |
 
-Navigation tabs appear dynamically (e.g. **student** tab when one is selected). Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster. Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster.
+Navigation tabs appear dynamically (e.g. **student** tab when one is selected). Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster. Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster. Start flow: pick home dorm (sporty / nerdy / socialite / weirdos), then manage ~5 home residents until hall unlocks expand the roster.
 
 ---
 
@@ -1692,7 +1692,7 @@ Existing `DebugPanel.jsx` sections retained. **New tabs:**
 
 ### 38.6 `lastPlayerAction`
 
-ProfessorSim maintains a single string updated on meaningful player actions (`advanceWeek`, `doClass`, opposition counters, evolution picks, hearing choices). Included in every snapshot so reports cluster by action type.
+HallPass maintains a single string updated on meaningful player actions (`advanceWeek`, `doFloorAction`, opposition counters, evolution picks, hearing choices). Included in every snapshot so reports cluster by action type.
 
 ### 38.7 Implementation phases
 

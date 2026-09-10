@@ -291,6 +291,41 @@ check('modular-text-doc-ra-theme', () => {
   assert.doesNotMatch(doc, /ProfessorSim/);
 });
 
+check('ascension-expansion-ra-theme', () => {
+  const plan = read('docs/ASCENSION_EXPANSION_PLAN.md');
+  assert.match(plan, /Hall Pass/);
+  assert.match(plan, /Cassidy/);
+  assert.doesNotMatch(plan, /Professor Sim/);
+  assert.doesNotMatch(plan, /\bMadeline\b/);
+});
+
+check('legacy-docs-archived', () => {
+  for (const file of [
+    'docs/Old/PROSE_ELEVATION_DESIGN_SESSION.md',
+    'docs/IgnoreThis/SETTLING_ENDGAME_DESIGN.md',
+  ]) {
+    const doc = read(file);
+    assert.match(doc, /ARCHIVED — pre–Hall Pass/);
+  }
+});
+
+check('presentation-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Presentation QA/);
+  assert.match(debug, /setPresentationState/);
+  assert.match(hallPass, /setPresentationState=\{setPresentationState\}/);
+  assert.match(helper, /triggerPresentationQA/);
+});
+
+check('competitive-gainer-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /CG Arc QA/);
+  assert.match(helper, /unlockCGArcQA/);
+});
+
 check('hall-unlock-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');
   const hallPass = read('src/HallPass.jsx');

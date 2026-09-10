@@ -9,6 +9,8 @@ const REPLACEMENTS = [
   [/Professor Sim/g, 'Hall Pass'],
   [/professor-sim/g, 'hall-pass'],
   [/ProfessorSim\.jsx/g, 'HallPass.jsx'],
+  [/ProfessorSim/g, 'HallPass'],
+  [/doClass/g, 'doFloorAction'],
   [/gluttony spirit/gi, 'RA influence'],
   [/Gluttony Spirit/g, 'RA Influence'],
   [/Spirit of Scarcity/g, 'Voice of Restraint'],
@@ -137,6 +139,23 @@ const targets = [
   'docs/V2_0_DESIGN.md',
   'docs/ASCENSION_DESIGN.md',
   'docs/modular-text-system.md',
+  'docs/ASCENSION_EXPANSION_PLAN.md',
+  'docs/SETTLING_TEETH_PLAN.md',
+  'docs/WORD_GRANULAR_ENGINE_PLAN.md',
+  'src/textEngine/MIGRATION.md',
+];
+
+const ARCHIVE_BANNER = `> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: \`GAME_BIBLE.md\`, \`DESIGN_BIBLE.md\`, \`HANDOFF.md\`. Content below is historical.
+
+`;
+
+const archiveTargets = [
+  'docs/Old/FAIR_PLACEHOLDER_TAGS.md',
+  'docs/Old/Farm_girl_grok_prompts.md',
+  'docs/Old/DEBUG_BUG_REPORTING_DESIGN_SESSION.md',
+  'docs/Old/FIONA_ARTISAN_GALLERY_REVISION.md',
+  'docs/Old/PROSE_ELEVATION_DESIGN_SESSION.md',
+  'docs/IgnoreThis/SETTLING_ENDGAME_DESIGN.md',
 ];
 let updated = 0;
 for (const file of targets) {
@@ -183,6 +202,16 @@ if (!bible.includes('home dorm hall')) {
   );
   writeFileSync(biblePath, bible);
   console.log('patched GAME_BIBLE opening');
+}
+
+for (const file of archiveTargets) {
+  const path = join(root, file);
+  let text = readFileSync(path, 'utf8');
+  if (!text.startsWith('> **ARCHIVED')) {
+    writeFileSync(path, ARCHIVE_BANNER + text);
+    console.log(`archived ${file}`);
+    updated++;
+  }
 }
 
 console.log(`done: ${updated} file(s) migrated`);

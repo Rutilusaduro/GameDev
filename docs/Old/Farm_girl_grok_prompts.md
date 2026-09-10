@@ -1,3 +1,5 @@
+> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `HANDOFF.md`. Content below is historical.
+
 # Farm Girl (Mary Jane) — Grok Prompts for ProfessorSim
 
 These prompts generate all text content for the Farm Girl archetype (id 14, replaces Sophie).

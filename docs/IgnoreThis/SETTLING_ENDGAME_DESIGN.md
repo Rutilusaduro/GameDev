@@ -1,3 +1,5 @@
+> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `HANDOFF.md`. Content below is historical.
+
 Professor Sim — "The Settling" Endgame Design & Build Record
 
 The Settling is the weight endgame. When a girl grows past mobility (stage 10),

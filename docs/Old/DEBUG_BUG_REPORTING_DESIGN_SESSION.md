@@ -1,3 +1,5 @@
+> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `HANDOFF.md`. Content below is historical.
+
 # Debug & Bug Reporting — Three-Agent Design Session
 
 **Branch:** `cursor/oppositional-forces-design-935f`  

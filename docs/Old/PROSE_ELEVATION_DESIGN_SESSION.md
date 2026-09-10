@@ -1,3 +1,5 @@
+> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `HANDOFF.md`. Content below is historical.
+
 # Prose Elevation — Four-Agent Design Session
 
 *Branch: `claude/prompt-following-2vpq06`. Four specialized agents audited the text engine's erotic quality and produced this implementation prompt. Refer to `AUTHORING.md`, `TUNING.md`, and the Style Ledger before writing any prose.*

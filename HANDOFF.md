@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 238)
+## Status (Pass 239)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -91,7 +91,8 @@ npm run build
 | Design bibles RA sync | ✅ | Pass 236 |
 | Agent skill docs RA sync | ✅ | Pass 237 |
 | `docs/V2_0_DESIGN.md` + ascension design | ✅ | Pass 238 + `v2-design-ra-theme` audit |
-| `docs/` archive docs (`Old/`, expansion plans) | ⚠️ | Still Professor Sim era (non-player-facing) |
+| `docs/ASCENSION_EXPANSION_PLAN.md` | ✅ | Pass 239 RA sync |
+| `docs/Old/`, `docs/IgnoreThis/` | ✅ | Archive banners (Pass 239) |
 | Steam-quality feel | ⚠️ | 25 ceremony e2e; no full manual semester playthrough |
 | Coherent prose throughout | ⚠️ | Runtime gates clean; legacy design docs remain |
 
@@ -99,7 +100,7 @@ npm run build
 
 ## Suggested next passes
 
-1. **Docs sweep** — `docs/ASCENSION_EXPANSION_PLAN.md`, `docs/Old/*` archive banner
+1. **Polish pass** — modal transitions, roster NEW badges, sound cues
 2. **Presentation / competitive-gainer ceremony** — verify e2e + QA if gaps found
 3. **Manual semester playthrough** — wk 1→16 on each dorm start; note modal/prose rough edges
 4. **Polish pass** — animation, sound, modal transitions, roster NEW badges

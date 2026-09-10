@@ -1,3 +1,5 @@
+> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `HANDOFF.md`. Content below is historical.
+
 # Mary Jane State Fair — Complete Placeholder Tag List for Prose
 
 ## Context for the writer

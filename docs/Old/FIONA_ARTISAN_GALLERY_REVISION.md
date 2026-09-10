@@ -1,3 +1,5 @@
+> **ARCHIVED — pre–Hall Pass design notes.** Canonical RA dorm design: `GAME_BIBLE.md`, `DESIGN_BIBLE.md`, `HANDOFF.md`. Content below is historical.
+
 # Fiona — Artisan Gallery Revision (v2)
 
 **Supersedes:** `living_canvas` (v1) in §36  
