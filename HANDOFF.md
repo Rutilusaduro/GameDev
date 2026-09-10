@@ -8,7 +8,7 @@
 
 ---
 
-## Status (Pass 243)
+## Status (Pass 244)
 
 | Area | Status | Evidence |
 |------|--------|----------|
@@ -93,7 +93,7 @@ npm run build
 | `docs/V2_0_DESIGN.md` + ascension design | ✅ | Pass 238 + `v2-design-ra-theme` audit |
 | `docs/ASCENSION_EXPANSION_PLAN.md` | ✅ | Pass 239 RA sync |
 | `docs/Old/`, `docs/IgnoreThis/` | ✅ | Archive banners (Pass 239) |
-| Steam-quality feel | ⚠️ | 25 ceremony e2e; no full manual semester playthrough |
+| Steam-quality feel | ⚠️ | 84+ ceremony/semester e2e; `semester-full-journey` wk1→16 automated |
 | Coherent prose throughout | ⚠️ | Runtime gates clean; legacy design docs remain |
 
 ---
@@ -102,5 +102,5 @@ npm run build
 
 1. **Polish pass** — modal transitions, sound cues, dinner venue polish
 2. **Presentation / competitive-gainer ceremony** — verify e2e + QA if gaps found
-3. **Manual semester playthrough** — wk 1→16 on each dorm start; note modal/prose rough edges
+3. **Manual semester playthrough** — Rosewood/Annex full-journey e2e; note modal/prose rough edges in browser
 4. **Polish pass** — animation, sound, modal transitions, roster NEW badges

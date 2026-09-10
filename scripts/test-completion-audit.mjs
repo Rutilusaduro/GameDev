@@ -180,6 +180,7 @@ const REQUIRED_E2E = [
   'e2e/semester-wk8-all-halls.spec.js',
   'e2e/semester-wk16-all-halls.spec.js',
   'e2e/semester-wk16-clickthrough.spec.js',
+  'e2e/semester-full-journey.spec.js',
   'e2e/dorm-unlock.spec.js',
   'e2e/dorm-unlock-wk16.spec.js',
   'e2e/hall-unlock-modal.spec.js',
@@ -516,6 +517,16 @@ check('floor-influence-ceremony-qa-wiring', () => {
   assert.match(debug, /setOwnedSkills/);
   assert.match(debug, /setDebugOpen\(false\)/);
   assert.match(helper, /triggerFloorInfluenceQA/);
+});
+
+check('semester-full-journey-e2e', () => {
+  const spec = read('e2e/semester-full-journey.spec.js');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(spec, /semester full journey/i);
+  assert.match(spec, /Victory Hall/);
+  assert.match(spec, /Scholar's Rest/);
+  assert.match(spec, /advanceToWeek/);
+  assert.match(helper, /advanceToWeek/);
 });
 
 check('modal-overlay-polish', () => {
