@@ -567,6 +567,28 @@ check('hall-log-sidebar-polish', () => {
   assert.match(desk, /Clear story beats/);
 });
 
+check('floor-checkin-stagger-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.floor-checkin-modal \.floor-checkin-choice/);
+  assert.match(desk, /animationDelay/);
+});
+
+check('next-week-ready-polish', () => {
+  const css = read('src/index.css');
+  const desk = read('src/HallPass.jsx');
+  assert.match(css, /\.ra-desk-next-week-ready/);
+  assert.match(css, /@keyframes raDeskNextWeekReady/);
+  assert.match(desk, /ra-desk-next-week-ready/);
+});
+
+check('natural-wk8-hall-unlock-e2e', () => {
+  const spec = read('e2e/natural-wk8-hall-unlock.spec.js');
+  assert.match(spec, /week 8 without debug/i);
+  assert.match(spec, /Victory Hall/);
+  assert.match(spec, /Scholar's Rest/);
+});
+
 check('hall-log-sidebar-e2e', () => {
   const spec = read('e2e/hall-log-sidebar.spec.js');
   assert.match(spec, /hall log story\/ledger tabs/i);

@@ -7967,7 +7967,7 @@ export default function HallPass(){
                     <div style={C.secT}>How do you respond?</div>
                     <div style={{display:"flex",flexDirection:"column",gap:8}}>
                       {scene.choices.map((ch,i)=>(
-                        <div key={i} role="button" tabIndex={0} className="floor-checkin-choice" style={{...C.card,cursor:"pointer"}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}
+                        <div key={i} role="button" tabIndex={0} className="floor-checkin-choice" style={{...C.card,cursor:"pointer",animationDelay:`${0.04 + i * 0.06}s`}} onClick={()=>{ playHallPassSound('click', soundEnabled); makeChoice(i); }}
                           onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); playHallPassSound('click', soundEnabled); makeChoice(i); } }}>
                           <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{ch.label}</div>
                           {(ch.effect.gain?.[1]>0||ch.effect.rel||ch.effect.mood)&&(
@@ -8662,7 +8662,7 @@ export default function HallPass(){
           )}
           <button
             type="button"
-            className="ra-desk-action-btn"
+            className={`ra-desk-action-btn${opposition?.supernatural?.famineWeek ? '' : ' ra-desk-next-week-ready'}`}
             onClick={startFloorCheckIn}
             style={{...C.btn(opposition?.supernatural?.famineWeek?"#333":"#186028"),opacity:opposition?.supernatural?.famineWeek?0.45:1}}
             title={opposition?.supernatural?.famineWeek?"Complete a Refeast Ritual first":"Advance the semester"}
