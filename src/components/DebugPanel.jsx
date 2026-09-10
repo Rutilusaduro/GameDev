@@ -499,6 +499,17 @@ export function DebugPanel({
                   🍽️ Hunger Interrupt QA
                 </button>
               )}
+              {setHearingState && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(90,30,40,0.55)' }}
+                  onClick={() => {
+                    setHearingState({
+                      type: 'emergency', studentId: null, phaseIdx: 0, history: [], log: [], done: false,
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  👁 Hearing QA
+                </button>
+              )}
               {setAscensionCeremony && (
                 <button type="button" style={{ ...C.smBtn, background: 'rgba(20,70,90,0.55)' }}
                   onClick={() => {

@@ -323,6 +323,12 @@ export async function triggerIntimacyQA(page) {
   await page.getByRole('button', { name: /Intimacy QA/ }).click();
 }
 
+/** Debug: open emergency Board hearing modal. */
+export async function triggerHearingQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Hearing QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
