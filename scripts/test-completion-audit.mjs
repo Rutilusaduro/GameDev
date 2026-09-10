@@ -500,6 +500,8 @@ check('roster-new-badge-polish', () => {
   assert.match(roster, /hasNewResidents/);
   assert.match(roster, /playHallPassSound\('nav'/);
   assert.match(css, /\.roster-tile-new/);
+  assert.match(css, /\.roster-new-pill/);
+  assert.match(css, /@keyframes rosterNewPillPulse/);
   assert.match(unlock, /openRosterResident/);
   assert.match(read('src/HallPass.jsx'), /openRosterResident/);
 });
