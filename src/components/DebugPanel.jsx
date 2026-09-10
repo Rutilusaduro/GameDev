@@ -89,6 +89,7 @@ export function DebugPanel({
   setEchoReplay,
   setFeastRitualOpen,
   setIntimacySceneSelector,
+  setPrivateSession,
   setSelectedId,
   setDebugInputs,
   setDebugOpen,
@@ -508,6 +509,37 @@ export function DebugPanel({
                     setDebugOpen(false);
                   }}>
                   👁 Hearing QA
+                </button>
+              )}
+              {setPrivateSession && setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(50,30,90,0.55)' }}
+                  onClick={() => {
+                    const subject = students.find((s) => s.id === 1) || { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 200, relationship: 55 };
+                    setStudents((prev) => prev.map((s) => (
+                      s.id === 1
+                        ? { ...s, archetype: 'swimmer', lbs: 200, relationship: 55, consumedCalories: 0 }
+                        : s
+                    )));
+                    setAp((a) => Math.max(a, 10));
+                    setPrivateSession({
+                      student: { ...subject, archetype: 'swimmer', lbs: 200, relationship: 55, consumedCalories: 0 },
+                      phase: 'venue',
+                      venue: null,
+                      foods: [],
+                      totalGain: 0,
+                      capacityBonus: 0,
+                      sessionStartCalories: 0,
+                      encouragementsUsed: [],
+                      toleranceBuffer: 0,
+                      sessionNum: 1,
+                      refillRound: 0,
+                      tappedOut: false,
+                      tapOutDialogue: null,
+                      sessionPace: 'steady',
+                    });
+                    setDebugOpen(false);
+                  }}>
+                  🌙 Private Session QA
                 </button>
               )}
               {setAscensionCeremony && (

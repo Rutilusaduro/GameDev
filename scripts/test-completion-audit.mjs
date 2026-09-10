@@ -227,8 +227,25 @@ const REQUIRED_E2E = [
   'e2e/feast-ritual-ceremony.spec.js',
   'e2e/intimacy-ceremony.spec.js',
   'e2e/opposition-hearing-ceremony.spec.js',
+  'e2e/private-session-ceremony.spec.js',
   'e2e/group-dinner-playthrough.spec.js',
 ];
+
+check('private-session-venue-framing', () => {
+  const sessions = read('src/gameData/sessions.js');
+  assert.match(sessions, /After Hours — Lounge/);
+  assert.doesNotMatch(sessions, /After Hours — Office/);
+});
+
+check('private-session-ceremony-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const hallPass = read('src/HallPass.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Private Session QA/);
+  assert.match(debug, /setPrivateSession/);
+  assert.match(hallPass, /setPrivateSession=\{setPrivateSession\}/);
+  assert.match(helper, /triggerPrivateSessionQA/);
+});
 
 check('hearing-ceremony-qa-wiring', () => {
   const debug = read('src/components/DebugPanel.jsx');

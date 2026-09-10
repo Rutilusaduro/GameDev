@@ -112,8 +112,8 @@ export const TIER_SCENES={
 
 // ── PRIVATE SESSIONS ─────────────────────────────────────────────
 export const PRIVATE_VENUES=[
-  {id:"office",    label:"🏢 After Hours — Office", minTier:1,
-   desc:"The building empties by evening. You order in. The door is locked. Time is not a factor.",
+  {id:"office",    label:"🏢 After Hours — Lounge", minTier:1,
+   desc:"The hall empties by evening. You order in. The lounge door is locked. Time is not a factor.",
    intro:s=>`${s.name} arrives after the last light in the corridor goes out. She looks at what you've laid out and her expression changes — something quiet and wanting settling over her. "You planned this," she says. It isn't a question.`},
   {id:"apartment", label:"🏡 Your Apartment",       minTier:2,
    desc:"Your kitchen, your rules. No pretense, no schedule. Just food and time.",

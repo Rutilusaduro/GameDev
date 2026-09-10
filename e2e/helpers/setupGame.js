@@ -329,6 +329,12 @@ export async function triggerHearingQA(page) {
   await page.getByRole('button', { name: /Hearing QA/ }).click();
 }
 
+/** Debug: open private session venue picker for Cassidy at Close tier. */
+export async function triggerPrivateSessionQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Private Session QA/ }).click();
+}
+
 /** Debug: set Cassidy evolution-eligible and open student detail (no modal). */
 export async function prepareEvolutionEligibleQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
