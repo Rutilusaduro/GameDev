@@ -106,6 +106,16 @@ check('community-researcher-activity-prose', () => {
   assert.doesNotMatch(activityBlock, /community_researcher:\[\s*\n\s*"Team jacket over/);
 });
 
+check('mori-ra-naming', () => {
+  for (const rel of ['src/gameData/evolvedForms.js', 'src/textEngine/scenes/diaryPhaseD.js', 'src/gameData/chloeSalon.js']) {
+    const src = read(rel);
+    assert.doesNotMatch(src, /\bDr\. Mori\b/, `${rel} must use RA Mori not Dr. Mori`);
+  }
+  const campus = read('src/gameData/campusDeviceEncounters.js');
+  assert.match(campus, /name: 'RA Chen'/);
+  assert.doesNotMatch(campus, /Prof\. Chen/);
+});
+
 check('lane-captain-panel-review-wiring', () => {
   const hallPass = read('src/HallPass.jsx');
   const detail = read('src/views/StudentDetailView.jsx');

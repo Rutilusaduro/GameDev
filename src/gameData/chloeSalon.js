@@ -7,7 +7,7 @@ export const SALON_GUESTS = [
   { id: 'cassidy', name: 'Cassidy', unlockPrestige: 0, studentId: 1 },
   { id: 'kylie', name: 'Kylie', unlockPrestige: 10, studentId: 2 },
   { id: 'rosa', name: 'Chef Rosa', unlockPrestige: 45, faculty: true },
-  { id: 'mori', name: 'Dr. Mori', unlockPrestige: 45, faculty: true },
+  { id: 'mori', name: 'RA Mori', unlockPrestige: 45, faculty: true },
   { id: 'journalist', name: 'Campus Writer', unlockPrestige: 60 },
   { id: 'platt', name: 'Ms. Platt (AIB)', unlockPrestige: 70, scandal: true },
 ];
@@ -175,7 +175,7 @@ export const SALON_EVOLVED_EVENTS = [
     title: 'Staff Drift',
     phases: [
       {
-        text: (h, s) => `Dr. Mori follows the smell of coq au vin to Chloé's door. She's ${Math.round(s.lbs)} pounds, hostess in black silk, and doesn't pretend surprise. "RA Mori. You may stay for dessert."`,
+        text: (h, s) => `RA Mori follows the smell of coq au vin to Chloé's door. She's ${Math.round(s.lbs)} pounds, hostess in black silk, and doesn't pretend surprise. "You may stay for dessert."`,
         choices: [
           { id: 'welcome', label: 'Welcome Mori — staff lends prestige', result: 'Mori stays. Takes notes. Eats more than she admits.', lbs: 6, rel: 9, flag: 'mori_regular' },
           { id: 'private', label: 'Keep it resident-only tonight', result: 'Mori leaves a card. Chloé pins it to the corkboard.', lbs: 4, rel: 6 },

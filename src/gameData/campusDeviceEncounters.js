@@ -20,8 +20,8 @@ export const CAMPUS_DEVICE_CONFIG = {
 };
 
 export const CAMPUS_NPCS = [
-  { id: 'npc_prof_chen', name: 'Prof. Chen', role: 'faculty', archetype: 'bookworm', lbs: 142, emoji: '👩‍🏫' },
-  { id: 'npc_dean_holt', name: 'Dean Holt', role: 'faculty', archetype: 'athlete', lbs: 168, emoji: '👨‍💼' },
+  { id: 'npc_ra_chen', name: 'RA Chen', role: 'staff', archetype: 'bookworm', lbs: 142, emoji: '📋' },
+  { id: 'npc_dean_holt', name: 'Dean Holt', role: 'staff', archetype: 'athlete', lbs: 168, emoji: '👨‍💼' },
   { id: 'npc_barista_mia', name: 'Mia (barista)', role: 'staff', archetype: 'culinary', lbs: 128, emoji: '☕' },
   { id: 'npc_lib_assist', name: 'Library Assistant Ray', role: 'staff', archetype: 'bookworm', lbs: 135, emoji: '📚' },
   { id: 'npc_rand_freshman', name: 'Unnamed freshman', role: 'student', archetype: 'cheerleader', lbs: 118, emoji: '🎒' },
