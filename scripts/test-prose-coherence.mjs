@@ -362,6 +362,9 @@ const BANNED = [
   /\bclassmates are eating\b/i,
   /\bclassmates eating\b/i,
   /\bclass is full of subjects\b/i,
+  /\byour office\b/i,
+  /\boffice door\b/i,
+  /\bfills the office chair\b/i,
 ];
 
 function assertClean(text, label) {

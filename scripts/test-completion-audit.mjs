@@ -98,6 +98,14 @@ check('community-researcher-cassidy', () => {
   assert.doesNotMatch(src, /\bMadeline\b/);
 });
 
+check('community-researcher-activity-prose', () => {
+  const src = read('src/gameData/evolvedForms.js');
+  const activityBlock = src.slice(src.indexOf('export const EVOLVED_ACTIVITY_TEXT'));
+  assert.match(activityBlock, /community_researcher:\[\s*\n\s*\(s\)=>`She stops by your RA desk/);
+  assert.match(activityBlock, /intake record on floor immersion/);
+  assert.doesNotMatch(activityBlock, /community_researcher:\[\s*\n\s*"Team jacket over/);
+});
+
 check('lane-captain-panel-review-wiring', () => {
   const hallPass = read('src/HallPass.jsx');
   const detail = read('src/views/StudentDetailView.jsx');

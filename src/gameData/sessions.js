@@ -52,7 +52,7 @@ export const getTier=(rel)=>[...INNER_CIRCLE_TIERS].reverse().find(t=>rel>=t.rel
 export const TIER_SCENES={
   cheerleader:[
     s=>`${s.name} stops you after floor check-in — not with a question, just to talk. "You're different from other RAs," she says. She doesn't elaborate, but she smiles when she leaves. You notice she's started sitting closer to the front.`,
-    s=>`She's waiting outside your office when you arrive. Not for anything specific. "I just wanted to talk," she says, already making herself comfortable in the chair across from you. She stays for forty minutes and eats the snacks you have out without asking.`,
+    s=>`She's waiting outside the lounge when you arrive. Not for anything specific. "I just wanted to talk," she says, already making herself comfortable in the chair across from you. She stays for forty minutes and eats the snacks you have out without asking.`,
     s=>`"I don't really think about it anymore," ${s.name} says one afternoon, smoothing her hands over her enormous thighs with quiet familiarity. "I just know that whatever you suggest is usually right." She leans forward, full of trust. "So what do you suggest?"`,
   ],
   bookworm:[

@@ -353,7 +353,7 @@ export const EVOLVED_OUTFITS = {
     "Hall casual with a purpose — she needs pockets, always. The blazer accommodates everything.",
     "Presentation attire for panel reviews. Wide-cut, professional, memorable. The slides are also memorable.",
     "Panel outfit. Her institution had a photographer there. The photos are impressive.",
-    "Observation gear that accommodates field work, office work, and being the field. Practical and extraordinary.",
+    "Observation gear that accommodates field work, desk work, and being the field. Practical and extraordinary.",
     "She dresses like someone whose hall log has outlasted the original hypothesis. With confidence.",
   ],
   eating_streamer:[
@@ -530,11 +530,20 @@ export const EVOLVED_OUTFITS = {
     "Oversized tech-wear in matte black, LED status pins along the sleeves. Her body fills it like another machine casing.",
     "The workshop clothes are half armor, half uniform — wide, soft, engineered around a body that feeds the builds. She belongs to the lab now.",
   ],
+  // ── SWIMMER path: lane captain ─────────────────────────────────
+  community_researcher:[
+    "Team jacket over a fitted tank, practice shorts, training log always in hand. The unofficial uniform of lane captain. Nothing about her appearance is an accident.",
+    "The jackets are looser now — chosen with room in mind. The shorts have been replaced with joggers that accommodate more. She still carries the log.",
+    "Zip hoodie over a sports bra she no longer tucks in. Her figure is noticeably fuller under the layers. She's stopped arranging herself for the team photos.",
+    "Oversized meet-day hoodie, leggings that hold everything together, slides on her feet. The training log is in a bigger bag now, next to a protein shaker.",
+    "Warm-up pullover, stretch joggers, comfortable slides. She carries herself with the ease of someone who has found the outfit that works and has several of it.",
+    "She moves slowly, deliberately, the way captains who have lived the season plan eventually move. A wide hoodie open over a soft tee, everything forgiving and full. The log is still there. It always will be.",
+  ],
 };
 
 export const EVOLVED_ACTIVITY_TEXT = {
   sumo:[
-    (s)=>`She knocks on your office door in her mawashi-bag and warm-ups — ${Math.round(s.lbs)} pounds, belly round and forward, a competitor's calm on her. "Regional qualifier today," she says. "Dana Mercer's there. She's 340. I want you to watch." She doesn't ask. You go. You watch a former cheerleader try to push a six-year veteran out of a ring with her belly, and very nearly do it. She loses by inches and isn't discouraged at all. "She's still bigger than me," she says afterward, eating. "For now."`,
+    (s)=>`She finds you at the RA desk in her mawashi-bag and warm-ups — ${Math.round(s.lbs)} pounds, belly round and forward, a competitor's calm on her. "Regional qualifier today," she says. "Dana Mercer's there. She's 340. I want you to watch." She doesn't ask. You go. You watch a former cheerleader try to push a six-year veteran out of a ring with her belly, and very nearly do it. She loses by inches and isn't discouraged at all. "She's still bigger than me," she says afterward, eating. "For now."`,
     (s)=>`She stops by before the circuit tournament — ${Math.round(s.lbs)} pounds, looser and surer than last season. "The gap's down to fifty pounds," she says, meaning her and Dana. "I feed in my corner now. Every bout I get a little bigger, and she has to move all of it." You come watch. Between bouts she eats — bowl after bowl in her corner — and you watch her grow over the course of the afternoon, her belly settling lower each break, until she nearly takes the Wall down with the weight of it.`,
     (s)=>`Conference meet. She's ${Math.round(s.lbs)} pounds and for the first time she outweighs the rival who used to dwarf her. "Watch the board today," she tells you. "My number goes up top." It does. Dana stares at it and says "there it is," and then she goes out and makes the number mean something — belly-first, driving Dana out of the ring twice while the crowd, for the first time at this level, chants her name.`,
     (s)=>`National qualifier, and there's press at the door. She finds you before warm-ups — ${Math.round(s.lbs)} pounds, the heaviest competitor in the building by a mile, her belly an enormous warm apron under the mawashi. "Dana says she'll out-think me," she says, almost amused. "Watch how that goes." You watch. It does not go well for Dana. Size has become an argument that ends discussions, and she spends the whole bracket eating in her corner to make the argument bigger.`,
@@ -564,10 +573,10 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`${Math.round(s.lbs)} pounds. The profile piece journalist came to her — she doesn't travel for interviews anymore. They talked for four hours, she ate throughout, the piece is 8,000 words. It describes her at length: her belly enormous and warm pressing the dining table; her thighs vast in the custom chair; her face calm when she says "I weigh ${Math.round(s.lbs)} pounds and this is the most myself I have ever felt." The piece ran Thursday. By Saturday it was the publication's most-read piece in four years. She read it once and said: "accurate." She had dinner. She filmed it.`,
   ],
   eating_captain:[
-    (s)=>`She knocks on your office door in her competition gear — bib around her neck, hair up, competition number pinned to her jacket, ${Math.round(s.lbs)} pounds warm and ready and forward in the doorframe. "Regional Open today," she says. "I wanted to tell you." She doesn't ask you to come. You come anyway. She's a cheerleader captain who has decided she's something else now, and she wants a witness.`,
+    (s)=>`She taps on the lounge door in her competition gear — bib around her neck, hair up, competition number pinned to her jacket, ${Math.round(s.lbs)} pounds warm and ready and forward in the doorframe. "Regional Open today," she says. "I wanted to tell you." She doesn't ask you to come. You come anyway. She's a cheerleader captain who has decided she's something else now, and she wants a witness.`,
     (s)=>`She stops by before she leaves for the circuit meet — ${Math.round(s.lbs)} pounds, the bib already on, and she's looking good, the specific loose confidence of someone who has stopped being new at something. "Maya's going to be there," she says. "Maya's 370." She says it the way people say things they've been thinking about for a while. "I know," she says. Then she leaves. You follow her out.`,
     (s)=>`Conference championship day. She's ${Math.round(s.lbs)} pounds and the competition bib she ordered three months ago is tight across her belly now and she wears it like it fits because it fits exactly as she wanted it to fit. "The board's going to have my number at the top," she tells you before she leaves. "I want you to see that." You go. The board has her number at the top. The judge reads it into the microphone. Maya puts the cap back on her marker.`,
-    (s)=>`National qualifier. She comes by your office the morning of — ${Math.round(s.lbs)} pounds, dressed to compete, the number already pinned. "There's going to be press," she says. "A journalist." She says it like she's telling you something, not asking. "Maya told me I'm the best she's ever seen." She pauses. "Maya's right." She leaves. You get in your car and follow the van to the venue.`,
+    (s)=>`National qualifier. She stops by your RA desk the morning of — ${Math.round(s.lbs)} pounds, dressed to compete, the number already pinned. "There's going to be press," she says. "A journalist." She says it like she's telling you something, not asking. "Maya told me I'm the best she's ever seen." She pauses. "Maya's right." She leaves. You get in your car and follow the van to the venue.`,
     (s)=>`National championship. She's ${Math.round(s.lbs)} pounds and the arena credential is around her neck and the woman at the door held the door open wider when she came through and didn't say anything about it. She finds you in the crowd before the event. "Watch the weigh-in," she says. Just that. Then she goes backstage. You watch the weigh-in. The arena goes quiet when they read her number.`,
   ],
   big_squad_captain:[
@@ -711,14 +720,14 @@ export const EVOLVED_ACTIVITY_TEXT = {
     (s)=>`The lesson today is the philosophy — stated plainly, not as metaphor. MJ at ${Math.round(s.lbs)} pounds at the head of the table, not performing, just talking. "Soft means warm. Soft means present. Soft means the house has a center." Lily is writing something in her phone. Cheryl is nodding. Wanda already knew. She came anyway.`,
     (s)=>`MJ barely needs to teach anymore. The women know the lessons. They come for the kitchen — for the warmth and the smell and the company — and they bring news of daughters, of doorways that are getting narrow, of reinforced furniture, of husbands who have stopped pretending not to love the change. MJ at ${Math.round(s.lbs)} pounds is the center of something that doesn't need her to keep moving in order to keep moving.`,
   ],
-  // ── BOOKWORM path ───────────────────────────────────────────────
+  // ── SWIMMER path: lane captain case-study arc ───────────────────
   community_researcher:[
-    "Team jacket over a fitted tank, practice shorts, training log always in hand. The unofficial uniform of lane captain. Nothing about her appearance is an accident.",
-    "The jackets are looser now — chosen with room in mind. The shorts have been replaced with joggers that accommodate more. She still carries the log.",
-    "Zip hoodie over a sports bra she no longer tucks in. Her figure is noticeably fuller under the layers. She's stopped arranging herself for the team photos.",
-    "Oversized meet-day hoodie, leggings that hold everything together, slides on her feet. The training log is in a bigger bag now, next to a protein shaker.",
-    "Warm-up pullover, stretch joggers, comfortable slides. She carries herself with the ease of someone who has found the outfit that works and has several of it.",
-    "She moves slowly, deliberately, the way captains who have lived the season plan eventually move. A wide hoodie open over a soft tee, everything forgiving and full. The log is still there. It always will be.",
+    (s)=>`She stops by your RA desk after evening practice — ${Math.round(s.lbs)} pounds in her lane jacket, training log under one arm. "First floor session today," she says. "I ate what they ate. Refusing felt like skewing the intake log." She taps the page. "I'm noting my meals separately from the training log now." She doesn't ask if that's allowed. She's already logged you as witness.`,
+    (s)=>`${Math.round(s.lbs)} pounds at the lounge table, case-study notes open beside two empty plates. She's present at more sessions than the season plan technically requires. The residents think she's supervising. You watch her eat alongside them and write it down afterward with the same precision she uses for splits and interval data.`,
+    (s)=>`She finds you in the hall lounge with the hall log half open and her mouth full. ${Math.round(s.lbs)} pounds, hoodie loose, she swallows and says: "I stopped pretending the log is what I'm here for." The writing is getting personal. The distinction between captain on the sidelines and captain at the table has collapsed.`,
+    (s)=>`${Math.round(s.lbs)} pounds and a second protocol section in her notebook — one for the residents, one for herself. Both curves trend upward. She shows you the graph without embarrassment. "Similar rate of change," she says. "That's interesting data." She goes back to her plate.`,
+    (s)=>`Panel prep night. She's ${Math.round(s.lbs)} pounds at the study table, slides on one monitor and a delivery spread on the other. "The hall log is going to be honest," she tells you. "Clinical where it needs to be. Honest everywhere else." She eats while she rehearses. She's writing herself in as a variable.`,
+    (s)=>`Final review week. She's ${Math.round(s.lbs)} pounds — the largest person in every room she enters for case-study purposes — and she presents the season report like it's a meet result. The intake record on floor immersion is extensive. The methodology got personal. She meets your eyes afterward. "Original work," she says. Both things are true.`,
   ],
 };
 
@@ -2781,7 +2790,7 @@ ${subject?`Her focus resident — ${subject.name}, ${getStage(subject.lbs).label
               :sid>=4
               ?`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs. Grown beyond the original proposal parameters. ${s.name} adds a footnote: 'Hypothesis exceeded.'`
               :`${subject?.name||'This resident'} is ${Math.round(subject?.lbs||100)} lbs — earlier in the arc, but the hall log captures both trajectories now.`;
-            return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the office chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a resident who changed profoundly. It also produced an observer who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced an observer who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
+            return `${s.name} is ${Math.round(s.lbs)} lbs. She fills the RA desk chair completely. She looks like the reason the chair exists.\n\n${h.includes("feeder_focus")?`The Hands-On Log produced a resident who changed profoundly. It also produced an observer who changed profoundly. The final report argues these facts are inseparable.`:`The Field Observer methodology produced a data set of extraordinary quality. It also produced an observer who is no longer separable from the field. She has noted this.`}\n\n${subDesc}`;
           },
           choices:[
             {id:"conclude",label:"Write the final entry — close the hall log formally",result:(s)=>`She writes the final entry. Weight: ${Math.round(s.lbs)} lbs. Conclusion: *The hall log is complete. All hypotheses confirmed or productively complicated. The observer is a different person than the observer who opened this notebook.* She underlines the last sentence.`,lbs:12,rel:14,flag:"concluded"},
@@ -3588,7 +3597,7 @@ export const EVOLUTION_OFFER = {
     },
   },
   quiet:{
-    intro:(s)=>`${s.name} doesn't leave a note. She's just there when you arrive — in your office, in the chair, very still. She doesn't explain how she got in. 'I've been mostly at home,' she says. 'I've stopped going out. The food comes.' She looks at her hands. 'I think I want someone to know that's a choice. I think I want someone to help me make it properly.'`,
+    intro:(s)=>`${s.name} doesn't leave a note. She's just there when you arrive — at your RA desk, in the chair, very still. She doesn't explain how she got in. 'I've been mostly at home,' she says. 'I've stopped going out. The food comes.' She looks at her hands. 'I think I want someone to know that's a choice. I think I want someone to help me make it properly.'`,
     paths:{
       home_nest: { label:"Home Nest", desc:"She's building something warm and self-contained. Delivery orders, refined preferences, a room arranged around exactly what she needs. The outside world is optional now." },
       delivery_hive: { label:"Delivery Hive Queen", desc:"Her room becomes the Central Nest: a soft lavender territory-control system where delivery recruits, conquered dorm rooms, Vice Queens, and your hunger-pressure pressure turn the whole building toward Maya." },

@@ -170,7 +170,7 @@ export const SKILL_TREE = [
     passiveBonus:2, apBonus:0, gainMult:0, requires:["wide_desks"] },
 
   { id:"private_kitchen", tier:3, cost:350, category:"feeding", label:"🍳 Private Kitchen",
-    desc:"A proper kitchen adjacent to your office — full equipment, a standing pantry, a refrigerator that's always stocked. Home-cooked meals prepared specifically for specific people. Nothing says care quite like knowing someone's preferences well enough to cook for them.",
+    desc:"A proper kitchen adjacent to your RA desk — full equipment, a standing pantry, a refrigerator that's always stocked. Home-cooked meals prepared specifically for specific people. Nothing says care quite like knowing someone's preferences well enough to cook for them.",
     effect:"Home-Cooked Meal action gain +4 lbs. Bake for Her gain +3 lbs. Unlocks bulk cooking actions.",
     passiveBonus:0, apBonus:0, gainMult:0.15, requires:["catering_contact"], unlocks:["bulk_cook"] },
 
