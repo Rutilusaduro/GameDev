@@ -2727,6 +2727,30 @@ check('ceremony-entry-polish', () => {
   assert.match(read('src/components/MiscModals.jsx'), /tier-up-header/);
 });
 
+check('hall-pass-audio-polish', () => {
+  const audio = read('src/gameData/hallPassAudio.js');
+  assert.match(audio, /MASTER_GAIN/);
+  assert.match(audio, /ensureCtx/);
+  assert.match(audio, /ctx\.resume/);
+});
+
+check('digestion-qa-wiring', () => {
+  const debug = read('src/components/DebugPanel.jsx');
+  const helper = read('e2e/helpers/setupGame.js');
+  assert.match(debug, /Digestion QA/);
+  assert.match(debug, /consumedCalories: 18000/);
+  assert.match(helper, /triggerDigestionQA/);
+});
+
+check('natural-week-recap-e2e', () => {
+  const spec = read('e2e/natural-week-recap.spec.js');
+  assert.match(spec, /surfaces naturally/i);
+  assert.match(spec, /triggerDigestionQA/);
+  assert.match(spec, /THE WEEK IN REVIEW/);
+  assert.match(spec, /resolveBlockingUI/);
+  assert.match(spec, /WEEK 2/);
+});
+
 check('resident-framing-ui', () => {
   const desk = read('src/HallPass.jsx');
   assert.match(desk, /SELECT RESIDENTS/);

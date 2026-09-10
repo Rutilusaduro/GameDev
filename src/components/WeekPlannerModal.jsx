@@ -15,7 +15,7 @@ import { getStage } from '../gameData/stages.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true }) {
-  useEffect(() => { playHallPassSound('click', soundEnabled); }, [soundEnabled, week]);
+  useEffect(() => { playHallPassSound('week', soundEnabled); }, [soundEnabled, week]);
   const visible = useMemo(
     () => (students || []).filter((s) => !s.hidden && s.lockState !== 'locked'),
     [students],

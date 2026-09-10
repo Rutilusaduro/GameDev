@@ -297,6 +297,19 @@ export function DebugPanel({
                   ⚖️ Milestone QA
                 </button>
               )}
+              {setStudents && (
+                <button type="button" style={{ ...C.smBtn, background: 'rgba(60,90,50,0.55)' }}
+                  onClick={() => {
+                    setStudents((prev) => prev.map((s) => (
+                      s.lockState === 'locked' || s.hidden
+                        ? s
+                        : { ...s, consumedCalories: 18000, fullness: 88 }
+                    )));
+                    setDebugOpen(false);
+                  }}>
+                  🍽️ Digestion QA
+                </button>
+              )}
               {setWeekRecap && (
                 <button type="button" style={{ ...C.smBtn, background: 'rgba(80,40,120,0.55)' }}
                   onClick={() => {

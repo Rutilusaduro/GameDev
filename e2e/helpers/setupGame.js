@@ -239,6 +239,12 @@ export async function triggerWeekRecapQA(page) {
   await page.getByRole('button', { name: /Week Recap QA/ }).click();
 }
 
+/** Debug: seed roster residents with calories so end-of-week digestion fires naturally. */
+export async function triggerDigestionQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Digestion QA/ }).click();
+}
+
 /** Debug: open lane captain presentation defense minigame (debug panel auto-closes). */
 export async function triggerPresentationQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
@@ -486,6 +492,28 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
   for (let step = 0; step < maxSteps; step += 1) {
     let acted = false;
 
+    if (await page.getByText('A THRESHOLD CROSSED').isVisible().catch(() => false)) {
+      if (await clickIfVisible(page.getByRole('button', { name: 'Skip remaining' }))) {
+        acted = true;
+        continue;
+      }
+      const milestoneModal = page.locator('.hall-pass-modal-in').filter({ hasText: 'A THRESHOLD CROSSED' });
+      const nextBeat = milestoneModal.getByRole('button', { name: /Tap for next beat/i });
+      if (await nextBeat.isVisible().catch(() => false)) {
+        await nextBeat.click({ force: true });
+        acted = true;
+        continue;
+      }
+      if (await clickIfVisible(milestoneModal.getByRole('button', { name: 'Take her in' }))) {
+        acted = true;
+        continue;
+      }
+      if (await clickIfVisible(milestoneModal.getByRole('button', { name: 'Next →' }))) {
+        acted = true;
+        continue;
+      }
+    }
+
     if (await page.getByText('THE WEEK IN REVIEW').isVisible().catch(() => false)) {
       const recap = page.locator('.week-recap-modal');
       if (await clickIfVisible(recap.getByRole('button', { name: /^Begin Week \d+$/ }))) {
@@ -543,28 +571,6 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
       }
     }
     if (acted) continue;
-
-    if (await page.getByText('A THRESHOLD CROSSED').isVisible().catch(() => false)) {
-      if (await clickIfVisible(page.getByRole('button', { name: 'Skip remaining' }))) {
-        acted = true;
-        continue;
-      }
-      const milestoneModal = page.locator('.hall-pass-modal-in').filter({ hasText: 'A THRESHOLD CROSSED' });
-      const nextBeat = milestoneModal.getByRole('button', { name: /Tap for next beat/i });
-      if (await nextBeat.isVisible().catch(() => false)) {
-        await nextBeat.click();
-        acted = true;
-        continue;
-      }
-      if (await clickIfVisible(milestoneModal.getByRole('button', { name: 'Take her in' }))) {
-        acted = true;
-        continue;
-      }
-      if (await clickIfVisible(milestoneModal.getByRole('button', { name: 'Next →' }))) {
-        acted = true;
-        continue;
-      }
-    }
 
     if (await page.getByText(/SHE'S HAD ENOUGH|MAKING AMENDS/).isVisible().catch(() => false)) {
       const modal = page.locator('.confrontation-modal');
@@ -639,7 +645,7 @@ export async function resolveBlockingUI(page, { maxSteps = 72 } = {}) {
 }
 
 /** Walk floor check-in modal through choices → End Week (if shown). */
-export async function completeFloorCheckIn(page, { leaveUnlockModal = false } = {}) {
+export async function completeFloorCheckIn(page, { leaveUnlockModal = false, leaveCeremonies = false } = {}) {
   for (let step = 0; step < 32; step += 1) {
     if (await isNarrativeOpen(page)) {
       await drainNarrativeModal(page, { maxTaps: 128 });
@@ -658,7 +664,7 @@ export async function completeFloorCheckIn(page, { leaveUnlockModal = false } = 
     const endWeek = checkIn.getByRole('button', { name: '⏩ End Week' });
     if (await endWeek.isVisible().catch(() => false)) {
       await endWeek.click();
-      if (!leaveUnlockModal) await resolveBlockingUI(page, { maxSteps: 160 });
+      if (!leaveUnlockModal && !leaveCeremonies) await resolveBlockingUI(page, { maxSteps: 160 });
       return;
     }
 
