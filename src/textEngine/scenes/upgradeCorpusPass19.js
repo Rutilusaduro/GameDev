@@ -1,6 +1,6 @@
 // The Squad — Lead: A2 Psych | Support: A1 Mobile, A6 Slender, A5 Editor
-// Pass 19 — leftover force-feeder, weigh-in greetings, session notes,
-// campus locale, leftover set-feed/praise, leftover stream.pre lines.
+// Pass 19 — leftover force-feeder setup/close, session notes,
+// leftover set-feed/praise, leftover stream.pre lines, leftover opposition.
 import { registerModuleVariants } from '../engine.js';
 
 // ── leftover force-feeder (A1/A2; no health-consequence) ──────
