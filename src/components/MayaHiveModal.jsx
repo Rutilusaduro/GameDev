@@ -197,7 +197,6 @@ export function MayaHiveModal({
     return(
       <ModalShell maxWidth={610}>
         <div style={{fontSize:9,letterSpacing:4,color:HIVE_ACC,marginBottom:8}}>{hs.view==="visit"?"🍽️ CENTRAL NEST VISIT":"📷 HIVE STATE"}</div>
-        <div style={{fontSize:8,letterSpacing:2,color:HIVE_ACC_2,marginBottom:8}}>{scene.tag}</div>
         <div style={{fontSize:12,color:HIVE_TEXT,lineHeight:1.8,background:HIVE_PANEL,border:`1px solid ${HIVE_ACC}33`,borderRadius:10,padding:12,marginBottom:12}}>{scene.text}</div>
         {scene.gain>0&&<div style={{fontSize:12,fontWeight:800,color:HIVE_ACC,marginBottom:12}}>Maya +{scene.gain} lbs · Hive Biomass +{scene.biomass||0}</div>}
         <button style={{...C.btn(HIVE_ACC_2),width:"100%"}} onClick={()=>setMayaHiveState(p=>({...p,view:"main",subState:null}))}>Return to Hive</button>
