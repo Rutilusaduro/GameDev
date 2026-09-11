@@ -42,6 +42,16 @@ for (let s = 0; s < 16; s += 1) {
 }
 assert.ok(remHit, `expected modular removal hearing phases @ week ${week}`);
 
+const EM_FP = /emergencyExposure|emergencyStake|Scandal meter critical|observer's pen/i;
+let emHit = false;
+for (let s = 0; s < 8; s += 1) {
+  const p0 = renderHearingPhase('emergency', 0, destiny, week)?.trim() || '';
+  const p1 = renderHearingPhase('emergency', 1, destiny, week)?.trim() || '';
+  assert.ok(p0.length > 80 && p1.length > 80, 'short emergency phase');
+  if (EM_FP.test(p0) || EM_FP.test(p1)) emHit = true;
+}
+assert.ok(emHit, `expected modular emergency hearing phases @ week ${week}`);
+
 const SYN_FP = /endgameAbundance|synthesisEcho|Scarcity folds|Passive abundance/i;
 let synHit = false;
 for (let s = 0; s < 16; s += 1) {

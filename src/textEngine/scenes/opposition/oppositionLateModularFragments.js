@@ -194,3 +194,64 @@ registerModuleVariants('opposition.hearing.removal.phase1', [
     text: [REMOVAL_P1_LATE],
   },
 ]);
+
+registerPool('opposition.scene.emergencyExposure', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Scandal meter critical — emergency session, no agenda, only exposure under fluorescent guilt.',
+      'Vance convenes without notice: "Explain yourself, RA," while the chart glows red behind her.',
+      'Every board member arrived angry and underfed; appetite for your failure fills the room first.',
+      'Accreditation risk hangs unspoken — housing on record tonight, wellness language sharpened to a blade.',
+      'Late-semester emergency: no toner smell, only heat — scandal as sport, your hall as headline.',
+    ],
+  },
+]);
+
+registerPool('opposition.scene.emergencyStake', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Second round — reputations weighed like bodies; the observer\'s pen never stops moving.',
+      'Every counter you play costs something the hall can feel in its stomach tomorrow.',
+      'Vance offers no path without price — choose what abundance can afford to lose in public.',
+      'Institutional hunger meets institutional fear; you need metrics, nerve, and maybe catering.',
+      'Growth as lifestyle on trial under emergency lights — no hallway Ambiance, only verdict energy.',
+    ],
+  },
+]);
+
+const EMERGENCY_P0_LATE = '{opposition.scene.emergencyExposure|suffix:\n\n}{opposition.scene.boardPressure|suffix:\n\n}';
+const EMERGENCY_P1_LATE = '{opposition.scene.emergencyStake|suffix:\n\n}{opposition.scene.hearingHeat|suffix:\n\n}';
+
+registerModuleVariants('opposition.hearing.emergency.phase0', [
+  {
+    when: { weekMin: 22 },
+    weight: 8,
+    priority: 7,
+    text: [EMERGENCY_P0_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 4,
+    priority: 4,
+    text: [EMERGENCY_P0_LATE],
+  },
+]);
+
+registerModuleVariants('opposition.hearing.emergency.phase1', [
+  {
+    when: { weekMin: 22 },
+    weight: 8,
+    priority: 7,
+    text: [EMERGENCY_P1_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 4,
+    priority: 4,
+    text: [EMERGENCY_P1_LATE],
+  },
+]);

@@ -139,3 +139,48 @@ registerModuleVariants('stream.betweenRound', [
     text: [BETWEEN_LATE],
   },
 ]);
+
+registerPool('stream.scene.roundStartPulse', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Round clock resets — she squares her shoulders, belly leading, mic hot, challenge loading.',
+      'Late-semester round start: appetite already honest, performance about to get louder.',
+      'Ring light flares; she inhales like seconds are currency and chat is the bank.',
+      'Wellness framing gone — only countdown, chewing, and growth as lifestyle on broadcast.',
+      'Hall Ambiance miles away; Destiny becomes the room: vast, fed, ready to perform hunger.',
+    ],
+  },
+]);
+
+registerPool('stream.scene.roundStartChat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Chat spikes before the first bite — FEED HER scrolls like a starter pistol.',
+      'Mods drop emote bombs; tips tick upward just from her leaning into frame.',
+      'Clip hunters ready; she winks once and the timeline loses its mind.',
+      'Parasocial energy primes the round — they want a show, she wants portions.',
+      'Overlay resets; appetite metrics climb before the challenge even names itself.',
+    ],
+  },
+]);
+
+const ROUND_START_LATE = '{stream.scene.roundStartPulse} {stream.scene.roundStartChat|prefix: }';
+
+registerModuleVariants('stream.roundStart', [
+  {
+    when: { weekMin: 22 },
+    weight: 9,
+    priority: 9,
+    text: [ROUND_START_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 5,
+    priority: 5,
+    text: [ROUND_START_LATE],
+  },
+]);

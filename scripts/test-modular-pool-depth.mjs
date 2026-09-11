@@ -49,6 +49,8 @@ const POOLS = [
   'talk.refusal.command_finish.lateHush',
   'stream.scene.betweenRoundGlow',
   'opposition.scene.removalDocket',
+  'opposition.scene.emergencyExposure',
+  'stream.scene.roundStartPulse',
 ];
 
 for (const key of POOLS) {

@@ -44,6 +44,22 @@ for (let s = 0; s < 16; s += 1) {
 }
 assert.ok(betweenHit, `expected modular stream.betweenRound @ week ${week}`);
 
+const ROUND_FP = /roundStartPulse|roundStartChat|FEED HER|growth as lifestyle|parasocial energy/i;
+let roundHit = false;
+for (let s = 0; s < 16; s += 1) {
+  const ctx = buildTextContext({
+    subject: destiny,
+    week,
+    seed: 66300 + s,
+    globals: { featureId: 'destiny_stream', challengeType: 'endurance' },
+  });
+  const line = renderStreamBeat('{stream.roundStart}', ctx, { v2DepthChance: 0 })?.trim() || '';
+  assert.ok(line.length > 55, 'short stream.roundStart');
+  assert.ok(!line.includes('{unresolved}'), 'unresolved roundStart');
+  if (ROUND_FP.test(line)) roundHit = true;
+}
+assert.ok(roundHit, `expected modular stream.roundStart @ week ${week}`);
+
 const TAP_FP = /tapOutBreath|tapOutChat|ring light|parasocial|growth as lifestyle/i;
 for (const reason of ['fullness', 'stamina']) {
   let tapHit = false;
