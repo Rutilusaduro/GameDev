@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { SALON_GUESTS, SALON_COURSES, SALON_SERVICE_CHOICES } from '../gameData/chloeSalon.js';
+import { SALON_GUESTS, SALON_COURSES, salonChoicesForOwned } from '../gameData/chloeSalon.js';
 
 const ACCENT = '#8b2942';
 const GOLD = '#c9a227';
@@ -16,6 +16,7 @@ export function SalonAppetitModal({
   onService,
   onDigestif,
   soundEnabled = true,
+  owned = {},
 }) {
   const session = salonState?.session;
   const chloe = students.find((s) => s.id === salonState?.chloeStudentId);
@@ -100,7 +101,7 @@ export function SalonAppetitModal({
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>SERVICE — Round {session.round + 1}/4</div>
           <p style={{ fontSize: 12, color: '#ecc', marginBottom: 10 }}>{course?.label || 'Course'} is served.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {SALON_SERVICE_CHOICES.map((c) => (
+            {salonChoicesForOwned(owned).map((c) => (
               <button key={c.id} type="button" className="salon-choice-row" style={{ ...C.btn('#5a3040'), textAlign: 'left', fontSize: 12 }} onClick={() => onService(c.id)}>
                 {c.label}
               </button>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
+import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition, intimacyChoicesForPhase } from './gameData/intimacy.js';
 import { GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText } from './gameData/weeklyEventText.js';
@@ -100,7 +100,7 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
 import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan } from './gameData/weekPlanner.js';
-import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness } from './gameData/mechanicDepth.js';
+import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs } from './gameData/mechanicDepth.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -345,7 +345,7 @@ import { OversightView } from './views/OversightView.jsx';
 import { SupernaturalAscensionModal } from './components/SupernaturalAscensionModal.jsx';
 import { OppositionHearingModal } from './components/OppositionHearingModal.jsx';
 import { OppositionEndgameModal } from './components/OppositionEndgameModal.jsx';
-import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING } from './gameData/oppositionHearings.js';
+import { pickHearingEnding, REMOVAL_HEARING, EMERGENCY_HEARING, hearingChoicesForPhase } from './gameData/oppositionHearings.js';
 import { renderHearingChoiceResult, renderHearingEnding } from './textEngine/scenes/opposition/index.js';
 import {
   defaultOppositionState, processOppositionWeek, runAibCounter, checkSupernaturalTrigger,
@@ -410,6 +410,7 @@ import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
+import { renderCampusLook } from './textEngine/scenes/overhaul/campusHunt.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -1285,7 +1286,7 @@ export default function HallPass(){
 
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
-    const flavor=node.flavor[rnd(0,node.flavor.length-1)];
+    const flavor=renderCampusLook(campusState.at, week) || node.flavor[rnd(0,node.flavor.length-1)];
     const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(campusState.at,false);
     const ctx=getCampusExplorationCtx();
     let exploration=eventExploration;
@@ -1489,7 +1490,7 @@ export default function HallPass(){
     let calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
     if(opts.compoundId){
       const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
-      calMult*=(preview.feedResult.calMult??1);
+      calMult*=(preview.feedResult.calMult??1)*pharmacistFloorCalMult(ownedHallSkills||{});
     }
     const scaledCals=Math.round((calories+extraFeedCalories(label,ownedHallSkills||{}))*(s.gainMultiplier||1)*raGainMult*calMult);
     const scaledFull=scaledFullEarly;
@@ -2600,8 +2601,9 @@ export default function HallPass(){
     if(nextPhase>=evDef.phases.length){
       // Find best matching ending
       const ending=evDef.endings.find(e=>e.condition(newHistory))||evDef.endings[evDef.endings.length-1];
-      const totalGain=newGain+(ending.gainBonus||0);
-      const totalRel=newRel+(ending.relBonus||0);
+      const floorEv=evolvedFloorBonus(ownedHallSkills||{});
+      const totalGain=newGain+(ending.gainBonus||0)+floorEv.gain;
+      const totalRel=newRel+(ending.relBonus||0)+floorEv.rel;
       // Apply pre-contest / pre-close gains to student
       setStudents(prev=>prev.map(st=>{
         if(st.id!==studentId) return st;
@@ -2674,7 +2676,7 @@ export default function HallPass(){
   };
 
   const salonMakeServiceChoice=(choiceId)=>{
-    setSalonState(prev=>salonServiceChoice(prev,choiceId));
+    setSalonState(prev=>salonServiceChoice(prev,choiceId,ownedHallSkills||{}));
   };
 
   const salonCloseEvening=()=>{
@@ -2683,7 +2685,7 @@ export default function HallPass(){
       if(!result?.done) return prev;
       const chloeId=prev.chloeStudentId;
       if(chloeId!=null){
-        setStudents(st=>st.map(s=>s.id!==chloeId?s:processStudentGain(s,result.chloeLbs,8)));
+        setStudents(st=>st.map(s=>s.id!==chloeId?s:processStudentGain(s,result.chloeLbs+salonFloorLbs(ownedHallSkills||{}),8)));
       }
       if(result.scrutiny) addScrutiny(result.scrutiny);
       push(`🥂 ${result.log}`);
@@ -2726,12 +2728,13 @@ export default function HallPass(){
 
   const galleryStudioAction=(actionId)=>{
     setGalleryState(prev=>{
-      const next=studioAction(prev,actionId);
+      const next=studioAction(prev,actionId,ownedHallSkills||{});
       if(next.pendingGains){
+        const extra=galleryFloorLbs(ownedHallSkills||{});
         const {subjectId,subjectLbs,fionaLbs,scrutiny}=next.pendingGains;
         const fionaId=next.fionaStudentId;
         setStudents(st=>st.map(s=>{
-          if(s.id===subjectId) return processStudentGain(s,subjectLbs,5);
+          if(s.id===subjectId) return processStudentGain(s,subjectLbs+extra,5);
           if(s.id===fionaId&&fionaLbs) return processStudentGain(s,fionaLbs,0);
           return s;
         }));
@@ -2748,7 +2751,7 @@ export default function HallPass(){
     if(ap<1){push('⚠️ Need 1 AP.');return;}
     setAp(a=>a-1);
     setGalleryState(prev=>{
-      const {state:next,scrutiny,log}=runFieldShoot(prev,locationId);
+      const {state:next,scrutiny,log}=runFieldShoot(prev,locationId,ownedHallSkills||{});
       if(scrutiny) addScrutiny(scrutiny);
       push(`🖼 ${log}`);
       return next;
@@ -2847,12 +2850,11 @@ export default function HallPass(){
       if(!prev||prev.done) return prev;
       const def=prev.type==='emergency'?EMERGENCY_HEARING:REMOVAL_HEARING;
       const hearingType=prev.type==='emergency'?'emergency':'removal';
-      const phase=def.phases[prev.phaseIdx];
-      const ch=phase?.choices?.find(c=>c.id===choiceId);
+      const ch=hearingChoicesForPhase(def, prev.phaseIdx, ownedHallSkills||{}, hearingType).find(c=>c.id===choiceId);
       if(!ch) return prev;
       const student=students.find(s=>s.id===prev.studentId);
       const resultLine=ch.resultPool
-        ?renderHearingChoiceResult(hearingType,choiceId,student,week,prev.phaseIdx)
+        ?renderHearingChoiceResult(hearingType,choiceId,student,week,prev.phaseIdx,ch.resultPool)
         :(ch.result||'');
       const log=[...(prev.log||[]),resultLine];
       const history=[...(prev.history||[]),ch.flag||choiceId];
@@ -4200,7 +4202,7 @@ export default function HallPass(){
     if(ap<act.apCost){push(`⚠️ Need ${act.apCost} AP.`);return;}
     guardHungerInterrupt(()=>{
       setPharmacistChemStudentId(s.id);
-      setPharmacistChemSession(startChemSession(pharmacistState));
+      setPharmacistChemSession(startChemSession(pharmacistState, ownedHallSkills||{}));
     });
   };
 
@@ -4759,6 +4761,8 @@ export default function HallPass(){
       const{ _pendingGainLbs,...rest}=ns;
       ns=processStudentGain(rest,g,0);
     }
+    const extraDev=extraDeviceUseLbs(ownedHallSkills||{});
+    if(extraDev>0&&ns) ns=processStudentGain(ns,extraDev,0);
     const gainLbs=Math.max(0, Math.round(ns.lbs-preLbs));
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
     if(consumeInventory&&def?.id){
@@ -6078,7 +6082,7 @@ export default function HallPass(){
       const challenge=CHALLENGES.find(c=>c.id===challengeId);
       if(!challenge||!prev) return prev;
       const student=students.find(st=>st.id===prev.studentId);
-      const totalRounds=pickRoundCount(challenge);
+      const totalRounds=pickRoundCount(challenge, Math.random, ownedHallSkills||{});
       const ctx=buildStreamCtx({...prev,challenge},student);
       const roundStartLine=renderStreamBeat('{stream.roundStart}',ctx);
       return {
@@ -6745,7 +6749,7 @@ export default function HallPass(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
-    const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
+    const choice=intimacyChoicesForPhase(phase, ownedHallSkills||{}).find(c=>c.id===choiceId); if(!choice) return;
     // Pin blackout — at settled size, letting her mass come over you is a gamble.
     // On a hit she pins you, you black out, and the week ends where you lie.
     if(choiceCanPin(sceneId,choiceId,s) && Math.random()<pinBlackoutChance(s)){
@@ -6757,7 +6761,7 @@ export default function HallPass(){
       return;
     }
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)];
+    const newLog=[...logLines, typeof choice.result==='function' ? choice.result(s) : (choice.result || renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum))];
     let newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
@@ -9151,7 +9155,7 @@ export default function HallPass(){
       {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene} soundEnabled={soundEnabled}/>}
 
       {/* ── EP5: ACTIVE INTIMACY SCENE ── */}
-      {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students} soundEnabled={soundEnabled}/>}
+      {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── DEBUG PANEL ── */}
       {debugOpen&&<DebugPanel adminScrutiny={adminScrutiny} ap={ap} debugApply={debugApply} debugInputs={debugInputs} setAdminScrutiny={setAdminScrutiny} setAp={setAp} setOwnedSkills={setOwnedSkills} setOwnedHallSkills={setOwnedHallSkills} setSalonState={setSalonState} setGalleryState={setGalleryState} setCompetitiveGainerState={setCompetitiveGainerState} setChapterHostessState={setChapterHostessState} setCommunityResearcherState={setCommunityResearcherState} setCultivatorState={setCultivatorState} setPharmacistState={setPharmacistState} setMayaHiveState={setMayaHiveState} setLabState={setLabState} setDeviceInventory={setDeviceInventory} setMilestoneQueue={setMilestoneQueue} setWeekRecap={setWeekRecap} setWeekPlannerOpen={setWeekPlannerOpen} setPresentationState={setPresentationState} setTierUpModal={setTierUpModal} setHungerInterrupt={setHungerInterrupt} setAscensionCeremony={setAscensionCeremony} setEvolutionModal={setEvolutionModal} setConfrontation={setConfrontation} setFloorCheckIn={setFloorCheckIn} setEmbodimentStudent={setEmbodimentStudent} setOriginPickState={setOriginPickState} setTalkStudentId={setTalkStudentId} setWeighInState={setWeighInState} setDreamStudent={setDreamStudent} setDreamPresetScenario={setDreamPresetScenario} setEchoReplay={setEchoReplay} setFeastRitualOpen={setFeastRitualOpen} setIntimacySceneSelector={setIntimacySceneSelector} setPrivateSession={setPrivateSession} setTapOutPopup={setTapOutPopup} setSessionResult={setSessionResult} setDormUnlockModal={setDormUnlockModal} setDinnerEvent={setDinnerEvent} setSelectedId={setSelectedId} setDebugInputs={setDebugInputs} setDebugOpen={setDebugOpen} setLilithUnlocked={setLilithUnlocked} setStudents={setStudents} students={students} opposition={opposition} setOpposition={setOpposition} setHearingState={setHearingState} week={week} setWeek={setWeek} startDormId={raProfile?.dormId||raProfile?.subject} unlockedDorms={unlockedDorms} setUnlockedDorms={setUnlockedDorms} money={money} view={view} setView={setView} log={log} lastPlayerAction={lastPlayerAction} getSnapshotContext={getSnapshotContext} getSaveContext={getSaveContext} campusState={campusState} pharmacistState={pharmacistState} eventQueueLen={eventQueue.length} instantText={instantText} onInstantTextChange={setInstantText} soundEnabled={soundEnabled} onSoundEnabledChange={setSoundEnabled}/>}
@@ -9260,9 +9264,9 @@ export default function HallPass(){
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled}/>}
 
-      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
+      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} owned={ownedHallSkills||{}} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
 
-      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition} soundEnabled={soundEnabled}/>}
+      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} owned={ownedHallSkills||{}} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition} soundEnabled={soundEnabled}/>}
 
       {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct} soundEnabled={soundEnabled}/>}
       {refeedSurgeState&&(()=>{
@@ -9287,7 +9291,7 @@ export default function HallPass(){
       })()}
 
       {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))} soundEnabled={soundEnabled}/>}
-      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing} soundEnabled={soundEnabled}/>}
+      {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── HALL KITCHEN QUEEN MINI-INTERFACE ── */}
       {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession} soundEnabled={soundEnabled}/>}
@@ -9430,9 +9434,9 @@ export default function HallPass(){
       })()}
 
       {/* ── EVOLVED PATH MINI-GAMES ── */}
-      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
-      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
-      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
+      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
+      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
+      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}
       {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled}/>}
@@ -9457,6 +9461,7 @@ export default function HallPass(){
             chemSession={pharmacistChemSession}
             setChemSession={setPharmacistChemSession}
             pharmacistState={pharmacistState}
+            owned={ownedHallSkills||{}}
             onConfirm={confirmPharmacistChem}
             onCancel={cancelPharmacistChem}
             finalizeBrewPlan={finalizeBrewPlan}

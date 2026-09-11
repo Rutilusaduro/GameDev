@@ -3,6 +3,7 @@
 // Extra linger / atmosphere slots stitched into high-traffic skeletons.
 import { registerPool, registerModuleVariants } from '../../engine.js';
 import './more.js';
+import './campusHunt.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

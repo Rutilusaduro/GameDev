@@ -249,7 +249,37 @@ export function compoundsCraftableNow(pool, stageId, pharmacistState = null) {
   return poolIds.filter(id => canAffordRecipe(pool, id, pharmacistState));
 }
 
-export function startChemSession(pharmacistState) {
+export function extraAcquisitionChoices(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.luxury_pantry) {
+    extras.push({
+      id: 'kitchen_extract',
+      label: 'Render extracts from floor kitchen leftovers',
+      desc: '+3 extracts · low exposure. The pantry already smells like a lab.',
+      exposure: 2,
+      grants: { extracts: 3 },
+      flavor: 'She takes leftover frosting and a measuring cup. Science, she says, and means the swallow.',
+    });
+  }
+  if (owned.research_budget) {
+    extras.push({
+      id: 'lounge_grant',
+      label: 'Divert lounge research budget into precursors',
+      desc: '+4 precursors · paperwork calls it a sensory trial.',
+      exposure: 6,
+      grants: { precursors: 4 },
+      flavor: 'The receipt says lounge programming. The bag says otherwise.',
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function acquisitionChoicesForOwned(stageId, owned = {}) {
+  const base = ACQUISITION_BY_STAGE[stageId] || ACQUISITION_BY_STAGE[1];
+  return [...base, ...extraAcquisitionChoices(owned)];
+}
+
+export function startChemSession(pharmacistState, owned = {}) {
   const stageId = pharmacistState?.stage ?? 1;
   const cultReservoir = pharmacistState?.cult?.supplyReservoir ?? 0;
   const cultBonus = pharmacistState?.cultActive ? cultSupplyToIngredients(pharmacistState) : {};
@@ -261,12 +291,12 @@ export function startChemSession(pharmacistState) {
     exposureGained: 0,
     acquisitionLog: [],
     brewPlan: [],
-    maxBrews: MAX_BREWS_BY_STAGE[stageId] || 2,
+    maxBrews: (MAX_BREWS_BY_STAGE[stageId] || 2) + (owned.research_budget ? 1 : 0),
   };
 }
 
-export function applyAcquisitionChoice(session, actionId) {
-  const options = ACQUISITION_BY_STAGE[session.stageId] || ACQUISITION_BY_STAGE[1];
+export function applyAcquisitionChoice(session, actionId, owned = {}) {
+  const options = acquisitionChoicesForOwned(session.stageId, owned);
   const action = options.find(a => a.id === actionId);
   if (!action) return session;
   return {

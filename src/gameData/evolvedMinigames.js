@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // EVOLVED PATH MINI-GAMES — presentation, delivery, campus challenge
 // ═══════════════════════════════════════════════════════════════
+import { evolvedFloorBonus } from './mechanicDepth.js';
 
 export const EVOLVED_MINIGAMES = {
   campus_challenge: {
@@ -74,7 +75,50 @@ export const EVOLVED_MINIGAMES = {
   },
 };
 
-export function computeMinigameOutcome(gameId, history, stageIdx = 0) {
+export function extraMinigameChoices(gameId, owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery) {
+    extras.push({
+      id: 'kitchen_run',
+      label: 'Send a runner to the floor kitchen',
+      score: 3,
+      log: 'Hall leftovers arrive mid-round. She makes room without being asked.',
+    });
+  }
+  if (owned.media_nook && gameId === 'campus_challenge') {
+    extras.push({
+      id: 'nook_cam',
+      label: 'Film it from the media-nook angle',
+      score: 2,
+      log: 'The ring light finds her. The crowd follows the lens.',
+    });
+  }
+  if (owned.dinner_basic && gameId === 'delivery_order') {
+    extras.push({
+      id: 'dining_nook',
+      label: 'Move the feast to the dining nook',
+      score: 2,
+      log: 'She relocates. The table was already waiting.',
+    });
+  }
+  if (owned.comfy_chairs && gameId === 'presentation_defense') {
+    extras.push({
+      id: 'lounge_seat',
+      label: 'Offer the panel the new lounge chairs',
+      score: 2,
+      log: 'They sit. They stay. The questions get softer.',
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function minigameChoicesForPhase(gameId, phaseIdx, owned = {}) {
+  const phase = EVOLVED_MINIGAMES[gameId]?.phases[phaseIdx];
+  if (!phase) return [];
+  return [...phase.choices, ...extraMinigameChoices(gameId, owned)];
+}
+
+export function computeMinigameOutcome(gameId, history, stageIdx = 0, owned = {}) {
   const def = EVOLVED_MINIGAMES[gameId];
   if (!def) return { gain: 8, rel: 8, tier: 'good' };
   const score = (history || []).reduce((sum, h) => sum + (h.score || 0), 0);
@@ -82,8 +126,9 @@ export function computeMinigameOutcome(gameId, history, stageIdx = 0) {
   const baseGain = gameId === 'campus_challenge' ? [8, 20] : gameId === 'delivery_order' ? [7, 17] : [6, 14];
   const baseRel = gameId === 'campus_challenge' ? 9 : gameId === 'delivery_order' ? 7 : 8;
   const gainSpan = baseGain[1] - baseGain[0];
-  const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus);
-  const rel = baseRel + Math.floor(score / 3);
+  const floor = evolvedFloorBonus(owned);
+  const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus) + (floor.gain || 0);
+  const rel = baseRel + Math.floor(score / 3) + (floor.rel || 0);
   const tier = score >= 5 ? 'perfect' : score >= 3 ? 'good' : score >= 1 ? 'messy' : 'soft';
   return { gain, rel, tier, score };
 }

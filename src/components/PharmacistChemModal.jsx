@@ -8,7 +8,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { COMPOUNDS, PHARMACIST_STAGES, compoundsForStage } from '../gameData/pharmacist.js';
 import {
-  ACQUISITION_BY_STAGE,
+  acquisitionChoicesForOwned,
   formatIngredientBag,
   recipeCostLabel,
   canAffordRecipe,
@@ -102,6 +102,7 @@ export function PharmacistChemModal({
   applyAcquisitionChoice,
   skipAcquisition,
   soundEnabled = true,
+  owned = {},
 }) {
   useEffect(() => {
     playHallPassSound('session', soundEnabled);
@@ -111,7 +112,7 @@ export function PharmacistChemModal({
   const stageId = chemSession.stageId ?? 1;
   const chrome = STAGE_CHROME[stageId] || STAGE_CHROME[1];
   const stageMeta = PHARMACIST_STAGES.find(s => s.id === stageId);
-  const options = ACQUISITION_BY_STAGE[stageId] || ACQUISITION_BY_STAGE[1];
+  const options = acquisitionChoicesForOwned(stageId, owned);
 
   const cancelChem = () => { playHallPassSound('click', soundEnabled); onCancel(); };
   const wrap = (children, { dismissible = false } = {}) => (
@@ -142,7 +143,7 @@ export function PharmacistChemModal({
             type="button"
             className="pharmacist-choice-row"
             style={{ ...C.btn('#1a3028'), width: '100%', marginBottom: 8, textAlign: 'left', padding: '10px 14px' }}
-            onClick={() => { playHallPassSound('click', soundEnabled); setChemSession(applyAcquisitionChoice(chemSession, opt.id)); }}
+            onClick={() => { playHallPassSound('click', soundEnabled); setChemSession(applyAcquisitionChoice(chemSession, opt.id, owned)); }}
           >
             <div style={{ color: '#8ad4b0', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>{opt.label}</div>
             <div style={{ color: '#608878', fontSize: 10, lineHeight: 1.45, marginBottom: 4 }}>{opt.desc}</div>

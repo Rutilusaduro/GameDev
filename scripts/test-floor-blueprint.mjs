@@ -19,8 +19,14 @@ import {
 import { aggregateHallLoungeSkillEffects, buyHallLoungeSkill } from '../src/gameData/hallLoungeSkills.js';
 import { createInitialPlayer } from '../src/gameData/player.js';
 import { clothingStateForStage } from '../src/gameData/textContext.js';
-import { pickHearingEnding, REMOVAL_HEARING } from '../src/gameData/oppositionHearings.js';
-import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness } from '../src/gameData/mechanicDepth.js';
+import { pickHearingEnding, REMOVAL_HEARING, extraHearingChoices, hearingChoicesForPhase } from '../src/gameData/oppositionHearings.js';
+import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs } from '../src/gameData/mechanicDepth.js';
+import { extraSalonServiceChoices, salonChoicesForOwned, startSalonSession, salonPickMenu, salonServiceChoice } from '../src/gameData/chloeSalon.js';
+import { extraStudioActions, extraFieldLocations, studioActionsForOwned, fieldLocationsForOwned } from '../src/gameData/fionaGallery.js';
+import { extraMinigameChoices, minigameChoicesForPhase, computeMinigameOutcome } from '../src/gameData/evolvedMinigames.js';
+import { extraAcquisitionChoices, acquisitionChoicesForOwned, startChemSession } from '../src/gameData/pharmacistIngredients.js';
+import { extraIntimacyChoices, intimacyChoicesForPhase } from '../src/gameData/intimacy.js';
+import { extraStreamRounds, pickRoundCount } from '../src/gameData/streaming.js';
 import { resolveWeekPlan, plannerSlotCount, venuePayoffHint } from '../src/gameData/weekPlanner.js';
 import { extraFloorChoices, generateFloorCheckIn } from '../src/utils/gameHelpers.js';
 import { FLOOR_SCENES } from '../src/gameData/floorEvents.js';
@@ -109,7 +115,7 @@ const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
 const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
 assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
-assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 24, 'depth inventory covers live systems');
+assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 27, 'depth inventory covers live systems');
 for (const row of MECHANIC_DEPTH_INVENTORY) {
   assert.ok(row.after > row.before, `${row.id} after (${row.after}) must beat before (${row.before})`);
   assert.ok(row.hook, `${row.id} missing hook`);
@@ -122,6 +128,46 @@ assert.ok(itemCalorieBonus('Pizza Party', owned) >= 400, 'item calories ride sna
 assert.ok(hallKitchenFillCalories(allOwned) > 0, 'kitchen fill feeds hall feasts');
 assert.ok(hallDiningFillFullness(allOwned) > 0, 'dining fill adds fullness');
 assert.ok(venuePayoffHint('dining').includes('cal'), 'venue hint shows calories');
+
+assert.ok(salonFloorLbs(allOwned) > 0, 'salon floor lbs live');
+assert.ok(extraSalonServiceChoices({ dinner_basic: true, media_nook: true }).length >= 2, 'salon extras cap at 2');
+assert.ok(salonChoicesForOwned({ dinner_basic: true }).length > 3, 'salon extras append');
+let salon = startSalonSession({ prestige: 0, indulgence: 0, eveningsHosted: 0, guestBook: [], session: null }, ['brittany']);
+salon = salonPickMenu(salon, 'cheese');
+salon = salonPickMenu(salon, 'croissant');
+salon = salonPickMenu(salon, 'fried');
+salon = salonPickMenu(salon, 'milkshake');
+const afterService = salonServiceChoice(salon, 'floor_leftovers', { dinner_basic: true });
+assert.ok(afterService.session.serviceLog.includes('floor_leftovers'), 'salon extra service is playable');
+
+assert.ok(galleryFloorLbs({ media_nook: true, echo_gallery: true }) >= 3, 'gallery floor lbs live');
+assert.ok(extraStudioActions({ media_nook: true }).length >= 1, 'gallery studio extra');
+assert.ok(extraFieldLocations({ snack_station: true }).length >= 1, 'gallery field extra');
+assert.ok(studioActionsForOwned({ media_nook: true }).length > 4);
+assert.ok(fieldLocationsForOwned({ echo_gallery: true }).some((l) => l.id === 'echo_gallery'));
+
+assert.ok(pharmacistFloorCalMult(allOwned) > 1, 'pharmacist kitchen/psych fill');
+assert.ok(extraAcquisitionChoices({ luxury_pantry: true }).some((a) => a.id === 'kitchen_extract'));
+assert.ok(acquisitionChoicesForOwned(1, { research_budget: true }).some((a) => a.id === 'lounge_grant'));
+const chem = startChemSession({ stage: 1 }, { research_budget: true });
+assert.ok(chem.maxBrews >= 3, 'research budget adds a brew slot');
+
+assert.ok(evolvedFloorBonus(allOwned).gain >= 1, 'evolved floor bonus scales with rooms');
+assert.ok(minigameChoicesForPhase('campus_challenge', 0, { snack_station: true }).length > 3, 'minigame extras append');
+assert.ok(extraMinigameChoices('delivery_order', { dinner_basic: true }).some((c) => c.id === 'dining_nook'));
+const bare = computeMinigameOutcome('campus_challenge', [{ score: 3 }, { score: 3 }], 0, {});
+const floored = computeMinigameOutcome('campus_challenge', [{ score: 3 }, { score: 3 }], 0, allOwned);
+assert.ok(floored.gain > bare.gain, 'minigame floor bonus pays');
+
+assert.ok(extraHearingChoices('removal', { legendary_host: true }).length >= 1);
+assert.ok(hearingChoicesForPhase(REMOVAL_HEARING, 0, { snack_station: true }, 'removal').length > REMOVAL_HEARING.phases[0].choices.length);
+
+assert.ok(extraIntimacyChoices({ oversized_linens: true }).some((c) => c.id === 'linens_nest'));
+assert.ok(intimacyChoicesForPhase({ choices: [{ id: 'wrap_arms' }] }, { oversized_linens: true }).length >= 2);
+
+assert.equal(extraStreamRounds({ media_nook: true }), 1);
+assert.ok(pickRoundCount(null, () => 0, { media_nook: true }) > pickRoundCount(null, () => 0, {}));
+assert.ok(extraDeviceUseLbs({ device_bay: true }) >= 1);
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

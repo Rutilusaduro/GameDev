@@ -14,13 +14,13 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'ecology', before: 1, after: 2, hook: 'ecologyDecayReduce' },
   { id: 'weighIn', before: 1, after: 2, hook: 'weighInRelBonus' },
   { id: 'roomVisit', before: 1, after: 2, hook: 'roomVisitRelBonus' },
-  { id: 'intimacy', before: 1, after: 2, hook: 'intimacyRelBonus' },
-  { id: 'devices', before: 1, after: 2, hook: 'deviceTickBonus' },
+  { id: 'intimacy', before: 1, after: 3, hook: 'intimacyRelBonus+extraChoice' },
+  { id: 'devices', before: 1, after: 3, hook: 'deviceTickBonus+extraUseLbs' },
   { id: 'pantry', before: 1, after: 2, hook: 'pantryBonus+itemCalBonus' },
   { id: 'campus', before: 1, after: 2, hook: 'campusYieldBonus' },
-  { id: 'opposition', before: 1, after: 2, hook: 'oppositionCover+hearingShield' },
+  { id: 'opposition', before: 1, after: 3, hook: 'oppositionCover+extraHearingChoice' },
   { id: 'clothing', before: 1, after: 2, hook: 'clothingEase' },
-  { id: 'streaming', before: 1, after: 2, hook: 'streamRelBonus+audience' },
+  { id: 'streaming', before: 1, after: 3, hook: 'streamRelBonus+extraRound' },
   { id: 'sessions', before: 1, after: 2, hook: 'sessionCapNextWeek' },
   { id: 'circuit', before: 0, after: 3, hook: 'walkAfterHours' },
   { id: 'planner', before: 1, after: 3, hook: 'resolveWeekPlan+venuePick' },
@@ -28,9 +28,12 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'hunt', before: 1, after: 2, hook: 'kitchenHuntBonus' },
   { id: 'trust', before: 1, after: 2, hook: 'socialTrustDrip' },
   { id: 'discontent', before: 1, after: 2, hook: 'comfortFramingDecay' },
-  { id: 'evolved', before: 1, after: 2, hook: 'completedRoomActivityGain' },
+  { id: 'evolved', before: 1, after: 3, hook: 'minigameExtras+floorBonus' },
   { id: 'influence', before: 1, after: 2, hook: 'pairGainFromSocial' },
   { id: 'narrativeEvents', before: 1, after: 2, hook: 'echoRelBonus' },
+  { id: 'salon', before: 1, after: 3, hook: 'salonFloorLbs+extraService' },
+  { id: 'gallery', before: 1, after: 3, hook: 'galleryFloorLbs+extraStudio+field' },
+  { id: 'pharmacist', before: 1, after: 3, hook: 'pharmacistFloorCalMult+extraAcquire' },
 ];
 
 export function kitchenHuntBonus(baseGain, owned = {}) {
@@ -63,6 +66,32 @@ export function hallKitchenFillCalories(owned = {}) {
 
 export function hallDiningFillFullness(owned = {}) {
   return Math.round(roomFill('dining', owned) * 8 + roomFill('kitchen', owned) * 4);
+}
+
+export function salonFloorLbs(owned = {}) {
+  return Math.round(roomFill('dining', owned) * 6 + roomFill('kitchen', owned) * 4);
+}
+
+export function galleryFloorLbs(owned = {}) {
+  const media = owned.media_nook ? 3 : 0;
+  return Math.round(roomFill('echo', owned) * 4) + media;
+}
+
+export function pharmacistFloorCalMult(owned = {}) {
+  return 1 + roomFill('kitchen', owned) * 0.2 + roomFill('psych', owned) * 0.1;
+}
+
+export function evolvedFloorBonus(owned = {}) {
+  const rooms = completedRoomCount(owned);
+  return {
+    gain: Math.floor(rooms / 4),
+    rel: Math.min(3, Math.floor(rooms / 5) + (aggregateFloorDepth(owned).talkRelBonus ? 1 : 0)),
+  };
+}
+
+export function extraDeviceUseLbs(owned = {}) {
+  if (!owned.device_bay) return 0;
+  return 1 + Math.floor(completedRoomCount(owned) / 6);
 }
 
 export function assertMechanicDepthCoverage() {

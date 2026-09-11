@@ -53,8 +53,8 @@ export function renderHearingPhase(type, phaseIdx, student, week) {
       : `Chairwoman Vance opens the hearing. ${student?.name || 'Your resident'} sits beside you.`);
 }
 
-export function renderHearingChoiceResult(type, choiceId, student, week, phaseIdx = 0) {
-  const pool = `opposition.hearing.${type}.result.${choiceId}`;
+export function renderHearingChoiceResult(type, choiceId, student, week, phaseIdx = 0, resultPool = null) {
+  const pool = resultPool || `opposition.hearing.${type}.result.${choiceId}`;
   return renderHearingPool(pool, student, week, type, phaseIdx, { v2DepthChance: 0.28 })
     || 'The room records your choice.';
 }

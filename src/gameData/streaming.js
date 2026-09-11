@@ -288,11 +288,16 @@ export function styleMatch(challenge, brand) {
   return b.favStyles.includes(challenge.category) ? 1 : 0.35;
 }
 
-export function pickRoundCount(challenge, rng = Math.random) {
-  if (!challenge?.roundCount) return STREAM_DEFAULT_ROUNDS;
+export function extraStreamRounds(owned = {}) {
+  return owned.media_nook ? 1 : 0;
+}
+
+export function pickRoundCount(challenge, rng = Math.random, owned = {}) {
+  const extra = extraStreamRounds(owned);
+  if (!challenge?.roundCount) return STREAM_DEFAULT_ROUNDS + extra;
   const [min, max] = challenge.roundCount;
-  if (min >= max) return min;
-  return min + Math.floor(rng() * (max - min + 1));
+  if (min >= max) return min + extra;
+  return min + Math.floor(rng() * (max - min + 1)) + extra;
 }
 
 /** Rolling performance over last 2–3 rounds for reactive dialogue. */

@@ -12,9 +12,9 @@ export const CAMPUS_NODES = {
     exits:["lecture_hall","faculty_lounge","quad","rooftop"],
     desc:"Your RA desk on the ground floor. Master key on a lanyard, a couch that's seen too many late-night talks, and a mini-fridge you restock before anyone asks. The door stays open. That's the whole strategy.",
     flavor:[
-      "A thank-you note sits on the desk, unsigned, weighted down with an empty pizza box.",
-      "The couch cushions are flattened in a way that suggests increasingly heavy floor meetings.",
-      "Someone left a crumb trail to your snack drawer. The drawer is lighter than you left it.",
+      "A thank-you note sits on the desk, unsigned, weighted with an empty pizza box still warm at the corners.",
+      "The couch cushions keep the shape of someone who sat heavy and did not want to leave.",
+      "Someone left a crumb trail to your snack drawer. The drawer is lighter. You restock without comment.",
     ],
   },
   lecture_hall: {
@@ -43,9 +43,9 @@ export const CAMPUS_NODES = {
     exits:["office","lecture_hall","dining_hall","dorms","gym","coffee_shop","student_union"],
     desc:"The crossroads of campus. Lawn, benches, food trucks idling along the path like opportunists. Everyone passes through here eventually, usually carrying something edible.",
     flavor:[
-      "The food trucks have doubled since last semester. Market forces at work.",
+      "The food trucks have doubled. Market forces, if market forces ate second lunches on the lawn.",
       "A picnic on the lawn has entered its fourth hour. The blanket is mostly serving dishes now.",
-      "Two residents share a bench built for three and fill it completely. Neither seems bothered. The bench, structurally, has opinions.",
+      "Two residents share a bench built for three and fill it. Neither seems bothered. The bench has opinions.",
     ],
   },
   library: {
@@ -63,9 +63,9 @@ export const CAMPUS_NODES = {
     exits:["quad","dorms","food_court","coffee_shop"],
     desc:"All-you-can-eat, a phrase the resident body has come to treat as a personal challenge. The staff know your hall by name and portion size. The dessert station has tripled its footprint.",
     flavor:[
-      "The dining staff are wheeling out a fourth dessert cart. On a Tuesday.",
-      "A laminated sign reads 'UNLIMITED MEANS UNLIMITED — Management.' It looks recent and hard-won.",
-      "Trays are being carried in stacks of two and three now. The single-tray era is over.",
+      "The dining staff wheel out a fourth dessert cart. On a Tuesday. Nobody pretends surprise.",
+      "A laminated sign reads UNLIMITED MEANS UNLIMITED. Recent. Hard-won. Sticky.",
+      "Trays travel in stacks of two and three now. The single-tray era is a rumor the staff tell new hires.",
     ],
   },
   gym: {

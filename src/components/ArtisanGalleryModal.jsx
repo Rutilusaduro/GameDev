@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
-import { FIELD_LOCATIONS, GALLERY_MOTIFS, GALLERY_MEDIUMS, STUDIO_ACTIONS } from '../gameData/fionaGallery.js';
+import { fieldLocationsForOwned, GALLERY_MOTIFS, GALLERY_MEDIUMS, studioActionsForOwned } from '../gameData/fionaGallery.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#c47a2a';
@@ -28,6 +28,7 @@ export function ArtisanGalleryModal({
   onExhibition,
   onConfirmEnroll,
   soundEnabled = true,
+  owned = {},
 }) {
   const fiona = students.find((s) => s.id === galleryState?.fionaStudentId);
   const session = galleryState?.session;
@@ -62,7 +63,7 @@ export function ArtisanGalleryModal({
           <div style={{ fontSize: 9, letterSpacing: 3, color: ACCENT }}>STUDIO — Round {session.round + 1}/3</div>
           <p style={{ fontSize: 12, color: CREAM, lineHeight: 1.6 }}>Feed & frame. Fiona shoots while the model eats.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {STUDIO_ACTIONS.map((a) => (
+            {studioActionsForOwned(owned).map((a) => (
               <button key={a.id} type="button" style={{ ...C.btn('#4a3a28'), textAlign: 'left', fontSize: 12 }} onClick={() => onStudioAction(a.id)}>
                 {a.label} <span style={{ fontSize: 10, color: '#c9a87c' }}>model +{a.subjectLbs}{a.fionaLbs ? ` · Fiona +${a.fionaLbs}` : ''}</span>
               </button>
@@ -95,7 +96,7 @@ export function ArtisanGalleryModal({
 
         <div style={{ fontSize: 10, color: '#a89078', marginBottom: 6 }}>FIELD SHOOT (1 AP)</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 12 }}>
-          {FIELD_LOCATIONS.map((loc) => (
+          {fieldLocationsForOwned(owned).map((loc) => (
             <button key={loc.id} type="button" style={{ ...C.btn('#3a3028'), fontSize: 11 }} onClick={() => onFieldShoot(loc.id)}>{loc.label}</button>
           ))}
         </div>

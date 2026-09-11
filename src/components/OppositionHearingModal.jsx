@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
-import { REMOVAL_HEARING, EMERGENCY_HEARING, pickHearingEnding } from '../gameData/oppositionHearings.js';
+import { REMOVAL_HEARING, EMERGENCY_HEARING, pickHearingEnding, hearingChoicesForPhase } from '../gameData/oppositionHearings.js';
 import { getSupernaturalHearingFlags } from '../gameData/supernaturalForms.js';
 import { renderHearingPhase } from '../textEngine/scenes/opposition/index.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
@@ -14,6 +14,7 @@ export function OppositionHearingModal({
   onChoice,
   onClose,
   soundEnabled = true,
+  owned = {},
 }) {
   useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, hearingState?.type, hearingState?.phaseIdx]);
   if (!hearingState) return null;
@@ -31,7 +32,7 @@ export function OppositionHearingModal({
   const advocate = opposition?.aib?.rotatingAdvocate;
   const hasAdvocatePath = advocate && ['neutral', 'compromised', 'wavering'].includes(advocate.stance);
   const testifyWitness = students.find((s) => s.id !== hearingState.studentId && !s.hidden && (s.relationship || 0) >= 70);
-  const visibleChoices = phase?.choices?.filter((ch) => {
+  const visibleChoices = hearingChoicesForPhase(def, hearingState.phaseIdx, owned, hearingType).filter((ch) => {
     if (ch.id === 'discredit' && !hasDiscreditPath) return false;
     if (ch.id === 'advocate' && !hasAdvocatePath) return false;
     if (ch.id === 'floor_pressure' && !hearingFlags.hasInfluencePath && !hearingFlags.hasEmbodimentPath) return false;

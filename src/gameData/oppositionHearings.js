@@ -97,6 +97,39 @@ export const EMERGENCY_HEARING = {
   ],
 };
 
+export function extraHearingChoices(type, owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.legendary_host) {
+    extras.push({
+      id: 'kitchen_cater',
+      label: type === 'emergency'
+        ? 'Cater the emergency session from the floor kitchen'
+        : 'Cater the hearing from the floor kitchen',
+      resultPool: type === 'emergency'
+        ? 'opposition.hearing.emergency.result.feast_bribe'
+        : 'opposition.hearing.removal.result.feast',
+      flag: type === 'emergency' ? 'catered' : 'feast',
+    });
+  }
+  if (owned.institutional_cover || owned.deep_cover) {
+    extras.push({
+      id: 'lounge_study',
+      label: 'Cite the lounge as an official wellness study site',
+      resultPool: type === 'emergency'
+        ? 'opposition.hearing.emergency.result.deflect'
+        : 'opposition.hearing.removal.result.advocate',
+      flag: type === 'emergency' ? 'deflect' : 'advocate',
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function hearingChoicesForPhase(def, phaseIdx, owned = {}, type = 'removal') {
+  const base = def?.phases?.[phaseIdx]?.choices || [];
+  if (phaseIdx !== 0) return base;
+  return [...base, ...extraHearingChoices(type, owned)];
+}
+
 export function pickHearingEnding(hearingDef, history, cover = 0) {
   const ending = hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
   if (!ending) return ending;

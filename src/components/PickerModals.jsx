@@ -5,12 +5,12 @@ import { ModalOverlay } from './ModalOverlay.jsx';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
 import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
 import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine/scenes/researchJournal/index.js';
-import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES } from '../gameData/intimacy.js';
+import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES, intimacyChoicesForPhase } from '../gameData/intimacy.js';
 import { intimacySceneAllowed, choiceCanPin } from '../gameData/intimacyGating.js';
 import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
-import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '../gameData/evolvedMinigames.js';
+import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameChoicesForPhase, minigameTierLabel } from '../gameData/evolvedMinigames.js';
 
 
 export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
@@ -197,7 +197,7 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
         );
 }
 
-function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true }) {
+function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true, owned = {} }) {
   const def = EVOLVED_MINIGAMES[gameId];
   const s = students.find((st) => st.id === studentId);
   const [phaseIdx, setPhaseIdx] = useState(0);
@@ -217,7 +217,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
     const nextHistory = [...history, choice];
     const nextPhase = phaseIdx + 1;
     if (nextPhase >= def.phases.length) {
-      const result = computeMinigameOutcome(gameId, nextHistory, stageIdx);
+      const result = computeMinigameOutcome(gameId, nextHistory, stageIdx, owned);
       setStudents((ss) => ss.map((st) => (st.id === studentId ? processStudentGain(st, result.gain, result.rel) : st)));
       const labels = {
         campus_challenge: 'Campus Challenge',
@@ -251,7 +251,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
         </div>
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {phase.choices.map((ch) => (
+            {minigameChoicesForPhase(gameId, phaseIdx, owned).map((ch) => (
               <button key={ch.id} type="button" className="evolved-minigame-choice-row" style={{ ...C.btn(def.accent), textAlign: 'left', fontSize: 12 }} onClick={() => { playHallPassSound('click', soundEnabled); pickChoice(ch); }}>
                 {ch.label}
               </button>
@@ -266,7 +266,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
   );
 }
 
-export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true }) {
+export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true, owned = {} }) {
   if (!challengeState) return null;
   return (
     <EvolvedMinigameModal
@@ -279,11 +279,12 @@ export function CampusChallengeModal({ challengeState, processStudentGain, push,
       push={push}
       onClose={() => setChallengeState(null)}
       soundEnabled={soundEnabled}
+      owned={owned}
     />
   );
 }
 
-export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true }) {
+export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true, owned = {} }) {
   if (!deliveryState) return null;
   return (
     <EvolvedMinigameModal
@@ -296,11 +297,12 @@ export function DeliveryOrderModal({ deliveryState, processStudentGain, push, se
       push={push}
       onClose={() => setDeliveryState(null)}
       soundEnabled={soundEnabled}
+      owned={owned}
     />
   );
 }
 
-export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true }) {
+export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true, owned = {} }) {
   if (!presentationState) return null;
   return (
     <EvolvedMinigameModal
@@ -313,11 +315,12 @@ export function PresentationDefenseModal({ presentationState, processStudentGain
       push={push}
       onClose={() => setPresentationState(null)}
       soundEnabled={soundEnabled}
+      owned={owned}
     />
   );
 }
 
-export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, makeIntimacyChoice, students, soundEnabled = true }){
+export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, makeIntimacyChoice, students, soundEnabled = true, owned = {} }){
         const {studentId,sceneId,tier,week:sceneWeek,phaseIdx,history,logLines,done,endingText,gainAccum}=intimacyEventState;
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, sceneId, phaseIdx, done]);
         const s=students.find(st=>st.id===studentId);
@@ -343,7 +346,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
               <div style={{fontSize:12,color:"#d0a8c0",lineHeight:1.9,marginBottom:14,fontStyle:"italic"}}>{done?endingText:phaseText}</div>
               {!done&&phase&&(
                 <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                  {phase.choices.map(ch=>{
+                  {intimacyChoicesForPhase(phase, owned).map(ch=>{
                     const locked=ch.requires&&!history.includes(ch.requires);
                     const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
                     if(excluded) return null;

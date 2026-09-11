@@ -33,6 +33,28 @@ export const STUDIO_ACTIONS = [
   { id: 'direct_feed', label: 'Direct & feed', subjectLbs: 11, fionaLbs: 3, quality: 'Masterwork' },
 ];
 
+export function extraStudioActions(owned = {}) {
+  const extras = [];
+  if (owned.media_nook) extras.push({ id: 'media_nook', label: 'Shoot in the media nook', subjectLbs: 6, fionaLbs: 2, quality: 'Print' });
+  if (owned.snack_station || owned.artisan_bakery) extras.push({ id: 'kitchen_still', label: 'Kitchen still-life feed', subjectLbs: 9, fionaLbs: 1, quality: 'Study' });
+  return extras.slice(0, 2);
+}
+
+export function studioActionsForOwned(owned = {}) {
+  return [...STUDIO_ACTIONS, ...extraStudioActions(owned)];
+}
+
+export function extraFieldLocations(owned = {}) {
+  const extras = [];
+  if (owned.snack_station) extras.push({ id: 'floor_kitchen', label: 'Floor Kitchen', tag: 'still-life', quality: 'Print' });
+  if (owned.echo_gallery) extras.push({ id: 'echo_gallery', label: 'Echo Gallery', tag: 'archive', quality: 'Masterwork', scrutiny: 2 });
+  return extras;
+}
+
+export function fieldLocationsForOwned(owned = {}) {
+  return [...FIELD_LOCATIONS, ...extraFieldLocations(owned)];
+}
+
 export const CRITIC_TIERS = [
   { id: 'reverent', label: 'Reverent', patrons: 8, scrutiny: 0 },
   { id: 'provocative', label: 'Provocative', patrons: 12, scrutiny: 3 },
@@ -87,10 +109,10 @@ export function startStudioSession(state, subjectId, setup = {}) {
   };
 }
 
-export function studioAction(state, actionId) {
+export function studioAction(state, actionId, owned = {}) {
   const session = state.session;
   if (!session || session.type !== 'studio') return state;
-  const action = STUDIO_ACTIONS.find((a) => a.id === actionId);
+  const action = studioActionsForOwned(owned).find((a) => a.id === actionId);
   if (!action) return state;
   const round = session.round + 1;
   const subjectGain = session.subjectGain + action.subjectLbs;
@@ -102,7 +124,11 @@ export function studioAction(state, actionId) {
       ? 'Fiona eats from the same tray, camera dangling, unashamed.'
       : action.id === 'shoot_only'
         ? 'She shoots without feeding — hunger in the frame.'
-        : 'Model fed. Shutter clicks.';
+        : action.id === 'media_nook'
+          ? 'Ring light, spare batteries, a couch that films well. The model eats for the lens.'
+          : action.id === 'kitchen_still'
+            ? 'She stages leftover heat from the floor kitchen. The still-life keeps moving as the model swallows.'
+            : 'Model fed. Shutter clicks.';
   if (round >= 3) {
     const critic = CRITIC_TIERS[Math.floor(Math.random() * CRITIC_TIERS.length)];
     return {
@@ -137,8 +163,8 @@ export function studioAction(state, actionId) {
   };
 }
 
-export function runFieldShoot(state, locationId) {
-  const loc = FIELD_LOCATIONS.find((l) => l.id === locationId) || FIELD_LOCATIONS[0];
+export function runFieldShoot(state, locationId, owned = {}) {
+  const loc = fieldLocationsForOwned(owned).find((l) => l.id === locationId) || FIELD_LOCATIONS[0];
   const entry = {
     id: `field-${Date.now()}`,
     location: loc.id,

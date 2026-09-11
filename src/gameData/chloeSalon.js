@@ -27,6 +27,24 @@ export const SALON_SERVICE_CHOICES = [
   { id: 'tandem', label: 'Toast & tandem', prestige: 6, chloeLbs: 6, indulgence: 6, rel: 2 },
 ];
 
+export function extraSalonServiceChoices(owned = {}) {
+  const extras = [];
+  if (owned.dinner_basic || owned.dinner_casual || owned.legendary_host) {
+    extras.push({ id: 'floor_leftovers', label: 'Plate hall leftovers', prestige: 4, chloeLbs: 7, indulgence: 8, rel: 3 });
+  }
+  if (owned.media_nook) {
+    extras.push({ id: 'ring_light', label: 'Film the toast', prestige: 10, chloeLbs: 4, indulgence: 4, rel: 2 });
+  }
+  if (owned.snack_station || owned.artisan_bakery) {
+    extras.push({ id: 'kitchen_run', label: 'Send a runner to the floor kitchen', prestige: 5, chloeLbs: 8, indulgence: 9, rel: 2 });
+  }
+  return extras.slice(0, 2);
+}
+
+export function salonChoicesForOwned(owned = {}) {
+  return [...SALON_SERVICE_CHOICES, ...extraSalonServiceChoices(owned)];
+}
+
 export function defaultSalonState(chloeStudentId = 9) {
   return {
     chloeStudentId,
@@ -76,10 +94,10 @@ export function salonPickMenu(state, courseId) {
   };
 }
 
-export function salonServiceChoice(state, choiceId) {
+export function salonServiceChoice(state, choiceId, owned = {}) {
   const session = state.session;
   if (!session || session.phase !== 'service') return state;
-  const choice = SALON_SERVICE_CHOICES.find((c) => c.id === choiceId);
+  const choice = salonChoicesForOwned(owned).find((c) => c.id === choiceId);
   if (!choice) return state;
   const round = session.round + 1;
   const course = session.menuPicks[Math.min(session.menuPicks.length - 1, session.round)] || session.menuPicks[0];
@@ -91,7 +109,13 @@ export function salonServiceChoice(state, choiceId) {
     ? `Chloé eats with theatrical pleasure. "*Encore,*" she murmurs.`
     : choice.id === 'charm'
       ? 'She charms the room — wine, wit, and a smile that promises dessert.'
-      : 'A toast, then she eats beside her guests without apology.';
+      : choice.id === 'floor_leftovers'
+        ? 'Hall leftovers arrive still warm. Chloé plates them like a second seating.'
+        : choice.id === 'ring_light'
+          ? 'The media nook ring light finds her toast. She performs the bite, then takes a real one.'
+          : choice.id === 'kitchen_run'
+            ? 'A runner comes back from the floor kitchen with more than you asked for. She makes room.'
+            : 'A toast, then she eats beside her guests without apology.';
   if (round >= 4) {
     return {
       ...state,
