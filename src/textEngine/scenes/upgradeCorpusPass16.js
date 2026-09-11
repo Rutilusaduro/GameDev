@@ -4,52 +4,52 @@ import { registerModuleVariants } from '../engine.js';
 
 // ── leftover hunger-interrupt person IDs ──────────────────────
 registerModuleVariants('scene.hungerInterrupt.personal', [
-  { when: { studentId: 0 }, weight: 7, text: [
+  { when: { studentId: 0 }, priority: 2, weight: 7, text: [
     'Practice shorts, ponytail listing. Brittany looks like she skipped a set for this.',
   ] },
-  { when: { studentId: 1 }, weight: 7, text: [
+  { when: { studentId: 1 }, priority: 2, weight: 7, text: [
     'Notebook shield, glasses crooked. Madeline came from stacks that could not feed her.',
   ] },
-  { when: { studentId: 2 }, weight: 7, text: [
+  { when: { studentId: 2 }, priority: 2, weight: 7, text: [
     'Ring light off. Kylie still finds the hallway angle. Hunger is the only filter.',
   ] },
-  { when: { studentId: 3 }, weight: 7, text: [
+  { when: { studentId: 3 }, priority: 2, weight: 7, text: [
     'Compression gear, hands flexing. Serena ran here. Appetite won the heat.',
   ] },
-  { when: { studentId: 4 }, weight: 7, text: [
+  { when: { studentId: 4 }, priority: 2, weight: 7, text: [
     'Paint under a nail. Fiona looks like a sketch got interrupted by her stomach.',
   ] },
-  { when: { studentId: 6 }, weight: 7, text: [
+  { when: { studentId: 6 }, priority: 2, weight: 7, text: [
     'Tiffany\'s blowout is listing. Chapter smile trying to host a craving.',
   ] },
-  { when: { studentId: 7 }, weight: 7, text: [
+  { when: { studentId: 7 }, priority: 2, weight: 7, text: [
     'Planner shut. Priya scheduled this hunger and it still arrived early.',
   ] },
-  { when: { studentId: 8 }, weight: 7, text: [
+  { when: { studentId: 8 }, priority: 2, weight: 7, text: [
     'Maya in the doorway. Sweater big. Appetite not.',
   ] },
-  { when: { studentId: 9 }, weight: 7, text: [
+  { when: { studentId: 9 }, priority: 2, weight: 7, text: [
     'Chloé\'s badge is crooked. American portions finally found her at the door.',
   ] },
-  { when: { studentId: 11 }, weight: 7, text: [
+  { when: { studentId: 11 }, priority: 2, weight: 7, text: [
     'Kaylee still in scrubs. Caregiver looking like she needs a plate.',
   ] },
-  { when: { studentId: 12 }, weight: 7, text: [
+  { when: { studentId: 12 }, priority: 2, weight: 7, text: [
     'Nadia watches you watch her. The case study is her own stomach.',
   ] },
-  { when: { studentId: 13 }, weight: 7, text: [
+  { when: { studentId: 13 }, priority: 2, weight: 7, text: [
     'Cookie crumbs on Daisy\'s cardigan. She brought treats and ate the evidence.',
   ] },
-  { when: { studentId: 14 }, weight: 7, text: [
+  { when: { studentId: 14 }, priority: 2, weight: 7, text: [
     'Flannel untucked. Mary Jane looks harvest-hungry and a little shy about it.',
   ] },
-  { when: { studentId: 15 }, weight: 7, text: [
+  { when: { studentId: 15 }, priority: 2, weight: 7, text: [
     'Lilith still. Hungry. The doorway is a perch.',
   ] },
-  { when: { studentId: 17 }, weight: 7, text: [
+  { when: { studentId: 17 }, priority: 2, weight: 7, text: [
     'Indiana dusty at the threshold. Trail mix gone. The office is the cache.',
   ] },
-  { when: { studentId: 18 }, weight: 7, text: [
+  { when: { studentId: 18 }, priority: 2, weight: 7, text: [
     'Talia\'s schematic is rolled shut. The experiment walked here on its own legs.',
   ] },
 ]);
