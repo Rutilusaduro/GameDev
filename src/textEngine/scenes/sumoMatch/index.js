@@ -2,6 +2,7 @@
 // Sumo match — engine bridge for competitive_circuit evolved form.
 import { registerDimension, registerPool, render } from '../../engine.js';
 import './legacyPools.js';
+import './payoffFragments.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import {
@@ -125,7 +126,8 @@ export function renderSumoPayoff(stageIdx, student, gainAccum, week) {
   const ctx = buildSumoCtx(student, week, stageIdx, { globals: { gainAccum } });
   const si = Math.min(Math.max(0, stageIdx), SUMO_PAYOFF_TEXT.length - 1);
   const fn = SUMO_PAYOFF_TEXT[stageIdx];
-  const raw = render(`{sumo.payoff.legacy.s${si}}`, ctx)?.trim()
+  const raw = render(`{sumo.payoff.compose.s${si}}`, ctx)?.trim()
+    || render(`{sumo.payoff.legacy.s${si}}`, ctx)?.trim()
     || (fn ? fn(gainAccum) : `${Math.round(gainAccum)} pounds added to your frame since you stepped onto the dohyo. You can feel it. More.`);
   return appendV2Depth(raw, 'sumoMatch', ctx, 0.3);
 }

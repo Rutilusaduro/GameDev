@@ -7,6 +7,7 @@ import { COLLAB_WREN_LINES, COLLAB_STAGEUP_TEXT, COLLAB_PAYOFF_TEXT } from '../.
 import './fragments.js';
 import './stageupFragments.js';
 import './payoffFragments.js';
+import './blobPools.js';
 import './collabStreamSceneDepth.js';
 
 registerDimension('collabStage', (ctx) => ctx.globals?.collabStage ?? 0);
@@ -186,6 +187,17 @@ export function renderCollabStageUp(stageIdx, kylie, partner, newLbs, week) {
     || render(`{collab.stream.stageup.s${si}}`, ctx)?.trim()
     || `${partner.name} just crossed ${Math.round(newLbs)} pounds on stream!`;
   return appendV2Depth(raw, 'collabStream', ctx, 0.3);
+}
+
+export function renderCollabBlobAnnouncement(partner, kylie, stageIdx, week) {
+  const si = Math.min(Math.max(0, stageIdx), 5);
+  const pid = partner?.id;
+  const ctx = buildCollabCtx(kylie, partner, week, stageIdx);
+  const poolKey = pid != null ? `collab.stream.blob.p${pid}.s${si}` : 'collab.stream.blob.fallback';
+  const raw = render(`{${poolKey}}`, ctx)?.trim()
+    || render('{collab.stream.blob.fallback}', ctx)?.trim()
+    || `${partner?.name || 'She'} hit blob stage. She cannot leave her room anymore. You announce it on stream.`;
+  return appendV2Depth(raw, 'collabStream', ctx, 0.28);
 }
 
 export function renderCollabPayoff(stageIdx, kylieGain, partnerGain, partner, kylie, week) {
