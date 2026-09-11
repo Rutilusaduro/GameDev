@@ -31,6 +31,9 @@ mustExist('src/gameData/homeroomEvents.js');
 mustExist('src/gameData/feederSubjectJournals.js');
 mustExist('src/gameData/wifeLessonsData.js');
 mustExist('src/gameData/rankedSessionData.js');
+mustExist('src/gameData/evolvedEvents.js');
+mustExist('src/gameData/competitiveGainerData.js');
+mustExist('src/gameData/fairQueenData.js');
 
 const hallLounge = readFileSync(join(root, 'src/views/HallLoungeView.jsx'), 'utf8');
 assert.match(hallLounge, /HallBlueprint/, 'Hall lounge view should render blueprint UI');

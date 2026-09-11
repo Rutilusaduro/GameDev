@@ -6,7 +6,7 @@ registerModuleVariants('device.campus.beat', [
     when: { endStageMin: [4] },
     weight: 1,
     text: [
-      'Campus rig whirs — a remote pulse of appetite finds her between classes.',
+      'Campus rig whirs — a remote pulse of appetite finds her between hall rounds.',
     ],
   },
 ]);

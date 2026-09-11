@@ -3,7 +3,8 @@
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
-import { EVOLVED_ACTIVITY_TEXT, EVOLVED_EVENTS } from '../../../gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
+import { EVOLVED_EVENTS } from '../../../gameData/evolvedEvents.js';
 import './activityPools.js';
 import './eventPools.js';
 import './reactionPools.js';

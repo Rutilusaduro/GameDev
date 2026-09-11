@@ -26,7 +26,7 @@ registerModuleVariants('evolution.offer.bookworm.intro', [
     when: { archetype: ['bookworm'] },
     weight: 1,
     text: [
-      'The season plan waits on your signature — her appetite is already peer-reviewed.',
+      'The season plan waits on your signature — her appetite is already hall-log approved.',
     ],
   },
 ]);

@@ -57,6 +57,9 @@ const DATA_ONLY = new Set([
   'feederSubjectJournals.js',
   'wifeLessonsData.js',
   'rankedSessionData.js',
+  'evolvedEvents.js',
+  'competitiveGainerData.js',
+  'fairQueenData.js',
   'nadiaSubjectJournals.js',
 ]);
 

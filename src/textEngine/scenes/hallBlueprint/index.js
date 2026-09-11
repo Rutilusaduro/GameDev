@@ -100,7 +100,7 @@ const ROOM_BLURB_EXTRA = {
   ],
   ra_office: [
     'Your desk drawer holds snacks and plausible deniability in equal measure.',
-    'Calendars here measure appetite in office hours saved.',
+    'Calendars here measure appetite in rounds saved on the floor.',
   ],
   social_salon: [
     'Champagne breath and group photos — indulgence with a guest list.',

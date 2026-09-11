@@ -1,6 +1,6 @@
 // Branching evolved events — EVOLVED_EVENTS phase + choice pools.
 import { registerPool } from '../../engine.js';
-import { EVOLVED_EVENTS } from '../../../gameData/evolvedForms.js';
+import { EVOLVED_EVENTS } from '../../../gameData/evolvedEvents.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat, choiceEchoBeat, endingEchoBeat } from './proseTails.js';
 
