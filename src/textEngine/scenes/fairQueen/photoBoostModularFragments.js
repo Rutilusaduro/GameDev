@@ -112,6 +112,35 @@ registerModuleVariants('fair.boost.Kylie', [
   },
 ]);
 
+registerModuleVariants('fair.boost.Renee', [
+  {
+    when: { fairBoostTier: ['High'] },
+    weight: 2,
+    text: [
+      'Renee rides the boost — hall pride and appetite share the same scoreboard.',
+      BOOST_SKELETON,
+    ],
+  },
+]);
+
+registerModuleVariants('fair.photo.Kylie', [
+  {
+    when: { mjStageBucket: ['mid'], weekMin: 16 },
+    weight: 5,
+    priority: 7,
+    text: [PHOTO_SKELETON],
+  },
+]);
+
+registerModuleVariants('fair.photo.Brittany', [
+  {
+    when: { mjStageBucket: ['heavy', 'plump'], weekMin: 16 },
+    weight: 5,
+    priority: 7,
+    text: [PHOTO_SKELETON],
+  },
+]);
+
 for (const c of COLLABS) {
   registerModuleVariants(`fair.photo.${c}`, [
     {

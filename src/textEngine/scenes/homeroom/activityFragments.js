@@ -66,6 +66,15 @@ const activityLateVariants = () => [
   },
 ];
 
+registerModuleVariants('homeroom.activity.parent_meeting.p0', [
+  {
+    when: { hallAmbiancePeakMin: [30], weekMin: 12 },
+    weight: 5,
+    priority: 6,
+    text: [ACTIVITY_SKELETON],
+  },
+]);
+
 for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
   const phases = act.phases || [{ text: act.text, choices: act.choices || [] }];
   phases.forEach((phase, pi) => {

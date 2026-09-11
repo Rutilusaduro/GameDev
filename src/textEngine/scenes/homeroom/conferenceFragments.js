@@ -46,6 +46,15 @@ registerPool('homeroom.scene.choiceWarmth', [
 const INTRO_SKELETON = '{homeroom.scene.floorTone|prefix:} {homeroom.scene.raStance|prefix: }';
 const CHOICE_SKELETON = '{homeroom.scene.choiceWarmth|prefix:} {homeroom.scene.raStance|prefix: }';
 
+registerModuleVariants('homeroom.conference.Bri.intro', [
+  {
+    when: { weekMin: 4 },
+    weight: 3,
+    priority: 4,
+    text: [INTRO_SKELETON],
+  },
+]);
+
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   registerModuleVariants(`homeroom.conference.${key}.intro`, [
     {

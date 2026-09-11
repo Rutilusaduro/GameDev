@@ -771,4 +771,17 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(homestead79Hit, 'pass-79 homestead_queen activity modular @ w24');
 
+let kyliePhotoHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{fair.photo.Kylie}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72570 + s,
+    globals: { featureId: 'state_fair_queen', fairCollab: 'Kylie', mjStageBucket: 'mid' },
+  }))?.trim() || '';
+  assert.ok(!/^Training vignette: ring light, shared shakes, MJ’s belly learning the frame\.$/.test(line), 'pass-102 Kylie photo bridge alone @ w24');
+  if (line.length > 72 || /pageantGlow|collabFrame|carnivalAir/i.test(line)) kyliePhotoHit = true;
+}
+assert.ok(kyliePhotoHit, 'pass-102 fair.photo.Kylie modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');
