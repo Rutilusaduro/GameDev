@@ -1,6 +1,7 @@
 // Branching evolved events — EVOLVED_EVENTS phase + choice pools.
 import { registerPool } from '../../engine.js';
 import { EVOLVED_EVENTS } from '../../../gameData/evolvedForms.js';
+import { atmosphereBeat, choiceEchoBeat, endingEchoBeat } from './proseTails.js';
 
 function resolvePhaseText(phase, ctx) {
   const h = ctx.globals?.history || [];
@@ -33,14 +34,25 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
       registerPool(`evolved.event.${formId}.s${stageIdx}.p${phaseIdx}`, [
         {
           when: {},
-          text: [intro, intro, (ctx) => `${intro(ctx)}\n\nThe moment holds — appetite, choice, consequence.`],
+          text: [
+            intro,
+            atmosphereBeat(formId, phaseIdx, 0),
+            atmosphereBeat(formId, phaseIdx, 1),
+          ],
         },
       ]);
       for (const ch of phase.choices || []) {
         if (!ch?.id) continue;
         const res = (ctx) => resolveChoiceResult(ch, ctx);
         registerPool(`evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.${ch.id}`, [
-          { when: {}, text: [res, res, res] },
+          {
+            when: {},
+            text: [
+              res,
+              choiceEchoBeat(formId, ch.id, 0),
+              choiceEchoBeat(formId, ch.id, 1),
+            ],
+          },
         ]);
       }
     });
@@ -53,7 +65,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
         return (ending.text || '').trim();
       };
       registerPool(`evolved.event.${formId}.s${stageIdx}.end${endingIdx}`, [
-        { when: {}, text: [endFn, endFn, endFn] },
+        {
+          when: {},
+          text: [
+            endFn,
+            endingEchoBeat(formId, stageIdx, endingIdx, 0),
+            endingEchoBeat(formId, stageIdx, endingIdx, 1),
+          ],
+        },
       ]);
     });
   });

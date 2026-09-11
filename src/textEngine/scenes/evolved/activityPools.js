@@ -1,6 +1,7 @@
 // Evolved form — passive activity beats (EVOLVED_ACTIVITY_TEXT → pools).
 import { registerDimension, registerPool } from '../../engine.js';
 import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
+import { atmosphereBeat } from './proseTails.js';
 
 registerDimension('evolvedFormId', (ctx) => ctx.globals?.evolvedFormId ?? ctx.globals?.formId ?? ctx.d?.evolvedForm ?? 'evolved');
 registerDimension('evolvedStageIdx', (ctx) => ctx.globals?.evolvedStageIdx ?? ctx.globals?.stageIdx ?? 0);
@@ -10,33 +11,6 @@ function beatFn(entry) {
     if (typeof entry === 'function') return entry(ctx.subject);
     return String(entry || '').trim();
   };
-}
-
-const ACTIVITY_ATMOSPHERE = [
-  (ctx) => {
-    const n = ctx.subject?.name || 'She';
-    const lbs = Math.round(ctx.subject?.lbs ?? 0);
-    return lbs > 0
-      ? `${n} leaves ${lbs} pounds of presence in the hallway when she goes.`
-      : `${n} leaves appetite in the hallway when she goes.`;
-  },
-  'The floor remembers the session long after the plates are empty.',
-  (ctx) => {
-    const w = ctx.week ?? 1;
-    return `Week ${w} stacks habit on habit — nobody pretends this is accidental anymore.`;
-  },
-  'Someone down the hall smells what happened and starts thinking about seconds.',
-  (ctx) => {
-    const n = ctx.subject?.name || 'She';
-    return `${n} moves slower afterward, satisfied in a way the building rewards.`;
-  },
-  'Radiators hum. Bellies settle. The RA log can wait.',
-];
-
-function atmosphereBeat(formId, stageIdx, slot = 0) {
-  const i = (formId.length * 7 + stageIdx * 3 + slot) % ACTIVITY_ATMOSPHERE.length;
-  const fn = ACTIVITY_ATMOSPHERE[i];
-  return typeof fn === 'function' ? fn : () => fn;
 }
 
 for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {

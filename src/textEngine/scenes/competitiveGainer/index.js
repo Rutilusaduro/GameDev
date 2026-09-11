@@ -28,8 +28,14 @@ sessionEntries.push({
   when: {},
   text: [
     cgMeasureSession,
-    (ctx) => `${cgMeasureSession(ctx)}\n\nThe corkboard waits like a verdict.`,
-    cgMeasureSession,
+    (ctx) => {
+      const p = ctx.globals?.priyaName || 'Priya';
+      return `${p} taps the corkboard before the ink dries — habit dressed as science.`;
+    },
+    (ctx) => {
+      const t = ctx.globals?.targetName || 'her';
+      return `Tape and scale agree: ${t} is measurable, memorable, and still hungry.`;
+    },
   ],
 });
 registerPool('cg.measurement.session', sessionEntries);
