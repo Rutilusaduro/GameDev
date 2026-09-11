@@ -3,7 +3,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
-import { renderEvolvedEventProse } from '../textEngine/scenes/evolved/index.js';
+import { renderEvolvedEventProse, renderEvolvedEventPhase } from '../textEngine/scenes/evolved/index.js';
 
 export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true }){
         const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge,startsSalon,startsGallery}=evolvedEventState;
@@ -14,9 +14,9 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
         const phase=!done?evDef.phases[phaseIdx]:null;
         const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
         const researchSubject=(formId==='psych_researcher'&&s?.researchSubjectId!=null)?students.find(st=>st.id===s.researchSubjectId):null;
-        const rawPhaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner||researchSubject):phase.text):null;
+        const eventRef=collabPartner||researchSubject||null;
         const depthOpts={formId,stageIdx,v2DepthChance:0.28};
-        const phaseText=rawPhaseText?renderEvolvedEventProse(rawPhaseText,s,week,depthOpts):null;
+        const phaseText=phase?renderEvolvedEventPhase(s,week,formId,stageIdx,phaseIdx,history,eventRef,depthOpts):null;
         const endingRendered=endingText?renderEvolvedEventProse(endingText,s,week,{...depthOpts,v2DepthChance:0.32}):null;
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";

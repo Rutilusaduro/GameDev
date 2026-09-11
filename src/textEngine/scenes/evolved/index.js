@@ -3,8 +3,22 @@
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
-import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT, EVOLVED_EVENTS } from '../../../gameData/evolvedForms.js';
 import './activityPools.js';
+import './eventPools.js';
+
+function resolvePhaseTextLegacy(phase, student, history, eventRef) {
+  if (typeof phase.text !== 'function') return (phase.text || '').trim();
+  if (eventRef != null) {
+    try {
+      const out = phase.text(history, student, eventRef);
+      if (out) return String(out).trim();
+    } catch {
+      /* 2-arg */
+    }
+  }
+  return String(phase.text(history, student)).trim();
+}
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -18,6 +32,40 @@ const EVOLVED_FORM_POOLS = {
   homeroom_queen: 'evolved.homeroomQueen.v2.depth',
   state_fair_queen: 'evolved.fairQueen.v2.depth',
 };
+
+/** Current phase intro for branching evolved event modal. */
+export function renderEvolvedEventPhase(student, week, formId, stageIdx, phaseIdx, history = [], eventRef = null, opts = {}) {
+  const evDef = EVOLVED_EVENTS[formId]?.[stageIdx];
+  const phase = evDef?.phases?.[phaseIdx];
+  if (!phase || !student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    ref: eventRef,
+    week,
+    globals: {
+      featureId: formId,
+      formId,
+      stageIdx,
+      phaseIdx,
+      history,
+      eventRef,
+      evolvedFormId: formId,
+      evolvedStageIdx: stageIdx,
+      ...(opts.globals || {}),
+    },
+    ...opts,
+  });
+  let line = '';
+  try {
+    line = render(`{evolved.event.${formId}.s${stageIdx}.p${phaseIdx}}`, ctx)?.trim();
+  } catch {
+    line = '';
+  }
+  if (!line || line.includes('{unresolved}')) {
+    line = resolvePhaseTextLegacy(phase, student, history, eventRef);
+  }
+  return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: opts.v2DepthChance ?? 0.28 });
+}
 
 /** Passive evolved activity beat (no EVOLVED_EVENTS modal for this stage). */
 export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts = {}) {
