@@ -12,7 +12,8 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { renderSessionRaeArrival, renderSessionRaeExtra, renderSessionPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain, scaleEatingContestLbsGain, scaleSumoMatchLbsGain } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -5172,7 +5173,8 @@ export default function HallPass(){
     const maxFullness=maxFullnessByStage[stageIdx]||100;
     const maxFocus=maxFocusByStage[stageIdx]||90;
     const raeStage=Math.min(5,stageIdx);
-    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[SESSION_NPC_LINES[raeStage].arrival+` ${SESSION_NPC_LINES[raeStage].extra||''}`],done:false,endReason:null,raeDelivered:raeStage<=1});
+    const arrivalLog=s?renderSessionRaeArrival(raeStage,s,week):'Delivery.';
+    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[arrivalLog],done:false,endReason:null,raeDelivered:raeStage<=1});
     setEvolvedEventState(null);
   };
 
@@ -5185,17 +5187,18 @@ export default function HallPass(){
     // Decay focus first, then apply food
     const newFocus=Math.max(0,Math.min(maxFocus,focus-15+food.focusRestore));
     const newFullness=fullness+food.fullnessCost;
-    const newGain=gain+food.gain;
+    const scaledGain=scaleEvolvedEventLbs(food.gain);
+    const newGain=gain+scaledGain;
     const newTurn=turn+1;
-    const newLog=[...log,`${food.icon} ${food.label} — +${food.gain} lbs, focus ${newFocus>focus?'+':''}${Math.round(food.focusRestore-15)}`];
+    const newLog=[...log,`${food.icon} ${food.label} — +${scaledGain} lbs, focus ${newFocus>focus?'+':''}${Math.round(food.focusRestore-15)}`];
     // Apply gain to student
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.gain,0):st));
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,scaledGain,0):st));
     // Check Rae delivery event at turn 3 if not yet delivered and stage >= 2
     let updatedLog=newLog;
     let newRaeDelivered=raeDelivered;
     if(!raeDelivered&&newTurn===3&&stageIdx>=2){
-      const raeNpc=SESSION_NPC_LINES[Math.min(5,stageIdx)];
-      updatedLog=[...newLog,`📦 RAE: ${raeNpc.extra||'She appears with extra supplies.'}`];
+      const extraLine=s?renderSessionRaeExtra(Math.min(5,stageIdx),s,week):'She appears with extra supplies.';
+      updatedLog=[...newLog,`📦 RAE: ${extraLine}`];
       newRaeDelivered=true;
     }
     // Check end conditions
@@ -9264,8 +9267,7 @@ export default function HallPass(){
         const STAGE_LABELS=["Bronze Session","Silver Grind","Gold Streak","Platinum Marathon","Diamond Run","Grandmaster Session"];
         const stageTitle=STAGE_LABELS[stageIdx]||"Ranked Session";
         const canQuit=stageIdx<2;
-        const payoffFn=SESSION_PAYOFF_TEXT[stageIdx];
-        const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
+        const payoffText=done?renderSessionPayoff(stageIdx,gain,endReason,s,week):`Session closed with ${Math.round(gain)} lbs gained.`;
         const dismissRanked=()=>{
           playHallPassSound('click', soundEnabled);
           if (done) closeRankedSession();
