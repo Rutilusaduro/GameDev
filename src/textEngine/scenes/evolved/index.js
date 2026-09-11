@@ -95,7 +95,7 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
     const glow = render(`{${glowKey}}`, ctx)?.trim();
     if (glow) out = `${out}\n\n${glow}`;
   }
-  const lingerChance = opts.ending ? 1 : 0.72;
+  const lingerChance = opts.ending || student?.leftoverFedThisWeek || (week && student?.lastNightVisitWeek === week) ? 1 : 0.72;
   if (out?.trim() && Math.random() < lingerChance) {
     const linger = render('{evolved.linger}', ctx)?.trim();
     if (linger) out = `${out}\n\n${linger}`;

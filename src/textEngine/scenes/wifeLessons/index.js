@@ -9,6 +9,10 @@ import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/w
 import './beat.js';
 
 registerModuleVariants('wife.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in Mary Jane. She treats the next greeting like a second rise.',
+    'Last night\'s tray plus this talk. The kitchen smells like both.',
+  ] },
   { when: { stageMin: 6 }, weight: 3, text: [
     'Daughters take leftover heat home in their clothes. Mary Jane keeps the rest.',
     'The lesson table is wreckage. Softness is the homework.',
@@ -94,7 +98,9 @@ export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 
     ...opts,
   });
   const base = line.trim();
-  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
+  const linger = render('{wife.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const composed = [base, linger].filter(Boolean).join('\n\n');
+  return appendV2Depth(composed, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
 }
 
 export const WIFE_LESSONS_MIGRATION = {

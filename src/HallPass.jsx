@@ -1609,11 +1609,12 @@ export default function HallPass(){
         const [lo,hi]=compound.immediateLbsGain;
         const lbsGain=rnd(lo,hi);
         const preLbs=result.lbs;
-        result=processStudentGain(result,lbsGain,0);
+        const applied=depthGainLbs(result,lbsGain,week,{});
+        result=processStudentGain(result,applied,0);
         const growthEv=buildGrowthEvent(result,{
           cause:{ type:'feature', featureId:'compound', locale:'office' },
           preLbs,
-          gainLbs:lbsGain,
+          gainLbs:applied,
           week,
         });
         if(growthEv){
@@ -1622,7 +1623,7 @@ export default function HallPass(){
             return { events, index: prev?.index??0 };
           });
         }
-        setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${lbsGain} lbs immediately. Fullness unchanged.`),75);
+        setTimeout(()=>push(`💊 ${compound.label} — ${s.name} gains ${applied} lbs immediately. Fullness unchanged.`),75);
       }
     }
     if(feedWeekUsed) result={...result,...weekUsedToPatch(feedWeekUsed)};
@@ -3910,8 +3911,13 @@ export default function HallPass(){
     }
     const newStageIdx=Math.min(5,stageIdx+1);
     const newPrepDays=newStageIdx<6?3:0;
-    const newSisters=sisters.map(sis=>({...sis,lbs:sis.lbs+(pendingSisterGains?.[sis.name]||0)}));
-    const newCamilleLbs=camille.lbs+(pendingCamilleGain||0);
+    const leftoverBump=leftoverNightGainBump(tiffany,week);
+    const newSisters=sisters.map(sis=>{
+      const base=pendingSisterGains?.[sis.name]||0;
+      return {...sis,lbs:sis.lbs+base+(base>0?leftoverBump:0)};
+    });
+    const camilleBase=pendingCamilleGain||0;
+    const newCamilleLbs=camille.lbs+camilleBase+(camilleBase>0?leftoverBump:0);
     setChapterHostessState(prev=>({...prev,stageIdx:newStageIdx,prepDaysLeft:newPrepDays,sisters:newSisters,camille:{lbs:newCamilleLbs},feastLogOpen:false,feastLog:[],feastGainTotal:0,feastRelTotal:0,feastDone:false,pendingSisterGains:null,pendingCamilleGain:0}));
     if(stageIdx>=1&&!lilithClueFound){ setLilithClueFound(true); setLilithClueModal('feast_clue'); }
   };

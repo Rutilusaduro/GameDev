@@ -315,6 +315,17 @@ registerPool('campus.location', [
   ] },
 ]);
 
+registerModuleVariants('campus.sighting', [
+  { when: { leftoverFed: true }, priority: 4, weight: 3, text: [
+    '{subject.name} still carries last night\'s galley. Campus kiosks look like seconds and she treats them that way.',
+    'Leftover heat in her walk. She buys anyway. The tray from the hall made the path hungrier.',
+  ] },
+  { when: { nightVisit: true }, priority: 4, weight: 3, text: [
+    'Night-round knock still in her. Daylight eating uses the same open door.',
+    'You saw her after hours. The campus version is the same appetite in public.',
+  ] },
+]);
+
 registerPool('campus.find', [
   { when: { campusTierMin: 3 }, priority: 2,
     text: [

@@ -6,6 +6,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import '../proseOverhaulPass4.js';
 import './biteBeats.js';
+import './actionBeats.js';
 import {
   CONTEST_FOOD_POPUPS,
   CONTEST_ACTION_POPUPS,
@@ -60,28 +61,47 @@ export function renderContestFoodPopup(foodId, stageIdx, student, week) {
 }
 
 export function renderContestActionPopup(actionKey, stageIdx, student, week) {
+  const ctx = buildContestCtx(student, week, stageIdx, { globals: { contestAction: actionKey } });
+  const scene = render('{contest.action.scene}', ctx)?.trim();
+  if (scene) {
+    return renderContestLegacy(scene, student, week, stageIdx, {
+      v2DepthChance: 0.24,
+      globals: { contestAction: actionKey },
+    });
+  }
   const raw = stageText(CONTEST_ACTION_POPUPS[actionKey], stageIdx);
   return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.24 });
 }
 
 export function renderContestDevourPopup(stageIdx, student, week) {
+  const ctx = buildContestCtx(student, week, stageIdx);
+  const scene = render('{contest.devour.scene}', ctx)?.trim();
+  if (scene) return renderContestLegacy(scene, student, week, stageIdx, { v2DepthChance: 0.3 });
   const raw = stageText(CONTEST_DEVOUR_POPUPS, stageIdx);
   return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
 }
 
 export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, mayaLbs, week) {
+  const globals = { yourGain, mayaGain, mayaLbs };
+  const ctx = buildContestCtx(student, week, stageIdx, { globals });
+  const scene = render('{contest.weigh.scene}', ctx)?.trim();
+  if (scene) {
+    return renderContestLegacy(scene, student, week, stageIdx, { globals, v2DepthChance: 0.32 });
+  }
   const fn = CONTEST_WEIGH_IN_2_TEXT[stageIdx];
   const raw = fn ? fn(student, yourGain, mayaGain, mayaLbs) : '';
   return renderContestLegacy(raw, student, week, stageIdx, {
-    globals: { yourGain, mayaGain, mayaLbs },
+    globals,
     v2DepthChance: 0.32,
   });
 }
 
 export function renderContestPayoff(stageIdx, student, yourGain, week) {
+  const ctx = buildContestCtx(student, week, stageIdx, { globals: { yourGain } });
+  const scene = render('{contest.payoff.scene}', ctx)?.trim();
+  if (scene) return appendV2Depth(scene, 'eatingContest', ctx, 0.3);
   const fn = CONTEST_PAYOFF_TEXT[stageIdx];
   const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
-  const ctx = buildContestCtx(student, week, stageIdx, { globals: { yourGain } });
   const glow = render('{contest.afterglow}', ctx)?.trim() || '';
   const linger = render('{contest.linger}', ctx)?.trim() || '';
   const composed = [raw, glow, linger].filter(Boolean).join('\n\n');
