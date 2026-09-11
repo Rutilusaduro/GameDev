@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { BLOB_PRIVATE_INTRO, INIT_STUDENTS } from '../../../gameData/students.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
+import { blobIntroTailBeat } from '../evolved/proseTails.js';
 
 function sampleStudent(studentId) {
   const id = Number(studentId);
@@ -12,7 +13,7 @@ function sampleStudent(studentId) {
   return row ? { ...row, lbs: 900 } : { id, name: 'Resident', lbs: 900 };
 }
 
-function registerBlobIntro(poolKey, prose) {
+function registerBlobIntro(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
   if (!text) return;
   const bodyKey = `${poolKey}.legacyBody`;
@@ -22,7 +23,16 @@ function registerBlobIntro(poolKey, prose) {
     return line && !line.includes('{unresolved}') ? line : text;
   };
   registerPool(poolKey, [
-    { when: {}, weight: 3, text: [slot, slot, slot] },
+    {
+      when: {},
+      weight: 3,
+      text: [
+        slot,
+        blobIntroTailBeat(seed, 0),
+        blobIntroTailBeat(seed, 1),
+        blobIntroTailBeat(seed, 2),
+      ],
+    },
   ]);
 }
 
@@ -30,7 +40,7 @@ for (const [studentId, entry] of Object.entries(BLOB_PRIVATE_INTRO)) {
   const sample = sampleStudent(studentId === 'default' ? 0 : studentId);
   const prose = typeof entry === 'function' ? entry(sample) : entry;
   const key = studentId === 'default' ? 'default' : `s${studentId}`;
-  registerBlobIntro(`session.blobIntro.${key}`, prose);
+  registerBlobIntro(`session.blobIntro.${key}`, prose, key);
 }
 
 export function renderBlobPrivateIntro(student, week = 1, opts = {}) {

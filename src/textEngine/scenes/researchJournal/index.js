@@ -5,8 +5,9 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
 import { FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../../../gameData/evolvedForms.js';
+import { journalTailBeat } from '../evolved/proseTails.js';
 
-function registerJournalPage(poolKey, prose) {
+function registerJournalPage(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
   if (!text) return;
   const bodyKey = `${poolKey}.legacyBody`;
@@ -16,7 +17,16 @@ function registerJournalPage(poolKey, prose) {
     return line && !line.includes('{unresolved}') ? line : text;
   };
   registerPool(poolKey, [
-    { when: {}, weight: 2, text: [slot, slot, slot] },
+    {
+      when: {},
+      weight: 2,
+      text: [
+        slot,
+        journalTailBeat(seed, 0),
+        journalTailBeat(seed, 1),
+        journalTailBeat(seed, 2),
+      ],
+    },
   ]);
 }
 

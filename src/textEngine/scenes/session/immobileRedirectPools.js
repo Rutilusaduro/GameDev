@@ -5,8 +5,9 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { IMMOBILE_REDIRECT } from '../../../gameData/students.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
+import { immobileRedirectTailBeat } from '../evolved/proseTails.js';
 
-function registerRedirect(poolKey, prose) {
+function registerRedirect(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
   if (!text) return;
   const bodyKey = `${poolKey}.legacyBody`;
@@ -16,14 +17,23 @@ function registerRedirect(poolKey, prose) {
     return line && !line.includes('{unresolved}') ? line : text;
   };
   registerPool(poolKey, [
-    { when: {}, weight: 3, text: [slot, slot, slot] },
+    {
+      when: {},
+      weight: 3,
+      text: [
+        slot,
+        immobileRedirectTailBeat(seed, 0),
+        immobileRedirectTailBeat(seed, 1),
+        immobileRedirectTailBeat(seed, 2),
+      ],
+    },
   ]);
 }
 
 for (const [studentId, tiers] of Object.entries(IMMOBILE_REDIRECT)) {
   if (!tiers || typeof tiers !== 'object') continue;
   for (const [tier, prose] of Object.entries(tiers)) {
-    registerRedirect(`session.immobile.s${studentId}.${tier}`, prose);
+    registerRedirect(`session.immobile.s${studentId}.${tier}`, prose, `${studentId}:${tier}`);
   }
 }
 

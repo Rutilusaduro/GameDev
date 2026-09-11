@@ -177,3 +177,72 @@ export function outfitTailBeat(seed, slot = 0) {
 export function sessionTapTailBeat(seed, slot = 0) {
   return pickTail(SESSION_TAP_TAIL, seed, slot);
 }
+
+const BLOB_INTRO_TAIL = [
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} does not travel to appetite anymore — appetite commutes to her door.`;
+  },
+  'The room rearranges around stillness; delivery becomes the only geography left.',
+  'Furniture learns her outline; the RA knock is a meal schedule in disguise.',
+];
+
+const JOURNAL_TAIL = [
+  'Ink and appetite share the same handwriting on this page.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} writes what the mirror already admitted — slower, sweeter, permanent.`;
+  },
+  'The journal fattens beside her; neither pretends to diet.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} — another entry the feeder focus will quote in triplicate.`;
+  },
+];
+
+const IMMOBILE_REDIRECT_TAIL = [
+  'Dinner moves without her — plates travel where her hips no longer fit through doors.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} stays put; the floor brings the feast like tribute.`;
+  },
+  'Immobility is not refusal — it is appetite choosing a throne.',
+];
+
+const EVOLVED_REACTION_TAIL = [
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} reacts like someone who already knows the next serving is hers.`;
+  },
+  'The evolved path shows in posture before anyone reads the roster note.',
+  'Habit and hunger answer before politeness can interrupt.',
+];
+
+const EVOLUTION_TAIL = [
+  'The fork in the road smells like butter — both paths lead to yes.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} stands at the threshold; appetite offers titles instead of warnings.`;
+  },
+  'Evolution here means appetite with a business plan.',
+];
+
+export function blobIntroTailBeat(seed, slot = 0) {
+  return pickTail(BLOB_INTRO_TAIL, seed, slot);
+}
+
+export function journalTailBeat(seed, slot = 0) {
+  return pickTail(JOURNAL_TAIL, seed, slot);
+}
+
+export function immobileRedirectTailBeat(seed, slot = 0) {
+  return pickTail(IMMOBILE_REDIRECT_TAIL, seed, slot);
+}
+
+export function evolvedReactionTailBeat(seed, slot = 0) {
+  return pickTail(EVOLVED_REACTION_TAIL, seed, slot);
+}
+
+export function evolutionTailBeat(seed, slot = 0) {
+  return pickTail(EVOLUTION_TAIL, seed, slot);
+}

@@ -6,8 +6,9 @@ import { getStage } from '../../../gameData/stages.js';
 import { EVOLVED_REACTIONS } from '../../../gameData/evolvedForms.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
+import { evolvedReactionTailBeat } from './proseTails.js';
 
-function registerReactionBeat(poolKey, prose) {
+function registerReactionBeat(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
   if (!text) return;
   const bodyKey = `${poolKey}.legacyBody`;
@@ -20,7 +21,12 @@ function registerReactionBeat(poolKey, prose) {
     {
       when: {},
       weight: 3,
-      text: [slot, slot, slot],
+      text: [
+        slot,
+        evolvedReactionTailBeat(seed, 0),
+        evolvedReactionTailBeat(seed, 1),
+        evolvedReactionTailBeat(seed, 2),
+      ],
     },
   ]);
 }
@@ -28,7 +34,7 @@ function registerReactionBeat(poolKey, prose) {
 for (const [formId, lines] of Object.entries(EVOLVED_REACTIONS)) {
   if (!Array.isArray(lines)) continue;
   lines.forEach((prose, idx) => {
-    registerReactionBeat(`evolved.reaction.${formId}.s${idx}`, prose);
+    registerReactionBeat(`evolved.reaction.${formId}.s${idx}`, prose, `${formId}:s${idx}`);
   });
 }
 

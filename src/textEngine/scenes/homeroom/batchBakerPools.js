@@ -2,6 +2,7 @@
 import { registerDimension, registerPool, render } from '../../engine.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { BATCH_BAKER_NPCS } from '../../../gameData/evolvedForms.js';
+import { homeroomTailBeat } from '../evolved/proseTails.js';
 
 registerDimension('npcStage', (ctx) => ctx.globals?.npcStage ?? 0);
 registerDimension('npcKey', (ctx) => ctx.globals?.npcKey ?? 'Kayla');
@@ -17,15 +18,16 @@ function registerNpcStage(poolKey, npcKey, stageIdx, prose) {
     return line && !line.includes('{unresolved}') ? line : text;
   };
   const snippet = (ctx) => (ctx.globals?.snippetOnly ? lead : slot(ctx));
+  const seed = `${npcKey}:s${stageIdx}`;
   registerPool(poolKey, [
     {
       when: { npcKey: [npcKey], npcStage: [Number(stageIdx)] },
       weight: 2,
-      text: [slot, snippet],
+      text: [slot, snippet, homeroomTailBeat(seed, 0)],
     },
     {
       when: {},
-      text: [slot, snippet, slot],
+      text: [slot, snippet, homeroomTailBeat(seed, 1), homeroomTailBeat(seed, 2)],
     },
   ]);
 }

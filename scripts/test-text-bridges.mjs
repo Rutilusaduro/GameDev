@@ -9,11 +9,13 @@ const scenes = join(root, 'src/textEngine/scenes');
 const required = [
   'evolved/reactionPools.js',
   'evolved/outfitPools.js',
+  'evolved/activityPools.js',
   'evolved/evolutionOfferPools.js',
   'evolved/evolutionBlurbPools.js',
   'session/tapOutPools.js',
   'session/blobIntroPools.js',
   'session/immobileRedirectPools.js',
+  'homeroom/index.js',
   'unlockScene/index.js',
   'rankedSession/legacyPools.js',
   'homeroom/batchBakerPools.js',
