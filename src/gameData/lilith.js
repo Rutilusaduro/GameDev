@@ -81,7 +81,7 @@ export const HUNT_MEN = [
     id: 'zack_m', name: "Zack Morris", tag: "Coffee Regular",
     location: 'coffee_shop', difficulty: 1,
     desc: (stage) => huntBand(stage,
-      "He has been making eyes at interesting people here for three semesters. You finally qualify.",
+      "He has been making eyes at interesting-looking people in this café for three semesters. You finally qualify.",
       "He stopped pretending to read. You walked in and the room changed temperature for him.",
       "The laptop is closed. He felt you in the doorway before he saw you. He is already paying.",
     ),
