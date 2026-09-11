@@ -9585,10 +9585,10 @@ export default function HallPass(){
       {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}} week={week}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}
-      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled}/>}
+      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST PREP MODAL ── */}
-      {chapterHostessState?.feastPrepOpen&&<ChapterHostessFeastPrepModal chapterHostessState={chapterHostessState} beginFeast={beginFeast} setChapterHostessState={setChapterHostessState} soundEnabled={soundEnabled}/>}
+      {chapterHostessState?.feastPrepOpen&&<ChapterHostessFeastPrepModal chapterHostessState={chapterHostessState} beginFeast={beginFeast} setChapterHostessState={setChapterHostessState} soundEnabled={soundEnabled} week={week} student={students.find(st=>st.evolvedForm==='chapter_hostess')||students[0]}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST LOG MODAL ── */}
       {chapterHostessState?.feastLogOpen&&<ChapterHostessFeastLogModal chapterHostessState={chapterHostessState} completeFeast={completeFeast} soundEnabled={soundEnabled}/>}

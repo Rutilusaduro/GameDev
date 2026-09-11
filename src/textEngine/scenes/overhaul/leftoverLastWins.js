@@ -15,6 +15,8 @@ import { applySkillOverhaul } from './leftoverSkills.js';
 import { applyUiBeatsOverhaul } from './leftoverUiBeats.js';
 import { applyMoreUiOverhaul } from './leftoverMoreUi.js'
 import { applySystemsOverhaul } from './leftoverSystems.js';
+import { applyFacultyOverhaul } from './leftoverFaculty.js';
+import { applyHostessOverhaul } from './leftoverHostess.js';
 
 applyCultivatorOverhaul();
 applyDishOverhaul();
@@ -25,3 +27,5 @@ applySkillOverhaul();
 applyUiBeatsOverhaul();
 applyMoreUiOverhaul();
 applySystemsOverhaul();
+applyFacultyOverhaul();
+applyHostessOverhaul();

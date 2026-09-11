@@ -87,6 +87,8 @@ import {
   renderHiveRoomBonus, renderEvolutionPathDesc, renderEvolutionIntro, renderCircuitNodeDesc,
   renderOversightActDesc, renderOversightDormant,
 } from '../src/textEngine/scenes/overhaul/leftoverSystems.js';
+import { renderFacultyTalk } from '../src/textEngine/scenes/overhaul/leftoverFaculty.js';
+import { renderHostessHangIntro, renderHostessHangResult, renderHostessTierDesc } from '../src/textEngine/scenes/overhaul/leftoverHostess.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
@@ -915,6 +917,21 @@ assert.equal(/Rumor \+ passive scrutiny/i.test(actLine), false, 'oversight act s
 const dormantLine = renderOversightDormant(students[0], 2);
 assert.ok(dormantLine && !dormantLine.includes('{unresolved}'));
 assert.equal(/scrutiny whispers, not agendas/i.test(dormantLine), false, 'oversight dormant should not dump leftover view copy');
+const facultyTalk = renderFacultyTalk('hartley', 'hub', 0, 2);
+assert.ok(facultyTalk && !facultyTalk.includes('{unresolved}'));
+assert.equal(/To what do I owe the interruption/i.test(facultyTalk), false, 'faculty hub should not dump leftover FACULTY.tree text');
+const facultyWarm = renderFacultyTalk('hartley', 'hub', 60, 2);
+assert.ok(facultyWarm && !facultyWarm.includes('{unresolved}'));
+assert.equal(/defending your floor program at meetings again/i.test(facultyWarm), false, 'warm faculty hub should not dump leftover FACULTY.tree text');
+const hostessIntro = renderHostessHangIntro('kylie', 0, students[0], 2);
+assert.ok(hostessIntro && !hostessIntro.includes('{unresolved}'));
+assert.equal(/she found out somehow/i.test(hostessIntro), false, 'hostess intro should not dump leftover HOSTESS_HANGOUTS.intro');
+const hostessResult = renderHostessHangResult('kylie', 0, 'let_run', students[0], 2);
+assert.ok(hostessResult && !hostessResult.includes('{unresolved}'));
+assert.equal(/She opens Notes before you finish agreeing/i.test(hostessResult), false, 'hostess result should not dump leftover HOSTESS_HANGOUTS.result');
+const hostessTier = renderHostessTierDesc('menu', 0, students[0], 2);
+assert.ok(hostessTier && !hostessTier.includes('{unresolved}'));
+assert.equal(/Chips, dip, box wine on the counter/i.test(hostessTier), false, 'hostess tier should not dump leftover MENU_TIERS.desc');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,
