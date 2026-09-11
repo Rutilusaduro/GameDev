@@ -79,7 +79,10 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
     }
     const afterglow = render('{talk.afterglow|prefix:\n\n}', ctx, { ...renderOpts, noSmooth: true });
     if (afterglow?.trim()) text += afterglow.startsWith('\n') ? afterglow : `\n\n${afterglow}`;
-    const linger = render('{talk.checkIn.linger|prefix:\n\n}', ctx, { ...renderOpts, noSmooth: true });
+    const lingerKey = topic.id === 'encourage' ? 'talk.encourage.linger'
+      : topic.id === 'command_finish' ? 'talk.command_finish.linger'
+      : 'talk.checkIn.linger';
+    const linger = render(`{${lingerKey}|prefix:\n\n}`, ctx, { ...renderOpts, noSmooth: true });
     if (linger?.trim()) text += linger.startsWith('\n') ? linger : `\n\n${linger}`;
     const fitCoda = render('{talk.roomFitCoda|prefix:\n\n}', ctx, { ...renderOpts, noSmooth: true });
     if (fitCoda?.trim()) text += fitCoda.startsWith('\n') ? fitCoda : `\n\n${fitCoda}`;

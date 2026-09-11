@@ -318,3 +318,35 @@ registerPool('talk.leftover_plate', [
     '{talk.leftover_plate.line}\n\n{talk.leftover_plate.body}',
   ] },
 ]);
+
+registerPool('talk.encourage.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She looks at the plate like it overheard you. Then she takes another bite anyway.',
+    'The encouragement sits in the room after you stop talking. So does her appetite.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'She palms her middle, fond, as if you just gave the belly permission it already had.',
+    'The talk ends. Eating does not. She treats that as the point.',
+  ] },
+  { when: {}, text: [
+    'She keeps eating after the sentence. The sentence was never the meal.',
+    'You said more. She heard seconds. Both of you know it.',
+    'The fork stays in her hand. Encouragement has a body now.',
+  ] },
+]);
+
+registerPool('talk.command_finish.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She stares at the empty plate like it might argue. It does not.',
+    'The command lingers warmer than the food. She sits with both.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'She leans back, packed, pleased, waiting to be told she did it right.',
+    'Every plate is gone. She stays in the chair, waiting.',
+  ] },
+  { when: {}, text: [
+    'Clean plates. A resident who did as she was told and wants the telling again.',
+    'The command holds after the last bite. She holds with it.',
+    'She sets the fork down only when you let her. Softness lives in the waiting.',
+  ] },
+]);

@@ -92,7 +92,10 @@ export const ACT_I_RUMORS = [
   '📣 Someone saw a night-round tray and called it programming. Housing filed it.',
 ];
 
-export function pickActIRumor(week, rnd = Math.random) {
+export function pickActIRumor(week, rnd = Math.random, extras = {}) {
+  if (extras.nightRounds && rnd() < 0.45) {
+    return ACT_I_RUMORS[ACT_I_RUMORS.length - 1];
+  }
   const idx = Math.floor(rnd() * ACT_I_RUMORS.length);
   return ACT_I_RUMORS[idx];
 }

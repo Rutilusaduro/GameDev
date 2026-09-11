@@ -238,33 +238,92 @@ export const PHYSICAL_MOVES = {
     label: "Hip Sway & Brush",
     unlockLbs: 150,
     power: 0.0,
-    vignette: (_stageBand) => "[Vignette: coming soon]",
+    vignette: (band) => band >= 2
+      ? "You take one slow step. Hip, then belly, then the rest of you. He forgets the sentence he was holding."
+      : band >= 1
+      ? "You brush past him close enough that warmth does the talking. His eyes drop and stay."
+      : "You shift your weight. The sway is small. He tracks it anyway.",
   },
   belly_press: {
     label: "Belly Press",
     unlockLbs: 240,
     power: 0.1,
-    vignette: (_stageBand) => "[Vignette: coming soon]",
+    vignette: (band) => band >= 2
+      ? "You pin him with softness. The belly arrives first, heavy and sure, and he stops pretending he might leave."
+      : band >= 1
+      ? "You step in until your middle meets him. Heat, give, a quiet claim. He does not step back."
+      : "You lean. The new curve of you finds his shirt. He inhales like that was the plan.",
   },
   cleavage_smother: {
     label: "Cleavage Smother",
     unlockLbs: 340,
     power: 0.15,
-    vignette: (_stageBand) => "[Vignette: coming soon]",
+    vignette: (band) => band >= 2
+      ? "You draw him into the warm architecture of you. He disappears a little. Appetite does the rest."
+      : band >= 1
+      ? "You gather him against you. Softness closes the argument. His hands forget what they were for."
+      : "You lean in until he has nowhere polite to look. He looks anyway.",
   },
   gut_press: {
     label: "Gut Press",
     unlockLbs: 540,
     power: 0.2,
-    vignette: (_stageBand) => "[Vignette: coming soon]",
+    vignette: (band) => band >= 2
+      ? "The mass of you settles against him like furniture choosing a room. He goes still and stays."
+      : band >= 1
+      ? "You press the full weight of your middle into him. He makes a sound that is not a word."
+      : "You let your belly do the introducing. It is thorough.",
   },
   lap_claim: {
     label: "Lap Claim",
     unlockLbs: 420,
     power: 0.18,
-    vignette: (_stageBand) => "[Vignette: coming soon]",
+    vignette: (band) => band >= 2
+      ? "You sit. There is no lap left that is not yours. He holds on because the alternative is falling."
+      : band >= 1
+      ? "You claim his lap with warm, heavy certainty. The chair complains. He does not."
+      : "You sit closer than manners allow. Heat and weight rewrite the seating chart.",
+  },
+  tray_invite: {
+    label: "Walk him toward leftovers",
+    unlockLbs: 155,
+    power: 0.12,
+    vignette: (band) => band >= 2
+      ? "You turn toward leftover steam. He follows the smell and the mass of you without naming either."
+      : band >= 1
+      ? "You mention the kitchen is still plating. He forgets the errand he was on."
+      : "You tilt your head toward warm trays. He takes a step before he decides to.",
   },
 };
+
+export const HUNT_NODE_MODS = {
+  dining_hall: { seduceBonus: 0.08, wpDelta: -5 },
+  dorm: { seduceBonus: 0.1, wpDelta: -8 },
+  dorm_row: { seduceBonus: 0.05, wpDelta: -3 },
+  frat_row: { seduceBonus: 0.04, wpDelta: -2 },
+  gym: { seduceBonus: 0.03, wpDelta: 0 },
+  coffee_shop: { seduceBonus: 0.02, wpDelta: 0 },
+  library: { seduceBonus: 0.01, wpDelta: 2 },
+  admin: { seduceBonus: 0, wpDelta: 4 },
+  campus_park: { seduceBonus: 0.03, wpDelta: -1 },
+  crossroads: { seduceBonus: 0.02, wpDelta: 0 },
+  quad: { seduceBonus: 0.01, wpDelta: 0 },
+};
+
+export function huntEncounterMods(nodeId, student, week = 0) {
+  const base = HUNT_NODE_MODS[nodeId] || { seduceBonus: 0, wpDelta: 0 };
+  let seduceBonus = base.seduceBonus || 0;
+  let wpDelta = base.wpDelta || 0;
+  if (student?.leftoverFedThisWeek && (nodeId === 'dining_hall' || nodeId === 'dorm' || nodeId === 'dorm_row')) {
+    seduceBonus += 0.08;
+    wpDelta -= 6;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    seduceBonus += 0.05;
+    wpDelta -= 3;
+  }
+  return { seduceBonus, wpDelta };
+}
 
 // Draw 3 reply options: 1 good + 1 bad + 1 neutral, shuffled
 export function drawReplies(usedIds = []) {
@@ -283,8 +342,9 @@ export function drawReplies(usedIds = []) {
 }
 
 // Probability of seduction success based on current willpower + move power bonus
-export function seduceSuccessChance(willpower, movePower = 0) {
-  return Math.max(0.05, Math.min(0.90, (100 - willpower) / 100 + movePower));
+export function seduceSuccessChance(willpower, movePower = 0, extras = {}) {
+  const bonus = extras.seduceBonus || 0;
+  return Math.max(0.05, Math.min(0.92, (100 - willpower) / 100 + movePower + bonus));
 }
 
 // Get a guy line for the current willpower state

@@ -71,6 +71,7 @@ export const LAB_ACQUISITION_OPTIONS = {
     { id: 'salvage', label: 'Salvage the engineering scrap pile', grant: 'scrap + circuits' },
     { id: 'campus_surplus', label: 'Raid campus surplus lockers', grant: 'servos + scrap' },
     { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents' },
+    { id: 'leftover_galley', label: 'Raid galley leftovers for paste stock', grant: 'reagents + scrap' },
     { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
   ],
 };

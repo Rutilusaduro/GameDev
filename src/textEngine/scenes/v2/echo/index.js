@@ -107,10 +107,26 @@ registerPool('echo.type.evolution', [
   ]},
 ]);
 
+registerPool('echo.linger', [
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'The memory is small and warm. She keeps it like a snack she will finish later.',
+    'Early echo. Softness still surprising. She plays it back anyway.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The archive holds mass now. Replaying it makes the room feel smaller.',
+  ] },
+  { when: {}, text: [
+    'The echo stays after the scene. Hunger uses it as a bookmark.',
+    'She breathes once. The memory breathes with her.',
+    'Stored warmth. She will grow into it again.',
+  ] },
+]);
+
 function appendEchoDepth(text, depthKey, ctx, chance) {
   const trimmed = text?.trim() || '';
   const local = render(`{${depthKey}}`, ctx)?.trim();
-  const combined = local && trimmed ? `${trimmed}\n\n${local}` : (local || trimmed);
+  const linger = render('{echo.linger}', ctx)?.trim();
+  const combined = [trimmed, local, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(combined, 'echo', ctx, chance);
 }
 

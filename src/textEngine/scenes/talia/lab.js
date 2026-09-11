@@ -24,6 +24,14 @@ registerPool('lab.session.acquire', [
   ]},
 ]);
 
+registerPool('lab.session.linger', [
+  { when: {}, text: [
+    'Solder cools. She does not. The hoodie rides and she leaves it.',
+    'The bench keeps her heat. Breakthroughs keep her hungry.',
+    'She palms the new of her like a successful test. The lab agrees.',
+  ] },
+]);
+
 export function renderLabSessionBeat(student, week = 1, phase = 'session', opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({
@@ -34,5 +42,6 @@ export function renderLabSessionBeat(student, week = 1, phase = 'session', opts 
   });
   const pool = phase === 'acquire' ? 'lab.session.acquire' : 'lab.session.beat';
   const base = render(`{${pool}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'lab', ctx, opts.v2DepthChance ?? 0.3);
+  const linger = render('{lab.session.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join('\n\n'), 'lab', ctx, opts.v2DepthChance ?? 0.3);
 }

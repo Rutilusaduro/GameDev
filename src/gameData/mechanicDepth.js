@@ -91,12 +91,43 @@ export function talkTopicAvailable(topic, student, dormState) {
   return true;
 }
 
-export function applyTalkHabitatBonus(effect, student, dormState) {
+export function applyTalkHabitatBonus(effect, student, dormState, week = 0) {
   const hab = habitatForStudent(student, dormState);
   if (!effect) return effect;
   const next = { ...effect };
   if (next.rel) next.rel += hab.talkRel;
+  if (student?.leftoverFedThisWeek) {
+    if (next.rel) next.rel += 1;
+    if (next.corruption) next.corruption += 1;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    if (next.rel) next.rel += 1;
+    if (next.full) next.full += 2;
+  }
+  if (next.cals) {
+    let cals = next.cals;
+    if (student?.leftoverFedThisWeek) cals = Math.round(cals * 1.08);
+    if (week && student?.lastNightVisitWeek === week) cals = Math.round(cals * 1.04);
+    next.cals = cals;
+    if (studentFits(dormState, student?.id).fridge) next.full = (next.full || 0) + 2;
+  }
   return next;
+}
+
+/** Extra lbs on overnight device runs after leftover trays or a night visit. */
+export function leftoverNightGainBump(student, week = 0) {
+  let n = 0;
+  if (student?.leftoverFedThisWeek) n += 1;
+  if (week && student?.lastNightVisitWeek === week) n += 1;
+  return n;
+}
+
+/** Echo resonate gain-multiplier after leftover trays or a night visit. */
+export function echoResonateMult(student, week = 0) {
+  let m = 1.05;
+  if (student?.leftoverFedThisWeek) m *= 1.03;
+  if (week && student?.lastNightVisitWeek === week) m *= 1.03;
+  return m;
 }
 
 export function tickHabitatWeek(student, dormState, ownedHallSkills) {

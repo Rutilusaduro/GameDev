@@ -79,6 +79,7 @@ export function getSessionPaceModifiers(paceId = 'steady') {
 export function getFeedingModifiers(student, {
   generousTrait = false,
   context = 'meal',
+  week = 0,
 } = {}) {
   const hunger = getHungerTier(student);
   const addiction = getAddictionLevel(student);
@@ -96,6 +97,15 @@ export function getFeedingModifiers(student, {
   let calorieMult = 1;
   if (hunger >= 3 && addiction >= 2) calorieMult = 1.12;
   else if (hunger >= 2) calorieMult = 1.05;
+
+  if (student?.leftoverFedThisWeek) {
+    calorieMult += 0.08;
+    fullnessMult += 0.04;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    refusalBonus += 0.06;
+    calorieMult += 0.05;
+  }
 
   return { refusalBonus, fullnessMult, calorieMult, hunger, corruption: cor };
 }
@@ -193,7 +203,7 @@ export function runVenueFeedAttempt({
     feedOpts = {},
   } = gameCtx;
 
-  const feedMods = getFeedingModifiers(student, { generousTrait, context });
+  const feedMods = getFeedingModifiers(student, { generousTrait, context, week: sessionCtx.week || 0 });
   const pace = getSessionPaceModifiers(sessionPace);
   const pushBonus = forcePush ? 0.12 : 0;
   const hungerBonus = pendingHungerResolve ? 0.1 : 0;
@@ -204,9 +214,11 @@ export function runVenueFeedAttempt({
     gainLbs,
   });
 
+  const leftoverCap = student?.leftoverFedThisWeek ? 4 : 0;
+  const nightCap = (sessionCtx.week && student?.lastNightVisitWeek === sessionCtx.week) ? 3 : 0;
   const capOpts = {
     softStartBonus,
-    capacityBonus,
+    capacityBonus: capacityBonus + leftoverCap + nightCap,
     toleranceBuffer,
   };
   const cap = getFeedCapacity(student, capOpts);
@@ -313,11 +325,14 @@ export function rollOverfillEndChance(fullness, cap) {
 }
 
 /** Private session tap-out probability from fullness %. */
-export function getTapOutProbability(fPct, tapOutResistance = 0) {
+export function getTapOutProbability(fPct, tapOutResistance = 0, extras = {}) {
   if (fPct < 150) return 0;
   if (fPct >= 250) return 1;
   const tapProb = ((fPct - 150) / 100) * 0.9;
-  return Math.max(0, tapProb - tapOutResistance);
+  let p = Math.max(0, tapProb - tapOutResistance);
+  if (extras.leftoverFed) p *= 0.85;
+  if (extras.nightVisit) p *= 0.92;
+  return p;
 }
 
 /** Calories fed since session start (uses consumedCalories ledger). */

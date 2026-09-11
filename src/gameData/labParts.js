@@ -178,9 +178,11 @@ export function devicesCraftableNow(labState) {
   return Object.values(BLUEPRINT_RECIPES).filter(r => isBlueprintBuildable(r, labState));
 }
 
-export function startLabSession(labState) {
+export function startLabSession(labState, extras = {}) {
   const stageId = labState?.stage ?? 1;
-  const grant = partsAcquisitionByStage(stageId);
+  let grant = partsAcquisitionByStage(stageId);
+  if (extras.leftover) grant = mergeParts(grant, { scrap: 1, reagents: 1 });
+  if (extras.night) grant = mergeParts(grant, { circuits: 1 });
   return {
     stageId,
     phase: 'acquire',
@@ -196,6 +198,7 @@ export function applyLabAcquisition(session, choiceId, labState) {
     salvage: { scrap: 2, circuits: 1 },
     campus_surplus: { servos: 1, scrap: 1, exotics: 1 },
     reagent_run: { reagents: 2, exotics: 1 },
+    leftover_galley: { reagents: 2, scrap: 2 },
     skip: {},
   };
   const grant = grants[choiceId] || grants.skip;

@@ -70,6 +70,8 @@ registerPool('weekly.uniformSplit.afterDialogue', [
 registerPool('weekly.uniform_split', [
   { when: {}, text: [
     '{weekly.uniformSplit.incident} {weekly.uniformSplit.recovery} {weekly.uniformSplit.afterDialogue}',
+    '{weekly.uniformSplit.incident}\n\n{weekly.uniformSplit.recovery}\n\n{weekly.uniformSplit.afterDialogue}',
+    '{weekly.uniformSplit.recovery} {weekly.uniformSplit.incident} {weekly.uniformSplit.afterDialogue}',
   ] },
 ]);
 

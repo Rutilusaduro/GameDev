@@ -196,6 +196,7 @@ registerPool('ff.aftermath', [
   { when: {}, text: [
     '{ff.closeBeat} {ff.closeDialogue|prefix: }',
     '{ff.closeBeat}{ff.closeDialogue|prefix: }',
+    '{ff.closeBeat} {ff.closeDialogue|prefix: } The chair still holds her heat.',
   ]},
 ]);
 
@@ -203,9 +204,27 @@ registerPool('ff.setup', [
   { when: { targetIsTalia: true }, text: [
     'Talia eyes the Force Feeder controls with the focus of someone about to experiment on herself.',
     'She runs a thumb along the intake tube. "I\'ll take the first calibration run."',
+    'She checks the harness twice, then sits like the data is already hungry.',
   ]},
   { when: {}, text: [
     'The target settles into the chair harness while the pump cycles through its pre-feed checks.',
     'Calibration lights blink green. The harness waits for a throat to fill.',
+    'The pump warms. The chair waits. She is already leaning toward both.',
   ]},
+]);
+
+registerPool('ff.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She stays in the harness a beat after the pump stops, surprised she wants the quiet.',
+    'The tube comes out. Her belly does not go back. She notices both.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'Unbuckling takes longer than the feed. She lets it. Mass keeps the chair honest.',
+    'The lab smells like paste and warmth. She palms the new of her and does not apologize.',
+  ] },
+  { when: {}, text: [
+    'The machine goes idle. She does not. Softness keeps the overtime.',
+    'She rests a hand where the paste landed and leaves it there.',
+    'Calibration ends. The body keeps the result.',
+  ] },
 ]);

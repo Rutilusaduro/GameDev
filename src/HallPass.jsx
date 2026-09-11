@@ -54,7 +54,7 @@ import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNod
 import { getExplorationFind } from './gameData/campusIngredients.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
-import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN, huntEncounterMods } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
@@ -387,7 +387,7 @@ import {
   tickHabitatWeek, applyTalkHabitatBonus, pantryDropBonus, neighborEcologyPatch,
   sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
   habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
-  tickOutfitWeek, digestStuffedExtras,
+  tickOutfitWeek, digestStuffedExtras, leftoverNightGainBump, echoResonateMult,
 } from './gameData/mechanicDepth.js';
 import { applyOutfitRefit, REFIT_OPTIONS } from './gameData/outfits.js';
 import './textEngine/scenes/proseOverhaul.js';
@@ -2195,6 +2195,7 @@ export default function HallPass(){
       pharmacistCultStage:cultStage,
       facultyInformantRisk:informantRisk,
       rumorChance:oppositionRumorChance(dormState||createInitialDormState(),ownedHallSkills||{}),
+      nightRounds:(dormState?.nightRounds?.lastWeek===week)&&((dormState.nightRounds.visitsThisWeek||0)>=1),
     });
     nextOpposition=oppResult.opposition;
     updated=applyOppositionStudentPatches(updated,oppResult.studentPatches);
@@ -3945,7 +3946,8 @@ export default function HallPass(){
     if(!man) return;
     const stageId=getStage(lilith.lbs).id;
     const diff=getEffectiveDifficulty(man.difficulty,stageId);
-    const willpower=WILLPOWER_START[diff]??45;
+    const mods=huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week);
+    const willpower=Math.max(5,(WILLPOWER_START[diff]??45)+mods.wpDelta);
     const maxApprehension=MAX_APPREHENSION[diff]??5;
     const firstLine=getGuyLine(diff,willpower);
     const replies=drawReplies([]);
@@ -3999,7 +4001,7 @@ export default function HallPass(){
     if(encounter.won||encounter.failed||encounter.consumed) return;
     const stageId=getStage(lilith.lbs).id;
     const stageBand=stageId>=7?2:stageId>=3?1:0;
-    const success=Math.random()<seduceSuccessChance(encounter.willpower,move.power||0);
+    const success=Math.random()<seduceSuccessChance(encounter.willpower,move.power||0,{seduceBonus:huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week).seduceBonus});
     const logs=[{text:move.vignette(stageBand),type:'action'}];
     let{willpower,apprehension}=encounter;
     if(success){const wpDrop=Math.round(25+Math.random()*10);willpower=Math.max(0,willpower-wpDrop);}
@@ -4318,7 +4320,7 @@ export default function HallPass(){
     const act=INVENTOR_ACTIVITIES[1];
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setLabStudentId(s.id);
-    setLabSession(startLabSession(labState));
+    setLabSession(startLabSession(labState,{leftover:!!s.leftoverFedThisWeek,night:s.lastNightVisitWeek===week}));
   };
 
   const runArrivalCapstone=(s)=>{
@@ -4981,7 +4983,8 @@ export default function HallPass(){
     }
     if(actionId==='overnight_belt'){
       if(!gateDeviceUse('auto_bloating_belt')) return;
-      const applied=applyDeviceEffect(s,{ gainLbs:[3,6], psychDelta:{ dependence:2 } },{ week, sourceDeviceId:'auto_bloating_belt', rng:Math.random });
+      const bump=leftoverNightGainBump(s,week);
+      const applied=applyDeviceEffect(s,{ gainLbs:[3+bump,6+bump], psychDelta:{ dependence:2 } },{ week, sourceDeviceId:'auto_bloating_belt', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.auto_bloating_belt);
       awardDeviceMastery('auto_bloating_belt', 'good');
       push(`🌙 Belt left on overnight for ${s.name}. Morning finds more of her.`);
@@ -4989,7 +4992,8 @@ export default function HallPass(){
     }
     if(actionId==='overnight_feeder'){
       if(!gateDeviceUse('auto_feeder_arm')) return;
-      const applied=applyDeviceEffect(s,{ gainLbs:[4,8], psychDelta:{ dependence:2 } },{ week, sourceDeviceId:'auto_feeder_arm', rng:Math.random });
+      const bump=leftoverNightGainBump(s,week);
+      const applied=applyDeviceEffect(s,{ gainLbs:[4+bump,8+bump], psychDelta:{ dependence:2 } },{ week, sourceDeviceId:'auto_feeder_arm', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.auto_feeder_arm);
       awardDeviceMastery('auto_feeder_arm', 'good');
       push(`🌙 Feeder left running overnight for ${s.name}. The arm kept count. She did not.`);
@@ -6779,7 +6783,7 @@ export default function HallPass(){
     setAp(a=>a-result.apCost);
     setV2State(result.v2State);
     const s=students.find(st=>st.id===result.moment?.studentId);
-    if(s) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,gainMultiplier:(st.gainMultiplier||1)*1.05}:st));
+    if(s) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,gainMultiplier:(st.gainMultiplier||1)*echoResonateMult(st,week)}:st));
     push(`📜 Echo resonated — ${s?.name||'her'} growth deepens.`);
     setEchoReplay(null);
   };
@@ -7118,7 +7122,7 @@ export default function HallPass(){
     gainFavor('talk');
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     const targetForHab=students.find(x=>x.id===talkStudentId);
-    effect=applyTalkHabitatBonus(effect,targetForHab,dormState||createInitialDormState());
+    effect=applyTalkHabitatBonus(effect,targetForHab,dormState||createInitialDormState(),week);
     if(applySuggest){
       setStudents(prev=>prev.map(x=>x.id===talkStudentId?{...x,suggestDebuffWeek:week}:x));
       push(`🗣 Suggestion planted — ${students.find(s=>s.id===talkStudentId)?.name||'she'} resists less this week.`);
@@ -7404,6 +7408,7 @@ export default function HallPass(){
         sessionStartCalories:dinnerEvent.sessionStartCalories||0,
         sessionPace:dinnerEvent.sessionPace||'steady',
         pendingHungerResolve:!!dinnerEvent.pendingHungerResolve,
+        week,
       },
       gameCtx:{
         skillGainMult,
@@ -7472,6 +7477,7 @@ export default function HallPass(){
         sessionStartCalories:dinnerEvent.sessionStartCalories||0,
         sessionPace:dinnerEvent.sessionPace||'steady',
         pendingHungerResolve:!!dinnerEvent.pendingHungerResolve,
+        week,
       },
       gameCtx:{
         skillGainMult,
@@ -7522,7 +7528,7 @@ export default function HallPass(){
     const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=renderDinnerConversation(conv.id, s, week);
     const fullnessChange=conv.fullnessEffect||0;
-    const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner'});
+    const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner',week});
     let fed=s;
     if(scaledBonus>0||fullnessChange!==0){
       const bonusFed=feedStudentCalories(s,scaledBonus,Math.max(0,fullnessChange),conv.relBonus||0,conv.label,{
@@ -7596,6 +7602,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:evtStudent.sessionStartCalories||0,
         sessionPace:groupDinnerEvent.sessionPace||'steady',
+        week,
       },
       gameCtx:{
         skillGainMult,
@@ -7708,6 +7715,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:evtStudent.sessionStartCalories||0,
         sessionPace:groupDinnerEvent.sessionPace||'steady',
+        week,
       },
       gameCtx:{
         skillGainMult,
@@ -7753,7 +7761,7 @@ export default function HallPass(){
     push(`💬 Group conversation: ${conv.label}`);
     if(fullE>0){
       liveStudents.forEach(ls=>{
-        const mods=getFeedingModifiers(ls,{generousTrait:hasTrait('generous'),context:'group_dinner'});
+        const mods=getFeedingModifiers(ls,{generousTrait:hasTrait('generous'),context:'group_dinner',week});
         const fed=feedStudentCalories(ls,0,fullE,0,'',{
           refusalBonus:mods.refusalBonus,
           fullnessMult:mods.fullnessMult,
@@ -7846,6 +7854,7 @@ export default function HallPass(){
         sessionPace:privateSession.sessionPace||'steady',
         capacityBonus:capOpts.capacityBonus,
         toleranceBuffer:capOpts.toleranceBuffer,
+        week,
       },
       gameCtx:{
         skillGainMult,
@@ -7868,7 +7877,7 @@ export default function HallPass(){
     const desc=renderSessionFullness(fed, Math.min(fsStage.id, 5), week);
     push(`🍽️ ${payload.label}: +${payload.calories.toLocaleString()} cal`);
     setSessionLog(sl=>[...sl,`🍽️ ${payload.label} (+${payload.calories.toLocaleString()} cal) — ${renderDinnerDishDesc(food, fed, week)}`,`   ${desc}`]);
-    const adjustedTapProb=getTapOutProbability(fPct,skillTapOutResistance)*(result.pace?.tapOutMult??1);
+    const adjustedTapProb=getTapOutProbability(fPct,skillTapOutResistance,{leftoverFed:!!fed.leftoverFedThisWeek,nightVisit:fed.lastNightVisitWeek===week})*(result.pace?.tapOutMult??1);
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
       const liveS=fed;

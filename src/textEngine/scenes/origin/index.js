@@ -105,5 +105,5 @@ export function renderOriginStirring(student, week = 1, opts = {}) {
   const base = render('{origin.stirring.line}', ctx, { trace: opts.trace || null })?.trim() || '';
   const glow = render('{origin.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{origin.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth([base, glow, linger].filter(Boolean).join(' '), 'origin', ctx, opts.v2DepthChance ?? 0.3);
+  return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'origin', ctx, opts.v2DepthChance ?? 0.3);
 }

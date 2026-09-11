@@ -18,6 +18,7 @@ registerPool('ge.onset', [
   { when: {}, text: [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
     'The change begins{ge.causeAnchor}: {ge.firstSensation}.',
+    'It starts slow{ge.causeAnchor}. {ge.firstSensation}.',
   ] },
 ]);
 
@@ -247,6 +248,7 @@ registerPool('ge.surge', [
   { when: {}, text: [
     '{grow.sudden}{join:ge.surgeDetail|prefix: — }.',
     'Pounds land fast: {grow.sudden}.',
+    'The swell keeps arriving{ge.causeAnchor}: {ge.surgeDetail}.',
   ] },
 ]);
 
@@ -421,7 +423,11 @@ registerPool('ge.strain', [
     '{ge.garment} {ge.clothingStrain}{join:ge.clothingFail|prefix: — }.',
     'Fabric protests — {ge.garment} {word.clothingFit}{join:ge.clothingFail|prefix:; }.',
   ] },
-  { when: {}, text: ['{ge.garment} pulls tighter across her changing body.'] },
+  { when: {}, text: [
+    '{ge.garment} pulls tighter across her changing body.',
+    '{ge.garment} {ge.clothingStrain}.',
+    'Cloth loses another argument with her.',
+  ] },
 ]);
 
 // VERB PHRASE — how the garment strains; follows the garment noun phrase

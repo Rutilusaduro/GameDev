@@ -11,6 +11,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase0', [
     'Chairwoman Vance opens the hearing. Photos of {subject.name} fill the screen — abundance framed as concern. "The Board must protect institutional wellness," she says. Your resident sits beside you, {studentLbs} lbs and unapologetic.',
     'Vance taps the projector. {subject.name} at {studentLbs} pounds becomes a slide deck. The room performs worry while your resident performs hunger.',
     'The hearing begins with documentation — timestamps, meal photos, a body counted like liability. {subject.name} stays seated, warm and enormous beside you.',
+    'A folder of night-round timestamps lands first. {subject.name} at {studentLbs} pounds sits like the evidence has hips.',
   ]},
 ]);
 
@@ -19,6 +20,7 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase1', [
     'Vance taps her folder. "{subject.name} may remain enrolled only if this hall demonstrates… restraint." The word hangs wrong in the air.',
     'Second motion: conditional enrollment. Restraint spoken like virtue while {subject.name}\'s belly still remembers lunch.',
     'Vance wants a promise of discretion. The Board wants language that makes appetite sound temporary.',
+    'Someone mentions leftover trays as if they were contraband. {subject.name} smiles without meaning to.',
   ]},
 ]);
 
