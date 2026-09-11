@@ -173,6 +173,44 @@ export function getStageUpText(stageId, testerName) {
   return renderCultivatorStageUp(stageId, testerName);
 }
 
+export function extraCultivatorChoices(foodType, junctionIdx, owned = {}) {
+  if (junctionIdx !== 0) return [];
+  if (!RECIPES[foodType]) return [];
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({
+      id: 'floor_kitchen_batch',
+      label: 'Pull a hall-kitchen batch',
+      desc: 'Leftovers from the floor kitchen. Denser. She does not ask where they came from.',
+      fatGain: 14,
+      suspChange: 2,
+    });
+  }
+  if (owned.dinner_basic || owned.legendary_host) {
+    extras.push({
+      id: 'dining_side',
+      label: 'Add a dining-nook side',
+      desc: 'A plated extra from dining. She treats it as hospitality and finishes it anyway.',
+      fatGain: 10,
+      suspChange: 1,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function cultivatorChoicesForJunction(foodType, junctionIdx, owned = {}) {
+  const junction = RECIPES[foodType]?.junctions?.[junctionIdx];
+  if (!junction) return [];
+  return [...junction.choices, ...extraCultivatorChoices(foodType, junctionIdx, owned)];
+}
+
+export function extraCultivatorReneeLbs(owned = {}) {
+  let n = 0;
+  if (owned.snack_station || owned.artisan_bakery) n += 2;
+  if (owned.luxury_pantry) n += 1;
+  return n;
+}
+
 export function getRecruitmentScene() {
   return renderCultivatorRecruitment();
 }

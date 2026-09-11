@@ -28,6 +28,7 @@ import { extraAcquisitionChoices, acquisitionChoicesForOwned, startChemSession }
 import { extraCultRoutes, cultRoutesForOwned, applyCultDistribution } from '../src/gameData/pharmacistCult.js';
 import { extraContestActions, extraSumoCornerFeeds, contestActionsForOwned, sumoCornerFeedsForOwned } from '../src/gameData/miniGames.js';
 import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned, extraEvolvedChoices, evolvedChoicesForPhase, extraFairAfterparty } from '../src/gameData/evolvedFloorExtras.js';
+import { extraCultivatorChoices, cultivatorChoicesForJunction, extraCultivatorReneeLbs, RECIPES } from '../src/gameData/cultivator.js';
 import { extraItemUseModes, itemUseModesForOwned } from '../src/gameData/items.js';
 import { HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/evolvedForms.js';
 import { extraIntimacyChoices, intimacyChoicesForPhase } from '../src/gameData/intimacy.js';
@@ -120,7 +121,7 @@ const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
 const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
 assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
-assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 36, 'depth inventory covers live systems');
+assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 37, 'depth inventory covers live systems');
 for (const row of MECHANIC_DEPTH_INVENTORY) {
   assert.ok(row.after > row.before, `${row.id} after (${row.after}) must beat before (${row.before})`);
   assert.ok(row.hook, `${row.id} missing hook`);
@@ -209,6 +210,10 @@ assert.ok(extraHiveShiftLbs({ luxury_pantry: true }) >= 1);
 assert.ok(extraHiveActions({ artisan_bakery: true }).some((a) => a.id === 'kitchen'));
 assert.ok(extraForceFeederKitchenLbs({ artisan_bakery: true }) >= 3);
 assert.ok(extraActivityKitchenLbs({ snack_station: true }) >= 3);
+assert.ok(extraCultivatorChoices('milkshake', 0, { snack_station: true }).some((c) => c.id === 'floor_kitchen_batch'));
+assert.ok(cultivatorChoicesForJunction('milkshake', 0, { snack_station: true }).length > RECIPES.milkshake.junctions[0].choices.length);
+assert.equal(extraCultivatorChoices('milkshake', 1, { snack_station: true }).length, 0);
+assert.ok(extraCultivatorReneeLbs({ artisan_bakery: true }) >= 2);
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

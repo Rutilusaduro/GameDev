@@ -42,6 +42,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'cg', before: 1, after: 2, hook: 'extraCgBingeLbs+kitchenPush' },
   { id: 'hive', before: 1, after: 2, hook: 'extraHiveVisitLbs+shiftLbs' },
   { id: 'fairDay', before: 1, after: 2, hook: 'extraFairAfterparty' },
+  { id: 'cultivator', before: 1, after: 2, hook: 'extraCultivatorChoice+reneeLbs' },
 ];
 
 export function kitchenHuntBonus(baseGain, owned = {}) {
