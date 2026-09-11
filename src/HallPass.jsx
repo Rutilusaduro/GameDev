@@ -5863,10 +5863,10 @@ export default function HallPass(){
     const initQual=history&&history.includes("both_loaded")?65:50;
     const initKylieGain=history&&history.includes("both_loaded")?8:0;
     const initPartnerGain=history&&history.includes("both_loaded")?6:0;
-    if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,depthGainLbs(st,initKylieGain,week,{}),0):st));
-    if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,depthGainLbs(st,initPartnerGain,week,{skipNight:true}),0):st));
+    if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?bumpOriginChain(processStudentGain(st,depthGainLbs(st,initKylieGain,week,{}),0)):st));
+    if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?bumpOriginChain(processStudentGain(st,depthGainLbs(st,initPartnerGain,week,{skipNight:true}),0)):st));
     const initChat=[pickCollabWrenLine(stageIdx,kylie,partner,week)].filter(Boolean);
-    setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:0,partnerGain:0,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
+    setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:initKylieGain,partnerGain:initPartnerGain,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
     setCollabPartnerId(null);
     setEvolvedEventState(null);
   };

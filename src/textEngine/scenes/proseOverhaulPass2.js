@@ -10,6 +10,12 @@ function oncePool(key, variants) {
 }
 
 oncePool('ge.afterglow', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Galley leftover still in the clothes. She files the extra warmth as last night plus this.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat plus the incident. She rests a palm on both and leaves it there.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She tugs cloth that still mostly works and files the new weight as weather.',
     'The change is small enough to deny and too warm to forget.',
@@ -68,6 +74,10 @@ oncePool('milestone.afterglow', [
 ]);
 
 oncePool('confront.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She is still here. Leftover heat and the demand share the same hungry body.',
+    'The fridge down the hall already opened her. The anger uses that door.',
+  ] },
   { when: {}, text: [
     'She is still here. The anger has a body, and the body is hungry.',
     'The demand hangs. So does the softness she came in wearing.',
@@ -76,6 +86,10 @@ oncePool('confront.afterglow', [
 ]);
 
 oncePool('gossip.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Sunday retell includes the foil. Gossip that eats twice.',
+    'Someone will retell this with leftover still on their fingers.',
+  ] },
   { when: {}, text: [
     'The hall files it under weather. Weather that eats.',
     'She looks away, then looks back. Looking is how gossip starts.',
@@ -84,6 +98,12 @@ oncePool('gossip.afterglow', [
 ]);
 
 oncePool('hunt.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat walks the path with her. Campus keeps feeding it without a name.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in her. The hunt is daylight using the same open door.',
+  ] },
   { when: {}, text: [
     'Hunger walks the path with her. The path makes room.',
     'Campus keeps its lights. She keeps her appetite.',
@@ -92,6 +112,9 @@ oncePool('hunt.afterglow', [
 ]);
 
 oncePool('origin.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat is the revision she is chewing. Origin waits its turn.',
+  ] },
   { when: { stageMax: 3 }, weight: 2, text: [
     'The old story still fits in her mouth. The new softness is the revision.',
     'She says where she came from, then reaches for here.',

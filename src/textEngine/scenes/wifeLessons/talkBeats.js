@@ -6,6 +6,28 @@ registerDimension('wlPerson', (ctx) => ctx.globals?.wlPerson ?? '');
 
 // Shape: FULL SENTENCE. Kitchen leftover heat around the talk.
 registerPool('wifeLessons.talk.wrap.kitchen', [
+  { when: { leftoverFed: true, wlPerson: 'Wanda' }, weight: 4, text: [
+    'Wanda is already tasting leftover galley like it belongs in this kitchen too.',
+    'Foil heat plus Wanda\'s spoon. She talks around both.',
+  ] },
+  { when: { leftoverFed: true, wlPerson: 'Darlene' }, weight: 4, text: [
+    'Darlene folds leftover heat into the prayer-hands, then unfolds them toward the platter.',
+  ] },
+  { when: { leftoverFed: true, wlPerson: 'Patrice' }, weight: 4, text: [
+    'Patrice watches leftover sauce reduce. Her patience does the same, hungrier.',
+  ] },
+  { when: { leftoverFed: true, wlPerson: 'Chloe' }, weight: 4, text: [
+    'Chloe pretends leftover is still technique. The plate from last night disagrees first.',
+  ] },
+  { when: { leftoverFed: true, wlPerson: 'Emma' }, weight: 4, text: [
+    'Emma files leftover as hospitality. Her waistband files the second sitting.',
+  ] },
+  { when: { leftoverFed: true, wlPerson: 'Kezia' }, weight: 4, text: [
+    'Kezia clocks leftover heat and reaches anyway, like the recipe asked twice.',
+  ] },
+  { when: { leftoverFed: true, wlPerson: 'Lila' }, weight: 4, text: [
+    'Lila keeps leftover quiet in her lap. The greeting still runs long.',
+  ] },
   { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
     'Galley foil still on Mary Jane\'s fingers. She talks like the next rise already started.',
     'Last night\'s tray sits in her middle. She treats this greeting like a second proof.',

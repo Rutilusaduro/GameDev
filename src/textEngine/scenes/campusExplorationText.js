@@ -326,19 +326,55 @@ registerModuleVariants('campus.sighting', [
   ] },
 ]);
 
-registerPool('campus.leftover.scene', [
+registerPool('campus.leftover.setup', [
   { when: { leftoverFed: true }, weight: 3, text: [
-    'The kiosk line is a second course she did not have to name. Hall foil still on her fingers.',
-    'She buys the walk anyway. Last night\'s tray made the path hungrier than the map.',
+    'Hall foil still on her fingers when the kiosk line starts.',
+    'Last night\'s tray still rounding her walk. Campus treats it as weather.',
   ] },
   { when: { nightVisit: true }, weight: 3, text: [
-    'Daylight eating uses the same open door the night-round knock taught her.',
-    'You saw her after hours. Campus is that appetite with better lighting.',
+    'Night-round knock still in her. Daylight campus uses the same open door.',
   ] },
   { when: {}, text: [
     'She stops once more. The path is already a table.',
     'Campus keeps moving. She keeps eating like the next tray was scheduled.',
     'You lose her in a cluster of trays and find her again by the laugh.',
+  ] },
+]);
+
+registerPool('campus.leftover.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The kiosk is a second course she did not have to name.',
+    'Leftover heat makes the walk hungrier than the map.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw her after hours. Campus is that appetite with better lighting.',
+  ] },
+  { when: {}, text: [
+    'Softness answers the walk before the register does.',
+    'She buys anyway. The body already voted.',
+    'The path keeps a taste of her after she moves on.',
+  ] },
+]);
+
+registerPool('campus.leftover.line', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She does not mention the galley. The foil already did.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'The knock taught the public version. She is living it.',
+  ] },
+  { when: {}, text: [
+    'She smiles like the next tray was already on the calendar.',
+    'Someone in line notices the extra. She notices that they notice.',
+    'She keeps walking. Appetite keeps the receipt.',
+  ] },
+]);
+
+registerPool('campus.leftover.scene', [
+  { when: {}, text: [
+    '{campus.leftover.setup} {campus.leftover.growth} {campus.leftover.line}',
+    '{campus.leftover.setup} {campus.leftover.line} {campus.leftover.growth}',
+    '{campus.leftover.growth} {campus.leftover.setup} {campus.leftover.line}',
   ] },
 ]);
 
