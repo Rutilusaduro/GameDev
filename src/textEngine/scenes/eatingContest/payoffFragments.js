@@ -25,6 +25,7 @@ registerPool('contest.payoff.body', [
   { when: {}, text: [
     'You put a hand on your belly and feel the heat of the work.',
     'The weight is not punishment. It is receipt.',
+    'Chair groans. Belt surrenders. Belly wins the argument.',
   ]},
 ]);
 
