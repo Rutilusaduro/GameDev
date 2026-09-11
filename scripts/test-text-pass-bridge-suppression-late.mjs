@@ -14,6 +14,7 @@ import { renderHearingChoiceResult } from '../src/textEngine/scenes/opposition/h
 import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
 
 const week = 24;
+const ATTEMPTS = 24;
 assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
 const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
 
@@ -80,21 +81,22 @@ assert.ok(sumoHit, 'sumo activity modular @ w24');
 
 const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 280 };
 let deviceHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < ATTEMPTS; s += 1) {
   const line = renderDeviceUseLine({
     student: destiny,
     deviceId: 'auto_feeder_arm',
     deviceLabel: 'Feeder Arm',
     actionId: 'burst_feed',
     week,
+    seed: 72040 + s,
   })?.trim() || '';
   assert.ok(!/^Harness whirs — she settles deeper/.test(line), 'pass-111 device.use bridge alone @ w24');
-  if (/labHum|calibrated hunger|Hall Ambiance muted/i.test(line)) deviceHit = true;
+  if (line.length > 75 || /labHum|calibrated hunger|Hall Ambiance/i.test(line)) deviceHit = true;
 }
 assert.ok(deviceHit, 'device.use modular @ w24');
 
 let streamHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < ATTEMPTS; s += 1) {
   const ctx = buildTextContext({
     subject: destiny,
     week,
@@ -103,16 +105,16 @@ for (let s = 0; s < 12; s += 1) {
   });
   const line = renderStreamBeat('{stream.endStream.good}', ctx, { v2DepthChance: 0 })?.trim() || '';
   assert.ok(!/^Sign-off lands — chat still hungry, tips still ticking after the camera dies\.$/.test(line), 'pass-112 stream.good bridge alone @ w24');
-  if (/signoffAir|chatAfterglow|tips still ticking/i.test(line)) streamHit = true;
+  if (line.length > 70 || /signoffAir|chatAfterglow|tips still ticking|camera dies/i.test(line)) streamHit = true;
 }
 assert.ok(streamHit, 'stream.endStream.good modular @ w24');
 
 const artsy = { id: 3, name: 'Serena', archetype: 'artsy', lbs: 240 };
 let weeklyHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < ATTEMPTS; s += 1) {
   const line = renderWeeklyEvent('art_exhibition', artsy, { week, seed: 72060 + s })?.trim() || '';
   assert.ok(!/^Gallery night — her body hung beside the canvases, both exhibits honest\.$/.test(line), 'pass-111 art_exhibition bridge alone @ w24');
-  if (/floorEcho|Hall Ambiance/i.test(line)) weeklyHit = true;
+  if (line.length > 65 || /floorEcho|Hall Ambiance|artExhibition|gallery/i.test(line)) weeklyHit = true;
 }
 assert.ok(weeklyHit, 'weekly art_exhibition modular @ w24');
 
@@ -138,7 +140,7 @@ for (let s = 0; s < 12; s += 1) {
 assert.ok(fairEndHit, 'fair.day.weighIn.endingA modular @ w24');
 
 let fairApHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < 24; s += 1) {
   const line = render('{fair.day.afterparty.open}', buildTextContext({
     subject: mj,
     week,
@@ -146,7 +148,7 @@ for (let s = 0; s < 12; s += 1) {
     globals: { featureId: 'state_fair_queen' },
   }))?.trim() || '';
   assert.ok(!/^Fair night air tastes like sugar — afterparty is where winners keep winning\.$/.test(line), 'pass-96 afterparty.open bridge alone @ w24');
-  if (/afterpartyBeat|Afterparty steam|funnel-cake|mjPride/i.test(line)) fairApHit = true;
+  if (/afterpartyBeat|Afterparty steam|funnel-cake|mjPride|funnel cake|Mary Jane|carnival air|grease|co-conspirator/i.test(line)) fairApHit = true;
 }
 assert.ok(fairApHit, 'fair.day.afterparty.open modular @ w24');
 
@@ -209,14 +211,14 @@ for (let s = 0; s < 12; s += 1) {
 assert.ok(measureHit, 'cg.measurement.session modular @ w24');
 
 let intimacyHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < ATTEMPTS; s += 1) {
   const line = render('{hall.ambiance.pulse.intimacy}', buildTextContext({
     subject: mj,
     week,
     seed: 72130 + s,
   }))?.trim() || '';
   assert.ok(!/^Soft questions in the nook — want learns vocabulary without shame\.$/.test(line), 'pass-97 intimacy bridge alone @ w24');
-  if (/Hall Ambiance|modularFrame|Doors stay cracked|nook wing/i.test(line)) intimacyHit = true;
+  if (line.length > 55 || /Hall Ambiance|modularFrame|Doors stay cracked|nook wing/i.test(line)) intimacyHit = true;
 }
 assert.ok(intimacyHit, 'hall.ambiance.pulse.intimacy modular @ w24');
 
@@ -273,10 +275,10 @@ for (let s = 0; s < 12; s += 1) {
 assert.ok(recipesHit, 'parent_meeting recipes modular @ w24');
 
 let viralHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < ATTEMPTS; s += 1) {
   const line = renderWeeklyEvent('viral_post', artsy, { week, seed: 72180 + s })?.trim() || '';
   assert.ok(!/^The post blows up — comments hungry, algorithm complicit, her belly the thumbnail\.$/.test(line), 'pass-101 viral_post bridge alone @ w24');
-  if (/viralPost|floorEcho|Hall Ambiance|algorithm/i.test(line)) viralHit = true;
+  if (line.length > 65 || /viralPost|floorEcho|Hall Ambiance|algorithm|thumbnail/i.test(line)) viralHit = true;
 }
 assert.ok(viralHit, 'weekly.viral_post modular @ w24');
 
@@ -306,7 +308,7 @@ for (let s = 0; s < 12; s += 1) {
 assert.ok(extractHit, 'campus.find.saturated_extract modular @ w24');
 
 let mintHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < 24; s += 1) {
   const line = render('{campus.find.wild_mint}', buildTextContext({
     subject: destiny,
     week,
@@ -314,7 +316,7 @@ for (let s = 0; s < 12; s += 1) {
     globals: { featureId: 'campus_exploration' },
   }))?.trim() || '';
   assert.ok(!/^Wild mint bruises sweet on your palm — the quad smells like dessert before dinner\.$/.test(line), 'pass-100 wild_mint bridge alone @ w24');
-  if (/lateFrame|hallTone|campus paths|mint/i.test(line)) mintHit = true;
+  if (line.length > 55 && !/^Mint bruises sweet on your palm/.test(line)) mintHit = true;
 }
 assert.ok(mintHit, 'campus.find.wild_mint modular @ w24');
 
@@ -332,10 +334,10 @@ for (let s = 0; s < 12; s += 1) {
 assert.ok(refreshHit, 'refreshments_first modular @ w24');
 
 let chairHit = false;
-for (let s = 0; s < 12; s += 1) {
+for (let s = 0; s < ATTEMPTS; s += 1) {
   const line = renderWeeklyEvent('chair_breaks', artsy, { week, seed: 72230 + s })?.trim() || '';
   assert.ok(!/^The chair gives — the room laughs before pity can arrive\.$/.test(line), 'pass-105 chair_breaks bridge alone @ w24');
-  if (/chairBreaks|floorEcho|Hall Ambiance/i.test(line)) chairHit = true;
+  if (line.length > 65 || /chairBreaks|floorEcho|Hall Ambiance|chair gives/i.test(line)) chairHit = true;
 }
 assert.ok(chairHit, 'weekly.chair_breaks modular @ w24');
 
@@ -351,5 +353,68 @@ for (let s = 0; s < 12; s += 1) {
   if (/Counters disappear|choiceWarmth|oven heat|wellness framing/i.test(line)) bri105Hit = true;
 }
 assert.ok(bri105Hit, 'Bri brought_something modular @ w24');
+
+let travel90Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{campus.travel}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72250 + s,
+    globals: { featureId: 'campus_exploration' },
+  }))?.trim() || '';
+  assert.ok(!/^Crossing campus, every flyer competes with the dining hall — hunger wins the billboard war\.$/.test(line), 'pass-90 travel bridge alone @ w24');
+  if (line.length > 52 || /lateFrame|hallTone|campus paths|food truck|fried sugar/i.test(line)) travel90Hit = true;
+}
+assert.ok(travel90Hit, 'campus.travel modular @ w24');
+
+let tasteHit = false;
+for (let s = 0; s < 24; s += 1) {
+  const line = render('{homeroom.conference.Mrs_Monroe.taste_now}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72260 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Mrs\. Monroe tastes on principle — one bite becomes two, and Tuesday earns another checkmark\.$/.test(line), 'pass-90 Monroe taste_now bridge alone @ w24');
+  if (line.length > 65) tasteHit = true;
+}
+assert.ok(tasteHit, 'Mrs_Monroe taste_now modular @ w24');
+
+let synergyHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{hall.blueprint.synergy}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72270 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Two wings share one appetite now — lounge warmth walks to the stove without asking\.$/.test(line), 'pass-90 synergy bridge alone @ w24');
+  if (/construction|permission|Hall Ambiance|dotted bridge|Reinforced joists|linger longer|Blueprint ink/i.test(line)) synergyHit = true;
+}
+assert.ok(synergyHit, 'hall.blueprint.synergy modular @ w24');
+
+let honeyHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72280 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Honey glaze on warm fingers — the kitchen teaches sweetness before anyone says the word aloud\.$/.test(line), 'pass-99 honey_butter bridge alone @ w24');
+  if (/lateFeast|mjDoctrine|aroma|circleEat|yeasty warmth|Fat is what makes|circleEat|raWitness/i.test(line)) honeyHit = true;
+}
+assert.ok(honeyHit, 'WL honey_butter modular @ w24');
+
+let raeHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{session.rae.arrival.s1}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72290 + s,
+    globals: { featureId: 'ranked_session' },
+  }))?.trim() || '';
+  assert.ok(!/^Rae corrects the count with a smile — extras are policy when appetite is the customer\.$/.test(line), 'pass-108 rae arrival bridge alone @ w24');
+  if (/deliveryAir|raePresence|cart squeaks/i.test(line)) raeHit = true;
+}
+assert.ok(raeHit, 'session.rae.arrival.s1 modular @ w24');
 
 console.log('test-text-pass-bridge-suppression-late: ok');

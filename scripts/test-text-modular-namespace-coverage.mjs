@@ -45,6 +45,7 @@ const requiredFragments = [
   'weeklyEvent/weeklyEventLateModularFragments.js',
   'campusEvent/campusEventLateModularFragments.js',
   'campusExplorationModularFragments.js',
+  'itemUse/itemUseModularFragments.js',
   'growthEvent/growthEventLateModularFragments.js',
   'deviceUse/deviceLateModularFragments.js',
   'talkEncourageModularFragments.js',

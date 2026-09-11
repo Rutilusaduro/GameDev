@@ -43,6 +43,7 @@ const pairs = [
   ['competitiveGainer/index.js', 'competitiveGainer/cgSceneFragments.js'],
   ['competitiveGainer/index.js', 'competitiveGainer/cgRaReplyFragments.js'],
   ['competitiveGainer/cgSceneFragments.js', 'competitiveGainer/cgMeasurementModularFragments.js'],
+  ['itemUse/index.js', 'itemUse/itemUseModularFragments.js'],
   ['session/index.js', 'session/fullnessFragments.js'],
   ['session/index.js', 'session/aftermathFragments.js'],
   ['cultivator/index.js', 'cultivator/cultivatorFragments.js'],

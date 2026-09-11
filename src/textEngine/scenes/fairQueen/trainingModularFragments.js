@@ -47,5 +47,17 @@ for (const c of COLLABS) {
       priority: 4,
       text: [TRAINING_SKELETON],
     },
+    {
+      when: { weekMin: 20 },
+      weight: 5,
+      priority: 5,
+      text: [TRAINING_SKELETON],
+    },
+    {
+      when: { weekMin: 14 },
+      weight: 3,
+      priority: 3,
+      text: [TRAINING_SKELETON],
+    },
   ]);
 }

@@ -32,6 +32,7 @@ const POOLS = [
   'hall.blueprint.construction',
   'hall.ambiance.modularFrame',
   'campus.explore.lateFrame',
+  'item.use.lateFrame',
   'cultivator.scene.labAir',
   'session.tapOut.breath',
   'device.use.scene.labHum',

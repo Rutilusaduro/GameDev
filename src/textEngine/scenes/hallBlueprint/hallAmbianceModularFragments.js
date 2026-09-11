@@ -43,6 +43,18 @@ for (const key of PULSE_KEYS) {
   ]);
 }
 
+registerModuleVariants('hall.ambiance.pulse.appetite', [
+  {
+    when: { hallAmbiancePeakMin: [40], weekMin: 10 },
+    weight: 3,
+    priority: 4,
+    text: [
+      'Wing hum rises — residents linger in doorways, plates in hand, schedules forgotten.',
+      PULSE_LATE,
+    ],
+  },
+]);
+
 registerModuleVariants('hall.ambiance.summary', [
   {
     when: { weekMin: 20 },

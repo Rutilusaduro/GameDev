@@ -89,6 +89,7 @@ import './corruptionTierUp/index.js';
 import './rankedSession/index.js';
 import './rankedSession/sessionFragments.js';
 import './rankedSession/sessionPayoffFragments.js';
+import './itemUse/itemUseModularFragments.js';
 import './feedReaction/depth.js';
 import './weekRecap/index.js';
 import './weekRecap/depth.js';

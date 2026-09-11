@@ -27,6 +27,7 @@ const required = [
   'legacyPoolPolicy.js',
   'campusEvent/campusEventFragments.js',
   'campusExplorationModularFragments.js',
+  'itemUse/itemUseModularFragments.js',
   'dinner/dinnerDishFragments.js',
   'hunt/huntFeastFragments.js',
   'eatingContest/eatingContestFragments.js',

@@ -76,7 +76,32 @@ for (const c of COLLABS) {
       priority: 4,
       text: [BOOST_SKELETON],
     },
+    {
+      when: { weekMin: 20 },
+      weight: 5,
+      priority: 5,
+      text: [BOOST_SKELETON],
+    },
+    {
+      when: { weekMin: 14 },
+      weight: 3,
+      priority: 3,
+      text: [BOOST_SKELETON],
+    },
   ]);
+}
+
+registerModuleVariants('fair.boost.Brittany', [
+  {
+    when: { fairBoostTier: ['High'] },
+    weight: 2,
+    text: [
+      'Brittany rides the boost — numbers climb and the crowd treats appetite like sport.',
+    ],
+  },
+]);
+
+for (const c of COLLABS) {
   registerModuleVariants(`fair.photo.${c}`, [
     {
       when: { fairCollab: [c], weekMin: 20 },
