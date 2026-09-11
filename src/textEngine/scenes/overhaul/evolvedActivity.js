@@ -6,6 +6,8 @@ import { registerPool } from '../../engine.js';
 registerPool('evolved.activity.scene', [
   { when: {}, text: [
     '{evolved.activity.setup} {evolved.activity.body}\n\n{evolved.activity.event}',
+    '{evolved.activity.setup}\n\n{evolved.activity.body} {evolved.activity.event}',
+    '{evolved.activity.body}\n\n{evolved.activity.setup} {evolved.activity.event}',
   ]},
 ]);
 
