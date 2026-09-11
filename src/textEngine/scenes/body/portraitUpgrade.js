@@ -10,10 +10,10 @@ registerModuleVariants("body.portrait.pear.s0._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s0._f2", [
-  { when: {}, weight: 5, text: [' Hips still slim, a gap at the thigh, the pear a pencil sketch.', ' A narrow waist over modest hips — the flare is a rumor she has not earned yet.'] },
+  { when: {}, weight: 5, text: [' Hips still slim, a gap at the thigh, the pear a pencil sketch.', ' A narrow waist over modest hips — the flare is a rumor she has not earned yet.', ' She still crosses a room like it costs nothing.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s0._f3", [
-  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.'] },
+  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.', ' Hips still slim, a gap at the thigh, the pear a pencil sketch.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s1._f1", [
   { when: {}, weight: 5, text: ['Her face is still all cheekbone and clean jaw, the future flare of her hips nowhere on it yet.', 'A bright, narrow face — she still looks like someone who can vanish sideways through a crowd.'] },
@@ -22,7 +22,7 @@ registerModuleVariants("body.portrait.pear.s1._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s1._f2", [
-  { when: {}, weight: 5, text: [' A narrow waist over modest hips — the flare is a rumor she has not earned yet.', ' Hips still slim, a gap at the thigh, the pear a pencil sketch.'] },
+  { when: {}, weight: 5, text: [' A narrow waist over modest hips — the flare is a rumor she has not earned yet.', ' Hips still slim, a gap at the thigh, the pear a pencil sketch.', ' She turns on a heel and is already gone.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s2._f1", [
   { when: {}, weight: 5, text: ['A new roundness at the cheek when she smiles — hips are doing the same work below.', 'Her cheeks have taken a first soft deposit; the jaw is still hers, just kinder.'] },
@@ -31,13 +31,13 @@ registerModuleVariants("body.portrait.pear.s2._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s2._f2", [
-  { when: {}, weight: 5, text: [' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' A new sway low on her; the waist is still small enough to notice the contrast.'] },
+  { when: {}, weight: 5, text: [' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' A new sway low on her; the waist is still small enough to notice the contrast.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s2._f3", [
-  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.'] },
+  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.', ' Hips beginning to mean it, thighs kissing at the top when she stands still.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s2._f4", [
-  { when: {}, weight: 5, text: [' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' A new sway low on her; the waist is still small enough to notice the contrast.'] },
+  { when: {}, weight: 5, text: [' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' A new sway low on her; the waist is still small enough to notice the contrast.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s2._f5", [
   { when: {}, weight: 5, text: [' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' She moves with a softness that was not in last semester\'s walk.'] },
@@ -49,13 +49,13 @@ registerModuleVariants("body.portrait.pear.s3._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s3._f2", [
-  { when: {}, weight: 5, text: [' A new sway low on her; the waist is still small enough to notice the contrast.', ' Hips beginning to mean it, thighs kissing at the top when she stands still.'] },
+  { when: {}, weight: 5, text: [' A new sway low on her; the waist is still small enough to notice the contrast.', ' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s3._f3", [
-  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.'] },
+  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.', ' A new sway low on her; the waist is still small enough to notice the contrast.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s3._f4", [
-  { when: {}, weight: 5, text: [' A new sway low on her; the waist is still small enough to notice the contrast.', ' Hips beginning to mean it, thighs kissing at the top when she stands still.'] },
+  { when: {}, weight: 5, text: [' A new sway low on her; the waist is still small enough to notice the contrast.', ' Hips beginning to mean it, thighs kissing at the top when she stands still.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s3._f5", [
   { when: {}, weight: 5, text: [' A new sway low on her; the waist is still small enough to notice the contrast.', ' A new sway stays a beat after she stops.'] },
@@ -70,13 +70,13 @@ registerModuleVariants("body.portrait.pear.s4._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s4._f2", [
-  { when: {}, weight: 5, text: [' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.'] },
+  { when: {}, weight: 5, text: [' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s4._f3", [
-  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.'] },
+  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.', ' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s4._f4", [
-  { when: {}, weight: 5, text: [' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.'] },
+  { when: {}, weight: 5, text: [' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s4._f5", [
   { when: {}, weight: 5, text: [' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' The room is beginning to make space without being asked.'] },
@@ -91,13 +91,13 @@ registerModuleVariants("body.portrait.pear.s5._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s5._f2", [
-  { when: {}, weight: 5, text: [' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.'] },
+  { when: {}, weight: 5, text: [' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s5._f3", [
-  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.'] },
+  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.', ' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s5._f4", [
-  { when: {}, weight: 5, text: [' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.'] },
+  { when: {}, weight: 5, text: [' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' Hips wide enough to announce her, thighs in constant warm contact, belly a soft apron.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s5._f5", [
   { when: {}, weight: 5, text: [' The lower half is the headline — heavy hips, thick thighs, a seat that finds every chair.', ' She arrives with a bounce that outlasts the step.'] },
@@ -112,13 +112,13 @@ registerModuleVariants("body.portrait.pear.s6._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s6._f2", [
-  { when: {}, weight: 5, text: [' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' A lower body that fills the frame before her face does — pear logic at full volume.'] },
+  { when: {}, weight: 5, text: [' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' A lower body that fills the frame before her face does — pear logic at full volume.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s6._f3", [
-  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.'] },
+  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.', ' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s6._f4", [
-  { when: {}, weight: 5, text: [' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' A lower body that fills the frame before her face does — pear logic at full volume.'] },
+  { when: {}, weight: 5, text: [' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' A lower body that fills the frame before her face does — pear logic at full volume.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s6._f5", [
   { when: {}, weight: 5, text: [' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
@@ -133,13 +133,13 @@ registerModuleVariants("body.portrait.pear.s7._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s7._f2", [
-  { when: {}, weight: 5, text: [' A lower body that fills the frame before her face does — pear logic at full volume.', ' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.'] },
+  { when: {}, weight: 5, text: [' A lower body that fills the frame before her face does — pear logic at full volume.', ' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s7._f3", [
-  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.'] },
+  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.', ' A lower body that fills the frame before her face does — pear logic at full volume.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s7._f4", [
-  { when: {}, weight: 5, text: [' A lower body that fills the frame before her face does — pear logic at full volume.', ' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.'] },
+  { when: {}, weight: 5, text: [' A lower body that fills the frame before her face does — pear logic at full volume.', ' Hips that need a second thought at every door, thighs displacing each other, belly along for the ride.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s7._f5", [
   { when: {}, weight: 5, text: [' A lower body that fills the frame before her face does — pear logic at full volume.', ' She leads with the heaviest part of her and lets the rest follow.'] },
@@ -154,13 +154,13 @@ registerModuleVariants("body.portrait.pear.s8._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s8._f2", [
-  { when: {}, weight: 5, text: [' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' The pear has become geography — you walk around her hips the way you walk around a piano.'] },
+  { when: {}, weight: 5, text: [' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' The pear has become geography — you walk around her hips the way you walk around a piano.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s8._f3", [
-  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.'] },
+  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.', ' Hips wider than the door planned for, thighs individually enormous, a lower landscape.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s8._f4", [
-  { when: {}, weight: 5, text: [' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' The pear has become geography — you walk around her hips the way you walk around a piano.'] },
+  { when: {}, weight: 5, text: [' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' The pear has become geography — you walk around her hips the way you walk around a piano.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s8._f5", [
   { when: {}, weight: 5, text: [' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
@@ -175,13 +175,13 @@ registerModuleVariants("body.portrait.pear.s9._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s9._f2", [
-  { when: {}, weight: 5, text: [' The pear has become geography — you walk around her hips the way you walk around a piano.', ' Hips wider than the door planned for, thighs individually enormous, a lower landscape.'] },
+  { when: {}, weight: 5, text: [' The pear has become geography — you walk around her hips the way you walk around a piano.', ' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s9._f3", [
-  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.'] },
+  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.', ' The pear has become geography — you walk around her hips the way you walk around a piano.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s9._f4", [
-  { when: {}, weight: 5, text: [' The pear has become geography — you walk around her hips the way you walk around a piano.', ' Hips wider than the door planned for, thighs individually enormous, a lower landscape.'] },
+  { when: {}, weight: 5, text: [' The pear has become geography — you walk around her hips the way you walk around a piano.', ' Hips wider than the door planned for, thighs individually enormous, a lower landscape.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s9._f5", [
   { when: {}, weight: 5, text: [' The pear has become geography — you walk around her hips the way you walk around a piano.', ' She advances like weather — one ponderous decision at a time.'] },
@@ -193,37 +193,37 @@ registerModuleVariants("body.portrait.pear.s9._f7", [
   { when: {}, weight: 5, text: [' The pear has become geography — you walk around her hips the way you walk around a piano.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s10._f1", [
-  { when: {}, weight: 5, text: ['Small, content features above an immobile harvest of thigh and seat.', 'Her face is a calm island in a sea of hip; the lower body is the weather system.'] },
+  { when: {}, weight: 5, text: ['Peaceful features; the real portrait is the lower half that no longer travels.', 'Her face is a calm island in a sea of hip; the lower body is the weather system.', 'Small, content features above an immobile harvest of thigh and seat.'] },
   { when: { corruption: [0] }, weight: 3, text: ['She still checks whether you noticed, then pretends she was looking at the wall.'] },
   { when: { corruption: [1] }, weight: 3, text: ['She holds still for the looking, no longer arguing with the inventory.'] },
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s10._f2", [
-  { when: {}, weight: 5, text: [' A lower body that fills the room and organizes the furniture around itself.', ' Pear curves merged into immobile mass — hips and thighs as architecture.'] },
+  { when: {}, weight: 5, text: [' A lower body that fills the room and organizes the furniture around itself.', ' Pear curves merged into immobile mass — hips and thighs as architecture.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s10._f3", [
-  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.'] },
+  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.', ' A lower body that fills the room and organizes the furniture around itself.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s10._f4", [
-  { when: {}, weight: 5, text: [' A lower body that fills the room and organizes the furniture around itself.', ' Pear curves merged into immobile mass — hips and thighs as architecture.'] },
+  { when: {}, weight: 5, text: [' A lower body that fills the room and organizes the furniture around itself.', ' Pear curves merged into immobile mass — hips and thighs as architecture.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s10._f5", [
   { when: {}, weight: 5, text: [' A lower body that fills the room and organizes the furniture around itself.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s11._f1", [
-  { when: {}, weight: 5, text: ['Her face is a calm island in a sea of hip; the lower body is the weather system.', 'Small, content features above an immobile harvest of thigh and seat.'] },
+  { when: {}, weight: 5, text: ['Small, content features above an immobile harvest of thigh and seat.', 'Peaceful features; the real portrait is the lower half that no longer travels.', 'Her face is a calm island in a sea of hip; the lower body is the weather system.'] },
   { when: { corruption: [0] }, weight: 3, text: ['A flush climbs when the description gets specific; she does not stop you.'] },
   { when: { corruption: [1] }, weight: 3, text: ['The old protest is gone; what remains is a quiet, accurate awareness.'] },
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s11._f2", [
-  { when: {}, weight: 5, text: [' Pear curves merged into immobile mass — hips and thighs as architecture.', ' A lower body that fills the room and organizes the furniture around itself.'] },
+  { when: {}, weight: 5, text: [' Pear curves merged into immobile mass — hips and thighs as architecture.', ' A lower body that fills the room and organizes the furniture around itself.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s11._f3", [
-  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
+  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.', ' Pear curves merged into immobile mass — hips and thighs as architecture.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s11._f4", [
-  { when: {}, weight: 5, text: [' Pear curves merged into immobile mass — hips and thighs as architecture.', ' A lower body that fills the room and organizes the furniture around itself.'] },
+  { when: {}, weight: 5, text: [' Pear curves merged into immobile mass — hips and thighs as architecture.', ' A lower body that fills the room and organizes the furniture around itself.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.pear.s11._f5", [
   { when: {}, weight: 5, text: [' Pear curves merged into immobile mass — hips and thighs as architecture.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
@@ -235,10 +235,10 @@ registerModuleVariants("body.portrait.apple.s0._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s0._f2", [
-  { when: {}, weight: 5, text: [' A trim torso with the faintest forward thought, nothing you would call a gut.', ' The middle is flat, shirt honest, belly not yet a character in the scene.'] },
+  { when: {}, weight: 5, text: [' A trim torso with the faintest forward thought, nothing you would call a gut.', ' The middle is flat, shirt honest, belly not yet a character in the scene.', ' She still crosses a room like it costs nothing.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s0._f3", [
-  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.'] },
+  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.', ' A trim torso with the faintest forward thought, nothing you would call a gut.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s1._f1", [
   { when: {}, weight: 5, text: ['A slim oval face, watchful, the middle of her still a rumor under the shirt.', 'Her face is neat and unburdened, nothing in the cheeks to hint at the belly that will lead later.'] },
@@ -247,10 +247,10 @@ registerModuleVariants("body.portrait.apple.s1._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s1._f2", [
-  { when: {}, weight: 5, text: [' The middle is flat, shirt honest, belly not yet a character in the scene.', ' A trim torso with the faintest forward thought, nothing you would call a gut.'] },
+  { when: {}, weight: 5, text: [' The middle is flat, shirt honest, belly not yet a character in the scene.', ' A trim torso with the faintest forward thought, nothing you would call a gut.', ' She turns on a heel and is already gone.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s1._f3", [
-  { when: {}, weight: 5, text: [' She turns on a heel and is already gone.'] },
+  { when: {}, weight: 5, text: [' She turns on a heel and is already gone.', ' The middle is flat, shirt honest, belly not yet a character in the scene.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s2._f1", [
   { when: {}, weight: 5, text: ['Her face has a faint new fullness; she keeps touching her middle as if the two are related.', 'Cheeks warming, jaw softening — the belly is writing the first draft of her new face.'] },
@@ -259,13 +259,13 @@ registerModuleVariants("body.portrait.apple.s2._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s2._f2", [
-  { when: {}, weight: 5, text: [' The belly has started its career — small, forward, impossible to tuck away.', ' A gentle dome under the shirt, waistband already filing a complaint.'] },
+  { when: {}, weight: 5, text: [' The belly has started its career — small, forward, impossible to tuck away.', ' A gentle dome under the shirt, waistband already filing a complaint.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s2._f3", [
-  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.'] },
+  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.', ' The belly has started its career — small, forward, impossible to tuck away.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s2._f4", [
-  { when: {}, weight: 5, text: [' The belly has started its career — small, forward, impossible to tuck away.', ' A gentle dome under the shirt, waistband already filing a complaint.'] },
+  { when: {}, weight: 5, text: [' The belly has started its career — small, forward, impossible to tuck away.', ' A gentle dome under the shirt, waistband already filing a complaint.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s2._f5", [
   { when: {}, weight: 5, text: [' The belly has started its career — small, forward, impossible to tuck away.', ' She moves with a softness that was not in last semester\'s walk.'] },
@@ -277,13 +277,13 @@ registerModuleVariants("body.portrait.apple.s3._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s3._f2", [
-  { when: {}, weight: 5, text: [' A gentle dome under the shirt, waistband already filing a complaint.', ' The belly has started its career — small, forward, impossible to tuck away.'] },
+  { when: {}, weight: 5, text: [' A gentle dome under the shirt, waistband already filing a complaint.', ' The belly has started its career — small, forward, impossible to tuck away.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s3._f3", [
-  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.'] },
+  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.', ' A gentle dome under the shirt, waistband already filing a complaint.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s3._f4", [
-  { when: {}, weight: 5, text: [' A gentle dome under the shirt, waistband already filing a complaint.', ' The belly has started its career — small, forward, impossible to tuck away.'] },
+  { when: {}, weight: 5, text: [' A gentle dome under the shirt, waistband already filing a complaint.', ' The belly has started its career — small, forward, impossible to tuck away.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s3._f5", [
   { when: {}, weight: 5, text: [' A gentle dome under the shirt, waistband already filing a complaint.', ' A new sway stays a beat after she stops.'] },
@@ -295,13 +295,13 @@ registerModuleVariants("body.portrait.apple.s4._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s4._f2", [
-  { when: {}, weight: 5, text: [' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.', ' A real belly now, round and forward, shirts climbing it like a hill.'] },
+  { when: {}, weight: 5, text: [' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.', ' A real belly now, round and forward, shirts climbing it like a hill.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s4._f3", [
-  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.'] },
+  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.', ' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s4._f4", [
-  { when: {}, weight: 5, text: [' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.', ' A real belly now, round and forward, shirts climbing it like a hill.'] },
+  { when: {}, weight: 5, text: [' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.', ' A real belly now, round and forward, shirts climbing it like a hill.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s5._f1", [
   { when: {}, weight: 5, text: ['Cheeks plump, chin doubling when she glances at her middle — which she does often.', 'Her face has a comfortable roundness; the belly below has stopped asking permission.'] },
@@ -310,13 +310,13 @@ registerModuleVariants("body.portrait.apple.s5._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s5._f2", [
-  { when: {}, weight: 5, text: [' A real belly now, round and forward, shirts climbing it like a hill.', ' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.'] },
+  { when: {}, weight: 5, text: [' A real belly now, round and forward, shirts climbing it like a hill.', ' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s5._f3", [
-  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.'] },
+  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.', ' A real belly now, round and forward, shirts climbing it like a hill.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s5._f4", [
-  { when: {}, weight: 5, text: [' A real belly now, round and forward, shirts climbing it like a hill.', ' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.'] },
+  { when: {}, weight: 5, text: [' A real belly now, round and forward, shirts climbing it like a hill.', ' The gut has a schedule; it arrives first, rests on her lap, and stays for the meeting.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s5._f5", [
   { when: {}, weight: 5, text: [' A real belly now, round and forward, shirts climbing it like a hill.', ' She arrives with a bounce that outlasts the step.'] },
@@ -328,13 +328,13 @@ registerModuleVariants("body.portrait.apple.s6._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s6._f2", [
-  { when: {}, weight: 5, text: [' The belly is the silhouette; everything else is annotation.', ' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.'] },
+  { when: {}, weight: 5, text: [' The belly is the silhouette; everything else is annotation.', ' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s6._f3", [
-  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.'] },
+  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.', ' The belly is the silhouette; everything else is annotation.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s6._f4", [
-  { when: {}, weight: 5, text: [' The belly is the silhouette; everything else is annotation.', ' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.'] },
+  { when: {}, weight: 5, text: [' The belly is the silhouette; everything else is annotation.', ' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s6._f5", [
   { when: {}, weight: 5, text: [' The belly is the silhouette; everything else is annotation.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
@@ -346,13 +346,13 @@ registerModuleVariants("body.portrait.apple.s7._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s7._f2", [
-  { when: {}, weight: 5, text: [' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' The belly is the silhouette; everything else is annotation.'] },
+  { when: {}, weight: 5, text: [' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' The belly is the silhouette; everything else is annotation.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s7._f3", [
-  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.'] },
+  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.', ' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s7._f4", [
-  { when: {}, weight: 5, text: [' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' The belly is the silhouette; everything else is annotation.'] },
+  { when: {}, weight: 5, text: [' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' The belly is the silhouette; everything else is annotation.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s7._f5", [
   { when: {}, weight: 5, text: [' A heavy gut past the hips, swaying on its own time, the rest of her arranged around it.', ' She leads with the heaviest part of her and lets the rest follow.'] },
@@ -367,13 +367,13 @@ registerModuleVariants("body.portrait.apple.s8._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s8._f2", [
-  { when: {}, weight: 5, text: [' Forward mass that needs its own furniture; the rest of her keeps it company.', ' A belly like a tide, couch-filling, the primary fact any room has to solve.'] },
+  { when: {}, weight: 5, text: [' Forward mass that needs its own furniture; the rest of her keeps it company.', ' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s8._f3", [
-  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.'] },
+  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.', ' Forward mass that needs its own furniture; the rest of her keeps it company.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s8._f4", [
-  { when: {}, weight: 5, text: [' Forward mass that needs its own furniture; the rest of her keeps it company.', ' A belly like a tide, couch-filling, the primary fact any room has to solve.'] },
+  { when: {}, weight: 5, text: [' Forward mass that needs its own furniture; the rest of her keeps it company.', ' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s9._f1", [
   { when: {}, weight: 5, text: ['Round, pleased features; the gut is the portrait, the face a signature in the corner.', 'Her face is a warm afterthought above a belly that holds court in the middle of the room.'] },
@@ -382,13 +382,13 @@ registerModuleVariants("body.portrait.apple.s9._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s9._f2", [
-  { when: {}, weight: 5, text: [' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' Forward mass that needs its own furniture; the rest of her keeps it company.'] },
+  { when: {}, weight: 5, text: [' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' Forward mass that needs its own furniture; the rest of her keeps it company.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s9._f3", [
-  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.'] },
+  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.', ' A belly like a tide, couch-filling, the primary fact any room has to solve.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s9._f4", [
-  { when: {}, weight: 5, text: [' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' Forward mass that needs its own furniture; the rest of her keeps it company.'] },
+  { when: {}, weight: 5, text: [' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' Forward mass that needs its own furniture; the rest of her keeps it company.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s9._f5", [
   { when: {}, weight: 5, text: [' A belly like a tide, couch-filling, the primary fact any room has to solve.', ' She advances like weather — one ponderous decision at a time.'] },
@@ -403,13 +403,13 @@ registerModuleVariants("body.portrait.apple.s10._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s10._f2", [
-  { when: {}, weight: 5, text: [' The gut is the climate; she is the weather system that stayed.', ' A belly that is most of the room, forward mass gone architectural.'] },
+  { when: {}, weight: 5, text: [' The gut is the climate; she is the weather system that stayed.', ' A belly that is most of the room, forward mass gone architectural.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s10._f3", [
-  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.'] },
+  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.', ' The gut is the climate; she is the weather system that stayed.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s10._f4", [
-  { when: {}, weight: 5, text: [' The gut is the climate; she is the weather system that stayed.', ' A belly that is most of the room, forward mass gone architectural.'] },
+  { when: {}, weight: 5, text: [' The gut is the climate; she is the weather system that stayed.', ' A belly that is most of the room, forward mass gone architectural.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s11._f1", [
   { when: {}, weight: 5, text: ['A serene oval over forward mass that no longer bothers with travel.', 'Her face is peaceful above a belly that is the room\'s warm geography.'] },
@@ -418,13 +418,13 @@ registerModuleVariants("body.portrait.apple.s11._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s11._f2", [
-  { when: {}, weight: 5, text: [' A belly that is most of the room, forward mass gone architectural.', ' The gut is the climate; she is the weather system that stayed.'] },
+  { when: {}, weight: 5, text: [' A belly that is most of the room, forward mass gone architectural.', ' The gut is the climate; she is the weather system that stayed.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s11._f3", [
-  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
+  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.', ' A belly that is most of the room, forward mass gone architectural.'] },
 ]);
 registerModuleVariants("body.portrait.apple.s11._f4", [
-  { when: {}, weight: 5, text: [' A belly that is most of the room, forward mass gone architectural.', ' The gut is the climate; she is the weather system that stayed.'] },
+  { when: {}, weight: 5, text: [' A belly that is most of the room, forward mass gone architectural.', ' The gut is the climate; she is the weather system that stayed.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s0._f1", [
   { when: {}, weight: 5, text: ['Her face is fine-boned, the hourglass only a rumor in the way her hair falls.', 'Clean jaw, light cheeks — the mold of curves is set, the clay still thin.'] },
@@ -433,7 +433,7 @@ registerModuleVariants("body.portrait.hourglass.s0._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s0._f2", [
-  { when: {}, weight: 5, text: [' A light hourglass, more intention than inventory.', ' Bust and hip are polite, waist neat — the mold is empty and waiting.'] },
+  { when: {}, weight: 5, text: [' A light hourglass, more intention than inventory.', ' Bust and hip are polite, waist neat — the mold is empty and waiting.', ' She still crosses a room like it costs nothing.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s1._f1", [
   { when: {}, weight: 5, text: ['Clean jaw, light cheeks — the mold of curves is set, the clay still thin.', 'Her face is fine-boned, the hourglass only a rumor in the way her hair falls.'] },
@@ -442,7 +442,7 @@ registerModuleVariants("body.portrait.hourglass.s1._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s1._f2", [
-  { when: {}, weight: 5, text: [' Bust and hip are polite, waist neat — the mold is empty and waiting.', ' A light hourglass, more intention than inventory.'] },
+  { when: {}, weight: 5, text: [' Bust and hip are polite, waist neat — the mold is empty and waiting.', ' A light hourglass, more intention than inventory.', ' She turns on a heel and is already gone.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s2._f1", [
   { when: {}, weight: 5, text: ['Her face has filled just enough to match the new swell at bust and hip.', 'A softer jaw, a warmer cheek — the hourglass is pouring into the face as well.'] },
@@ -451,13 +451,13 @@ registerModuleVariants("body.portrait.hourglass.s2._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s2._f2", [
-  { when: {}, weight: 5, text: [' The hourglass is pouring; both ends of her are taking the extra.', ' Bust and hip swelling on the same schedule, waist going quietly soft between them.'] },
+  { when: {}, weight: 5, text: [' The hourglass is pouring; both ends of her are taking the extra.', ' Bust and hip swelling on the same schedule, waist going quietly soft between them.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s2._f3", [
-  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.'] },
+  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.', ' The hourglass is pouring; both ends of her are taking the extra.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s2._f4", [
-  { when: {}, weight: 5, text: [' The hourglass is pouring; both ends of her are taking the extra.', ' Bust and hip swelling on the same schedule, waist going quietly soft between them.'] },
+  { when: {}, weight: 5, text: [' The hourglass is pouring; both ends of her are taking the extra.', ' Bust and hip swelling on the same schedule, waist going quietly soft between them.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s3._f1", [
   { when: {}, weight: 5, text: ['A softer jaw, a warmer cheek — the hourglass is pouring into the face as well.', 'Her face has filled just enough to match the new swell at bust and hip.'] },
@@ -466,13 +466,13 @@ registerModuleVariants("body.portrait.hourglass.s3._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s3._f2", [
-  { when: {}, weight: 5, text: [' Bust and hip swelling on the same schedule, waist going quietly soft between them.', ' The hourglass is pouring; both ends of her are taking the extra.'] },
+  { when: {}, weight: 5, text: [' Bust and hip swelling on the same schedule, waist going quietly soft between them.', ' The hourglass is pouring; both ends of her are taking the extra.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s3._f3", [
-  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.'] },
+  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.', ' Bust and hip swelling on the same schedule, waist going quietly soft between them.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s3._f4", [
-  { when: {}, weight: 5, text: [' Bust and hip swelling on the same schedule, waist going quietly soft between them.', ' The hourglass is pouring; both ends of her are taking the extra.'] },
+  { when: {}, weight: 5, text: [' Bust and hip swelling on the same schedule, waist going quietly soft between them.', ' The hourglass is pouring; both ends of her are taking the extra.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s4._f1", [
   { when: {}, weight: 5, text: ['Her face is plush and pleased; bust and hip have made the same argument, louder.', 'A full, warm face above an hourglass that has outgrown every old dress.'] },
@@ -481,13 +481,13 @@ registerModuleVariants("body.portrait.hourglass.s4._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s4._f2", [
-  { when: {}, weight: 5, text: [' An hourglass poured too full; waist a sweet memory between two arguments.', ' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.'] },
+  { when: {}, weight: 5, text: [' An hourglass poured too full; waist a sweet memory between two arguments.', ' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s4._f3", [
-  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.'] },
+  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.', ' An hourglass poured too full; waist a sweet memory between two arguments.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s4._f4", [
-  { when: {}, weight: 5, text: [' An hourglass poured too full; waist a sweet memory between two arguments.', ' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.'] },
+  { when: {}, weight: 5, text: [' An hourglass poured too full; waist a sweet memory between two arguments.', ' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s4._f5", [
   { when: {}, weight: 5, text: [' An hourglass poured too full; waist a sweet memory between two arguments.', ' The room is beginning to make space without being asked.'] },
@@ -499,13 +499,13 @@ registerModuleVariants("body.portrait.hourglass.s5._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s5._f2", [
-  { when: {}, weight: 5, text: [' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' An hourglass poured too full; waist a sweet memory between two arguments.'] },
+  { when: {}, weight: 5, text: [' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' An hourglass poured too full; waist a sweet memory between two arguments.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s5._f3", [
-  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.'] },
+  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.', ' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s5._f4", [
-  { when: {}, weight: 5, text: [' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' An hourglass poured too full; waist a sweet memory between two arguments.'] },
+  { when: {}, weight: 5, text: [' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' An hourglass poured too full; waist a sweet memory between two arguments.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s5._f5", [
   { when: {}, weight: 5, text: [' Dramatic curves gone heavy — bust resting on a softening middle, hips taking the doorway.', ' She arrives with a bounce that outlasts the step.'] },
@@ -517,13 +517,13 @@ registerModuleVariants("body.portrait.hourglass.s6._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s6._f2", [
-  { when: {}, weight: 5, text: [' Curves stacked past the original mold — an hourglass that forgot the glass.', ' Bust and hip each demanding their own share of the doorway, waist a rumor between them.'] },
+  { when: {}, weight: 5, text: [' Curves stacked past the original mold — an hourglass that forgot the glass.', ' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s6._f3", [
-  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.'] },
+  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.', ' Curves stacked past the original mold — an hourglass that forgot the glass.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s6._f4", [
-  { when: {}, weight: 5, text: [' Curves stacked past the original mold — an hourglass that forgot the glass.', ' Bust and hip each demanding their own share of the doorway, waist a rumor between them.'] },
+  { when: {}, weight: 5, text: [' Curves stacked past the original mold — an hourglass that forgot the glass.', ' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s6._f5", [
   { when: {}, weight: 5, text: [' Curves stacked past the original mold — an hourglass that forgot the glass.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
@@ -535,13 +535,13 @@ registerModuleVariants("body.portrait.hourglass.s7._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s7._f2", [
-  { when: {}, weight: 5, text: [' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' Curves stacked past the original mold — an hourglass that forgot the glass.'] },
+  { when: {}, weight: 5, text: [' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' Curves stacked past the original mold — an hourglass that forgot the glass.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s7._f3", [
-  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.'] },
+  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.', ' Bust and hip each demanding their own share of the doorway, waist a rumor between them.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s7._f4", [
-  { when: {}, weight: 5, text: [' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' Curves stacked past the original mold — an hourglass that forgot the glass.'] },
+  { when: {}, weight: 5, text: [' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' Curves stacked past the original mold — an hourglass that forgot the glass.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s7._f5", [
   { when: {}, weight: 5, text: [' Bust and hip each demanding their own share of the doorway, waist a rumor between them.', ' She leads with the heaviest part of her and lets the rest follow.'] },
@@ -553,13 +553,13 @@ registerModuleVariants("body.portrait.hourglass.s8._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s8._f2", [
-  { when: {}, weight: 5, text: [' An hourglass poured out to fill the allowance of the room.', ' Curves on curves, all of them enormous, waist a folklore between monuments.'] },
+  { when: {}, weight: 5, text: [' An hourglass poured out to fill the allowance of the room.', ' Curves on curves, all of them enormous, waist a folklore between monuments.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s8._f3", [
-  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.'] },
+  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.', ' An hourglass poured out to fill the allowance of the room.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s8._f4", [
-  { when: {}, weight: 5, text: [' An hourglass poured out to fill the allowance of the room.', ' Curves on curves, all of them enormous, waist a folklore between monuments.'] },
+  { when: {}, weight: 5, text: [' An hourglass poured out to fill the allowance of the room.', ' Curves on curves, all of them enormous, waist a folklore between monuments.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s8._f5", [
   { when: {}, weight: 5, text: [' An hourglass poured out to fill the allowance of the room.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
@@ -574,13 +574,13 @@ registerModuleVariants("body.portrait.hourglass.s9._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s9._f2", [
-  { when: {}, weight: 5, text: [' Curves on curves, all of them enormous, waist a folklore between monuments.', ' An hourglass poured out to fill the allowance of the room.'] },
+  { when: {}, weight: 5, text: [' Curves on curves, all of them enormous, waist a folklore between monuments.', ' An hourglass poured out to fill the allowance of the room.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s9._f3", [
-  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.'] },
+  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.', ' Curves on curves, all of them enormous, waist a folklore between monuments.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s9._f4", [
-  { when: {}, weight: 5, text: [' Curves on curves, all of them enormous, waist a folklore between monuments.', ' An hourglass poured out to fill the allowance of the room.'] },
+  { when: {}, weight: 5, text: [' Curves on curves, all of them enormous, waist a folklore between monuments.', ' An hourglass poured out to fill the allowance of the room.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s9._f5", [
   { when: {}, weight: 5, text: [' Curves on curves, all of them enormous, waist a folklore between monuments.', ' She advances like weather — one ponderous decision at a time.'] },
@@ -592,13 +592,13 @@ registerModuleVariants("body.portrait.hourglass.s10._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s10._f2", [
-  { when: {}, weight: 5, text: [' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.', ' The hourglass remembered only in outline, curves merged into warm permanence.'] },
+  { when: {}, weight: 5, text: [' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.', ' The hourglass remembered only in outline, curves merged into warm permanence.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s10._f3", [
-  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.'] },
+  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.', ' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s10._f4", [
-  { when: {}, weight: 5, text: [' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.', ' The hourglass remembered only in outline, curves merged into warm permanence.'] },
+  { when: {}, weight: 5, text: [' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.', ' The hourglass remembered only in outline, curves merged into warm permanence.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s11._f1", [
   { when: {}, weight: 5, text: ['Unhurried eyes in a plush face; the hourglass beneath has forgotten what a waist was.', 'Her face is still hers — soft, present — above curves that have become the room.'] },
@@ -607,13 +607,13 @@ registerModuleVariants("body.portrait.hourglass.s11._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s11._f2", [
-  { when: {}, weight: 5, text: [' The hourglass remembered only in outline, curves merged into warm permanence.', ' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.'] },
+  { when: {}, weight: 5, text: [' The hourglass remembered only in outline, curves merged into warm permanence.', ' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s11._f3", [
-  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
+  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.', ' The hourglass remembered only in outline, curves merged into warm permanence.'] },
 ]);
 registerModuleVariants("body.portrait.hourglass.s11._f4", [
-  { when: {}, weight: 5, text: [' The hourglass remembered only in outline, curves merged into warm permanence.', ' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.'] },
+  { when: {}, weight: 5, text: [' The hourglass remembered only in outline, curves merged into warm permanence.', ' Bust, belly, and hip a continuous landscape, barely mobile, deeply content.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s0._f1", [
   { when: {}, weight: 5, text: ['A taut, trained face — no softness at the jaw, eyes already measuring the next lap.', 'Her face is sun-touched and spare, the look of someone who still outruns breakfast.'] },
@@ -622,13 +622,13 @@ registerModuleVariants("body.portrait.athletic.s0._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s0._f2", [
-  { when: {}, weight: 5, text: [' Muscle still visible at the shoulder and thigh, no padding to hide the work.', ' A compact trained frame — the body of someone who still wins arguments with stairs.'] },
+  { when: {}, weight: 5, text: [' Muscle still visible at the shoulder and thigh, no padding to hide the work.', ' A compact trained frame — the body of someone who still wins arguments with stairs.', ' She still crosses a room like it costs nothing.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s0._f3", [
-  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.'] },
+  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.', ' Muscle still visible at the shoulder and thigh, no padding to hide the work.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s0._f4", [
-  { when: {}, weight: 5, text: [' Muscle still visible at the shoulder and thigh, no padding to hide the work.', ' A compact trained frame — the body of someone who still wins arguments with stairs.'] },
+  { when: {}, weight: 5, text: [' Muscle still visible at the shoulder and thigh, no padding to hide the work.', ' A compact trained frame — the body of someone who still wins arguments with stairs.', ' She still crosses a room like it costs nothing.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s1._f1", [
   { when: {}, weight: 5, text: ['Her face is sun-touched and spare, the look of someone who still outruns breakfast.', 'A taut, trained face — no softness at the jaw, eyes already measuring the next lap.'] },
@@ -637,7 +637,7 @@ registerModuleVariants("body.portrait.athletic.s1._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s1._f2", [
-  { when: {}, weight: 5, text: [' A compact trained frame — the body of someone who still wins arguments with stairs.', ' Muscle still visible at the shoulder and thigh, no padding to hide the work.'] },
+  { when: {}, weight: 5, text: [' A compact trained frame — the body of someone who still wins arguments with stairs.', ' Muscle still visible at the shoulder and thigh, no padding to hide the work.', ' She turns on a heel and is already gone.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s2._f1", [
   { when: {}, weight: 5, text: ['The athlete\'s jaw is still there; a pillow of new cheek has moved in beside it.', 'Training still shows in her face, with a new plushness she has not trained off.'] },
@@ -646,13 +646,13 @@ registerModuleVariants("body.portrait.athletic.s2._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s2._f2", [
-  { when: {}, weight: 5, text: [' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' Trained lines going plush at the edges — the body keeping the trophies and adding padding.'] },
+  { when: {}, weight: 5, text: [' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s2._f3", [
-  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.'] },
+  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.', ' Muscle still there, wearing a new coat of ease at the thigh and seat.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s2._f4", [
-  { when: {}, weight: 5, text: [' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' Trained lines going plush at the edges — the body keeping the trophies and adding padding.'] },
+  { when: {}, weight: 5, text: [' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s2._f5", [
   { when: {}, weight: 5, text: [' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' She moves with a softness that was not in last semester\'s walk.'] },
@@ -664,13 +664,13 @@ registerModuleVariants("body.portrait.athletic.s3._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s3._f2", [
-  { when: {}, weight: 5, text: [' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' Muscle still there, wearing a new coat of ease at the thigh and seat.'] },
+  { when: {}, weight: 5, text: [' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s3._f3", [
-  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.'] },
+  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.', ' Trained lines going plush at the edges — the body keeping the trophies and adding padding.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s3._f4", [
-  { when: {}, weight: 5, text: [' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' Muscle still there, wearing a new coat of ease at the thigh and seat.'] },
+  { when: {}, weight: 5, text: [' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' Muscle still there, wearing a new coat of ease at the thigh and seat.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s3._f5", [
   { when: {}, weight: 5, text: [' Trained lines going plush at the edges — the body keeping the trophies and adding padding.', ' A new sway stays a beat after she stops.'] },
@@ -682,13 +682,13 @@ registerModuleVariants("body.portrait.athletic.s4._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s4._f2", [
-  { when: {}, weight: 5, text: [' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' The athlete\'s frame is the hanger; the new weight is the coat.'] },
+  { when: {}, weight: 5, text: [' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' The athlete\'s frame is the hanger; the new weight is the coat.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s4._f3", [
-  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.'] },
+  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.', ' Power under a comfortable thickness, shoulders still broad, everything else plush.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s4._f4", [
-  { when: {}, weight: 5, text: [' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' The athlete\'s frame is the hanger; the new weight is the coat.'] },
+  { when: {}, weight: 5, text: [' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' The athlete\'s frame is the hanger; the new weight is the coat.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s4._f5", [
   { when: {}, weight: 5, text: [' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' The room is beginning to make space without being asked.'] },
@@ -706,13 +706,13 @@ registerModuleVariants("body.portrait.athletic.s5._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s5._f2", [
-  { when: {}, weight: 5, text: [' The athlete\'s frame is the hanger; the new weight is the coat.', ' Power under a comfortable thickness, shoulders still broad, everything else plush.'] },
+  { when: {}, weight: 5, text: [' The athlete\'s frame is the hanger; the new weight is the coat.', ' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s5._f3", [
-  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.'] },
+  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.', ' The athlete\'s frame is the hanger; the new weight is the coat.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s5._f4", [
-  { when: {}, weight: 5, text: [' The athlete\'s frame is the hanger; the new weight is the coat.', ' Power under a comfortable thickness, shoulders still broad, everything else plush.'] },
+  { when: {}, weight: 5, text: [' The athlete\'s frame is the hanger; the new weight is the coat.', ' Power under a comfortable thickness, shoulders still broad, everything else plush.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s5._f5", [
   { when: {}, weight: 5, text: [' The athlete\'s frame is the hanger; the new weight is the coat.', ' She arrives with a bounce that outlasts the step.'] },
@@ -727,13 +727,13 @@ registerModuleVariants("body.portrait.athletic.s6._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s6._f2", [
-  { when: {}, weight: 5, text: [' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.'] },
+  { when: {}, weight: 5, text: [' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s6._f3", [
-  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.'] },
+  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.', ' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s6._f4", [
-  { when: {}, weight: 5, text: [' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.'] },
+  { when: {}, weight: 5, text: [' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s6._f5", [
   { when: {}, weight: 5, text: [' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
@@ -745,13 +745,13 @@ registerModuleVariants("body.portrait.athletic.s7._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s7._f2", [
-  { when: {}, weight: 5, text: [' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.', ' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.'] },
+  { when: {}, weight: 5, text: [' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.', ' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s7._f3", [
-  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.'] },
+  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.', ' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s7._f4", [
-  { when: {}, weight: 5, text: [' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.', ' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.'] },
+  { when: {}, weight: 5, text: [' Broad shoulders, buried muscle, a body that still knows how to stand and no longer needs to run.', ' An athlete\'s posture carrying a vast soft argument, strength entombed in ease.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s8._f1", [
   { when: {}, weight: 5, text: ['A vast soft face with a trained calm still in it — the body has won every event since.', 'The old competitor looks out from a face buried in comfortable immensity.'] },
@@ -760,13 +760,13 @@ registerModuleVariants("body.portrait.athletic.s8._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s8._f2", [
-  { when: {}, weight: 5, text: [' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' A vast trained frame barely mobile — power as a memory the shoulders keep.'] },
+  { when: {}, weight: 5, text: [' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s8._f3", [
-  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.'] },
+  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.', ' Athletic breadth buried in doorway-filling bulk, the old posture still trying.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s8._f4", [
-  { when: {}, weight: 5, text: [' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' A vast trained frame barely mobile — power as a memory the shoulders keep.'] },
+  { when: {}, weight: 5, text: [' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s8._f5", [
   { when: {}, weight: 5, text: [' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
@@ -778,13 +778,13 @@ registerModuleVariants("body.portrait.athletic.s9._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s9._f2", [
-  { when: {}, weight: 5, text: [' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' Athletic breadth buried in doorway-filling bulk, the old posture still trying.'] },
+  { when: {}, weight: 5, text: [' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s9._f3", [
-  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.'] },
+  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.', ' A vast trained frame barely mobile — power as a memory the shoulders keep.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s9._f4", [
-  { when: {}, weight: 5, text: [' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' Athletic breadth buried in doorway-filling bulk, the old posture still trying.'] },
+  { when: {}, weight: 5, text: [' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' Athletic breadth buried in doorway-filling bulk, the old posture still trying.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s9._f5", [
   { when: {}, weight: 5, text: [' A vast trained frame barely mobile — power as a memory the shoulders keep.', ' She advances like weather — one ponderous decision at a time.'] },
@@ -796,13 +796,13 @@ registerModuleVariants("body.portrait.athletic.s10._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s10._f2", [
-  { when: {}, weight: 5, text: [' Athletic breadth become permanent mass, power remembered in stillness.', ' Strength entombed in plush immobility — she is the finish line now.'] },
+  { when: {}, weight: 5, text: [' Athletic breadth become permanent mass, power remembered in stillness.', ' Strength entombed in plush immobility — she is the finish line now.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s10._f3", [
-  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.'] },
+  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.', ' Athletic breadth become permanent mass, power remembered in stillness.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s10._f4", [
-  { when: {}, weight: 5, text: [' Athletic breadth become permanent mass, power remembered in stillness.', ' Strength entombed in plush immobility — she is the finish line now.'] },
+  { when: {}, weight: 5, text: [' Athletic breadth become permanent mass, power remembered in stillness.', ' Strength entombed in plush immobility — she is the finish line now.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s10._f5", [
   { when: {}, weight: 5, text: [' Athletic breadth become permanent mass, power remembered in stillness.', ' Going somewhere has been replaced by being the somewhere.'] },
@@ -814,10 +814,10 @@ registerModuleVariants("body.portrait.athletic.s11._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s11._f2", [
-  { when: {}, weight: 5, text: [' Strength entombed in plush immobility — she is the finish line now.', ' Athletic breadth become permanent mass, power remembered in stillness.'] },
+  { when: {}, weight: 5, text: [' Strength entombed in plush immobility — she is the finish line now.', ' Athletic breadth become permanent mass, power remembered in stillness.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.athletic.s11._f3", [
-  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
+  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.', ' Strength entombed in plush immobility — she is the finish line now.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s0._f1", [
   { when: {}, weight: 5, text: ['A slender, unadorned face — the kind that still fits every old photograph.', 'Her face is even and light, no single feature claiming more space than the rest.'] },
@@ -826,10 +826,10 @@ registerModuleVariants("body.portrait.straight.s0._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s0._f2", [
-  { when: {}, weight: 5, text: [' Even and slight from collar to knee, no curve taking the lead.', ' A clean vertical line; clothes hang because there is nothing for them to catch on.'] },
+  { when: {}, weight: 5, text: [' Even and slight from collar to knee, no curve taking the lead.', ' A clean vertical line; clothes hang because there is nothing for them to catch on.', ' She still crosses a room like it costs nothing.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s0._f3", [
-  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.'] },
+  { when: {}, weight: 5, text: [' She still crosses a room like it costs nothing.', ' Even and slight from collar to knee, no curve taking the lead.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s1._f1", [
   { when: {}, weight: 5, text: ['Her face is even and light, no single feature claiming more space than the rest.', 'A slender, unadorned face — the kind that still fits every old photograph.'] },
@@ -838,7 +838,7 @@ registerModuleVariants("body.portrait.straight.s1._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s1._f2", [
-  { when: {}, weight: 5, text: [' A clean vertical line; clothes hang because there is nothing for them to catch on.', ' Even and slight from collar to knee, no curve taking the lead.'] },
+  { when: {}, weight: 5, text: [' A clean vertical line; clothes hang because there is nothing for them to catch on.', ' Even and slight from collar to knee, no curve taking the lead.', ' She turns on a heel and is already gone.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s2._f1", [
   { when: {}, weight: 5, text: ['Cheeks and jaw taking the same quiet padding as her waist and sleeve.', 'Her face is rounding the way the rest of her is — evenly, without a starring feature.'] },
@@ -847,13 +847,13 @@ registerModuleVariants("body.portrait.straight.s2._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s2._f2", [
-  { when: {}, weight: 5, text: [' Even padding at sleeve and waist, no zone showing off.', ' She is thicker all over by a finger\'s width, democratic as weather.'] },
+  { when: {}, weight: 5, text: [' Even padding at sleeve and waist, no zone showing off.', ' She is thicker all over by a finger\'s width, democratic as weather.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s2._f3", [
-  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.'] },
+  { when: {}, weight: 5, text: [' She moves with a softness that was not in last semester\'s walk.', ' Even padding at sleeve and waist, no zone showing off.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s2._f4", [
-  { when: {}, weight: 5, text: [' Even padding at sleeve and waist, no zone showing off.', ' She is thicker all over by a finger\'s width, democratic as weather.'] },
+  { when: {}, weight: 5, text: [' Even padding at sleeve and waist, no zone showing off.', ' She is thicker all over by a finger\'s width, democratic as weather.', ' She moves with a softness that was not in last semester\'s walk.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s3._f1", [
   { when: {}, weight: 5, text: ['Her face is rounding the way the rest of her is — evenly, without a starring feature.', 'Cheeks and jaw taking the same quiet padding as her waist and sleeve.'] },
@@ -862,13 +862,13 @@ registerModuleVariants("body.portrait.straight.s3._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s3._f2", [
-  { when: {}, weight: 5, text: [' She is thicker all over by a finger\'s width, democratic as weather.', ' Even padding at sleeve and waist, no zone showing off.'] },
+  { when: {}, weight: 5, text: [' She is thicker all over by a finger\'s width, democratic as weather.', ' Even padding at sleeve and waist, no zone showing off.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s3._f3", [
-  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.'] },
+  { when: {}, weight: 5, text: [' A new sway stays a beat after she stops.', ' She is thicker all over by a finger\'s width, democratic as weather.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s3._f4", [
-  { when: {}, weight: 5, text: [' She is thicker all over by a finger\'s width, democratic as weather.', ' Even padding at sleeve and waist, no zone showing off.'] },
+  { when: {}, weight: 5, text: [' She is thicker all over by a finger\'s width, democratic as weather.', ' Even padding at sleeve and waist, no zone showing off.', ' A new sway stays a beat after she stops.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s4._f1", [
   { when: {}, weight: 5, text: ['A round, democratic face — cheek, jaw, and neck all taking their fair share.', 'Her face is evenly plump, no feature leading, the way the rest of her thickened.'] },
@@ -877,13 +877,13 @@ registerModuleVariants("body.portrait.straight.s4._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s4._f2", [
-  { when: {}, weight: 5, text: [' Even plumpness from bust to thigh, no favorite child among the pounds.', ' A columnar softness — waist, hip, and arm all thickened on the same budget.'] },
+  { when: {}, weight: 5, text: [' Even plumpness from bust to thigh, no favorite child among the pounds.', ' A columnar softness — waist, hip, and arm all thickened on the same budget.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s4._f3", [
-  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.'] },
+  { when: {}, weight: 5, text: [' The room is beginning to make space without being asked.', ' Even plumpness from bust to thigh, no favorite child among the pounds.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s4._f4", [
-  { when: {}, weight: 5, text: [' Even plumpness from bust to thigh, no favorite child among the pounds.', ' A columnar softness — waist, hip, and arm all thickened on the same budget.'] },
+  { when: {}, weight: 5, text: [' Even plumpness from bust to thigh, no favorite child among the pounds.', ' A columnar softness — waist, hip, and arm all thickened on the same budget.', ' The room is beginning to make space without being asked.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s4._f5", [
   { when: {}, weight: 5, text: [' Even plumpness from bust to thigh, no favorite child among the pounds.', ' The room is beginning to make space without being asked.'] },
@@ -895,13 +895,13 @@ registerModuleVariants("body.portrait.straight.s5._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s5._f2", [
-  { when: {}, weight: 5, text: [' A columnar softness — waist, hip, and arm all thickened on the same budget.', ' Even plumpness from bust to thigh, no favorite child among the pounds.'] },
+  { when: {}, weight: 5, text: [' A columnar softness — waist, hip, and arm all thickened on the same budget.', ' Even plumpness from bust to thigh, no favorite child among the pounds.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s5._f3", [
-  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.'] },
+  { when: {}, weight: 5, text: [' She arrives with a bounce that outlasts the step.', ' A columnar softness — waist, hip, and arm all thickened on the same budget.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s5._f4", [
-  { when: {}, weight: 5, text: [' A columnar softness — waist, hip, and arm all thickened on the same budget.', ' Even plumpness from bust to thigh, no favorite child among the pounds.'] },
+  { when: {}, weight: 5, text: [' A columnar softness — waist, hip, and arm all thickened on the same budget.', ' Even plumpness from bust to thigh, no favorite child among the pounds.', ' She arrives with a bounce that outlasts the step.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s6._f1", [
   { when: {}, weight: 5, text: ['A wide, soft face — no sharp leftover from the girl who used to fit every chair.', 'Her face is uniformly abundant, a match for the even mass from shoulder to knee.'] },
@@ -910,13 +910,13 @@ registerModuleVariants("body.portrait.straight.s6._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s6._f2", [
-  { when: {}, weight: 5, text: [' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' Even mass, no climax — she is simply, thoroughly, everywhere thicker.'] },
+  { when: {}, weight: 5, text: [' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' Even mass, no climax — she is simply, thoroughly, everywhere thicker.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s6._f3", [
-  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.'] },
+  { when: {}, weight: 5, text: [' She waddles with pleasant purpose, momentum doing half the work.', ' Uniform heaviness from shoulder to knee, a single continuous expanse of her.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s6._f4", [
-  { when: {}, weight: 5, text: [' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' Even mass, no climax — she is simply, thoroughly, everywhere thicker.'] },
+  { when: {}, weight: 5, text: [' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' Even mass, no climax — she is simply, thoroughly, everywhere thicker.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s6._f5", [
   { when: {}, weight: 5, text: [' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' She waddles with pleasant purpose, momentum doing half the work.'] },
@@ -928,13 +928,13 @@ registerModuleVariants("body.portrait.straight.s7._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s7._f2", [
-  { when: {}, weight: 5, text: [' Even mass, no climax — she is simply, thoroughly, everywhere thicker.', ' Uniform heaviness from shoulder to knee, a single continuous expanse of her.'] },
+  { when: {}, weight: 5, text: [' Even mass, no climax — she is simply, thoroughly, everywhere thicker.', ' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s7._f3", [
-  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.'] },
+  { when: {}, weight: 5, text: [' She leads with the heaviest part of her and lets the rest follow.', ' Even mass, no climax — she is simply, thoroughly, everywhere thicker.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s7._f4", [
-  { when: {}, weight: 5, text: [' Even mass, no climax — she is simply, thoroughly, everywhere thicker.', ' Uniform heaviness from shoulder to knee, a single continuous expanse of her.'] },
+  { when: {}, weight: 5, text: [' Even mass, no climax — she is simply, thoroughly, everywhere thicker.', ' Uniform heaviness from shoulder to knee, a single continuous expanse of her.', ' She leads with the heaviest part of her and lets the rest follow.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s8._f1", [
   { when: {}, weight: 5, text: ['Wide cheeks, thick neck, no leftover angles; she is round in the democratic way.', 'Her face is as evenly huge as the rest of her — a single continuous softness.'] },
@@ -943,13 +943,13 @@ registerModuleVariants("body.portrait.straight.s8._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s8._f2", [
-  { when: {}, weight: 5, text: [' Round and vast in every measurement, a body the eye has to travel.', ' Uniform enormity, no rest for the gaze — she is the whole wall.'] },
+  { when: {}, weight: 5, text: [' Round and vast in every measurement, a body the eye has to travel.', ' Uniform enormity, no rest for the gaze — she is the whole wall.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s8._f3", [
-  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.'] },
+  { when: {}, weight: 5, text: [' Crossing the room is a project with a beginning, a middle, and a settle.', ' Round and vast in every measurement, a body the eye has to travel.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s8._f4", [
-  { when: {}, weight: 5, text: [' Round and vast in every measurement, a body the eye has to travel.', ' Uniform enormity, no rest for the gaze — she is the whole wall.'] },
+  { when: {}, weight: 5, text: [' Round and vast in every measurement, a body the eye has to travel.', ' Uniform enormity, no rest for the gaze — she is the whole wall.', ' Crossing the room is a project with a beginning, a middle, and a settle.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s9._f1", [
   { when: {}, weight: 5, text: ['Her face is as evenly huge as the rest of her — a single continuous softness.', 'Wide cheeks, thick neck, no leftover angles; she is round in the democratic way.'] },
@@ -958,13 +958,13 @@ registerModuleVariants("body.portrait.straight.s9._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s9._f2", [
-  { when: {}, weight: 5, text: [' Uniform enormity, no rest for the gaze — she is the whole wall.', ' Round and vast in every measurement, a body the eye has to travel.'] },
+  { when: {}, weight: 5, text: [' Uniform enormity, no rest for the gaze — she is the whole wall.', ' Round and vast in every measurement, a body the eye has to travel.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s9._f3", [
-  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.'] },
+  { when: {}, weight: 5, text: [' She advances like weather — one ponderous decision at a time.', ' Uniform enormity, no rest for the gaze — she is the whole wall.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s9._f4", [
-  { when: {}, weight: 5, text: [' Uniform enormity, no rest for the gaze — she is the whole wall.', ' Round and vast in every measurement, a body the eye has to travel.'] },
+  { when: {}, weight: 5, text: [' Uniform enormity, no rest for the gaze — she is the whole wall.', ' Round and vast in every measurement, a body the eye has to travel.', ' She advances like weather — one ponderous decision at a time.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s10._f1", [
   { when: {}, weight: 5, text: ['Soft features on a body that has become one temperature, one texture, one room.', 'Her face is even, vast, and still — a match for the continuous expanse of her.'] },
@@ -973,13 +973,13 @@ registerModuleVariants("body.portrait.straight.s10._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['She lets the looking happen like a woman who ordered this portrait.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s10._f2", [
-  { when: {}, weight: 5, text: [' A single continuous expanse of her, even mass become immobile warmth.', ' Columnar abundance past ordinary scale, one temperature from collar to knee.'] },
+  { when: {}, weight: 5, text: [' A single continuous expanse of her, even mass become immobile warmth.', ' Columnar abundance past ordinary scale, one temperature from collar to knee.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s10._f3", [
-  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.'] },
+  { when: {}, weight: 5, text: [' Going somewhere has been replaced by being the somewhere.', ' A single continuous expanse of her, even mass become immobile warmth.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s10._f4", [
-  { when: {}, weight: 5, text: [' A single continuous expanse of her, even mass become immobile warmth.', ' Columnar abundance past ordinary scale, one temperature from collar to knee.'] },
+  { when: {}, weight: 5, text: [' A single continuous expanse of her, even mass become immobile warmth.', ' Columnar abundance past ordinary scale, one temperature from collar to knee.', ' Going somewhere has been replaced by being the somewhere.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s11._f1", [
   { when: {}, weight: 5, text: ['Her face is even, vast, and still — a match for the continuous expanse of her.', 'Soft features on a body that has become one temperature, one texture, one room.'] },
@@ -988,11 +988,11 @@ registerModuleVariants("body.portrait.straight.s11._f1", [
   { when: { corruption: [2] }, weight: 3, text: ['Appetite and pride share the same expression; she does not tidy either.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s11._f2", [
-  { when: {}, weight: 5, text: [' Columnar abundance past ordinary scale, one temperature from collar to knee.', ' A single continuous expanse of her, even mass become immobile warmth.'] },
+  { when: {}, weight: 5, text: [' Columnar abundance past ordinary scale, one temperature from collar to knee.', ' A single continuous expanse of her, even mass become immobile warmth.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s11._f3", [
-  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
+  { when: {}, weight: 5, text: [' Motion is a tide, not a stride — she exists, and the room adjusts.', ' Columnar abundance past ordinary scale, one temperature from collar to knee.'] },
 ]);
 registerModuleVariants("body.portrait.straight.s11._f4", [
-  { when: {}, weight: 5, text: [' Columnar abundance past ordinary scale, one temperature from collar to knee.', ' A single continuous expanse of her, even mass become immobile warmth.'] },
+  { when: {}, weight: 5, text: [' Columnar abundance past ordinary scale, one temperature from collar to knee.', ' A single continuous expanse of her, even mass become immobile warmth.', ' Motion is a tide, not a stride — she exists, and the room adjusts.'] },
 ]);

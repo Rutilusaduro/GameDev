@@ -143,6 +143,8 @@ import './polishDepthPass40.js';
 import './upgradeCorpusPass.js';
 import './upgradeCorpusPass2.js';
 import './upgradeCorpusPass3.js';
+import './upgradeCorpusPass4.js';
+import './researchJournal/upgrade.js';
 import './v2/index.js';
 import './salonGallerySceneDepth.js';
 import './monolithFragmentDepth.js';

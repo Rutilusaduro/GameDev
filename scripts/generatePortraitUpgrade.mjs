@@ -226,6 +226,7 @@ const FACE = {
     pear: [
       'Her face is a calm island in a sea of hip; the lower body is the weather system.',
       'Small, content features above an immobile harvest of thigh and seat.',
+      'Peaceful features; the real portrait is the lower half that no longer travels.',
     ],
     apple: [
       'Her face is peaceful above a belly that is the room\'s warm geography.',
@@ -615,11 +616,17 @@ for (const { type, s, f } of keys) {
   else core = pickLine(BODY, type, band, salt + 11);
   if (!core) continue;
   const texts = [`${prefix}${core}`];
-  // second unique line from the other index
-  const core2 = f === 1
-    ? pickLine(FACE, type, band, salt + 1)
-    : (f % 2 ? moveLine(band, salt + 3) : pickLine(BODY, type, band, salt + 5));
-  if (core2 && core2 !== core) texts.push(`${prefix}${core2}`);
+  const extras = f === 1
+    ? [pickLine(FACE, type, band, salt + 1), pickLine(FACE, type, band, salt + 2)]
+    : [
+      pickLine(BODY, type, band, salt + 5),
+      moveLine(band, salt + 3),
+      pickLine(BODY, type, band, salt + 7),
+    ];
+  for (const extra of extras) {
+    if (extra && extra !== core && !texts.includes(`${prefix}${extra}`)) texts.push(`${prefix}${extra}`);
+    if (texts.length >= 3) break;
+  }
 
   lines.push(`registerModuleVariants("${key}", [`);
   lines.push(`  { when: {}, weight: 5, text: [${texts.map((t) => `'${esc(t)}'`).join(', ')}] },`);
