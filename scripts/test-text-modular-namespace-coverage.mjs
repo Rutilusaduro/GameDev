@@ -34,6 +34,7 @@ const requiredFragments = [
   'hallBlueprint/blueprintModularFragments.js',
   'hallBlueprint/hallAmbianceModularFragments.js',
   'competitiveGainer/cgSceneFragments.js',
+  'competitiveGainer/cgMeasurementModularFragments.js',
   'cultivator/cultivatorFragments.js',
   'dinner/dinnerDishFragments.js',
   'campusEvent/campusEventFragments.js',

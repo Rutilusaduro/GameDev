@@ -51,13 +51,3 @@ registerModuleVariants('wifeLessons.talk.Wanda.s1.opt1', [
     ],
   },
 ]);
-
-registerModuleVariants('cg.raReply.taunt', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Your needle lands — Priya answers with calories, not courtesy.',
-    ],
-  },
-]);

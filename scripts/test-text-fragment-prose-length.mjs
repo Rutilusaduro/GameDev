@@ -22,6 +22,7 @@ const POOLS = [
   'session.payoff.raeWrap',
   'session.payoff.scaleEcho',
   'cg.scene.dataObsession',
+  'cg.measurement.ritualBeat',
   'fair.training.coachBeat',
   'fair.training.collabVoice',
   'fair.boost.midwayPush',

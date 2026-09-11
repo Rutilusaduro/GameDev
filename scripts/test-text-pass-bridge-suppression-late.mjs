@@ -120,7 +120,7 @@ let feastBribeHit = false;
 for (let s = 0; s < 8; s += 1) {
   const line = renderHearingChoiceResult('emergency', 'feast_bribe', destiny, week, 1)?.trim() || '';
   assert.ok(!/^Hearing catered — board members eat before they vote, and appetite wins the agenda\.$/.test(line), 'pass-112 feast_bribe bridge alone @ w24');
-  if (/cateredVote|boardAppetite|Appetite interrupts|feed the hearing|board members chew/i.test(line)) feastBribeHit = true;
+  if (/cateredVote|boardAppetite|Appetite interrupts|feed the hearing|board members chew|Trays arrive mid-sentence|Hearing catered on purpose|room slows around chewing|hunger rewriting the agenda/i.test(line)) feastBribeHit = true;
 }
 assert.ok(feastBribeHit, 'emergency feast_bribe modular @ w24');
 
@@ -161,5 +161,76 @@ for (let s = 0; s < 12; s += 1) {
   if (/Hall Ambiance|modularFrame|linger longer|group chat|Invitations multiply/i.test(line)) socialHeatHit = true;
 }
 assert.ok(socialHeatHit, 'hall.ambiance.pulse.socialHeat modular @ w24');
+
+let fairC2Hit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{fair.day.afterparty.choice2}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72100 + s,
+    globals: { featureId: 'state_fair_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Crowd presses close — fair grease and pride share the same sticky napkin\.$/.test(line), 'pass-95 afterparty.choice2 bridge alone @ w24');
+  if (/afterpartyBeat|carnivalAir|mjPride|funnel/i.test(line)) fairC2Hit = true;
+}
+assert.ok(fairC2Hit, 'fair.day.afterparty.choice2 modular @ w24');
+
+let monroeHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{homeroom.conference.Mrs_Monroe.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72110 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Mrs\. Monroe arrives early, claims the good chair — conference is snack diplomacy\.$/.test(line), 'pass-95 Monroe bridge alone @ w24');
+  if (/floorTone|butter and suspicion|recipe cards|Hall Ambiance/i.test(line)) monroeHit = true;
+}
+assert.ok(monroeHit, 'Mrs_Monroe intro modular @ w24');
+
+const priya = { id: 2, name: 'Priya', archetype: 'competitive_gainer', lbs: 260 };
+let measureHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{cg.measurement.session}', buildTextContext({
+    subject: priya,
+    week,
+    seed: 72120 + s,
+    globals: {
+      featureId: 'competitive_gainer',
+      targetName: 'Brittany',
+      priyaName: 'Priya',
+      cgDriveTier: 'Driven',
+      targetStageBucket: 'heavy',
+    },
+  }))?.trim() || '';
+  assert.ok(!/^Tape whispers around Brittany — Priya records every inch like scripture\.$/.test(line), 'pass-95 cg.measurement bridge alone @ w24');
+  if (/ritualBeat|dataObsession|corkboard|competitionHeat|categories called/i.test(line)) measureHit = true;
+}
+assert.ok(measureHit, 'cg.measurement.session modular @ w24');
+
+let intimacyHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{hall.ambiance.pulse.intimacy}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72130 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Soft questions in the nook — want learns vocabulary without shame\.$/.test(line), 'pass-97 intimacy bridge alone @ w24');
+  if (/Hall Ambiance|modularFrame|Doors stay cracked|nook wing/i.test(line)) intimacyHit = true;
+}
+assert.ok(intimacyHit, 'hall.ambiance.pulse.intimacy modular @ w24');
+
+let tauntHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{cg.raReply.taunt}', buildTextContext({
+    subject: priya,
+    week,
+    seed: 72140 + s,
+    globals: { featureId: 'competitive_gainer' },
+  }))?.trim() || '';
+  assert.ok(!/^Your needle lands — Priya answers with calories, not courtesy\.$/.test(line), 'pass-96 taunt bridge alone @ w24');
+  if (/wellnessFrame|boardNudge|corkboard|thread wants drama/i.test(line)) tauntHit = true;
+}
+assert.ok(tauntHit, 'cg.raReply.taunt modular @ w24');
 
 console.log('test-text-pass-bridge-suppression-late: ok');

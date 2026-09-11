@@ -125,6 +125,7 @@ import './competitiveGainer/index.js';
 import './competitiveGainer/cgChatFragments.js';
 import './competitiveGainer/cgSceneFragments.js';
 import './competitiveGainer/cgRaReplyFragments.js';
+import './competitiveGainer/cgMeasurementModularFragments.js';
 import './raPivotProseDepthPass69.js';
 import './raPivotProseDepthPass70.js';
 import './raPivotProseDepthPass71.js';
