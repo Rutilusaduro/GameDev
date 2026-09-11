@@ -91,4 +91,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'oppositionHearings', file: 'oppositionHearings.js' },
   { id: 'dossierReplay', file: 'dossierReplay.js' },
   { id: 'weeklyEventText', file: 'weeklyEventText.js' },
+  { id: 'oppositionEndgame', file: 'oppositionEndgame.js' },
+  { id: 'memory', file: 'memory.js' },
 ];

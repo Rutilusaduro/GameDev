@@ -3,6 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { getStage } from './stages.js';
+import { depthScarcityRelief } from './mechanicsDepthLayer.js';
+
+function scarcityPressureDrain(base = 1) {
+  return Math.max(1, depthScarcityRelief(base));
+}
 
 export function checkOppositionEndgame(opposition, students) {
   const members = opposition?.aib?.members || [];
@@ -34,11 +39,11 @@ export function tickScarcityBanishment(opposition, students) {
   if (!ascended.length) return opposition;
 
   const avgStage = ascended.reduce((a, s) => a + getStage(s.lbs).id, 0) / ascended.length;
-  if (avgStage >= 5) pressure = Math.max(0, pressure - 2);
-  else if (avgStage >= 3) pressure = Math.max(0, pressure - 1);
+  if (avgStage >= 5) pressure = Math.max(0, pressure - scarcityPressureDrain(2));
+  else if (avgStage >= 3) pressure = Math.max(0, pressure - scarcityPressureDrain(1));
 
   const refedCount = ascended.filter((s) => getStage(s.lbs).id >= 6).length;
-  if (refedCount >= 3) pressure = Math.max(0, pressure - 3);
+  if (refedCount >= 3) pressure = Math.max(0, pressure - scarcityPressureDrain(3));
 
   return {
     ...opposition,
