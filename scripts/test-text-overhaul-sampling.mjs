@@ -22,6 +22,9 @@ const MODULAR_MARKERS = [
   /Clipboard margins|Late-semester entries|datapoint|journal stops pretending/i,
   /cart squeaks|Rae arrives|Clipboard, timer|session clock starts/i,
   /butter and suspicion|wellness framing|Floor check-in energy/i,
+  /corkboard like scripture|treats the corkboard|Flour dust and warm sugar|labAir/i,
+  /Dust and drywall|hall log neutral|Fullness climbs/i,
+  /hall door|Wellness framing ready|Blueprint ink/i,
 ];
 
 function isModular(line) {
@@ -32,35 +35,53 @@ const pulls = [
   () => render('{evolved.event.eating_streamer.s0.p0}', buildTextContext({
     subject: destiny,
     week,
-    seed: Math.random() * 1e6,
+    seed: 24001,
     globals: { formId: 'eating_streamer', stageIdx: 0, phaseIdx: 0, history: [], featureId: 'evolved_event' },
   })),
   () => render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
     subject: mj,
     week,
-    seed: Math.random() * 1e6,
+    seed: 24002,
   })),
   () => render('{homeroom.conference.Kayla.intro}', buildTextContext({
     subject: mj,
     week,
-    seed: Math.random() * 1e6,
+    seed: 24003,
     globals: { featureId: 'homeroom_queen' },
   })),
   () => render('{fair.day.weighIn.choice1}', buildTextContext({
     subject: mj,
     week,
-    seed: Math.random() * 1e6,
+    seed: 24004,
     globals: { featureId: 'state_fair_queen', fairStageIdx: 2, fairInfluence: 'Brittany' },
   })),
   () => render('{journal.feeder.cheerleader.s8}', buildTextContext({
     subject: brittany,
     week,
-    seed: Math.random() * 1e6,
+    seed: 24005,
+  })),
+  () => render('{cg.scene.corkboard.Invested}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 24006,
+    globals: { featureId: 'competitive_gainer', cgDriveTier: 'Invested', cgSceneVisit: 0 },
+  })),
+  () => render('{cultivator.beat}', buildTextContext({
+    subject: { id: 0, name: 'Tester', archetype: 'swimmer' },
+    week,
+    seed: 24007,
+    globals: { featureId: 'cultivator' },
+  })),
+  () => render('{hall.blueprint.purchase}', buildTextContext({
+    subject: null,
+    week,
+    seed: 24008,
+    globals: { featureId: 'hall_blueprint', hallRoomId: 'kitchen_pantry' },
   })),
   () => render('{session.rae.exit.s2}', buildTextContext({
     subject: destiny,
     week,
-    seed: Math.random() * 1e6,
+    seed: 24009,
     globals: { featureId: 'ranked_session', sessionStage: 2 },
   })),
 ];

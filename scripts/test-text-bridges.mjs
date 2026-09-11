@@ -31,6 +31,8 @@ const required = [
   'competitiveGainer/cgChatPools.js',
   'competitiveGainer/cgChatFragments.js',
   'competitiveGainer/cgSceneFragments.js',
+  'competitiveGainer/cgRaReplyFragments.js',
+  'session/fullnessFragments.js',
   'cultivator/cultivatorFragments.js',
   'competitiveGainer/cgScenePools.js',
   'competitiveGainer/raReplyPools.js',

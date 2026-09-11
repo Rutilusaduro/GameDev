@@ -62,6 +62,10 @@ const SLOT_KEYS = [
   'cg.scene.competitionHeat',
   'cultivator.scene.labAir',
   'cultivator.scene.testerYield',
+  'cg.raReply.wellnessFrame',
+  'cg.raReply.boardNudge',
+  'session.fullness.pressure',
+  'session.fullness.permission',
 ];
 
 for (const key of SLOT_KEYS) {

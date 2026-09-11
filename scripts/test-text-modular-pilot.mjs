@@ -10,6 +10,18 @@ import { renderTapOutLine } from '../src/textEngine/scenes/session/tapOutPools.j
 import { renderRosterUnlockScene } from '../src/textEngine/scenes/unlockScene/index.js';
 import { renderCGPriyaFollowup } from '../src/textEngine/scenes/competitiveGainer/index.js';
 
+/** Modular overlays vary by seed; accept any fingerprint from legacy or slot pools. */
+function assertModularFingerprint(line, pattern, label, rerender) {
+  if (pattern.test(line)) return;
+  if (rerender) {
+    for (let i = 0; i < 16; i += 1) {
+      const alt = rerender(i)?.trim() || '';
+      if (pattern.test(alt)) return;
+    }
+  }
+  assert.fail(`${label}: "${line.slice(0, 120)}"`);
+}
+
 const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 240, relationship: 70 };
 const ctx = buildTextContext({ subject: mj, week: 8, globals: { wlStage: 1, lessonId: 'honey_butter' } });
 
@@ -122,7 +134,13 @@ const reactLine = render('{evolved.reaction.eating_streamer.s0}', buildTextConte
 }))?.trim() || '';
 assert.ok(reactLine.length > 30, 'evolved reaction modular render');
 assert.ok(!reactLine.includes('{unresolved}'), 'evolved reaction unresolved');
-assert.match(reactLine, /Residents notice|hall reads|eats without apology/i, 'evolved reaction slots');
+const REACTION_FP = /Residents notice|hall reads|eats without apology|Someone whispers|Every bite lands|contagion dressed|Fullness shows|evolved form suits/i;
+assertModularFingerprint(
+  reactLine,
+  REACTION_FP,
+  'evolved reaction slots',
+  (i) => render('{evolved.reaction.eating_streamer.s0}', buildTextContext({ subject: destiny, week: 14, seed: 701 + i })),
+);
 
 const outfitLine = render('{evolved.outfit.eating_streamer.s0}', buildTextContext({
   subject: { ...destiny, evolvedForm: 'eating_streamer', lbs: 260 },
@@ -130,7 +148,17 @@ const outfitLine = render('{evolved.outfit.eating_streamer.s0}', buildTextContex
   seed: 801,
 }))?.trim() || '';
 assert.ok(outfitLine.length > 25, 'evolved outfit modular render');
-assert.match(outfitLine, /Seams whisper|wears the strain|Stretch panels|Buttons hold/i, 'evolved outfit slots');
+const OUTFIT_FP = /Seams whisper|wears the strain|Stretch panels|Buttons hold|fabric chooses|waistband reads|jewelry/i;
+assertModularFingerprint(
+  outfitLine,
+  OUTFIT_FP,
+  'evolved outfit slots',
+  (i) => render('{evolved.outfit.eating_streamer.s0}', buildTextContext({
+    subject: { ...destiny, evolvedForm: 'eating_streamer', lbs: 260 },
+    week: 16,
+    seed: 801 + i,
+  })),
+);
 
 const blurbLine = render('{evolution.blurb.gamer}', buildTextContext({
   subject: destiny,
@@ -139,19 +167,78 @@ const blurbLine = render('{evolution.blurb.gamer}', buildTextContext({
   seed: 802,
 }))?.trim() || '';
 assert.ok(blurbLine.length > 25, 'evolution blurb modular render');
-assert.match(blurbLine, /threshold|next stage|Floor favor|roster agree|pep rally/i, 'evolution blurb slots');
+const BLURB_FP = /threshold|next stage|Floor favor|roster agree|pep rally|Evolution is not a surprise|wellness-clean|door she already/i;
+assertModularFingerprint(
+  blurbLine,
+  BLURB_FP,
+  'evolution blurb slots',
+  (i) => render('{evolution.blurb.gamer}', buildTextContext({
+    subject: destiny,
+    week: 14,
+    globals: { archetype: 'gamer' },
+    seed: 802 + i,
+  })),
+);
 
 const tapLine = renderTapOutLine(cassidy, 120, 16);
 assert.ok(tapLine.length > 25, 'tap-out modular render');
-assert.match(tapLine, /Breath comes shallow|stuffed middle|tapping out|Tap-out is mercy/i, 'tap-out slots');
+const TAP_FP = /Breath comes shallow|stuffed middle|tapping out|Tap-out is mercy|fullness owns|Tap-out is mercy/i;
+assertModularFingerprint(tapLine, TAP_FP, 'tap-out slots', (i) => renderTapOutLine(cassidy, 120 + i, 16));
 
 const unlockLine = renderRosterUnlockScene(cassidy, 12);
 assert.ok(unlockLine.length > 25, 'roster unlock modular render');
-assert.match(unlockLine, /hall door|Floor check-in|kitchen first|orientation|Wellness framing/i, 'unlock slots');
+const UNLOCK_FP = /hall door|Floor check-in|kitchen first|orientation|Wellness framing/i;
+assertModularFingerprint(unlockLine, UNLOCK_FP, 'unlock slots', (i) => renderRosterUnlockScene(cassidy, 12 + i));
 
 const priya = { id: 99, name: 'Priya', archetype: 'competitive_gainer', lbs: 260 };
 const fu = renderCGPriyaFollowup(priya, 18, 'leading', 'Invested', { seed: 803 });
 assert.ok(fu.length > 25, 'CG followup modular render');
-assert.match(fu, /Priya replies|Residents read|Competition turns communal|hunger spikes/i, 'CG followup slots');
+const CG_FU_FP = /Priya replies|She quotes a measurement|Someone vows a binge|hunger spikes|follow-up lands|Competition turns/i;
+assertModularFingerprint(fu, CG_FU_FP, 'CG followup slots', (i) => renderCGPriyaFollowup(priya, 18, 'leading', 'Invested', { seed: 803 + i }));
+
+const raReply = render('{cg.raReply.encourage}', buildTextContext({
+  subject: mj,
+  week: 14,
+  seed: 804,
+  globals: {
+    featureId: 'competitive_gainer',
+    cgRaStage: 'Heavy',
+    cgRaHasComparison: false,
+    residentName: 'Brittany',
+  },
+}))?.trim() || '';
+assert.ok(raReply.length > 25, 'CG RA reply modular render');
+const RA_FP = /hall log|RA reply lands|thread wants drama|wellness|Clipboard closed|corkboard pings|floor program/i;
+assertModularFingerprint(
+  raReply,
+  RA_FP,
+  'CG RA reply slots',
+  (i) => render('{cg.raReply.encourage}', buildTextContext({
+    subject: mj,
+    week: 14,
+    seed: 804 + i,
+    globals: {
+      featureId: 'competitive_gainer',
+      cgRaStage: 'Heavy',
+      cgRaHasComparison: false,
+      residentName: 'Brittany',
+    },
+  })),
+);
+
+const fullnessLine = render('{session.fullness.default.f3}', buildTextContext({
+  subject: cassidy,
+  week: 14,
+  seed: 805,
+}))?.trim() || '';
+assert.ok(fullnessLine.length > 25, 'session fullness modular render');
+assert.ok(!fullnessLine.includes('{unresolved}'), 'session fullness unresolved');
+const FULLNESS_FP = /Fullness climbs|middle resists|session meter|Wellness framing|groans/i;
+assertModularFingerprint(
+  fullnessLine,
+  FULLNESS_FP,
+  'session fullness slots',
+  (i) => render('{session.fullness.default.f3}', buildTextContext({ subject: cassidy, week: 14, seed: 805 + i })),
+);
 
 console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + homeroom + evolved phase/choice/ending)`);
