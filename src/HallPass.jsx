@@ -146,7 +146,7 @@ import {
   renderFairDayAfterpartyResult,
 } from './textEngine/scenes/fairTraining/index.js';
 import { renderEvolvedEventProse, renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
-import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene, renderCgReaction } from './textEngine/scenes/evolved/cgBingeBeats.js';
+import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene, renderCgReaction, renderCgChatPost, renderCgChatFollowup } from './textEngine/scenes/evolved/cgBingeBeats.js';
 import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -1611,7 +1611,7 @@ export default function HallPass(){
         const lbsGain=rnd(lo,hi);
         const preLbs=result.lbs;
         const applied=depthGainLbs(result,lbsGain,week,{});
-        result=processStudentGain(result,applied,0);
+        result=bumpOriginChain(processStudentGain(result,applied,0));
         const growthEv=buildGrowthEvent(result,{
           cause:{ type:'feature', featureId:'compound', locale:'office' },
           preLbs,
@@ -3123,7 +3123,7 @@ export default function HallPass(){
       let ns=spent.student;
       const p=abilityParams;
       if(ability.hook==='feedEvent'){
-        ns=processStudentGain(ns,p.lbsGain?depthGainLbs(ns,p.lbsGain,week,{}):0,p.rel||0);
+        ns=bumpOriginChain(processStudentGain(ns,p.lbsGain?depthGainLbs(ns,p.lbsGain,week,{}):0,p.rel||0));
         if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
       }else if(ability.hook==='appetiteMod'){
         if(p.hungerDelta) ns=adjustHunger(ns,p.hungerDelta);
@@ -3551,7 +3551,8 @@ export default function HallPass(){
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
     const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
-    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
+    const postBeat=renderCgChatPost(priya,currentWeek,tier.label);
+    msgs.push({text:`[Priya] ${postBeat||postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
     // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
     const candidates=visible
@@ -3580,7 +3581,7 @@ export default function HallPass(){
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
-    const followup=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
+    const followup=renderCgChatFollowup(priya,currentWeek,tier.label,threatDetected)||CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
     msgs.push({text:`[Priya] ${followup}`,isRa:false,wk:currentWeek});
     return msgs;
   };
@@ -4565,7 +4566,7 @@ export default function HallPass(){
     setStudents(prev=>prev.map(st=>{
       if(st.id!==s.id) return st;
       let next=st;
-      if(finalGain>0) next=processStudentGain(next,depthGainLbs(s,finalGain,week,{}),finalRel);
+      if(finalGain>0) next=bumpOriginChain(processStudentGain(next,depthGainLbs(s,finalGain,week,{}),finalRel));
       else if(finalRel) next={...next,relationship:Math.min(100,(next.relationship??0)+finalRel)};
       if(eff.capacity) next={...next,stomachCapacity:(next.stomachCapacity||GAIN_CONFIG.baseCapacity)+eff.capacity};
       next=markImmobilityArrived(next);

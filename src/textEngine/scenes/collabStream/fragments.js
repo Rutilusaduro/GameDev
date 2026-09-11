@@ -3,6 +3,13 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('collab.reveal.open', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'You announce {subject.name}\'s weight. Galley leftover still in her. The number is a second sitting.',
+    'The scale goes live. Kitchen heat under the outfit. Chat gets both sittings.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw her after hours. Daylight stream uses the same appetite with a lens.',
+  ] },
   { when: {}, text: [
     'You announce {subject.name}\'s weight on camera — clearly, into the mic.',
     'The number goes live: {subject.name}, {subject.lbs} pounds, no filter.',
@@ -63,6 +70,10 @@ registerPool('collab.reveal.partner.close', [
 ]);
 
 registerPool('collab.zoom.open', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Zoom in. Leftover heat plus partner heat. The frame has to take both.',
+    'Close-up on a middle that already ate. The stream is the logged second course.',
+  ] },
   { when: {}, text: [
     'You zoom in — the camera tightening on both women at the table.',
     'The frame closes on bellies, faces, hands reaching for food.',

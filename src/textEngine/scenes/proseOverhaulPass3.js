@@ -121,6 +121,13 @@ oncePool('wife.linger', [
 ]);
 
 oncePool('homeroom.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover plus Tuesday butter. Daisy writes both sittings in one line.',
+    'Last night\'s tray still in the lounge. The hall kitchen is a sequel.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. Tuesday uses the same open door.',
+  ] },
   { when: {}, text: [
     'The hall lounge smells like butter after they go. Daisy writes one line.',
     'Tuesday keeps happening in their clothes. The clothes are already losing.',
@@ -129,6 +136,10 @@ oncePool('homeroom.afterglow', [
 ]);
 
 oncePool('homeroom.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Daisy leaves one tray where hands will find it. The galley already started them.',
+    'Foil from last night, then this. Forks wait like they knew.',
+  ] },
   { when: {}, text: [
     'Daisy wipes the table and leaves one tray where hands will find it.',
     'The lounge keeps the heat of whoever just ate. Forks wait for next Tuesday.',

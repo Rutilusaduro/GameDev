@@ -478,3 +478,150 @@ export function renderCgReaction(priya, target, week, driveLabel, rel, part) {
   });
   return render('{cg.react.scene}', ctx)?.trim() || '';
 }
+
+registerDimension('cgThreat', (ctx) => ctx.globals?.cgThreat ?? 'leading');
+
+registerPool('cg.chat.post.setup', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 4, text: [
+    'Priya posts from a desk that still smells like galley foil. The board wants last night too.',
+    'Kitchen heat under the blazer. She types the numbers like a second sitting.',
+  ] },
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Leftover still in her when she opens the thread. The log starts before breakfast.',
+    'She types with a palm on last night\'s tray. The chat will count both.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw her after hours. Daylight chat uses the same appetite with better lighting.',
+  ] },
+  { when: { cgDrive: 'Ruthless', stageMin: 8 }, weight: 4, text: [
+    'She fills the post like she fills the chair. Columns, pins, a lead she will not share.',
+  ] },
+  { when: { stageMax: 4 }, weight: 3, text: [
+    'Neat post. Modest numbers. The planner pretends this is still study.',
+  ] },
+  { when: {}, text: [
+    'Priya posts the board like a ranking she intends to keep.',
+    'Pins, inches, a caption that is also a dare.',
+    'The thread opens. She feeds it numbers first.',
+  ] },
+]);
+
+registerPool('cg.chat.post.line', [
+  { when: { leftoverFed: true, cgDrive: 'Ruthless' }, weight: 4, text: [
+    '"Leftovers count," she types. "So does this week\'s margin."',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '"Logged both sittings," Priya writes. "The board will show it."',
+  ] },
+  { when: { cgDrive: 'Frenzied' }, weight: 3, text: [
+    '"Need the number higher. Mine." She hits send before the fork is down.',
+  ] },
+  { when: { cgDrive: 'Driven' }, weight: 3, text: [
+    '"Gap check," she types. "I intend to keep it."',
+  ] },
+  { when: { cgDrive: 'Invested' }, weight: 3, text: [
+    '"Maintenance post," she writes. The waistband disagrees.',
+  ] },
+  { when: {}, text: [
+    '"Updated," Priya types, which is also "ahead."',
+    'She posts the inches and waits for the floor to flinch.',
+    'The caption is short. The lead is not.',
+  ] },
+]);
+
+registerPool('cg.chat.post.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat under the caption. The inches arrive before the replies.',
+    'The post is still typing. Her middle already logged the tray.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'The chair reports her while she hits send. The board likes honesty.',
+  ] },
+  { when: {}, text: [
+    'Softness answers the caption first. Chat is slower.',
+    'She posts. The body keeps arriving after send.',
+    'Numbers first. The middle is the proof.',
+  ] },
+]);
+
+registerPool('cg.chat.post.scene', [
+  { when: {}, text: [
+    '{cg.chat.post.setup} {cg.chat.post.line}',
+    '{cg.chat.post.line} {cg.chat.post.growth}',
+    '{cg.chat.post.setup} {cg.chat.post.growth} {cg.chat.post.line}',
+  ] },
+]);
+
+registerPool('cg.chat.follow.line', [
+  { when: { leftoverFed: true, cgThreat: 'threatened' }, weight: 4, text: [
+    '"You ate. I ate more. The galley already started me." She pins the reply.',
+    'Threat in the thread. Leftover heat in her. "I will close it. Watch the board."',
+  ] },
+  { when: { leftoverFed: true, cgThreat: 'leading' }, weight: 4, text: [
+    '"Lead holds. Last night helped." She does not pretend the tray was off the record.',
+  ] },
+  { when: { cgThreat: 'threatened', cgDrive: 'Ruthless' }, weight: 4, text: [
+    '"Noted. Closing." The word is a calendar date.',
+  ] },
+  { when: { cgThreat: 'threatened' }, weight: 3, text: [
+    '"Close is not a lead," Priya writes. "Fixing."',
+    'She replies to the threat with a schedule, not a joke.',
+  ] },
+  { when: { cgThreat: 'leading' }, weight: 3, text: [
+    '"Still ahead." She dots the pin like a receipt.',
+    'Lead holds. She types it like a receipt the floor can keep.',
+  ] },
+  { when: {}, text: [
+    'Priya follows up. The board is the rest of the sentence.',
+    'She answers the thread with another number.',
+    'Send. The looking is the rest of the chat.',
+  ] },
+]);
+
+registerPool('cg.chat.follow.setup', [
+  { when: { leftoverFed: true, cgThreat: 'threatened' }, weight: 4, text: [
+    'A threat in the thread. Galley leftover still in her. She types slower, hungrier.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She follows up with leftover heat still in the blazer.',
+  ] },
+  { when: { cgThreat: 'threatened' }, weight: 3, text: [
+    'The board has a rival. Priya answers in the same thread.',
+  ] },
+  { when: {}, text: [
+    'Priya stays in the thread. The board is not done talking.',
+    'A follow-up, short, aimed at the floor.',
+    'She does not leave the chat hungry.',
+  ] },
+]);
+
+registerPool('cg.chat.follow.scene', [
+  { when: {}, text: [
+    '{cg.chat.follow.setup} {cg.chat.follow.line}',
+    '{cg.chat.follow.line} {cg.chat.follow.setup}',
+    '{cg.chat.follow.line}',
+  ] },
+]);
+
+export function renderCgChatPost(priya, week, driveLabel) {
+  if (!priya) return '';
+  const ctx = buildTextContext({
+    subject: priya,
+    week,
+    globals: { cgDrive: driveLabel || 'Invested' },
+  });
+  return render('{cg.chat.post.scene}', ctx)?.trim() || '';
+}
+
+export function renderCgChatFollowup(priya, week, driveLabel, threatened) {
+  if (!priya) return '';
+  const ctx = buildTextContext({
+    subject: priya,
+    week,
+    globals: {
+      cgDrive: driveLabel || 'Invested',
+      cgThreat: threatened ? 'threatened' : 'leading',
+    },
+  });
+  return render('{cg.chat.follow.scene}', ctx)?.trim() || '';
+}

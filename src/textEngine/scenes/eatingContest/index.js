@@ -109,6 +109,14 @@ export function renderContestPayoff(stageIdx, student, yourGain, week) {
 }
 
 registerModuleVariants('contest.afterglow', [
+  { when: { leftoverFed: true, contestStage: [0, 1] }, weight: 3, text: [
+    'Galley leftover plus the bib. First-circuit heat is a second sitting Maya can see.',
+    'Last night\'s tray still in her. The table is bones and sauce. She is both sittings.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat under the bib. She sits in leftover like it is a ranking.',
+    'The galley started her. The contest finished the log.',
+  ] },
   { when: { contestStage: [0, 1] }, weight: 2, text: [
     'The bib is a wreck. She keeps a palm on the new weight like a trophy Maya can see.',
     'First-circuit heat still in her. The table is bones and sauce. She is the rest of the scoreboard.',

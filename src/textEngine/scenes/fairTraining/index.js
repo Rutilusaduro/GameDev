@@ -258,6 +258,17 @@ registerPool('fair.day.afterparty.result', [
 ]);
 
 registerPool('fair.linger', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'Galley leftover still in Mary Jane. Fairground butter is the second sitting.',
+    'Last night\'s tray plus this drill. She treats the picnic table like seconds.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat under the bib. The county is a logged follow-up plate.',
+    'Two kitchens, one champion. She lets the pounds finish arriving from both.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in her. Daylight training uses the same open door.',
+  ] },
   { when: { stageMin: 8 }, weight: 2, text: [
     'Getting her off the bench is tomorrow\'s problem. Tonight she is the fair.',
     'The stall keeps her outline after she leans back. County nights are long. So is she.',

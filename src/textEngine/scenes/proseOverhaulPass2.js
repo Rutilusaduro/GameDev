@@ -29,6 +29,17 @@ oncePool('ge.afterglow', [
 ]);
 
 oncePool('weekly.afterglow', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'Galley leftover still in her clothes. The incident is a second sitting the floor will retell.',
+    'Last night\'s tray plus this week. She carries both in the waistband.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat still answering. Sunday gossip will include the foil.',
+    'The floor retells it rounder. The leftover already started the rounding.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. The incident uses the same open door.',
+  ] },
   { when: {}, text: [
     'The floor will retell this by Sunday, softer and rounder in the telling.',
     'She carries the incident in her clothes. The clothes are already losing.',
