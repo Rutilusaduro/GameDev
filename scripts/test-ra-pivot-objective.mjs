@@ -94,6 +94,8 @@ execSync('node scripts/test-fair-boost-photo-modular-late.mjs', { cwd: root, std
 
 execSync('node scripts/test-talk-suggest-indulgence-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-talk-suggest-growth-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-homeroom-activity-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-fragment-prose-length.mjs', { cwd: root, stdio: 'inherit' });

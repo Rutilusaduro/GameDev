@@ -104,6 +104,7 @@ import './raPivotProseDepthPass55.js';
 import './raPivotProseDepthPass56.js';
 import './raPivotProseDepthPass57.js';
 import './talkSuggestIndulgenceModularFragments.js';
+import './talkSuggestGrowthModularFragments.js';
 import './raPivotProseDepthPass58.js';
 import './raPivotProseDepthPass59.js';
 import './raPivotProseDepthPass60.js';

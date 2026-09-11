@@ -11,6 +11,7 @@ const POOLS = [
   'wl.talk.raPresence',
   'wl.talk.branchPrompt',
   'fair.day.judgingBeat',
+  'fair.day.weighInBeat',
   'fair.day.carnivalAir',
   'homeroom.activity.kitchenHeat',
   'homeroom.activity.communityWarmth',
@@ -26,6 +27,7 @@ const POOLS = [
   'fair.boost.midwayPush',
   'fair.photo.pageantGlow',
   'talk.suggest.indulgenceWarmth',
+  'talk.suggest.growthAmbition',
   'hall.blueprint.construction',
 ];
 

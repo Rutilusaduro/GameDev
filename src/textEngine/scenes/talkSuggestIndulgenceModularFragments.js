@@ -31,17 +31,21 @@ registerPool('talk.suggest.indulgenceInvite', [
 
 const INDULGENCE_SKELETON = '{talk.suggest.indulgenceWarmth|prefix:} {talk.suggest.indulgenceInvite|prefix: }';
 
-const BRANCH_KEYS = [
-  'talk.suggest_indulgence',
-  'talk.suggest_indulgence.b00',
-  'talk.suggest_indulgence.b01',
-  'talk.suggest_indulgence.b10',
-  'talk.suggest_indulgence.b11',
-  'talk.suggest_indulgence.b20',
-  'talk.suggest_indulgence.b21',
-];
+const BRANCHES = ['b00', 'b01', 'b10', 'b11', 'b20', 'b21'];
 
-for (const key of BRANCH_KEYS) {
+function indulgenceKeys() {
+  const keys = ['talk.suggest_indulgence'];
+  for (const b of BRANCHES) {
+    keys.push(`talk.suggest_indulgence.${b}`);
+    const maxF = b === 'b00' ? 4 : 3;
+    for (let f = 1; f <= maxF; f += 1) {
+      keys.push(`talk.suggest_indulgence.${b}._f${f}`);
+    }
+  }
+  return keys;
+}
+
+for (const key of indulgenceKeys()) {
   registerModuleVariants(key, [
     {
       when: { weekMin: 22 },

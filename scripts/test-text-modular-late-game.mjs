@@ -25,7 +25,7 @@ for (let i = 0; i < 24; i += 1) {
   }))?.trim() || '';
   assert.ok(line.length > 30, 'fair day open at week 22 should render');
   assert.ok(!line.includes('{unresolved}'), 'fair day open unresolved');
-  if (/cotton candy|Crowd noise|funnel-cake|Mary Jane stands taller|Pride sits on her hips/i.test(line)) {
+  if (/cotton candy|Crowd noise|funnel-cake|Mary Jane stands taller|Pride sits on her hips|platform scale|weighInBeat|Officials murmur|weigh-in line/i.test(line)) {
     fairModularHit = true;
   }
 }

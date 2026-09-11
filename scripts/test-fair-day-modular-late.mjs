@@ -9,9 +9,15 @@ const week = 24;
 assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
 const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
 
-const FP = /Cotton candy|Crowd noise|Phones rise|announcer|Mary Jane stands|co-conspirator|funnel[- ]cake|Hay-scent|Judges lean|ribbon categories/i;
+const FP = /Cotton candy|Crowd noise|Phones rise|announcer|Mary Jane stands|co-conspirator|funnel[- ]cake|Hay-scent|Judges lean|ribbon categories|platform scale|weighInBeat|weigh-in line/i;
 
-const keys = ['fair.day.weighIn.open', 'fair.day.judging', 'fair.day.afterparty.open'];
+const keys = [
+  'fair.day.weighIn.open',
+  'fair.day.weighIn.choice1',
+  'fair.day.weighIn.endingA',
+  'fair.day.judging',
+  'fair.day.afterparty.open',
+];
 for (const key of keys) {
   let hit = false;
   for (let s = 0; s < 16; s += 1) {

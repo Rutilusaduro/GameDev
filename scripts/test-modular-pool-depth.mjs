@@ -24,6 +24,8 @@ const POOLS = [
   'fair.boost.partnerHype',
   'fair.photo.collabFrame',
   'talk.suggest.indulgenceInvite',
+  'fair.day.weighInBeat',
+  'talk.suggest.growthPraise',
 ];
 
 for (const key of POOLS) {
