@@ -44,5 +44,17 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
         ]);
       }
     });
+    (evDef.endings || []).forEach((ending, endingIdx) => {
+      const endFn = (ctx) => {
+        const h = ctx.globals?.history || [];
+        const subj = ctx.subject;
+        const g = ctx.globals?.totalGain ?? ctx.globals?.gainAccum ?? 0;
+        if (typeof ending.text === 'function') return String(ending.text(h, subj, g)).trim();
+        return (ending.text || '').trim();
+      };
+      registerPool(`evolved.event.${formId}.s${stageIdx}.end${endingIdx}`, [
+        { when: {}, text: [endFn, endFn, endFn] },
+      ]);
+    });
   });
 }

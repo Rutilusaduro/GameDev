@@ -17,7 +17,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
         const eventRef=collabPartner||researchSubject||null;
         const depthOpts={formId,stageIdx,v2DepthChance:0.28};
         const phaseText=phase?renderEvolvedEventPhase(s,week,formId,stageIdx,phaseIdx,history,eventRef,depthOpts):null;
-        const endingRendered=endingText?renderEvolvedEventProse(endingText,s,week,{...depthOpts,v2DepthChance:0.32}):null;
+        const endingRendered=endingText||null;
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";
         return(
@@ -63,7 +63,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
               {logLines.length>0&&(
                 <div style={{marginBottom:12}}>
                   {logLines.map((line,i)=>(
-                    <div key={i} style={{fontSize:11,color:"#7060a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}30`}}>{renderEvolvedEventProse(line,s,week,{...depthOpts,v2DepthChance:0.18})}</div>
+                    <div key={i} style={{fontSize:11,color:"#7060a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}30`}}>{line}</div>
                   ))}
                 </div>
               )}

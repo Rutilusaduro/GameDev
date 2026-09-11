@@ -358,8 +358,8 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
-import { renderCGMeasurementScene, renderCGRaReply } from './textEngine/scenes/competitiveGainer/index.js';
-import { renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
+import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat } from './textEngine/scenes/competitiveGainer/index.js';
+import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
 import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
@@ -2520,7 +2520,9 @@ export default function HallPass(){
     const phase=evDef.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
+    const choiceLine=renderEvolvedEventChoiceResult(formId,stageIdx,phaseIdx,choiceId,s,week,newHistory)
+      || (typeof choice.result==='function'?choice.result(s):choice.result);
+    const newLog=[...logLines,choiceLine];
     const newGain=gainAccum+scaleEvolvedEventLbs(choice.lbs||0);
     const newRel=relAccum+scaleEvolvedEventRel(choice.rel||0);
     // Handle feedOther — feed residents of matching archetype
@@ -2542,7 +2544,9 @@ export default function HallPass(){
     const nextPhase=phaseIdx+1;
     if(nextPhase>=evDef.phases.length){
       // Find best matching ending
-      const ending=evDef.endings.find(e=>e.condition(newHistory))||evDef.endings[evDef.endings.length-1];
+      let endingIdx=evDef.endings.findIndex(e=>e.condition(newHistory));
+      if(endingIdx<0) endingIdx=evDef.endings.length-1;
+      const ending=evDef.endings[endingIdx];
       const totalGain=newGain+scaleEvolvedEventLbs(ending.gainBonus||0);
       const totalRel=newRel+scaleEvolvedEventRel(ending.relBonus||0);
       // Apply pre-contest / pre-close gains to student
@@ -2562,8 +2566,9 @@ export default function HallPass(){
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
-      const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:depthMetaProgressBonus(ending.classGain||0),momGain:depthMetaProgressBonus(ending.momGain||0),startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge,startsSalon:!!ending.startsSalon,startsGallery:!!ending.startsGallery}));
+      const endRaw=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
+      const endText=renderEvolvedEventEnding(s,week,formId,stageIdx,endingIdx,newHistory,totalGain,endRaw);
+      setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,endingIdx,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:depthMetaProgressBonus(ending.classGain||0),momGain:depthMetaProgressBonus(ending.momGain||0),startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge,startsSalon:!!ending.startsSalon,startsGallery:!!ending.startsGallery}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }
@@ -3376,7 +3381,8 @@ export default function HallPass(){
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
     const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
-    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
+    const postBody=renderCGSceneBeat(postTemplate,priya,currentWeek,tier.label,'chat_post');
+    msgs.push({text:`[Priya] ${postBody} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
     // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
     const candidates=visible
@@ -3405,7 +3411,8 @@ export default function HallPass(){
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
-    const followup=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
+    const followupRaw=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
+    const followup=renderCGSceneBeat(followupRaw,priya,currentWeek,tier.label,'chat_followup');
     msgs.push({text:`[Priya] ${followup}`,isRa:false,wk:currentWeek});
     return msgs;
   };

@@ -67,6 +67,56 @@ export function renderEvolvedEventPhase(student, week, formId, stageIdx, phaseId
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: opts.v2DepthChance ?? 0.28 });
 }
 
+/** Choice result line when player picks an evolved event option. */
+export function renderEvolvedEventChoiceResult(formId, stageIdx, phaseIdx, choiceId, student, week, history = []) {
+  const evDef = EVOLVED_EVENTS[formId]?.[stageIdx];
+  const phase = evDef?.phases?.[phaseIdx];
+  const choice = phase?.choices?.find((c) => c.id === choiceId);
+  if (!choice || !student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { formId, stageIdx, phaseIdx, history, evolvedFormId: formId, evolvedStageIdx: stageIdx },
+  });
+  let line = '';
+  try {
+    line = render(`{evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.${choiceId}}`, ctx)?.trim();
+  } catch {
+    line = '';
+  }
+  if (!line || line.includes('{unresolved}')) {
+    line = typeof choice.result === 'function' ? String(choice.result(student)).trim() : (choice.result || '').trim();
+  }
+  return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: 0.22 });
+}
+
+/** Ending beat after branching evolved event completes. */
+export function renderEvolvedEventEnding(student, week, formId, stageIdx, endingIdx, history, totalGain, fallbackRaw = '') {
+  if (!student) return fallbackRaw || '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: {
+      formId,
+      stageIdx,
+      endingIdx,
+      history,
+      totalGain,
+      gainAccum: totalGain,
+      evolvedFormId: formId,
+      evolvedStageIdx: stageIdx,
+    },
+  });
+  let line = '';
+  try {
+    line = render(`{evolved.event.${formId}.s${stageIdx}.end${endingIdx}}`, ctx)?.trim();
+  } catch {
+    line = '';
+  }
+  if (!line || line.includes('{unresolved}')) line = (fallbackRaw || '').trim();
+  return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: 0.32 });
+}
+
 /** Passive evolved activity beat (no EVOLVED_EVENTS modal for this stage). */
 export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts = {}) {
   const formId = student?.evolvedForm;
