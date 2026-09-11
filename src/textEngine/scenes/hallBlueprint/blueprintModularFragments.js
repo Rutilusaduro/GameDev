@@ -31,6 +31,18 @@ registerPool('hall.blueprint.permission', [
 
 const BLUEPRINT_SKELETON = '{hall.blueprint.construction|prefix:} {hall.blueprint.permission|prefix: }';
 
+registerModuleVariants('hall.blueprint.synergy', [
+  {
+    when: { hallAmbiancePeakMin: [50], weekMin: 12 },
+    weight: 4,
+    priority: 4,
+    text: [
+      'Wing resonance hums — lounge warmth and kitchen steam trade favors.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+]);
+
 for (const key of [
   'hall.blueprint.purchase',
   'hall.blueprint.upgrade.confirm',

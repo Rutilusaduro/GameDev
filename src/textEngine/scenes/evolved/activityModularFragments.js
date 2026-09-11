@@ -5,7 +5,24 @@ import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedActivityData.js'
 const ACTIVITY_SKELETON = '{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }';
 
 for (const formId of Object.keys(EVOLVED_ACTIVITY_TEXT)) {
-  if (!Array.isArray(EVOLVED_ACTIVITY_TEXT[formId])) continue;
+  const stages = EVOLVED_ACTIVITY_TEXT[formId];
+  if (!Array.isArray(stages)) continue;
+  stages.forEach((_, si) => {
+    registerModuleVariants(`evolved.activity.${formId}.s${si}.legacyBody`, [
+      {
+        when: { weekMin: 20, evolvedFormId: [formId], evolvedStageIdx: [si] },
+        weight: 6,
+        priority: 6,
+        text: [ACTIVITY_SKELETON],
+      },
+      {
+        when: { weekMin: 14, evolvedFormId: [formId], evolvedStageIdx: [si] },
+        weight: 4,
+        priority: 4,
+        text: [ACTIVITY_SKELETON],
+      },
+    ]);
+  });
   registerModuleVariants(`evolved.activity.${formId}`, [
     {
       when: { weekMin: 18 },

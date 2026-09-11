@@ -548,4 +548,42 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(calloway81Hit, 'Mrs_Calloway intro modular @ w24 (pass81 peel)');
 
+let appetite104Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{hall.ambiance.pulse.appetite}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72400 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Oven timers stack — the hall learns to schedule hunger between bells\.$/.test(line), 'pass-104 appetite bridge alone @ w24');
+  if (line.length > 55) appetite104Hit = true;
+}
+assert.ok(appetite104Hit, 'hall.ambiance.pulse.appetite modular @ w24 (pass104 peel)');
+
+let weighMomsHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.activity.health_unit.p1.weigh_moms}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72410 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Moms on the scale — Kayla’s secret safe until laughter betrays it\.$/.test(line), 'pass-106 weigh_moms bridge alone @ w24');
+  if (line.length > 65) weighMomsHit = true;
+}
+assert.ok(weighMomsHit, 'health_unit weigh_moms modular @ w24');
+
+let cork102Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{cg.scene.corkboard.Driven}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72420 + s,
+    globals: { featureId: 'competitive_gainer', priyaName: 'Priya' },
+  }))?.trim() || '';
+  assert.ok(!/^Driven tier: Priya updates the board before the ink dries — competition as foreplay\.$/.test(line), 'pass-102 corkboard bridge alone @ w24');
+  if (line.length > 65 || /dataObsession|competitionHeat/i.test(line)) cork102Hit = true;
+}
+assert.ok(cork102Hit, 'cg.scene.corkboard.Driven modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');
