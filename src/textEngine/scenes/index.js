@@ -286,6 +286,8 @@ import './evolved/index.js';
 import './evolved/eventPhaseFragments.js';
 import './evolved/eventStreamerFragments.js';
 import './evolved/eventSumoFragments.js';
+import './evolved/eventSalonGalleryFragments.js';
+import './evolved/eventFormOverlays.js';
 import './evolved/reactionFragments.js';
 import './evolved/activityModularFragments.js';
 import './evolved/evolutionOfferFragments.js';

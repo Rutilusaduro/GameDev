@@ -192,142 +192,142 @@ export function mountExhibition(state, theme = 'documentary') {
 }
 
 export const GALLERY_EVOLVED_EVENTS = [
-  {
-    title: 'First Model',
-    phases: [
-      {
-        text: (h, s) => `Fiona pins the first contact sheet to *In Progress*. A resident, mid-bite, mid-laugh. Fiona is ${Math.round(s.lbs)} pounds and says: "The subject cooperates. The camera doesn't lie."`,
-        choices: [
-          { id: 'enroll', label: 'Enroll the first official model', result: 'Release forms become art contracts. Everyone signs.', lbs: 4, rel: 10, flag: 'first_subject' },
-          { id: 'candid', label: 'Start with candid field work only', result: 'She shoots from the hip. The quad yields gold.', lbs: 3, rel: 8, flag: 'field_first' },
-        ],
-      },
-      {
-        text: (h, s) => `The studio smells of paint and butter. Fiona is ${Math.round(s.lbs)} pounds, editing frames. "I want a wall of proof," she says.`,
-        choices: [
-          { id: 'wall', label: 'Help her hang the first wall', result: 'Thumbtacks, twine, bodies at every stage.', lbs: 5, rel: 9, flag: 'wall_up' },
-          { id: 'wait', label: 'Wait for a stronger series', result: 'She nods. Shoots more. Eats while she shoots.', lbs: 6, rel: 7 },
-        ],
-      },
-    ],
-    endings: [
-      { condition: (h) => h.includes('first_subject') && h.includes('wall_up'), text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. First model enrolled. First wall hung.`, gainBonus: 5, relBonus: 11, startsGallery: true },
-      { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. The archive begins.`, gainBonus: 3, relBonus: 7, startsGallery: true },
-    ],
-  },
-  {
-    title: 'Field Roll',
-    phases: [
-      {
-        text: (h, s) => `Fiona walks the quad with a camera and hunger. She's ${Math.round(s.lbs)} pounds and photographs a stranger's softness without asking — then does ask, and gets a shy yes.`,
-        choices: [
-          { id: 'consent', label: 'Insist on consent going forward', result: 'Release forms become part of the art.', lbs: 3, rel: 10, flag: 'consent_strict' },
-          { id: 'bold', label: 'Bold shots sell — embrace scandal', result: 'She pins a risky print. Patrons notice.', lbs: 5, rel: 6, flag: 'scandal_embraced' },
-        ],
-      },
-      {
-        text: (h, s) => `The field archive grows. Fiona is ${Math.round(s.lbs)} pounds. "Abundance is everywhere," she says. "They just don't frame it."`,
-        choices: [
-          { id: 'dining', label: 'Shoot the dining hall regulars', result: 'Documentary series: *Regulars.*', lbs: 6, rel: 8, flag: 'dining_series' },
-          { id: 'faculty', label: 'Risk the staff lounge', result: 'Coach Brooks in frame. Scandalous.', lbs: 4, rel: 7, flag: 'faculty_shot' },
-        ],
-      },
-    ],
-    endings: [
-      { condition: (h) => h.includes('scandal_embraced'), text: (h, s, gain) => `Scandalous field work. ${s.name} is ${Math.round(s.lbs + gain)} pounds. Patrons line up.`, gainBonus: 6, relBonus: 9, startsGallery: true },
-      { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. Field archive rich.`, gainBonus: 4, relBonus: 8, startsGallery: true },
-    ],
-  },
-  {
-    title: 'Wall of Proof',
-    phases: [
-      {
-        text: (h, s) => `Opening night: eight prints, wine, cheese. Fiona is ${Math.round(s.lbs)} pounds in linen that won't survive the evening. Critics arrive.`,
-        choices: [
-          { id: 'reverent', label: 'Reverent tone — art world speak', result: '"Uncomfortably generous." She pins the review.', lbs: 5, rel: 10, flag: 'reverent_opening' },
-          { id: 'confrontational', label: 'Confrontational — bodies as politics', result: 'Campus paper attends. AIB telegraph.', lbs: 7, rel: 7, flag: 'confrontational' },
-        ],
-      },
-      {
-        text: (h, s) => `The room talks while Fiona eats in the corner — deliberately, publicly. She's ${Math.round(s.lbs)} pounds and the performance is the point.`,
-        choices: [
-          { id: 'eat', label: 'Eat through the critique', result: 'Fork in hand. Eye contact. Silence breaks.', lbs: 9, rel: 9, flag: 'performance_eat' },
-          { id: 'speak', label: 'Give an artist statement', result: '"The body is the only honest medium."', lbs: 4, rel: 11, flag: 'statement' },
-        ],
-      },
-    ],
-    endings: [
-      { condition: (h) => h.includes('confrontational'), text: (h, s, gain) => `Confrontational opening. ${s.name} is ${Math.round(s.lbs + gain)} pounds. Scrutiny rises. Patrons soar.`, gainBonus: 8, relBonus: 10, startsGallery: true },
-      { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. First exhibition a success.`, gainBonus: 5, relBonus: 9, startsGallery: true },
-    ],
-  },
-  {
-    title: 'The Living Room',
-    phases: [
-      {
-        text: (h, s) => `The featured model stands beside their timeline — stage three, stage five, live and heavier still. Fiona is ${Math.round(s.lbs)} pounds and introduces them: "The work continues. She continues."`,
-        choices: [
-          { id: 'feature', label: 'Let the model speak', result: 'Shy words. Loud applause. More food.', lbs: 6, rel: 12, flag: 'subject_speaks' },
-          { id: 'feed_live', label: 'Feed the model live', result: 'Grapes, cream, cameras. The crowd hushes.', lbs: 10, rel: 10, flag: 'live_feed' },
-        ],
-      },
-      {
-        text: (h, s) => `A patron offers commission. Fiona is ${Math.round(s.lbs)} pounds and already planning the next model.`,
-        choices: [
-          { id: 'accept', label: 'Accept the commission', result: '$300 and a waiting list.', lbs: 4, rel: 8, flag: 'commission' },
-          { id: 'selective', label: 'Stay selective', result: 'Prestige rises. Lines form.', lbs: 3, rel: 10, flag: 'selective' },
-        ],
-      },
-    ],
-    endings: [
-      { condition: (h) => h.includes('live_feed'), text: (h, s, gain) => `Living Room opening. ${s.name} is ${Math.round(s.lbs + gain)} pounds. Legendary.`, gainBonus: 10, relBonus: 13, startsGallery: true },
-      { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. Living installation complete.`, gainBonus: 6, relBonus: 10, startsGallery: true },
-    ],
-  },
-  {
-    title: 'Regional Interest',
-    phases: [
-      {
-        text: (h, s) => `An email from a regional gallery. They want the series. Fiona is ${Math.round(s.lbs)} pounds and reads it twice.`,
-        choices: [
-          { id: 'travel', label: 'Plan the traveling show', result: 'Crates, prints, scrutiny.', lbs: 5, rel: 9, flag: 'travel_show' },
-          { id: 'stay', label: 'Stay campus-focused', result: 'Local myth deepens.', lbs: 6, rel: 11, flag: 'local' },
-        ],
-      },
-      {
-        text: (h, s) => `AIB notices the mailing list. Fiona is ${Math.round(s.lbs)} pounds. "Evidence," they call it. She calls it *archive.*`,
-        choices: [
-          { id: 'hide', label: 'Move sensitive prints off-site', result: 'Scandal meter cools slightly.', lbs: 3, rel: 8, flag: 'hide_prints' },
-          { id: 'double_down', label: 'Double down — publish online', result: 'Patrons explode. So does scrutiny.', lbs: 7, rel: 6, flag: 'publish' },
-        ],
-      },
-    ],
-    endings: [
-      { condition: (h) => h.includes('publish'), text: (h, s, gain) => `Published online. ${s.name} is ${Math.round(s.lbs + gain)} pounds. The internet hungry.`, gainBonus: 7, relBonus: 8, startsGallery: true },
-      { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. Regional interest secured.`, gainBonus: 5, relBonus: 9, startsGallery: true },
-    ],
-  },
-  {
-    title: 'Permanent Collection',
-    phases: [
-      {
-        text: (h, s) => `A museum wants the series permanently. Fiona is ${Math.round(s.lbs)} pounds and touches the acceptance letter like a texture study.`,
-        choices: [
-          { id: 'accept_museum', label: 'Accept — permanent collection', result: 'Her name on a wall. Bodies on a wall. Same thing.', lbs: 5, rel: 12, flag: 'museum' },
-          { id: 'negotiate', label: 'Negotiate for living model clause', result: 'Future openings mandatory. She smiles.', lbs: 6, rel: 10, flag: 'living_clause' },
-        ],
-      },
-      {
-        text: (h, s) => `The gallery is no longer a project. It's an institution. Fiona is ${Math.round(s.lbs)} pounds and still shooting, still feeding, still pinning.`,
-        choices: [
-          { id: 'legacy', label: 'Launch the legacy program', result: 'New models every semester. Forever.', lbs: 8, rel: 11, flag: 'legacy' },
-          { id: 'retrospective', label: 'Retrospective on herself too', result: 'Self-portraits join the wall. Full circle.', lbs: 9, rel: 9, flag: 'self_included' },
-        ],
-      },
-    ],
-    endings: [
-      { condition: (h) => h.includes('museum') && h.includes('legacy'), text: (h, s, gain) => `Permanent collection. Legacy program. ${s.name} is ${Math.round(s.lbs + gain)} pounds. The Artisan Gallery endures.`, gainBonus: 12, relBonus: 15, startsGallery: true },
-      { condition: () => true, text: (h, s, gain) => `${s.name} is ${Math.round(s.lbs + gain)} pounds. Museum-grade. Institution made flesh.`, gainBonus: 8, relBonus: 12, startsGallery: true },
-    ],
-  },
+    {
+      title:"First Model",
+      phases:[
+        {
+          text:(h,s)=>`artisan_gallery s0p0 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"enroll",label:"Enroll the first official model",result:"Choice enroll (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:4,rel:10,flag:"first_subject"},
+            {id:"candid",label:"Start with candid field work only",result:"Choice candid (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:3,rel:8,flag:"field_first"}
+          ]
+        },
+        {
+          text:(h,s)=>`artisan_gallery s0p1 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"wall",label:"Help her hang the first wall",result:"Choice wall (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:5,rel:9,flag:"wall_up"},
+            {id:"wait",label:"Wait for a stronger series",result:"Choice wait (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:6,rel:7}
+          ]
+        }
+      ],
+      endings:[
+        {condition:(h) => h.includes('first_subject') && h.includes('wall_up'),text:(h,s,gain)=>`artisan_gallery ending 0 bridge — modular evolved.ending @ week 20+.`,gainBonus:5,relBonus:11,startsGallery:true},
+        {condition:() => true,text:(h,s,gain)=>`artisan_gallery ending 1 bridge — modular evolved.ending @ week 20+.`,gainBonus:3,relBonus:7,startsGallery:true}
+      ]
+    },
+    {
+      title:"Field Roll",
+      phases:[
+        {
+          text:(h,s)=>`artisan_gallery s1p0 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"consent",label:"Insist on consent going forward",result:"Choice consent (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:3,rel:10,flag:"consent_strict"},
+            {id:"bold",label:"Bold shots sell — embrace scandal",result:"Choice bold (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:5,rel:6,flag:"scandal_embraced"}
+          ]
+        },
+        {
+          text:(h,s)=>`artisan_gallery s1p1 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"dining",label:"Shoot the dining hall regulars",result:"Choice dining (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:6,rel:8,flag:"dining_series"},
+            {id:"faculty",label:"Risk the staff lounge",result:"Choice faculty (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:4,rel:7,flag:"faculty_shot"}
+          ]
+        }
+      ],
+      endings:[
+        {condition:(h) => h.includes('scandal_embraced'),text:(h,s,gain)=>`artisan_gallery ending 0 bridge — modular evolved.ending @ week 20+.`,gainBonus:6,relBonus:9,startsGallery:true},
+        {condition:() => true,text:(h,s,gain)=>`artisan_gallery ending 1 bridge — modular evolved.ending @ week 20+.`,gainBonus:4,relBonus:8,startsGallery:true}
+      ]
+    },
+    {
+      title:"Wall of Proof",
+      phases:[
+        {
+          text:(h,s)=>`artisan_gallery s2p0 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"reverent",label:"Reverent tone — art world speak",result:"Choice reverent (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:5,rel:10,flag:"reverent_opening"},
+            {id:"confrontational",label:"Confrontational — bodies as politics",result:"Choice confrontational (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:7,rel:7,flag:"confrontational"}
+          ]
+        },
+        {
+          text:(h,s)=>`artisan_gallery s2p1 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"eat",label:"Eat through the critique",result:"Choice eat (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:9,rel:9,flag:"performance_eat"},
+            {id:"speak",label:"Give an artist statement",result:"Choice speak (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:4,rel:11,flag:"statement"}
+          ]
+        }
+      ],
+      endings:[
+        {condition:(h) => h.includes('confrontational'),text:(h,s,gain)=>`artisan_gallery ending 0 bridge — modular evolved.ending @ week 20+.`,gainBonus:8,relBonus:10,startsGallery:true},
+        {condition:() => true,text:(h,s,gain)=>`artisan_gallery ending 1 bridge — modular evolved.ending @ week 20+.`,gainBonus:5,relBonus:9,startsGallery:true}
+      ]
+    },
+    {
+      title:"The Living Room",
+      phases:[
+        {
+          text:(h,s)=>`artisan_gallery s3p0 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"feature",label:"Let the model speak",result:"Choice feature (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:6,rel:12,flag:"subject_speaks"},
+            {id:"feed_live",label:"Feed the model live",result:"Choice feed_live (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:10,rel:10,flag:"live_feed"}
+          ]
+        },
+        {
+          text:(h,s)=>`artisan_gallery s3p1 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"accept",label:"Accept the commission",result:"Choice accept (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:4,rel:8,flag:"commission"},
+            {id:"selective",label:"Stay selective",result:"Choice selective (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:3,rel:10,flag:"selective"}
+          ]
+        }
+      ],
+      endings:[
+        {condition:(h) => h.includes('live_feed'),text:(h,s,gain)=>`artisan_gallery ending 0 bridge — modular evolved.ending @ week 20+.`,gainBonus:10,relBonus:13,startsGallery:true},
+        {condition:() => true,text:(h,s,gain)=>`artisan_gallery ending 1 bridge — modular evolved.ending @ week 20+.`,gainBonus:6,relBonus:10,startsGallery:true}
+      ]
+    },
+    {
+      title:"Regional Interest",
+      phases:[
+        {
+          text:(h,s)=>`artisan_gallery s4p0 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"travel",label:"Plan the traveling show",result:"Choice travel (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:5,rel:9,flag:"travel_show"},
+            {id:"stay",label:"Stay campus-focused",result:"Choice stay (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:6,rel:11,flag:"local"}
+          ]
+        },
+        {
+          text:(h,s)=>`artisan_gallery s4p1 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"hide",label:"Move sensitive prints off-site",result:"Choice hide (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:3,rel:8,flag:"hide_prints"},
+            {id:"double_down",label:"Double down — publish online",result:"Choice double_down (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:7,rel:6,flag:"publish"}
+          ]
+        }
+      ],
+      endings:[
+        {condition:(h) => h.includes('publish'),text:(h,s,gain)=>`artisan_gallery ending 0 bridge — modular evolved.ending @ week 20+.`,gainBonus:7,relBonus:8,startsGallery:true},
+        {condition:() => true,text:(h,s,gain)=>`artisan_gallery ending 1 bridge — modular evolved.ending @ week 20+.`,gainBonus:5,relBonus:9,startsGallery:true}
+      ]
+    },
+    {
+      title:"Permanent Collection",
+      phases:[
+        {
+          text:(h,s)=>`artisan_gallery s5p0 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"accept_museum",label:"Accept — permanent collection",result:"Choice accept_museum (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:5,rel:12,flag:"museum"},
+            {id:"negotiate",label:"Negotiate for living model clause",result:"Choice negotiate (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:6,rel:10,flag:"living_clause"}
+          ]
+        },
+        {
+          text:(h,s)=>`artisan_gallery s5p1 bridge — ${Math.round(s.lbs)} lbs on the log. Modular evolved.scene @ week 20+.`,
+          choices:[
+            {id:"legacy",label:"Launch the legacy program",result:"Choice legacy (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:8,rel:11,flag:"legacy"},
+            {id:"retrospective",label:"Retrospective on herself too",result:"Choice retrospective (artisan_gallery) — flag logged; evolved.choice slots own the beat @ week 20+.",lbs:9,rel:9,flag:"self_included"}
+          ]
+        }
+      ],
+      endings:[
+        {condition:(h) => h.includes('museum') && h.includes('legacy'),text:(h,s,gain)=>`artisan_gallery ending 0 bridge — modular evolved.ending @ week 20+.`,gainBonus:12,relBonus:15,startsGallery:true},
+        {condition:() => true,text:(h,s,gain)=>`artisan_gallery ending 1 bridge — modular evolved.ending @ week 20+.`,gainBonus:8,relBonus:12,startsGallery:true}
+      ]
+    }
 ];

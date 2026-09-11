@@ -106,6 +106,10 @@ execSync('node scripts/test-evolution-ui-stub-debt.mjs', { cwd: root, stdio: 'in
 
 execSync('node scripts/test-evolution-blurb-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-salon-gallery-evolved-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-salon-event-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });
