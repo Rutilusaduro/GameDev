@@ -413,8 +413,10 @@ import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
 import { renderCampusLook } from './textEngine/scenes/overhaul/campusHunt.js';
-import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure } from './textEngine/scenes/overhaul/cgFair.js';
-import { renderHiveVisit } from './textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from './textEngine/scenes/overhaul/cgFair.js';
+import { renderHiveVisit, renderHivePhoto } from './textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from './textEngine/scenes/overhaul/cgChat.js';
+import { renderSessionNpc } from './textEngine/scenes/overhaul/sessionNpc.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -3348,9 +3350,9 @@ export default function HallPass(){
     });
   };
 
-  const _wlTalkLine=(line,person,stage,mjStudentId)=>{
+  const _wlTalkLine=(line,person,stage,mjStudentId,slot)=>{
     const mj=students.find(st=>st.id===mjStudentId);
-    return mj?renderWifeLessonTalkLine(line,person,stage,mj,week):line;
+    return mj?renderWifeLessonTalkLine(line,person,stage,mj,week,{slot}):line;
   };
 
   const startWifeLessonsConversation=(personKey)=>{
@@ -3369,7 +3371,7 @@ export default function HallPass(){
       const isCapped=isDaughter&&prev.daughters[personKey]>=WL_CONFIG.stageCaps[stage];
       const overtook=personKey==='Emma'||personKey==='Darlene'?prev.daughters.Chloe>prev.daughters.Emma:false;
       const greetingText=isCapped&&entry.cappedGreeting?entry.cappedGreeting:(overtook&&entry.overtookGreeting?entry.overtookGreeting:entry.greeting);
-      const greetingProse=_wlTalkLine(greetingText,personKey,stage,prev.mjStudentId);
+      const greetingProse=_wlTalkLine(greetingText,personKey,stage,prev.mjStudentId,'greeting');
       return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingProse]}}};
     });
   };
@@ -3385,7 +3387,7 @@ export default function HallPass(){
       const opt=entry.options[optionIdx];
       if(!opt) return prev;
       if(opt.subs&&opt.subs.length>0){
-        const optProse=_wlTalkLine(opt.text,cs.person,prev.stage,prev.mjStudentId);
+        const optProse=_wlTalkLine(opt.text,cs.person,prev.stage,prev.mjStudentId,'reply');
         return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),optProse]}}};
       }
       return prev;
@@ -3413,7 +3415,7 @@ export default function HallPass(){
       }
       const mjGain=outcome.mjLbs||0;
       const relGain=outcome.rel||0;
-      const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId);
+      const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId,'reply');
       let next={...prev,daughters:newDaughters,moms:newMoms,
         session:{...prev.session,mjGainAccum:prev.session.mjGainAccum+mjGain,relAccum:prev.session.relAccum+relGain,
           log:[...prev.session.log,logLine],
@@ -3456,7 +3458,9 @@ export default function HallPass(){
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
     const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
-    msgs.push({text:`[Priya] ${postTemplate} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
+    let priyaPost=renderCgChatPriyaPost(priya,currentWeek,tier.label);
+    if(!priyaPost||priyaPost.includes('{unresolved}')) priyaPost=postTemplate;
+    msgs.push({text:`[Priya] ${priyaPost} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
     // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
     const candidates=visible
@@ -3481,12 +3485,16 @@ export default function HallPass(){
       else if(s.lbs>priya.lbs*0.80)  replyType='proud';
       else replyType='behind';
       const replyText=templates[replyType]||templates.behind||'...';
-      msgs.push({text:`[${s.name}] ${replyText}`,isRa:false,wk:currentWeek});
+      let residentLine=renderCgChatResident(s,currentWeek,replyType);
+      if(!residentLine||residentLine.includes('{unresolved}')) residentLine=replyText;
+      msgs.push({text:`[${s.name}] ${residentLine}`,isRa:false,wk:currentWeek});
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
     const followup=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
-    msgs.push({text:`[Priya] ${followup}`,isRa:false,wk:currentWeek});
+    let followLine=renderCgChatFollowup(priya,currentWeek,tier.label,threatDetected);
+    if(!followLine||followLine.includes('{unresolved}')) followLine=followup;
+    msgs.push({text:`[Priya] ${followLine}`,isRa:false,wk:currentWeek});
     return msgs;
   };
 
@@ -3578,7 +3586,11 @@ export default function HallPass(){
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
         else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
         const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
-        reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)})};
+        let reactText=renderCgMeasureReaction(priya,week,rel,cat,target);
+        if(!reactText||reactText.includes('{unresolved}')||/\[MeasureReaction_/i.test(reactText)){
+          reactText=formatCGText(template,{targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)});
+        }
+        reactions[cat]={rel,text:reactText};
       });
       const driveGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
@@ -3648,12 +3660,15 @@ export default function HallPass(){
       const stageKey=priya?getCGStageKey(priya.lbs):"Heavy";
       const comparison=pickCGComparison(prev,optId);
       const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
-      const text=formatCGText(template,{
-        residentName:comparison?.residentName||comparison?.girlName||"the hall",
-        bodypart:comparison?.bodypart||"measurements",
-        priyaValue:comparison?.priyaValue,
-        targetValue:comparison?.targetValue,
-      });
+      let text=renderCgChatRaReply(priya,week,optId,comparison);
+      if(!text||text.includes('{unresolved}')){
+        text=formatCGText(template,{
+          residentName:comparison?.residentName||comparison?.girlName||"the hall",
+          bodypart:comparison?.bodypart||"measurements",
+          priyaValue:comparison?.priyaValue,
+          targetValue:comparison?.targetValue,
+        });
+      }
       const msg={text:`[You] ${text}`,isRa:true,wk:week};
       const delta=cgDriveDelta(opt);
       return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
@@ -3780,11 +3795,15 @@ export default function HallPass(){
       const bmiTier=getHiveBmiTier(prev.avgBmi);
       const rooms=getHiveControl(prev.rooms);
       const tag=makeHiveTag("HiveStatePhoto",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"observation",roomId:prev.selectedRoomId});
+      let photoText=maya?renderHivePhoto(maya,week):'';
+      if(!photoText||photoText.includes('{unresolved}')){
+        photoText=`Maya documents the Hive: claimed rooms, delivery routes, soft bodies, lavender light holding the extra of her.`;
+      }
       return {
         ...prev,
         floorResonance:getHiveFloorResonance(prev)+1,
         view:"photo",
-        subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint hive resonance pressure visible in every lavender-lit corner.`},
+        subState:{tag,text:photoText},
         log:[{tag,text:"Hive State observation archived.",type:"photo"},...prev.log].slice(0,40),
       };
     });
@@ -5297,7 +5316,9 @@ export default function HallPass(){
     const maxFullness=maxFullnessByStage[stageIdx]||100;
     const maxFocus=maxFocusByStage[stageIdx]||90;
     const raeStage=Math.min(5,stageIdx);
-    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[SESSION_NPC_LINES[raeStage].arrival+` ${SESSION_NPC_LINES[raeStage].extra||''}`],done:false,endReason:null,raeDelivered:raeStage<=1});
+    const arrival=renderSessionNpc('arrival',s,week,raeStage)||SESSION_NPC_LINES[raeStage].arrival;
+    const extra=renderSessionNpc('extra',s,week,raeStage)||SESSION_NPC_LINES[raeStage].extra||'';
+    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[`${arrival}${extra?` ${extra}`:''}`],done:false,endReason:null,raeDelivered:raeStage<=1});
     setEvolvedEventState(null);
   };
 
@@ -5320,7 +5341,8 @@ export default function HallPass(){
     let newRaeDelivered=raeDelivered;
     if(!raeDelivered&&newTurn===3&&stageIdx>=2){
       const raeNpc=SESSION_NPC_LINES[Math.min(5,stageIdx)];
-      updatedLog=[...newLog,`📦 RAE: ${raeNpc.extra||'She appears with extra supplies.'}`];
+      const extraLine=renderSessionNpc('extra',s,week,Math.min(5,stageIdx))||raeNpc.extra||'She appears with extra supplies.';
+      updatedLog=[...newLog,`📦 RAE: ${extraLine}`];
       newRaeDelivered=true;
     }
     // Check end conditions
@@ -6449,10 +6471,10 @@ export default function HallPass(){
       const avg=recruits.reduce((a,r)=>a+r.stage,0)/3;
       const group=avg<=2?'Early':avg<=4?'Mid':'Late';
       sceneTag=renderFairBeat('train',mj,week,{stageIdx:mjStage})||FAIR_TRAINING_SCENES.Lilith[`MJ${mjStage}_L${cStage}_${group}`];
-      photoTag=FAIR_TRAINING_PHOTOS.Lilith[`MJ${mjStage}_L${cStage}`];
+      photoTag=renderFairPhoto(mj,week,{collabKey:'Lilith',stageIdx:mjStage})||FAIR_TRAINING_PHOTOS.Lilith[`MJ${mjStage}_L${cStage}`];
     } else {
       sceneTag=renderFairBeat('train',mj,week,{stageIdx:mjStage})||FAIR_TRAINING_SCENES[collabKey][`MJ${mjStage}_C${cStage}`];
-      photoTag=FAIR_TRAINING_PHOTOS[collabKey][`MJ${mjStage}_C${cStage}`];
+      photoTag=renderFairPhoto(mj,week,{collabKey,stageIdx:mjStage})||FAIR_TRAINING_PHOTOS[collabKey][`MJ${mjStage}_C${cStage}`];
     }
     // pride boost — halved if she keeps leaning on the same collaborator
     const boostCfg=FAIR_TRAINING_CONFIG.fairPrideBoosts[collabKey];
@@ -6460,6 +6482,7 @@ export default function HallPass(){
     if(ft.lastCollaborator===collabKey) prideBoost=Math.round(prideBoost*0.5);
     prideBoost=Math.round(prideBoost);
     const boostTier=cStage<=5?'Low':cStage<=8?'Mid':'High';
+    const boostSummary=renderFairBoost(mj,week,{collabKey,boostTier,stageIdx:mjStage})||FAIR_BOOST_SUMMARIES[collabKey][boostTier];
     // gains
     const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
     const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
@@ -6480,7 +6503,7 @@ export default function HallPass(){
       trophyPhotos:[...prev.trophyPhotos,{tag:photoTag,collab:collabKey,cycle:prev.cycleNum}],
       pendingCollab:collabKey, pendingRecruits:recruits,
       sessionSceneTag:sceneTag, sessionPhotoTag:photoTag,
-      sessionBoostSummary:FAIR_BOOST_SUMMARIES[collabKey][boostTier],
+      sessionBoostSummary:boostSummary,
       sessionLog:{mjGain,cGain,prideBoost,collabName:collab.name},
       view:'session',
     }));

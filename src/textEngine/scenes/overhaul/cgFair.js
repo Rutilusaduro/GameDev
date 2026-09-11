@@ -174,6 +174,81 @@ registerPool('fair.train.body', [
   ]},
 ]);
 
+registerPool('fair.photo.scene', [
+  { when: {}, text: [
+    '{fair.photo.setup} {fair.photo.body}',
+    '{fair.photo.body} {fair.photo.setup}',
+    '{fair.photo.setup}',
+  ]},
+]);
+
+registerPool('fair.photo.setup', [
+  { when: {}, text: [
+    'Trophy wall pin. Mary Jane and her partner mid-bite, fair pride already in the frame.',
+    'A vignette for the wall. Number pinned. The extra of her is the caption.',
+    'She holds still long enough for the pin. The kitchen is still warm behind her.',
+  ]},
+  { when: { fairCollab: 'Brittany' }, weight: 4, text: [
+    'Brittany in the bib. MJ matching her plate. The wall will want this one.',
+  ]},
+  { when: { fairCollab: 'Kylie' }, weight: 4, text: [
+    'Ring light in the kitchen. Kylie films the swallow. MJ lets the camera hold the extra.',
+  ]},
+  { when: { fairCollab: 'Serena' }, weight: 4, text: [
+    'Serena counts like a split. MJ eats like a weigh-in rehearsal. The photo is the split.',
+  ]},
+  { when: { fairCollab: 'Renee' }, weight: 4, text: [
+    'Reneé plated it. MJ finished it. The trophy wall smells like butter.',
+  ]},
+  { when: { fairCollab: 'Daisy' }, weight: 4, text: [
+    'Daisy packed seconds. MJ took them. The wall files it as enrichment hour.',
+  ]},
+  { when: { fairCollab: 'Lilith' }, weight: 4, text: [
+    'Lilith brought company. The recruits eat. MJ is the larger half of the arrangement.',
+  ]},
+]);
+
+registerPool('fair.photo.body', [
+  { when: {}, text: [
+    '{word.size} of her takes the session. Soft mass working. Pride is a calorie count.',
+    'She trains by eating. The collaborator keeps pace. Fair Day will notice.',
+    'Belly first in the frame. The wall files the extra like a ribbon.',
+  ]},
+]);
+
+registerPool('fair.boost.scene', [
+  { when: {}, text: [
+    '{fair.boost.setup} {fair.boost.body}',
+    '{fair.boost.body} {fair.boost.setup}',
+    '{fair.boost.setup}',
+  ]},
+]);
+
+registerPool('fair.boost.setup', [
+  { when: {}, text: [
+    'Fair Pride ticks up. The scale will remember who she trained with.',
+    'The partner leaves a habit in her. She will walk onto the platform heavier for it.',
+    'A session in the books. The platform will taste it later.',
+  ]},
+  { when: { boostTier: 'High' }, weight: 3, text: [
+    'High heat. The crowd at Fair Day will hear this session in the number.',
+  ]},
+  { when: { boostTier: 'Mid' }, weight: 2, text: [
+    'Solid work. Pride sits in her middle like a second helping she intends to keep.',
+  ]},
+  { when: { boostTier: 'Low' }, weight: 2, text: [
+    'A start. The wall has a pin. The number will want more sessions.',
+  ]},
+]);
+
+registerPool('fair.boost.body', [
+  { when: {}, text: [
+    'She files the session next to last year\'s rumor. This year is mass.',
+    'Darcy is a fact she is revising in private before she revises it in public.',
+    'Heat stays in her middle after the partner leaves. She likes the leftover.',
+  ]},
+]);
+
 function fairCtx(student, week, opts = {}) {
   return buildTextContext({
     subject: student,
@@ -236,4 +311,29 @@ export function renderCgMeasure(student, week = 1, opts = {}) {
     globals: { targetName: opts.targetName || 'a resident' },
   });
   return prefer('cg.measure.scene', ctx);
+}
+
+export function renderFairPhoto(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = fairCtx(student, week, {
+    ...opts,
+    globals: {
+      fairCollab: opts.collabKey || opts.fairCollab,
+      ...(opts.globals || {}),
+    },
+  });
+  return prefer('fair.photo.scene', ctx);
+}
+
+export function renderFairBoost(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = fairCtx(student, week, {
+    ...opts,
+    globals: {
+      fairCollab: opts.collabKey || opts.fairCollab,
+      boostTier: opts.boostTier,
+      ...(opts.globals || {}),
+    },
+  });
+  return prefer('fair.boost.scene', ctx);
 }

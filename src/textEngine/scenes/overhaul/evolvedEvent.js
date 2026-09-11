@@ -173,3 +173,43 @@ registerPool('evolved.event.turn', [
     'At this size the event is also a procession. Soft mass arriving, staying, being seen. Choose.',
   ]},
 ]);
+
+registerPool('evolved.event.result', [
+  { when: {}, text: [
+    'The door you opened fills. She eats through it. Soft mass answering in public.',
+    'Choice lands. She files it in her body. You stay until the extra of her has arrived.',
+    'She takes the path you named and makes it heavier. Asking was the feed.',
+  ]},
+  { when: { evolvedForm: 'sumo' }, weight: 4, text: [
+    'Corner or clay, she feeds the next number. Dana has more of her to move.',
+  ]},
+  { when: { evolvedForm: 'eating_competitor' }, weight: 4, text: [
+    'The plate goes. Training, she calls it. She means every pound.',
+  ]},
+  { when: { evolvedForm: 'feedee_creator' }, weight: 4, text: [
+    'Chat clocks the extra. She lets the camera hold it while she swallows.',
+  ]},
+  { when: { evolvedForm: 'chapter_hostess' }, weight: 4, text: [
+    'Sisters eat. She watches, then takes thirds like hosting is a second stomach.',
+  ]},
+  { when: { evolvedForm: 'state_fair_queen' }, weight: 4, text: [
+    'The number moves. She files it. Darcy is already a smaller rumor.',
+  ]},
+  { when: { evolvedForm: 'wife_lessons' }, weight: 4, text: [
+    'The lesson lands in the bread basket. Wanda already knew. MJ refills.',
+  ]},
+  { when: { evolvedForm: 'delivery_hive' }, weight: 4, text: [
+    'Tribute first. She eats what the floor sent up. Drivers already know the door.',
+  ]},
+  { when: { evolvedForm: 'ranked_feedee' }, weight: 4, text: [
+    'Focus bar, fullness bar. She treats the plate like a ranked opponent and wins it.',
+  ]},
+]);
+
+registerPool('evolved.event.ending', [
+  { when: {}, text: [
+    '{evolved.event.setup} The event closes. {word.size} of her is the record the week kept.',
+    'She leaves heavier than she arrived. She wants that witnessed. You witnessed it.',
+    'Done for now. The extra of her stays in the room after she does.',
+  ]},
+]);

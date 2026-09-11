@@ -46,8 +46,11 @@ import { renderContestFoodPopup, renderContestActionPopup, renderContestWeighIn2
 import { renderSumoOpening, renderSumoExchangeLine, renderSumoAftermath, renderSumoPayoff } from '../src/textEngine/scenes/sumoMatch/index.js';
 import { renderRecordingOpening, renderRecordingDirectionPopup, renderRecordingTakeResult } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
-import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure } from '../src/textEngine/scenes/overhaul/cgFair.js';
-import { renderHiveVisit } from '../src/textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from '../src/textEngine/scenes/overhaul/cgFair.js';
+import { renderHiveVisit, renderHivePhoto } from '../src/textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from '../src/textEngine/scenes/overhaul/cgChat.js';
+import { renderSessionNpc } from '../src/textEngine/scenes/overhaul/sessionNpc.js';
+import { renderWifeLessonTalkLine } from '../src/textEngine/scenes/wifeLessons/index.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
@@ -342,6 +345,67 @@ const hiveVisit = renderHiveVisit({
 }, 3);
 assert.ok(hiveVisit && !hiveVisit.includes('{unresolved}'));
 assert.equal(/You bring tribute directly to the Central Nest/i.test(hiveVisit), false);
+const hivePhoto = renderHivePhoto({
+  id: 8, name: 'Maya', lbs: 280, startLbs: 130, evolvedForm: 'delivery_hive',
+  relationship: 40, corruption: 1, fullness: 10, stomachCapacity: 120,
+}, 3);
+assert.ok(hivePhoto && !hivePhoto.includes('{unresolved}'));
+assert.equal(/Maya documents the Hive: conquered rooms/i.test(hivePhoto), false);
+assert.equal(/\[HiveStatePhoto/i.test(hivePhoto), false);
+
+let sawSumoResult = false;
+for (let i = 0; i < 40; i++) {
+  const eventResult = renderEvolvedEventProse('LEGACY RESULT SHOULD NOT APPEAR', {
+    id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
+  }, 3, { formId: 'sumo', stageIdx: 0, phaseIdx: 0, preferResult: true, v2DepthChance: 0 });
+  assert.ok(eventResult && !eventResult.includes('{unresolved}'));
+  assert.equal(eventResult.includes('LEGACY RESULT SHOULD NOT APPEAR'), false, 'composed result should replace leftover log lines');
+  if (/Dana|corner|clay|feeds the next number/i.test(eventResult)) sawSumoResult = true;
+}
+assert.ok(sawSumoResult, 'sumo result should surface form-keyed copy across pooled renders');
+
+const eventEnding = renderEvolvedEventProse('LEGACY ENDING SHOULD NOT APPEAR', {
+  id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
+}, 3, { formId: 'sumo', stageIdx: 0, phaseIdx: 0, preferEnding: true, v2DepthChance: 0 });
+assert.ok(eventEnding && !eventEnding.includes('{unresolved}'));
+assert.equal(eventEnding.includes('LEGACY ENDING SHOULD NOT APPEAR'), false);
+
+const cgPost = renderCgChatPriyaPost(cgPriya, 3, 'Driven');
+assert.ok(cgPost && !cgPost.includes('{unresolved}'));
+assert.equal(/Thigh column says/i.test(cgPost), false);
+const cgRes = renderCgChatResident({
+  id: 0, name: 'Brittany', lbs: 210, startLbs: 118, relationship: 20, corruption: 1,
+  fullness: 10, stomachCapacity: 100,
+}, 3, 'ahead');
+assert.ok(cgRes && !cgRes.includes('{unresolved}'));
+assert.equal(/Thigh column says you still have work/i.test(cgRes), false);
+const cgFollow = renderCgChatFollowup(cgPriya, 3, 'Frenzied', true);
+assert.ok(cgFollow && !cgFollow.includes('{unresolved}'));
+const cgRa = renderCgChatRaReply(cgPriya, 3, 'encourage', { residentName: 'Cassidy', bodypart: 'thighs' });
+assert.ok(cgRa && !cgRa.includes('{unresolved}'));
+assert.equal(/blob-like body/i.test(cgRa), false);
+const cgReact = renderCgMeasureReaction(cgPriya, 3, 'priya_larger', 'waist', { name: 'Cassidy' });
+assert.ok(cgReact && !cgReact.includes('{unresolved}'));
+assert.equal(/\[MeasureReaction_/i.test(cgReact), false);
+
+const sessionArrive = renderSessionNpc('arrival', recStudent, 3, 2);
+assert.ok(sessionArrive && !sessionArrive.includes('{unresolved}'));
+assert.equal(/You were about to order, right\? I was already heading over/i.test(sessionArrive), false);
+const sessionExtra = renderSessionNpc('extra', recStudent, 3, 4);
+assert.ok(sessionExtra && !sessionExtra.includes('{unresolved}'));
+
+const fairPhoto = renderFairPhoto(mj, 4, { collabKey: 'Brittany', stageIdx: 0 });
+assert.ok(fairPhoto && !fairPhoto.includes('{unresolved}'));
+assert.equal(/\[FT_/i.test(fairPhoto), false);
+const fairBoost = renderFairBoost(mj, 4, { collabKey: 'Kylie', boostTier: 'High', stageIdx: 0 });
+assert.ok(fairBoost && !fairBoost.includes('{unresolved}'));
+assert.equal(/\[FBS_/i.test(fairBoost), false);
+
+const wlGreet = renderWifeLessonTalkLine('LEGACY GREETING SHOULD NOT APPEAR', 'Wanda', 2, mj, 3, { slot: 'greeting', v2DepthChance: 0 });
+assert.ok(wlGreet && !wlGreet.includes('{unresolved}'));
+assert.equal(wlGreet.includes('LEGACY GREETING SHOULD NOT APPEAR'), false);
+assert.ok(/Wanda|butter|bread|table|kitchen/i.test(wlGreet), `wl greeting should be composed, got: ${String(wlGreet).slice(0, 160)}`);
+
 const collabPay = renderCollabPayoff(0, 8, 6, { id: 0, name: 'Brittany', lbs: 200 }, recStudent, 3);
 assert.ok(collabPay && !collabPay.includes('{unresolved}'));
 assert.equal(/pounds on Kylie/i.test(collabPay), false);

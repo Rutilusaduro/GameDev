@@ -29,13 +29,18 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
       evolvedForm: formId,
       ...(opts.globals || {}),
     },
-    ...opts,
   });
   const chance = opts.v2DepthChance ?? 0.3;
-  if (opts.preferComposed && student) {
-    const scene = render('{evolved.event.scene}', ctx)?.trim();
-    if (scene && !scene.includes('{unresolved}')) {
-      return appendV2Depth(scene, 'evolved', ctx, chance);
+  if (student) {
+    const slot = opts.preferComposed ? 'evolved.event.scene'
+      : opts.preferResult ? 'evolved.event.result'
+      : opts.preferEnding ? 'evolved.event.ending'
+      : null;
+    if (slot) {
+      const scene = render(`{${slot}}`, ctx)?.trim();
+      if (scene && !scene.includes('{unresolved}')) {
+        return appendV2Depth(scene, 'evolved', ctx, chance);
+      }
     }
   }
   const line = typeof text === 'string' ? text.trim() : '';

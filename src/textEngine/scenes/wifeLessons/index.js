@@ -66,17 +66,20 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
   return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
 }
 
-/** 1-on-1 talk line — V2 depth on merged legacy/depth prose. */
+/** 1-on-1 talk line — composed pool first, leftover line only if unresolved. */
 export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 1, opts = {}) {
-  if (!line?.trim()) return '';
   const ctx = buildTextContext({
     subject: mjStudent,
     week,
     globals: { wlStage: stage, wlPerson: person, ...(opts.globals || {}) },
-    ...opts,
   });
-  const base = line.trim();
-  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
+  const slot = opts.slot === 'greeting' ? 'wl.talk.greeting' : 'wl.talk.reply';
+  const composed = render(`{${slot}}`, ctx)?.trim();
+  if (composed && !composed.includes('{unresolved}')) {
+    return appendV2Depth(composed, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
+  }
+  if (!line?.trim()) return '';
+  return appendV2Depth(line.trim(), 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
 }
 
 export const WIFE_LESSONS_MIGRATION = {

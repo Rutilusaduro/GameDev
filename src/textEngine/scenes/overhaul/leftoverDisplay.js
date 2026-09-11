@@ -30,6 +30,33 @@ registerPool('hive.visit.body', [
   ]},
 ]);
 
+registerPool('hive.photo.scene', [
+  { when: {}, text: [
+    '{hive.photo.setup} {hive.photo.body}',
+    '{hive.photo.body} {hive.photo.setup}',
+    '{hive.photo.setup}\n\n{hive.photo.body}',
+  ]},
+]);
+
+registerPool('hive.photo.setup', [
+  { when: {}, text: [
+    'Observation shot. Maya holds the nest still long enough to archive it.',
+    'Hive State, filed. Lavender light, tribute bags, the extra of her as the center.',
+    'She documents claimed rooms the way some people document a harvest.',
+  ]},
+]);
+
+registerPool('hive.photo.body', [
+  { when: {}, text: [
+    'Conquered floors. Delivery routes. Soft bodies in the corners the camera cannot crop.',
+    'Resonance sits in the lavender. She is the geography. The photo is a receipt.',
+    '{word.size} of her fills the frame first. The nest is only the furniture around it.',
+  ]},
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'At this size the nest is a map and she is the legend. The camera stays put. She does not get up.',
+  ]},
+]);
+
 registerPool('collab.stageup.scene', [
   { when: {}, text: [
     'The number crosses on stream. Chat finds it. She lets the camera hold the extra.',
@@ -60,6 +87,16 @@ export function renderHiveVisit(student, week = 1, opts = {}) {
     globals: { featureId: 'delivery_hive', ...(opts.globals || {}) },
   });
   return prefer('hive.visit.scene', ctx);
+}
+
+export function renderHivePhoto(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { featureId: 'delivery_hive', ...(opts.globals || {}) },
+  });
+  return prefer('hive.photo.scene', ctx);
 }
 
 export function renderCollabStageUpPool(kylie, partner, week = 1, stageIdx = 0) {

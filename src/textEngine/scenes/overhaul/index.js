@@ -10,6 +10,9 @@ import './evolvedEvent.js';
 import './recording.js';
 import './cgFair.js';
 import './leftoverDisplay.js';
+import './cgChat.js';
+import './sessionNpc.js';
+import './wlTalk.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [
