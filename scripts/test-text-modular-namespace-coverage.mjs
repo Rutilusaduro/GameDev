@@ -46,6 +46,7 @@ const requiredFragments = [
   'deviceUse/deviceLateModularFragments.js',
   'talkEncourageModularFragments.js',
   'streamEndStreamModularFragments.js',
+  'talkCommandFinishModularFragments.js',
   'fairQueen/trainingModularFragments.js',
   'fairQueen/photoBoostModularFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',

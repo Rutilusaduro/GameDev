@@ -56,6 +56,7 @@ import './talkRefusal.js';
 import './talkRefusalDepth.js';
 import './talkCommandFinish.js';
 import './talkCommandFinishDepth.js';
+import './talkCommandFinishModularFragments.js';
 import './talkDiscontent.js';
 import './talkDiscontentDepth.js';
 import './intimacy/index.js';

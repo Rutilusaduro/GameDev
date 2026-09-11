@@ -57,6 +57,7 @@ const pairs = [
   ['deviceUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
   ['deviceCampusUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
   ['talkEncourage.js', 'talkEncourageModularFragments.js'],
+  ['talkCommandFinishDepth.js', 'talkCommandFinishModularFragments.js'],
   ['raPivotProseDepthPass112.js', 'streamEndStreamModularFragments.js'],
 ];
 

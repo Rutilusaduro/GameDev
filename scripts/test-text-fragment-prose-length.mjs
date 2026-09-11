@@ -35,6 +35,8 @@ const POOLS = [
   'device.campus.scene.meshAir',
   'talk.encourage.lateHallAir',
   'stream.scene.signoffAir',
+  'talk.command_finish.lateFloor',
+  'stream.scene.tapOutBreath',
 ];
 
 for (const key of POOLS) {

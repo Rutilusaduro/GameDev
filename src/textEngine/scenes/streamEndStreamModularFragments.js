@@ -47,3 +47,50 @@ for (const tier of ['excellent', 'good', 'average', 'poor', 'verypoor']) {
     },
   ]);
 }
+
+registerPool('stream.scene.tapOutBreath', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She taps out on camera — breath shallow, belly vast, chat screaming FEED HER anyway.',
+      'Fullness wins the round; ring light catches the tremor in her hands before the overlay cuts.',
+      'Late-semester tap-outs sound like honesty: too full, too vast, still weirdly proud.',
+      'The challenge ends; appetite does not — growth as lifestyle even when stamina surrenders.',
+      'Mic picks up a shaky exhale; wellness framing dies while the VOD keeps rolling.',
+    ],
+  },
+]);
+
+registerPool('stream.scene.tapOutChat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Mods spam hearts; clip requests land before she can sit back.',
+      'Chat types she\'s done; donations argue she could do one more bite.',
+      'Timeline floods with belly emojis — parasocial hunger outlasting her stamina.',
+      'Someone posts a delivery link; she laughs once and shakes her head, still full.',
+      'The tap-out is content; the afterglow is appetite metrics ticking upward.',
+    ],
+  },
+]);
+
+const TAP_LATE = '{stream.scene.tapOutBreath} {stream.scene.tapOutChat|prefix: }';
+
+for (const reason of ['stamina', 'fullness', 'performance']) {
+  registerModuleVariants(`stream.tapOut.${reason}`, [
+    {
+      when: { weekMin: 22 },
+      weight: 7,
+      priority: 7,
+      text: [TAP_LATE],
+    },
+    {
+      when: { weekMin: 14 },
+      weight: 4,
+      priority: 4,
+      text: [TAP_LATE],
+    },
+  ]);
+}

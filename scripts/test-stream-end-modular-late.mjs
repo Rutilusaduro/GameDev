@@ -28,4 +28,22 @@ for (const tier of ['excellent', 'good', 'average']) {
   assert.ok(hit, `expected modular stream.endStream.${tier} @ week ${week}`);
 }
 
+const TAP_FP = /tapOutBreath|tapOutChat|ring light|parasocial|growth as lifestyle/i;
+for (const reason of ['fullness', 'stamina']) {
+  let tapHit = false;
+  for (let s = 0; s < 16; s += 1) {
+    const ctx = buildTextContext({
+      subject: destiny,
+      week,
+      seed: 66100 + s,
+      globals: { featureId: 'destiny_stream' },
+    });
+    const line = renderStreamBeat(`{stream.tapOut.${reason}}`, ctx, { v2DepthChance: 0 })?.trim() || '';
+    assert.ok(line.length > 55, `short stream.tapOut.${reason}`);
+    assert.ok(!line.includes('{unresolved}'), `unresolved stream.tapOut.${reason}`);
+    if (TAP_FP.test(line)) tapHit = true;
+  }
+  assert.ok(tapHit, `expected modular stream.tapOut.${reason} @ week ${week}`);
+}
+
 console.log('test-stream-end-modular-late: ok');
