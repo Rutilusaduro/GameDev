@@ -17,7 +17,7 @@ const LEGACY_OPENERS = [
   /^I still can't quite believe I consented/i,
 ];
 
-const MODULAR_FP = /Clipboard margins|Observation beats|datapoint|Late-semester entries|journal stops pretending|appetite curves|fieldNotes/i;
+const MODULAR_FP = /Clipboard margins|Observation beats|datapoint|Late-semester entries|journal stops pretending|appetite curves|fieldNotes|IRB paperwork|Pen scratches|Compliance reads|body admits|consent dressed|cooperates beautifully|blushes when praised/i;
 
 const brittany = { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 280 };
 const swimmer = { id: 2, name: 'Cassidy', archetype: 'swimmer', lbs: 260 };

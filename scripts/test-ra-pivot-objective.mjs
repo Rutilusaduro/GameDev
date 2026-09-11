@@ -84,6 +84,10 @@ execSync('node scripts/test-homeroom-events-stub-debt.mjs', { cwd: root, stdio: 
 
 execSync('node scripts/test-homeroom-conference-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-fair-day-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-modular-pool-depth.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });

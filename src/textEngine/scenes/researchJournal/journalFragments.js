@@ -11,6 +11,8 @@ registerPool('journal.scene.fieldNotes', [
       'Clipboard margins fill with appetite curves — neat handwriting, hungry data.',
       'You date the entry before the ink dries; the hall keeps feeding whether IRB notices or not.',
       'Observation beats intervention tonight — you log what the body admits before the mind does.',
+      'IRB paperwork can wait; the resident\'s appetite cannot — you note both without irony.',
+      'Pen scratches keep time with chewing; the hall hums approval through the wall.',
     ],
   },
 ]);
@@ -23,6 +25,8 @@ registerPool('journal.scene.subjectFocus', [
       'She softens on camera and off it; the journal catches both versions without judgment.',
       'Weight gain reads as compliance when you frame it as wellness — she cooperates beautifully.',
       'Every pound is a datapoint; every sigh is consent dressed as fatigue.',
+      'She blushes when praised for finishing; you write down the flush as data.',
+      'Compliance reads as wellness on the form; hunger reads as honesty in the room.',
     ],
   },
 ]);

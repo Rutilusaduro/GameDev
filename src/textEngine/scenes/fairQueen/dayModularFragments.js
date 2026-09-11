@@ -9,6 +9,21 @@ registerPool('fair.day.carnivalAir', [
       'Cotton candy and fryer oil hang in the air — the fair owns the whole weekend.',
       'Crowd noise swells; every glance measures appetite like a ribbon category.',
       'Stage lights and funnel-cake steam make the weigh-in line feel ceremonial.',
+      'Hay-scent and diesel braid with fried sugar until the midway feels like a second dorm.',
+      'Ribbon categories blur together; everyone pretends the scale is the main attraction.',
+    ],
+  },
+]);
+
+registerPool('fair.day.crowdBeat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Phones rise in unison when Mary Jane steps toward the platform — hunger as spectacle.',
+      'The announcer leans into the microphone like weight gain is county entertainment.',
+      'Strangers cheer for softness; the hall trained them to call it wellness.',
+      'Laughter ripples when her belt sighs; she smiles like the joke is affectionate.',
     ],
   },
 ]);
@@ -21,11 +36,13 @@ registerPool('fair.day.mjPride', [
       'Mary Jane stands taller in the bustle — belly soft, smile deliberate, crown optional.',
       'She reads the crowd the way she reads ovens: who is hungry, who is ready.',
       'Pride sits on her hips; she wears it like a sash that keeps getting wider.',
+      'She squeezes your hand once — coach, partner, co-conspirator — before the number lands.',
+      'Every pound on display feels like policy she chose on purpose.',
     ],
   },
 ]);
 
-const DAY_SKELETON = '{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: }';
+const DAY_SKELETON = '{fair.day.carnivalAir|prefix:} {fair.day.crowdBeat|prefix: } {fair.day.mjPride|prefix: }';
 
 const DAY_POOLS = [
   'fair.day.weighIn.open',
@@ -42,6 +59,12 @@ const DAY_POOLS = [
 
 for (const key of DAY_POOLS) {
   registerModuleVariants(key, [
+    {
+      when: { weekMin: 20 },
+      weight: 6,
+      priority: 5,
+      text: [DAY_SKELETON],
+    },
     {
       when: { weekMin: 16 },
       weight: 4,

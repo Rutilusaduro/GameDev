@@ -18,7 +18,7 @@ const MODULAR_MARKERS = [
   /smells like food|Ambient noise|Fabric strains|Every choice tonight|Hunger hums/i,
   /yeasty warmth|Fat is what makes a home|Steam and sweetness|Table groans under every favorite/i,
   /Oven heat|Calloway|wide tables groan|clipboard stays closed/i,
-  /Cotton candy|Mary Jane stands taller|Pride sits on her hips|Crowd noise swells/i,
+  /Cotton candy|Mary Jane stands taller|Pride sits on her hips|Crowd noise swells|Phones rise|Hay-scent|co-conspirator|funnel-cake/i,
   /Clipboard margins|Late-semester entries|datapoint|journal stops pretending/i,
   /cart squeaks|Rae arrives|Clipboard, timer|session clock starts/i,
   /butter and suspicion|wellness framing|Floor check-in energy/i,
