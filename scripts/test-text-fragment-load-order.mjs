@@ -54,6 +54,7 @@ const pairs = [
   ['unlockScene/index.js', 'unlockScene/unlockFragments.js'],
   ['hallBlueprint/index.js', 'hallBlueprint/blueprintModularFragments.js'],
   ['hallBlueprint/index.js', 'hallBlueprint/hallAmbianceModularFragments.js'],
+  ['origin/index.js', 'origin/originResidentModularFragments.js'],
   ['session/index.js', 'session/blobIntroFragments.js'],
   ['session/index.js', 'session/immobileRedirectFragments.js'],
   ['homeroom/index.js', 'homeroom/batchBakerFragments.js'],

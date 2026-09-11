@@ -2,13 +2,12 @@
 // Wife Lessons (Flabwife) — engine bridge from legacy WL_LESSONS / WL_DIALOGUES.
 import { registerPool, render } from '../../engine.js';
 import { registerDecomposedPool } from '../decomposePools.js';
-import { wlTalkTailBeat } from '../evolved/proseTails.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { wifeLessonsV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/wifeLessonsData.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
-import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
+import { lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 const DAUGHTERS = new Set(['Emma', 'Chloe', 'Kezia', 'Lila']);
 
@@ -22,18 +21,6 @@ function registerTalkLine(poolKey, line) {
   const bodyKey = `${poolKey}.body`;
   registerDecomposedPool(bodyKey, prose);
   registerPool(poolKey, [
-    {
-      when: legacyBridgeWhen(),
-      weight: 2,
-      text: [
-        (ctx) => {
-          const rendered = render(`{${bodyKey}}`, ctx)?.trim();
-          return rendered && !rendered.includes('{unresolved}') ? rendered : prose;
-        },
-        wlTalkTailBeat(poolKey, 0),
-        wlTalkTailBeat(poolKey, 1),
-      ],
-    },
     lintWildcardVariant('{wl.talk.warmOpen|prefix:} {wl.talk.raPresence|prefix: }'),
   ]);
 }
@@ -58,18 +45,6 @@ function registerLessonBeat(poolKey, prose) {
   const bodyKey = `${poolKey}.body`;
   registerDecomposedPool(bodyKey, text);
   registerPool(poolKey, [
-    {
-      when: legacyBridgeWhen(),
-      weight: 2,
-      text: [
-        (ctx) => {
-          const rendered = render(`{${bodyKey}}`, ctx)?.trim();
-          return rendered && !rendered.includes('{unresolved}') ? rendered : text;
-        },
-        wlTalkTailBeat(poolKey, 0),
-        wlTalkTailBeat(poolKey, 1),
-      ],
-    },
     lintWildcardVariant('{wl.lesson.aroma|prefix:} {wl.lesson.mjDoctrine|prefix: } {wl.lesson.circleEat|prefix: }'),
   ]);
 }

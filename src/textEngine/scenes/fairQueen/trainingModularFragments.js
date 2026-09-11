@@ -69,6 +69,16 @@ registerModuleVariants('fair.training.Brittany', [
     priority: 5,
     text: [TRAINING_SKELETON],
   },
+  {
+    when: { mjStageBucket: ['heavy'], cStageBucket: ['heavy'] },
+    weight: 3,
+    text: [
+      (ctx) => {
+        const n = ctx.subject?.name || 'Mary Jane';
+        return `${n} and Brittany finish the last tray together — two champions treating fullness like a handshake.`;
+      },
+    ],
+  },
 ]);
 
 registerModuleVariants('fair.training.Renee', [

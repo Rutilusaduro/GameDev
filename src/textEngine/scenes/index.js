@@ -320,6 +320,7 @@ import './evolved/outfitFragments.js';
 import './evolved/evolutionBlurbFragments.js';
 import './customStudent/index.js';
 import './origin/index.js';
+import './origin/originResidentModularFragments.js';
 import './polishDepthPass40.js';
 import './v2/index.js';
 import './salonGallerySceneDepth.js';
