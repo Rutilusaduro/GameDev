@@ -4,7 +4,8 @@ import { registerDecomposedPool } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
-import { FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../../../gameData/evolvedForms.js';
+import { FEEDER_SUBJECT_JOURNALS } from '../../../gameData/feederSubjectJournals.js';
+import { NADIA_SUBJECT_JOURNALS } from '../../../gameData/nadiaSubjectJournals.js';
 import { journalTailBeat } from '../evolved/proseTails.js';
 
 function registerJournalPage(poolKey, prose, seed = poolKey) {

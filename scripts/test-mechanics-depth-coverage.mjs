@@ -53,6 +53,11 @@ const DATA_ONLY = new Set([
   'textFlagStore.js',
   'textLintMeta.js',
   'wlMomDialogueDepth.js',
+  'homeroomEvents.js',
+  'feederSubjectJournals.js',
+  'wifeLessonsData.js',
+  'rankedSessionData.js',
+  'nadiaSubjectJournals.js',
 ]);
 
 const unwiredPayout = unwired.filter((rel) => !DATA_ONLY.has(rel));

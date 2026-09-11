@@ -10,6 +10,16 @@ import { RA_RANKS } from '../src/gameData/content.js';
 const root = join(import.meta.dirname, '..');
 const read = (rel) => readFileSync(join(root, rel), 'utf8');
 
+/** Monolith + MIGRATION.md extracts — prose gates that span extracted gameData files. */
+function gameDataCorpus() {
+  return [
+    'src/gameData/evolvedForms.js',
+    'src/gameData/feederSubjectJournals.js',
+    'src/gameData/homeroomEvents.js',
+    'src/gameData/nadiaSubjectJournals.js',
+  ].map(read).join('\n');
+}
+
 function walkSrcFiles(dir = join(root, 'src')) {
   const out = [];
   for (const ent of readdirSync(dir, { withFileTypes: true })) {
@@ -1565,7 +1575,7 @@ check('narrative-residents-not-students', () => {
 });
 
 check('nadia-feedee-blob-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const diary = read('src/textEngine/scenes/diary.js');
   const content = read('src/gameData/content.js');
   assert.match(evolved, /Resident Recruitment Failure/);
@@ -1606,14 +1616,16 @@ check('arc-subject-resident-framing', () => {
 
 check('wife-lessons-hunt-framing', () => {
   const evolved = read('src/gameData/evolvedForms.js');
-  assert.match(evolved, /as the daughters led the lesson/);
-  assert.match(evolved, /their daughters proudly serving/);
-  assert.match(evolved, /my daughters seemed to enjoy/);
-  assert.match(evolved, /finally grew a stomach worth feeding/);
-  assert.doesNotMatch(evolved, /as the girls led the lesson|the girls proudly serving|like a real girl|the girls seemed to enjoy them/i);
-  assert.doesNotMatch(evolved, /Both girls have reached|Both girls hit|Both girls have hit/i);
-  const wlNpcs = evolved.match(/export const WIFE_LESSONS_NPCS = \{[\s\S]*?\n\};/)?.[0] ?? '';
-  assert.ok(wlNpcs, 'evolvedForms.js must contain WIFE_LESSONS_NPCS block');
+  const wlData = read('src/gameData/wifeLessonsData.js');
+  const wlProse = evolved + '\n' + wlData;
+  assert.match(wlProse, /as the daughters led the lesson/);
+  assert.match(wlProse, /their daughters proudly serving/);
+  assert.match(wlProse, /my daughters seemed to enjoy/);
+  assert.match(wlProse, /finally grew a stomach worth feeding/);
+  assert.doesNotMatch(wlProse, /as the girls led the lesson|the girls proudly serving|like a real girl|the girls seemed to enjoy them/i);
+  assert.doesNotMatch(wlProse, /Both girls have reached|Both girls hit|Both girls have hit/i);
+  const wlNpcs = wlData.match(/export const WIFE_LESSONS_NPCS = \{[\s\S]*?\n\};/)?.[0] ?? '';
+  assert.ok(wlNpcs, 'wifeLessonsData.js must contain WIFE_LESSONS_NPCS block');
   assert.match(wlNpcs, /Emma is 19/);
   assert.match(wlNpcs, /Claire is 18/);
   assert.match(wlNpcs, /packed lunches/);
@@ -1640,7 +1652,7 @@ check('content-stage-journal-framing', () => {
   assert.match(content, /the fastest on this track/);
   assert.match(content, /wider than some teammates' whole bodies/);
   assert.doesNotMatch(content, /skinny for a girl who grew up|the girl with jam for every mood|intervention girls came|the fastest girl on this track|the fastest girl on the track|wider than some girls' whole bodies/);
-  const journals = read('src/gameData/evolvedForms.js');
+  const journals = read('src/gameData/feederSubjectJournals.js');
   assert.match(journals, /ultimate hall appetite case study/);
   assert.match(journals, /letting the RA stuff me like this/);
   assert.doesNotMatch(journals, /appetite psychology|letting a resident stuff me like this/);
@@ -1657,7 +1669,7 @@ check('early-portrait-journal-framing', () => {
   const dreams = read('src/textEngine/scenes/v2/dreams/depth.js');
   assert.match(dreams, /feeds her reflection in the glass/);
   assert.doesNotMatch(dreams, /feeds the girl in the glass/);
-  const journals = read('src/gameData/evolvedForms.js');
+  const journals = read('src/gameData/feederSubjectJournals.js');
   assert.match(journals, /floor program sounded harmless/);
   assert.match(journals, /hall meal season/);
   assert.match(journals, /Straight-bodied frames like mine adapt quickly/);
@@ -1743,11 +1755,7 @@ check('campus-no-possession-framing', () => {
 });
 
 check('feeder-journal-no-placeholders', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
-  const journals = evolved.slice(
-    evolved.indexOf('export const FEEDER_SUBJECT_JOURNALS = {'),
-    evolved.indexOf('export const NADIA_SUBJECT_JOURNALS'),
-  );
+  const journals = read('src/gameData/feederSubjectJournals.js');
   assert.doesNotMatch(journals, /\[Name\]/);
   assert.match(journals, /my RA|My RA/);
 });
@@ -1904,7 +1912,7 @@ check('homeroom-resident-framing', () => {
   const activity = read('src/textEngine/scenes/homeroom/homeroomActivityDepth.js');
   assert.match(activity, /the residents have been waiting/);
   assert.doesNotMatch(activity, /the girls have been waiting/i);
-  const homeroom = read('src/gameData/evolvedForms.js');
+  const homeroom = gameDataCorpus();
   assert.match(homeroom, /The residents know what this is/);
   assert.match(homeroom, /Keep it to the residents/);
   assert.match(homeroom, /wellness-program aligned/);
@@ -2921,6 +2929,8 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(maxPass >= 120, `expected prose pass index >=120, max=${maxPass} (n=${passes.length} files)`);
   assert.ok(existsSync(join(root, 'scripts/test-ra-pivot-objective.mjs')));
   assert.ok(existsSync(join(root, 'scripts/test-text-spot-render.mjs')));
+  assert.ok(existsSync(join(root, 'src/gameData/homeroomEvents.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/feederSubjectJournals.js')));
 });
 
 // ── Report ─────────────────────────────────────────────────────

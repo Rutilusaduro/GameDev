@@ -1,6 +1,6 @@
 // Wife Lessons — supplemental lesson beat variants (lint variety floor).
 import { registerModuleVariants } from '../../engine.js';
-import { WL_LESSONS } from '../../../gameData/evolvedForms.js';
+import { WL_LESSONS } from '../../../gameData/wifeLessonsData.js';
 
 for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
   if (!Array.isArray(lessons)) continue;

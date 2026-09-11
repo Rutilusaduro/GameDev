@@ -28,6 +28,9 @@ mustExist('src/components/HallBlueprint.jsx');
 mustExist('src/gameData/hallBlueprint.js');
 mustExist('src/gameData/hallAmbiance.js');
 mustExist('src/gameData/homeroomEvents.js');
+mustExist('src/gameData/feederSubjectJournals.js');
+mustExist('src/gameData/wifeLessonsData.js');
+mustExist('src/gameData/rankedSessionData.js');
 
 const hallLounge = readFileSync(join(root, 'src/views/HallLoungeView.jsx'), 'utf8');
 assert.match(hallLounge, /HallBlueprint/, 'Hall lounge view should render blueprint UI');
@@ -50,7 +53,9 @@ const evoPath = join(root, 'src/gameData/evolvedForms.js');
 const evoLines = readFileSync(evoPath, 'utf8').split('\n').length;
 const debtThreshold = 4000;
 if (evoLines > debtThreshold) {
-  console.warn(`text-migration-debt: evolvedForms.js still ${evoLines} lines (target <=${debtThreshold}; homeroomEvents extracted)`);
+  console.warn(`text-migration-debt: evolvedForms.js still ${evoLines} lines (target <=${debtThreshold}; homeroom/wifeLessons/rankedSession extracted)`);
+} else {
+  console.log(`text-migration-debt: evolvedForms.js ${evoLines} lines (<= ${debtThreshold})`);
 }
 
 console.log('test-ra-pivot-objective: ok (mechanics, blueprint, ambiance registry, text bridges, text:lint)');

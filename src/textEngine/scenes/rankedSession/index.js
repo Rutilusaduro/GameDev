@@ -1,7 +1,7 @@
 // Ranked feedee session — engine bridge (Destiny evolved path).
 import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
-import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/evolvedForms.js';
+import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/rankedSessionData.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { rankedSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import './legacyPools.js';

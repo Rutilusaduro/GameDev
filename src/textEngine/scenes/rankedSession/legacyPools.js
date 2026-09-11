@@ -1,6 +1,6 @@
 // Ranked feedee session — Rae NPC + payoff (legacy evolvedForms → pools).
 import { registerPool, render } from '../../engine.js';
-import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/evolvedForms.js';
+import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/rankedSessionData.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { rankedSessionTailBeat } from '../evolved/proseTails.js';
 
