@@ -1,6 +1,7 @@
 // Systems expected to participate in the mechanics depth layer (~50% richer secondary reads).
 export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'feeding', file: 'feedingSession.js' },
+  { id: 'gain', file: 'gainSystem.js' },
   { id: 'relationshipEcology', file: 'relationshipEcology.js' },
   { id: 'hunger', file: 'hungerAddiction.js' },
   { id: 'talk', file: 'talkSystem.js' },
@@ -14,4 +15,12 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'hallLounge', file: 'hallLoungeSkills.js' },
   { id: 'hallBlueprint', file: 'hallBlueprint.js' },
   { id: 'hallAmbiance', file: 'hallAmbiance.js' },
+  { id: 'pharmacist', file: 'pharmacist.js' },
+  { id: 'campusSaturation', file: 'campusSaturation.js' },
+  { id: 'intimacy', file: 'intimacyGating.js' },
+  { id: 'opposition', file: 'opposition.js' },
+  { id: 'oppositionIntegration', file: 'oppositionIntegration.js' },
+  { id: 'growthEvents', file: 'growthEvents.js' },
+  { id: 'competitiveGainer', file: 'competitiveGainerState.js' },
+  { id: 'inventionUpgrades', file: 'inventionUpgrades.js' },
 ];

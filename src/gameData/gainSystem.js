@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // STOMACH & GAINING SYSTEM
+import { depthDigestLbsBonus, depthForceFeedReachBonus } from './mechanicsDepthLayer.js';
 // Calorie/stomach simulation model. Most general feeding actions add
 // CALORIES + FULLNESS rather than direct weight; weight is gained at
 // the end of each week through digestion. Evolved activities and
@@ -52,7 +53,8 @@ export const forceFeedChance = (s, fullnessCost, reachLevel = 1) => {
   const overFraction = Math.max(0, ((s.fullness || 0) - cap) / cap);
   const sizeFraction = fullnessCost / cap;
   const c = GAIN_CONFIG.forceFeed;
-  const chance = c.base + (reachLevel - 1) * c.perReachLevel - overFraction * c.overPenalty - sizeFraction * 0.3;
+  const chance = c.base + (reachLevel - 1) * c.perReachLevel + depthForceFeedReachBonus(reachLevel)
+    - overFraction * c.overPenalty - sizeFraction * 0.3;
   return Math.min(c.max, Math.max(c.min, chance));
 };
 
@@ -79,7 +81,8 @@ export const digestStudent = (s, rng = Math.random) => {
   const surplus = s.consumedCalories || 0;
   const metabolicMult = 1 + (s.metabolicSlowdown || 0);
   const digestMult = s.weeklyDigestMult ?? 1;
-  const lbsGained = surplus > 0 ? Math.max(0, Math.round(calsToLbs(surplus) * metabolicMult * digestMult)) : 0;
+  let lbsGained = surplus > 0 ? Math.max(0, Math.round(calsToLbs(surplus) * metabolicMult * digestMult)) : 0;
+  if (lbsGained > 0) lbsGained += depthDigestLbsBonus(lbsGained);
   // stuffed check happens against the fullness she's carrying into the night
   const stuffed = (s.fullness || 0) > cap;
   let stuffedStreak = stuffed ? (s.stuffedStreak || 0) + 1 : 0;

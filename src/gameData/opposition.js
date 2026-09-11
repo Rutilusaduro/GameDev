@@ -14,6 +14,7 @@ import {
 import {
   counterGateReason, getEvolvedOpMessage, normalizeCounterId, proxyUnlockFlags, recordCounterType, wellnessScrutinyBonus,
 } from './oppositionIntegration.js';
+import { depthOppositionGainMult } from './mechanicsDepthLayer.js';
 
 export { normalizeCounterId };
 
@@ -195,7 +196,7 @@ export function applyLatentAppetiteWeek(students, opposition, rnd = Math.random)
 export function getOppositionGainMult(opposition) {
   const debuffs = opposition?.aib?.activeDebuffs;
   if (!debuffs || debuffs.gainMultWeeks <= 0) return 1;
-  return debuffs.gainMult ?? 1;
+  return depthOppositionGainMult(debuffs.gainMult ?? 1);
 }
 
 export function getAibScrutinyMod(opposition, students = []) {

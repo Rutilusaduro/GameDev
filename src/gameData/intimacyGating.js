@@ -3,6 +3,7 @@
 // the generated intimacyData.js so regeneration never clobbers it.
 import { getStage } from './stages.js';
 import { getImmobilityTier } from './immobilityArrival.js';
+import { depthPinBlackoutChance, depthPinRelBonus } from './mechanicsDepthLayer.js';
 
 // Scenes that need standing / mobile posture. Once she's past mobility
 // (stage 10+) she can't be pinned to a wall, pull you in, straddle a lap she
@@ -33,8 +34,9 @@ export function choiceCanPin(sceneId, choiceId, student) {
 
 // Blackout odds: heavy enough to be dangerous at stage 10, far worse at 11.
 export function pinBlackoutChance(student) {
-  return getStage(student?.lbs ?? 0).id >= 11 ? 0.35 : 0.20;
+  const base = getStage(student?.lbs ?? 0).id >= 11 ? 0.35 : 0.20;
+  return depthPinBlackoutChance(base);
 }
 
 // She does not forget a man who let her put him out for a week.
-export const PIN_PASSOUT_REL_BONUS = 8;
+export const PIN_PASSOUT_REL_BONUS = depthPinRelBonus(8);

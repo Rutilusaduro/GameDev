@@ -10,7 +10,8 @@ for (const sys of MECHANICS_DEPTH_SYSTEMS) {
   const path = join(root, 'src/gameData', sys.file);
   const src = readFileSync(path, 'utf8');
   const wired = /mechanicsDepthLayer/.test(src)
-    || (sys.id === 'hallLounge' && /hallBlueprint/.test(src));
+    || (sys.id === 'hallLounge' && /hallBlueprint/.test(src))
+    || (sys.id === 'witness' && /scrutinyDiscoveryMult/.test(src));
   assert.ok(wired, `${sys.file} must wire mechanics depth (system: ${sys.id})`);
 }
 

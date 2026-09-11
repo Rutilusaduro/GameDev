@@ -106,3 +106,68 @@ export function enrichTalkEffect(effect = {}) {
   if (next.corruption) next.corruption = depthCorruptionGrant(next.corruption);
   return next;
 }
+
+/** End-of-week digest — small bonus lbs when surplus converted. */
+export function depthDigestLbsBonus(lbsGained = 0) {
+  if (lbsGained <= 0) return 0;
+  return Math.max(0, Math.floor(lbsGained * BONUS_FRAC * 0.22));
+}
+
+export function depthForceFeedReachBonus(reachLevel = 1) {
+  return Math.max(0, (reachLevel - 1) * 0.018 * (1 + BONUS_FRAC * 0.35));
+}
+
+export function depthCompoundFeedResult(feedResult = {}) {
+  const fr = { ...feedResult };
+  if (fr.relGain) fr.relGain = depthTalkRelGrant(fr.relGain);
+  if (fr.corruptionGain) fr.corruptionGain = depthCorruptionGrant(fr.corruptionGain);
+  if (fr.calMult && fr.calMult > 1) {
+    fr.calMult = 1 + (fr.calMult - 1) * (1 + BONUS_FRAC * 0.2);
+  }
+  if (fr.digestMult && fr.digestMult > 1) {
+    fr.digestMult = 1 + (fr.digestMult - 1) * (1 + BONUS_FRAC * 0.2);
+  }
+  return fr;
+}
+
+export function depthSaturationBonus(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.35)));
+}
+
+export function depthSaturationRate(base = 0) {
+  if (base <= 0) return base;
+  return Math.min(0.85, base * (1 + BONUS_FRAC * 0.18));
+}
+
+export function depthPinBlackoutChance(base = 0) {
+  return Math.min(0.55, base * (1 + BONUS_FRAC * 0.2));
+}
+
+export function depthPinRelBonus(base = 0) {
+  return depthTalkRelGrant(base);
+}
+
+export function depthOppositionGainMult(mult = 1) {
+  if (mult >= 1) return mult;
+  return mult - (1 - mult) * (BONUS_FRAC * 0.25);
+}
+
+export function depthWellnessScrutinyBonus(base = 0) {
+  return depthSaturationBonus(base);
+}
+
+export function depthCgDriveGain(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.4)));
+}
+
+/** Lower threshold → more growth-event coverage (content depth). */
+export function depthMajorGrowthLbsThreshold(base = 8) {
+  return Math.max(6, base - 1);
+}
+
+export function depthBoardWeeklyGainMult(mult = 1) {
+  if (mult <= 1) return mult;
+  return 1 + (mult - 1) * (1 + BONUS_FRAC * 0.25);
+}

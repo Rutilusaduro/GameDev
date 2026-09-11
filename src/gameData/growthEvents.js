@@ -6,6 +6,7 @@ import { getDevice, getGrowthProfile, MARQUEE_GROWTH_DEVICE_IDS } from './device
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { getDependenceTier } from './psychState.js';
 import { renderGrowthScene } from '../textEngine/scenes/growthEvent/index.js';
+import { depthMajorGrowthLbsThreshold } from './mechanicsDepthLayer.js';
 import { renderImmobScene } from '../textEngine/scenes/immobility/index.js';
 import { traceToFlagNodes } from '../textEngine/textFlagFormat.js';
 
@@ -46,14 +47,15 @@ export function isMajorGrowth(cause, gainLbs, stagesJumped) {
   if (type === 'device_use' && cause.deviceId && MARQUEE_GROWTH_DEVICE_IDS.includes(cause.deviceId)) {
     return true;
   }
+  const majorLbs = depthMajorGrowthLbsThreshold(8);
   if (type === 'device_malfunction') {
-    return gainLbs >= 8;
+    return gainLbs >= majorLbs;
   }
   if (type === 'weekly_tick' || type === 'digest_stageup') {
-    return stagesJumped >= 1 && gainLbs >= 8;
+    return stagesJumped >= 1 && gainLbs >= majorLbs;
   }
   if (type === 'feature') {
-    return gainLbs >= 8 || stagesJumped >= 1;
+    return gainLbs >= majorLbs || stagesJumped >= 1;
   }
   return false;
 }

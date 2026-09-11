@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // COMPETITIVE GAINER — state helpers + legacy save migration
 // ═══════════════════════════════════════════════════════════════
+import { depthCgDriveGain } from './mechanicsDepthLayer.js';
 
 export function cgDrive(cgState) {
   return cgState?.drive ?? cgState?.spirit ?? 0;
@@ -11,7 +12,8 @@ export function cgDriveDelta(opt) {
 }
 
 export function cgSubstateGain(subState) {
-  return subState?.driveGain ?? subState?.spiritGain ?? 0;
+  const base = subState?.driveGain ?? subState?.spiritGain ?? 0;
+  return depthCgDriveGain(base);
 }
 
 /** Normalize legacy spirit → drive keys from older saves. */

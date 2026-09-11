@@ -9,6 +9,7 @@ import {
   stripBoardMeta,
   collectBoardMods,
 } from './circuitBoardDefs.js';
+import { depthBoardWeeklyGainMult } from './mechanicsDepthLayer.js';
 
 export const MAIN_PATH_TIER_THRESHOLDS = { 2: 4, 3: 9 };
 
@@ -338,11 +339,12 @@ export function applyBoardModsToWeeklyEffect(weekly, labState, deviceDefId) {
   const mods = getDeviceBoardMods(labState, deviceDefId);
   const next = { ...weekly };
   if (mods.weeklyGainMult && next.gainLbs) {
-    const mult = 1 + mods.weeklyGainMult;
+    const mult = depthBoardWeeklyGainMult(1 + mods.weeklyGainMult);
     next.gainLbs = next.gainLbs.map((g) => Math.max(1, Math.round(g * mult)));
   }
   if (mods.gainMult && next.gainLbs) {
-    next.gainLbs = next.gainLbs.map((g) => Math.max(1, Math.round(g * mods.gainMult)));
+    const mult = depthBoardWeeklyGainMult(mods.gainMult);
+    next.gainLbs = next.gainLbs.map((g) => Math.max(1, Math.round(g * mult)));
   }
   if (mods.shameMult != null && next.psychDelta?.shame) {
     next.psychDelta = { ...next.psychDelta, shame: Math.round(next.psychDelta.shame * mods.shameMult) };

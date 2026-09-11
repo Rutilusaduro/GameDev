@@ -3,6 +3,7 @@
 // See docs/Pharmacist/
 // ═══════════════════════════════════════════════════════════════
 import { defaultCultState, initCultOnUnlock, cultLoyaltyRelBonus, consumeCultSupplyReservoir } from './pharmacistCult.js';
+import { depthCompoundFeedResult } from './mechanicsDepthLayer.js';
 
 export const PHARMACIST_STAGES = [
   { id: 1, key: "corporate_chemist",  label: "Corporate Chemist",   desc: "Secret sabotage at her day job. Early compounds for the player." },
@@ -286,7 +287,8 @@ export function applyCompoundToFeed(student, compoundId, feedResult = {}, pharma
   fr.corruptionGain = (fr.corruptionGain ?? 0) + (compound.corruptionGain ?? 0);
   fr.relGain = (fr.relGain ?? 0) + (compound.relGain ?? 0) + cultLoyaltyRelBonus(pharmacistState, compoundId);
   fr.digestMult = (fr.digestMult ?? 1) * (compound.digestMult ?? 1);
-  return { student: s, feedResult: fr, flavor: compound.flavor };
+  const scaledFr = depthCompoundFeedResult(fr);
+  return { student: s, feedResult: scaledFr, flavor: compound.flavor };
 }
 
 function getAddictionLevel(student) {
