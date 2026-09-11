@@ -30,7 +30,8 @@
     "test:e2e": "playwright test",
     "test:smoke": "node scripts/test-smoke.mjs",
     "text:lint": "node scripts/textLint.mjs",
-    "test:text-bridges": "node scripts/test-text-bridges.mjs"
+    "test:text-bridges": "node scripts/test-text-bridges.mjs",
+    "test:ra-pivot-objective": "node scripts/test-ra-pivot-objective.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",

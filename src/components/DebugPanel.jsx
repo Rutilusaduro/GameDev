@@ -23,6 +23,7 @@ import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { INNER_CIRCLE_TIERS, TIER_SCENES } from '../gameData/sessions.js';
 import { EVOLUTION_OFFER } from '../gameData/evolvedForms.js';
+import { renderEvolutionOfferIntro } from '../textEngine/scenes/evolved/evolutionOfferPools.js';
 import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
@@ -365,7 +366,7 @@ export function DebugPanel({
                     const archPaths = offer.paths;
                     setEvolutionModal({
                       student: subject,
-                      intro: offer.intro(subject),
+                      intro: renderEvolutionOfferIntro(subject, week) || offer.intro(subject),
                       paths: Object.keys(archPaths).map((k) => ({
                         id: k,
                         label: archPaths[k].label,
