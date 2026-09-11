@@ -164,3 +164,63 @@ registerPool('recording.result.body', [
     'The extra that was not here last week is the whole shot. She does not hide it.',
   ]},
 ]);
+
+registerPool('recording.oneMore.scene', [
+  { when: {}, text: [
+    '{recording.oneMore.setup} {recording.oneMore.body}',
+    '{recording.oneMore.body} {recording.oneMore.setup}',
+    '{recording.oneMore.setup}',
+  ]},
+]);
+
+registerPool('recording.oneMore.setup', [
+  { when: {}, text: [
+    'One more take. She nods. The lights stay up. Appetite does not clock out.',
+    'You ask again. She is already reaching. The camera loves persistence.',
+    '"Again," she says, calm, certain, already opening for the next bite.',
+  ]},
+  { when: { studentId: 2 }, weight: 4, text: [
+    'Kylie nods at the lens. "One more take. This one is the clip."',
+  ]},
+  { when: { recordingStage: [4, 5] }, weight: 3, text: [
+    'She barely moves. One more. You bring the food to the bed. She eats for the lens.',
+  ]},
+]);
+
+registerPool('recording.oneMore.body', [
+  { when: {}, text: [
+    '{word.size} of her resettles on the mattress. Soft mass, heat, another swallow queued.',
+    'Belly first. She smiles into the lens like the encore was the scene she wanted.',
+    'The extra of her is still arriving. She wants that on camera too.',
+  ]},
+]);
+
+registerPool('recording.wrap.scene', [
+  { when: {}, text: [
+    '{recording.wrap.setup} {recording.wrap.body}',
+    '{recording.wrap.body} {recording.wrap.setup}',
+    '{recording.wrap.setup}',
+  ]},
+]);
+
+registerPool('recording.wrap.setup', [
+  { when: {}, text: [
+    'You wrap. She is still on the bed, still warm, still heavier than the first take.',
+    'Lights down. The clip is in the can. She does not get up yet.',
+    'Session over. The room smells like food and the extra of her.',
+  ]},
+  { when: { takeQuality: 'perfect' }, weight: 4, text: [
+    'Perfect take. You linger. She looks at you like the clip was a promise kept.',
+  ]},
+  { when: { takeQuality: 'great' }, weight: 3, text: [
+    'Great clip. She glows. The new weight reads on camera and she knows it.',
+  ]},
+]);
+
+registerPool('recording.wrap.body', [
+  { when: {}, text: [
+    '{word.size} of her fills the leftover frame. Soft mass, heat, crop top still losing.',
+    'Belly lower than when you arrived. She breathes like the work pleased her.',
+    'You set the camera down. She stays. The extra of her is the wrap.',
+  ]},
+]);

@@ -634,7 +634,7 @@ export function StreamSessionModal({
                   </div>
                 )}
                 {ss.destinyMoneyFlavor && (
-                  <div>She spent it on: {ss.destinyMoneyFlavor.replace(/^Destiny spends her (cut|share) on /i, '').replace(/\.$/, '')}</div>
+                  <div style={{ lineHeight: 1.65, whiteSpace: 'pre-line' }}>{ss.destinyMoneyFlavor}</div>
                 )}
               </div>
             )}

@@ -295,7 +295,7 @@ export function startChemSession(pharmacistState, owned = {}) {
   };
 }
 
-export function applyAcquisitionChoice(session, actionId, owned = {}) {
+export function applyAcquisitionChoice(session, actionId, owned = {}, flavorLine = null) {
   const options = acquisitionChoicesForOwned(session.stageId, owned);
   const action = options.find(a => a.id === actionId);
   if (!action) return session;
@@ -304,7 +304,7 @@ export function applyAcquisitionChoice(session, actionId, owned = {}) {
     phase: 'craft',
     pool: mergeIngredients(session.pool, action.grants),
     exposureGained: (session.exposureGained || 0) + (action.exposure || 0),
-    acquisitionLog: [...(session.acquisitionLog || []), action.flavor],
+    acquisitionLog: [...(session.acquisitionLog || []), flavorLine || action.flavor],
     lastAcquisition: action,
   };
 }

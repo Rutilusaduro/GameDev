@@ -30,15 +30,16 @@ function resolveLegacy(fn, lbs) {
 }
 
 export function buildRecordingCtx(student, week, stageIdx = 0, opts = {}) {
+  const { globals: extraGlobals, v2DepthChance: _v2, ...rest } = opts;
   return buildTextContext({
     subject: student,
     week,
+    ...rest,
     globals: {
       featureId: 'recording_session',
       recordingStage: stageIdx,
-      ...(opts.globals || {}),
+      ...(extraGlobals || {}),
     },
-    ...opts,
   });
 }
 
@@ -106,6 +107,10 @@ export function renderRecordingTakeResult(quality, stageIdx, postGainLbs, studen
 }
 
 export function renderRecordingOneMoreTake(stageIdx, student, week) {
+  const composed = preferRecordingPool('recording.oneMore.scene', student, week, stageIdx, {
+    v2DepthChance: 0.24,
+  });
+  if (composed) return composed;
   const ctx = buildRecordingCtx(student, week, stageIdx);
   const si = Math.min(Math.max(0, stageIdx), RECORDING_ONE_MORE_TAKE.length - 1);
   const fromPool = render(`{recording.oneMore.s${si}}`, ctx)?.trim();
@@ -117,6 +122,11 @@ export function renderRecordingOneMoreTake(stageIdx, student, week) {
 }
 
 export function renderRecordingWrapEnding(bestClip, stageIdx, student, week) {
+  const composed = preferRecordingPool('recording.wrap.scene', student, week, stageIdx, {
+    globals: { takeQuality: bestClip },
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   const ctx = buildRecordingCtx(student, week, stageIdx, {
     globals: { takeQuality: bestClip },
   });

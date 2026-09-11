@@ -120,3 +120,37 @@ export function renderCollabPayoffPool(kylie, partner, week = 1, stageIdx = 0) {
   });
   return prefer('collab.payoff.scene', ctx);
 }
+
+registerPool('stream.destiny.spend', [
+  { when: {}, text: [
+    '{stream.destiny.spend.setup} {stream.destiny.spend.body}',
+    '{stream.destiny.spend.body} {stream.destiny.spend.setup}',
+    '{stream.destiny.spend.setup}',
+  ]},
+]);
+
+registerPool('stream.destiny.spend.setup', [
+  { when: {}, text: [
+    'Destiny blows her cut before the overlay fades. Delivery apps. A new mic arm. Both.',
+    'She treats the share like a snack budget with RGB lighting.',
+    'Chat paid. She spends. The chair is already waiting on the bags.',
+  ]},
+]);
+
+registerPool('stream.destiny.spend.body', [
+  { when: {}, text: [
+    'Snacks she needed for research. A mystery box. Food for the vibes.',
+    'The extra of her is the receipt. She will stream the unboxing with a full mouth.',
+    '{word.size} of her does not save. She orders again while the numbers are still climbing.',
+  ]},
+]);
+
+export function renderDestinySpend(student, week = 1) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { featureId: 'eating_streamer' },
+  });
+  return prefer('stream.destiny.spend', ctx);
+}

@@ -51,19 +51,24 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
   });
 }
 
-/** Lesson beat after pick — engine pool + V2 depth, legacy fallback. */
+/** Lesson beat after pick — composed pool first, leftover only if unresolved. */
 export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = {}) {
   if (!lesson) return '';
   const legacy = lesson.text?.trim() || '';
+  const { globals: extraGlobals, v2DepthChance, trace, ...rest } = opts;
   const ctx = buildTextContext({
     subject: mjStudent,
     week,
-    globals: { wlStage: stage, lessonId: lesson.id, ...(opts.globals || {}) },
-    ...opts,
+    ...rest,
+    globals: { wlStage: stage, lessonId: lesson.id, ...(extraGlobals || {}) },
   });
+  const composed = render('{wl.lesson.scene}', ctx, { trace: trace || null })?.trim();
+  if (composed && !composed.includes('{unresolved}')) {
+    return appendV2Depth(composed, 'wifeLessons', ctx, v2DepthChance ?? 0.32);
+  }
   const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
-  const base = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
-  return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
+  const base = render(`{${key}}`, ctx, { trace: trace || null })?.trim() || legacy;
+  return appendV2Depth(base, 'wifeLessons', ctx, v2DepthChance ?? 0.32);
 }
 
 /** 1-on-1 talk line — composed pool first, leftover line only if unresolved. */

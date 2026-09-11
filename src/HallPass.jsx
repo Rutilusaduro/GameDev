@@ -414,9 +414,9 @@ import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
 import { renderCampusLook } from './textEngine/scenes/overhaul/campusHunt.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from './textEngine/scenes/overhaul/cgFair.js';
-import { renderHiveVisit, renderHivePhoto } from './textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderHiveVisit, renderHivePhoto, renderDestinySpend } from './textEngine/scenes/overhaul/leftoverDisplay.js';
 import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from './textEngine/scenes/overhaul/cgChat.js';
-import { renderSessionNpc } from './textEngine/scenes/overhaul/sessionNpc.js';
+import { renderSessionNpc, renderSessionPayoff } from './textEngine/scenes/overhaul/sessionNpc.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -3127,7 +3127,7 @@ export default function HallPass(){
     const poolKey=type==='conference'
       ?homeroomConferencePoolKey(key,choiceId)
       :homeroomActivityPoolKey(type,phaseIdx,choiceId);
-    const renderedResult=(daisy&&poolKey?renderHomeroomPool(poolKey,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):'')||resultText;
+    const renderedResult=(daisy&&poolKey?renderHomeroomPool(poolKey,daisy,week,{globals:{homeroomKey:key,homeroomAct:type,homeroomChoice:choiceId}}):'')||resultText;
     setHomeroomSessionState(prev=>({
       ...prev,
       daisyGain:prev.daisyGain+(choice.lbs||0),
@@ -6401,7 +6401,7 @@ export default function HallPass(){
         week,
       }):null;
       const endingText=[tapLine,...specialLines,...milestoneLines,streamGrowth?.prose,endLine].filter(Boolean).join('\n\n');
-      const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
+      const flavor=renderDestinySpend(updated,week)||DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
       fired.forEach((key,i)=>{
         const{label,emoji}=getStreamMilestoneLabel(key);
         setTimeout(()=>push(`📡 ${emoji} Milestone: ${label}`),80+i*120);
@@ -9480,8 +9480,9 @@ export default function HallPass(){
         const STAGE_LABELS=["Bronze Session","Silver Grind","Gold Streak","Platinum Marathon","Diamond Run","Grandmaster Session"];
         const stageTitle=STAGE_LABELS[stageIdx]||"Ranked Session";
         const canQuit=stageIdx<2;
-        const payoffFn=SESSION_PAYOFF_TEXT[stageIdx];
-        const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
+        const payoffText=done
+          ?(renderSessionPayoff(s,week,stageIdx,endReason)||SESSION_PAYOFF_TEXT[stageIdx]?.(gain,endReason)||`Session closed with ${Math.round(gain)} lbs gained.`)
+          :'';
         const dismissRanked=()=>{
           playHallPassSound('click', soundEnabled);
           if (done) closeRankedSession();
@@ -9597,6 +9598,7 @@ export default function HallPass(){
             applyAcquisitionChoice={applyAcquisitionChoice}
             skipAcquisition={skipAcquisition}
             soundEnabled={soundEnabled}
+            week={week}
           />
         );
       })()}

@@ -15,6 +15,7 @@ import {
   spendRecipe,
   toggleBrewInPlan,
 } from '../gameData/pharmacistIngredients.js';
+import { renderPharmacistAcquire } from '../textEngine/scenes/overhaul/pharmacist.js';
 
 const STAGE_CHROME = {
   1: { accent: '#3d5a80', label: 'CORPORATE LAB', sub: 'Shift synthesis — acquire stock, brew quietly.' },
@@ -103,6 +104,7 @@ export function PharmacistChemModal({
   skipAcquisition,
   soundEnabled = true,
   owned = {},
+  week = 1,
 }) {
   useEffect(() => {
     playHallPassSound('session', soundEnabled);
@@ -143,7 +145,11 @@ export function PharmacistChemModal({
             type="button"
             className="pharmacist-choice-row"
             style={{ ...C.btn('#1a3028'), width: '100%', marginBottom: 8, textAlign: 'left', padding: '10px 14px' }}
-            onClick={() => { playHallPassSound('click', soundEnabled); setChemSession(applyAcquisitionChoice(chemSession, opt.id, owned)); }}
+            onClick={() => {
+              playHallPassSound('click', soundEnabled);
+              const composed = renderPharmacistAcquire(opt.id, student, week);
+              setChemSession(applyAcquisitionChoice(chemSession, opt.id, owned, composed || undefined));
+            }}
           >
             <div style={{ color: '#8ad4b0', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>{opt.label}</div>
             <div style={{ color: '#608878', fontSize: 10, lineHeight: 1.45, marginBottom: 4 }}>{opt.desc}</div>

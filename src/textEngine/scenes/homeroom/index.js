@@ -28,19 +28,37 @@ for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
 }
 
 function buildHomeroomCtx(daisyStudent, week, opts = {}) {
+  const { globals: extraGlobals, v2DepthChance: _v2, ...rest } = opts;
   return buildTextContext({
     subject: daisyStudent,
     week,
-    globals: { featureId: 'homeroom_queen', ...(opts.globals || {}) },
-    ...opts,
+    ...rest,
+    globals: { featureId: 'homeroom_queen', ...(extraGlobals || {}) },
   });
 }
 
-/** Render a registered homeroom pool key with V2 depth. */
+function composedHomeroomKey(poolKey) {
+  if (!poolKey) return null;
+  if (poolKey.includes('.intro') || /^homeroom\.activity\.[^.]+\.p\d+$/.test(poolKey)) {
+    return poolKey.startsWith('homeroom.conference')
+      ? 'homeroom.conference.scene'
+      : 'homeroom.activity.scene';
+  }
+  return 'homeroom.result.scene';
+}
+
+/** Render a registered homeroom pool key with V2 depth. Prefer composed scenes. */
 export function renderHomeroomPool(poolKey, daisyStudent, week = 1, opts = {}) {
   if (!poolKey || !daisyStudent) return '';
   const ctx = buildHomeroomCtx(daisyStudent, week, opts);
   try {
+    const composedKey = composedHomeroomKey(poolKey);
+    if (composedKey) {
+      const composed = render(`{${composedKey}}`, ctx)?.trim();
+      if (composed && !composed.includes('{unresolved}')) {
+        return appendV2Depth(composed, 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
+      }
+    }
     const line = render(`{${poolKey}}`, ctx)?.trim();
     if (!line || line.includes('{unresolved}')) return '';
     return appendV2Depth(line, 'homeroom', ctx, opts.v2DepthChance ?? 0.28);

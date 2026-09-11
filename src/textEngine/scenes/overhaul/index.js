@@ -13,6 +13,8 @@ import './leftoverDisplay.js';
 import './cgChat.js';
 import './sessionNpc.js';
 import './wlTalk.js';
+import './homeroom.js';
+import './pharmacist.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

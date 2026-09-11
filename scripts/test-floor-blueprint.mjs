@@ -44,13 +44,15 @@ import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js
 import { renderEvolvedActivity, renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
 import { renderContestFoodPopup, renderContestActionPopup, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
 import { renderSumoOpening, renderSumoExchangeLine, renderSumoAftermath, renderSumoPayoff } from '../src/textEngine/scenes/sumoMatch/index.js';
-import { renderRecordingOpening, renderRecordingDirectionPopup, renderRecordingTakeResult } from '../src/textEngine/scenes/recordingSession/index.js';
+import { renderRecordingOpening, renderRecordingDirectionPopup, renderRecordingTakeResult, renderRecordingOneMoreTake, renderRecordingWrapEnding } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from '../src/textEngine/scenes/overhaul/cgFair.js';
-import { renderHiveVisit, renderHivePhoto } from '../src/textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderHiveVisit, renderHivePhoto, renderDestinySpend } from '../src/textEngine/scenes/overhaul/leftoverDisplay.js';
 import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from '../src/textEngine/scenes/overhaul/cgChat.js';
-import { renderSessionNpc } from '../src/textEngine/scenes/overhaul/sessionNpc.js';
-import { renderWifeLessonTalkLine } from '../src/textEngine/scenes/wifeLessons/index.js';
+import { renderSessionNpc, renderSessionPayoff } from '../src/textEngine/scenes/overhaul/sessionNpc.js';
+import { renderWifeLessonTalkLine, renderWifeLessonBeat } from '../src/textEngine/scenes/wifeLessons/index.js';
+import { renderHomeroomPool, homeroomConferencePoolKey } from '../src/textEngine/scenes/homeroom/index.js';
+import { renderPharmacistAcquire } from '../src/textEngine/scenes/overhaul/pharmacist.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
@@ -409,6 +411,64 @@ assert.ok(/Wanda|butter|bread|table|kitchen/i.test(wlGreet), `wl greeting should
 const collabPay = renderCollabPayoff(0, 8, 6, { id: 0, name: 'Brittany', lbs: 200 }, recStudent, 3);
 assert.ok(collabPay && !collabPay.includes('{unresolved}'));
 assert.equal(/pounds on Kylie/i.test(collabPay), false);
+
+const recOne = renderRecordingOneMoreTake(0, recStudent, 3);
+assert.ok(recOne && !recOne.includes('{unresolved}'));
+assert.equal(/I'll eat even more for you this time/i.test(recOne), false, 'oneMore should not be leftover Kylie monolith');
+assert.ok(/one more|again|encore|lights stay|nods/i.test(recOne), `oneMore should be composed, got: ${String(recOne).slice(0, 160)}`);
+
+const recWrap = renderRecordingWrapEnding('perfect', 0, recStudent, 3);
+assert.ok(recWrap && !recWrap.includes('{unresolved}'));
+assert.equal(/looks noticeably fatter than when you arrived/i.test(recWrap), false, 'wrap should not be leftover RECORDING_WRAP_ENDINGS');
+
+const destStudent = {
+  id: 11, name: 'Destiny', lbs: 210, startLbs: 155, evolvedForm: 'eating_streamer',
+  relationship: 20, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const sessionPay = renderSessionPayoff(destStudent, 3, 0, 'food_coma');
+assert.ok(sessionPay && !sessionPay.includes('{unresolved}'));
+assert.equal(/Session complete\./i.test(sessionPay), false, 'ranked payoff should not be SESSION_PAYOFF_TEXT');
+assert.ok(/coma|chair|ranked|session/i.test(sessionPay), `session payoff should be composed, got: ${String(sessionPay).slice(0, 160)}`);
+
+const destSpend = renderDestinySpend(destStudent, 3);
+assert.ok(destSpend && !destSpend.includes('{unresolved}'));
+assert.equal(/Destiny blows her share on delivery apps/i.test(destSpend), false);
+
+let sawHoney = false;
+for (let i = 0; i < 40; i++) {
+  const lessonBeat = renderWifeLessonBeat(1, { id: 'honey_butter', text: 'LEGACY LESSON SHOULD NOT APPEAR' }, mj, 3, { v2DepthChance: 0 });
+  assert.ok(lessonBeat && !lessonBeat.includes('{unresolved}'));
+  assert.equal(lessonBeat.includes('LEGACY LESSON SHOULD NOT APPEAR'), false, 'wl lesson should prefer composed pools');
+  assert.equal(/Fat is what makes a home feel like home/i.test(lessonBeat), false);
+  if (/Honey Butter|butter into the flour|gingham|yeast/i.test(lessonBeat)) sawHoney = true;
+}
+assert.ok(sawHoney, 'honey_butter lesson should surface recipe-keyed copy');
+
+const daisy = {
+  id: 3, name: 'Daisy', lbs: 190, startLbs: 125, evolvedForm: 'homeroom_queen',
+  relationship: 30, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const hrIntro = renderHomeroomPool(homeroomConferencePoolKey('Kayla'), daisy, 3, {
+  globals: { homeroomKey: 'Kayla' },
+  v2DepthChance: 0,
+});
+assert.ok(hrIntro && !hrIntro.includes('{unresolved}'));
+assert.equal(/Is this about hall standing/i.test(hrIntro), false, 'homeroom conference should not be leftover monolith');
+
+const hrResult = renderHomeroomPool(homeroomConferencePoolKey('Kayla', 'tuesday'), daisy, 3, {
+  globals: { homeroomKey: 'Kayla', homeroomChoice: 'tuesday' },
+  v2DepthChance: 0,
+});
+assert.ok(hrResult && !hrResult.includes('{unresolved}'));
+assert.equal(/She has categorized the recipe progression/i.test(hrResult), false);
+
+const sophia = {
+  id: 12, name: 'Sophia', lbs: 180, startLbs: 130, evolvedForm: 'pharmacist',
+  relationship: 20, corruption: 1, fullness: 8, stomachCapacity: 110,
+};
+const pharmLine = renderPharmacistAcquire('shift_stock', sophia, 3);
+assert.ok(pharmLine && !pharmLine.includes('{unresolved}'));
+assert.equal(/Sophia logs the minimum/i.test(pharmLine), false, 'pharmacist acquire should not dump leftover flavor');
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

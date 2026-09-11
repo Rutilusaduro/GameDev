@@ -1,7 +1,10 @@
 // The Squad — Lead: A5 Editor | Support: A2 Psych
 // Slot-composed ranked-session delivery NPC (Rae). Prefer over SESSION_NPC_LINES.
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
+
+registerDimension('sessionStage', (ctx) => ctx.globals?.sessionStage ?? 0);
+registerDimension('endReason', (ctx) => ctx.globals?.endReason ?? '');
 
 registerPool('session.npc.arrival', [
   { when: {}, text: [
@@ -105,4 +108,47 @@ export function renderSessionNpc(beat, student, week = 1, sessionStage = 0) {
     globals: { featureId: 'ranked_feedee', sessionStage },
   });
   return prefer(key, ctx);
+}
+
+registerPool('session.payoff.scene', [
+  { when: {}, text: [
+    '{session.payoff.setup} {session.payoff.body}',
+    '{session.payoff.body} {session.payoff.setup}',
+    '{session.payoff.setup}',
+  ]},
+]);
+
+registerPool('session.payoff.setup', [
+  { when: {}, text: [
+    'Session log closed. The ranked table is a rumor. The chair kept score.',
+    'Game over. The bags are empty. She is not.',
+    'Rae is already resetting the desk. The extra of her is the receipt.',
+  ]},
+  { when: { endReason: 'food_coma' }, weight: 4, text: [
+    'Food coma. Full stop. She cannot argue with a middle that won the session.',
+  ]},
+  { when: { endReason: 'focus_out' }, weight: 4, text: [
+    'Focus out. The food was still going. She kept chewing until the bar went dark.',
+  ]},
+  { when: { endReason: 'quit' }, weight: 3, text: [
+    'Session ended early. The gain still landed. Rae does not look surprised.',
+  ]},
+]);
+
+registerPool('session.payoff.body', [
+  { when: {}, text: [
+    '{word.size} of her sits in the chair like the rank was a meal. Soft mass, heat, done for now.',
+    'She is heavier than the first bag. She wants the next queue. You already know.',
+    'The Rae receipt is still on the desk. You are ordering from that place again.',
+  ]},
+]);
+
+export function renderSessionPayoff(student, week = 1, sessionStage = 0, endReason = 'food_coma') {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { featureId: 'ranked_feedee', sessionStage, endReason },
+  });
+  return prefer('session.payoff.scene', ctx);
 }
