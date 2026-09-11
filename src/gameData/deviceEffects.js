@@ -690,6 +690,7 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     mode?.discoveryRisk ?? 0.15,
     ctx.adminScrutiny ?? 0,
     discoveryMult,
+    { leftoverKitchen: !!ctx.leftoverKitchen, nightRound: !!ctx.nightRound },
   );
   const discovered = rng() < discoveryRisk;
   return {

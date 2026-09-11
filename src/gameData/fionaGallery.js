@@ -91,7 +91,7 @@ export function startStudioSession(state, subjectId, setup = {}) {
   };
 }
 
-export function studioAction(state, actionId) {
+export function studioAction(state, actionId, extras = {}) {
   const session = state.session;
   if (!session || session.type !== 'studio') return state;
   const action = STUDIO_ACTIONS.find((a) => a.id === actionId);
@@ -117,9 +117,11 @@ export function studioAction(state, actionId) {
     const extra = nightStill ? 2 : 0;
     const subjectLbs = Math.round(subjectGain * lbsMult) + extra;
     const fionaLbs = Math.round(fionaGain * lbsMult) + (nightStill ? 1 : 0);
+    const leftoverPatrons = extras.leftoverKitchen ? 2 : 0;
+    const nightPatrons = extras.nightRound ? 1 : 0;
     return {
       ...state,
-      patrons: Math.min(100, state.patrons + critic.patrons + (motif?.relBonus || 0)),
+      patrons: Math.min(100, state.patrons + critic.patrons + (motif?.relBonus || 0) + leftoverPatrons + nightPatrons),
       scrutinyHeat: state.scrutinyHeat + critic.scrutiny + (motif?.scrutiny || 0),
       subjects: state.subjects.map((s) => {
         if (s.studentId !== session.subjectId) return s;

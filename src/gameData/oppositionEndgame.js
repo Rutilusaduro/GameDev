@@ -25,7 +25,7 @@ export function checkOppositionEndgame(opposition, students) {
 }
 
 /** Weekly scarcity drain when ascended residents are well-fed. */
-export function tickScarcityBanishment(opposition, students) {
+export function tickScarcityBanishment(opposition, students, extras = {}) {
   if (!opposition?.supernatural?.actTriggered) return opposition;
   let pressure = opposition.supernatural.scarcityPressure || 0;
   if (pressure <= 0) return opposition;
@@ -39,6 +39,8 @@ export function tickScarcityBanishment(opposition, students) {
 
   const refedCount = ascended.filter((s) => getStage(s.lbs).id >= 6).length;
   if (refedCount >= 3) pressure = Math.max(0, pressure - 3);
+  if (extras.leftoverKitchen) pressure = Math.max(0, pressure - 2);
+  if (extras.nightRound) pressure = Math.max(0, pressure - 1);
 
   return {
     ...opposition,

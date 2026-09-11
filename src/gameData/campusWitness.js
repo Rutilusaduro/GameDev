@@ -11,9 +11,12 @@ export function appendWitnessLog(campusState, entry) {
   return { ...campusState, witnessLog: next };
 }
 
-export function scaleDiscoveryRisk(baseRisk, adminScrutiny = 0, boardMult = 1) {
+export function scaleDiscoveryRisk(baseRisk, adminScrutiny = 0, boardMult = 1, extras = {}) {
   const scrutinyMult = scrutinyDiscoveryMult(adminScrutiny);
-  return Math.min(0.95, Math.max(0.05, baseRisk * boardMult * scrutinyMult));
+  let risk = Math.min(0.95, Math.max(0.05, baseRisk * boardMult * scrutinyMult));
+  if (extras.leftoverKitchen) risk = Math.min(0.95, risk + 0.04);
+  if (extras.nightRound) risk = Math.min(0.95, risk + 0.02);
+  return risk;
 }
 
 export function witnessEntrySummary(entry) {

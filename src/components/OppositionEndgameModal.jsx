@@ -13,12 +13,12 @@ const BEAT_META = {
   vance_compromised: { label: 'CHAIR FOLDS', emoji: '👁', color: '#a05060', slot: 'opposition.endgame.vance' },
 };
 
-export function OppositionEndgameModal({ beat, onDismiss, soundEnabled = true }) {
+export function OppositionEndgameModal({ beat, leftoverKitchen = false, nightRound = false, onDismiss, soundEnabled = true }) {
   useEffect(() => { playHallPassSound('unlock', soundEnabled); }, [soundEnabled, beat?.id]);
   if (!beat?.id) return null;
   const meta = BEAT_META[beat.id] || { label: 'ENDGAME', emoji: '✦', color: '#8060a0', slot: null };
   const body = meta.slot
-    ? renderOppositionEndgame(meta.slot, beat.week ?? 1)
+    ? renderOppositionEndgame(meta.slot, beat.week ?? 1, { globals: { leftoverFed: leftoverKitchen, nightVisit: nightRound } })
     : beat.fallback || 'Something fundamental shifts in the opposition.';
 
   const dismiss = () => { playHallPassSound('confirm', soundEnabled); onDismiss(); };

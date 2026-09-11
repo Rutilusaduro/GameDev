@@ -83,7 +83,7 @@ export function resolveSecretDiscoverLine(secret, ctx, nodeId, rng = Math.random
   const student = pickSecretDiscoverStudent(ctx, rng);
   const line = student
     ? formatSecretDiscoverLine(secret, student, ctx.week ?? 1, {
-      globals: { nodeId },
+      globals: { nodeId, leftoverFed: !!ctx.leftoverKitchen, nightVisit: !!ctx.nightRound },
       v2DepthChance: 0.35,
     })
     : '';

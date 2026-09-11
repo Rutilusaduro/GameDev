@@ -1,6 +1,6 @@
 // Campus secret discovery prose
 import { render } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 
 export function renderSecretDiscover(secret, student, week = 1, opts = {}) {
@@ -12,7 +12,15 @@ export function renderSecretDiscover(secret, student, week = 1, opts = {}) {
     ...opts,
   });
   const base = secret.discover.trim();
-  return appendV2Depth(base, 'campusSecret', ctx, opts.v2DepthChance ?? 0.35);
+  const prose = appendV2Depth(base, 'campusSecret', ctx, opts.v2DepthChance ?? 0.35);
+  const lingerSub = student && (student.leftoverFedThisWeek || opts.globals?.leftoverFed || opts.globals?.nightVisit)
+    ? {
+      ...student,
+      leftoverFedThisWeek: !!student.leftoverFedThisWeek || !!opts.globals?.leftoverFed,
+      lastNightVisitWeek: student.lastNightVisitWeek || (opts.globals?.nightVisit ? week : student.lastNightVisitWeek),
+    }
+    : student;
+  return wrapLeftoverLinger(prose, lingerSub, week, 'campus.linger');
 }
 
 export function formatSecretDiscoverLine(secret, student, week = 1, opts = {}) {

@@ -37,6 +37,7 @@ export function applyDeviceDependenceDelta(student, deviceId, delta) {
 export function bumpWeeklyDeviceDependence(student, deviceId, def = null) {
   let gain = WEEKLY_WEAR_GAIN;
   if (def?.weeklyEffect?.psychDelta?.dependence) gain += 1;
+  if (student?.leftoverFedThisWeek) gain += 1;
   return applyDeviceDependenceDelta(student, deviceId, gain);
 }
 

@@ -32,6 +32,11 @@ import { pickHearingEnding, REMOVAL_HEARING } from '../src/gameData/oppositionHe
 import { applyCultDistribution, tickCultWeek, initCultOnUnlock, defaultCultState } from '../src/gameData/pharmacistCult.js';
 import { salonFinishDigestif } from '../src/gameData/chloeSalon.js';
 import { rollVanceCampusEvent } from '../src/gameData/oppositionCampus.js';
+import { devourScarcityDamage } from '../src/gameData/scarcityTools.js';
+import { tickScarcityBanishment } from '../src/gameData/oppositionEndgame.js';
+import { getCampusWeeklyEventChance } from '../src/gameData/pharmacistCampus.js';
+import { bumpWeeklyDeviceDependence } from '../src/gameData/deviceDependence.js';
+import { scaleDiscoveryRisk } from '../src/gameData/campusWitness.js';
 import '../src/textEngine/scenes/proseOverhaulPass4.js';
 
 function sportyResidents() {
@@ -347,6 +352,36 @@ assert.match(
 const hiveLinger = wrapLeftoverLinger('Nest intake.', { leftoverFedThisWeek: true, lbs: 180, name: 'Maya' }, 3, 'hive.afterglow');
 assert.ok(hiveLinger.length > 'Nest intake.'.length, 'hive leftover linger should append');
 assert.match(hiveLinger, /surplus|galley|Hive/i, 'hive leftover linger voice');
+
+const scarcityOpp = { supernatural: { actTriggered: true, scarcityPressure: 80 } };
+const devourBase = devourScarcityDamage(scarcityOpp, 1);
+const devourLeftover = devourScarcityDamage(scarcityOpp, 1, { leftoverKitchen: true });
+assert.ok(
+  devourLeftover.supernatural.scarcityPressure < devourBase.supernatural.scarcityPressure,
+  'leftover kitchen should deepen devour scarcity drain',
+);
+const ascendedStub = [{ supernaturalForm: 'siren', lbs: 400 }];
+const banBase = tickScarcityBanishment(scarcityOpp, ascendedStub);
+const banLeftover = tickScarcityBanishment(scarcityOpp, ascendedStub, { leftoverKitchen: true });
+assert.ok(
+  banLeftover.supernatural.scarcityPressure < banBase.supernatural.scarcityPressure,
+  'leftover kitchen should deepen weekly scarcity banishment',
+);
+const campusChanceBase = getCampusWeeklyEventChance({ campusFattening: true, stage: 2 }, 1);
+const campusChanceLeftover = getCampusWeeklyEventChance({ campusFattening: true, stage: 2 }, 1, { leftoverKitchen: true });
+assert.ok(campusChanceLeftover > campusChanceBase, 'leftover kitchen should thicken campus weekly event chance');
+const depBase = bumpWeeklyDeviceDependence({ deviceDependence: {} }, 'feeding_mask');
+const depLeftover = bumpWeeklyDeviceDependence({ deviceDependence: {}, leftoverFedThisWeek: true }, 'feeding_mask');
+assert.ok(
+  depLeftover.deviceDependence.feeding_mask > depBase.deviceDependence.feeding_mask,
+  'leftover should bump weekly device dependence',
+);
+assert.ok(
+  scaleDiscoveryRisk(0.15, 0, 1, { leftoverKitchen: true }) > scaleDiscoveryRisk(0.15, 0, 1),
+  'leftover kitchen should thicken campus device discovery risk',
+);
+const unlockLinger = wrapLeftoverLinger('She knocks.', { leftoverFedThisWeek: true, lbs: 140, name: 'Brittany' }, 3, 'unlock.linger');
+assert.ok(unlockLinger.length > 'She knocks.'.length, 'unlock leftover linger should append');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

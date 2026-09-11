@@ -2,9 +2,11 @@
 // SCARCITY PLAYER TOOLS — Devour, Echoed Will (§33.5)
 // ═══════════════════════════════════════════════════════════════
 
-export function devourScarcityDamage(opposition, reachLevel = 1) {
+export function devourScarcityDamage(opposition, reachLevel = 1, extras = {}) {
   if (!opposition?.supernatural?.actTriggered) return opposition;
-  const base = 8 + Math.min(6, reachLevel);
+  const base = 8 + Math.min(6, reachLevel)
+    + (extras.leftoverKitchen ? 2 : 0)
+    + (extras.nightRound ? 1 : 0);
   const pressure = Math.max(0, (opposition.supernatural.scarcityPressure || 0) - base);
   return {
     ...opposition,

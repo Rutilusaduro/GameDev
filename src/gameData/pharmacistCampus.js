@@ -42,11 +42,13 @@ export function rollCampusPassiveLbs(pharmacistState, rndFn) {
 }
 
 /** Weekly campus event roll chance scales with narrative tier and saturation. */
-export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0) {
+export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0, extras = {}) {
   const narrative = getCampusNarrativeTier(pharmacistState);
   const base = { 1: 0.22, 2: 0.3, 3: 0.38 }[narrative] || 0;
   const satBonus = { 0: 0, 1: 0.04, 2: 0.08, 3: 0.12 }[saturationTier] ?? 0;
-  return Math.min(0.55, base + satBonus);
+  const leftoverBonus = extras.leftoverKitchen ? 0.06 : 0;
+  const nightBonus = extras.nightRound ? 0.03 : 0;
+  return Math.min(0.55, base + satBonus + leftoverBonus + nightBonus);
 }
 
 export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturationTier = 0) {

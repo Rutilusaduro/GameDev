@@ -1977,7 +1977,7 @@ export default function HallPass(){
       }
       setLabState(normalizeLabTechState(nextLab));
     }
-    if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState,nextSaturation?.tier??0)){
+    if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState,nextSaturation?.tier??0,{leftoverKitchen:leftoverKitchenThisWeek,nightRound:nightRoundThisWeek})){
       const campusEv=pickPharmacistCampusEvent(updated,{
         hasMayaHive:!!students.find(s=>s.evolvedForm==='delivery_hive'),
       });
@@ -2250,7 +2250,7 @@ export default function HallPass(){
     const superTick=tickSupernaturalWeek(nextOpposition,updated,rnd,newWeek);
     nextOpposition=superTick.opposition;
     updated=applyOppositionStudentPatches(updated,superTick.studentPatches);
-    nextOpposition=tickScarcityBanishment(nextOpposition,updated);
+    nextOpposition=tickScarcityBanishment(nextOpposition,updated,{leftoverKitchen:leftoverKitchenThisWeek,nightRound:nightRoundThisWeek});
     if(oppResult.pendingDeviceConfiscation){
       const equipped=updated.find(st=>st.equip&&Object.values(st.equip).some(Boolean));
       if(equipped){
@@ -2321,7 +2321,9 @@ export default function HallPass(){
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));
       const scene = getUnlockScene(ripe.id) || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
-      setTimeout(() => push(`🌒 ${scene}`), 160);
+      const lingerSub = leftoverIdsThisWeek.has(ripe.id) ? { ...ripe, leftoverFedThisWeek: true } : ripe;
+      const sceneText = wrapLeftoverLinger(scene, lingerSub, week, 'unlock.linger');
+      setTimeout(() => push(`🌒 ${sceneText}`), 160);
     }
 
     const ascensionReadyIds=[];
@@ -2835,7 +2837,10 @@ export default function HallPass(){
 
   const galleryStudioAction=(actionId)=>{
     setGalleryState(prev=>{
-      const next=studioAction(prev,actionId);
+      const next=studioAction(prev,actionId,{
+        leftoverKitchen:students.some(st=>st.leftoverFedThisWeek),
+        nightRound:students.some(st=>week&&st.lastNightVisitWeek===week),
+      });
       if(next.pendingGains){
         const {subjectId,subjectLbs,fionaLbs,scrutiny}=next.pendingGains;
         const fionaId=next.fionaStudentId;
@@ -7347,7 +7352,10 @@ export default function HallPass(){
           if(opposition?.supernatural?.actTriggered){
             const floorLbs=students.reduce((a,s)=>a+(s.lbs-s.startLbs),0);
             const sl=1+Math.floor(Math.max(0,Math.round(floorLbs))/REACH_XP_PER_LEVEL);
-            setOpposition(prev=>devourScarcityDamage(prev,sl));
+            setOpposition(prev=>devourScarcityDamage(prev,sl,{
+              leftoverKitchen:students.some(st=>st.leftoverFedThisWeek),
+              nightRound:students.some(st=>week&&st.lastNightVisitWeek===week),
+            }));
             push('👁 Devour tears a hole in Scarcity\'s counting — pressure eases.');
           }
         } else if(effect.corruption){
@@ -9578,7 +9586,7 @@ export default function HallPass(){
         );
       })()}
 
-      {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} onDismiss={()=>setEndgameQueue(q=>q.slice(1))} soundEnabled={soundEnabled}/>}
+      {endgameQueue[0]&&<OppositionEndgameModal beat={endgameQueue[0]} leftoverKitchen={students.some(st=>st.leftoverFedThisWeek)} nightRound={students.some(st=>week&&st.lastNightVisitWeek===week)} onDismiss={()=>setEndgameQueue(q=>q.slice(1))} soundEnabled={soundEnabled}/>}
       {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing} soundEnabled={soundEnabled}/>}
 
       {/* ── HALL KITCHEN QUEEN MINI-INTERFACE ── */}

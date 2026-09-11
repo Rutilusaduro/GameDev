@@ -570,3 +570,18 @@ oncePool('hostess.linger', [
   ] },
 ]);
 
+oncePool('unlock.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She knocks still carrying last night\'s sitting. The hall takes both.',
+    'Galley leftover in the clothes she wore to your door. Trust smells like foil.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You already saw her after hours. This knock is the public version.',
+  ] },
+  { when: {}, text: [
+    'The door stays open a beat after she comes in.',
+    'She finds the lounge like it was waiting.',
+    'Trust arrives with an appetite she does not hide.',
+  ] },
+]);
+
