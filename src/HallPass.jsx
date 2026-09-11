@@ -1954,7 +1954,7 @@ export default function HallPass(){
           updated=updated.map(s=>{
             const d=netTick.studentDeltas.find(x=>x.studentId===s.id);
             if(!d) return s;
-            let ns=processStudentGain(s,d.gainLbs,0);
+            let ns=processStudentGain(s,d.gainLbs>0?depthGainLbs(s,d.gainLbs,week,{skipNight:true}):0,0);
             if(d.psychDelta) ns={...ns,psych:applyPsychDelta(ns.psych||{},d.psychDelta)};
             return ns;
           });
@@ -2048,7 +2048,7 @@ export default function HallPass(){
       const oldStageId=getStage(s.lbs).id;
       const preLbs=s.lbs;
       let ns=s;
-      if(d.lbsGained>0) ns=processStudentGain(s,d.lbsGained,0);
+      if(d.lbsGained>0) ns=processStudentGain(s,depthGainLbs(s,d.lbsGained,week,{skipNight:true}),0);
       const stagedUp=getStage(ns.lbs).id>oldStageId;
       // Stage-ups route to the dedicated Milestone Ceremony (below), not the
       // generic growth-event popup — so big-gain-without-stageup still shows

@@ -94,6 +94,8 @@ import './hunt/depth.js';
 import './hunt/feastDepth.js';
 import './campusEvent/index.js';
 import './campusEvent/depth.js';
+import './campusEvent/floorBeats.js';
+import './faculty/voice.js';
 import './deviceFlavor.js';
 import './opposition/endgameBeat.js';
 import './opposition/index.js';

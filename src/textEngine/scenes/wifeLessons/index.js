@@ -99,10 +99,7 @@ export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 
     ...opts,
   });
   const base = line.trim();
-  const leftoverish = !!mjStudent?.leftoverFedThisWeek || !!(week && mjStudent?.lastNightVisitWeek === week);
-  const wrap = leftoverish
-    ? (render('{wifeLessons.talk.scene}', ctx, { trace: opts.trace || null })?.trim() || '')
-    : '';
+  const wrap = render('{wifeLessons.talk.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{wife.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = [base, wrap, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(composed, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);

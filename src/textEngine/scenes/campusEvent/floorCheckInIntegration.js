@@ -4,6 +4,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { FLOOR_SCENES } from '../../../gameData/floorEvents.js';
 import { INIT_STUDENTS } from '../../../gameData/students.js';
 import '../proseOverhaulPass4.js';
+import './floorBeats.js';
 
 const sampleStudent = INIT_STUDENTS[0];
 
@@ -42,18 +43,16 @@ for (const scene of FLOOR_SCENES) {
   });
 }
 
-/** Campus observation + legacy floor check-in scene intro composed. */
+/** Floor check-in intro — leftover/night skeleton primary, unique scene fallback. */
 export function renderFloorSceneText(scene, student, week = 1, opts = {}) {
   if (!scene || !student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  const beat = render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const composed = render('{floor.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
   const modular = render(`{campusEvent.scene.${scene.id}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   const legacy = resolveLegacyText(scene.text, student);
-  const body = modular || legacy;
+  const body = composed || modular || legacy;
   const linger = render('{floor.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const withLinger = linger ? `${body} ${linger}` : body;
-  if (beat && withLinger) return `${beat} ${withLinger}`;
-  return beat || withLinger;
+  return [body, linger].filter(Boolean).join('\n\n');
 }
 
 export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opts = {}) {
@@ -62,9 +61,10 @@ export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opt
   if (!choice) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const modular = render(`{campusEvent.choice.${scene.id}.${choiceIdx}}`, ctx, { trace: opts.trace || null })?.trim();
+  const unique = modular || resolveLegacyText(choice.result, student);
+  const wrap = render('{floor.choice.wrap}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{floor.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const body = modular || resolveLegacyText(choice.result, student);
-  return linger ? `${body} ${linger}` : body;
+  return [unique, wrap, linger].filter(Boolean).join('\n\n');
 }
 
 /** @deprecated use renderFloorSceneText */

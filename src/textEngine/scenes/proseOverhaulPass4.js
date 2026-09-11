@@ -207,9 +207,9 @@ oncePool('faculty.line', [
 
 oncePool('faculty.scene', [
   { when: {}, text: [
-    '{faculty.beat} {faculty.growth} {faculty.line} {faculty.afterglow}',
-    '{faculty.growth} {faculty.beat} {faculty.line} {faculty.afterglow}',
-    '{faculty.line} {faculty.beat} {faculty.growth} {faculty.afterglow}',
+    '{faculty.voice} {faculty.growth} {faculty.line}',
+    '{faculty.voice} {faculty.line} {faculty.growth}',
+    '{faculty.growth} {faculty.voice} {faculty.line}',
   ] },
 ]);
 
