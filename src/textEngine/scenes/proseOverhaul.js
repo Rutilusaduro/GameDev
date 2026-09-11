@@ -243,6 +243,24 @@ registerModuleVariants('talk.checkIn.greetClose', [
 ]);
 
 registerModuleVariants('enc.bodyAside', [
+  { when: { leftoverFed: true, stageMax: 1 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover heat is the new softness talking first.',
+    'Kitchen sitting already started the hunger the encouragement names.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 2, stageMax: 3 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover sitting plus this talk — belly rounding, hand finding it.',
+    'The {subject.lbs} lbs include last night\'s tray. She keeps finding it with one hand.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 5 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover heat is plump and honest — belly forward, appetite not a question.',
+    'The {subject.lbs} lbs already sat with foil. Encouragement is just catching up.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6, stageMax: 7 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover and this talk share a lap. Appetite unapologetic.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Her body answers leftover first, then the encouragement. Warmth, give, appetite open.',
+  ] },
   { when: { stageMin: 3, stageMax: 6 }, weight: 2, text: [
     'Her belly answers the encouragement with a slow outward ease.',
     'A new softness shows when she laughs, then stays when she stops.',

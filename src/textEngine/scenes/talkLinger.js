@@ -356,6 +356,17 @@ registerPool('talk.leftover_plate', [
 ]);
 
 registerPool('talk.encourage.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She looks at the plate like leftover already started the argument. Then she takes another bite.',
+    'Kitchen heat plus the encouragement. She treats both as permission.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'She palms leftover work and this talk in the same warm place.',
+    'The talk ends. Last night\'s sitting does not. She treats that as the point.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She keeps eating after the sentence. Foil from the galley already taught her how.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She looks at the plate like it overheard you. Then she takes another bite anyway.',
     'The encouragement sits in the room after you stop talking. So does her appetite.',
@@ -372,6 +383,17 @@ registerPool('talk.encourage.linger', [
 ]);
 
 registerPool('talk.command_finish.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She stares at the empty plate. Last night\'s tray already voted. This one did too.',
+    'The command lands on leftover heat. She sits with both.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'She leans back, packed from kitchen sitting plus the plate you named. Waiting.',
+    'Every plate is gone. Leftover parked her. She stays.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Clean plates. Kitchen leftover was the first order. She wants the telling again.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She stares at the empty plate like it might argue. It does not.',
     'The command lingers warmer than the food. She sits with both.',
