@@ -6,6 +6,8 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import '../proseOverhaulPass4.js';
 import './salonGalleryBeats.js';
+import './activityBeats.js';
+import './formBeats.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -22,6 +24,17 @@ const EVOLVED_FORM_POOLS = {
 const EVOLVED_AFTERGLOW = {
   salon_appetit: 'salon.afterglow',
   artisan_gallery: 'gallery.afterglow',
+};
+
+const EVOLVED_BEATS = {
+  salon_appetit: 'evolved.salon.beat',
+  artisan_gallery: 'evolved.gallery.beat',
+  eating_competitor: 'evolved.circuit.beat',
+  pharmacist: 'evolved.pharmacist.beat',
+  cultivator: 'evolved.cultivator.beat',
+  eating_streamer: 'evolved.streamer.beat',
+  homeroom_queen: 'evolved.homeroom.beat',
+  wife_lessons: 'evolved.wife.beat',
 };
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   const line = typeof text === 'string' ? text.trim() : '';
@@ -45,12 +58,8 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
     const extra = render(`{${formPool}}`, ctx)?.trim();
     if (extra) out = `${out}\n\n${extra}`;
   }
-  const beatKey = formId === 'salon_appetit'
-    ? 'evolved.salon.beat'
-    : formId === 'artisan_gallery'
-      ? 'evolved.gallery.beat'
-      : null;
-  if (beatKey && out?.trim()) {
+  const beatKey = EVOLVED_BEATS[formId] || null;
+  if (beatKey && out?.trim() && !opts.skipBeats) {
     const beat = render(`{${beatKey}}`, ctx)?.trim();
     if (beat) out = `${out}\n\n${beat}`;
   }
@@ -65,4 +74,30 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
     if (linger) out = `${out}\n\n${linger}`;
   }
   return out;
+}
+
+/** One-shot evolved activity — slot skeleton, then linger/afterglow wrap. */
+export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: {
+      featureId: opts.formId || student.evolvedForm || 'evolved',
+      stageIdx,
+      leftoverFed: !!student.leftoverFedThisWeek,
+      ...(opts.globals || {}),
+    },
+    ...opts,
+  });
+  const scene = render('{evolved.activity.scene}', ctx)?.trim();
+  if (!scene) return '';
+  return renderEvolvedEventProse(scene, student, week, {
+    formId: opts.formId || student.evolvedForm,
+    stageIdx,
+    ending: true,
+    skipBeats: true,
+    v2DepthChance: opts.v2DepthChance ?? 0.35,
+    globals: opts.globals,
+  });
 }

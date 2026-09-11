@@ -82,6 +82,16 @@ registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.gl
 registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
 registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
 registerDimension('origin', (ctx) => ctx.subject?.origin ?? 'default');
+registerDimension('leftoverFed', (ctx) => !!(ctx.subject?.leftoverFedThisWeek || ctx.globals?.leftoverFed));
+registerDimension('nightVisit', (ctx) => {
+  const w = ctx.week;
+  return !!(w && ctx.subject?.lastNightVisitWeek === w) || !!ctx.globals?.nightVisit;
+});
+registerDimension('huntSeasoned', (ctx) => {
+  const marks = ctx.subject?.huntMarks;
+  const total = marks ? Object.values(marks).reduce((a, n) => a + (n || 0), 0) : 0;
+  return total >= 3 || !!ctx.globals?.huntSeasoned;
+});
 registerDimension('isGaining', (ctx) => {
   const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
   if (delta != null) return delta > 0;

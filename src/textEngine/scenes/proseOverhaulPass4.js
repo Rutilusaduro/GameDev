@@ -32,6 +32,13 @@ oncePool('campus.linger', [
     'She hurries a little, then forgets why, then buys something anyway.',
     'Quad wind finds the new tightness at her waist. She keeps walking.',
   ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her. Campus kiosks feel like seconds.',
+    'She buys anyway. The tray from last night made the walk hungrier.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in her. Daylight eating uses the same open door.',
+  ] },
   { when: { stageMin: 6 }, weight: 2, text: [
     'Paths make room. She takes the slow lane like it was built for her.',
     'A bench remembers her outline after she stands. Campus keeps the heat.',

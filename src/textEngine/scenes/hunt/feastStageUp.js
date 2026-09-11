@@ -130,6 +130,31 @@ registerPool('hunt.feast.deliveryIntro', [
   { when: {}, text: [DELIVERY_INTRO] },
 ]);
 
+// Shape: FULL SENTENCE. Afterglow after the swallow — leftover / night / seasoned hunt.
+registerPool('hunt.feast.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover was still in her when she took him. The warmth stacked. Softness arrived faster for it.',
+    'Kitchen tray from earlier. Prey on top of it. She hums like both were courses.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You were at her door hours ago. The hunt uses that heat. She is still open from it.',
+    'Night-round knock still in the wood. She hunted on the same appetite.',
+  ] },
+  { when: { huntSeasoned: true }, weight: 3, text: [
+    'Marks on more than one man. She swallows like practice. The body already knows the bloom.',
+    'She has done this enough that the surge arrives on cue. Hands already roaming the new inches.',
+  ] },
+  { when: { stageMin: 7 }, weight: 2, text: [
+    'Furniture reports the new mass. She stays where she is and lets it finish arriving.',
+    'The room has to accept her. It does. She pets the fresh weight like a kept thing.',
+  ] },
+  { when: {}, text: [
+    'Warmth spreads after the last gulp. She catalogs hips, breasts, belly. Then she smiles at the catalog.',
+    'The prey is gone. The softness is not. She keeps a black-nailed hand on it.',
+    'A pleased sound. The hunt heard it too. She is already thinking about the next one.',
+  ] },
+]);
+
 /**
  * Full feast narrative for a hunt consume at the given pre-gain stage (0–9).
  * Falls back to legacy CONSUME_TEXT for stage 10+ repeats.
@@ -141,7 +166,9 @@ export function renderLilithFeast(student, stageId, week = 1, opts = {}) {
   if (!hasModule(key)) return getConsumeText(stageId);
   const ctx = createContext({ subject: student, week, globals: { feastStage: sid }, ...opts });
   const line = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim();
-  return line || getConsumeText(stageId);
+  const glow = render('{hunt.feast.afterglow}', ctx, { trace: opts.trace || null })?.trim();
+  const out = [line, glow].filter(Boolean).join('\n\n');
+  return out || getConsumeText(stageId);
 }
 
 /** Mood-setter when opening delivery-only hunt (stage 9+). */

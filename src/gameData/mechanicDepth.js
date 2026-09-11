@@ -154,6 +154,17 @@ export function applyTalkHabitatBonus(effect, student, dormState, week = 0, topi
   return next;
 }
 
+/** Hive shift extras from leftover trays and a night visit. */
+export function hiveShiftFx(maya, week = 0) {
+  const leftover = !!maya?.leftoverFedThisWeek;
+  const night = !!(week && maya?.lastNightVisitWeek === week);
+  return {
+    lbsBump: leftoverNightGainBump(maya, week),
+    biomassBump: leftover ? 2 : 0,
+    resonanceBump: night ? 1 : 0,
+  };
+}
+
 /** Extra lbs on overnight device runs after leftover trays or a night visit. */
 export function leftoverNightGainBump(student, week = 0) {
   let n = 0;

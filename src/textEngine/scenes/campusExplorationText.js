@@ -359,7 +359,9 @@ export function renderCampusSighting(student, explorationCtx, nodeId) {
   const line = render('{campus.sighting}', ctx);
   if (!line) return null;
   const depth = appendV2Depth(line, 'campusNav', ctx, 0.22);
-  return depth ? `👁 ${depth}` : null;
+  const linger = render('{campus.linger}', ctx)?.trim() || '';
+  const body = [depth, linger].filter(Boolean).join('\n\n');
+  return body ? `👁 ${body}` : null;
 }
 
 export function renderCampusTravelLine(explorationCtx, nodeId, category = 'travel') {

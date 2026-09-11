@@ -145,7 +145,7 @@ import {
   renderFairDayWeighInResult,
   renderFairDayAfterpartyResult,
 } from './textEngine/scenes/fairTraining/index.js';
-import { renderEvolvedEventProse } from './textEngine/scenes/evolved/index.js';
+import { renderEvolvedEventProse, renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
 import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -398,6 +398,7 @@ import {
   habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
   tickOutfitWeek, digestStuffedExtras, leftoverNightGainBump, echoResonateMult,
   contestBiteLbs, depthGainLbs, evolvedPrepFx, homeroomArcFx, wifeRepeatFx,
+  hiveShiftFx,
 } from './gameData/mechanicDepth.js';
 import { applyOutfitRefit, REFIT_OPTIONS } from './gameData/outfits.js';
 import './textEngine/scenes/proseOverhaul.js';
@@ -2180,8 +2181,8 @@ export default function HallPass(){
         const diff=Math.abs(getStage(sA.lbs).id-getStage(sB.lbs).id);
         if(diff>=2){
           const lighter=getStage(sA.lbs).id<getStage(sB.lbs).id?sA:sB;
-          const bonus=rnd(1,3);
-          updated=updated.map(s=>s.id===lighter.id?{...s,lbs:s.lbs+bonus}:s);
+          const bonus=depthGainLbs(lighter,rnd(1,3),newWeek,{});
+          updated=updated.map(s=>s.id===lighter.id?processStudentGain(s,bonus,0):s);
           setTimeout(()=>push(`👥 ${lighter.name} spends time with her friend and gains an extra ${bonus} lbs this week.`),80);
         }
       }
@@ -2604,7 +2605,8 @@ export default function HallPass(){
     }
     const actArr=EVOLVED_ACTIVITY_TEXT[s.evolvedForm];
     const rawText=actArr?actArr[stageIdx]:null;
-    let text=rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.";
+    const beat=renderEvolvedActivityBeat(s,week,stageIdx,{formId:s.evolvedForm});
+    let text=beat||(rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.");
     if(s.evolvedForm==='eating_streamer'){
       const offCtx=createContext({subject:s,week});
       offCtx.d.brand=s.brand;
@@ -2613,8 +2615,10 @@ export default function HallPass(){
       const off=render('{destiny.offstream.activity}',offCtx);
       if(off) text=`${off}\n\n${text}`;
     }
-    const evolvedCtx=createContext({subject:s,week});
-    text=renderEvolvedEventProse(text,s,week,{formId:s.evolvedForm,stageIdx,ending:true,v2DepthChance:0.35})||appendV2Depth(text,'evolved',evolvedCtx,0.35);
+    if(!beat){
+      const evolvedCtx=createContext({subject:s,week});
+      text=renderEvolvedEventProse(text,s,week,{formId:s.evolvedForm,stageIdx,ending:true,v2DepthChance:0.35})||appendV2Depth(text,'evolved',evolvedCtx,0.35);
+    }
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -3676,7 +3680,7 @@ export default function HallPass(){
       const{gain}=prev.subState;
       setStudents(sp=>sp.map(s=>{
         if(s.id!==prev.priyaStudentId) return s;
-        return processStudentGain(s,gain,0);
+        return processStudentGain(s,depthGainLbs(s,gain,week,{}),0);
       }));
       push(`📊 Priya — Competitive Binge: +${gain} lbs`);
       return{...prev,view:null,subState:null};
@@ -3760,9 +3764,11 @@ export default function HallPass(){
       const assigned=Object.values(prev.assignments).reduce((a,b)=>a+b,0);
       if(assigned>prev.members){push("⚠️ Too many Hive members assigned.");return prev;}
       const next=executeHiveShift(prev,{mayaStageId:getStage(maya.lbs).id});
+      const hiveFx=hiveShiftFx(maya,week);
       const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
-      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,mayaGain,4):s));
-      push(`🕸️ Maya — Delivery Hive Shift: +${mayaGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
+      const appliedGain=depthGainLbs(maya,mayaGain,week,{});
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,appliedGain,4):s));
+      push(`🕸️ Maya — Delivery Hive Shift: +${appliedGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
       // Modular-text intake scene when the shift recruits new bodies
       let withScene=next;
       const recruits=next.lastShift?.memberGain||0;
@@ -3781,7 +3787,7 @@ export default function HallPass(){
           withScene={...next,log:[{tag:sceneTag,text:sceneText,type:"scene"},...next.log].slice(0,40)};
         }
       }
-      return {...withScene,lastShift:{...withScene.lastShift,mayaGain}};
+      return {...withScene,hiveBiomass:(withScene.hiveBiomass||0)+hiveFx.biomassBump,floorResonance:getHiveFloorResonance(withScene)+hiveFx.resonanceBump,lastShift:{...withScene.lastShift,mayaGain:appliedGain}};
     });
   };
 
@@ -3794,14 +3800,15 @@ export default function HallPass(){
       const bmiTier=getHiveBmiTier(prev.avgBmi);
       const rooms=getHiveControl(prev.rooms);
       const tag=makeHiveTag("CentralNestVisit",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"ra",roomId:prev.selectedRoomId});
-      const gain=Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35);
-      const biomass=Math.round(gain*0.8);
+      const hiveFx=hiveShiftFx(maya,week);
+      const gain=depthGainLbs(maya,Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35),week,{});
+      const biomass=Math.round(gain*0.8)+hiveFx.biomassBump;
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
       push(`🕸️ Maya — Central Nest Visit: +${gain} lbs`);
       return {
         ...prev,
         hiveBiomass:prev.hiveBiomass+biomass,
-        floorResonance:getHiveFloorResonance(prev)+3,
+        floorResonance:getHiveFloorResonance(prev)+3+hiveFx.resonanceBump,
         view:"visit",
         subState:{tag,gain,biomass,text:`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
         log:[{tag,text:"RA-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
@@ -3835,15 +3842,16 @@ export default function HallPass(){
       const rooms=getHiveControl(prev.rooms);
       const mayaStage=getStage(maya.lbs).label.replace(/\s+/g,"");
       const bmiTier=getHiveBmiTier(prev.avgBmi);
-      const gain=Math.round(22+getStage(maya.lbs).id*4+rooms*1.5);
+      const hiveFx=hiveShiftFx(maya,week);
+      const gain=depthGainLbs(maya,Math.round(22+getStage(maya.lbs).id*4+rooms*1.5),week,{});
       const tag=makeHiveTag("LilithAbsorption",{mayaStage,vpId:"lilith",bmiTier,rooms,task:"absorb",roomId:prev.selectedRoomId});
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,3):s));
       push(`🌑 Maya's Hive absorbs a devotee: +${gain} lbs`);
       return {
         ...prev,
         members:prev.members-1,
-        hiveBiomass:prev.hiveBiomass+gain,
-        floorResonance:getHiveFloorResonance(prev)+6,
+        hiveBiomass:prev.hiveBiomass+gain+hiveFx.biomassBump,
+        floorResonance:getHiveFloorResonance(prev)+6+hiveFx.resonanceBump,
         log:[{tag,text:"Lilith guides one devotee into Maya's stored biomass.",type:"absorb"},...prev.log].slice(0,40),
       };
     });
@@ -3869,7 +3877,7 @@ export default function HallPass(){
       const relBonus=vignette.relBonus||0;
       const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
       if(tiffany){
-        setStudents(prev=>prev.map(s=>s.id===tiffany.id?{...s,lbs:s.lbs+bonus,relationship:Math.min(100,s.relationship+relBonus)}:s));
+        setStudents(prev=>prev.map(s=>s.id===tiffany.id?processStudentGain(s,depthGainLbs(s,bonus,week,{}),relBonus):s));
         push(`✦ ${['Kylie','Fiona','Reneé'][[2,4,10].indexOf(hangoutStudentId)]} hangout — +${bonus} lbs · +${relBonus} rel`);
       }
       setChapterHostessState(prev=>{
@@ -3897,7 +3905,7 @@ export default function HallPass(){
     const{stageIdx,feastGainTotal,feastRelTotal,pendingSisterGains,pendingCamilleGain,sisters,camille}=chapterHostessState;
     const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
     if(tiffany){
-      setStudents(prev=>prev.map(s=>s.id===tiffany.id?{...s,lbs:s.lbs+feastGainTotal,relationship:Math.min(100,s.relationship+feastRelTotal)}:s));
+      setStudents(prev=>prev.map(s=>s.id===tiffany.id?processStudentGain(s,depthGainLbs(s,feastGainTotal,week,{}),feastRelTotal):s));
       push(`✦ ${tiffany.name} — Wednesday Feast: +${feastGainTotal} lbs · +${feastRelTotal} rel`);
     }
     const newStageIdx=Math.min(5,stageIdx+1);
@@ -4081,7 +4089,9 @@ export default function HallPass(){
       const marks={...(s.huntMarks||{})};
       const mid=lilithHuntState?.encounter?.manId;
       if(mid) marks[mid]=(marks[mid]||0)+1;
-      return {...s,lbs:s.lbs+gain,huntMarks:marks};
+      const markTotal=Object.values(marks).reduce((a,n)=>a+(n||0),0);
+      const grown=processStudentGain(s,depthGainLbs(s,gain,week,{chain:markTotal>=3?1:0}),0);
+      return bumpOriginChain({...grown,huntMarks:marks});
     }));
     setLilithKillCount(k=>k+1);
     if(isAib){
@@ -4110,7 +4120,7 @@ export default function HallPass(){
     const stageId=getStage(lilith.lbs).id;
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):25;
-    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?bumpOriginChain(processStudentGain(s,depthGainLbs(s,gain,week,{}),0)):s));
     setLilithKillCount(k=>k+1);
     push(`🌑 Lilith — delivery: +${gain} lbs`);
     const feastText=renderLilithFeast(lilith, stageId, week);
@@ -4194,7 +4204,7 @@ export default function HallPass(){
     const finalSusp=stageUp?(rawSusp>75?Math.round(rawSusp*SUSPICION_CARRY_FRACTION):0):rawSusp;
     // Reneé small quality-control gain (skip if already digesting)
     if(cs.digestWeeksLeft===0){
-      const reneeGain=Math.round(2+Math.random()*6)+leftoverNightGainBump(s,week);
+      const reneeGain=depthGainLbs(s,Math.round(2+Math.random()*6),week,{});
       setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,reneeGain,5):st));
     }
     // Emergency harvest at suspicion 200 (only if no stage-up — stage-up takes priority with reset)
@@ -4207,7 +4217,7 @@ export default function HallPass(){
       const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);
       const gVignette=getGrowthVignette(_bSid,hGain,_stagesJumped);
       const reneePre=renee.lbs;
-      const grown=processStudentGain(renee,hGain,8);
+      const grown=processStudentGain(renee,depthGainLbs(renee,hGain,week,{}),8);
       const growthEv=buildGrowthEvent(grown,{
         cause:{ type:'feature', featureId:'cultivator', locale:'kitchen' },
         preLbs:reneePre,
@@ -4248,7 +4258,7 @@ export default function HallPass(){
     const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
     const renee=students.find(st=>st.id===s.id)||s;
     const reneePre=renee.lbs;
-    const grown=processStudentGain(renee,hGain,12);
+    const grown=processStudentGain(renee,depthGainLbs(renee,hGain,week,{}),12);
     const growthEv=buildGrowthEvent(grown,{
       cause:{ type:'feature', featureId:'cultivator', locale:'kitchen' },
       preLbs:reneePre,
@@ -4311,7 +4321,7 @@ export default function HallPass(){
     const act=PHARMACIST_ACTIVITIES[pharmacistChemSession.stageId||pharmacistState.stage]||PHARMACIST_ACTIVITIES[1];
     if(ap<act.apCost){push(`⚠️ Need ${act.apCost} AP.`);return;}
     setAp(a=>a-act.apCost);
-    const gain=rnd(...act.sophiaGain)+leftoverNightGainBump(s,week);
+    const gain=depthGainLbs(s,rnd(...act.sophiaGain),week,{});
     const ns=processStudentGain(s,gain,10);
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
     const prevState=pharmacistState;
@@ -4384,7 +4394,7 @@ export default function HallPass(){
     if(!capstone) return;
     if(ap<capstone.apCost){ push(`⚠️ Need ${capstone.apCost} AP.`); return; }
     setAp(a=>a-capstone.apCost);
-    const gain=Math.max(1,Math.round(rnd(8,14)*getSupernaturalGainMult(s)));
+    const gain=Math.max(1,Math.round(depthGainLbs(s,rnd(8,14),week,{})*getSupernaturalGainMult(s)));
     const firstUnlock=capstone.firstUnlock;
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:markArrivalUnlocked(processStudentGain(st,gain,6))));
     if(firstUnlock&&labState){
@@ -4403,7 +4413,7 @@ export default function HallPass(){
     if(!arrival) return;
     if(ap<arrival.apCost){ push(`⚠️ Need ${arrival.apCost} AP.`); return; }
     setAp(a=>a-arrival.apCost);
-    const gain=Math.max(1,Math.round(rnd(arrival.gain[0],arrival.gain[1])*getSupernaturalGainMult(s)));
+    const gain=Math.max(1,Math.round(depthGainLbs(s,rnd(arrival.gain[0],arrival.gain[1]),week,{})*getSupernaturalGainMult(s)));
     const firstUnlock=arrival.firstUnlock;
     const hint=(s.courtHintWeek??-1)<week?getNextHint(s):null;
     let hintPatched=s;
@@ -5821,8 +5831,8 @@ export default function HallPass(){
     const initQual=history&&history.includes("both_loaded")?65:50;
     const initKylieGain=history&&history.includes("both_loaded")?8:0;
     const initPartnerGain=history&&history.includes("both_loaded")?6:0;
-    if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,initKylieGain,0):st));
-    if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,initPartnerGain,0):st));
+    if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,depthGainLbs(st,initKylieGain,week,{}),0):st));
+    if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,depthGainLbs(st,initPartnerGain,week,{skipNight:true}),0):st));
     const initChat=[pickCollabWrenLine(stageIdx,kylie,partner,week)].filter(Boolean);
     setCollabStreamState({kylieId,partnerId,stageIdx,qualityBar:initQual,kylieGain:0,partnerGain:0,partnerStageAtStart,stagedUp:false,foodQueue:tierFoods,tierIdx:0,chatLines:initChat,phase:'streaming',popupText:null,phaseAfterPopup:null,actions:{kylieRevealed:false,partnerRevealed:false,zoomUses:3,chatUses:3,pushUsed:false}});
     setCollabPartnerId(null);
@@ -5916,11 +5926,11 @@ export default function HallPass(){
     }
 
     // Apply lbs gains
-    if(kylieGainThisAction>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,kylieGainThisAction,0):st));
+    if(kylieGainThisAction>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,depthGainLbs(st,kylieGainThisAction,week,{skipNight:kylieGain>0}),0):st));
     if(partnerGainThisAction>0){
       setStudents(prev=>prev.map(st=>{
         if(st.id!==partnerId) return st;
-        const updated=processStudentGain(st,partnerGainThisAction,0);
+        const updated=processStudentGain(st,depthGainLbs(st,partnerGainThisAction,week,{skipNight:partnerGain>0}),0);
         // Check for stage-up
         if(getStage(updated.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
           const newStage=getStage(updated.lbs);
@@ -6038,9 +6048,10 @@ export default function HallPass(){
       const qualityLbs=RECORDING_QUALITY_BONUS[quality]||0;
       const gainThisTake=baseLbs+paceLbs+qualityLbs;
       const newGain=prev.kylieGain+gainThisTake;
-      // Apply lbs to student
       const kylie=students.find(st=>st.id===prev.studentId);
-      if(kylie) processStudentGain(kylie,gainThisTake,0);
+      if(kylie){
+        setStudents(p=>p.map(st=>st.id!==prev.studentId?st:processStudentGain(st,depthGainLbs(st,gainThisTake,week,{skipNight:prev.kylieGain>0}),0)));
+      }
       const newRatings=[...prev.clipRatings,quality];
       const qualityOrder=['okay','good','great','perfect'];
       const bestClip=newRatings.reduce((best,q)=>qualityOrder.indexOf(q)>qualityOrder.indexOf(best)?q:best,'okay');
@@ -6901,7 +6912,7 @@ export default function HallPass(){
     // Pin blackout — at settled size, letting her mass come over you is a gamble.
     // On a hit she pins you, you black out, and the week ends where you lie.
     if(choiceCanPin(sceneId,choiceId,s) && Math.random()<pinBlackoutChance(s)){
-      const passGain=choice.lbs||0;
+      const passGain=choice.lbs?depthGainLbs(s,choice.lbs,week,{}):0;
       const passRel=(choice.rel||0)+PIN_PASSOUT_REL_BONUS;
       setStudents(prev=>prev.map(st=>st.id!==studentId?st:processStudentGain(st,passGain,passRel)));
       push(`🕳️ ${s.name} pins you under her — the room goes dark. The week ends where you lie.`);
@@ -6910,12 +6921,12 @@ export default function HallPass(){
     }
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const newLog=[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)];
-    let newGain=gainAccum+(choice.lbs||0);
+    const choiceLbs=choice.lbs?depthGainLbs(s,choice.lbs,week,{skipNight:true}):0;
+    let newGain=gainAccum+choiceLbs;
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
-      const feedGain=rnd(choice.gainRange[0],choice.gainRange[1]);
+      const feedGain=depthGainLbs(s,rnd(choice.gainRange[0],choice.gainRange[1]),week,{skipNight:true});
       newGain=gainAccum+feedGain;
-      setStudents(prev=>prev.map(st=>st.id!==studentId?st:processStudentGain(st,feedGain,0)));
       push(`🍖 ${s.name} grows warmer and heavier against you. +${feedGain} lbs`);
     }
     const nextPhase=phaseIdx+1;
@@ -6923,7 +6934,8 @@ export default function HallPass(){
       let endingIdx=def.endings.findIndex(e=>evalIntimacyEndingCondition(e.conditionSrc,newHistory));
       if(endingIdx<0) endingIdx=def.endings.length-1;
       const ending=def.endings[endingIdx];
-      const totalGain=newGain+ending.gainBonus;
+      const biteTotal=newGain+ending.gainBonus;
+      const totalGain=biteTotal+(biteTotal>0?leftoverNightGainBump(s,week):0);
       const totalRel=newRel+ending.relBonus;
       setStudents(prev=>prev.map(st=>{
         if(st.id!==studentId) return st;
@@ -7049,7 +7061,10 @@ export default function HallPass(){
           if(!surgeStudent&&(beforePct<50&&afterPct>=50)) surgeStudent=ns;
         }
         if(!studentReceivesPassiveGain(ns)) return ns;
-        if(ns.lockState==='locked') return {...ns,lbs:ns.lbs+1,willpowerTaps:(ns.willpowerTaps||0)+1};
+        if(ns.lockState==='locked'){
+          const tap=depthGainLbs(ns,1,week,{skipNight:true});
+          return {...processStudentGain(ns,tap,0),willpowerTaps:(ns.willpowerTaps||0)+1};
+        }
         const cals=rnd(action.cal[0],action.cal[1]);
         const fed=feedStudentCalories(ns,cals,action.full,2,'Refeast',{});
         if(!fed){refused++;return ns;}
@@ -7072,7 +7087,10 @@ export default function HallPass(){
     const feedFull=(action.full||0)+leftoverBonus*2;
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
-      if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
+      if(s.lockState==='locked'){
+        const tap=depthGainLbs(s,1,week,{skipNight:true});
+        return {...processStudentGain(s,tap,0),willpowerTaps:(s.willpowerTaps||0)+1};
+      }
       const cals=rnd(action.cal[0],action.cal[1]);
       const fed=feedStudentCalories(s,cals,feedFull,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
@@ -7884,8 +7902,8 @@ export default function HallPass(){
 
   const resolveNarrative=(ev,s,accept)=>{
     if(accept&&ev.gain[1]>0){
-      const gain=rnd(ev.gain[0],ev.gain[1]);
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+ev.rel)}));
+      const gain=depthGainLbs(s,rnd(ev.gain[0],ev.gain[1]),week,{});
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:processStudentGain(st,gain,ev.rel)));
       push(`📖 ${ev.title} resolved. ${s.name} +${gain} lbs, +${ev.rel} relationship.`);
     } else {
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+Math.floor(ev.rel/2))}));
@@ -9447,8 +9465,8 @@ export default function HallPass(){
             taps={refeedSurgeState.taps}
             onTap={()=>setRefeedSurgeState(prev=>prev?{...prev,taps:Math.min(prev.tapsNeeded,prev.taps+1)}:null)}
             onComplete={()=>{
-              const bonus=rnd(4,8);
-              setStudents(prev=>prev.map(st=>st.id!==surgeStudent.id?st:{...st,lbs:st.lbs+bonus}));
+              const bonus=depthGainLbs(surgeStudent,rnd(4,8),week,{});
+              setStudents(prev=>prev.map(st=>st.id!==surgeStudent.id?st:processStudentGain(st,bonus,0)));
               push(`✨ ${surgeStudent.name} surges — memory floods back (+${bonus} lbs).`);
               setRefeedSurgeState(null);
             }}
