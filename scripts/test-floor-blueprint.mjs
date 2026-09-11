@@ -44,6 +44,7 @@ import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js
 import { renderEvolvedActivity, renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
 import { renderContestFoodPopup, renderContestActionPopup } from '../src/textEngine/scenes/eatingContest/index.js';
 import { renderSumoOpening, renderSumoExchangeLine } from '../src/textEngine/scenes/sumoMatch/index.js';
+import { renderRecordingOpening, renderRecordingDirectionPopup } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
@@ -287,6 +288,17 @@ const pantryCtx = createContext({ subject: students[0], week: 2, globals: { item
 const pantryLine = render('{pantry.use}', pantryCtx);
 assert.ok(pantryLine && !pantryLine.includes('{unresolved}'), `pantry.use should resolve, got: ${String(pantryLine).slice(0, 160)}`);
 assert.ok(/cookie dough/i.test(pantryLine), `item.label should land in pantry.use, got: ${String(pantryLine).slice(0, 160)}`);
+
+const recStudent = {
+  id: 2, name: 'Kylie', lbs: 240, startLbs: 125, evolvedForm: 'feedee_creator',
+  relationship: 30, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const recOpen = renderRecordingOpening(0, recStudent, 3);
+assert.ok(recOpen && !recOpen.includes('{unresolved}'), `recording open should resolve, got: ${String(recOpen).slice(0, 160)}`);
+assert.equal(/I'm so ready for this/i.test(recOpen), false, 'recording open should not be the leftover monolith');
+const recDir = renderRecordingDirectionPopup('food_kitchen', 0, recStudent, 3);
+assert.ok(recDir && !recDir.includes('{unresolved}'));
+assert.equal(/You bring the hall kitchen leftovers/i.test(recDir), false, 'recording direction should not be leftover food_kitchen copy');
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

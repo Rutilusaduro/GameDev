@@ -49,17 +49,40 @@ export function renderRecordingLegacy(text, student, week, stageIdx = 0, opts = 
   return appendV2Depth(line, 'recordingSession', ctx, opts.v2DepthChance ?? 0.28);
 }
 
+function preferRecordingPool(poolKey, student, week, stageIdx, opts = {}) {
+  if (!student) return '';
+  const ctx = buildRecordingCtx(student, week, stageIdx, opts);
+  const composed = render(`{${poolKey}}`, ctx)?.trim();
+  if (composed && !composed.includes('{unresolved}')) {
+    return appendV2Depth(composed, 'recordingSession', ctx, opts.v2DepthChance ?? 0.26);
+  }
+  return '';
+}
+
 export function renderRecordingOpening(stageIdx, student, week) {
+  const composed = preferRecordingPool('recording.open.scene', student, week, stageIdx, {
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   const raw = resolveLegacy(RECORDING_OPENING_TEXT[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
 }
 
 export function renderRecordingTakeIntro(stageIdx, student, week) {
+  const composed = preferRecordingPool('recording.take.scene', student, week, stageIdx, {
+    v2DepthChance: 0.22,
+  });
+  if (composed) return composed;
   const raw = resolveLegacy(RECORDING_TAKE_INTRO_TEXT[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.22 });
 }
 
 export function renderRecordingDirectionPopup(choiceId, stageIdx, student, week) {
+  const composed = preferRecordingPool('recording.direction.scene', student, week, stageIdx, {
+    globals: { recordingAction: choiceId },
+    v2DepthChance: 0.26,
+  });
+  if (composed) return composed;
   const arr = RECORDING_DIRECTION_POPUPS[choiceId];
   const raw = resolveLegacy(arr?.[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
