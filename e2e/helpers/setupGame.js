@@ -402,6 +402,7 @@ export async function triggerFloorInfluenceQA(page) {
   const btn = page.getByRole('button', { name: /Floor Influence QA/ });
   await btn.scrollIntoViewIfNeeded();
   await btn.click();
+  await expect(page.getByText('Floor Influence').first()).toBeVisible({ timeout: 10_000 });
 }
 
 /** Debug: open dinner-out venue picker for Cassidy. */
