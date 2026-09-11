@@ -1,4 +1,5 @@
 // Lilith — Feasting Beauty evolved form
+import { depthLbsGrant, depthLilithDifficulty, depthLilithSeduceChance } from './mechanicsDepthLayer.js';
 
 export const LILITH_ID = 15;
 
@@ -270,7 +271,8 @@ export function drawReplies(usedIds = []) {
 
 // Probability of seduction success based on current willpower + move power bonus
 export function seduceSuccessChance(willpower, movePower = 0) {
-  return Math.max(0.05, Math.min(0.90, (100 - willpower) / 100 + movePower));
+  const raw = Math.max(0.05, Math.min(0.90, (100 - willpower) / 100 + movePower));
+  return depthLilithSeduceChance(raw);
 }
 
 // Get a guy line for the current willpower state
@@ -283,9 +285,10 @@ export function getGuyLine(difficulty, willpower) {
 }
 
 export function getEffectiveDifficulty(baseDifficulty, stageId) {
-  if (stageId >= 7) return Math.max(0, baseDifficulty - 2);
-  if (stageId >= 4) return Math.max(1, baseDifficulty - 1);
-  return baseDifficulty;
+  let d = baseDifficulty;
+  if (stageId >= 7) d = Math.max(0, d - 2);
+  else if (stageId >= 4) d = Math.max(1, d - 1);
+  return depthLilithDifficulty(d);
 }
 
 // ── CONSUME TEXT ───────────────────────────────────────────────────
@@ -356,6 +359,10 @@ export const CLUE_INVESTIGATION = {
 // ── WEEKLY PASSIVE ─────────────────────────────────────────────────
 // Lilith gets 1 lbs/week (not the normal 1-3). Applied in advanceWeek.
 export const LILITH_PASSIVE_GAIN = 1;
+
+export function getLilithPassiveGain() {
+  return depthLbsGrant(LILITH_PASSIVE_GAIN);
+}
 
 // ── DIGESTION PHASE ────────────────────────────────────────────
 // After consuming, Lilith enters a digestion phase. Hunting is

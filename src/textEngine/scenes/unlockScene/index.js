@@ -9,19 +9,17 @@ for (const [studentId, prose] of Object.entries(UNLOCK_SCENES)) {
   if (!prose?.trim()) continue;
   const key = `roster.unlock.s${studentId}`;
   registerDecomposedPool(`${key}.legacyBody`, prose);
+  const bodySlot = (ctx) => render(`{${key}.legacyBody}`, ctx)?.trim() || '';
   registerPool(key, [
     {
       when: { studentId: [Number(studentId)] },
       priority: 2,
       weight: 3,
-      text: [
-        prose,
-        (ctx) => render(`{${key}.legacyBody}`, ctx)?.trim() || prose,
-      ],
+      text: [bodySlot, bodySlot, bodySlot],
     },
     {
       when: {},
-      text: [prose],
+      text: [bodySlot, bodySlot, bodySlot],
     },
   ]);
 }

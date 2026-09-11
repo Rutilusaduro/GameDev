@@ -2,6 +2,13 @@
 // PHARMACIST CULT — circle supply, distribution, area fattening
 // Stage 3+ (excludes ascension endgame)
 // ═══════════════════════════════════════════════════════════════
+import { depthMetaProgressBonus, depthRelBonus } from './mechanicsDepthLayer.js';
+
+function rollDepthRange(range, rndFn) {
+  const [lo, hi] = range;
+  const raw = rndFn(lo, hi);
+  return depthMetaProgressBonus(raw);
+}
 export const CULT_DISTRIBUTION_ROUTES = [
   {
     id: 'circle_pickup',
@@ -87,9 +94,9 @@ export function applyCultDistribution(state, routeId, rndFn) {
   };
   const outcome = {
     routeId,
-    circleDelta: roll(route.circleGrowth),
-    supplyDelta: roll(route.supplyGain),
-    devotionDelta: roll(route.devotionGain),
+    circleDelta: rollDepthRange(route.circleGrowth, rndFn),
+    supplyDelta: rollDepthRange(route.supplyGain, rndFn),
+    devotionDelta: depthRelBonus(roll(route.devotionGain)),
     classGainRange: route.classGain,
     addictedGainRange: route.addictedGain,
     exposure: route.exposure,

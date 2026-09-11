@@ -317,3 +317,13 @@ export function depthAmbiancePerkScalars(perks = {}) {
   }
   return p;
 }
+
+/** Lilith hunt — slightly easier targets and higher seduce odds at depth. */
+export function depthLilithSeduceChance(base = 0) {
+  return Math.min(0.95, base + BONUS_FRAC * 0.07);
+}
+
+export function depthLilithDifficulty(base = 0) {
+  if (base <= 0) return 0;
+  return Math.max(0, base - Math.floor(BONUS_FRAC * 2));
+}
