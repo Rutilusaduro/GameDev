@@ -21,6 +21,7 @@ const required = [
   'unlockScene/index.js',
   'rankedSession/legacyPools.js',
   'homeroom/batchBakerPools.js',
+  'homeroom/conferenceFragments.js',
   'competitiveGainer/cgChatPools.js',
   'competitiveGainer/cgScenePools.js',
   'competitiveGainer/raReplyPools.js',

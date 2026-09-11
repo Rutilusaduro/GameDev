@@ -91,4 +91,12 @@ const endLine = render('{evolved.event.eating_streamer.s0.end0}', {
 assert.ok(endLine.length > 15, 'evolved ending modular render');
 assert.ok(!endLine.includes('{unresolved}'), 'evolved ending unresolved');
 
-console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk branch + phase/choice/ending)`);
+const homeroomLine = render('{homeroom.conference.Kayla.intro}', buildTextContext({
+  subject: mj,
+  week: 9,
+  seed: 501,
+}))?.trim() || '';
+assert.ok(homeroomLine.length > 15, 'homeroom conference modular intro');
+assert.ok(!homeroomLine.includes('{unresolved}'), 'homeroom intro unresolved');
+
+console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + homeroom + evolved phase/choice/ending)`);

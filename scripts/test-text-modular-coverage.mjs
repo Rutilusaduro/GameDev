@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import '../src/textEngine/scenes/index.js';
 import { _registryEntries } from '../src/textEngine/engine.js';
+import { EVOLVED_MODULAR_STATS } from '../src/textEngine/scenes/evolved/eventPhaseFragments.js';
 
 const root = join(import.meta.dirname, '..');
 
@@ -27,6 +28,7 @@ const SLOT_KEYS = [
   'evolved.scene.atmosphere',
   'evolved.choice.chatReact',
   'evolved.ending.streamCoda',
+  'homeroom.scene.floorTone',
 ];
 
 for (const key of SLOT_KEYS) {
@@ -40,7 +42,10 @@ const eventFrag = readFileSync(join(root, 'src/textEngine/scenes/evolved/eventPh
 
 assert.match(lessonFrag, /MODULAR_LESSON_KEYS/);
 assert.match(talkFrag, /opt\$\{oi\}\.sub\$\{si\}/);
-assert.match(eventFrag, /MODULAR_EVENT_ENDINGS/);
+assert.match(eventFrag, /EVOLVED_MODULAR_STATS/);
+assert.ok(EVOLVED_MODULAR_STATS.phasePools >= 80, `evolved phase pools ${EVOLVED_MODULAR_STATS.phasePools}`);
+assert.ok(EVOLVED_MODULAR_STATS.choicePools >= 150, `evolved choice pools ${EVOLVED_MODULAR_STATS.choicePools}`);
+assert.ok(EVOLVED_MODULAR_STATS.endingPools >= 40, `evolved ending pools ${EVOLVED_MODULAR_STATS.endingPools}`);
 
 let talkOptVariants = 0;
 for (const [key] of _registryEntries()) {

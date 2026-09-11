@@ -2942,6 +2942,7 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/lessonFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/eventPhaseFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/talkFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/conferenceFragments.js')));
   assert.ok(existsSync(join(root, 'scripts/test-text-modular-pilot.mjs')));
   assert.ok(existsSync(join(root, 'scripts/test-text-modular-coverage.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
