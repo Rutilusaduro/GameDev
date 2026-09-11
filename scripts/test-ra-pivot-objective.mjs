@@ -27,6 +27,7 @@ assert.ok(ids.has('hallAmbiance'), 'hallAmbiance (designed mechanic) not in dept
 mustExist('src/components/HallBlueprint.jsx');
 mustExist('src/gameData/hallBlueprint.js');
 mustExist('src/gameData/hallAmbiance.js');
+mustExist('src/gameData/homeroomEvents.js');
 
 const hallLounge = readFileSync(join(root, 'src/views/HallLoungeView.jsx'), 'utf8');
 assert.match(hallLounge, /HallBlueprint/, 'Hall lounge view should render blueprint UI');
@@ -47,8 +48,9 @@ execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 
 const evoPath = join(root, 'src/gameData/evolvedForms.js');
 const evoLines = readFileSync(evoPath, 'utf8').split('\n').length;
-if (evoLines > 4000) {
-  console.warn(`text-migration-debt: evolvedForms.js still ${evoLines} lines (full MIGRATION.md retire pending)`);
+const debtThreshold = 4000;
+if (evoLines > debtThreshold) {
+  console.warn(`text-migration-debt: evolvedForms.js still ${evoLines} lines (target <=${debtThreshold}; homeroomEvents extracted)`);
 }
 
 console.log('test-ra-pivot-objective: ok (mechanics, blueprint, ambiance registry, text bridges, text:lint)');

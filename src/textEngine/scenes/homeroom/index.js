@@ -6,7 +6,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { registerPool } from '../../engine.js';
 import { homeroomTailBeat } from '../evolved/proseTails.js';
-import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/evolvedForms.js';
+import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/homeroomEvents.js';
 import './batchBakerPools.js';
 
 const SAMPLE_HOMEROOM_DAISY = { id: 13, name: 'Daisy', lbs: 210, archetype: 'homeroom_queen' };
