@@ -509,4 +509,43 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(cassidyHit, 'cg.chat.resident.Cassidy.ahead modular @ w24');
 
+let kayla84Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Kayla.tuesday}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72370 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Cinnamon rolls ranked like strategy — Kayla has already won the argument before Daisy opens the notebook\.$/.test(line), 'pass-84 Kayla tuesday bridge alone @ w24');
+  if (line.length > 65) kayla84Hit = true;
+}
+assert.ok(kayla84Hit, 'Kayla.tuesday modular @ w24');
+
+let priyaFuHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{cg.chat.priyaFollowup.threatened.Frenzied}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72380 + s,
+    globals: { featureId: 'competitive_gainer', priyaName: 'Priya' },
+  }))?.trim() || '';
+  assert.ok(!/schedules a binge before she finishes typing/.test(line), 'pass-84 priyaFollowup bridge alone @ w24');
+  if (line.length > 55 || /followupSting|followupPride|boardTone/i.test(line)) priyaFuHit = true;
+}
+assert.ok(priyaFuHit, 'cg.chat.priyaFollowup.threatened.Frenzied modular @ w24');
+
+let calloway81Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Mrs_Calloway.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72390 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/Mrs\. Calloway studies .* the way inspectors study permits/.test(line), 'pass-81 Calloway intro bridge alone @ w24');
+  if (line.length > 65) calloway81Hit = true;
+}
+assert.ok(calloway81Hit, 'Mrs_Calloway intro modular @ w24 (pass81 peel)');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

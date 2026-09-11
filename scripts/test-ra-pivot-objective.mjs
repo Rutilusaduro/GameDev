@@ -152,6 +152,7 @@ execSync('node scripts/test-evolved-all-forms-modular-late.mjs', { cwd: root, st
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });
+execSync('node scripts/test-pass-retire-inventory.mjs', { cwd: root, stdio: 'inherit' });
 execSync('node scripts/test-text-pass-bridge-suppression-late.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });

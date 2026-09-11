@@ -3033,6 +3033,10 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   const pass89 = read('src/textEngine/scenes/raPivotProseDepthPass89.js');
   assert.ok(!pass85.includes('registerModuleVariants'), 'pass85 should be retired to fragments');
   assert.ok(!pass89.includes('registerModuleVariants'), 'pass89 should be retired to fragments');
+  const pass81 = read('src/textEngine/scenes/raPivotProseDepthPass81.js');
+  const pass84 = read('src/textEngine/scenes/raPivotProseDepthPass84.js');
+  assert.ok(!pass81.includes('registerModuleVariants'), 'pass81 should be retired to fragments');
+  assert.ok(!pass84.includes('registerModuleVariants'), 'pass84 should be retired to fragments');
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgResidentEarlyFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/wlTalkV2ModularFragments.js')));
   const pass88 = read('src/textEngine/scenes/raPivotProseDepthPass88.js');
