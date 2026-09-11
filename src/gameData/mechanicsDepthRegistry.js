@@ -95,4 +95,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'memory', file: 'memory.js' },
   { id: 'talia', file: 'talia.js' },
   { id: 'labParts', file: 'labParts.js' },
+  { id: 'labTechTree', file: 'labTechTree.js' },
+  { id: 'researchTree', file: 'researchTree.js' },
 ];

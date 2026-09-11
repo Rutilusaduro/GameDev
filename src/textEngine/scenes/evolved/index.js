@@ -7,6 +7,13 @@ import { EVOLVED_ACTIVITY_TEXT, EVOLVED_EVENTS } from '../../../gameData/evolved
 import './activityPools.js';
 import './eventPools.js';
 
+function legacyBodyChanceFromCtx(ctx, fallback = 0.12) {
+  const peak = ctx.globals?.hallAmbiancePeak ?? 0;
+  if (peak >= 50) return Math.min(0.3, fallback + 0.12);
+  if (peak >= 30) return Math.min(0.22, fallback + 0.06);
+  return fallback;
+}
+
 function tryAppendLegacyBody(line, bodyKey, ctx, chance = 0.12) {
   if (!line?.trim() || Math.random() >= chance) return line;
   try {
@@ -81,7 +88,7 @@ export function renderEvolvedEventPhase(student, week, formId, stageIdx, phaseId
     line,
     `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.legacyBody`,
     ctx,
-    opts.legacyBodyChance ?? 0.12,
+    opts.legacyBodyChance ?? legacyBodyChanceFromCtx(ctx, 0.12),
   );
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: opts.v2DepthChance ?? 0.28 });
 }
@@ -118,7 +125,7 @@ export function renderEvolvedEventChoiceResult(formId, stageIdx, phaseIdx, choic
     line,
     `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.${choiceId}.legacyBody`,
     ctx,
-    0.1,
+    legacyBodyChanceFromCtx(ctx, 0.1),
   );
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: 0.22 });
 }

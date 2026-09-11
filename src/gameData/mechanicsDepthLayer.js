@@ -278,6 +278,12 @@ export function depthDossierReplayDepthChance(weeksAgo = 0) {
   return Math.min(0.52, 0.24 + bump * 0.007);
 }
 
+/** Lab experiment instability ticks — slightly gentler at depth. */
+export function depthLabInstabilityGain(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(1, Math.round(base * (1 - BONUS_FRAC * 0.16)));
+}
+
 export function depthExplorationIngredientGrant(grants = {}) {
   if (!grants || typeof grants !== 'object') return grants;
   const out = { ...grants };

@@ -5,7 +5,7 @@ import { ModalOverlay } from './ModalOverlay.jsx';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
 import { renderEvolvedEventPhase } from '../textEngine/scenes/evolved/index.js';
 
-export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true }){
+export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, hallAmbiancePeak = 0, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true }){
         const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge,startsSalon,startsGallery}=evolvedEventState;
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, studentId, formId, stageIdx, phaseIdx]);
         const s=students.find(st=>st.id===studentId);
@@ -15,7 +15,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
         const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
         const researchSubject=(formId==='psych_researcher'&&s?.researchSubjectId!=null)?students.find(st=>st.id===s.researchSubjectId):null;
         const eventRef=collabPartner||researchSubject||null;
-        const depthOpts={formId,stageIdx,v2DepthChance:0.28};
+        const depthOpts={formId,stageIdx,v2DepthChance:0.28,globals:{hallAmbiancePeak}};
         const phaseText=phase?renderEvolvedEventPhase(s,week,formId,stageIdx,phaseIdx,history,eventRef,depthOpts):null;
         const endingRendered=endingText||null;
         const evMeta=EVOLVED_FORM_META[formId];
