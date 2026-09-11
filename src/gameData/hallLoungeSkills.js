@@ -2,6 +2,7 @@
 // HALL LOUNGE PRESTIGE SKILLS — lbs-cost shop (§12, §30 gates)
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
+import { aggregateBlueprintSynergyEffects } from './hallBlueprint.js';
 
 export function computeClassSkillTotal(students = []) {
   return Math.round(
@@ -69,6 +70,11 @@ export function aggregateClassSkillEffects(owned = {}) {
     gainMult: 0,
     sessionCapBonus: 0,
     tapOutResistance: 0,
+    calMult: 0,
+    hallCalMult: 0,
+    forceFeedBonus: 0,
+    relTalkBonus: 0,
+    digestMult: 0,
   };
   SKILL_TREE.forEach((sk) => {
     if (!owned[sk.id]) return;
@@ -80,6 +86,18 @@ export function aggregateClassSkillEffects(owned = {}) {
     effects.sessionCapBonus += sk.sessionCapBonus || 0;
     effects.tapOutResistance += sk.tapOutResistance || 0;
   });
+  const syn = aggregateBlueprintSynergyEffects(owned);
+  effects.gainMult += syn.gainMult || 0;
+  effects.passiveBonus += syn.passiveBonus || 0;
+  effects.apBonus += syn.apBonus || 0;
+  effects.scrutinyReduce += syn.scrutinyReduce || 0;
+  effects.scrutinyPassiveReduce += syn.scrutinyPassiveReduce || 0;
+  effects.calMult += syn.calMult || 0;
+  effects.hallCalMult += syn.hallCalMult || 0;
+  effects.forceFeedBonus += syn.forceFeedBonus || 0;
+  effects.relTalkBonus += syn.relTalkBonus || 0;
+  effects.digestMult += syn.digestMult || 0;
+  effects.blueprintSynergies = syn.activeSynergies;
   return effects;
 }
 

@@ -3,6 +3,7 @@
 // group dinner, and private sessions (DEPTH_PLAN §8)
 // ═══════════════════════════════════════════════════════════════
 import { GAIN_CONFIG } from './gainSystem.js';
+import { EXTENDED_SESSION_PACES } from './mechanicsDepth.js';
 import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 import { getForceFeedComplianceBonus } from './deviceGating.js';
@@ -67,6 +68,8 @@ export const SESSION_PACE_ACTIONS = [
 ];
 
 export function getSessionPaceModifiers(paceId = 'steady') {
+  const extended = EXTENDED_SESSION_PACES.find((p) => p.id === paceId);
+  if (extended) return extended;
   return SESSION_PACE_ACTIONS.find((p) => p.id === paceId) || SESSION_PACE_ACTIONS[1];
 }
 

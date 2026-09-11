@@ -5,11 +5,13 @@ export const ACTIONS_SINGLE = [
 ];
 
 export const ACTIONS_HALL = [
-  { id:"pizza",        label:"🍕 Floor Pizza Night",         cost:3, cal:[12000,24000], full:40, desc:"An excessive whole-floor pizza order. Everyone indulges." },
-  { id:"potluck",      label:"🥘 Floor Potluck",             cost:2, cal:[9000,18000],  full:30, desc:"Everyone brings a dish. Everyone is expected to try everything." },
-  { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
-  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
-  { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
+  { id:"pizza",        label:"🍕 Floor Pizza Night",         cost:3, cal:[12000,26000], full:42, desc:"An excessive whole-floor pizza order. Everyone indulges — boxes stacked, cheese stretching, seconds without apology." },
+  { id:"potluck",      label:"🥘 Floor Potluck",             cost:2, cal:[9500,19500],  full:32, desc:"Everyone brings a dish. Everyone is expected to try everything — comparison becomes competition becomes clean plates." },
+  { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[30000,56000], full:74, desc:"A full holiday spread with courses that never quite end. This one really goes far." },
+  { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[15000,32000], full:48, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
+  { id:"midnight_tray", label:"🌙 Midnight Tray Run",       cost:2, cal:[7000,14000], full:28, desc:"After-hours warm trays delivered door to door — intimate, illicit, impossible to refuse.", requiresUnlock:"late_night_access" },
+  { id:"bakery_drop",  label:"🥐 Bakery Drop",               cost:2, cal:[8000,16000], full:26, desc:"Artisan morning delivery for the whole floor — butter, sugar, and the smell of permission.", requiresUnlock:"artisan_bakery" },
+  { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8500,17000], full:52, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
 ];
 
 /** @deprecated use ACTIONS_HALL */
@@ -219,6 +221,30 @@ export const FLOOR_SCENES = [
       { label:"Try everything and praise all",       effect:{gain:[6,12]}, result:"You try each dish and comment thoughtfully. The floor is thrilled. Second and third helpings are consumed under the banner of thorough side-by-side comparison." },
       { label:"Formalize it with a scoring rubric",  effect:{gain:[4,9]},  result:"You produce a rubric. The floor suddenly cares very deeply about their dishes. The stakes make everyone eat more to properly evaluate." },
       { label:"Abandon pretense — just party",       effect:{gain:[5,11]}, result:"You put on music and let it be what it is. The floor eats freely for ninety minutes. It's the best floor check-in of the semester." },
+    ] },
+  { id:"hall_warm_rain", target:"hall",
+    title:"Warm Rain Afternoon",
+    text:"Cold rain hammers the windows; the lounge glows amber inside. Someone ordered delivery without asking — steam fogs the glass, and the floor smells like broth and bread.",
+    choices:[
+      { label:"Set out a communal pot", effect:{gain:[4,8]}, result:"The pot never empties. Residents drift in wet and leave heavier, drowsy, grateful." },
+      { label:"Turn it into a movie block", effect:{gain:[5,10]}, result:"Blankets appear. Snacks circulate on instinct. Nobody remembers the film; everyone remembers the eating." },
+      { label:"Keep programming — offer cocoa", effect:{gain:[2,5]}, result:"You push through with hot cups and quiet bites. Discipline and warmth share the hour." },
+    ] },
+  { id:"hall_scale_confession", target:"hall",
+    title:"Anonymous Scale Confession",
+    text:"A group chat thread leaked — residents comparing numbers, laughing nervously, daring each other to eat 'for the bit.' The energy in the lounge is charged.",
+    choices:[
+      { label:"Lean in — sponsor the challenge", effect:{gain:[6,11]}, result:"You formalize it with snacks and a wink. What was shame becomes sport; plates arrive in waves." },
+      { label:"Redirect to body-neutral talk", effect:{gain:[2,4]}, result:"You steer toward comfort and health-as-happiness framing. They still eat; they feel allowed to." },
+      { label:"Shut it down gently", effect:{gain:[0,2]}, result:"The thread dies. A few residents sulk — then accept the pastries you leave anyway." },
+    ] },
+  { id:"hall_vendor_fair", target:"hall",
+    title:"Vendor Fair in the Lobby",
+    text:"Local vendors set up samples downstairs; your residents keep drifting back upstairs with bags and excuses. The lounge becomes a tasting annex.",
+    choices:[
+      { label:"Bus in more samples", effect:{gain:[5,9]}, result:"You negotiate bulk. The floor eats like judges at a county fair — serious, joyful, thorough." },
+      { label:"Curate a 'best of' table", effect:{gain:[4,8]}, result:"You arrange a highlight reel of calories. They trust your taste; you trust their appetite." },
+      { label:"Limit to one item each", effect:{gain:[1,3]}, result:"Portion control lasts eleven minutes. Then someone opens a second bag 'for sharing.'" },
     ] },
   { id:"hall_extended", target:"hall",
     title:"Extended Session",

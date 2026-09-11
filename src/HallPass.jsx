@@ -378,6 +378,10 @@ import {
   computeHallLoungeSkillCurrency, buyHallLoungeSkill, aggregateHallLoungeSkillEffects, listPurchasableHallLoungeSkills,
   hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
+import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave } from './gameData/hallBlueprint.js';
+import {
+  hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
+} from './gameData/mechanicsDepth.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -444,7 +448,7 @@ export default function HallPass(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedHallSkills, facultyAffinity, raProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State,
+    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, atmosphereWeave,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -464,6 +468,7 @@ export default function HallPass(){
   const setAchievements = (updater) => setPlayer((p) => updatePlayerField(p, 'achievements', updater));
   const setBigScaleUnlocked = (updater) => setPlayer((p) => updatePlayerField(p, 'bigScaleUnlocked', updater));
   const setV2State = (updater) => setPlayer((p) => updatePlayerField(p, 'v2State', updater));
+  const setAtmosphereWeave = (updater) => setPlayer((p) => updatePlayerField(p, 'atmosphereWeave', updater));
   const [view,setView]=useState("roster");
   const [selectedId,setSelectedId]=useState(null);
   const [log,setLog]=useState(["📋 Hall Pass — Week one on your floor. Five residents, one master key, and a dining hall that never closes."]);
@@ -1030,6 +1035,7 @@ export default function HallPass(){
     const result=buyHallLoungeSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedHallSkills(result.owned);
+    setAtmosphereWeave((prev)=>weaveOnHallPurchase({ atmosphereWeave: prev }, skillId, result.owned));
     push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
   };
 
@@ -1399,6 +1405,8 @@ export default function HallPass(){
       } else {
         const bonuses=getForceFeedChanceBonuses(s);
         let chance=forceFeedChance(s,fullnessCost,reachLevel)+bonuses.corruptionBonus;
+        const loungeBp=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+        chance+=depthForceFeedAdjustments(s,{ blueprintForceBonus: loungeBp.forceFeedBonus||0 }).refusalBonus;
         if(opts.refusalBonus!=null) chance+=opts.refusalBonus;
         else chance+=bonuses.complianceBonus;
         chance+=bonuses.dependenceBonus||0;
@@ -1417,6 +1425,7 @@ export default function HallPass(){
       setTimeout(()=>push(`🔥 ${line}`),60);
     }
     let calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
+    calMult*=1+(aggregateHallLoungeSkillEffects(ownedHallSkills||{}).calMult||0);
     if(opts.compoundId){
       const preview=applyCompoundToFeed(s,opts.compoundId,{},pharmacistState);
       calMult*=(preview.feedResult.calMult??1);
@@ -1615,6 +1624,17 @@ export default function HallPass(){
     setWeek(newWeek);
     setWeekPulse((p) => p + 1);
     playHallPassSound('week', soundEnabled);
+    const { weave: weaveAfterPulse, pulse: weavePulseThisWeek } = consumeWeavePulseIfReady(
+      atmosphereWeave || initAtmosphereWeave(),
+      newWeek,
+    );
+    if (weavePulseThisWeek) {
+      setAtmosphereWeave(weaveAfterPulse);
+      setTimeout(
+        () => push('🌬️ Atmosphere Weave pulses — warm air through every room; stuffed residents digest deeper this week.'),
+        80,
+      );
+    }
     const startDorm=raProfile?.dormId||raProfile?.subject;
     let effectiveUnlockedDorms=unlockedDorms||[];
     if(startDorm){
@@ -1658,6 +1678,7 @@ export default function HallPass(){
       if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,LILITH_PASSIVE_GAIN,0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0);
+      if (weavePulseThisWeek) gain += WEAVE_CONFIG.pulsePassiveBonus;
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
       gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*formPassiveGainMultiplier(s)*(1+(loungeSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
@@ -1882,9 +1903,16 @@ export default function HallPass(){
       };
       const textOpts=digestTextSession;
       const d=digestStudent(
-        s.embodimentEchoWeek===newWeek
-          ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, V2_CONFIG.embodimentEchoDigestMult) }
-          : s,
+        (() => {
+          const base = s.embodimentEchoWeek === newWeek
+            ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, V2_CONFIG.embodimentEchoDigestMult) }
+            : s;
+          const dm = depthDigestMultiplier(base, {
+            weavePulse: weavePulseThisWeek,
+            synergyDigestMult: loungeSkillFx.digestMult,
+          });
+          return { ...base, weeklyDigestMult: Math.max(base.weeklyDigestMult || 1, dm) };
+        })(),
       );
       const oldStageId=getStage(s.lbs).id;
       const preLbs=s.lbs;
@@ -6726,17 +6754,23 @@ export default function HallPass(){
     if(type==="student"&&student){
       const s=newStudents.find(st=>st.id===student.id);
       if(s){
+        const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+        const depth=depthFloorChoiceGainMult({ loungeGainMult: loungeFx.gainMult, relTalkBonus: loungeFx.relTalkBonus });
         gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
+        gainAmt=Math.max(0,Math.round(gainAmt*depth.gainMult));
         const ns=processStudentGain(s,gainAmt,0);
         newStudents=newStudents.map(st=>st.id===s.id?{
           ...ns,
           ...(choice.effect.mood?{mood:choice.effect.mood}:{}),
-          relationship:Math.min(100,ns.relationship+(choice.effect.rel||0)),
+          relationship:Math.min(100,ns.relationship+(choice.effect.rel||0)+depth.extraRel),
         }:st);
         targetName=s.name;
       }
     }else if(type==="hall"){
+      const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+      const depth=depthFloorChoiceGainMult({ loungeGainMult: loungeFx.gainMult });
       gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
+      gainAmt=Math.max(0,Math.round(gainAmt*depth.gainMult));
       newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
       targetName="the hall";
     }
@@ -6814,11 +6848,17 @@ export default function HallPass(){
       return;
     }
     let refusals=0,fedCount=0,totalCals=0;
+    const loungeFxFeed=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+    const hallCalMult=hallActionCalMultiplier({
+      hallCalMult: loungeFxFeed.hallCalMult,
+      week,
+      famineWeek: !!opposition?.supernatural?.famineWeek,
+    });
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
-      const cals=rnd(action.cal[0],action.cal[1]);
+      const cals=rnd(Math.round(action.cal[0]*hallCalMult),Math.round(action.cal[1]*hallCalMult));
       const fed=feedStudentCalories(s,cals,action.full,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
       fedCount++;totalCals+=cals;
@@ -8790,7 +8830,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} atmosphereWeave={atmosphereWeave} raProfile={raProfile}/>}
 
           {view==="influence"&&<InfluenceView
             students={students}

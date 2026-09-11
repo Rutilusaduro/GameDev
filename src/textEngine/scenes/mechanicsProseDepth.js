@@ -1,0 +1,53 @@
+// The Squad — Lead: A2 Psych | Support: A6 Slender, A5 Editor
+// Cross-cutting talk + feed + hall action prose depth.
+import { registerModuleVariants } from '../engine.js';
+
+registerModuleVariants('talk.encourage.hook', [
+  { when: {}, text: [
+    'You speak like appetite is allowed — quiet, sure, leaving room for her to lean in.',
+  ]},
+  { when: { corruption: [0] }, weight: 2, text: [
+    'You speak like it is normal to want more — gentle, certain, leaving her nowhere to hide her curiosity.',
+  ]},
+  { when: { corruption: [1] }, weight: 2, text: [
+    'Your voice does not ask; it invites, and her body answers before her pride catches up.',
+  ]},
+  { when: { corruption: [2] }, weight: 2, text: [
+    'You praise appetite like devotion — she blushes, then eats, then blushes again for liking it.',
+  ]},
+]);
+
+registerModuleVariants('feed.reaction.soft', [
+  { when: {}, text: [
+    'She eats with unhurried focus — warmth, fullness, and the pleasure of not stopping yet.',
+  ]},
+  { when: { stageMin: 0, stageMax: 4 }, text: [
+    'She chews slowly, surprised at how good surrender tastes when someone trustworthy is watching.',
+  ]},
+  { when: { stageMin: 5, stageMax: 8 }, text: [
+    'Fullness spreads warm under her hand; she sighs and keeps going because the sigh felt like yes.',
+  ]},
+  { when: { stageMin: 9 }, weight: 2, text: [
+    'Her belly resists the chair and wins; each swallow lands heavy, pleased, impossible to rush.',
+  ]},
+]);
+
+registerModuleVariants('hallAction.aftermath', [
+  { when: {}, text: [
+    'The floor quiets into the drowsy hush that follows a meal nobody pretended to moderate.',
+    'Plates sit empty; belts rest open; the hall feels closer than it did an hour ago.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'Chairs creak kindly; belts rest open; laughter returns slower, fuller, closer to the kitchen.',
+  ]},
+]);
+
+registerModuleVariants('hallAction.opening', [
+  { when: {}, text: [
+    'You call the hall to table — not official, not quite innocent, absolutely effective.',
+    'The announcement is casual; the spread behind you is not.',
+  ]},
+  { when: { corruptionMin: 2 }, weight: 2, text: [
+    'They know what this is now; they come anyway, hungry for the ritual as much as the food.',
+  ]},
+]);
