@@ -36,6 +36,42 @@ const OVERLAYS = [
     key: 'weekly.gaming_sponsor',
     skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.gamingSponsor.deal|prefix:} {weekly.gamingSponsor.line|prefix: } {weekly.gamingSponsor.tag|prefix: }',
   },
+  {
+    key: 'weekly.thesis_rewrite',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.thesisRewrite.submit|prefix:} {weekly.thesisRewrite.verdict|prefix: }',
+  },
+  {
+    key: 'weekly.intervention_fails',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.interventionFails.setup|prefix:} {weekly.interventionFails.payoff|prefix: }',
+  },
+  {
+    key: 'weekly.art_exhibition',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.artExhibition.opening|prefix:} {weekly.artExhibition.line|prefix: }',
+  },
+  {
+    key: 'weekly.quiet_opens_up',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.quietOpen.setup|prefix:} {weekly.quietOpen.close|prefix: }',
+  },
+  {
+    key: 'weekly.overachiever_pivot',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.overachieverPivot.submit|prefix:} {weekly.overachieverPivot.verdict|prefix: }',
+  },
+  {
+    key: 'weekly.transfer_settled',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.transferSettled.call|prefix:} {weekly.transferSettled.after|prefix: }',
+  },
+  {
+    key: 'weekly.custom_clothing',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.customClothing.announce|prefix:} {weekly.customClothing.line|prefix: }',
+  },
+  {
+    key: 'weekly.immobility_peace',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.immobilityPeace.scene|prefix:} {weekly.immobilityPeace.line|prefix: } {weekly.immobilityPeace.tag|prefix: }',
+  },
+  {
+    key: 'weekly.blob_ending',
+    skeleton: '{weekly.scene.floorEcho|prefix:} {weekly.blobEnding.setup|prefix:} {weekly.blobEnding.line|prefix: }',
+  },
 ];
 
 for (const { key, skeleton } of OVERLAYS) {

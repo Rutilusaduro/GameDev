@@ -10,7 +10,7 @@ import './chairIncident.js';
 import './teamWeighIn.js';
 import './narrativeEvents.js';
 
-const POOL_BY_EVENT_ID = {
+export const POOL_BY_EVENT_ID = {
   uniform_split: 'weekly.uniform_split',
   chair_breaks: 'weekly.chair_breaks',
   viral_post: 'weekly.viral_post',
