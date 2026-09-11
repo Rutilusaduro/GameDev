@@ -9,6 +9,7 @@ const steps = [
   ['npm', ['run', 'test:dorm-unlock-ui']],
   ['npm', ['run', 'test:hall-blueprint']],
   ['npm', ['run', 'test:mechanics-depth']],
+  ['npm', ['run', 'test:ra-pivot-objective']],
   ['npm', ['run', 'test:playthrough']],
   ['npm', ['run', 'test:semester-audit']],
   ['npm', ['run', 'test:prose-coherence']],

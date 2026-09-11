@@ -71,6 +71,24 @@ const cases = [
     template: '{evolution.offer.swimmer.intro}',
     ctx: buildTextContext({ subject: cassidy, week: 7 }),
   },
+  {
+    label: 'evolved activity',
+    template: '{evolved.activity.eating_streamer}',
+    ctx: buildTextContext({
+      subject: { ...destiny, evolvedForm: 'eating_streamer', lbs: 250 },
+      week: 9,
+      globals: { evolvedFormId: 'eating_streamer', evolvedStageIdx: 1 },
+    }),
+  },
+  {
+    label: 'cultivator beat',
+    template: '{cultivator.beat}',
+    ctx: buildTextContext({
+      subject: brittany,
+      week: 8,
+      globals: { featureId: 'cultivator' },
+    }),
+  },
 ];
 
 for (const { label, template, ctx } of cases) {

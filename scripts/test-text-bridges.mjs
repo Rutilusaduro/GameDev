@@ -15,6 +15,8 @@ const required = [
   'session/tapOutPools.js',
   'session/blobIntroPools.js',
   'session/immobileRedirectPools.js',
+  'session/index.js',
+  'evolved/index.js',
   'homeroom/index.js',
   'unlockScene/index.js',
   'rankedSession/legacyPools.js',
