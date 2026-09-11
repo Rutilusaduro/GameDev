@@ -50,3 +50,13 @@ for (const [npcKey, stages] of Object.entries(BATCH_BAKER_NPCS)) {
     ]);
   }
 }
+
+registerModuleVariants('homeroom.npc.Kayla.s3', [
+  {
+    when: { hallAmbiancePeakMin: [35] },
+    weight: 1,
+    text: [
+      'Kayla smells the upgraded kitchen before she sees it — appetite already on the syllabus.',
+    ],
+  },
+]);

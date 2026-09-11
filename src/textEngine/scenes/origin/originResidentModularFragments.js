@@ -207,6 +207,13 @@ registerModuleVariants('diary.innerBeat', [
       'I left family to find a table that would keep feeding me. Found it.',
     ],
   },
+  {
+    when: { hallAmbiancePeakMin: [30] },
+    weight: 1,
+    text: [
+      'The hall hums through the page — appetite feels policy-approved tonight.',
+    ],
+  },
 ]);
 
 registerModuleVariants('origin.stirring.line', [

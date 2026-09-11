@@ -118,3 +118,13 @@ registerModuleVariants('hall.lounge.skill.unlock', [
     ],
   },
 ]);
+
+registerModuleVariants('hall.blueprint.upgrade.confirm', [
+  {
+    when: { hallAmbiancePeakMin: [40] },
+    weight: 1,
+    text: [
+      'Upgrade confirms — labeled rooms pull warmth through the whole wing like shared breath.',
+    ],
+  },
+]);

@@ -45,3 +45,43 @@ for (const archetype of Object.keys(EVOLUTION_OFFER)) {
     },
   ]);
 }
+
+registerModuleVariants('evolution.offer.cheerleader.intro', [
+  {
+    when: { archetype: ['cheerleader'] },
+    weight: 1,
+    text: [
+      'She still wears the sash — the squad’s future and her belly finally share a language.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolution.offer.gamer.intro', [
+  {
+    when: { archetype: ['gamer'] },
+    weight: 1,
+    text: [
+      'Controller still warm — she wants ranked sessions and ranked appetite in the same build.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolution.offer.bookworm.intro', [
+  {
+    when: { archetype: ['bookworm'] },
+    weight: 1,
+    text: [
+      'The season plan waits on your signature — her appetite is already hall-log approved.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolution.offer.swimmer.intro', [
+  {
+    when: { archetype: ['swimmer'] },
+    weight: 1,
+    text: [
+      'Lane discipline cracks — she wants a path where appetite keeps pace with medals.',
+    ],
+  },
+]);

@@ -67,3 +67,13 @@ registerModuleVariants('evolved.outfit.eating_competitor.s4', [
     ],
   },
 ]);
+
+registerModuleVariants('evolved.outfit.eating_streamer.s2', [
+  {
+    when: { hallAmbiancePeakMin: [35] },
+    weight: 1,
+    text: [
+      'Branded hoodie, bib centered for chat — the hall ambiance makes every frame feel like a watch party.',
+    ],
+  },
+]);

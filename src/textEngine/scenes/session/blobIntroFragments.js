@@ -45,3 +45,23 @@ for (const studentId of Object.keys(BLOB_PRIVATE_INTRO)) {
     },
   ]);
 }
+
+registerModuleVariants('session.blobIntro.s5', [
+  {
+    when: { studentId: [5] },
+    weight: 1,
+    text: [
+      'Forty-one seconds up the fold — Destiny times the climb like a speedrun category.',
+    ],
+  },
+]);
+
+registerModuleVariants('session.blobIntro.s13', [
+  {
+    when: { studentId: [13] },
+    weight: 1,
+    text: [
+      'Daisy’s door does not open wide anymore — meals arrive like hall policy written in steam and frosting.',
+    ],
+  },
+]);

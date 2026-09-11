@@ -201,4 +201,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
   });
 }
 
+registerModuleVariants('evolved.event.state_fair_queen.s0.p0', [
+  {
+    when: { evolvedFormId: ['state_fair_queen'] },
+    weight: 1,
+    text: [
+      'Fair queen arc opens on sawdust and sugar — MJ already tastes the crown before the weigh-in.',
+    ],
+  },
+]);
+
 export const EVOLVED_MODULAR_STATS = { phasePools, choicePools, endingPools };

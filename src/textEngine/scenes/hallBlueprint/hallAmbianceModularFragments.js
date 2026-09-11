@@ -62,6 +62,16 @@ registerModuleVariants('hall.ambiance.pulse.appetite', [
   },
 ]);
 
+registerModuleVariants('hall.ambiance.pulse.prestige', [
+  {
+    when: { ambianceTier: ['high', 'max'] },
+    weight: 1,
+    text: [
+      'Atrium prestige ripples down the wing — residents stand taller in doorways, plates fuller, pride softer.',
+    ],
+  },
+]);
+
 registerModuleVariants('hall.ambiance.summary', [
   {
     when: { weekMin: 20 },

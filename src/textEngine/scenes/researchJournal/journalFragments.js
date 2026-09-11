@@ -126,3 +126,33 @@ registerModuleVariants('journal.feeder.cheerleader.s1', [
     ],
   },
 ]);
+
+registerModuleVariants('journal.feeder.swimmer.s0', [
+  {
+    when: { stageMin: [5] },
+    weight: 1,
+    text: [
+      'Her strokes slow in the journal ink — buoyancy traded for belly, lap times for late-night pantry raids.',
+    ],
+  },
+]);
+
+registerModuleVariants('journal.nadia.cheerleader.s1.l1', [
+  {
+    when: { corruptionMin: [1] },
+    weight: 1,
+    text: [
+      'Nadia underlines appetite like choreography — every bite a step the squad was not taught.',
+    ],
+  },
+]);
+
+registerModuleVariants('journal.feeder.cheerleader.s2', [
+  {
+    when: { stageMin: [6] },
+    weight: 1,
+    text: [
+      'Formation notes become portion charts — leadership means nobody on the squad stays hungry alone.',
+    ],
+  },
+]);

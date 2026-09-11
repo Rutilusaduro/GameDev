@@ -110,6 +110,16 @@ for (const key of MODULAR_LESSON_KEYS) {
   ]);
 }
 
+registerModuleVariants('wifeLessons.lesson.s2.butter_cake', [
+  {
+    when: { weekMin: [4] },
+    weight: 1,
+    text: [
+      'Mary Jane ladles the lesson slow — daughters learn appetite is hospitality, not scandal, at this table.',
+    ],
+  },
+]);
+
 registerModuleVariants('wifeLessons.lesson.s4.lasagna', [
   {
     when: { hallAmbiancePeakMin: [20] },

@@ -51,6 +51,16 @@ for (let si = 0; si <= 5; si += 1) {
   }
 }
 
+registerModuleVariants('session.rae.arrival.s3', [
+  {
+    when: { sessionStage: [3] },
+    weight: 1,
+    text: [
+      'Rae drops in with backup calories like patch notes — Destiny grins, queue unpaused, belly unmuted.',
+    ],
+  },
+]);
+
 for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
   registerModuleVariants(`session.payoff.legacy.s${si}`, [
     {

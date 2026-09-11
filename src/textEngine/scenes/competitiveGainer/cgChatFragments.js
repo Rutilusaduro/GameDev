@@ -131,6 +131,16 @@ registerModuleVariants('cg.chat.priyaPost.leading.High', [
   },
 ]);
 
+registerModuleVariants('cg.chat.priyaPost.Heavy.Invested', [
+  {
+    when: { cgDriveTier: ['Invested'] },
+    weight: 1,
+    text: [
+      'Priya posts numbers like patch notes — waist, bust, hips — and the hall pretends it is not watching.',
+    ],
+  },
+]);
+
 for (const name of RESIDENT_EXTRA) {
   for (const replyType of RESIDENT_REPLY_TYPES) {
     registerModuleVariants(`cg.chat.resident.${name}.${replyType}`, [

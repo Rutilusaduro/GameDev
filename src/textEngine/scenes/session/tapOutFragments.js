@@ -63,3 +63,33 @@ for (const [studentId] of Object.entries(TAP_OUT_250)) {
     },
   ]);
 }
+
+registerModuleVariants('session.tapOut.s7.st2', [
+  {
+    when: { studentId: [7] },
+    weight: 1,
+    text: [
+      'Threshold crossed — she logs the number later; right now she just breathes around the dome of her belly.',
+    ],
+  },
+]);
+
+registerModuleVariants('session.tapOut.s5.st3', [
+  {
+    when: { studentId: [5] },
+    weight: 1,
+    text: [
+      'Controller down, belly up — Destiny taps out like closing a ranked queue on a full inventory.',
+    ],
+  },
+]);
+
+registerModuleVariants('session.tapOut.s1.st2', [
+  {
+    when: { studentId: [1] },
+    weight: 1,
+    text: [
+      'Cassidy taps out laughing — competitive even when surrendering, plate pushed away like a finished race.',
+    ],
+  },
+]);

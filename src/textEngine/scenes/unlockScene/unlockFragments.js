@@ -54,3 +54,13 @@ for (const studentId of Object.keys(UNLOCK_SCENES)) {
     },
   ]);
 }
+
+registerModuleVariants('roster.unlock.s5', [
+  {
+    when: { studentId: [5] },
+    weight: 1,
+    text: [
+      'Destiny’s door cracks open on RGB glow — trust unlock reads like a new stream category: private, ranked, hungry.',
+    ],
+  },
+]);

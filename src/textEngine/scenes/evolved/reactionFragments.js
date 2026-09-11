@@ -78,3 +78,13 @@ registerModuleVariants('evolved.reaction.eating_competitor.s3', [
     ],
   },
 ]);
+
+registerModuleVariants('evolved.reaction.feedee_creator.s3', [
+  {
+    when: { evolvedFormId: ['feedee_creator'] },
+    weight: 1,
+    text: [
+      'Comments spike before she finishes chewing — the creator path feeds the audience and the belly at once.',
+    ],
+  },
+]);
