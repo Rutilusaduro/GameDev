@@ -12,6 +12,7 @@ import './selectors.js';
 import './selectorDepth.js';
 import './tapOutPools.js';
 import './blobIntroPools.js';
+import './immobileRedirectPools.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
@@ -51,6 +52,7 @@ export function renderSessionFullness(student, fullnessStageId, week = 1, opts =
 /** Closing beat when a private session ends (keyed by fullness percent band). */
 export { renderTapOutLine } from './tapOutPools.js';
 export { renderBlobPrivateIntro } from './blobIntroPools.js';
+export { renderImmobileRedirect } from './immobileRedirectPools.js';
 
 export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
   if (!student) return '';

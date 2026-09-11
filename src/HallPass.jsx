@@ -25,7 +25,7 @@ import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, getHiveFloorResonance, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
-import { IMMOBILE_REDIRECT, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
+import { INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { renderFeedRefusal, renderForceFeedSuccess } from './textEngine/scenes/feedForce/index.js';
@@ -121,7 +121,7 @@ import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryHall } from './textEngine/scenes/memory/index.js';
-import { renderSessionFullness, renderSessionAftermath, renderTapOutLine, renderBlobPrivateIntro } from './textEngine/scenes/session/index.js';
+import { renderSessionFullness, renderSessionAftermath, renderTapOutLine, renderBlobPrivateIntro, renderImmobileRedirect } from './textEngine/scenes/session/index.js';
 import { renderEvolutionOfferIntro } from './textEngine/scenes/evolved/evolutionOfferPools.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
@@ -7248,8 +7248,7 @@ export default function HallPass(){
           :s.ascensionPath==="sanguine"?"sanguine"
           :s.ascensionPath==="verdant"?"verdant"
           :s.ascensionPath==="primordial"?"primordial":"blob";
-        const entry=IMMOBILE_REDIRECT[s.id];
-        const text=entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
+        const text=renderImmobileRedirect(s,tier,week);
         setImmobileRedirect({student:s,text});
         return;
       }
