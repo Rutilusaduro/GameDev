@@ -130,3 +130,14 @@ export function depthRitualCalMult(ownedHallSkills = {}) {
   const feastSyn = getActiveBlueprintSynergies(ownedHallSkills).some((s) => s.id === 'feast_corridor');
   return 1 + kitchenOwned * 0.045 + (feastSyn ? 0.12 : 0);
 }
+
+/** Sophia campus fattening + hall social investment. */
+export function depthCampusPharmacistMods(ownedHallSkills = {}, saturationTier = 0) {
+  const syn = getActiveBlueprintSynergies(ownedHallSkills).length;
+  const parlorOwned = skillsForRoom('parlor').filter((sk) => ownedHallSkills[sk.id]).length;
+  return {
+    gainMult: 1 + syn * 0.028 + parlorOwned * 0.035 + (saturationTier >= 2 ? 0.08 : saturationTier >= 1 ? 0.04 : 0),
+    eventChanceBonus: syn >= 2 ? 0.06 : syn >= 1 ? 0.03 : 0,
+    passiveExtra: parlorOwned >= 2 ? 1 : parlorOwned >= 1 ? 0.5 : 0,
+  };
+}

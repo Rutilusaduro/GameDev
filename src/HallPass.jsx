@@ -383,7 +383,7 @@ import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosp
 import {
   hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
   oppositionScrutinyEaseFromHall, oppositionCounterRelBonus, depthDeviceGainMult, depthSaturationPassiveBonus,
-  depthTalkRelBonus,
+  depthTalkRelBonus, depthCampusPharmacistMods,
 } from './gameData/mechanicsDepth.js';
 import {
   hallLabNetworkModifiers, depthLabSessionBreakthroughBonus, depthLabSessionInstability, depthNetworkTickAdjust,
@@ -1739,9 +1739,10 @@ export default function HallPass(){
     // Final-form campus radiate: Comfort Queens soothe, The Adored warm.
     updated=applyFinalFormRadiate(updated);
     if(pharmacistState?.campusFattening){
+      const campusModsEarly=depthCampusPharmacistMods(ownedHallSkills||{},campusState.saturation?.tier??0);
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
-        const extra=rollCampusPassiveLbs(pharmacistState,rnd);
+        const extra=rollCampusPassiveLbs(pharmacistState,rnd,campusModsEarly);
         return extra>0?processStudentGain(s,extra,0):s;
       });
     }
@@ -1873,21 +1874,22 @@ export default function HallPass(){
       }
       setLabState(normalizeLabTechState(nextLab));
     }
-    if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState,nextSaturation?.tier??0)){
+    if(pharmacistState?.campusFattening&&Math.random()<getCampusWeeklyEventChance(pharmacistState,nextSaturation?.tier??0,depthCampusPharmacistMods(ownedHallSkills||{},nextSaturation?.tier??0))){
       const campusEv=pickPharmacistCampusEvent(updated,{
         hasMayaHive:!!students.find(s=>s.evolvedForm==='delivery_hive'),
       });
+      const campusMods=depthCampusPharmacistMods(ownedHallSkills||{},nextSaturation?.tier??0);
       if(campusEv){
         setTimeout(()=>{
           if(campusEv.target==='hall'){
             push(`🌿 ${campusEv.text()}`);
-            setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
+            setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0,campusMods),0):s));
           }else{
             const gainTargets=updated.filter(studentReceivesPassiveGain);
             const target=gainTargets.length?gainTargets[rnd(0,gainTargets.length-1)]:null;
             if(target){
               push(`🌿 ${campusEv.text(target)}`);
-              setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
+              setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0,campusMods),0):s));
             }
           }
         },180);

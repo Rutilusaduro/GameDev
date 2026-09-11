@@ -6,6 +6,7 @@
 import { TESTER_START_LBS } from './cultivator.js';
 import { saturationNewStudentLbsBonus } from './campusSaturation.js';
 import { getCampusNarrativeTier, CAMPUS_NARRATIVE_LABELS } from './pharmacistIngredients.js';
+import { depthCampusPharmacistMods } from './mechanicsDepth.js';
 
 export { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier };
 
@@ -32,28 +33,31 @@ export function getCampusHiveRecruitLbsBonus(pharmacistState, saturationTier = 0
   return campus + saturationNewStudentLbsBonus(saturationTier);
 }
 
-export function rollCampusPassiveLbs(pharmacistState, rndFn) {
+export function rollCampusPassiveLbs(pharmacistState, rndFn, campusMods = null) {
   const tier = getCampusFatteningTier(pharmacistState);
   if (!tier) return 0;
   const [lo, hi] = tier.passiveLbs;
   const narrative = getCampusNarrativeTier(pharmacistState);
   const bonus = narrative >= 3 ? 1 : narrative >= 2 ? 0 : 0;
-  return rndFn(lo + bonus, hi + bonus);
+  const extra = campusMods?.passiveExtra || 0;
+  return rndFn(lo + bonus + extra, hi + bonus + extra);
 }
 
 /** Weekly campus event roll chance scales with narrative tier and saturation. */
-export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0) {
+export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0, campusMods = null) {
   const narrative = getCampusNarrativeTier(pharmacistState);
   const base = { 1: 0.22, 2: 0.3, 3: 0.38 }[narrative] || 0;
   const satBonus = { 0: 0, 1: 0.04, 2: 0.08, 3: 0.12 }[saturationTier] ?? 0;
-  return Math.min(0.55, base + satBonus);
+  const hallBonus = campusMods?.eventChanceBonus || 0;
+  return Math.min(0.6, base + satBonus + hallBonus);
 }
 
-export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturationTier = 0) {
+export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturationTier = 0, campusMods = null) {
   const narrative = getCampusNarrativeTier(pharmacistState);
   const narrativeMult = narrative >= 3 ? 1.35 : narrative >= 2 ? 1.15 : 1;
   const satMult = 1 + ({ 0: 0, 1: 0.05, 2: 0.1, 3: 0.18 }[saturationTier] ?? 0);
-  const mult = narrativeMult * satMult;
+  const hallMult = campusMods?.gainMult || 1;
+  const mult = narrativeMult * satMult * hallMult;
   const [lo, hi] = gainRange;
   return rndFn(Math.round(lo * mult), Math.round(hi * mult));
 }
