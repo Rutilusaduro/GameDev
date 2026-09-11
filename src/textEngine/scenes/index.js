@@ -149,6 +149,7 @@ import './upgradeCorpusPass4.js';
 import './upgradeCorpusPass5.js';
 import './upgradeCorpusPass6.js';
 import './upgradeCorpusPass7.js';
+import './upgradeCorpusPass8.js';
 import './diaryPhaseDUpgrade.js';
 import './researchJournal/upgrade.js';
 import './cultivator/harvestUpgrade.js';
