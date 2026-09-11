@@ -53,6 +53,8 @@ const POOLS = [
   'stream.scene.roundStartPulse',
   'opposition.scene.testifyWarmth',
   'opposition.scene.counterMomentum',
+  'opposition.scene.agendaInstitutional',
+  'opposition.scene.endingRelief',
 ];
 
 for (const key of POOLS) {

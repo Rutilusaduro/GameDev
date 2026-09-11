@@ -5,7 +5,8 @@ import { render } from '../src/textEngine/engine.js';
 import { renderHearingChoiceResult, renderHearingPhase } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { buildHearingCtx } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
-import { counterSuccessLine } from '../src/gameData/oppositionText.js';
+import { counterSuccessLine, agendaResolveLine } from '../src/gameData/oppositionText.js';
+import { renderHearingEnding } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
 
 const week = 24;
@@ -71,6 +72,33 @@ for (let s = 0; s < 12; s += 1) {
   if (COUNTER_FP.test(line)) counterHit = true;
 }
 assert.ok(counterHit, `expected modular counter.success @ week ${week}`);
+
+const AGENDA_FP = /agendaInstitutional|agendaHallCost|scrutiny dressed|Opposition learns/i;
+let agendaHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = agendaResolveLine('wellness_audit', week)?.trim() || '';
+  assert.ok(line.length > 80, 'short agenda');
+  if (AGENDA_FP.test(line)) agendaHit = true;
+}
+assert.ok(agendaHit, `expected modular agenda @ week ${week}`);
+
+const FEAST_REM_FP = /removalFeastPlay|cateredVote|hearing becomes dinner/i;
+let feastRemHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderHearingChoiceResult('removal', 'feast', destiny, week, 1)?.trim() || '';
+  assert.ok(line.length > 80, 'short removal feast');
+  if (FEAST_REM_FP.test(line)) feastRemHit = true;
+}
+assert.ok(feastRemHit, `expected modular removal feast @ week ${week}`);
+
+const END_FP = /endingRelief|endingEcho|policy lost to plates|Hall Ambiance climbs/i;
+let endHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderHearingEnding('removal', 'discredit_feast', destiny, week)?.trim() || '';
+  assert.ok(line.length > 80, 'short hearing ending');
+  if (END_FP.test(line)) endHit = true;
+}
+assert.ok(endHit, `expected modular hearing ending @ week ${week}`);
 
 const SYN_FP = /endgameAbundance|synthesisEcho|Scarcity folds|Passive abundance/i;
 let synHit = false;

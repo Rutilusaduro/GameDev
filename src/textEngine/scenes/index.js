@@ -243,6 +243,7 @@ import './opposition/endgameBeat.js';
 import './opposition/index.js';
 import './opposition/depth.js';
 import './opposition/oppositionLateModularFragments.js';
+import './opposition/oppositionAgendaModularFragments.js';
 import './dinner/index.js';
 import './dinner/dinnerDishFragments.js';
 import './growthEvent/index.js';
