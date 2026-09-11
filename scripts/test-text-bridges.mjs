@@ -49,6 +49,7 @@ const required = [
   'cultivator/vignettes.js',
   'hallBlueprint/index.js',
   'hallBlueprint/blueprintModularFragments.js',
+  'hallBlueprint/hallAmbianceModularFragments.js',
   'session/blobIntroFragments.js',
   'session/immobileRedirectFragments.js',
   'homeroom/batchBakerFragments.js',

@@ -32,6 +32,7 @@ const requiredFragments = [
   'talkSuggestIndulgenceModularFragments.js',
   'talkSuggestGrowthModularFragments.js',
   'hallBlueprint/blueprintModularFragments.js',
+  'hallBlueprint/hallAmbianceModularFragments.js',
   'competitiveGainer/cgSceneFragments.js',
   'cultivator/cultivatorFragments.js',
   'dinner/dinnerDishFragments.js',

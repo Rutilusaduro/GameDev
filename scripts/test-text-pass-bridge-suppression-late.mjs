@@ -73,7 +73,7 @@ let sumoHit = false;
 for (let s = 0; s < 12; s += 1) {
   const line = renderEvolvedActivityBeat(sumo, week, 3, { seed: 72010 + s })?.trim() || '';
   assert.ok(line.length > 40, 'short sumo activity');
-  if (/evolved\.scene|atmosphere|stakes|hungerCue|witnessed|She's in her element|Modular evolved/i.test(line)) sumoHit = true;
+  if (/evolved\.scene|atmosphere|stakes|hungerCue|witnessed|She's in her element|Modular evolved|Fabric strains|Floor heat and cooking|Winning here means growing|appetite becomes the only agenda/i.test(line)) sumoHit = true;
   assert.ok(!/^National qualifier — press watches her belly argue with the sport's weight classes\.$/.test(line), 'pass-112 sumo bridge alone @ w24');
 }
 assert.ok(sumoHit, 'sumo activity modular @ w24');
@@ -123,5 +123,43 @@ for (let s = 0; s < 8; s += 1) {
   if (/cateredVote|boardAppetite|Appetite interrupts|feed the hearing|board members chew/i.test(line)) feastBribeHit = true;
 }
 assert.ok(feastBribeHit, 'emergency feast_bribe modular @ w24');
+
+let fairEndHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{fair.day.weighIn.endingA}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72070 + s,
+    globals: { featureId: 'state_fair_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Ground holds — MJ owns the number while the crowd learns her name\.$/.test(line), 'pass-96 weighIn.endingA bridge alone @ w24');
+  if (/weighInBeat|carnivalAir|platform scale|Hay-scent|co-conspirator/i.test(line)) fairEndHit = true;
+}
+assert.ok(fairEndHit, 'fair.day.weighIn.endingA modular @ w24');
+
+let fairApHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{fair.day.afterparty.open}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72080 + s,
+    globals: { featureId: 'state_fair_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Fair night air tastes like sugar — afterparty is where winners keep winning\.$/.test(line), 'pass-96 afterparty.open bridge alone @ w24');
+  if (/afterpartyBeat|Afterparty steam|funnel-cake|mjPride/i.test(line)) fairApHit = true;
+}
+assert.ok(fairApHit, 'fair.day.afterparty.open modular @ w24');
+
+let socialHeatHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{hall.ambiance.pulse.socialHeat}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72090 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Doorways stay open — gossip and snacks trade places in the hallway\.$/.test(line), 'pass-96 socialHeat bridge alone @ w24');
+  if (/Hall Ambiance|modularFrame|linger longer|group chat|Invitations multiply/i.test(line)) socialHeatHit = true;
+}
+assert.ok(socialHeatHit, 'hall.ambiance.pulse.socialHeat modular @ w24');
 
 console.log('test-text-pass-bridge-suppression-late: ok');

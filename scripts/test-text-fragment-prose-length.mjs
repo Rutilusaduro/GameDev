@@ -29,6 +29,7 @@ const POOLS = [
   'talk.suggest.indulgenceWarmth',
   'talk.suggest.growthAmbition',
   'hall.blueprint.construction',
+  'hall.ambiance.modularFrame',
   'cultivator.scene.labAir',
   'session.tapOut.breath',
   'device.use.scene.labHum',

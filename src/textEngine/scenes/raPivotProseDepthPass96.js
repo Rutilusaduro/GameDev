@@ -1,37 +1,6 @@
-// Fair day tags bridge, evolved, WL, hall (Pass 96).
+// Pass 96 — fair/homeroom/blueprint bridges retired to *Fragments.js; evolved/WL/CG bridges remain.
 import { registerModuleVariants } from '../engine.js';
 import { legacyBridgeWhen } from './legacyPoolPolicy.js';
-
-
-registerModuleVariants('fair.day.weighIn.endingA', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Ground holds — MJ owns the number while the crowd learns her name.',
-    ],
-  },
-]);
-
-registerModuleVariants('fair.day.weighIn.endingB', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Crowd roars — MJ feeds the moment until pride outweighs modesty.',
-    ],
-  },
-]);
-
-registerModuleVariants('fair.day.afterparty.open', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Fair night air tastes like sugar — afterparty is where winners keep winning.',
-    ],
-  },
-]);
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.end1', [
   {
@@ -79,36 +48,6 @@ registerModuleVariants('wifeLessons.talk.Wanda.s1.opt1', [
     weight: 1,
     text: [
       '"Our recipes were simple once. Mary Jane taught us abundance tastes like home."',
-    ],
-  },
-]);
-
-registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Mrs. Calloway arrives buttoned tight — wellness policy versus butter smell, round one.',
-    ],
-  },
-]);
-
-registerModuleVariants('hall.blueprint.purchase', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Work order signed — the wing changes smell before the paint dries.',
-    ],
-  },
-]);
-
-registerModuleVariants('hall.ambiance.pulse.socialHeat', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Doorways stay open — gossip and snacks trade places in the hallway.',
     ],
   },
 ]);
