@@ -34,6 +34,10 @@ mustExist('src/gameData/rankedSessionData.js');
 mustExist('src/gameData/evolvedEvents.js');
 mustExist('src/gameData/competitiveGainerData.js');
 mustExist('src/gameData/fairQueenData.js');
+mustExist('src/gameData/evolvedReactionsOutfits.js');
+mustExist('src/gameData/evolvedActivityData.js');
+mustExist('src/gameData/evolutionUiData.js');
+mustExist('src/gameData/evolvedScaling.js');
 
 const hallLounge = readFileSync(join(root, 'src/views/HallLoungeView.jsx'), 'utf8');
 assert.match(hallLounge, /HallBlueprint/, 'Hall lounge view should render blueprint UI');
@@ -55,10 +59,20 @@ execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 const evoPath = join(root, 'src/gameData/evolvedForms.js');
 const evoLines = readFileSync(evoPath, 'utf8').split('\n').length;
 const debtThreshold = 4000;
+const extractModules = [
+  'src/gameData/evolvedEvents.js',
+  'src/gameData/evolvedReactionsOutfits.js',
+  'src/gameData/evolvedActivityData.js',
+  'src/gameData/evolutionUiData.js',
+];
+let extractLines = 0;
+for (const rel of extractModules) {
+  extractLines += readFileSync(join(root, rel), 'utf8').split('\n').length;
+}
 if (evoLines > debtThreshold) {
-  console.warn(`text-migration-debt: evolvedForms.js still ${evoLines} lines (target <=${debtThreshold}; homeroom/wifeLessons/rankedSession extracted)`);
+  console.warn(`text-migration-debt: evolvedForms barrel ${evoLines} lines; extracts ${extractLines} lines across modules`);
 } else {
-  console.log(`text-migration-debt: evolvedForms.js ${evoLines} lines (<= ${debtThreshold})`);
+  console.log(`text-migration-debt: evolvedForms barrel ${evoLines} lines; prose extracts ${extractLines} lines (monolith retired)`);
 }
 
 console.log('test-ra-pivot-objective: ok (mechanics, blueprint, ambiance registry, text bridges, text:lint)');

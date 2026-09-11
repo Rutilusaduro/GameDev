@@ -3,7 +3,7 @@ import { registerPool, render } from '../../engine.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { getStage } from '../../../gameData/stages.js';
-import { EVOLVED_OUTFITS } from '../../../gameData/evolvedForms.js';
+import { EVOLVED_OUTFITS } from '../../../gameData/evolvedReactionsOutfits.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
 import { outfitTailBeat } from './proseTails.js';

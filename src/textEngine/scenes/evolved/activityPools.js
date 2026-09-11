@@ -1,6 +1,6 @@
 // Evolved form — passive activity beats (EVOLVED_ACTIVITY_TEXT → pools).
 import { registerDimension, registerPool } from '../../engine.js';
-import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedActivityData.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat } from './proseTails.js';
 

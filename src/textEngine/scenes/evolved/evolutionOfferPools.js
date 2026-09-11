@@ -2,7 +2,7 @@
 import { registerPool, render } from '../../engine.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
-import { EVOLUTION_OFFER } from '../../../gameData/evolvedForms.js';
+import { EVOLUTION_OFFER } from '../../../gameData/evolutionUiData.js';
 import { INIT_STUDENTS } from '../../../gameData/students.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';

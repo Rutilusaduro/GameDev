@@ -20,6 +20,9 @@ function gameDataCorpus() {
     'src/gameData/evolvedEvents.js',
     'src/gameData/competitiveGainerData.js',
     'src/gameData/fairQueenData.js',
+    'src/gameData/evolvedReactionsOutfits.js',
+    'src/gameData/evolvedActivityData.js',
+    'src/gameData/evolutionUiData.js',
   ].map(read).join('\n');
 }
 
@@ -112,7 +115,7 @@ check('community-researcher-cassidy', () => {
 });
 
 check('community-researcher-activity-prose', () => {
-  const src = read('src/gameData/evolvedForms.js');
+  const src = read('src/gameData/evolvedActivityData.js');
   const activityBlock = src.slice(src.indexOf('export const EVOLVED_ACTIVITY_TEXT'));
   assert.match(activityBlock, /community_researcher:\[\s*\n\s*\(s\)=>`She stops by your RA desk/);
   assert.match(activityBlock, /intake record on floor immersion/);
@@ -1362,7 +1365,7 @@ check('dorm-diary-stream-resident-framing', () => {
   const diary = read('src/textEngine/scenes/diaryPhaseD.js');
   assert.match(diary, /Chloé's dinners/);
   assert.doesNotMatch(diary, /French girl's dinners/i);
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(evolved, /Chloé's dinners/);
   assert.doesNotMatch(evolved, /French girl's dinners/i);
   const feast = read('src/textEngine/scenes/hunt/feastStageUp.js');
@@ -1421,7 +1424,7 @@ check('nadia-journal-framing', () => {
 });
 
 check('psych-researcher-resident-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const content = read('src/gameData/content.js');
   const diary = read('src/textEngine/scenes/diary.js');
   assert.match(evolved, /It involves a focus resident/);
@@ -1459,7 +1462,7 @@ check('fiona-artsy-model-framing', () => {
 check('fiona-gallery-model-ui', () => {
   const modal = read('src/components/ArtisanGalleryModal.jsx');
   const gallery = read('src/gameData/fionaGallery.js');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const phaseD = read('src/textEngine/scenes/diaryPhaseD.js');
   const salon = read('src/textEngine/scenes/salonGallerySceneDepth.js');
   const depth = read('src/textEngine/scenes/diaryPhaseDSceneDepth.js');
@@ -1552,7 +1555,7 @@ check('narrative-residents-not-students', () => {
   const squad = read('src/textEngine/scenes/squadStageCoverage.js');
   const hunt = read('src/textEngine/scenes/hunt/depth.js');
   const lilith = read('src/gameData/lilith.js');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const growth = read('src/textEngine/scenes/growthEvent/fragments.js');
   const diary = read('src/textEngine/scenes/diary.js');
   assert.match(narrative, /Residents orbit her/);
@@ -1618,9 +1621,8 @@ check('arc-subject-resident-framing', () => {
 });
 
 check('wife-lessons-hunt-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
   const wlData = read('src/gameData/wifeLessonsData.js');
-  const wlProse = evolved + '\n' + wlData;
+  const wlProse = gameDataCorpus() + '\n' + wlData;
   assert.match(wlProse, /as the daughters led the lesson/);
   assert.match(wlProse, /their daughters proudly serving/);
   assert.match(wlProse, /my daughters seemed to enjoy/);
@@ -1793,7 +1795,7 @@ check('picker-resident-framing-ui', () => {
   const picker = read('src/components/PickerModals.jsx');
   const detail = read('src/views/StudentDetailView.jsx');
   const cultivator = read('src/components/CultivatorModal.jsx');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(picker, /HALL LOG FOCUS/);
   assert.match(picker, /Select a Resident/);
   assert.match(picker, /No eligible residents/);
@@ -1863,7 +1865,7 @@ check('nadia-sophia-baseline-framing', () => {
   assert.doesNotMatch(early, /Subject error|She is the subject|Control group contamination/i);
   const attitude = read('src/textEngine/scenes/attitude.js');
   const dinnerDepth = read('src/textEngine/scenes/dinner/dinnerReactionsDepth.js');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(attitude, /resident increasingly comfortable with the resident being herself/);
   assert.match(dinnerDepth, /Resident demonstrates optimal satiety response/);
   assert.match(evolved, /Resident demonstrates continued voluntary intake increase/);
@@ -2083,7 +2085,7 @@ check('cassidy-swimmer-voice', () => {
     }
   }
 
-  const evolvedSrc = read('src/gameData/evolvedForms.js') + '\n' + read('src/gameData/evolvedEvents.js');
+  const evolvedSrc = gameDataCorpus();
   const crJournal = evolvedSrc.match(/community_researcher:\[\s*\n\s*"First floor session[\s\S]*?\],\s*\n\};/);
   assert.ok(crJournal, 'evolved gameData must contain community_researcher journal block');
   const crEvents = evolvedSrc.match(/community_researcher:\[\s*\n\s*\/\/ stageIdx 0[\s\S]*?\n  \],\n\n  \/\/ ── QUIET/);

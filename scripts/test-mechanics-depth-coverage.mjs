@@ -60,6 +60,10 @@ const DATA_ONLY = new Set([
   'evolvedEvents.js',
   'competitiveGainerData.js',
   'fairQueenData.js',
+  'evolvedReactionsOutfits.js',
+  'evolvedActivityData.js',
+  'evolutionUiData.js',
+  'evolvedScaling.js',
   'nadiaSubjectJournals.js',
 ]);
 
