@@ -10,8 +10,14 @@ import { applyCultivatorOverhaul } from './leftoverCultivator.js';
 import { applyDishOverhaul } from './leftoverDish.js';
 import { applyCatalogOverhaul } from './leftoverCatalog.js';
 import { applyHarvestOverhaul } from './leftoverHarvest.js';
+import { applySessionBeatsOverhaul } from './leftoverSessionBeats.js';
+import { applySkillOverhaul } from './leftoverSkills.js';
+import { applyUiBeatsOverhaul } from './leftoverUiBeats.js';
 
 applyCultivatorOverhaul();
 applyDishOverhaul();
 applyCatalogOverhaul();
 applyHarvestOverhaul();
+applySessionBeatsOverhaul();
+applySkillOverhaul();
+applyUiBeatsOverhaul();

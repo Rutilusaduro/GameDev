@@ -15,6 +15,7 @@ import {
   getHiveFloorResonance,
 } from '../gameData/mayaHive.js';
 import { extraHiveActions } from '../gameData/mechanicDepth.js';
+import { renderHiveTaskDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 
 const HIVE_BG = "#07040d";
 const HIVE_PANEL = "rgba(78, 36, 96, 0.28)";
@@ -81,12 +82,12 @@ function RoomCell({room,selected,onSelect,frontier}){
   );
 }
 
-function TaskRow({task,count,canAdd,onAdjust}){
+function TaskRow({task,count,canAdd,onAdjust,student,week=1}){
   return(
     <div style={{display:"grid",gridTemplateColumns:"1fr auto",gap:8,alignItems:"center",padding:"8px 0",borderBottom:"1px solid rgba(255,255,255,.06)"}}>
       <div>
         <div style={{fontSize:11,fontWeight:800,color:task.color}}>{task.icon} {task.label}</div>
-        <div style={{fontSize:9,color:HIVE_SUB,lineHeight:1.4}}>{task.desc}</div>
+        <div style={{fontSize:9,color:HIVE_SUB,lineHeight:1.4}}>{renderHiveTaskDesc(task.id, student, week) || task.desc}</div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:5}}>
         <button type="button" className="maya-hive-task-btn" style={{...C.btn("#25102d"),padding:"4px 8px",border:`1px solid ${task.color}40`}} onClick={()=>onAdjust(task.id,-1)} disabled={count<=0} aria-label={`Decrease ${task.label}`}>-</button>
@@ -278,7 +279,7 @@ export function MayaHiveModal({
               <div style={{fontSize:9,color:unassigned<0?HIVE_WARN:HIVE_SUB}}>Assigned {assigned}/{hs.members}</div>
             </div>
             {HIVE_TASKS.map(task=>(
-              <TaskRow key={task.id} task={task} count={hs.assignments[task.id]||0} canAdd={assigned<hs.members} onAdjust={adjustHiveAssignment}/>
+              <TaskRow key={task.id} task={task} count={hs.assignments[task.id]||0} canAdd={assigned<hs.members} onAdjust={adjustHiveAssignment} student={maya}/>
             ))}
             <button disabled={assigned>hs.members} style={{...C.btn(HIVE_ACC),width:"100%",marginTop:12,opacity:assigned<=hs.members?1:.45}} onClick={executeMayaHiveShift}>Execute Shift</button>
           </div>

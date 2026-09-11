@@ -1,4 +1,5 @@
 import { C } from '../styles.js';
+import { renderFloorActionDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 
 export function ActionsView({ ap, doFloorAction, effectiveHallActions, famineWeek = false }){
   const sortedActions=[...effectiveHallActions].sort((a,b)=>{
@@ -19,7 +20,7 @@ export function ActionsView({ ap, doFloorAction, effectiveHallActions, famineWee
                 {sortedActions.map(a=>(
                   <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1,border:famineWeek&&a.id==='refeast_ritual'?'1px solid #c0404060':undefined}}>
                     <div style={{fontWeight:700,color:famineWeek&&a.id==='refeast_ritual'?"#f08080":"#c090e8",marginBottom:3}}>{a.label}</div>
-                    <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{a.desc}</div>
+                    <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{renderFloorActionDesc(a.id) || a.desc}</div>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
                       <span style={{fontSize:11,color:a.cost===0?"#60c060":"#e07030"}}>{a.cost===0?"FREE":a.cost+" AP"}</span>
                       <span style={{fontSize:10,color:"#604030"}}>+{(a.cal[0]/1000).toFixed(0)}k–{(a.cal[1]/1000).toFixed(0)}k cal · {a.full} fullness</span>

@@ -5,6 +5,7 @@ import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage,
 import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { renderDinnerDishDesc } from '../textEngine/scenes/dinner/index.js';
 import { renderPrivateVenueDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
+import { renderSessionPaceDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFeedingAppetiteNote } from '../gameData/feedingSession.js';
@@ -102,7 +103,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                       <button key={p.id} type="button"
                         style={{...C.smBtn,opacity:sessionPace===p.id?1:0.55,background:sessionPace===p.id?"rgba(120,60,180,0.45)":"rgba(40,10,60,0.2)"}}
                         onClick={()=>setPrivateSession(prev=>({...prev,sessionPace:p.id}))}
-                        title={p.desc}>
+                        title={renderSessionPaceDesc(p.id, s, week)||p.desc}>
                         {p.label}
                       </button>
                     ))}

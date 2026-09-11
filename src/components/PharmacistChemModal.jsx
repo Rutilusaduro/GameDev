@@ -16,6 +16,7 @@ import {
   toggleBrewInPlan,
 } from '../gameData/pharmacistIngredients.js';
 import { renderPharmacistAcquire } from '../textEngine/scenes/overhaul/pharmacist.js';
+import { renderPharmacistOptDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 
 const STAGE_CHROME = {
   1: { accent: '#3d5a80', label: 'CORPORATE LAB', sub: 'Shift synthesis — acquire stock, brew quietly.' },
@@ -152,7 +153,7 @@ export function PharmacistChemModal({
             }}
           >
             <div style={{ color: '#8ad4b0', fontWeight: 700, fontSize: 12, marginBottom: 3 }}>{opt.label}</div>
-            <div style={{ color: '#608878', fontSize: 10, lineHeight: 1.45, marginBottom: 4 }}>{opt.desc}</div>
+            <div style={{ color: '#608878', fontSize: 10, lineHeight: 1.45, marginBottom: 4 }}>{renderPharmacistOptDesc(opt.id, student, week) || opt.desc}</div>
             <div style={{ color: opt.exposure > 15 ? '#c08060' : '#507060', fontSize: 9 }}>
               {opt.exposure > 0 ? `+${opt.exposure}% exposure risk` : 'No added exposure'}
             </div>

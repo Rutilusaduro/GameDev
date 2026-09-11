@@ -99,6 +99,9 @@ import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js'
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderDinnerArrive } from './textEngine/scenes/overhaul/dinnerVenue.js';
 import { renderQuestDesc, renderPrivateVenueIntro, renderPrivateBlobIntro } from './textEngine/scenes/overhaul/leftoverCatalog.js';
+import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect } from './textEngine/scenes/overhaul/leftoverSessionBeats.js';
+import { renderHallSkillDesc } from './textEngine/scenes/overhaul/leftoverSkills.js';
+import { renderSessionPaceDesc, renderFloorActionDesc } from './textEngine/scenes/overhaul/leftoverUiBeats.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
@@ -7421,7 +7424,7 @@ export default function HallPass(){
           :s.ascensionPath==="verdant"?"verdant"
           :s.ascensionPath==="primordial"?"primordial":"blob";
         const entry=IMMOBILE_REDIRECT[s.id];
-        const text=entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
+        const text=renderImmobileRedirect(s,week)||entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
         setImmobileRedirect({student:s,text});
         return;
       }
@@ -7948,14 +7951,16 @@ export default function HallPass(){
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
       const liveS=fed;
-      let tapLine;
-      if(fPct>=250){
-        const entry250=TAP_OUT_250[s.id]||TAP_OUT_250.default;
-        tapLine=typeof entry250==='function'?entry250(liveS):entry250;
-      } else {
-        const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
-        const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
-        tapLine=dialogueSet[tapStage](liveS);
+      let tapLine=renderSessionTapout(liveS,week);
+      if(!tapLine){
+        if(fPct>=250){
+          const entry250=TAP_OUT_250[s.id]||TAP_OUT_250.default;
+          tapLine=typeof entry250==='function'?entry250(liveS):entry250;
+        } else {
+          const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
+          const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
+          tapLine=dialogueSet[tapStage](liveS);
+        }
       }
       const currentTotalGain=sessionCals;
       const hist2=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
@@ -8007,7 +8012,7 @@ export default function HallPass(){
     };
     const fPct=getFullnessPercent(s,capOpts);
     const lbsBonus=enc.lbsBonus?rnd(enc.lbsBonus[0],enc.lbsBonus[1]):0;
-    const encLine=enc.line(s,fPct);
+    const encLine=renderSessionEncourage(enc.id,s,week)||enc.line(s,fPct);
     push(`💬 ${encLine}`);
     setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
     let fed=s;
@@ -8186,7 +8191,7 @@ export default function HallPass(){
             <div className="hall-pass-modal-in skill-purchase-modal" style={{...C.modal,maxWidth:580}}>
               <div style={{fontSize:9,letterSpacing:3,color:"#8040c8",marginBottom:3}}>UNLOCK SKILL</div>
               <h2 style={{margin:"0 0 4px",color:"#c898ff",fontSize:18}}>{skill.label}</h2>
-              <div style={{fontSize:11,color:"#9070b0",lineHeight:1.5,marginBottom:4}}>{skill.desc}</div>
+              <div style={{fontSize:11,color:"#9070b0",lineHeight:1.5,marginBottom:4}}>{renderHallSkillDesc(skill.id, students[0], week)||skill.desc}</div>
               <div style={{fontSize:11,color:"#c090d0",fontStyle:"italic",marginBottom:12}}>{skill.effect}</div>
               <div style={{...C.infoBox("rgba(100,40,200,0.1)"),display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                 <span style={{fontSize:12,color:"#d0b8e8"}}>Cost: <strong style={{color:"#f0a060"}}>{skill.cost} lbs</strong></span>
@@ -8407,7 +8412,7 @@ export default function HallPass(){
                       <button key={p.id} type="button" className="dinner-lane-choice-row"
                         style={{...C.smBtn,opacity:(dinnerEvent.sessionPace||'steady')===p.id?1:0.55}}
                         onClick={()=>setDinnerEvent(prev=>({...prev,sessionPace:p.id}))}
-                        title={p.desc}>
+                        title={renderSessionPaceDesc(p.id, dinnerEvent.student, week)||p.desc}>
                         {p.label}
                       </button>
                     ))}
@@ -8718,7 +8723,7 @@ export default function HallPass(){
                       <button key={p.id} type="button" className="dinner-lane-choice-row"
                         style={{...C.smBtn,opacity:(gev.sessionPace||'steady')===p.id?1:0.55}}
                         onClick={()=>setGroupDinnerEvent(prev=>({...prev,sessionPace:p.id}))}
-                        title={p.desc}>
+                        title={renderSessionPaceDesc(p.id, gev.students?.[0], week)||p.desc}>
                         {p.label}
                       </button>
                     ))}

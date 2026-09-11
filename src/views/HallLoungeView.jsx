@@ -22,6 +22,8 @@ import {
   computeHallLoungeSkillSpent,
   canBuyHallLoungeSkill,
 } from '../gameData/hallLoungeSkills.js';
+import { renderHallSkillDesc } from '../textEngine/scenes/overhaul/leftoverSkills.js';
+import { renderRoomBlurb } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 
 const INK = '#0b1220';
 const LINE = 'rgba(120, 210, 230, 0.45)';
@@ -83,10 +85,11 @@ function BlueprintRoom({ room, owned, selected, pinnedIndex, onSelect }) {
   );
 }
 
-function UpgradeRow({ skill, owned, students, onPurchase }) {
+function UpgradeRow({ skill, owned, students, onPurchase, week = 1 }) {
   const purchased = !!owned[skill.id];
   const check = purchased ? null : canBuyHallLoungeSkill(skill.id, owned, students);
   const affordable = !!check?.ok;
+  const desc = renderHallSkillDesc(skill.id, students?.[0], week) || skill.effect || skill.desc;
   return (
     <div
       style={{
@@ -101,7 +104,7 @@ function UpgradeRow({ skill, owned, students, onPurchase }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'flex-start' }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 12, color: purchased ? '#90b8a8' : '#d8c8b0', fontWeight: 600 }}>{skill.label}</div>
-          <div style={{ fontSize: 10, color: '#708090', marginTop: 3, lineHeight: 1.45, textWrap: 'pretty' }}>{skill.effect || skill.desc}</div>
+          <div style={{ fontSize: 10, color: '#708090', marginTop: 3, lineHeight: 1.45, textWrap: 'pretty' }}>{desc}</div>
           {!purchased && check?.reason && !affordable && (
             <div style={{ fontSize: 10, color: '#a07070', marginTop: 4 }}>{check.reason}</div>
           )}
@@ -124,7 +127,7 @@ function UpgradeRow({ skill, owned, students, onPurchase }) {
   );
 }
 
-function RoomDetail({ roomId, owned, students, circuit, onPurchase, onTogglePin }) {
+function RoomDetail({ roomId, owned, students, circuit, onPurchase, onTogglePin, week = 1 }) {
   const room = getRoom(roomId);
   if (!room) {
     return <div style={{ fontSize: 11, color: '#708090' }}>Select a room on the plan.</div>;
@@ -150,14 +153,14 @@ function RoomDetail({ roomId, owned, students, circuit, onPurchase, onTogglePin 
           </button>
         )}
       </div>
-      <p style={{ fontSize: 12, color: '#b8a898', lineHeight: 1.55, margin: '0 0 10px', textWrap: 'pretty' }}>{room.blurb}</p>
+      <p style={{ fontSize: 12, color: '#b8a898', lineHeight: 1.55, margin: '0 0 10px', textWrap: 'pretty' }}>{renderRoomBlurb(room.id, students?.[0], week) || room.blurb}</p>
       {skills.length === 0 && (
         <div style={{ fontSize: 11, color: '#708090', fontStyle: 'italic' }}>
           {room.decorative ? 'Structural. No upgrades — the plan just needs the box.' : 'Night stop only. Pin it to include the resident wing on After-Hours Rounds.'}
         </div>
       )}
       {skills.map((sk) => (
-        <UpgradeRow key={sk.id} skill={sk} owned={owned} students={students} onPurchase={onPurchase} />
+        <UpgradeRow key={sk.id} skill={sk} owned={owned} students={students} onPurchase={onPurchase} week={week} />
       ))}
     </div>
   );
@@ -273,6 +276,7 @@ export function HallLoungeView({
             circuit={circuit}
             onPurchase={onPurchaseHallLoungeSkill}
             onTogglePin={onToggleCircuitPin}
+            week={week}
           />
         </div>
       </div>

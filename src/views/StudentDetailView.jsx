@@ -16,6 +16,9 @@ import { renderStudentBlurb } from '../textEngine/scenes/overhaul/studentBlurb.j
 import { getRecruitmentScene } from '../gameData/cultivator.js';
 import { renderTesterLook } from '../textEngine/scenes/overhaul/leftoverCultivator.js';
 import { renderArrivalCapstoneDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
+import { renderAbilityCard, renderSettleArrival, renderSettleRefit, renderSettleComfort } from '../textEngine/scenes/overhaul/leftoverSessionBeats.js';
+import { renderEvolvedSkillDesc } from '../textEngine/scenes/overhaul/leftoverSkills.js';
+import { renderPharmacistActDesc, renderFloorActionDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
@@ -349,7 +352,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                               >
                                 <b>{ability.name}</b> <span style={{ color: '#80cfe8' }}>({ability.essenceCost})</span>
                                 <div style={{ fontSize: 9, color: '#8aa8b0', marginTop: 2 }}>
-                                  {cooldown > 0 ? `${cooldown}w cooldown` : ability.desc}
+                                  {cooldown > 0 ? `${cooldown}w cooldown` : (renderAbilityCard(ability.id, s, week) || ability.desc)}
                                 </div>
                               </button>
                             );
@@ -592,7 +595,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                                 </div>
                               )}
                               <div style={{fontSize:9,color:"#406858",marginBottom:8,lineHeight:1.5}}>
-                                {act.desc}
+                                {renderPharmacistActDesc(ps.stage, s, week) || act.desc}
                               </div>
                               <button style={{...C.btn(green),width:"100%",opacity:ap<(act.apCost||1)?0.4:1}} onClick={()=>runPharmacistSynthesis(s)}>
                                 {act.label||"🧪 Run Synthesis Session"} ({act.apCost||1} AP)
@@ -802,7 +805,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                                   <div key={sk.id} style={{background:owned?"rgba(60,20,100,0.5)":"rgba(20,5,40,0.4)",border:`1px solid ${owned?"#7040c080":"#30206030"}`,borderRadius:7,padding:"7px 9px",marginBottom:5,display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
                                     <div style={{flex:1}}>
                                       <div style={{fontSize:11,fontWeight:700,color:owned?"#c080ff":"#7050a0",marginBottom:1}}>{sk.label} {owned&&"✓"}</div>
-                                      <div style={{fontSize:10,color:owned?"#9060c0":"#503070",lineHeight:1.4}}>{sk.desc}</div>
+                                      <div style={{fontSize:10,color:owned?"#9060c0":"#503070",lineHeight:1.4}}>{renderEvolvedSkillDesc(sk.id, s, week) || sk.desc}</div>
                                     </div>
                                     {!owned&&(
                                       <button style={{...C.smBtn,opacity:canBuy?1:0.35,fontSize:10,whiteSpace:"nowrap"}} onClick={()=>canBuy&&purchaseEvolvedSkill(s.id,sk.id)}>
@@ -882,7 +885,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                         <div style={{fontSize:9,letterSpacing:3,color:"#c080d0",marginBottom:4}}>
                           ✦ THE SETTLING{arr.tier>=2?' · the room’s whole gravity':' · settled in place'}
                         </div>
-                        <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>{arr.desc}</div>
+                        <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>{renderSettleArrival(s, week) || arr.desc}</div>
                         <button
                           style={{...C.btn("#7a3aa0"),width:"100%",opacity:ap<arr.apCost?0.4:1}}
                           onClick={()=>runImmobilityArrival(s)}
@@ -902,7 +905,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     <div style={{marginBottom:14}}>
                       <div style={{background:"rgba(30,12,36,0.55)",border:"1px solid #9050b080",borderRadius:10,padding:12}}>
                         <div style={{fontSize:9,letterSpacing:3,color:"#b070c0",marginBottom:4}}>✦ RE-FIT</div>
-                        <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>{action.desc}</div>
+                        <div style={{fontSize:12,color:"#e8d0f0",lineHeight:1.6,marginBottom:8}}>{renderSettleRefit(s, week) || action.desc}</div>
                         <button
                           style={{...C.btn("#6a3090"),width:"100%",opacity:ap<action.apCost?0.4:1}}
                           onClick={()=>runImmobilityRefit(s)}
@@ -940,7 +943,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                           const ms=COMFORT_MILESTONES[k];
                           return(
                             <div key={k} style={{marginBottom:8}}>
-                              <div style={{fontSize:11,color:"#d0b0e0",marginBottom:4}}>{ms.label} — {ms.desc}</div>
+                              <div style={{fontSize:11,color:"#d0b0e0",marginBottom:4}}>{ms.label} — {renderSettleComfort(k, s, week) || ms.desc}</div>
                               <button
                                 style={{...C.btn("#5a2880"),width:"100%",opacity:ap<ms.apCost?0.4:1}}
                                 onClick={()=>runComfortMilestone(s,k)}
@@ -1041,7 +1044,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                   {effectiveSingleActions.map(a=>(
                     <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1}} onClick={()=>doSingle(a,s)}>
                       <div style={{fontWeight:700,fontSize:12,color:"#c090e8",marginBottom:2}}>{a.label}</div>
-                      <div style={{fontSize:10,color:"#5a3888",lineHeight:1.4,marginBottom:4}}>{a.desc}</div>
+                      <div style={{fontSize:10,color:"#5a3888",lineHeight:1.4,marginBottom:4}}>{renderFloorActionDesc(a.id, s, week) || a.desc}</div>
                       <div style={{display:"flex",justifyContent:"space-between"}}>
                         <span style={{fontSize:10,color:"#e07030"}}>{a.cost} AP{a.cost===0?<span style={{color:"#60c060",marginLeft:3}}>FREE</span>:null}</span>
                         <span style={{fontSize:10,color:"#685040"}}>interactive evening</span>

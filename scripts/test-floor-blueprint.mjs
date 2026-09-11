@@ -76,6 +76,9 @@ import { renderCultivatorChoice } from '../src/textEngine/scenes/cultivator/inde
 import { renderTesterLook } from '../src/textEngine/scenes/overhaul/leftoverCultivator.js';
 import { renderItemDesc, renderPrivateVenueDesc, renderPrivateVenueIntro, renderPrivateBlobIntro, renderQuestDesc, renderArrivalCapstoneDesc } from '../src/textEngine/scenes/overhaul/leftoverCatalog.js';
 import { renderIntimacyPicker } from '../src/textEngine/scenes/overhaul/intimacy.js';
+import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect, renderSettleArrival, renderSettleRefit, renderSettleComfort, renderAbilityCard } from '../src/textEngine/scenes/overhaul/leftoverSessionBeats.js';
+import { renderHallSkillDesc, renderRaSkillDesc, renderEvolvedSkillDesc } from '../src/textEngine/scenes/overhaul/leftoverSkills.js';
+import { renderSessionPaceDesc, renderHiveTaskDesc, renderSumoMoveDesc, renderPharmacistActDesc, renderPharmacistOptDesc, renderFloorActionDesc, renderRoomBlurb, renderPhysicalTraitDesc } from '../src/textEngine/scenes/overhaul/leftoverUiBeats.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
@@ -779,6 +782,61 @@ assert.ok(aggregateFloorDepth(pantryOwned).pantryBonus >= 2, 'luxury pantry + su
 const hostOwned = { legendary_host: true };
 assert.ok(aggregateFloorDepth(hostOwned).dinnerCalBonus >= 2000, 'legendary host dinner cals live');
 assert.ok(extraFeedCalories('Floor Pizza Night', { catering_contact: true }) >= 800, 'catering contact feast cals live');
+
+const encLine = renderSessionEncourage('enc_praise', students[0], 2);
+assert.ok(encLine && !encLine.includes('{unresolved}'));
+assert.equal(/pleased and a little distracted from her fullness/i.test(encLine), false, 'encourage should not dump leftover enc.line');
+const tapLine = renderSessionTapout(students[0], 2);
+assert.ok(tapLine && !tapLine.includes('{unresolved}'));
+assert.equal(/I'm tapping out, I'm literally tapping out/i.test(tapLine), false, 'tap-out should not dump leftover TAP_OUT_DIALOGUE');
+const immobileLine = renderImmobileRedirect(students[0], 2);
+assert.ok(immobileLine && !immobileLine.includes('{unresolved}'));
+assert.equal(/hasn't left her room in weeks/i.test(immobileLine), false, 'immobile should not dump leftover IMMOBILE_REDIRECT');
+const settleArr = renderSettleArrival(students[0], 2);
+assert.ok(settleArr && !settleArr.includes('{unresolved}'));
+assert.equal(/tend her vastness/i.test(settleArr), false, 'settle arrival should not dump leftover IMMOBILITY_ARRIVAL.desc');
+const settleRefit = renderSettleRefit(students[0], 2);
+assert.ok(settleRefit && !settleRefit.includes('{unresolved}'));
+assert.equal(/She's grown into a new size\. Have something made to fit/i.test(settleRefit), false);
+const settleComfort = renderSettleComfort('bed', students[0], 2);
+assert.ok(settleComfort && !settleComfort.includes('{unresolved}'));
+assert.equal(/She's outgrown the standard bed/i.test(settleComfort), false, 'comfort should not dump leftover COMFORT_MILESTONES');
+const abilityCard = renderAbilityCard('valk_rollcall', students[0], 2);
+assert.ok(abilityCard && !abilityCard.includes('{unresolved}'));
+assert.equal(/Marks her chosen standard/i.test(abilityCard), false, 'ability card should not dump leftover valk_rollcall desc');
+const hallSkill = renderHallSkillDesc('comfy_chairs', students[0], 2);
+assert.ok(hallSkill && !hallSkill.includes('{unresolved}'));
+assert.equal(/institutional plastic/i.test(hallSkill), false, 'hall skill should not dump leftover SKILL_TREE.desc');
+const raSkill = renderRaSkillDesc('subtle_nudge', students[0], 2);
+assert.ok(raSkill && !raSkill.includes('{unresolved}'));
+assert.equal(/Slightly increases success when feeding past capacity/i.test(raSkill), false, 'RA skill should not dump leftover SKILLS.desc');
+const evSkill = renderEvolvedSkillDesc('sumo_stance', students[0], 2);
+assert.ok(evSkill && !evSkill.includes('{unresolved}'));
+assert.equal(/Her bouts end 20% faster/i.test(evSkill), false, 'evolved skill should not dump leftover EVOLVED_SKILL_TREES.desc');
+const paceLine = renderSessionPaceDesc('gentle', students[0], 2);
+assert.ok(paceLine && !paceLine.includes('{unresolved}'));
+assert.equal(/Easier refusal, less tap-out pressure/i.test(paceLine), false, 'pace should not dump leftover SESSION_PACE_ACTIONS.desc');
+const hiveTask = renderHiveTaskDesc('food', students[1], 2);
+assert.ok(hiveTask && !hiveTask.includes('{unresolved}'));
+assert.equal(/calorie-dense tribute/i.test(hiveTask), false, 'hive task should not dump leftover HIVE_TASKS.desc');
+const sumoMove = renderSumoMoveDesc('charge', students[0], 2);
+assert.ok(sumoMove && !sumoMove.includes('{unresolved}'));
+assert.equal(/Explosive forward hit/i.test(sumoMove), false, 'sumo move should not dump leftover SUMO_MOVES.desc');
+const pharmAct = renderPharmacistActDesc(1, students[0], 2);
+assert.ok(pharmAct && !pharmAct.includes('{unresolved}'));
+assert.equal(/Sophia runs a quiet lab session/i.test(pharmAct), false, 'pharmacist act should not dump leftover PHARMACIST_ACTIVITIES.desc');
+const pharmOpt = renderPharmacistOptDesc('shift_stock', students[0], 2);
+assert.ok(pharmOpt && !pharmOpt.includes('{unresolved}'));
+assert.equal(/Take only what the session budget allows/i.test(pharmOpt), false, 'pharmacist opt should not dump leftover ACQUISITION desc');
+const pizzaAct = renderFloorActionDesc('pizza', students[0], 2);
+assert.ok(pizzaAct && !pizzaAct.includes('{unresolved}'));
+assert.equal(/An excessive whole-floor pizza order/i.test(pizzaAct), false, 'floor action should not dump leftover ACTIONS_HALL.desc');
+const roomLine = renderRoomBlurb('kitchen', students[0], 2);
+assert.ok(roomLine && !roomLine.includes('{unresolved}'));
+assert.equal(/the kitchen that never really closes/i.test(roomLine), false, 'room blurb should not dump leftover FLOOR_ROOMS.blurb');
+const traitLine = renderPhysicalTraitDesc('accelerated_settling', students[0], 2);
+assert.ok(traitLine && !traitLine.includes('{unresolved}'));
+assert.equal(/newly gained pounds settle without a fight/i.test(traitLine), false, 'trait should not dump leftover PHYSICAL_TRAITS.desc');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,

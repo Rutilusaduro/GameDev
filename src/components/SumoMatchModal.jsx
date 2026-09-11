@@ -8,6 +8,7 @@ import { ModalOverlay } from './ModalOverlay.jsx';
 import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED, extraSumoCornerFeeds } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { renderSumoAftermath, renderSumoPayoff } from '../textEngine/scenes/sumoMatch/index.js';
+import { renderSumoMoveDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 
 export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup, owned = {}, soundEnabled = true }){
         const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText,fillRingUsed}=sumoMatchState;
@@ -75,7 +76,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                         <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
                         <span style={{fontWeight:700,color:"#ffc0a0"}}>{mv.label}</span>
                         {lowBal&&<span style={{color:"#ff6040",marginLeft:8,fontSize:9}}>off balance — you'll stumble</span>}
-                        <div style={{fontSize:10,color:"#b08070",marginTop:2,fontStyle:"italic"}}>{mv.desc}</div>
+                        <div style={{fontSize:10,color:"#b08070",marginTop:2,fontStyle:"italic"}}>{renderSumoMoveDesc(mv.id, s, week) || mv.desc}</div>
                       </button>
                     );
                   })}
@@ -86,7 +87,7 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                       onClick={()=>sumoPlayMove('fill_ring')}>
                       <span style={{fontSize:15,marginRight:6}}>{mv.emoji}</span>
                       <span style={{fontWeight:700,color:fillRingUsed?"#806050":"#ffb060"}}>{mv.label}{fillRingUsed?" (used)":""}</span>
-                      <div style={{fontSize:10,color:"#c09060",marginTop:2,fontStyle:"italic"}}>{mv.desc}</div>
+                      <div style={{fontSize:10,color:"#c09060",marginTop:2,fontStyle:"italic"}}>{renderSumoMoveDesc(mv.id, s, week) || mv.desc}</div>
                     </button>
                   ):null;})()}
                 </div>

@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { SKILLS, SKILL_TREES, TIER_THRESHOLDS, RANK_COSTS, PHYSICAL_TRAITS } from '../gameData/skillTrees.js';
 import { C } from '../styles.js';
+import { renderRaSkillDesc } from '../textEngine/scenes/overhaul/leftoverSkills.js';
+import { renderPhysicalTraitDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
 
 const TREE_ORDER = ["influence","gluttony","corruption"];
 
@@ -55,7 +57,7 @@ function SkillCard({ skill, owned, rank, canAfford, tierUnlocked, onBuy, onMax, 
           <span style={{fontSize:18,lineHeight:1}}>{skill.icon}</span>
           <div style={{flex:1}}>
             <div style={{fontSize:12,fontWeight:700,color:active?color:"#c8a8e8",lineHeight:1.2}}>{skill.name}</div>
-            <div style={{fontSize:10,color:"#7a5a9a",marginTop:2,lineHeight:1.45}}>{skill.desc}</div>
+            <div style={{fontSize:10,color:"#7a5a9a",marginTop:2,lineHeight:1.45}}>{renderRaSkillDesc(skill.id) || skill.desc}</div>
           </div>
         </div>
         {skill.maxRanks > 1 && (
@@ -261,7 +263,7 @@ function PhysicalTraitsPanel({ students, ownedSkills }){
         {allTraits.map(({student,trait},i)=>(
           <div key={i} style={{borderLeft:`2px solid #7a3a9a`,paddingLeft:8,paddingTop:2,paddingBottom:2}}>
             <div style={{fontSize:11,color:"#c890e8",fontWeight:600}}>{trait.icon} {trait.name}</div>
-            <div style={{fontSize:10,color:"#8a6aaa"}}>{student.name} — {trait.desc}</div>
+            <div style={{fontSize:10,color:"#8a6aaa"}}>{student.name} — {renderPhysicalTraitDesc(trait.id, student) || trait.desc}</div>
           </div>
         ))}
       </div>
