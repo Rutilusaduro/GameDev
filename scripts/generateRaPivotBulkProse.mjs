@@ -51,9 +51,12 @@ const EXTRA = {
 };
 
 const TARGET = 3;
+const SKIP_OVERWRITE = new Set(['talk.check_in', 'talk.encourage']);
+
 const lines = [
-  '// Auto-generated — node scripts/generateRaPivotBulkProse.mjs',
-  "import { registerPool } from '../engine.js';",
+  '// Auto-generated — node scripts/generateRaPivotBulkProse.mjs (overlay-only; does not replace base pools)',
+  "import { registerModuleVariants } from '../engine.js';",
+  "import { legacyBridgeWhen } from './legacyPoolPolicy.js';",
   '',
 ];
 
@@ -63,10 +66,12 @@ const entries = _registryEntries().filter(([k]) =>
 
 let added = 0;
 for (const [key, variants] of entries) {
+  if (SKIP_OVERWRITE.has(key)) continue;
+
   const preset = EXTRA[key];
   if (preset) {
-    lines.push(`registerPool('${key}', [`);
-    lines.push(`  { when: {}, weight: 2, text: [${preset.map((t) => `\`${t.replace(/`/g, '\\`')}\``).join(', ')}] },`);
+    lines.push(`registerModuleVariants('${key}', [`);
+    lines.push(`  { when: legacyBridgeWhen(), weight: 2, text: [${preset.map((t) => `\`${t.replace(/`/g, '\\`')}\``).join(', ')}] },`);
     lines.push(`]);`);
     lines.push('');
     added += 1;
@@ -85,8 +90,8 @@ for (const [key, variants] of entries) {
     `{subject.name} meets your eyes like the rest of the floor can wait.`,
     `Warmth pools in the room the way fullness pools in her.`,
   ];
-  lines.push(`registerPool('${key}', [`);
-  lines.push(`  { when: {}, weight: 1, text: [${filler.map((t) => `\`${t}\``).join(', ')}] },`);
+  lines.push(`registerModuleVariants('${key}', [`);
+  lines.push(`  { when: legacyBridgeWhen(), weight: 1, text: [${filler.map((t) => `\`${t}\``).join(', ')}] },`);
   lines.push(`]);`);
   lines.push('');
   added += 1;
