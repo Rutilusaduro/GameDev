@@ -287,6 +287,7 @@ import {
   upgradeNexus,
 } from './gameData/networkState.js';
 import { getForceFeedChanceBonuses, canStudentUseDevice, deviceAcceptanceBlockReason } from './gameData/deviceGating.js';
+import { buildDeviceActionEffect } from './gameData/deviceActions.js';
 import {
   tickRelationshipDecay,
   applyFavoritismEcology,
@@ -4904,14 +4905,14 @@ export default function HallPass(){
       return;
     }
     if(actionId==='sleep_feed_gentle'){
-      const effect={ gainLbs:[2,4], psychDelta:{ dependence:2 } };
+      const effect=buildDeviceActionEffect('sleep_feed_gentle')||{ gainLbs:[2,4], psychDelta:{ dependence:2 } };
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
       applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.sleep_feeding_system);
       push(`🌙 Gentle overnight prep on ${s.name}.`);
       return;
     }
     if(actionId==='sleep_feed_aggressive'){
-      const effect={ gainLbs:[5,9], bodyOverride:{ stateType:'bloated', stageBump:2, durationWeeks:1 }, psychDelta:{ dependence:4 } };
+      const effect=buildDeviceActionEffect('sleep_feed_aggressive')||{ gainLbs:[5,9], bodyOverride:{ stateType:'bloated', stageBump:2, durationWeeks:1 }, psychDelta:{ dependence:4 } };
       const applied=applyDeviceEffect(s,effect,{ week, sourceDeviceId:'sleep_feeding_system', rng:Math.random });
       const gain=applied.student._pendingGainLbs||0;
       const gl=growthLineForStudent(applied.student,gain);

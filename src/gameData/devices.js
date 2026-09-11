@@ -1,5 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // TALIA VALE — Approved invention catalog
+import { depthLbsGrant } from './mechanicsDepthLayer.js';
+
+/** UI/catalog range readout — matches depth layer (gameplay uses deviceGating scale). */
+export function displayGainLbsRange(range) {
+  if (!Array.isArray(range) || range.length < 2) return range;
+  return [depthLbsGrant(range[0]), depthLbsGrant(range[1])];
+}
 // inventionKind: 'equipable' | 'event'
 // Catalog prose: src/textEngine/scenes/deviceFlavor.js (device.catalog.*)
 // ═══════════════════════════════════════════════════════════════

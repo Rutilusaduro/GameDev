@@ -2,6 +2,18 @@
 // FIONA — Artisan Gallery of Abundance
 // ═══════════════════════════════════════════════════════════════
 
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
+
+export function scaleGalleryLbsGain(lbs = 0) {
+  if (lbs <= 0) return 0;
+  return depthLbsGrant(lbs);
+}
+
+export function scaleGalleryRelGain(rel = 0) {
+  if (rel <= 0) return 0;
+  return depthRelBonus(rel);
+}
+
 export const GALLERY_MOTIFS = [
   { id: 'abundance', label: 'Abundance', lbsMult: 1.1, scrutiny: 2 },
   { id: 'still_life', label: 'Still Life', relBonus: 3, scrutiny: 0 },
@@ -93,8 +105,8 @@ export function studioAction(state, actionId) {
   const action = STUDIO_ACTIONS.find((a) => a.id === actionId);
   if (!action) return state;
   const round = session.round + 1;
-  const subjectGain = session.subjectGain + action.subjectLbs;
-  const fionaGain = session.fionaGain + action.fionaLbs;
+  const subjectGain = session.subjectGain + scaleGalleryLbsGain(action.subjectLbs);
+  const fionaGain = session.fionaGain + scaleGalleryLbsGain(action.fionaLbs);
   const frames = [...session.frames, action.quality];
   const logLine = action.id === 'direct_feed'
     ? 'Fiona directs the bite and captures the moment the fullness shows.'
@@ -174,7 +186,7 @@ export function mountExhibition(state, theme = 'documentary') {
     ok: true,
     scrutiny,
     money: 120 + patrons * 2,
-    fionaLbs: 5 + Math.floor(patrons / 4),
+    fionaLbs: scaleGalleryLbsGain(5 + Math.floor(patrons / 4)),
     log: `Opening night (${theme}). Gallery packed. Patrons +${patrons}.`,
   };
 }

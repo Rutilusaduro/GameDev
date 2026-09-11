@@ -72,4 +72,8 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'deviceInteractions', file: 'deviceInteractions.js' },
   { id: 'deviceEquip', file: 'deviceEquip.js' },
   { id: 'gatewayMoments', file: 'gatewayMoments.js' },
+  { id: 'devices', file: 'devices.js' },
+  { id: 'deviceQuery', file: 'deviceQuery.js' },
+  { id: 'deviceActions', file: 'deviceActions.js' },
+  { id: 'fionaGallery', file: 'fionaGallery.js' },
 ];

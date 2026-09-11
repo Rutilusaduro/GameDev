@@ -34,6 +34,7 @@ registerPool('feed.react.beat', [
   { when: { foodKind: 'sweet' }, weight: 2, text: [
     'She works through it in slow, melting bites, sugar gleaming on her lower lip before her tongue chases it.',
     'Rich and dense and sweet — she lets each forkful sit on her tongue a moment longer than she means to.',
+    'Dessert-soft calories land easy; she hums once, pleased, and keeps going.',
   ]},
   { when: { foodKind: 'hearty' }, weight: 2, text: [
     'She digs in with real appetite, savory and warm, one forkful already loaded before the last one lands.',
@@ -83,6 +84,7 @@ registerPool('feed.react.line', [
   // Persona lines — heavy weight so they dominate for that resident.
   { when: { studentId: 0 }, weight: 4, text: [
     `Brittany licks her thumb clean and points it at you like a verdict. "Okay. That was annoyingly good."`,
+    `"Don't get smug," she says, already eyeing seconds. "But yeah. Run that back."`,
   ]},
   { when: { studentId: 1 }, weight: 4, text: [
     `Cassidy finishes, considers the empty plate with mild athletic surprise, and makes a small note to herself.`,
@@ -126,11 +128,21 @@ registerPool('feed.react.line', [
   { when: { studentId: 14 }, weight: 4, text: [
     `Mary Jane clears the plate with sunny, farm-raised appetite. "Shoot, that didn't stand a chance. Got any more?"`,
   ]},
+  { when: { studentId: 15 }, weight: 4, text: [
+    `She eats with quiet focus, then surprises herself with a small, honest smile. "I forgot food could taste like this."`,
+    `"Thank you," she says — not performative, just full. "I needed that more than I admitted."`,
+  ]},
   { when: { studentId: 16 }, weight: 4, text: [
     `Sophia eats faster than she wants to, a flush rising as the want outruns her. "I — I shouldn't be this hungry."`,
+    `She catches your eye mid-bite and does not look away. "…Don't log this as a relapse. Log it as data."`,
+  ]},
+  { when: { studentId: 17 }, weight: 4, text: [
+    `Indiana wipes her mouth, mud still on her boots from somewhere you did not ask about. "Good fuel. I'll remember where you keep it."`,
+    `"Partners share snacks," she says, deadpan. Then she takes another bite like the treaty is already signed.`,
   ]},
   { when: { studentId: 18, custom: false }, weight: 4, text: [
     `Talia eats one-handed over a blueprint, registering the pleasure a beat late. "Hm. Caloric density's excellent, actually."`,
+    `"Note to self," she murmurs, patting her middle. "Schedule more… quality control."`,
   ]},
 
   // ── corruption / room generics — cover every resident, shade by psyche ─

@@ -2,6 +2,7 @@
 // DEVICE QUERY — filtering and derived status (engine-free)
 // ═══════════════════════════════════════════════════════════════
 import { DEVICES, DEVICE_SLOTS } from './devices.js';
+import { depthLbsGrant } from './mechanicsDepthLayer.js';
 import { getDeviceCatalogSearchText } from '../textEngine/scenes/deviceFlavor.js';
 import { PLAYER_EQUIP_SLOTS } from './player.js';
 
@@ -129,7 +130,7 @@ export function summarizeDeviceEffect(def) {
   const parts = [];
   const we = def.weeklyEffect;
   if (we?.gainLbs) {
-    const [lo, hi] = we.gainLbs;
+    const [lo, hi] = [depthLbsGrant(we.gainLbs[0]), depthLbsGrant(we.gainLbs[1])];
     parts.push(`+${lo}–${hi} lbs/wk`);
   }
   if (we?.bodyOverride?.stateType) parts.push(we.bodyOverride.stateType);
