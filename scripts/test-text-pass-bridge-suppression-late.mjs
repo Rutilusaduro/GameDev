@@ -750,4 +750,25 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(talk57Hit, 'pass-57 talk.suggest_indulgence modular @ w24');
 
+let pulse61Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{hall.ambiance.pulse.comfort}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72550 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Comfort pulse: chairs wider, lights warmer — the floor teaches residents to stay\.$/.test(line), 'pass-61 comfort pulse bridge alone @ w24');
+  if (line.length > 72 || /modularFrame|blueprint\.permission|Hall Ambiance/i.test(line)) pulse61Hit = true;
+}
+assert.ok(pulse61Hit, 'pass-61 hall.ambiance.pulse.comfort modular @ w24');
+
+let homestead79Hit = false;
+const homestead = { id: 8, name: 'Patrice', archetype: 'homestead', lbs: 280, evolvedForm: 'homestead_queen' };
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = renderEvolvedActivityBeat(homestead, week, 0, { seed: 72560 + s })?.trim() || '';
+  assert.ok(!/homestead logic eating the hallway\.$/.test(line), 'pass-79 homestead activity bridge alone @ w24');
+  if (line.length > 72 || /atmosphere|stakes|hungerCue/i.test(line)) homestead79Hit = true;
+}
+assert.ok(homestead79Hit, 'pass-79 homestead_queen activity modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

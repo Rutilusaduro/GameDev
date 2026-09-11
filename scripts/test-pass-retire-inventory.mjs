@@ -35,6 +35,8 @@ const RETIRED_EMPTY = new Set([
   'raPivotProseDepthPass91.js',
   'raPivotProseDepthPass92.js',
   'raPivotProseDepthPass96.js',
+  'raPivotProseDepthPass61.js',
+  'raPivotProseDepthPass79.js',
 ]);
 
 const passFiles = readdirSync(scenes).filter((f) => /^raPivotProseDepthPass\d+\.js$/.test(f));
@@ -53,7 +55,8 @@ for (const f of passFiles) {
   }
 }
 
-assert.ok(hollow >= 15, `expected >=15 hollow pass files, got ${hollow}`);
-assert.ok(withVariants <= 98, `pass files with variants should shrink over time, got ${withVariants}`);
+assert.ok(hollow >= 33, `expected >=33 hollow pass files, got ${hollow}`);
+assert.ok(withVariants <= 75, `pass files with variants should shrink over time, got ${withVariants}`);
+assert.ok(legacyBridgeBlocks === 0, `expected 0 legacyBridgeWhen in pass files, got ${legacyBridgeBlocks}`);
 
 console.log(`test-pass-retire-inventory: ok (${hollow} hollow, ${withVariants} with variants, ${legacyBridgeBlocks} legacyBridgeWhen refs in passes)`);
