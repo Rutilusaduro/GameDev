@@ -110,8 +110,8 @@ All core objective gates green. Optional: human playtest for subjective feel tun
 |-------------|--------|
 | Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
 | New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
-| Mechanics depth layer (partial) | 🟡 `test:mechanics-depth` — **29** wired systems (+ sessions, roster, approaches, week planner, supernatural, force feeder) |
-| Full 50% depth all mechanics | 🔴 Evolved minigames, chapter hostess, stream/collab, cultivator salon, etc. still unwired |
+| Mechanics depth layer (partial) | 🟡 `test:mechanics-depth` — **36** wired (+ minigames, hostess feast, streaming, prestige, scarcity, ascension gain, salon) |
+| Full 50% depth all mechanics | 🔴 Cultivator vignettes, weekly events, room visit rewards, collab-only paths, etc. still unwired |
 | Full text overhaul | 🟡 Pass 53–54 + **pass 55** (dinner/session/weighIn prefixes); skeleton scenes not fully migrated |
 
 Verify: `npm run test:hall-blueprint`, `npm run text:lint`, `npm run test:smoke` (full).
