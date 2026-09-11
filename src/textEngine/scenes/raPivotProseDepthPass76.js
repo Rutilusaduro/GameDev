@@ -1,16 +1,2 @@
-// Evolved event endings + CG chat depth (Pass 76).
-import { registerModuleVariants } from '../engine.js';
-import { legacyBridgeWhen } from './legacyPoolPolicy.js';
-
-registerModuleVariants('evolved.event.sumo.s0.end0', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 2,
-    text: [
-      (ctx) => {
-        const n = ctx.subject?.name || 'She';
-        return `${n} steps off the scale already thinking about the next bowl — regional day is just the opening number.`;
-      },
-    ],
-  },
-]);
+// Pass 76 — retired into evolved/eventSumoFragments + eventPhaseFragments.
+// Kept as empty import so text:lint / bridge numbering stay stable.

@@ -109,3 +109,18 @@ for (const key of MODULAR_LESSON_KEYS) {
     },
   ]);
 }
+
+registerModuleVariants('wifeLessons.v2.depth', [
+  {
+    when: { weekMin: 20 },
+    weight: 6,
+    priority: 6,
+    text: [LATE_SKELETON],
+  },
+  {
+    when: { weekMin: 12 },
+    weight: 4,
+    priority: 4,
+    text: [SKELETON],
+  },
+]);

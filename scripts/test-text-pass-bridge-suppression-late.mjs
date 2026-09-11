@@ -698,4 +698,42 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(blueprint93Hit, 'pass-93 hall.blueprint.purchase modular @ w24');
 
+let peach86Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{wifeLessons.lesson.s3.peach_cobbler}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72510 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Peach juice runs down chins — daughters and mothers learn the same lesson in sticky sync\.$/.test(line), 'pass-86 peach_cobbler bridge alone @ w24');
+  if (line.length > 60 || /yeasty|mjDoctrine|circleEat|lateFeast/i.test(line)) peach86Hit = true;
+}
+assert.ok(peach86Hit, 'pass-86 WL peach_cobbler modular @ w24');
+
+let weighOpenHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{fair.day.weighIn.open}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72520 + s,
+    globals: { featureId: 'state_fair_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^The scale groans before anyone steps on — the crowd already knows this is the main event\.$/.test(line), 'pass-86 weighIn.open bridge alone @ w24');
+  if (line.length > 72 || /weighIn|crowdBeat|carnivalAir/i.test(line)) weighOpenHit = true;
+}
+assert.ok(weighOpenHit, 'pass-86 fair.day.weighIn.open modular @ w24');
+
+let homeroomP0Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{evolved.event.homeroom_queen.s0.p0}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72530 + s,
+    globals: { evolvedFormId: 'homeroom_queen', evolvedStageIdx: 0 },
+  }))?.trim() || '';
+  assert.ok(!/apron tied, cabinets stocked like she planned hunger on purpose\.$/.test(line), 'pass-78 homeroom_queen s0.p0 bridge alone @ w24');
+  if (line.length > 72 || /atmosphere|stakes|homeroom_queen|Oven heat/i.test(line)) homeroomP0Hit = true;
+}
+assert.ok(homeroomP0Hit, 'pass-78 homeroom_queen s0.p0 modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

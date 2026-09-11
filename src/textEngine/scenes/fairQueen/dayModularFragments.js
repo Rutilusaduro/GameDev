@@ -131,6 +131,23 @@ for (const key of DAY_POOLS) {
   ]);
 }
 
+const FAIR_V2_LATE = '{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: } {fair.day.judgingBeat|prefix: }';
+
+registerModuleVariants('evolved.fairQueen.v2.depth', [
+  {
+    when: { weekMin: 20 },
+    weight: 6,
+    priority: 6,
+    text: [FAIR_V2_LATE],
+  },
+  {
+    when: { weekMin: 12 },
+    weight: 4,
+    priority: 4,
+    text: ['{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: }'],
+  },
+]);
+
 for (const c of ['Brittany', 'Kylie', 'Serena', 'Renee', 'Daisy', 'Lilith']) {
   registerModuleVariants(`fair.boost.${c}`, [
     {
