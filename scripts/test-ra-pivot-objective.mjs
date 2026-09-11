@@ -96,6 +96,12 @@ execSync('node scripts/test-evolved-events-stub-debt.mjs', { cwd: root, stdio: '
 
 execSync('node scripts/test-evolved-phase-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-evolved-reactions-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-evolved-activity-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-evolved-reaction-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });

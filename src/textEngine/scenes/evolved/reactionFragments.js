@@ -10,6 +10,7 @@ registerPool('evolved.reaction.witness', [
       'Residents notice before she speaks — weight, confidence, appetite on display.',
       'The hall reads her body like a bulletin board: fuller, slower, happier.',
       'Someone whispers; someone else reaches for a plate — contagion dressed as curiosity.',
+      'Late-semester residents orbit her evolved form the way they orbit the kitchen — hungry, loyal, complicit.',
     ],
   },
 ]);
