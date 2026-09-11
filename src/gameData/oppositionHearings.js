@@ -2,6 +2,7 @@
 // OPPOSITION HEARINGS — removal & emergency (§30.6)
 // Text resolved via text engine pools in opposition/aibHearing.js
 // ═══════════════════════════════════════════════════════════════
+import { depthHearingResolveHit, depthHearingSignedDelta } from './mechanicsDepthLayer.js';
 
 export const REMOVAL_HEARING = {
   title: 'Resident Removal Hearing',
@@ -97,6 +98,17 @@ export const EMERGENCY_HEARING = {
   ],
 };
 
+export function scaleHearingEnding(ending) {
+  if (!ending) return ending;
+  const out = { ...ending };
+  if (out.scrutinyDelta != null) out.scrutinyDelta = depthHearingSignedDelta(out.scrutinyDelta);
+  if (out.scandalDelta != null) out.scandalDelta = depthHearingSignedDelta(out.scandalDelta);
+  if (out.resolveHitAll) out.resolveHitAll = depthHearingResolveHit(out.resolveHitAll);
+  if (out.memberResolveHit) out.memberResolveHit = depthHearingResolveHit(out.memberResolveHit);
+  return out;
+}
+
 export function pickHearingEnding(hearingDef, history) {
-  return hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
+  const raw = hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
+  return scaleHearingEnding(raw);
 }

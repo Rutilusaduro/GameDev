@@ -256,6 +256,28 @@ export function depthExplorationFindChance(base = 0) {
   return Math.min(0.92, base * (1 + BONUS_FRAC * 0.22));
 }
 
+/** Board hearing scrutiny / scandal deltas — deepen relief, soften accidental wins slightly less. */
+export function depthHearingSignedDelta(delta = 0) {
+  if (!delta) return 0;
+  if (delta < 0) {
+    return -Math.max(-delta, Math.round(-delta * (1 + BONUS_FRAC * 0.26)));
+  }
+  return Math.max(delta, Math.round(delta * (1 + BONUS_FRAC * 0.14)));
+}
+
+/** Resolve damage to AIB members on hearing victories. */
+export function depthHearingResolveHit(base = 0) {
+  if (!base || base <= 0) return 0;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.32)));
+}
+
+/** Dossier / narrative replay — richer modular tail on older pins. */
+export function depthDossierReplayDepthChance(weeksAgo = 0) {
+  const ago = Math.max(0, Math.min(16, weeksAgo));
+  const bump = depthMetaProgressBonus(ago);
+  return Math.min(0.52, 0.24 + bump * 0.007);
+}
+
 export function depthExplorationIngredientGrant(grants = {}) {
   if (!grants || typeof grants !== 'object') return grants;
   const out = { ...grants };

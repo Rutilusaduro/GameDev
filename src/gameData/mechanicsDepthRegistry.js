@@ -88,4 +88,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'weeklyNarrative', file: 'weeklyEventDefs.js' },
   { id: 'itemEffects', file: 'itemEffects.js' },
   { id: 'campusSecrets', file: 'campusSecrets.js' },
+  { id: 'oppositionHearings', file: 'oppositionHearings.js' },
+  { id: 'dossierReplay', file: 'dossierReplay.js' },
+  { id: 'weeklyEventText', file: 'weeklyEventText.js' },
 ];
