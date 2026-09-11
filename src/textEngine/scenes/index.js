@@ -160,6 +160,7 @@ import './upgradeCorpusPass10.js';
 import './upgradeCorpusPass11.js';
 import './upgradeCorpusPass12.js';
 import './upgradeCorpusPass13.js';
+import './upgradeCorpusPass14.js';
 import './session/fullnessUpgrade.js';
 import './campusEvent/choiceUpgrade.js';
 import './intimacy/upgrade.js';
