@@ -120,7 +120,7 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
         const btnBase={borderRadius:5,cursor:"pointer",textAlign:"left",lineHeight:1.4,fontFamily:"inherit",width:"100%",fontSize:12};
 
         return(
-          <div style={{position:"fixed",inset:0,background:"#000",zIndex:1300,display:"flex",flexDirection:"column",fontFamily:"inherit"}}>
+          <div className="lilith-hunt-overlay" style={{position:"fixed",inset:0,background:"#000",zIndex:1300,display:"flex",flexDirection:"column",fontFamily:"inherit"}}>
 
             {/* ── NIGHT SCENE HEADER ── */}
             <div style={{position:"relative",height:123,overflow:"hidden",flexShrink:0,background:"linear-gradient(180deg,#010008 0%,#060018 55%,#0d0026 100%)"}}>
