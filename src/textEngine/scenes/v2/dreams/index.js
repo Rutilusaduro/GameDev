@@ -1,6 +1,6 @@
 // The Squad — Lead: A2 Psych | Support: A6 Slender, A5 Editor
 // V2.0 Appetite Dreams prose
-import { registerPool, render } from '../../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../../engine.js';
 import { appendV2Depth } from '../depthRenderer.js';
 import './depth.js';
 
@@ -117,6 +117,42 @@ registerPool('dream.linger', [
     'The dream sticks to her sheets like warmth.',
     'She wakes still chewing the idea of more.',
     'Morning finds her softer than the night promised.',
+  ] },
+]);
+
+registerModuleVariants('dream.open', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Sleep opens on leftover heat. The dream kitchen already knows her name.',
+    'She falls asleep still tasting foil. Appetite walks in without knocking.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover warmth follows her into sleep. The dream only has to continue.',
+    'The galley started it. Sleep finishes the sitting.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. The dream knocks the same door.',
+  ] },
+]);
+
+registerModuleVariants('dream.night_kitchen', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'The dream galley is last night\'s galley. She finishes trays she already finished.',
+    'Foil, fridge, leftover heat. Sleep just turns the lights lower.',
+    'She eats the same second sitting again, slower, like the building asked twice.',
+  ] },
+]);
+
+registerModuleVariants('dream.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She wakes looking for the fridge she already raided.',
+    'The dream leaves leftover taste. Morning has the same foil.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Sleep lets go. Leftover does not. Her hands find the same middle.',
+    'She wakes still working last night\'s tray.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'The knock from the round is still in the wood when she wakes hungry.',
   ] },
 ]);
 

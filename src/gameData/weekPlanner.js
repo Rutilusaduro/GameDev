@@ -45,15 +45,17 @@ export function weekPlanSlotCount(ownedHallSkills = {}) {
 }
 
 /** Standing plan pays off in the week tick: attention, hunger, night-wing lbs. */
-export function weekPlanBonusesFor(student, weekPlan) {
+export function weekPlanBonusesFor(student, weekPlan, week = 0) {
   const slots = (weekPlan?.slots || []).filter((s) => s.studentId === student?.id);
   if (!slots.length) return { rel: 0, extraLbs: 0, hungerEase: 0, discontentEase: 0 };
   const night = slots.some((s) => s.venueId === 'night_wing');
+  const leftover = !!student?.leftoverFedThisWeek;
+  const nightVisit = !!(week && student?.lastNightVisitWeek === week);
   return {
-    rel: Math.min(6, 2 * slots.length),
+    rel: Math.min(8, 2 * slots.length + (leftover ? 1 : 0) + (nightVisit ? 1 : 0)),
     extraLbs: night ? 1 : 0,
-    hungerEase: 1,
-    discontentEase: 1,
+    hungerEase: leftover ? 2 : 1,
+    discontentEase: nightVisit ? 2 : 1,
   };
 }
 

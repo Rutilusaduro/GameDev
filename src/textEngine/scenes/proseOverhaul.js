@@ -326,6 +326,22 @@ registerModuleVariants('week.recap.beat', [
 
 // Extra composed afterglows — length via extra slots, not monoliths.
 registerPool('week.recap.afterglow', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She tugs a shirt that met leftover midweek. The recap is just the receipt.',
+    'Kitchen sitting still in her when the week gets named. She files it as weather.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'She sits leftover-heavy in the lounge recap. The couch learned her twice.',
+    'A hand finds leftover work while she listens. Warm. Occupied.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'The recap happens around leftover mass. She is the furniture the kitchen arranged.',
+    'Sunday names the week. Leftover already named the chair.',
+  ] },
+  { when: { leftoverFed: true }, weight: 2, text: [
+    'Leftover heat rides the recap out the door.',
+    'The week wrote leftover on her waistband first.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She tugs a shirt that still mostly works and pretends the tug is nothing.',
     'The number from midweek sits in her like a private joke she will not tell.',
@@ -420,6 +436,15 @@ registerPool('intimacy.afterglow', [
 ]);
 
 registerPool('opposition.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The board wants restraint. The galley already sent a second sitting down the hall.',
+    'Paperwork cannot see leftover heat. The floor already did.',
+    'Vance files concern. The kitchen filed foil. Only one of those stuck.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. Daylight hearings use a thinner story.',
+    'You already saw her after hours. The board is late to appetite.',
+  ] },
   { when: {}, text: [
     'Paperwork cannot see what the floor already decided.',
     'The board wants a narrative. The residents want seconds.',

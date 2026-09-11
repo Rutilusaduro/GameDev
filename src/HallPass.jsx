@@ -163,7 +163,7 @@ import { renderCorruptionTierUp, renderCorruptionAuto } from './textEngine/scene
 import './textEngine/scenes/psychShift/index.js';
 import { renderClothScene } from './textEngine/scenes/clothing/index.js';
 import './textEngine/scenes/clothing/index.js';
-import { renderImmobScene, renderImmobArrival, renderImmobRefit, renderImmobComfort, renderImmobHint, renderImmobPref, renderImmobVisit } from './textEngine/scenes/immobility/index.js';
+import { renderImmobScene, renderImmobArrival, renderImmobRefit, renderImmobComfort, renderImmobHint, renderImmobPref, renderImmobVisit, renderImmobWrap } from './textEngine/scenes/immobility/index.js';
 import { renderGossipReact } from './textEngine/scenes/gossip/index.js';
 import {
   getImmobilityArrival, markImmobilityArrived, immobilitySettleGain,
@@ -1783,7 +1783,7 @@ export default function HallPass(){
       const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{});
       let nsHab=habTick.student;
       const hallHab=habitatFx(s,dormState||createInitialDormState(),ownedHallSkills||{});
-      const planFx=weekPlanBonusesFor(s,weekPlan);
+      const planFx=weekPlanBonusesFor(s,weekPlan,week);
       if(planFx.rel) nsHab={...nsHab,relationship:Math.min(100,(nsHab.relationship||0)+planFx.rel)};
       if(planFx.hungerEase) nsHab=adjustHunger(nsHab,-planFx.hungerEase);
       if(planFx.discontentEase) nsHab={...nsHab,discontent:Math.max(0,(nsHab.discontent||0)-planFx.discontentEase)};
@@ -1810,7 +1810,7 @@ export default function HallPass(){
       }
       if(gain>0) gain=depthGainLbs(nsHab,gain,week,{});
       let ns=processStudentGain(nsHab,gain,0);
-      ns=tickOutfitWeek(ns,dormState||createInitialDormState());
+      ns=tickOutfitWeek(ns,dormState||createInitialDormState(),week);
       ns=tickPhysicalTraits(ns,ownedSkills);
       ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
       ns=tickRelationshipDecay(ns,week);
@@ -2231,7 +2231,7 @@ export default function HallPass(){
       weeksAtRegionalExcess:weeksAtRegional,
       pharmacistCultStage:cultStage,
       facultyInformantRisk:informantRisk,
-      rumorChance:oppositionRumorChance(dormState||createInitialDormState(),ownedHallSkills||{}),
+      rumorChance:oppositionRumorChance(dormState||createInitialDormState(),ownedHallSkills||{},{leftoverKitchen:updated.some(st=>st.leftoverFedThisWeek)}),
       nightRounds:(dormState?.nightRounds?.lastWeek===week)&&((dormState.nightRounds.visitsThisWeek||0)>=1),
     });
     nextOpposition=oppResult.opposition;
@@ -7500,7 +7500,9 @@ export default function HallPass(){
           :s.ascensionPath==="verdant"?"verdant"
           :s.ascensionPath==="primordial"?"primordial":"blob";
         const entry=IMMOBILE_REDIRECT[s.id];
-        const text=entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
+        let text=entry?.[tier]||`${s.name} can't go anywhere anymore. You'll have to bring the food to her.`;
+        const wrap=renderImmobWrap(s,week);
+        if(wrap) text=`${text}\n\n${wrap}`;
         setImmobileRedirect({student:s,text});
         return;
       }
@@ -7998,7 +8000,11 @@ export default function HallPass(){
     push(`🌙 Private session with ${s.name} — ${venue.label}.`);
     const isImmobile=getStage(s.lbs).id>=10||!!s.ascensionPath;
     const blobEntry=isImmobile?(BLOB_PRIVATE_INTRO[s.id]||BLOB_PRIVATE_INTRO.default):null;
-    const blobIntroText=blobEntry?(typeof blobEntry==='function'?blobEntry(s):blobEntry):null;
+    let blobIntroText=blobEntry?(typeof blobEntry==='function'?blobEntry(s):blobEntry):null;
+    if(blobIntroText){
+      const wrap=renderImmobWrap(s,week);
+      if(wrap) blobIntroText=`${blobIntroText}\n\n${wrap}`;
+    }
     setSessionLog(blobIntroText?[blobIntroText, venue.intro(s)]:[venue.intro(s)]);
   };
 
@@ -9891,6 +9897,7 @@ export default function HallPass(){
       {dreamStudent&&(
         <DreamModal
           student={dreamStudent}
+          week={week}
           presetScenarioId={dreamPresetScenario}
           lucidUnlocked={v2.dreams?.lucidUnlocked}
           onChoice={(scenario,choice,wakeText)=>runDream(dreamStudent,scenario,choice,wakeText)}

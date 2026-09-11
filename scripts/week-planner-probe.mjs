@@ -33,5 +33,13 @@ assert(extras.some((e) => e.type === 'psych' || e.type === 'quiet'), 'review ext
 const planned = weekPlanBonusesFor(INIT_STUDENTS[0], { slots: [{ studentId: INIT_STUDENTS[0].id, venueId: 'night_wing' }] });
 assert(planned.extraLbs === 1 && planned.rel > 0, 'night-wing plan bonus');
 
+const leftoverStudent = { ...INIT_STUDENTS[0], leftoverFedThisWeek: true };
+const leftoverPlan = weekPlanBonusesFor(leftoverStudent, { slots: [{ studentId: leftoverStudent.id, venueId: 'campus' }] }, 3);
+const basePlan = weekPlanBonusesFor(INIT_STUDENTS[0], { slots: [{ studentId: INIT_STUDENTS[0].id, venueId: 'campus' }] }, 3);
+assert(leftoverPlan.rel > basePlan.rel && leftoverPlan.hungerEase > basePlan.hungerEase, 'leftover plan rel and hunger');
+const nightVisitStudent = { ...INIT_STUDENTS[0], lastNightVisitWeek: 3 };
+const nightVisitPlan = weekPlanBonusesFor(nightVisitStudent, { slots: [{ studentId: nightVisitStudent.id, venueId: 'campus' }] }, 3);
+assert(nightVisitPlan.discontentEase > basePlan.discontentEase, 'night visit plan discontent ease');
+
 console.log(`week-planner:probe — ${failures} failures`);
 process.exit(failures > 0 ? 1 : 0);

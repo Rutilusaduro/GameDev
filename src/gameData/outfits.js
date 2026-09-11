@@ -88,14 +88,15 @@ export function applyOutfitRefit(student, optionId = 'let_out') {
   const opt = REFIT_OPTIONS.find((o) => o.id === optionId) || REFIT_OPTIONS[0];
   const base = outfitFor(student);
   const lbs = student.lbs || 130;
+  const leftoverRoom = student.leftoverFedThisWeek ? 6 : 0;
   const next = { ...base };
   for (const slot of ['top', 'bottom', 'waist']) {
     const g = next[slot];
     if (!g) continue;
     const slotMult = slot === 'top' ? 1.12 : slot === 'bottom' ? 1.05 : 1;
     const fitLbs = opt.refitToCurrent
-      ? Math.round(lbs * slotMult + (opt.extraFit || 0))
-      : (g.fitLbs || lbs) + (opt.fitLbsBump || 0);
+      ? Math.round(lbs * slotMult + (opt.extraFit || 0) + leftoverRoom)
+      : (g.fitLbs || lbs) + (opt.fitLbsBump || 0) + leftoverRoom;
     const integrity = Math.min(1, (g.integrity ?? 1) + (opt.integrityRestore || 0));
     next[slot] = { ...g, fitLbs, integrity };
   }

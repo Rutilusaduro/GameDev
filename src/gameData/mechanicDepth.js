@@ -339,10 +339,12 @@ export function deviceTickHabitatMult(student, dormState) {
   return 1 + (habitatForStudent(student, dormState).deviceTickMult || 0);
 }
 
-export function oppositionRumorChance(dormState, ownedHallSkills = {}) {
+export function oppositionRumorChance(dormState, ownedHallSkills = {}, extras = {}) {
   const annex = roomCompletion('annex', ownedHallSkills);
   const intimacy = dormState?.nightRounds?.floorIntimacy || 0;
-  return Math.max(0.12, 0.4 - annex.owned * 0.05 - (intimacy >= 40 ? 0.08 : 0));
+  let chance = 0.4 - annex.owned * 0.05 - (intimacy >= 40 ? 0.08 : 0);
+  if (extras.leftoverKitchen) chance += 0.05;
+  return Math.max(0.12, chance);
 }
 
 export function labInstabilityEase(dormState, ownedHallSkills = {}) {
@@ -368,12 +370,14 @@ export function digestStuffedExtras(student, dormState, week = 0) {
 
 
 /** Weekly garment strain. Wider doorway eases fabric catching on the frame. */
-export function tickOutfitWeek(student, dormState) {
+export function tickOutfitWeek(student, dormState, week = 0) {
   if (!student) return student;
   const base = outfitFor(student);
   if (!student.outfit) return { ...student, outfit: base };
   const fits = studentFits(dormState, student.id);
   const doorwayEase = fits.doorway ? 0.45 : 1;
+  const leftoverPress = student.leftoverFedThisWeek ? 1.25 : 1;
+  const nightEase = (week && student.lastNightVisitWeek === week) ? 0.85 : 1;
   const outfit = { ...base };
   let changed = false;
   for (const slot of ['top', 'bottom', 'waist']) {
@@ -385,7 +389,7 @@ export function tickOutfitWeek(student, dormState) {
     else if (state === 'failing') loss = 0.12;
     else if (state === 'burst') loss = 0.2;
     if (!loss) continue;
-    const nextInt = Math.max(0, Math.round(((g.integrity ?? 1) - loss * doorwayEase) * 100) / 100);
+    const nextInt = Math.max(0, Math.round(((g.integrity ?? 1) - loss * doorwayEase * leftoverPress * nightEase) * 100) / 100);
     if (nextInt !== (g.integrity ?? 1)) {
       outfit[slot] = { ...g, integrity: nextInt };
       changed = true;

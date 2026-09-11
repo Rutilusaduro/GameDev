@@ -18,7 +18,7 @@
 //   stagedUp   bool   — crossed a weight stage this week
 //   stuffedWeek bool  — spent the week stuffed to capacity
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaul.js';
@@ -157,6 +157,19 @@ registerPool('week.recap.linger', [
     'The week is over. She is not done arriving.',
     'You log the number. Her body keeps the minutes.',
     'Sunday quiet. Her waistband still arguing.',
+  ] },
+]);
+
+// leftoverFed one key, weight 2 so stuffedWeek / studentId recap lines still win.
+registerModuleVariants('week.recap.linger', [
+  { when: { leftoverFed: true, gainBand: 'huge' }, weight: 3, text: [
+    'Galley leftover started the week. The number finished it. She sits like both are still digesting.',
+    'Kitchen sitting plus this. Sunday finds her softer than the notes admit.',
+  ] },
+  { when: { leftoverFed: true }, weight: 2, text: [
+    'Last night\'s tray is in the recap whether anyone wrote it down.',
+    'She palms leftover work and the week\'s work in the same warm place.',
+    'Foil from Tuesday. Softness from Sunday. Same middle.',
   ] },
 ]);
 

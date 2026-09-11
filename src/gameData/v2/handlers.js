@@ -13,7 +13,7 @@ import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
 import { captureEcho, captureEchoOnce, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
 import { getStage } from '../stages.js';
 import {
-  canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams,
+  canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams, dreamChoiceFx,
 } from './appetiteDreams.js';
 import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index.js';
 import { createContext } from '../../textEngine/engine.js';
@@ -220,12 +220,21 @@ export function handleRitual(ritualId, studentIds, ctx) {
   const check = canRunRitual(ritualId, studentIds, ctx);
   if (!check.ok) return { ok: false, reason: check.reason };
   const ritual = check.ritual;
-  const effects = studentIds.map((id) => ({
-    studentId: id,
-    calories: ritual.caloriesEach,
-    rel: ritual.relEach,
-    corruption: ritual.corruptionEach,
-  }));
+  const effects = studentIds.map((id) => {
+    const student = (ctx.students || []).find((s) => s.id === id);
+    let calories = ritual.caloriesEach;
+    let rel = ritual.relEach;
+    let corruption = ritual.corruptionEach;
+    if (student?.leftoverFedThisWeek) {
+      calories = Math.round(calories * 1.08);
+      rel += 1;
+    }
+    if (ctx.week && student?.lastNightVisitWeek === ctx.week) {
+      calories = Math.round(calories * 1.04);
+      corruption += 1;
+    }
+    return { studentId: id, calories, rel, corruption };
+  });
   const prevCompleted = ctx.v2State.rituals.completed[ritual.id]
     || (ritual.id === 'hall_banquet' ? ctx.v2State.rituals.completed.class_banquet : 0)
     || 0;
@@ -247,12 +256,13 @@ export function handleRitual(ritualId, studentIds, ctx) {
 }
 
 export function handleDreamChoice(scenario, choice, student, v2State, week) {
+  const fx = dreamChoiceFx(student, choice, week);
   const dreams = recordDream(v2State.dreams, student.id, week, scenario.id);
   return {
     ok: true,
-    calories: choice.calories || 0,
-    rel: choice.rel || 0,
-    corruption: choice.corruption || 0,
+    calories: fx.calories || 0,
+    rel: fx.rel || 0,
+    corruption: fx.corruption || 0,
     v2State: { ...v2State, dreams },
   };
 }

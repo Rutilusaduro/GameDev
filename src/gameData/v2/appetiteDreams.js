@@ -84,7 +84,7 @@ export function canTriggerDream(student, { ownedSkills = {}, ownedHallSkills = {
   return { ok: true, apCost: manual ? V2_CONFIG.dreamBaseAp : 0 };
 }
 
-export function pickDreamScenario(student) {
+export function pickDreamScenario(student, week = 0) {
   const stage = getStage(student.lbs).id;
   const cor = student.corruption || 0;
   const arch = student.archetype;
@@ -95,7 +95,27 @@ export function pickDreamScenario(student) {
     return true;
   });
   if (!eligible.length) return DREAM_SCENARIOS[0];
+  const kitchen = eligible.find((d) => d.id === 'night_kitchen');
+  if (kitchen) {
+    if (student?.leftoverFedThisWeek && Math.random() < 0.45) return kitchen;
+    if (week && student?.lastNightVisitWeek === week && Math.random() < 0.35) return kitchen;
+  }
   return eligible[Math.floor(Math.random() * eligible.length)];
+}
+
+export function dreamChoiceFx(student, choice, week = 0) {
+  let calories = choice?.calories || 0;
+  let rel = choice?.rel || 0;
+  let corruption = choice?.corruption || 0;
+  if (student?.leftoverFedThisWeek) {
+    calories = Math.round(calories * 1.12);
+    rel += 1;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    calories = Math.round(calories * 1.08);
+    corruption += 1;
+  }
+  return { ...choice, calories, rel, corruption };
 }
 
 export function recordDream(dreamsState, studentId, week, scenarioId) {
@@ -118,7 +138,7 @@ export function rollWeeklyDreams(students, dreamsState, ownedSkills, week) {
     if (s.hidden) continue;
     const check = canTriggerDream(s, { ownedSkills, dreamsState, week, manual: false });
     if (!check.ok) continue;
-    if (Math.random() < 0.12) triggers.push(s.id);
+    if (Math.random() < 0.12 + (s.leftoverFedThisWeek ? 0.08 : 0) + (s.lastNightVisitWeek === week ? 0.06 : 0)) triggers.push(s.id);
   }
   return triggers;
 }

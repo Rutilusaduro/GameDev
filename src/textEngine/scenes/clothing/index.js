@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
+import './leftoverDepth.js';
 
 registerPool('cloth.scene', [
   { when: {}, text: [
