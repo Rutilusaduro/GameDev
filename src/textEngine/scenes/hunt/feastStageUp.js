@@ -1,8 +1,11 @@
 // The Squad — Lead: A2 Psych | Support: A3 Immobility, A7 Artisan, A5 Editor
 // Lilith hunt feast narratives — one monolithic beat per stage crossing (prey → growth).
 // Registered verbatim; decomposition deferred (author-approved standardized vignettes).
-import { registerPool, render, createContext, hasModule } from '../../engine.js';
-import { getConsumeText } from '../../../gameData/lilith.js';
+import { registerPool } from '../../engine.js';
+export {
+  renderLilithFeast,
+  renderLilithDeliveryIntro,
+} from '../overhaul/huntFeast.js';
 
 const FEAST_BY_STAGE = {
   0: `Lilith's dark eyes gleamed with predatory hunger as she lured the eager young man into her dimly lit dorm room. The sultry sway of her narrow hips and the low-cut black top clinging to her small, perky breasts had him hooked from the first whispered invitation. Goth music pulsed heavily around them. He grinned, already imagining claiming his prize — every inch of her lithe pale form his for the taking.
@@ -129,24 +132,3 @@ for (const [stage, text] of Object.entries(FEAST_BY_STAGE)) {
 registerPool('hunt.feast.deliveryIntro', [
   { when: {}, text: [DELIVERY_INTRO] },
 ]);
-
-/**
- * Full feast narrative for a hunt consume at the given pre-gain stage (0–9).
- * Falls back to legacy CONSUME_TEXT for stage 10+ repeats.
- */
-export function renderLilithFeast(student, stageId, week = 1, opts = {}) {
-  if (!student) return '';
-  const sid = Math.min(9, Math.max(0, stageId ?? 0));
-  const key = `hunt.feast.s${sid}`;
-  if (!hasModule(key)) return getConsumeText(stageId);
-  const ctx = createContext({ subject: student, week, globals: { feastStage: sid }, ...opts });
-  const line = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim();
-  return line || getConsumeText(stageId);
-}
-
-/** Mood-setter when opening delivery-only hunt (stage 9+). */
-export function renderLilithDeliveryIntro(student, week = 1, opts = {}) {
-  if (!student) return '';
-  const ctx = createContext({ subject: student, week, ...opts });
-  return render('{hunt.feast.deliveryIntro}', ctx, { trace: opts.trace || null })?.trim() || DELIVERY_INTRO;
-}

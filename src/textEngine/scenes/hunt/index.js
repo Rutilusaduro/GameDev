@@ -6,6 +6,12 @@ import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
 import './feastStageUp.js';
 
 export { renderLilithFeast, renderLilithDeliveryIntro } from './feastStageUp.js';
+export {
+  renderLilithDigest,
+  renderLilithDigestComplete,
+  renderLilithDigestBlocked,
+  renderLilithHuntStatus,
+} from '../overhaul/huntFeast.js';
 
 for (const [nodeId, node] of Object.entries(HUNT_NODES)) {
   registerPool(`hunt.node.${nodeId}`, [

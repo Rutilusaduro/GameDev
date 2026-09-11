@@ -41,6 +41,7 @@ import '../src/textEngine/scenes/overhaul/index.js';
 import { renderPharmacistAcquire, renderPharmacistCompound, renderPharmacistCult } from '../src/textEngine/scenes/overhaul/pharmacist.js';
 import { renderMinigamePhase, renderMinigameLog, renderMinigameWrap } from '../src/textEngine/scenes/overhaul/minigame.js';
 import { renderHuntArrive, renderHuntTravel, renderHuntDormOpen, renderHuntClueFeast, renderHuntClueInvestigate, renderHuntClueResult } from '../src/textEngine/scenes/overhaul/huntArrive.js';
+import { renderLilithFeast, renderLilithDeliveryIntro, renderLilithDigest, renderLilithDigestComplete, renderLilithDigestBlocked, renderLilithHuntStatus } from '../src/textEngine/scenes/overhaul/huntFeast.js';
 import { renderFeederJournalEntry, renderNadiaJournalEntry } from '../src/textEngine/scenes/researchJournal/index.js';
 import { INTIMACY_SCENES } from '../src/gameData/intimacy.js';
 import { renderHuntNode, renderHuntTarget } from '../src/textEngine/scenes/hunt/index.js';
@@ -586,6 +587,27 @@ const huntMan = renderHuntTarget('chad_w', lilith, 3, { v2DepthChance: 0 });
 assert.ok(huntMan && !huntMan.includes('{unresolved}'));
 assert.equal(/polo shirt half-tucked/i.test(huntMan), false, 'hunt target should not dump leftover man.desc');
 assert.ok(renderHuntArrive('quad', lilith, 3));
+
+for (let feastStage = 0; feastStage <= 9; feastStage++) {
+  const feast = renderLilithFeast(lilith, feastStage, 12);
+  assert.ok(feast && !feast.includes('{unresolved}'), `feast stage ${feastStage} should compose`);
+  assert.equal(/dark eyes gleamed with predatory hunger/i.test(feast), false, `feast ${feastStage} should not dump leftover s0 opener`);
+  assert.equal(/jaw unhinged/i.test(feast), false, `feast ${feastStage} should not dump leftover swallow gore`);
+  assert.equal(/You've been thinking about this one for a while/i.test(feast), false);
+}
+const deliveryIntro = renderLilithDeliveryIntro(lilith, 12);
+assert.ok(deliveryIntro && !deliveryIntro.includes('{unresolved}'));
+assert.equal(/You've been thinking about this one for a while/i.test(deliveryIntro), false, 'delivery intro should not dump leftover opener');
+assert.equal(/Not Mia specifically/i.test(deliveryIntro), false);
+const digestLine = renderLilithDigest(lilith, 12, 'mid');
+assert.ok(digestLine && !digestLine.includes('{unresolved}'));
+assert.equal(/Not lazy-still/i.test(digestLine), false, 'digest should not dump leftover processing-still');
+assert.ok(renderLilithDigestComplete(lilith, 12));
+assert.ok(renderLilithDigestBlocked(lilith, 12));
+const huntStatus = renderLilithHuntStatus(lilith, 3);
+assert.ok(huntStatus && !huntStatus.includes('{unresolved}'));
+assert.equal(/That's her favorite part/i.test(huntStatus), false, 'hunt status should not dump leftover panel copy');
+assert.equal(/She doesn't go anywhere anymore/i.test(huntStatus), false);
 
 const challengeStudent = {
   id: 9, name: 'Talia', lbs: 210, startLbs: 135, evolvedForm: 'campus_legend',

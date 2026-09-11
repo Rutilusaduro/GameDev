@@ -10,6 +10,7 @@ import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID } from '../gameData/lilith.js';
+import { renderLilithHuntStatus } from '../textEngine/scenes/hunt/index.js';
 import { getRecruitmentScene, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
@@ -91,11 +92,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                   <div style={{background:"rgba(15,0,25,0.7)",border:`1px solid ${accent}40`,borderRadius:10,padding:14,marginBottom:10}}>
                     <div style={{fontSize:9,letterSpacing:3,color:accent,marginBottom:6}}>🌑 FEASTING BEAUTY</div>
                     <div style={{fontSize:12,color:"#c0a0c0",lineHeight:1.75,marginBottom:10,fontStyle:"italic"}}>
-                      {isBlob
-                        ?"She doesn't go anywhere anymore. The hunger hasn't gone anywhere either. Things come to her now."
-                        :stageId>=7?"She moves through the campus slowly. Deliberately. There's no need to hurry — they're not going anywhere."
-                        :stageId>=4?"She's larger than she was. It shows. It also helps."
-                        :"She moves through the campus like she owns it. Nobody knows what she is. That's her favorite part."}
+                      {renderLilithHuntStatus(s, week)}
                     </div>
                     {isBlob?(
                       <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
