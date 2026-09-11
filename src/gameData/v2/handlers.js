@@ -156,10 +156,10 @@ export function handleEmbodimentAction(action, student, v2State) {
   return {
     ok: true,
     v2State: v2,
-    calories: act.calories || 0,
+    calories: depthResonancePassiveBonus(act.calories || 0),
     fullness: act.fullness || 0,
-    rel: act.rel || 0,
-    corruption: act.corruption || 0,
+    rel: depthRelBonus(act.rel || 0),
+    corruption: depthCorruptionGrant(act.corruption || 0),
     scrutiny: act.scrutiny || 0,
   };
 }

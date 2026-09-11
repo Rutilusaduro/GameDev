@@ -110,7 +110,7 @@ All core objective gates green. Optional: human playtest for subjective feel tun
 |-------------|--------|
 | Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
 | New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
-| Mechanics depth layer (partial) | 🟡 `test:mechanics-depth` — **39** wired (+ room visit rel, V2 rituals/dreams, Maya hive shift, device gain/psych scale) |
+| Mechanics depth layer (partial) | 🟡 `test:mechanics-depth` — **42** wired (+ embodied campus, Talia network, cultivator harvest, hall lounge aggregate) |
 | Full 50% depth all mechanics | 🔴 Cultivator vignettes, weekly events, room visit rewards, collab-only paths, etc. still unwired |
 | Full text overhaul | 🟡 Pass 53–54 + **pass 55** (dinner/session/weighIn prefixes); skeleton scenes not fully migrated |
 

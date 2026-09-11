@@ -29,6 +29,7 @@ const EXTRA = {
   'talk.encourage': [
     `You say it plainly. She hears the permission underneath.`,
     `Encouragement lands softer when {ra.name} says it — like policy from someone who cares.`,
+    `{subject.name} exhales like a knot loosening. "Okay," she whispers. "Okay."`,
   ],
   'hunger.interrupt.arrival': [
     `The knock comes hungry — not angry, just certain.`,

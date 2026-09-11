@@ -55,7 +55,7 @@ import { getExplorationFind } from './gameData/campusIngredients.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
-import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
+import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette, harvestGainForStage, scaleCultivatorFatGain } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult } from './textEngine/scenes/campusEvent/index.js';
@@ -4001,7 +4001,7 @@ export default function HallPass(){
     const{session}=cs;
     const recipe=RECIPES[session.foodType]; if(!recipe) return;
     const junction=recipe.junctions[session.junctionIdx]; if(!junction) return;
-    const newFat=session.sessionFatAccum+choice.fatGain;
+    const newFat=session.sessionFatAccum+scaleCultivatorFatGain(choice.fatGain);
     const newSusp=session.sessionSuspAccum+choice.suspChange;
     const newChoices=[...session.choices,choice.id];
     const choiceLine=renderCultivatorChoice(session.foodType,choice.id,cs.testerName,week)||choice.desc;
@@ -4036,7 +4036,7 @@ export default function HallPass(){
     // Emergency harvest at suspicion 200 (only if no stage-up — stage-up takes priority with reset)
     if(rawSusp>=200&&!stageUp){
       const renee=students.find(st=>st.id===s.id)||s;
-      const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
+      const hGain=harvestGainForStage(cs.testerStageId);
       const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
       const vignette=getEmergencyVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[emergency harvest]';
       const _bSid=getStage(renee.lbs).id;
@@ -4071,7 +4071,7 @@ export default function HallPass(){
     if(ap<1){push("⚠️ Need 1 AP for harvest.");return;}
     setAp(a=>a-1);
     const renee=students.find(st=>st.id===s.id)||s;
-    const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
+    const hGain=harvestGainForStage(cs.testerStageId);
     const vignette=getPlannedVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[planned harvest]';
     const _bSid=getStage(renee.lbs).id;
     const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);

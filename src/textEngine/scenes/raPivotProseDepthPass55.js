@@ -6,7 +6,7 @@ registerPool('talk.check_in', [
 ]);
 
 registerPool('talk.encourage', [
-  { when: {}, weight: 2, text: [`You say it plainly. She hears the permission underneath.`, `Encouragement lands softer when {ra.name} says it — like policy from someone who cares.`] },
+  { when: {}, weight: 2, text: [`You say it plainly. She hears the permission underneath.`, `Encouragement lands softer when {ra.name} says it — like policy from someone who cares.`, `{subject.name} exhales like a knot loosening. "Okay," she whispers. "Okay."`] },
 ]);
 
 registerPool('talk.suggest_indulgence.b00', [

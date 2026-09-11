@@ -39,4 +39,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'roomVisit', file: 'roomVisit.js' },
   { id: 'v2Handlers', file: 'v2/handlers.js' },
   { id: 'mayaHive', file: 'mayaHive.js' },
+  { id: 'embodiedCampus', file: 'v2/embodiedCampus.js' },
+  { id: 'networkState', file: 'networkState.js' },
+  { id: 'cultivator', file: 'cultivator.js' },
 ];

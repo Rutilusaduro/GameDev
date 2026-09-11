@@ -1,6 +1,8 @@
 // ── CULTIVATOR EVOLUTION DATA ────────────────────────────────────────────────
 // Reneé (id:10) — culinary archetype
 // Unlock: Lilith unlocked + lilithKillCount >= 1 + relationship >= 60
+import { depthActivityGainBonus, depthLbsGrant } from './mechanicsDepthLayer.js';
+
 // A "taste tester" is recruited, fed across sessions, and harvested.
 // Up to 4 complete cycles. Tester starts at Fat (stage 6) and can reach Blob.
 // Fat bar = XP bar: fills to 100, stage-up, resets. Suspicion resets at stage-up (with carry-in).
@@ -26,6 +28,15 @@ export const TESTER_STAGE_LBS = { 6:295, 7:370, 8:480, 9:610, 10:830 };
 
 // Reneé's actual lbs gain from harvest at each tester stage
 export const HARVEST_GAIN = { 6:65, 7:130, 8:220, 9:330, 10:470 };
+
+export function harvestGainForStage(stageId = 6) {
+  const base = HARVEST_GAIN[stageId] || HARVEST_GAIN[6];
+  return depthLbsGrant(base);
+}
+
+export function scaleCultivatorFatGain(fatGain = 0) {
+  return depthActivityGainBonus(fatGain);
+}
 
 // Fat bar fills toward 100 to advance tester one stage (XP-style: resets, not zeroes)
 export const FAT_BAR_CAP = 100;

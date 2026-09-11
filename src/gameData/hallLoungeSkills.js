@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
 import { computeHallRoomSynergyBonus } from './hallBlueprint.js';
+import { depthSaturationBonus, depthTalkRelGrant } from './mechanicsDepthLayer.js';
 import { computeHallAmbiancePerks } from './hallAmbiance.js';
 
 export function computeClassSkillTotal(students = []) {
@@ -95,6 +96,8 @@ export function aggregateClassSkillEffects(owned = {}) {
   effects.talkRelBonus = (effects.talkRelBonus || 0) + (ambiance.talkRelBonus || 0);
   effects.roomSynergyGain = synergy;
   effects.hallAmbianceGain = ambiance.gainMult || 0;
+  effects.passiveBonus = depthSaturationBonus(effects.passiveBonus);
+  effects.talkRelBonus = depthTalkRelGrant(effects.talkRelBonus);
   return effects;
 }
 
