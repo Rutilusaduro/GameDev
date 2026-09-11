@@ -8,6 +8,7 @@ import { getCorruptionTier } from './corruption.js';
 import { getForceFeedComplianceBonus } from './deviceGating.js';
 import { ITEMS } from './items.js';
 import { getStage } from './stages.js';
+import { depthFeedPaceBonus } from './mechanicsDepthLayer.js';
 
 /**
  * Venue/private dish ids linked to pantry ITEMS[] for a shared cal/full model.
@@ -91,6 +92,7 @@ export function getFeedingModifiers(student, {
   let calorieMult = 1;
   if (hunger >= 3 && addiction >= 2) calorieMult = 1.12;
   else if (hunger >= 2) calorieMult = 1.05;
+  calorieMult += depthFeedPaceBonus(cor, hunger);
 
   return { refusalBonus, fullnessMult, calorieMult, hunger, corruption: cor };
 }

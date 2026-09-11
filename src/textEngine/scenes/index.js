@@ -78,6 +78,8 @@ import './milestone/milestoneSceneDepth.js';
 import './rosterTell/index.js';
 import './rosterTell/depth.js';
 import './roomVisit/index.js';
+import './hallBlueprint/index.js';
+import './raPivotMechanicsProseDepth.js';
 import './memory/index.js';
 import './memory/depth.js';
 import './gossip/index.js';

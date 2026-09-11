@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// HALL LOUNGE VIEW — prestige upgrades (lbs-cost skill shop)
+// HALL LOUNGE VIEW — blueprint map + prestige upgrades (lbs-cost)
 // ═══════════════════════════════════════════════════════════════
+import { useState } from 'react';
 import { C } from '../styles.js';
 import { SKILL_TREE } from '../gameData/skills.js';
 import {
@@ -9,27 +10,36 @@ import {
   computeHallLoungeSkillSpent,
   canBuyHallLoungeSkill,
 } from '../gameData/hallLoungeSkills.js';
+import { skillsForHallRoom, getHallRoom } from '../gameData/hallBlueprint.js';
+import { HallBlueprint } from '../components/HallBlueprint.jsx';
 
 const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
-function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase }) {
+function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase, roomFilterId = null }) {
   const owned = ownedHallSkills || {};
   const total = computeHallLoungeSkillTotal(students);
   const spent = computeHallLoungeSkillSpent(owned);
   const currency = computeHallLoungeSkillCurrency(students, owned);
   const tiers = [1, 2, 3, 4, 5, 6];
+  const roomSkills = roomFilterId ? skillsForHallRoom(roomFilterId) : null;
+  const roomSkillIds = roomSkills ? new Set(roomSkills.map((s) => s.id)) : null;
+  const room = roomFilterId ? getHallRoom(roomFilterId) : null;
 
   return (
     <div style={{ ...C.card, borderColor: '#2a1840', marginBottom: 14, padding: '12px 14px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
-        <div style={{ fontSize: 10, color: '#c080a0', letterSpacing: 1.5 }}>HALL LOUNGE PRESTIGE</div>
+        <div style={{ fontSize: 10, color: '#c080a0', letterSpacing: 1.5 }}>
+          {room ? `${room.emoji} ${room.label.toUpperCase()} UPGRADES` : 'HALL LOUNGE PRESTIGE'}
+        </div>
         <div style={{ fontSize: 11, color: '#e0c0d0' }}>{currency} lbs available · {spent} spent of {total}</div>
       </div>
       <div style={{ fontSize: 10, color: '#806070', marginBottom: 10, lineHeight: 1.5 }}>
-        Spend cumulative hall weight gain on permanent lounge upgrades. Institutional Cover unlocks AIB counter paths.
+        {room
+          ? room.blurb
+          : 'Spend cumulative hall weight gain on permanent lounge upgrades. Institutional Cover unlocks AIB counter paths.'}
       </div>
       {tiers.map((tier) => {
-        const skills = SKILL_TREE.filter((sk) => sk.tier === tier);
+        const skills = SKILL_TREE.filter((sk) => sk.tier === tier && (!roomSkillIds || roomSkillIds.has(sk.id)));
         if (!skills.length) return null;
         return (
           <div key={tier} style={{ marginBottom: 10 }}>
@@ -81,15 +91,25 @@ function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase }) {
 }
 
 export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLoungeSkill }) {
+  const [selectedRoom, setSelectedRoom] = useState('common_lounge');
+
   return (
     <div>
       <p style={C.secT}>🏠 Hall Lounge</p>
       {onPurchaseHallLoungeSkill ? (
-        <HallLoungeSkillsPanel
-          students={students}
-          ownedHallSkills={ownedHallSkills}
-          onPurchase={onPurchaseHallLoungeSkill}
-        />
+        <>
+          <HallBlueprint
+            ownedHallSkills={ownedHallSkills}
+            selectedRoomId={selectedRoom}
+            onSelectRoom={setSelectedRoom}
+          />
+          <HallLoungeSkillsPanel
+            students={students}
+            ownedHallSkills={ownedHallSkills}
+            onPurchase={onPurchaseHallLoungeSkill}
+            roomFilterId={selectedRoom}
+          />
+        </>
       ) : (
         <div style={{ fontSize: 11, color: '#706080', fontStyle: 'italic' }}>
           Hall lounge upgrades unlock as your floor fills out.

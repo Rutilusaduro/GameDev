@@ -378,6 +378,9 @@ import {
   computeHallLoungeSkillCurrency, buyHallLoungeSkill, aggregateHallLoungeSkillEffects, listPurchasableHallLoungeSkills,
   hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
+import { listActiveSynergies } from './gameData/hallBlueprint.js';
+import { rollWeeklyAmbiancePulse } from './gameData/hallAmbiance.js';
+import { depthTalkRelGrant } from './gameData/mechanicsDepthLayer.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -444,7 +447,7 @@ export default function HallPass(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedHallSkills, facultyAffinity, raProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State,
+    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, hallAmbiance,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -1027,10 +1030,16 @@ export default function HallPass(){
   };
 
   const purchaseHallLoungeSkill=(skillId)=>{
+    const priorSynergy=listActiveSynergies(ownedHallSkills||{}).length;
     const result=buyHallLoungeSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedHallSkills(result.owned);
-    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
+    const prose=render('{hall.blueprint.purchase}',{week});
+    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).${prose?` ${prose}`:''}`);
+    if(listActiveSynergies(result.owned).length>priorSynergy){
+      const syn=render('{hall.blueprint.synergy}',{week});
+      if(syn) setTimeout(()=>push(`🔗 Wing resonance: ${syn}`),120);
+    }
   };
 
   const grantExplorationReward=(grants)=>{
@@ -1556,6 +1565,11 @@ export default function HallPass(){
   };
 
   const processStudentGain=(s,gain,extraRel=0)=>{
+    let relAdd=extraRel;
+    if(relAdd>0){
+      const ambFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+      relAdd=depthTalkRelGrant(relAdd+(ambFx.talkRelBonus||0));
+    }
     const scaledGain=Math.round(gain*(s.gainMultiplier||1)*skillGainMult);
     const {newLbs,oldStageId,newStageId,narrativeEvents}=applyGainToStudent(s,scaledGain);
     if(newStageId>oldStageId){
@@ -1568,7 +1582,7 @@ export default function HallPass(){
     const gained = {
       ...s,
       lbs:newLbs,
-      relationship:Math.min(100,s.relationship+extraRel),
+      relationship:Math.min(100,s.relationship+relAdd),
       triggeredEvents:mergedTriggered,
       mood: newStageId>=5?"content":s.mood,
       // Unlock any signature-beat diary gate her new state has earned.
@@ -2140,6 +2154,18 @@ export default function HallPass(){
 
     // ── ROSTER UNLOCK ─ hall reach (slots) + passive trust (queue) ──
     updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
+    const ambiancePulse=rollWeeklyAmbiancePulse(ownedHallSkills||{},newWeek,hallAmbiance||{});
+    if(ambiancePulse){
+      patchPlayer({ hallAmbiance: ambiancePulse.nextState });
+      const pulseLine=render(`{hall.ambiance.pulse.${ambiancePulse.axis}}`,{week:newWeek});
+      if(pulseLine) setTimeout(()=>push(`🌡️ ${ambiancePulse.axisLabel} pulse — ${pulseLine}`),180);
+      if(ambiancePulse.passiveDrip>0){
+        updated=updated.map((s)=>{
+          if(s.hidden||s.lockState==='locked') return s;
+          return processStudentGain(s,ambiancePulse.passiveDrip,0);
+        });
+      }
+    }
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));

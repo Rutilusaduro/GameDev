@@ -2,6 +2,7 @@
 // RELATIONSHIP ECOLOGY — decay, neglect, favoritism jealousy (DEPTH_PLAN §1)
 // ═══════════════════════════════════════════════════════════════
 import { getTier } from './sessions.js';
+import { depthRelationshipDecayMult } from './mechanicsDepthLayer.js';
 
 export const RELATIONSHIP_ECOLOGY = {
   weeksIgnoredBeforeDecay: 3,
@@ -22,7 +23,10 @@ export function tickRelationshipDecay(student) {
   const tier = getTier(rel).id;
   if (tier >= 3) return student; // Devoted — max inner-circle tier
   const excess = weeks - RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay + 1;
-  const loss = Math.min(RELATIONSHIP_ECOLOGY.maxDecayPerWeek, RELATIONSHIP_ECOLOGY.decayPerWeek * excess);
+  const loss = Math.min(
+    RELATIONSHIP_ECOLOGY.maxDecayPerWeek,
+    RELATIONSHIP_ECOLOGY.decayPerWeek * excess * depthRelationshipDecayMult(rel),
+  );
   return { ...student, relationship: Math.max(0, rel - loss), _relDecayApplied: loss };
 }
 

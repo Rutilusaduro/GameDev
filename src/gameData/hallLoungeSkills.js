@@ -2,6 +2,8 @@
 // HALL LOUNGE PRESTIGE SKILLS — lbs-cost shop (§12, §30 gates)
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
+import { computeHallRoomSynergyBonus } from './hallBlueprint.js';
+import { computeHallAmbiancePerks } from './hallAmbiance.js';
 
 export function computeClassSkillTotal(students = []) {
   return Math.round(
@@ -69,6 +71,9 @@ export function aggregateClassSkillEffects(owned = {}) {
     gainMult: 0,
     sessionCapBonus: 0,
     tapOutResistance: 0,
+    talkRelBonus: 0,
+    roomSynergyGain: 0,
+    hallAmbianceGain: 0,
   };
   SKILL_TREE.forEach((sk) => {
     if (!owned[sk.id]) return;
@@ -80,6 +85,16 @@ export function aggregateClassSkillEffects(owned = {}) {
     effects.sessionCapBonus += sk.sessionCapBonus || 0;
     effects.tapOutResistance += sk.tapOutResistance || 0;
   });
+  const synergy = computeHallRoomSynergyBonus(owned);
+  const ambiance = computeHallAmbiancePerks(owned);
+  effects.gainMult += synergy;
+  effects.gainMult += ambiance.gainMult || 0;
+  effects.passiveBonus += ambiance.passiveBonus || 0;
+  effects.scrutinyPassiveReduce += ambiance.scrutinyPassiveReduce || 0;
+  effects.sessionCapBonus += ambiance.sessionCapBonus || 0;
+  effects.talkRelBonus = (effects.talkRelBonus || 0) + (ambiance.talkRelBonus || 0);
+  effects.roomSynergyGain = synergy;
+  effects.hallAmbianceGain = ambiance.gainMult || 0;
   return effects;
 }
 

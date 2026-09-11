@@ -40,6 +40,8 @@ registerPool('room.visit.stage.beat', [
     `{subject.name} makes room for you. "Thanks for checking in, {ra.name}."`,
     `"You're good to me," she says. "{ra.name}. Don't think I haven't noticed."`,
     `She pats the chair beside her. "Sit. Tell me what the rest of the floor is up to."`,
+    `She shifts on the bed so you have space — warm, unhurried, already glad you came.`,
+    `"I was hoping you'd knock," she murmurs. "{ra.name}. The hall feels different when you're nearby."`,
   ] },
   { when: { stageMin: 3, stageMax: 4 }, text: [
     `{subject.name} laughs when she catches you looking. "Yeah. It's new. Don't make it a thing, {ra.name}."`,
@@ -53,6 +55,9 @@ registerPool('room.visit.stage.beat', [
     `She doesn't get up — doesn't need to. "{ra.name}." Her voice is warm, heavy with satisfaction. "Look what your hall did to me."`,
     `The room smells like lotion and something sweet. {subject.name} smiles like the walls are in on the secret.`,
     `"Door's always open for you," she murmurs. "{ra.name}. You know that by now."`,
+    `Her belly rests in her lap like something poured and left to set. She watches you notice — slow, pleased, certain.`,
+    `"Stay a minute," she says. Not a request. A small command wrapped in softness. "{ra.name}, I like when you see me like this."`,
+    `Heat pools in the narrow space between you. She breathes deep; fabric strains; the room holds the sound.`,
   ] },
 ]);
 
