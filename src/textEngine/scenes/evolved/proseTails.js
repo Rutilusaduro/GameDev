@@ -125,3 +125,20 @@ const CG_CHAT_TAIL = [
 export function cgChatTailBeat(seed, slot = 0) {
   return pickTail(CG_CHAT_TAIL, seed, slot);
 }
+
+const FAIR_TAIL = [
+  'Fair lights hum; pride stacks like plates nobody admits they ordered.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} tastes sawdust and sugar — county season writing itself on her hips.`;
+  },
+  'Crowd noise folds into appetite; the scale waits like a throne.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} — another training session the fair will remember before the office does.`;
+  },
+];
+
+export function fairTailBeat(seed, slot = 0) {
+  return pickTail(FAIR_TAIL, seed, slot);
+}

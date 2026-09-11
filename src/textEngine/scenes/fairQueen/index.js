@@ -20,6 +20,7 @@ import {
   afterpartyEnd,
 } from './dayFragments.js';
 import { fairPhotoCaption } from './photoFragments.js';
+import { fairTailBeat } from '../evolved/proseTails.js';
 
 const INF_FROM_TAG = {
   None: 'None',
@@ -70,12 +71,13 @@ for (const c of collabs) {
     when: { fairCollab: [c] },
     text: [(ctx) => fairTrainingBody(c, ctx)],
   });
+  const trainBody = (ctx) => fairTrainingBody(c, ctx);
   entries.push({
     when: {},
     text: [
-      (ctx) => fairTrainingBody(c, ctx),
-      (ctx) => `${fairTrainingBody(c, ctx)}\n\nFair lights hum; pride stacks like plates.`,
-      (ctx) => fairTrainingBody(c, ctx),
+      trainBody,
+      fairTailBeat(`fair:train:${c}`, 0),
+      fairTailBeat(`fair:train:${c}`, 1),
     ],
   });
   registerPool(`fair.training.${c}`, entries);
@@ -87,32 +89,38 @@ for (const c of collabs) {
       when: { fairBoostTier: [tier] },
       text: [
         (ctx) => fairBoostBody(c, tier, ctx),
-        (ctx) => fairBoostBody(c, tier, ctx),
-        (ctx) => `${fairBoostBody(c, tier, ctx)} Pride climbs with every session.`,
+        fairTailBeat(`fair:boost:${c}:${tier}`, 0),
+        (ctx) => {
+          const base = fairBoostBody(c, tier, ctx);
+          return base ? `${base} Pride climbs with every session.` : base;
+        },
       ],
     })),
     {
       when: {},
       text: [
         (ctx) => fairBoostBody(c, 'Mid', ctx),
-        (ctx) => fairBoostBody(c, 'Mid', ctx),
+        fairTailBeat(`fair:boost:${c}`, 1),
         (ctx) => fairBoostBody(c, 'Low', ctx),
       ],
     },
   ]);
 }
 
-const triple = (fn) => ({ when: {}, text: [fn, fn, (ctx) => `${fn(ctx)}\n\nThe fair keeps feeding the moment.`] });
-registerPool('fair.day.weighIn.open', [triple(weighInOpen)]);
-registerPool('fair.day.weighIn.choice1', [triple(weighInChoiceGround)]);
-registerPool('fair.day.weighIn.choice2', [triple(weighInChoiceCrowd)]);
-registerPool('fair.day.weighIn.endingA', [triple(weighInEndGround)]);
-registerPool('fair.day.weighIn.endingB', [triple(weighInEndCrowd)]);
-registerPool('fair.day.judging', [triple(judgingBeat)]);
-registerPool('fair.day.afterparty.open', [triple(afterpartyOpen)]);
-registerPool('fair.day.afterparty.choice1', [triple(afterpartyCollab)]);
-registerPool('fair.day.afterparty.choice2', [triple(afterpartyCrowd)]);
-registerPool('fair.day.afterparty.ending', [triple(afterpartyEnd)]);
+const triple = (fn, seed) => ({
+  when: {},
+  text: [fn, fairTailBeat(`fair:day:${seed}`, 0), fairTailBeat(`fair:day:${seed}`, 1)],
+});
+registerPool('fair.day.weighIn.open', [triple(weighInOpen, 'wi-open')]);
+registerPool('fair.day.weighIn.choice1', [triple(weighInChoiceGround, 'wi-c1')]);
+registerPool('fair.day.weighIn.choice2', [triple(weighInChoiceCrowd, 'wi-c2')]);
+registerPool('fair.day.weighIn.endingA', [triple(weighInEndGround, 'wi-ea')]);
+registerPool('fair.day.weighIn.endingB', [triple(weighInEndCrowd, 'wi-eb')]);
+registerPool('fair.day.judging', [triple(judgingBeat, 'ju')]);
+registerPool('fair.day.afterparty.open', [triple(afterpartyOpen, 'ap-open')]);
+registerPool('fair.day.afterparty.choice1', [triple(afterpartyCollab, 'ap-c1')]);
+registerPool('fair.day.afterparty.choice2', [triple(afterpartyCrowd, 'ap-c2')]);
+registerPool('fair.day.afterparty.ending', [triple(afterpartyEnd, 'ap-end')]);
 
 for (const c of collabs) {
   const photoEntries = buckets.map((b) => ({
@@ -124,8 +132,11 @@ for (const c of collabs) {
     when: {},
     text: [
       fairPhotoCaption,
-      fairPhotoCaption,
-      (ctx) => `${fairPhotoCaption(ctx)} Pinned to the Trophy Wall with a bent gold tack.`,
+      fairTailBeat(`fair:photo:${c}`, 0),
+      (ctx) => {
+        const cap = fairPhotoCaption(ctx);
+        return cap ? `${cap} Pinned to the Trophy Wall with a bent gold tack.` : cap;
+      },
     ],
   });
   registerPool(`fair.photo.${c}`, photoEntries);

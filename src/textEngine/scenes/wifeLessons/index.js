@@ -49,11 +49,32 @@ function registerDialogueEntry(person, stageIdx, entry) {
   });
 }
 
+function registerLessonBeat(poolKey, prose) {
+  const text = (prose || '').trim();
+  if (!text) return;
+  const bodyKey = `${poolKey}.body`;
+  registerDecomposedPool(bodyKey, text);
+  registerPool(poolKey, [
+    {
+      when: {},
+      weight: 2,
+      text: [
+        (ctx) => {
+          const rendered = render(`{${bodyKey}}`, ctx)?.trim();
+          return rendered && !rendered.includes('{unresolved}') ? rendered : text;
+        },
+        wlTalkTailBeat(poolKey, 0),
+        wlTalkTailBeat(poolKey, 1),
+      ],
+    },
+  ]);
+}
+
 for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
   if (!Array.isArray(lessons)) continue;
   for (const lesson of lessons) {
     if (!lesson?.text) continue;
-    registerDecomposedPool(`wifeLessons.lesson.s${stage}.${lesson.id}`, lesson.text);
+    registerLessonBeat(`wifeLessons.lesson.s${stage}.${lesson.id}`, lesson.text);
   }
 }
 
