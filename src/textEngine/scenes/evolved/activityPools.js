@@ -4,6 +4,8 @@ import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat } from './proseTails.js';
 
+const SAMPLE_ACTIVITY_SUBJECT = { id: 'mj', name: 'MJ', lbs: 220, archetype: 'cheerleader' };
+
 registerDimension('evolvedFormId', (ctx) => ctx.globals?.evolvedFormId ?? ctx.globals?.formId ?? ctx.d?.evolvedForm ?? 'evolved');
 registerDimension('evolvedStageIdx', (ctx) => ctx.globals?.evolvedStageIdx ?? ctx.globals?.stageIdx ?? 0);
 
@@ -20,8 +22,17 @@ for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
   for (let si = 0; si < arr.length; si++) {
     const entry = arr[si];
     if (entry == null) continue;
-    if (typeof entry === 'string' && entry.trim()) {
-      registerDecomposedPool(`evolved.activity.${formId}.s${si}.legacyBody`, entry.trim());
+    let legacySample = '';
+    if (typeof entry === 'string' && entry.trim()) legacySample = entry.trim();
+    else if (typeof entry === 'function') {
+      try {
+        legacySample = String(entry(SAMPLE_ACTIVITY_SUBJECT)).trim();
+      } catch {
+        legacySample = '';
+      }
+    }
+    if (legacySample) {
+      registerDecomposedPool(`evolved.activity.${formId}.s${si}.legacyBody`, legacySample);
     }
     const core = beatFn(entry);
     entries.push({

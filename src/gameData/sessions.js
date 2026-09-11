@@ -1,8 +1,30 @@
 import { getStage } from './stages.js';
-import { depthRelBonus, depthActivityGainBonus } from './mechanicsDepthLayer.js';
+import {
+  depthRelBonus,
+  depthActivityGainBonus,
+  depthSessionToleranceBoost,
+} from './mechanicsDepthLayer.js';
 
 export function scaleSessionRelBonus(amount = 0) {
   return depthRelBonus(amount);
+}
+
+export function scalePrivateFoodGain(food = {}) {
+  const g = food.gain;
+  if (!Array.isArray(g) || g.length < 2) return g;
+  return [depthActivityGainBonus(g[0]), depthActivityGainBonus(g[1])];
+}
+
+export function scaleEncouragementAction(enc = {}) {
+  const lbsBonus = enc.lbsBonus?.length === 2
+    ? [depthActivityGainBonus(enc.lbsBonus[0]), depthActivityGainBonus(enc.lbsBonus[1])]
+    : enc.lbsBonus;
+  return {
+    ...enc,
+    relBonus: depthRelBonus(enc.relBonus ?? 0),
+    toleranceBoost: depthSessionToleranceBoost(enc.toleranceBoost ?? 0),
+    lbsBonus,
+  };
 }
 
 export function getGroupConversation(convId) {

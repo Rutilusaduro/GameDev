@@ -203,6 +203,12 @@ export function depthActivityGainBonus(base = 0) {
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.35)));
 }
 
+/** Private session fullness tolerance nudges — encouragement + pacing. */
+export function depthSessionToleranceBoost(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.22)));
+}
+
 /** Event / feast / minigame lb grants — secondary loop depth. */
 export function depthLbsGrant(base = 0) {
   if (base <= 0) return base;

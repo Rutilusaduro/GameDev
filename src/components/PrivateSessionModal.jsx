@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
-import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage, getTier } from '../gameData/sessions.js';
+import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage, getTier, scalePrivateFoodGain } from '../gameData/sessions.js';
 import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
@@ -134,7 +134,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                                     cursor:ordered?"default":"pointer",opacity:ordered?0.45:1}}
                                   onClick={()=>!ordered&&feedInSession(food)}>
                                   <span style={{flex:1,fontSize:12,color:ordered?"#5a3888":"#c8a8f0"}}>{ordered?"✓ ":""}{food.label}</span>
-                                  <span style={{fontSize:10,color:"#8060a0"}}>+{food.gain[0]}–{food.gain[1]} lbs</span>
+                                  <span style={{fontSize:10,color:"#8060a0"}}>+{(() => { const g = scalePrivateFoodGain(food); return `${g[0]}–${g[1]}`; })()} lbs</span>
                                   {!ordered&&<div style={{fontSize:9,color:"#6a4880",maxWidth:140,textAlign:"right"}}>{food.desc.slice(0,45)}…</div>}
                                 </div>
                               );

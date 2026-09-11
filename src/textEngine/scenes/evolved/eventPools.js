@@ -6,13 +6,23 @@ import { atmosphereBeat, choiceEchoBeat, endingEchoBeat } from './proseTails.js'
 
 const SAMPLE_EVOLVED_SUBJECT = { id: 'mj', name: 'MJ', lbs: 240, archetype: 'cheerleader' };
 
-function samplePhaseProse(phase, history = []) {
+function samplePhaseProse(phase, history = [], eventRef = null) {
   if (typeof phase.text === 'string') return (phase.text || '').trim();
   if (typeof phase.text === 'function') {
-    try {
-      return String(phase.text(history, SAMPLE_EVOLVED_SUBJECT)).trim();
-    } catch {
-      return '';
+    const attempts = [
+      () => phase.text(history, SAMPLE_EVOLVED_SUBJECT, eventRef),
+      () => phase.text(history, SAMPLE_EVOLVED_SUBJECT),
+      () => phase.text(SAMPLE_EVOLVED_SUBJECT, history),
+      () => phase.text(history),
+      () => phase.text(SAMPLE_EVOLVED_SUBJECT),
+    ];
+    for (const fn of attempts) {
+      try {
+        const out = fn();
+        if (out) return String(out).trim();
+      } catch {
+        /* next signature */
+      }
     }
   }
   return '';
@@ -70,8 +80,24 @@ function resolvePhaseText(phase, ctx) {
 
 function resolveChoiceResult(choice, ctx) {
   const subj = ctx.subject;
-  if (typeof choice.result === 'function') return String(choice.result(subj)).trim();
-  return (choice.result || '').trim();
+  const h = ctx.globals?.history || [];
+  if (typeof choice.result !== 'function') return (choice.result || '').trim();
+  const attempts = [
+    () => choice.result(subj, h),
+    () => choice.result(h, subj),
+    () => choice.result(subj),
+    () => choice.result(h),
+    () => choice.result(),
+  ];
+  for (const fn of attempts) {
+    try {
+      const out = fn();
+      if (out) return String(out).trim();
+    } catch {
+      /* next signature */
+    }
+  }
+  return '';
 }
 
 for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {

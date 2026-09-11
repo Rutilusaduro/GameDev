@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition, scaleIntimacyChoiceRewards, scaleIntimacyEndingBonuses } from './gameData/intimacy.js';
-import { GROUP_CONVERSATIONS, getGroupConversation, getDinnerConversation, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { GROUP_CONVERSATIONS, getGroupConversation, getDinnerConversation, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST, scaleEncouragementAction, scalePrivateFoodGain } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { narrativeEventGainBounds, scaleNarrativeEventRel } from './gameData/weeklyEventDefs.js';
@@ -7758,7 +7758,10 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'private_session',
         forcePush:!!opts.forcePush,
-        gainLbs:rnd(food.gain[0],food.gain[1]),
+        gainLbs:(() => {
+          const g = scalePrivateFoodGain(food);
+          return rnd(g[0], g[1]);
+        })(),
       },
     });
     if(!result.ok){
@@ -7824,7 +7827,8 @@ export default function HallPass(){
     push(`🐛 Debug: resident #${sid} updated.`);
   };
 
-  const useSessionEncouragement=(enc)=>{
+  const useSessionEncouragement=(rawEnc)=>{
+    const enc=scaleEncouragementAction(rawEnc);
     if(!privateSession||privateSession.encouragementsUsed.includes(enc.id)) return;
     const s=students.find(st=>st.id===privateSession.student.id)||privateSession.student;
     const stageId=getStage(s.lbs).id;
