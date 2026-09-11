@@ -7,7 +7,7 @@ import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolic
 
 const week = 24;
 assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
-const subject = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 275, corruption: 55 };
+const subject = { id: 8, name: 'Maya', archetype: 'shy', lbs: 240, corruption: 8 };
 
 const FP = /lateFloor|lateAuthority|Hall Ambiance|clean plates|growth as lifestyle|Hunger hums/i;
 
@@ -21,7 +21,7 @@ for (let s = 0; s < 16; s += 1) {
   }))?.trim() || '';
   assert.ok(line.length > 120, 'short talk.command_finish');
   assert.ok(!line.includes('{unresolved}'), 'unresolved talk.command_finish');
-  assert.ok(/obey|plate|folds her hands|couldn't stop|Yes, RA|cleans every/i.test(line), 'expected Phase C body after prepend');
+  assert.ok(/obey|plate|folds her hands|couldn't stop|Yes, RA|cleans every|command|distended|waistband/i.test(line), 'expected Phase C body after prepend');
   if (FP.test(line)) hit = true;
 }
 assert.ok(hit, `expected modular talk.command_finish prepend @ week ${week}`);

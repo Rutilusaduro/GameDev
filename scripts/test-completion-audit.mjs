@@ -2994,6 +2994,10 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'scripts/test-stream-end-modular-late.mjs')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkCommandFinishModularFragments.js')));
   assert.ok(existsSync(join(root, 'scripts/test-talk-command-finish-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/opposition/oppositionLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkRefusalCommandFinishModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-opposition-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-talk-refusal-command-finish-modular-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
 });

@@ -47,6 +47,8 @@ const requiredFragments = [
   'talkEncourageModularFragments.js',
   'streamEndStreamModularFragments.js',
   'talkCommandFinishModularFragments.js',
+  'opposition/oppositionLateModularFragments.js',
+  'talkRefusalCommandFinishModularFragments.js',
   'fairQueen/trainingModularFragments.js',
   'fairQueen/photoBoostModularFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',

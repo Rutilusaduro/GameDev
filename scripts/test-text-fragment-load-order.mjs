@@ -59,6 +59,8 @@ const pairs = [
   ['talkEncourage.js', 'talkEncourageModularFragments.js'],
   ['talkCommandFinishDepth.js', 'talkCommandFinishModularFragments.js'],
   ['raPivotProseDepthPass112.js', 'streamEndStreamModularFragments.js'],
+  ['opposition/depth.js', 'opposition/oppositionLateModularFragments.js'],
+  ['talkRefusalDepth.js', 'talkRefusalCommandFinishModularFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {

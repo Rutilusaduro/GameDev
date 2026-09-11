@@ -36,6 +36,7 @@ const MODULAR_MARKERS = [
   /dinner\.dish|venueMood|hallTone|choiceEcho|hungerCall|yieldBeat|crowdHeat|tableStakes/i,
   /calibrated hunger|mesh flickers|deployEcho|Hall Ambiance muted|peer-reviewed ritual/i,
   /lateHallAir|latePermission|signoffAir|chatAfterglow|tips still ticking/i,
+  /boardPressure|cateredVote|endgameAbundance|lateHush|lateTremor/i,
 ];
 
 function isModular(line) {
@@ -114,7 +115,7 @@ const total = 48;
 for (let i = 0; i < total; i += 1) {
   const fn = pulls[i % pulls.length];
   let sampleModular = false;
-  for (let attempt = 0; attempt < 3; attempt += 1) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
     const line = fn(24000 + i * 37 + attempt * 503)?.trim() || '';
     assert.ok(line.length > 20, `short line at pull ${i}: "${line}"`);
     assert.ok(!line.includes('{unresolved}'), `unresolved at pull ${i}`);

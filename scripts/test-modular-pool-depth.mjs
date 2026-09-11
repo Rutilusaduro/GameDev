@@ -45,6 +45,8 @@ const POOLS = [
   'stream.scene.signoffAir',
   'talk.command_finish.lateFloor',
   'stream.scene.tapOutBreath',
+  'opposition.scene.boardPressure',
+  'talk.refusal.command_finish.lateHush',
 ];
 
 for (const key of POOLS) {
