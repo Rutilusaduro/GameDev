@@ -154,3 +154,9 @@ export function depthExplorationMods(ownedHallSkills = {}, saturationTier = 0) {
     searchSecretBonus: raOffice >= 2 ? 0.06 : raOffice >= 1 ? 0.03 : 0,
   };
 }
+
+/** Evolved-form passive lbs scale with hall prestige synergies. */
+export function depthEvolvedPassiveMult(ownedHallSkills = {}) {
+  const syn = getActiveBlueprintSynergies(ownedHallSkills).length;
+  return 1 + Math.min(0.2, syn * 0.035);
+}

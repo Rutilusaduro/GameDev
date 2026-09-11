@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A5 Editor
-import { registerModuleVariants } from '../engine.js';
+import { registerModuleVariants } from '../../engine.js';
 
 registerModuleVariants('opposition.agenda.wellness_seminar', [
   { when: { stageMin: 5 }, weight: 3, text: [

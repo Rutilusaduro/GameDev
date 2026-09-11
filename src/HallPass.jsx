@@ -383,7 +383,7 @@ import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosp
 import {
   hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
   oppositionScrutinyEaseFromHall, oppositionCounterRelBonus, depthDeviceGainMult, depthSaturationPassiveBonus,
-  depthTalkRelBonus, depthCampusPharmacistMods,
+  depthTalkRelBonus, depthCampusPharmacistMods, depthEvolvedPassiveMult,
 } from './gameData/mechanicsDepth.js';
 import {
   hallLabNetworkModifiers, depthLabSessionBreakthroughBonus, depthLabSessionInstability, depthNetworkTickAdjust,
@@ -1720,7 +1720,7 @@ export default function HallPass(){
       if(s.evolvedForm&&(s.evolvedSkills||[]).length>0){
         const evTree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
         const evPassive=evTree.filter(sk=>(s.evolvedSkills||[]).includes(sk.id)&&sk.passiveBonus).reduce((a,b)=>a+(b.passiveBonus||0),0);
-        gain+=evPassive;
+        gain+=Math.round(evPassive*depthEvolvedPassiveMult(ownedHallSkills||{}));
       }
       let ns=processStudentGain(s,gain,0);
       ns=tickPhysicalTraits(ns,ownedSkills);

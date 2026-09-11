@@ -130,6 +130,8 @@ import './v2RitualEchoOverhaul.js';
 import './campusExplorationOverhaulPass.js';
 import './talkRefusalOverhaulPass.js';
 import './opposition/oppositionAgendaOverhaulPass.js';
+import './diaryEvolvedComprehensivePass.js';
+import './v2ProseOverhaulPass.js';
 import './weeklyEvent/index.js';
 import './weeklyEvent/depth.js';
 import './weeklyEvent/weeklyEventSceneDepth.js';
