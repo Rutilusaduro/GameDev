@@ -217,5 +217,7 @@ registerPool('evolved.activity.line', [
 registerPool('evolved.activity.scene', [
   { when: {}, text: [
     '{evolved.activity.lead} {evolved.activity.growth} {evolved.activity.line}',
+    '{evolved.activity.lead} {evolved.activity.line} {evolved.activity.growth}',
+    '{evolved.activity.growth} {evolved.activity.lead} {evolved.activity.line}',
   ] },
 ]);
