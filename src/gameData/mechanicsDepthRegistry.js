@@ -109,4 +109,5 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'oppositionText', file: 'oppositionText.js' },
   { id: 'player', file: 'player.js' },
   { id: 'v2State', file: 'v2/state.js' },
+  { id: 'sessionTextDepth', file: 'sessionTextDepth.js' },
 ];
