@@ -13,7 +13,7 @@ import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverE
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
 import { campusNodeToLocale } from './textContext.js';
-import { depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
+import { depthExplorationIngredientGrant, depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 import { formatSecretDiscoverLine } from '../textEngine/scenes/campus/secrets.js';
 
@@ -169,10 +169,16 @@ export function buildExplorationContext({
 /** Roll events when moving between nodes or looking around. */
 function applyFindToEffects(find, effects) {
   if (!find?.grants) return;
-  if (find.grants.foodId) effects.foodGrant = find.grants.foodId;
-  const ing = { ...find.grants };
+  const scaled = depthExplorationIngredientGrant(find.grants);
+  if (scaled.foodId) effects.foodGrant = scaled.foodId;
+  const ing = { ...scaled };
   delete ing.foodId;
   if (Object.keys(ing).length) effects.ingredientGrant = ing;
+}
+
+function explorationFindProse(find, travelCtx) {
+  const flavor = renderCampusFindFlavor(travelCtx)?.trim();
+  return flavor || find?.text || '';
 }
 
 export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
@@ -252,8 +258,9 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     const findId = pickExplorationFind(travelFindPool(nodeId, Math.max(ctx.campusTier, satTier >= 2 ? 2 : 0)), rng);
     const find = getExplorationFind(findId);
     if (find) {
-      lines.push(`🎒 ${find.text}`);
-      lines.push(`   + ${formatExplorationGrant(find.grants)}`);
+      const prose = explorationFindProse(find, travelCtx);
+      if (prose) lines.push(`🎒 ${prose}`);
+      lines.push(`   + ${formatExplorationGrant(depthExplorationIngredientGrant(find.grants))}`);
       applyFindToEffects(find, effects);
     }
   }
@@ -277,6 +284,7 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
 /** Active search for secrets and extra finds. */
 export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random) {
+  const travelCtx = { ...ctx, nodeId };
   const lines = [`🔍 You take time to search ${nodeId.replace(/_/g, ' ')} carefully.`];
   const effects = {
     solvedSecret: null,
@@ -308,7 +316,9 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
       if (secret.reward?.findId) {
         const find = getExplorationFind(secret.reward.findId);
         if (find) {
-          lines.push(`   + ${find.label}: ${formatExplorationGrant(find.grants)}`);
+          const prose = explorationFindProse(find, travelCtx);
+          if (prose) lines.push(`🎒 ${prose}`);
+          lines.push(`   + ${find.label}: ${formatExplorationGrant(depthExplorationIngredientGrant(find.grants))}`);
           applyFindToEffects(find, effects);
         }
       }
@@ -327,8 +337,9 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
     const findId = pickExplorationFind(travelFindPool(nodeId, ctx.campusTier), rng);
     const find = getExplorationFind(findId);
     if (find) {
-      lines.push(`🎒 ${find.text}`);
-      lines.push(`   + ${formatExplorationGrant(find.grants)}`);
+      const prose = explorationFindProse(find, travelCtx);
+      if (prose) lines.push(`🎒 ${prose}`);
+      lines.push(`   + ${formatExplorationGrant(depthExplorationIngredientGrant(find.grants))}`);
       applyFindToEffects(find, effects);
     }
   } else {

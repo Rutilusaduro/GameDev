@@ -230,6 +230,19 @@ export function depthFairPrideGrant(base = 0) {
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.34)));
 }
 
+/** Exploration ingredient grant counts — secondary loot depth. */
+export function depthExplorationIngredientGrant(grants = {}) {
+  if (!grants || typeof grants !== 'object') return grants;
+  const out = { ...grants };
+  for (const [k, v] of Object.entries(out)) {
+    if (k === 'foodId') continue;
+    if (typeof v === 'number' && v > 0) {
+      out[k] = Math.max(v, Math.round(v * (1 + BONUS_FRAC * 0.26)));
+    }
+  }
+  return out;
+}
+
 /** Scale hall ambiance perk bundle (talk rel deepened again in hallLoungeSkills aggregate). */
 export function depthAmbiancePerkScalars(perks = {}) {
   const p = { ...perks };
