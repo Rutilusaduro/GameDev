@@ -45,6 +45,14 @@ oncePool('hunt.linger', [
 ]);
 
 oncePool('recording.afterglow', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'Camera down. Galley leftover still answering under the costume. She sits in both.',
+    'Ring light off. Kitchen heat plus the take. The clip is the second sitting.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You pack the lens. Last night\'s tray is still in her. So is the take.',
+    'The camera is down. Leftover heat does not take direction.',
+  ] },
   { when: {}, text: [
     'The camera is down. She is still eating the way the take taught her.',
     'Ring light off. Belly still answering. The clip already happened in her.',
@@ -69,6 +77,10 @@ oncePool('sumo.afterglow', [
 ]);
 
 oncePool('salon.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Candles gut. Galley leftover still in Chloé. Prestige is the second sitting.',
+    'Guests leave. Kitchen heat stays. She finishes both.',
+  ] },
   { when: {}, text: [
     'Candles gut. Prestige stays. Chloé sits like the evening is still a course.',
     'Guests leave slower than they arrived. She eats the last of their leaving.',
@@ -77,6 +89,10 @@ oncePool('salon.afterglow', [
 ]);
 
 oncePool('gallery.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The shutter stops. Galley leftover still in the subject. Fiona pins both sittings.',
+    'Prints dry. Kitchen heat does not. The wall of proof gains last night too.',
+  ] },
   { when: {}, text: [
     'The shutter stops. The body in the frame does not. Fiona pins both.',
     'Prints dry. Softness does not. The wall of proof gains a new inch.',

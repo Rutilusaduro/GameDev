@@ -71,7 +71,31 @@ registerPool('dinner.relWarmth', [
   { when: {}, text: [''] },
 ]);
 
+registerPool('dinner.leftoverHeat', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'Galley leftover still in her. This sitting is the dressed-up second.',
+    'Foil from earlier, then a menu. She treats both as one appetite.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Last night\'s tray is still warm under the restaurant butter.',
+    'Kitchen heat plus this table. She orders like the hall already started her.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You walked her floor after hours. Dinner is that knock in nicer clothes.',
+  ] },
+  { when: {}, text: [
+    'The table holds more of her than the menu admits.',
+    'She orders like the evening is a continuation.',
+    'Appetite arrives before the first course.',
+  ] },
+]);
+
 registerPool('dinner.selectorOverlay', [
+  { when: { leftoverFed: true }, priority: 4, weight: 3, text: [
+    '{dinner.leftoverHeat} {dinner.moodTone}',
+    '{dinner.leftoverHeat} {dinner.relWarmth}',
+    '{dinner.leftoverHeat}',
+  ] },
   { when: { relationship: [3, 4], mood: ['happy', 'warm', 'content'] }, weight: 3, text: [
     '{dinner.relWarmth} {dinner.moodTone}',
     '{dinner.moodTone} {dinner.relWarmth}',

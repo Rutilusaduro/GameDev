@@ -3,6 +3,18 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('dinner.conv.compliment_appetite', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    `You mention her appetite. {subject.name} glances at her middle. "I already ate. Then I came here." She picks up her fork anyway.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    `"I love watching you eat," you say. {subject.name} grins. "You left leftovers. This is the sequel." She takes an enormous bite.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    `"You eat beautifully," you tell her. {subject.name} laughs, leftover heat still in her. "I know. The hall started me. This finishes it."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Praise lands on a middle that already ate. {subject.name} answers with another bite.`,
+  ] },
   { when: { stageMax: 2 }, text: [
     `You mention how much she's enjoying herself. {subject.name} flushes slightly but picks up her fork with renewed purpose.`,
   ] },
@@ -20,6 +32,18 @@ registerPool('dinner.conv.compliment_appetite', [
 ]);
 
 registerPool('dinner.conv.suggest_second', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    `"You should try the other dish," you suggest. {subject.name} hesitates. "I finished the tray already." Then: "Why not."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    `"More?" {subject.name} is already signaling. "Leftovers were the appetizer. Thank you for the permission."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    `You gesture at her plate. "Again?" {subject.name} pats a middle that still holds the galley. "Obviously."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Seconds land easier because the kitchen already opened her. {subject.name} nods before you finish the offer.`,
+  ] },
   { when: { stageMax: 2 }, text: [
     `"You should try the other dish," you suggest. {subject.name} hesitates, then: "You know what, yes. Why not."`,
   ] },
@@ -81,6 +105,18 @@ registerPool('dinner.conv.overcomes_hesitation', [
 ]);
 
 registerPool('dinner.conv.body_compliment', [
+  { when: { leftoverFed: true, stageMax: 1 }, weight: 3, text: [
+    `You tell {subject.name} she looks wonderful. She glances down at leftover softness. "Thank you." She takes a large bite anyway.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 2, stageMax: 4 }, weight: 3, text: [
+    `You tell {subject.name} she looks incredible. She pats a middle that still holds the galley. "Working on it. Still."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 5 }, weight: 3, text: [
+    `You tell {subject.name} she looks spectacular. She spreads her hands across a middle already fed twice. "I know."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `The compliment finds leftover heat. {subject.name} smiles and takes another bite.`,
+  ] },
   { when: { stageMax: 1 }, text: [
     `You tell {subject.name} she looks wonderful tonight. She blinks, then smiles and takes a large bite of her food. "Thank you." She sounds like she means it.`,
   ] },
@@ -108,6 +144,18 @@ registerPool('dinner.conv.endless_courses', [
 ]);
 
 registerPool('dinner.conv.praise_capacity', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    `"I'm impressed," you say. {subject.name} grins. "Hall tray, then this. I've always eaten a lot." She orders another.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    `"I cannot believe how much you've eaten," you say. {subject.name} looks at leftover heat plus empty plates and laughs. "I can."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    `You survey the wreckage. "Extraordinary." {subject.name} pats a vast middle that started in the galley. "Just getting started."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Praise finds a capacity that already had a first sitting. {subject.name} grins and keeps eating.`,
+  ] },
   { when: { stageMax: 2 }, text: [
     `"I'm impressed," you say. {subject.name} grins and finishes the dish. "I've always eaten a lot." She orders another.`,
   ] },

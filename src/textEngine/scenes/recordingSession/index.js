@@ -4,6 +4,7 @@ import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
+import { renderRecordingOpeningBeat, renderRecordingTakeBeat } from './recordingBeats.js';
 import {
   RECORDING_OPENING_TEXT,
   RECORDING_TAKE_INTRO_TEXT,
@@ -51,11 +52,21 @@ export function renderRecordingLegacy(text, student, week, stageIdx = 0, opts = 
 }
 
 export function renderRecordingOpening(stageIdx, student, week) {
+  const beat = renderRecordingOpeningBeat(student, week, stageIdx);
+  if (beat) {
+    const ctx = buildRecordingCtx(student, week, stageIdx);
+    return appendV2Depth(beat, 'recordingSession', ctx, 0.3);
+  }
   const raw = resolveLegacy(RECORDING_OPENING_TEXT[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
 }
 
 export function renderRecordingTakeIntro(stageIdx, student, week) {
+  const beat = renderRecordingTakeBeat(student, week, stageIdx, 'okay');
+  if (beat) {
+    const ctx = buildRecordingCtx(student, week, stageIdx, { globals: { takeQuality: 'okay' } });
+    return appendV2Depth(beat, 'recordingSession', ctx, 0.22);
+  }
   const raw = resolveLegacy(RECORDING_TAKE_INTRO_TEXT[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.22 });
 }
@@ -68,6 +79,11 @@ export function renderRecordingDirectionPopup(choiceId, stageIdx, student, week)
 
 export function renderRecordingTakeResult(quality, stageIdx, postGainLbs, student, week) {
   const isPerfect = quality === 'perfect';
+  const beat = renderRecordingTakeBeat(student, week, stageIdx, quality);
+  if (beat) {
+    const ctx = buildRecordingCtx(student, week, stageIdx, { globals: { takeQuality: quality } });
+    return appendV2Depth(beat, 'recordingSession', ctx, isPerfect ? 0.34 : 0.28);
+  }
   const fn = isPerfect
     ? RECORDING_PERFECT_TAKE[stageIdx]
     : (RECORDING_TAKE_RESULT[quality] || [])[stageIdx];

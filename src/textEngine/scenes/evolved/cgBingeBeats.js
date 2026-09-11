@@ -348,3 +348,133 @@ export function renderCgMeasureScene(priya, target, week, driveLabel) {
   });
   return render('{cg.measure.scene}', ctx)?.trim() || '';
 }
+
+registerDimension('cgRel', (ctx) => ctx.globals?.cgRel ?? 'priya_larger');
+registerDimension('cgPart', (ctx) => ctx.globals?.cgPart ?? 'waist');
+
+registerPool('cg.partWord', [
+  { when: { cgPart: 'waist' }, weight: 4, text: ['waist', 'middle', 'belt-line'] },
+  { when: { cgPart: 'bust' }, weight: 4, text: ['bust', 'chest', 'front'] },
+  { when: { cgPart: 'hip' }, weight: 4, text: ['hips', 'hip line', 'seat'] },
+  { when: { cgPart: 'thigh' }, weight: 4, text: ['thighs', 'leg gap', 'lap'] },
+  { when: { cgPart: 'arm' }, weight: 4, text: ['arm', 'upper arm', 'sleeve'] },
+  { when: {}, text: ['inch', 'number', 'column'] },
+]);
+
+registerPool('cg.react.setup', [
+  { when: { leftoverFed: true, cgRel: 'priya_smaller' }, weight: 4, text: [
+    'Galley leftover still in Priya while she tapes {ref.name}. The board will count both sittings.',
+    'Foil heat plus a larger {cg.partWord} on {ref.name}. Priya writes slower.',
+  ] },
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Priya leans leftover warmth into the tape on {ref.name}. The number lands on a middle that already ate.',
+    'Kitchen heat still under the blazer. She measures {ref.name} like a follow-up plate.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw Priya after hours. Daylight tape uses the same hunger with better lighting.',
+  ] },
+  { when: { stageMax: 4, corruption: [0] }, weight: 3, text: [
+    'Priya keeps the tape neat. {ref.name} is still easy to circle. The planner pretends this is modest.',
+  ] },
+  { when: { stageMin: 5, stageMax: 7 }, weight: 3, text: [
+    'Belly in her lap, tape in her hands. {ref.name} waits while Priya finds the true line.',
+  ] },
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'The tape has to travel. Priya travels it. {ref.name} is the other column on a board that already owns the room.',
+  ] },
+  { when: {}, text: [
+    'Priya draws the tape across {ref.name} and waits for the click.',
+    'Marker ready. {ref.name} holds still. The board is already listening.',
+    'Priya measures {ref.name} the way she measures herself: twice, then logged.',
+  ] },
+]);
+
+registerPool('cg.react.verdict', [
+  { when: { leftoverFed: true, cgRel: 'priya_smaller' }, weight: 4, text: [
+    'The {cg.partWord} beats hers. Leftover heat does not count as a lead. She underlines in red.',
+    '{ref.name} is ahead here. Priya\'s middle still remembers last night. The gap stings twice.',
+  ] },
+  { when: { leftoverFed: true, cgRel: 'priya_equal' }, weight: 4, text: [
+    'Near-tie on {cg.partWord}. Leftover should have padded this. She circles the margin anyway.',
+  ] },
+  { when: { cgRel: 'priya_smaller', cgDrive: 'Ruthless' }, weight: 4, text: [
+    '{ref.name} leads the {cg.partWord}. Priya\'s face stays flat. The pin will not.',
+    'A bigger {cg.partWord} than hers. She files it as a problem she intends to crush.',
+  ] },
+  { when: { cgRel: 'priya_smaller', cgDrive: 'Frenzied' }, weight: 4, text: [
+    'The {cg.partWord} is larger. Priya checks the tape twice, hunger already climbing.',
+    '{ref.name} wins this inch. Priya\'s jaw goes tight. Calories become a schedule.',
+  ] },
+  { when: { cgRel: 'priya_smaller' }, weight: 3, text: [
+    '{ref.name}\'s {cg.partWord} sits ahead. Priya logs it without smiling.',
+    'The number is bigger than hers. She writes it. The writing is the threat.',
+  ] },
+  { when: { cgRel: 'priya_equal', cgDrive: 'Ruthless' }, weight: 4, text: [
+    'Too close on {cg.partWord}. Parity is not a win. She marks it like a debt.',
+  ] },
+  { when: { cgRel: 'priya_equal' }, weight: 3, text: [
+    'The {cg.partWord} numbers kiss. A tie is not a lead. Priya underlines the margin.',
+    'Near-even. She records it carefully, already planning the next binge.',
+  ] },
+  { when: { cgRel: 'priya_larger', cgDrive: 'Ruthless' }, weight: 4, text: [
+    'Her {cg.partWord} still leads. She does not celebrate. She locks the column.',
+  ] },
+  { when: { cgRel: 'priya_larger' }, weight: 3, text: [
+    'Priya\'s {cg.partWord} stays ahead. She dots the pin like a receipt.',
+    'Lead holds on {cg.partWord}. She writes {ref.name} smaller and keeps moving.',
+  ] },
+  { when: {}, text: [
+    'The tape tells the truth. Priya writes the truth.',
+    'She logs the {cg.partWord} without looking away from {ref.name}.',
+    'Number down. Next category. The board does not blink.',
+  ] },
+]);
+
+registerPool('cg.react.line', [
+  { when: { leftoverFed: true, cgDrive: 'Ruthless' }, weight: 4, text: [
+    '"Leftovers count," Priya says. "This inch still has to."',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '"I already ate," she says, palm on her own middle. "The board still wants hers."',
+  ] },
+  { when: { cgDrive: 'Ruthless', cgRel: 'priya_smaller' }, weight: 4, text: [
+    '"Noted," Priya says. The word is a closing date.',
+  ] },
+  { when: { cgDrive: 'Frenzied' }, weight: 3, text: [
+    '"Need the number higher. Mine." She is already thinking about containers.',
+  ] },
+  { when: { cgDrive: 'Driven' }, weight: 3, text: [
+    '"Gap or no gap, it goes on the board," Priya says.',
+  ] },
+  { when: { cgDrive: 'Invested' }, weight: 3, text: [
+    '"Logged," she says. "{ref.name} is in the set now."',
+  ] },
+  { when: {}, text: [
+    'Priya looks from the tape to {ref.name}. The looking is the rest of the inch.',
+    '"Hold still," she says, which is also a ranking.',
+    'She caps the marker. The column is warm. So is she.',
+  ] },
+]);
+
+registerPool('cg.react.scene', [
+  { when: {}, text: [
+    '{cg.react.setup} {cg.react.verdict} {cg.react.line}',
+    '{cg.react.setup} {cg.react.line} {cg.react.verdict}',
+    '{cg.react.verdict} {cg.react.setup} {cg.react.line}',
+  ] },
+]);
+
+export function renderCgReaction(priya, target, week, driveLabel, rel, part) {
+  if (!priya || !target) return '';
+  const ctx = buildTextContext({
+    subject: priya,
+    ref: target,
+    week,
+    globals: {
+      cgDrive: driveLabel || 'Invested',
+      cgRel: rel || 'priya_larger',
+      cgPart: part || 'waist',
+    },
+  });
+  return render('{cg.react.scene}', ctx)?.trim() || '';
+}
