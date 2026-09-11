@@ -74,6 +74,13 @@ registerModuleVariants('hall.ambiance.pulse.prestige', [
 
 registerModuleVariants('hall.ambiance.summary', [
   {
+    when: { ambianceTier: ['mid'] },
+    weight: 1,
+    text: [
+      'Ambiance mid-tier now — residents linger in corridors like the blueprint predicted.',
+    ],
+  },
+  {
     when: { weekMin: 20 },
     weight: 6,
     priority: 5,

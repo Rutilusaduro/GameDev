@@ -64,3 +64,13 @@ registerModuleVariants('roster.unlock.s5', [
     ],
   },
 ]);
+
+registerModuleVariants('roster.unlock.s1', [
+  {
+    when: { studentId: [1] },
+    weight: 1,
+    text: [
+      'Cassidy’s unlock scene lands like a lane change — trust opens, portions follow.',
+    ],
+  },
+]);

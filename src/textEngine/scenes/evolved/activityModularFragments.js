@@ -48,3 +48,16 @@ for (const formId of Object.keys(EVOLVED_ACTIVITY_TEXT)) {
     },
   ]);
 }
+
+registerModuleVariants('evolved.activity.eating_streamer', [
+  {
+    when: { evolvedStageIdx: [2] },
+    weight: 1,
+    text: [
+      (ctx) => {
+        const n = ctx.subject?.name || 'She';
+        return `${n} streams with bib centered — chat donates calories like ranked queue tips.`;
+      },
+    ],
+  },
+]);

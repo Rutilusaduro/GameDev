@@ -87,3 +87,13 @@ for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
     }
   });
 }
+
+registerModuleVariants('homeroom.activity.health_unit.p1', [
+  {
+    when: { hallAmbiancePeakMin: [25] },
+    weight: 1,
+    text: [
+      'Health unit phase two — moms eye the scale like the blueprint promised nobody would stay small.',
+    ],
+  },
+]);

@@ -79,6 +79,23 @@ registerModuleVariants('fair.training.Brittany', [
       },
     ],
   },
+  {
+    when: { weekMin: [18] },
+    weight: 1,
+    text: [
+      'Brittany’s fair-prep run treats every rehearsal like a weigh-in — MJ’s kitchen heat already showing on the scoreboard.',
+    ],
+  },
+]);
+
+registerModuleVariants('fair.train.Brittany.body', [
+  {
+    when: { weekMin: [18] },
+    weight: 1,
+    text: [
+      'Brittany’s fair-prep run treats every rehearsal like a weigh-in — MJ’s kitchen heat already showing on the scoreboard.',
+    ],
+  },
 ]);
 
 registerModuleVariants('fair.training.Renee', [

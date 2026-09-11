@@ -65,3 +65,13 @@ registerModuleVariants('session.blobIntro.s13', [
     ],
   },
 ]);
+
+registerModuleVariants('session.blobIntro.default', [
+  {
+    when: { stageMin: [8] },
+    weight: 1,
+    text: [
+      'Default blob intro tail — you climb warm geography; she receives you like the room always meant immobility.',
+    ],
+  },
+]);

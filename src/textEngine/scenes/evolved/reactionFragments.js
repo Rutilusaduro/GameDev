@@ -79,6 +79,16 @@ registerModuleVariants('evolved.reaction.eating_competitor.s3', [
   },
 ]);
 
+registerModuleVariants('evolved.reaction.competitive_gainer.s3', [
+  {
+    when: { weekMin: [16] },
+    weight: 1,
+    text: [
+      'Priya’s corkboard update lands like a weigh-in — the hall reads every number twice.',
+    ],
+  },
+]);
+
 registerModuleVariants('evolved.reaction.feedee_creator.s3', [
   {
     when: { evolvedFormId: ['feedee_creator'] },

@@ -110,6 +110,36 @@ for (const key of MODULAR_LESSON_KEYS) {
   ]);
 }
 
+registerModuleVariants('wl.lesson.mjDoctrine', [
+  {
+    when: { weekMin: [12] },
+    weight: 2,
+    text: [
+      '"The hall taught me appetite is hospitality," Mary Jane says, ladling without measuring.',
+    ],
+  },
+]);
+
+registerModuleVariants('wifeLessons.lesson.s8.legacy_recipe', [
+  {
+    when: { weekMin: [16] },
+    weight: 2,
+    text: [
+      '{wl.lesson.lateFeast|prefix:} Mary Jane unwraps the sealed recipe card like scripture — daughters leaning in, bellies soft against the table edge.',
+    ],
+  },
+]);
+
+registerModuleVariants('wifeLessons.lesson.s6.daughters_bake', [
+  {
+    when: { weekMin: [20] },
+    weight: 1,
+    text: [
+      'Daughters run the counter now — MJ watches from the stool, flour on her apron like a badge the hall already recognizes.',
+    ],
+  },
+]);
+
 registerModuleVariants('wifeLessons.lesson.s2.butter_cake', [
   {
     when: { weekMin: [4] },

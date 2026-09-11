@@ -211,4 +211,54 @@ registerModuleVariants('evolved.event.state_fair_queen.s0.p0', [
   },
 ]);
 
+registerModuleVariants('evolved.event.eating_streamer.s0.p0', [
+  {
+    when: { evolvedFormId: ['eating_streamer'] },
+    weight: 1,
+    text: [
+      'Stream overlay loads — chat already donating snacks before she finishes hello.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.scene.stakes', [
+  {
+    when: { weekMin: [20] },
+    weight: 1,
+    text: [
+      'The hall remembers every pound you logged here — tonight adds another verse.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.choice.bodyResult', [
+  {
+    when: { stageMin: [5] },
+    weight: 2,
+    text: [
+      'Her belly presses the desk edge; every bite makes the stream feel more inevitable.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.ending.streamCoda', [
+  {
+    when: { weekMin: [18] },
+    weight: 1,
+    text: [
+      'The hall ambiance meter ticks up — stream night counts as floor culture now.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.sumo.s5.phase0.body', [
+  {
+    when: { stageMin: [5] },
+    weight: 1,
+    text: [
+      'Chanko steam and liniment — the dohyo warm-up room knows you started as a cheerleader and stopped apologizing for it.',
+    ],
+  },
+]);
+
 export const EVOLVED_MODULAR_STATS = { phasePools, choicePools, endingPools };

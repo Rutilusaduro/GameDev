@@ -84,4 +84,14 @@ registerModuleVariants('evolution.offer.swimmer.intro', [
       'Lane discipline cracks — she wants a path where appetite keeps pace with medals.',
     ],
   },
+  {
+    when: { weekMin: [10] },
+    weight: 1,
+    text: [
+      (ctx) => {
+        const name = ctx.subject?.name || 'She';
+        return `${name} meets you after laps — lane discipline still in her shoulders, appetite now part of the program chart.`;
+      },
+    ],
+  },
 ]);

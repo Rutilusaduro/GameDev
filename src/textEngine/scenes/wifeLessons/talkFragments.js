@@ -163,3 +163,33 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
     });
   });
 }
+
+registerModuleVariants('wl.talk.warmOpen', [
+  {
+    when: { weekMin: [14] },
+    weight: 1,
+    text: [
+      '"The hall kitchen feels like our real dining room now — we only eat this well here."',
+    ],
+  },
+]);
+
+registerModuleVariants('wl.talk.branchAnswer', [
+  {
+    when: { weekMin: [12] },
+    weight: 1,
+    text: [
+      '"Mary Jane says appetite is hospitality. We\'re learning that lesson in our bodies."',
+    ],
+  },
+]);
+
+registerModuleVariants('wifeLessons.talk.Emma.s6.greeting', [
+  {
+    when: { weekMin: [8] },
+    weight: 1,
+    text: [
+      'Emma greets the kitchen like a daughter who finally stopped apologizing for seconds.',
+    ],
+  },
+]);

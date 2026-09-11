@@ -76,6 +76,16 @@ for (const stageKey of Object.keys(CG_FILLED_BINGE_SCENES)) {
   }
 }
 
+registerModuleVariants('cg.scene.binge.Heavy.Invested', [
+  {
+    when: { cgDriveTier: ['Invested'], cgStageKey: ['Heavy'] },
+    weight: 1,
+    text: [
+      'Containers empty in ranked order — Priya binge scene reads like a bracket nobody streams but everybody feels.',
+    ],
+  },
+]);
+
 for (const stageKey of Object.keys(CG_FILLED_SELF_REVIEW)) {
   const tierMap = CG_FILLED_SELF_REVIEW[stageKey] || {};
   for (const tier of Object.keys(tierMap)) {

@@ -48,6 +48,7 @@ registerModuleVariants('session.immobile.s0.blob', [
     weight: 1,
     text: [
       'Brittany’s chair creaks agreement — dinner comes to the captain now, not the other way.',
+      'Brittany’s redirect is blunt — dinner travels to her; the hall learns immobility is still hospitality.',
     ],
   },
 ]);

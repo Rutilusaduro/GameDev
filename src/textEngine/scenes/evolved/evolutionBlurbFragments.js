@@ -85,3 +85,13 @@ registerModuleVariants('evolution.blurb.athlete', [
     ],
   },
 ]);
+
+registerModuleVariants('evolution.blurb.swimmer', [
+  {
+    when: { archetype: ['swimmer'] },
+    weight: 1,
+    text: [
+      'Lane splits behind her — evolution card reads like a new PR category: appetite per serving.',
+    ],
+  },
+]);

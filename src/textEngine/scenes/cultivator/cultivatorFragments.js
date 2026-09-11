@@ -45,6 +45,13 @@ registerModuleVariants('cultivator.beat', [
     priority: 2,
     text: [CULT_SKELETON],
   },
+  {
+    when: { weekMin: [6] },
+    weight: 1,
+    text: [
+      'Tester bellies swell on schedule — the cult treats appetite like liturgy, not sin.',
+    ],
+  },
 ]);
 
 registerModuleVariants('cultivator.reaction', [

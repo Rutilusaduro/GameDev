@@ -101,6 +101,26 @@ for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   }
 }
 
+registerModuleVariants('homeroom.conference.Kayla.intro', [
+  {
+    when: { weekMin: [10] },
+    weight: 1,
+    text: [
+      'Kayla meets your eyes at the conference table — hips wider, suspicion softer, appetite harder to hide.',
+    ],
+  },
+]);
+
+registerModuleVariants('homeroom.conference.Sofia.intro', [
+  {
+    when: { weekMin: [6] },
+    weight: 1,
+    text: [
+      'Sofia fills the chair before the conference starts — appetite already written in posture, not paperwork.',
+    ],
+  },
+]);
+
 registerModuleVariants('homeroom.conference.Bri.brought_something', [
   {
     when: { hallAmbiancePeakMin: [30] },

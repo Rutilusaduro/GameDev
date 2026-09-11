@@ -71,3 +71,41 @@ for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
     },
   ]);
 }
+
+registerModuleVariants('session.payoff.legacy.s2', [
+  {
+    when: { sessionStage: [2] },
+    weight: 1,
+    text: [
+      (ctx) => {
+        const g = Math.round(ctx.globals?.sessionGain ?? 0);
+        return `Session closes at +${g} lbs — Rae’s route memorized, Destiny’s focus fraying into appetite.`;
+      },
+    ],
+  },
+]);
+
+registerModuleVariants('session.payoff.legacy.s4', [
+  {
+    when: { weekMin: [24] },
+    weight: 1,
+    text: [
+      (ctx) => {
+        const gain = Math.round(ctx.globals?.sessionGain ?? 0);
+        const reason = ctx.globals?.sessionEndReason ?? 'focus_out';
+        const stop = reason === 'food_coma' ? 'Food coma.' : 'Focus out.';
+        return `${stop} ${gain} lbs. Grandmaster rank, desk clear, Rae already planning the next delivery before you finish the victory screen.`;
+      },
+    ],
+  },
+]);
+
+registerModuleVariants('session.rae.exit.s2', [
+  {
+    when: { sessionStage: [2] },
+    weight: 1,
+    text: [
+      'Rae ducks out mid-queue — “good luck” sounds like she already knows Destiny will tap out full.',
+    ],
+  },
+]);

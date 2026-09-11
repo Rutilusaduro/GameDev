@@ -97,6 +97,23 @@ registerModuleVariants('hall.room.blurb', [
       BLUEPRINT_SKELETON,
     ],
   },
+  {
+    when: { hallRoomId: ['kitchen_pantry'] },
+    weight: 1,
+    text: [
+      (ctx) => {
+        const label = ctx.globals?.ambianceLabel || 'Pantry';
+        return `${label} wing hums — stock rotation written in butter and permission.`;
+      },
+    ],
+  },
+  {
+    when: { hallRoomId: ['grand_atrium'] },
+    weight: 1,
+    text: [
+      'Grand Atrium: prestige echoes off marble; residents arrive heavier just walking the threshold.',
+    ],
+  },
 ]);
 
 registerModuleVariants('hall.blueprint.synergy', [
@@ -105,6 +122,7 @@ registerModuleVariants('hall.blueprint.synergy', [
     weight: 1,
     text: [
       'Every labeled room breathes together — the wing feels like one warm organism.',
+      'Two wings lock in — comfort bleeds into pantry steam until appetite walks the blueprint without a map.',
     ],
   },
 ]);
