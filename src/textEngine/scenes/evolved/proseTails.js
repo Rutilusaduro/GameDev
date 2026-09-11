@@ -100,3 +100,28 @@ const HOMEROOM_TAIL = [
 export function homeroomTailBeat(seed, slot = 0) {
   return pickTail(HOMEROOM_TAIL, seed, slot);
 }
+
+const WL_TALK_TAIL = [
+  'The kitchen smells like butter before anyone finishes hello.',
+  'Mary Jane ladles warmth into every pause — nobody leaves still pretending they are full.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} — daughters and mothers learn appetite in the same room.`;
+  },
+];
+
+export function wlTalkTailBeat(seed, slot = 0) {
+  return pickTail(WL_TALK_TAIL, seed, slot);
+}
+
+const CG_CHAT_TAIL = [
+  'The group chat pings like a scoreboard — numbers and appetite in the same thread.',
+  (ctx) => {
+    const p = ctx.globals?.priyaName || 'Priya';
+    return `${p} reads replies while eating — multitasking as dominance.`;
+  },
+];
+
+export function cgChatTailBeat(seed, slot = 0) {
+  return pickTail(CG_CHAT_TAIL, seed, slot);
+}

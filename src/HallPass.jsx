@@ -358,7 +358,7 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
-import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction } from './textEngine/scenes/competitiveGainer/index.js';
+import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction, renderCGPriyaPost, renderCGPriyaFollowup, renderCGResidentReply } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
 import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
@@ -3380,8 +3380,8 @@ export default function HallPass(){
     const msgs=[];
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
-    const postTemplate=CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested;
-    const postBody=renderCGSceneBeat(postTemplate,priya,currentWeek,tier.label,'chat_post');
+    const postBody=renderCGPriyaPost(priya,currentWeek,stageKey,tier.label)
+      ||renderCGSceneBeat(CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested,priya,currentWeek,tier.label,'chat_post');
     msgs.push({text:`[Priya] ${postBody} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
     // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
@@ -3406,13 +3406,14 @@ export default function HallPass(){
       else if(CG_CONFIG.categories.some(cat=>sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction))||s.lbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
       else if(s.lbs>priya.lbs*0.80)  replyType='proud';
       else replyType='behind';
-      const replyText=templates[replyType]||templates.behind||'...';
+      const replyText=renderCGResidentReply(s.name,replyType,priya,currentWeek,tier.label)
+        ||templates[replyType]||templates.behind||'...';
       msgs.push({text:`[${s.name}] ${replyText}`,isRa:false,wk:currentWeek});
     });
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
-    const followupRaw=CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.";
-    const followup=renderCGSceneBeat(followupRaw,priya,currentWeek,tier.label,'chat_followup');
+    const followup=renderCGPriyaFollowup(priya,currentWeek,followupKey,tier.label)
+      ||renderCGSceneBeat(CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.",priya,currentWeek,tier.label,'chat_followup');
     msgs.push({text:`[Priya] ${followup}`,isRa:false,wk:currentWeek});
     return msgs;
   };

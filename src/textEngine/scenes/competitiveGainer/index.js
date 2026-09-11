@@ -6,6 +6,7 @@ import { getStage } from '../../../gameData/stages.js';
 import { cgMeasureSession, cgTargetStageBucket } from './fragments.js';
 import './raReplyPools.js';
 import './cgScenePools.js';
+import './cgChatPools.js';
 import { fillCgTemplate } from './raReplyPools.js';
 import {
   CG_RA_REPLY_TEXT,
@@ -13,7 +14,9 @@ import {
   CG_FILLED_BINGE_SCENES,
   CG_FILLED_SELF_REVIEW,
   CG_FILLED_MEASUREMENT_REACTIONS,
+  CG_FILLED_CHAT_TEMPLATES,
 } from '../../../gameData/competitiveGainerText.js';
+import { CG_CHAT_TEMPLATES } from '../../../gameData/evolvedForms.js';
 
 registerDimension('targetStageBucket', (ctx) => ctx.globals?.targetStageBucket ?? 'mid');
 registerDimension('cgDriveTier', (ctx) => ctx.globals?.cgDriveTier ?? 'Invested');
@@ -95,6 +98,72 @@ export function renderCGCorkboardScene(priya, week, driveTierLabel = 'Invested',
     /* fallback */
   }
   return renderCGSceneBeat(fallback, priya, week, tier, 'corkboard', opts);
+}
+
+function residentPoolName(name) {
+  return (name || 'Brittany').replace(/\s+/g, '_');
+}
+
+export function renderCGPriyaPost(priya, week, stageKey, driveTierLabel, opts = {}) {
+  if (!priya) return '';
+  const tier = driveTierLabel || 'Invested';
+  const sk = stageKey || 'Heavy';
+  const fallback = CG_FILLED_CHAT_TEMPLATES.priyaPost?.[sk]?.[tier]
+    || CG_FILLED_CHAT_TEMPLATES.priyaPost?.Heavy?.Invested
+    || '';
+  const ctx = buildCGSceneCtx(priya, week, { cgDriveTier: tier, cgStageKey: sk, cgChatKind: 'post' }, opts);
+  try {
+    const line = render(`{cg.chat.priyaPost.${sk}.${tier}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) {
+      return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.2);
+    }
+  } catch {
+    /* fallback */
+  }
+  return renderCGSceneBeat(fallback, priya, week, tier, 'chat_post', opts);
+}
+
+export function renderCGPriyaFollowup(priya, week, followupKey, driveTierLabel, opts = {}) {
+  if (!priya) return '';
+  const tier = driveTierLabel || 'Invested';
+  const fk = followupKey === 'threatened' ? 'threatened' : 'leading';
+  const fallback = CG_FILLED_CHAT_TEMPLATES.priyaFollowup?.[fk]?.[tier] || 'The board is updated.';
+  const ctx = buildCGSceneCtx(priya, week, {
+    cgDriveTier: tier,
+    cgFollowupKey: fk,
+    cgChatKind: 'followup',
+  }, opts);
+  try {
+    const line = render(`{cg.chat.priyaFollowup.${fk}.${tier}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) {
+      return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.2);
+    }
+  } catch {
+    /* fallback */
+  }
+  return renderCGSceneBeat(fallback, priya, week, tier, 'chat_followup', opts);
+}
+
+export function renderCGResidentReply(residentName, replyType, priya, week, driveTierLabel, opts = {}) {
+  const safe = residentPoolName(residentName);
+  const templates = CG_CHAT_TEMPLATES.residents?.[residentName]
+    || CG_CHAT_TEMPLATES.residents?.Brittany
+    || {};
+  const fallback = templates[replyType] || templates.behind || '...';
+  const ctx = buildCGSceneCtx(priya, week, {
+    cgDriveTier: driveTierLabel || 'Invested',
+    cgResidentName: safe,
+    cgResidentReply: replyType,
+    cgChatKind: 'resident',
+    residentName,
+  }, opts);
+  try {
+    const line = render(`{cg.chat.resident.${safe}.${replyType}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) return line;
+  } catch {
+    /* fallback */
+  }
+  return fallback;
 }
 
 export function renderCGSelfReviewScene(priya, week, stageKey, driveTierLabel, vars = {}, opts = {}) {

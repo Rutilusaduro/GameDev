@@ -2,6 +2,7 @@
 // Wife Lessons (Flabwife) — engine bridge from legacy WL_LESSONS / WL_DIALOGUES.
 import { registerPool, render } from '../../engine.js';
 import { registerDecomposedPool } from '../decomposePools.js';
+import { wlTalkTailBeat } from '../evolved/proseTails.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
@@ -13,22 +14,37 @@ function wlStageNum(person, stageIdx) {
   return DAUGHTERS.has(person) ? stageIdx + WL_CONFIG.daughtersFrom : stageIdx + 1;
 }
 
+function registerTalkLine(poolKey, line) {
+  const prose = (line || '').trim();
+  if (!prose) return;
+  const bodyKey = `${poolKey}.body`;
+  registerDecomposedPool(bodyKey, prose);
+  registerPool(poolKey, [
+    {
+      when: {},
+      weight: 2,
+      text: [
+        (ctx) => {
+          const rendered = render(`{${bodyKey}}`, ctx)?.trim();
+          return rendered && !rendered.includes('{unresolved}') ? rendered : prose;
+        },
+        wlTalkTailBeat(poolKey, 0),
+        wlTalkTailBeat(poolKey, 1),
+      ],
+    },
+  ]);
+}
+
 function registerDialogueEntry(person, stageIdx, entry) {
   const stage = wlStageNum(person, stageIdx);
   const prefix = `wifeLessons.talk.${person}.s${stage}`;
-  if (entry.greeting) {
-    registerPool(`${prefix}.greeting`, [{ when: {}, text: [entry.greeting] }]);
-  }
-  if (entry.cappedGreeting) {
-    registerPool(`${prefix}.capped`, [{ when: {}, text: [entry.cappedGreeting] }]);
-  }
-  if (entry.overtookGreeting) {
-    registerPool(`${prefix}.overtook`, [{ when: {}, text: [entry.overtookGreeting] }]);
-  }
+  if (entry.greeting) registerTalkLine(`${prefix}.greeting`, entry.greeting);
+  if (entry.cappedGreeting) registerTalkLine(`${prefix}.capped`, entry.cappedGreeting);
+  if (entry.overtookGreeting) registerTalkLine(`${prefix}.overtook`, entry.overtookGreeting);
   entry.options?.forEach((opt, oi) => {
-    if (opt.text) registerPool(`${prefix}.opt${oi}`, [{ when: {}, text: [opt.text] }]);
+    if (opt.text) registerTalkLine(`${prefix}.opt${oi}`, opt.text);
     opt.subs?.forEach((sub, si) => {
-      if (sub.text) registerPool(`${prefix}.opt${oi}.sub${si}`, [{ when: {}, text: [sub.text] }]);
+      if (sub.text) registerTalkLine(`${prefix}.opt${oi}.sub${si}`, sub.text);
     });
   });
 }
