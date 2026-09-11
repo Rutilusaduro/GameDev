@@ -2,7 +2,7 @@
 // Salon + gallery hub prose and form-specific evolved event depth.
 // Loads after oppositionSalonGallery.js and v2ProseExpansion.js.
 import { registerModuleVariants, registerPool, render } from '../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext } from '../../gameData/textContext.js';
 import './proseOverhaulPass3.js';
 
 const W = 4;

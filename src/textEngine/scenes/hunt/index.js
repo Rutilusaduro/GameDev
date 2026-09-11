@@ -46,3 +46,5 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   const linger = render('{hunt.linger}', ctx)?.trim() || '';
   return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
+
+import './depth.js';

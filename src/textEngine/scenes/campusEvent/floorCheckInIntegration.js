@@ -28,8 +28,15 @@ for (const scene of FLOOR_SCENES) {
   scene.choices.forEach((choice, idx) => {
     const resultText = resolveLegacyText(choice.result, sampleStudent);
     if (resultText) {
+      const texts = idx === 3
+        ? [
+          resultText,
+          `${choice.label} becomes the rest of the hour. She eats like it was scheduled.`,
+          `You follow through. The food leaves with her. The lounge pretends it was always this full.`,
+        ]
+        : [resultText];
       registerPool(`campusEvent.choice.${scene.id}.${idx}`, [
-        { when: {}, text: [resultText] },
+        { when: {}, text: texts },
       ]);
     }
   });

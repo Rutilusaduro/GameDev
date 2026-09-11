@@ -27,3 +27,8 @@ registerModuleVariants('hunt.man.ethan_c', [{ when: {}, text: ["Uniform, routine
 registerModuleVariants('hunt.man.brendan_m', [{ when: {}, text: ["He felt her before he saw her — something in the air changed when she entered.", "His confidence falters mid-sentence; her scale rewrites the room."] }]);
 registerModuleVariants('hunt.man.prof_hayes', [{ when: {}, text: ["He felt her before he saw her — something in the air changed when she entered.", "His confidence falters mid-sentence; her scale rewrites the room."] }]);
 registerModuleVariants('hunt.man.danny_d', [{ when: {}, text: ["He felt her before he saw her — something in the air changed when she entered.", "His confidence falters mid-sentence; her scale rewrites the room."] }]);
+registerModuleVariants('hunt.man.owen_k', [{ when: {}, text: [
+  "Closing-shift apron, leftover tray still warm — he kept it for a reason he will not name.",
+  "Night cook, scraping nothing. The tray was already spoken for when she walked in.",
+  "He stopped working the moment she entered. The kitchen lights make him honest.",
+] }]);
