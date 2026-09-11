@@ -119,6 +119,7 @@ registerPool('fair.training.photo', [
   { when: {}, text: [
     'County-fair light on a full middle. The trophy wall will keep this heat.',
     'A still of appetite. The ribbon comes later.',
+    'Butter on a wrist. Mary Jane mid-laugh. The county will keep this.',
   ] },
 ]);
 
@@ -207,6 +208,7 @@ registerPool('fair.day.weighin.result', [
   { when: {}, text: [
     'The scale speaks. She stays on it a beat longer than required.',
     'Official writes. County watches. She already knew.',
+    'The board ticks. She does not step off until the roar starts.',
   ] },
 ]);
 
@@ -251,6 +253,7 @@ registerPool('fair.day.afterparty.result', [
   { when: {}, text: [
     'The night keeps serving. She keeps receiving.',
     'Ribbon on the stall. Appetite still on the clock.',
+    'String lights, a last plate, a champion who treats closing time as a rumor.',
   ] },
 ]);
 
