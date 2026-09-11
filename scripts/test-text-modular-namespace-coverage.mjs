@@ -50,6 +50,7 @@ const requiredFragments = [
   'opposition/oppositionLateModularFragments.js',
   'talkRefusalCommandFinishModularFragments.js',
   'opposition/oppositionAgendaModularFragments.js',
+  'talkRefusalCommandDevourModularFragments.js',
   'fairQueen/trainingModularFragments.js',
   'fairQueen/photoBoostModularFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',

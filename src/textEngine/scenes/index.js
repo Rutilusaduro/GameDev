@@ -55,6 +55,7 @@ import './talkSuggestDepth.js';
 import './talkRefusal.js';
 import './talkRefusalDepth.js';
 import './talkRefusalCommandFinishModularFragments.js';
+import './talkRefusalCommandDevourModularFragments.js';
 import './talkCommandFinish.js';
 import './talkCommandFinishDepth.js';
 import './talkCommandFinishModularFragments.js';

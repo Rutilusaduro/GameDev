@@ -37,6 +37,11 @@ for (const cardId of [
   'size_review',
   'budget_freeze',
   'wellness_seminar',
+  'device_confiscation',
+  'mandatory_fitness',
+  'shame_vigil',
+  'faculty_informant',
+  'student_advocacy',
 ]) {
   registerModuleVariants(`opposition.agenda.${cardId}`, [
     {

@@ -62,6 +62,7 @@ const pairs = [
   ['opposition/depth.js', 'opposition/oppositionLateModularFragments.js'],
   ['opposition/oppositionLateModularFragments.js', 'opposition/oppositionAgendaModularFragments.js'],
   ['talkRefusalDepth.js', 'talkRefusalCommandFinishModularFragments.js'],
+  ['talkRefusalCommandFinishModularFragments.js', 'talkRefusalCommandDevourModularFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {

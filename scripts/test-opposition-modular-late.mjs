@@ -81,6 +81,12 @@ for (let s = 0; s < 12; s += 1) {
   if (AGENDA_FP.test(line)) agendaHit = true;
 }
 assert.ok(agendaHit, `expected modular agenda @ week ${week}`);
+let agenda2Hit = false;
+for (let s = 0; s < 8; s += 1) {
+  const line = agendaResolveLine('shame_vigil', week)?.trim() || '';
+  if (AGENDA_FP.test(line)) agenda2Hit = true;
+}
+assert.ok(agenda2Hit, `expected modular shame_vigil agenda @ week ${week}`);
 
 const FEAST_REM_FP = /removalFeastPlay|cateredVote|hearing becomes dinner/i;
 let feastRemHit = false;

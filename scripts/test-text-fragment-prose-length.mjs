@@ -47,6 +47,7 @@ const POOLS = [
   'opposition.scene.counterMomentum',
   'opposition.scene.agendaInstitutional',
   'opposition.scene.endingRelief',
+  'talk.refusal.command_devour.lateBrink',
 ];
 
 for (const key of POOLS) {

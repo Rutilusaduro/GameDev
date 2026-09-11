@@ -41,6 +41,7 @@ const MODULAR_MARKERS = [
   /emergencyExposure|emergencyStake|roundStartPulse|roundStartChat/i,
   /testifyWarmth|counterMomentum|counterAfterglow/i,
   /agendaInstitutional|endingRelief|removalFeastPlay/i,
+  /lateBrink|lateAlmost|command_devour/i,
 ];
 
 function isModular(line) {
