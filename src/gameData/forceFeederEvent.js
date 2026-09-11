@@ -254,6 +254,7 @@ export function buildForceFeederEffect(target, performanceTier, labState, week, 
   if (mods.intimateCalibration && isHighRelationship(target)) {
     psychDelta.dependence = (psychDelta.dependence ?? 0) + 1;
   }
+  if (target?.leftoverFedThisWeek) psychDelta.dependence = (psychDelta.dependence ?? 0) + 1;
 
   const bloatedBump = performanceTier === 'failure' ? 3 : performanceTier === 'messy' ? 2 : 1;
   return {

@@ -177,6 +177,9 @@ oncePool('homeroom.linger', [
     'Daisy leaves one tray where hands will find it. The galley already started them.',
     'Foil from last night, then this. Forks wait like they knew.',
   ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Quiet-hours knock still in the lounge. Tuesday hospitality uses the same open door.',
+  ] },
   { when: {}, text: [
     'Daisy wipes the table and leaves one tray where hands will find it.',
     'The lounge keeps the heat of whoever just ate. Forks wait for next Tuesday.',

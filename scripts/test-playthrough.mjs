@@ -14,8 +14,8 @@ import { SATURATION_TIERS, computeSaturationScore } from '../src/gameData/campus
 import { getMysteryTrustPulse } from '../src/gameData/mysteryTrust.js';
 import { computeSurrenderVector } from '../src/gameData/transformationPressure.js';
 import { computePrestigeScore } from '../src/gameData/prestigeLite.js';
-import { labInstabilityEase, leftoverNightGainBump, neighborEcologyPatch } from '../src/gameData/mechanicDepth.js';
-import { getInterruptTalkRelGain, getInterruptDenyRelLoss } from '../src/gameData/hungerAddiction.js';
+import { labInstabilityEase, leftoverNightGainBump, neighborEcologyPatch, habitatFx } from '../src/gameData/mechanicDepth.js';
+import { getInterruptTalkRelGain, getInterruptDenyRelLoss, getInterruptFeedPortion } from '../src/gameData/hungerAddiction.js';
 import { applyFavoritismEcology } from '../src/gameData/relationshipEcology.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
@@ -263,6 +263,16 @@ const neighPatch = neighborEcologyPatch(
   3,
 );
 assert.equal(neighPatch[0], 1, 'leftover should give neighbor ecology +1');
+assert.ok(
+  habitatFx(null, {}, {}, { leftoverKitchen: true }).scrutinyEase
+    > habitatFx(null, {}, {}).scrutinyEase,
+  'leftover kitchen should ease weekly scrutiny',
+);
+assert.ok(
+  getInterruptFeedPortion({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true }).relGain
+    > getInterruptFeedPortion(INIT_STUDENTS[0]).relGain,
+  'leftover should bump hunger-interrupt feed rel',
+);
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

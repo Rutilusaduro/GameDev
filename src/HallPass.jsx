@@ -1765,7 +1765,7 @@ export default function HallPass(){
     const nightIdsThisWeek=new Set(students.filter(st=>week&&st.lastNightVisitWeek===week).map(st=>st.id));
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats, leftoverKitchen:leftoverKitchenThisWeek, nightRound:nightRoundThisWeek });
     const loungeSkillFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
-    const hallFx=habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{});
+    const hallFx=habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{},{leftoverKitchen:leftoverKitchenThisWeek,nightRound:nightRoundThisWeek});
     const weeklyApBase=5+skillApBonus+(loungeSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny)+(hallFx.plannerAp||0);
     const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
@@ -3915,9 +3915,10 @@ export default function HallPass(){
       setChapterHostessState(prev=>({...prev,hangoutPhaseIdx:1,hangoutHistory:[choiceId]}));
     } else {
       // Complete hangout — apply unlock and decrement days
-      const bonus=vignette.gainBonus||0;
-      const relBonus=vignette.relBonus||0;
       const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
+      const bonus=vignette.gainBonus||0;
+      const leftoverRel=(tiffany?.leftoverFedThisWeek?1:0)+(week&&tiffany?.lastNightVisitWeek===week?1:0);
+      const relBonus=(vignette.relBonus||0)+leftoverRel;
       if(tiffany){
         setStudents(prev=>prev.map(s=>s.id===tiffany.id?bumpOriginChain(processStudentGain(s,depthGainLbs(s,bonus,week,{}),relBonus)):s));
         push(`✦ ${['Kylie','Fiona','Reneé'][[2,4,10].indexOf(hangoutStudentId)]} hangout — +${bonus} lbs · +${relBonus} rel`);

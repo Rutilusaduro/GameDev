@@ -259,7 +259,7 @@ export function tickHabitatWeek(student, dormState, ownedHallSkills, week = 0) {
 }
 
 /** Cross-system habitat readout — lounge rooms + per-door fit-outs + night rounds. */
-export function habitatFx(student, dormState, ownedHallSkills = {}) {
+export function habitatFx(student, dormState, ownedHallSkills = {}, extras = {}) {
   const hab = habitatForStudent(student, dormState, ownedHallSkills);
   const fits = studentFits(dormState, student?.id);
   const nr = dormState?.nightRounds || {};
@@ -272,7 +272,8 @@ export function habitatFx(student, dormState, ownedHallSkills = {}) {
   const habit = nr.habits?.[student?.id];
   return {
     ...hab,
-    scrutinyEase: annex.owned + (nr.floorIntimacy >= 50 ? 1 : 0) + (desk.owned >= 2 ? 1 : 0),
+    scrutinyEase: annex.owned + (nr.floorIntimacy >= 50 ? 1 : 0) + (desk.owned >= 2 ? 1 : 0)
+      + (extras.leftoverKitchen ? 1 : 0) + (extras.nightRound ? 1 : 0),
     malfRiskMult: fits.outlets ? 0.72 : 1,
     hungerInterruptEase:
       (fits.fridge ? 0.22 : 0)

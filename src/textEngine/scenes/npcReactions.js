@@ -36,6 +36,13 @@ registerPool('npc.peer', [
     'A resident nods — familiar, noncommittal.',
     'Someone she knows offers a smile that does not quite reach their eyes.',
   ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'A floor-mate clocks leftover roundness and pretends the greeting is about class.',
+    '"You look... fed," someone says, then laughs like it was a joke.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Someone who heard the knock last night looks at her middle first.',
+  ] },
   { when: { relationship: [2, 3], stageMin: 5 }, text: [
     'A friend squeezes her arm — affectionate, unsurprised by the size of it.',
     '"You\'re looking well," someone says, and means it.',

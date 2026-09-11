@@ -218,6 +218,7 @@ export function getInterruptFeedPortion(student) {
     fullness += 2;
     relGain += 1;
   }
+  if (student?.leftoverFedThisWeek) relGain += 1;
   return { calories, fullness, relGain };
 }
 

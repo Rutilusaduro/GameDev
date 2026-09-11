@@ -499,3 +499,21 @@ oncePool('stream.destiny.spend', [
   ] },
 ]);
 
+oncePool('portrait.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Last night\'s sitting still shows in the outline. She does not suck it in.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The portrait includes leftover heat. The middle is the honest part.',
+    'She stands like the tray is still happening. Softness keeps the overtime.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'After-hours knock still in the stance. Daylight just lights the same roundness.',
+  ] },
+  { when: {}, text: [
+    'The eye keeps finding more of her. She lets it.',
+    'Softness holds the pose after she thinks she stopped posing.',
+    'The outline keeps arriving. She breathes around it.',
+  ] },
+]);
+

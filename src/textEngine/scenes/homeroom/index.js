@@ -1,7 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Hall kitchen queen — engine bridge from HOMEROOM_* legacy prose.
 import { render, registerModuleVariants } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import { registerDecomposedPool } from '../decomposePools.js';
@@ -58,7 +58,7 @@ export function renderHomeroomProse(text, daisyStudent, week = 1, opts = {}) {
   if (!text?.trim()) return '';
   const ctx = buildHomeroomCtx(daisyStudent, week, opts);
   const base = text.trim();
-  return appendV2Depth(base, 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
+  return wrapLeftoverLinger(appendV2Depth(base, 'homeroom', ctx, opts.v2DepthChance ?? 0.28), daisyStudent, week, 'homeroom.linger');
 }
 
 /** Pool key for conference intro or choice result. */

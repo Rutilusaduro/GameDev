@@ -25,6 +25,13 @@ registerPool('lab.session.acquire', [
 ]);
 
 registerPool('lab.session.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley surplus still in the hoodie. She treats the bench like a second sitting.',
+    'Last night\'s tray plus this test. Mass is the successful output.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'After-hours knock still in her. The lab uses the same open door.',
+  ] },
   { when: {}, text: [
     'Solder cools. She does not. The hoodie rides and she leaves it.',
     'The bench keeps her heat. Breakthroughs keep her hungry.',
