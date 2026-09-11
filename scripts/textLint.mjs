@@ -195,8 +195,8 @@ for (const [key] of entries) {
 // asserts clean output. Only runs for templates whose modules exist.
 
 const SWEEPS = [
-  { name: 'WI_INTRO', root: 'wi.arrival', tpl: '{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}' },
-  { name: 'WI_INTRO_BIG', root: 'wi.approachSentence', tpl: '{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}', bigScale: true },
+  { name: 'WI_INTRO', root: 'wi.arrival', tpl: '{wi.arrival} {wi.settle} {wi.bodyRead} {wi.approachSentence} {wi.scaleSentence} {wi.floor}' },
+  { name: 'WI_INTRO_BIG', root: 'wi.approachSentence', tpl: '{wi.arrival} {wi.settle} {wi.bodyRead} {wi.approachSentence} {wi.scaleSentence} {wi.floor}', bigScale: true },
   { name: 'WI_INTRO_LEGACY', root: 'wi.scaleApproach', tpl: '{wi.arrival} {wi.settle} {wi.scaleApproach}' },
   { name: 'WI_REACTION', root: 'wi.reply', tpl: '{wi.stepOff}\n\n{wi.reply}' },
   { name: 'WI_BREAK', root: 'wi.breakLine', tpl: '{wi.breakBeat} {wi.breakLine}' },
@@ -212,8 +212,9 @@ const SWEEPS = [
   { name: 'slender.mirror', root: 'slender.mirror', tpl: '{slender.mirror} {slender.mindFeel}', corruptionTier: [0], stageMax: 4 },
   { name: 'dinner.overfill', root: 'dinner.overfill', tpl: '{dinner.overfill}' },
   { name: 'feed.voice', root: 'feed.voice', tpl: '{feed.voice}' },
-  { name: 'body.portrait.depth', root: 'body.portrait.depth', tpl: '{body.portrait.depth}' },
-];
+  { name: 'talk.check_in', root: 'talk.check_in', tpl: '{talk.check_in}' },
+  { name: 'feed.react', root: 'feed.react', tpl: '{feed.react}' },
+  { name: 'circuit.beat', root: 'circuit.open', tpl: '{circuit.open} {circuit.kitchen} {circuit.line}' },
 
 const STAGE_PROBES = [0, 2, 4, 6, 8, 10, 11];
 const stageLbs = (id) => WEIGHT_STAGES[id].min + 10;

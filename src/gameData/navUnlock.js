@@ -75,7 +75,7 @@ export const NAV_TAB_META = [
 ];
 
 export const NAV_UNLOCK_BLURB = {
-  'hall-lounge': 'Hall Lounge — spend floor weight on permanent upgrades.',
+  'hall-lounge': 'Hall Lounge — floor blueprint. Click a room, install upgrades, walk After-Hours Rounds.',
   influence: 'Influence — resonance links and floor rituals.',
   actions: 'Hall-Wide Actions — feed the whole floor at once.',
   inventory: 'Pantry — items and gifts for residents.',

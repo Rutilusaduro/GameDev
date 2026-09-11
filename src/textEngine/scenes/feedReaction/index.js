@@ -209,7 +209,7 @@ registerPool('feed.react.line', [
 // ── feed.react — composed skeleton ────────────────────────────
 // Shape: SKELETON — stitches the two sub-pools. Never a paragraph.
 registerPool('feed.react', [
-  { when: {}, text: ['{feed.react.beat} {feed.react.line}'] },
+  { when: {}, text: ['{feed.react.beat} {feed.react.body} {feed.react.line}'] },
 ]);
 
 /**

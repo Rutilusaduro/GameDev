@@ -389,6 +389,43 @@ export const SKILL_TREE = [
     effect:"+5 passive lbs/week for all. +3 AP per week. The endgame. Everything at full power simultaneously.",
     passiveBonus:5, apBonus:3, gainMult:0, requires:["master_feeder", "the_arrangement"] },
 
+  // ── FLOOR ROOMS (blueprint) ─────────────────────────────────────────────────
+
+  { id:"floor_scale", tier:2, cost:150, category:"environment", label:"⚖️ Floor Scale",
+    desc:"A discreet calibrated scale in the corridor alcove — wide platform, quiet readout, a plant that almost hides it. Weigh-ins stop being a trek across campus.",
+    effect:"Weigh-ins grant +2 relationship. The number lives on your floor now.",
+    weighInRelBonus:2, passiveBonus:0, apBonus:0, gainMult:0, requires:["comfy_chairs"] },
+
+  { id:"quiet_hours", tier:2, cost:150, category:"efficiency", label:"🌙 Quiet Hours Charter",
+    desc:"Posted, laminated, ignored by everyone except craving. After midnight the corridor belongs to you and whoever cannot sleep for hunger.",
+    effect:"Hunger interrupts fire less often. After-Hours Rounds cost 0 AP if Late-Night Access is owned.",
+    interruptReduce:0.12, passiveBonus:0, apBonus:0, gainMult:0, requires:["late_night_access"] },
+
+  { id:"laundry_refit", tier:1, cost:50, category:"environment", label:"🧺 Laundry Refit",
+    desc:"Machines that take a real load. Detergent that smells like warm bread if you buy the right bottle. Softness as policy.",
+    effect:"Residents finish After-Hours laundry stops content. Clothing strain eases a notch.",
+    clothingEase:1, passiveBonus:0, apBonus:0, gainMult:0 },
+
+  { id:"oversized_linens", tier:2, cost:150, category:"environment", label:"🛏️ Oversized Linens",
+    desc:"Sheets ordered two sizes up. Towels that still wrap. The laundry room becomes a place she is not embarrassed to be seen.",
+    effect:"Intimacy and private sessions in hall spaces grant extra relationship.",
+    intimacyRelBonus:2, clothingEase:1, passiveBonus:0, apBonus:0, gainMult:0, requires:["laundry_refit"] },
+
+  { id:"supply_cage", tier:1, cost:50, category:"feeding", label:"📦 Supply Cage",
+    desc:"A locked pantry annex Housing signed off as 'emergency snacks.' It restocks itself if you keep the key.",
+    effect:"+1 extra pantry drop each week. After-Hours storage stops yield food.",
+    pantryBonus:1, passiveBonus:0, apBonus:0, gainMult:0 },
+
+  { id:"device_bay", tier:3, cost:350, category:"efficiency", label:"🔌 Device Bay",
+    desc:"A ventilated cage where Talia's hardware rests between uses. The hum never fully stops. Neither does the work.",
+    effect:"Weekly device ticks gain +1 lb. After-Hours storage can land a small extra.",
+    deviceTickBonus:1, passiveBonus:0, apBonus:0, gainMult:0, requires:["supply_cage"] },
+
+  { id:"media_nook", tier:2, cost:150, category:"social", label:"📺 Media Nook",
+    desc:"A couch that films well, a ring light, spare batteries. Destiny and Kylie clock it immediately.",
+    effect:"Stream-adjacent residents gain extra relationship on After-Hours stops. Floor content feels hosted.",
+    streamRelBonus:2, passiveBonus:0, apBonus:0, gainMult:0, requires:["snack_station"] },
+
 ];
 
 export const SKILL_CATEGORIES = {

@@ -99,6 +99,7 @@ registerDimension('fitTop', fitDim('top'));
 registerDimension('fitBottom', fitDim('bottom'));
 registerDimension('fitWaist', fitDim('waist'));
 registerDimension('worstFit', (ctx) => worstFitState(ctx.subject));
+registerDimension('floorRoom', (ctx) => ctx.globals?.floorRoom ?? 'lounge');
 
 /** Infer clothing strain from stage when no explicit state is stored. */
 export function deriveClothingState(student) {

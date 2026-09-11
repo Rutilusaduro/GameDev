@@ -53,7 +53,9 @@ export function renderWeeklyEvent(eventId, student, opts = {}) {
     globals: buildWeeklyEventGlobals(student, eventId, opts),
   });
   const base = render(`{${poolKey}}`, ctx, { trace: opts.trace });
-  return appendV2Depth(base, 'weekly', ctx, opts.v2DepthChance ?? 0.3);
+  const linger = render('{weekly.linger}', ctx, { trace: opts.trace });
+  const composed = linger?.trim() ? `${base}\n\n${linger.trim()}` : base;
+  return appendV2Depth(composed, 'weekly', ctx, opts.v2DepthChance ?? 0.3);
 }
 
 export function weeklyEventHasModularText(eventId) {

@@ -81,6 +81,10 @@ export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) 
     mod.rollBonus = (mod.rollBonus || 0) + TALK_CONFIG.auraBonus;
   }
 
+  if (eff.interruptReduce) {
+    mod.interruptBonus -= eff.interruptReduce;
+  }
+
   if (eff.willingVessel && getCorruptionTier(student?.corruption || 0).id >= 2) {
     mod.passiveRiseMult *= 1.55;
     mod.interruptBonus += 0.18;

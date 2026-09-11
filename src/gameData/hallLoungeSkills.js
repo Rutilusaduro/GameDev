@@ -2,6 +2,7 @@
 // HALL LOUNGE PRESTIGE SKILLS — lbs-cost shop (§12, §30 gates)
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
+import { aggregateFloorDepth, extraFeedCalories, loungeGainMultForStudent } from './floorBlueprint.js';
 
 export function computeClassSkillTotal(students = []) {
   return Math.round(
@@ -69,6 +70,17 @@ export function aggregateClassSkillEffects(owned = {}) {
     gainMult: 0,
     sessionCapBonus: 0,
     tapOutResistance: 0,
+    talkRelBonus: 0,
+    feedCalBonus: 0,
+    interruptReduce: 0,
+    pantryBonus: 0,
+    deviceTickBonus: 0,
+    intimacyRelBonus: 0,
+    weighInRelBonus: 0,
+    roomVisitRelBonus: 0,
+    ecologyDecayReduce: 0,
+    campusYieldBonus: 0,
+    oppositionCover: 0,
   };
   SKILL_TREE.forEach((sk) => {
     if (!owned[sk.id]) return;
@@ -80,8 +92,23 @@ export function aggregateClassSkillEffects(owned = {}) {
     effects.sessionCapBonus += sk.sessionCapBonus || 0;
     effects.tapOutResistance += sk.tapOutResistance || 0;
   });
+  const depth = aggregateFloorDepth(owned);
+  effects.talkRelBonus = depth.talkRelBonus;
+  effects.feedCalBonus = depth.feedCalBonus;
+  effects.interruptReduce = depth.interruptReduce;
+  effects.pantryBonus = depth.pantryBonus;
+  effects.deviceTickBonus = depth.deviceTickBonus;
+  effects.intimacyRelBonus = depth.intimacyRelBonus;
+  effects.weighInRelBonus = depth.weighInRelBonus;
+  effects.roomVisitRelBonus = depth.roomVisitRelBonus;
+  effects.ecologyDecayReduce = depth.ecologyDecayReduce;
+  effects.campusYieldBonus = depth.campusYieldBonus;
+  effects.oppositionCover = depth.oppositionCover;
+  effects.floorDepth = depth;
   return effects;
 }
+
+export { extraFeedCalories, loungeGainMultForStudent, aggregateFloorDepth };
 
 export function getClassActionCost(action, owned = {}) {
   let cost = action.cost ?? 0;

@@ -14,7 +14,7 @@ export const RELATIONSHIP_ECOLOGY = {
   favoredInterruptWeight: 0.85,
 };
 
-export function tickRelationshipDecay(student) {
+export function tickRelationshipDecay(student, { decayReduce = 0 } = {}) {
   if (!student || student.hidden) return student;
   const weeks = student.weeksWithoutPlayerFeed ?? 0;
   if (weeks < RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay) return student;
@@ -22,7 +22,8 @@ export function tickRelationshipDecay(student) {
   const tier = getTier(rel).id;
   if (tier >= 3) return student; // Devoted — max inner-circle tier
   const excess = weeks - RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay + 1;
-  const loss = Math.min(RELATIONSHIP_ECOLOGY.maxDecayPerWeek, RELATIONSHIP_ECOLOGY.decayPerWeek * excess);
+  const loss = Math.max(0, Math.min(RELATIONSHIP_ECOLOGY.maxDecayPerWeek, RELATIONSHIP_ECOLOGY.decayPerWeek * excess) - (decayReduce || 0));
+  if (loss <= 0) return student;
   return { ...student, relationship: Math.max(0, rel - loss), _relDecayApplied: loss };
 }
 
