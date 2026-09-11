@@ -470,4 +470,43 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(fairWiHit, 'fair.day.weighIn.choice1 modular @ w24');
 
+let sofia85Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Sofia.next_tuesday}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72340 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Cardamom, peach upside-down, backup cake — Sofia ranks desserts like exam prep\.$/.test(line), 'pass-85 Sofia bridge alone @ w24');
+  if (line.length > 65) sofia85Hit = true;
+}
+assert.ok(sofia85Hit, 'Sofia.next_tuesday modular @ w24');
+
+let calloway88Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Mrs_Calloway.offer_tasting}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72350 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Wrapped slice steams on laminate — Mrs\. Calloway takes it like policy finally admitted appetite counts\.$/.test(line), 'pass-88 Calloway offer bridge alone @ w24');
+  if (line.length > 65) calloway88Hit = true;
+}
+assert.ok(calloway88Hit, 'Mrs_Calloway.offer_tasting modular @ w24');
+
+let cassidyHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{cg.chat.resident.Cassidy.ahead}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72360 + s,
+    globals: { featureId: 'competitive_gainer', priyaName: 'Priya' },
+  }))?.trim() || '';
+  assert.ok(!/^Thigh column still mine — update the board before you celebrate\.$/.test(line), 'pass-89 Cassidy ahead alone @ w24');
+  if (line.length > 55 || /boardTone|residentReply/i.test(line)) cassidyHit = true;
+}
+assert.ok(cassidyHit, 'cg.chat.resident.Cassidy.ahead modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

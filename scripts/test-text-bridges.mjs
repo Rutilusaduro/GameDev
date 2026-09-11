@@ -41,6 +41,7 @@ const required = [
   'fairQueen/dayModularFragments.js',
   'competitiveGainer/cgChatPools.js',
   'competitiveGainer/cgChatFragments.js',
+  'competitiveGainer/cgResidentEarlyFragments.js',
   'competitiveGainer/cgSceneFragments.js',
   'competitiveGainer/cgRaReplyFragments.js',
   'competitiveGainer/cgMeasurementModularFragments.js',

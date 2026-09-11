@@ -57,6 +57,8 @@ const requiredFragments = [
   'talkRefusalCommandDevourModularFragments.js',
   'raPivotPassPeelFragments.js',
   'homeroom/homeroomV2ModularFragments.js',
+  'wifeLessons/wlTalkV2ModularFragments.js',
+  'competitiveGainer/cgResidentEarlyFragments.js',
   'fairQueen/trainingModularFragments.js',
   'fairQueen/photoBoostModularFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',

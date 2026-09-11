@@ -3029,6 +3029,14 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.match(pass83, /cg\.raReply\.encourage/, 'pass83 keeps CG encourage vignette');
   const pass91 = read('src/textEngine/scenes/raPivotProseDepthPass91.js');
   assert.match(pass91, /wellness_nook/, 'pass91 keeps hall wellness nook blurb');
+  const pass85 = read('src/textEngine/scenes/raPivotProseDepthPass85.js');
+  const pass89 = read('src/textEngine/scenes/raPivotProseDepthPass89.js');
+  assert.ok(!pass85.includes('registerModuleVariants'), 'pass85 should be retired to fragments');
+  assert.ok(!pass89.includes('registerModuleVariants'), 'pass89 should be retired to fragments');
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgResidentEarlyFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/wlTalkV2ModularFragments.js')));
+  const pass88 = read('src/textEngine/scenes/raPivotProseDepthPass88.js');
+  assert.match(pass88, /fairBoostTier/, 'pass88 keeps fair boost tier vignettes');
   assert.ok(existsSync(join(root, 'scripts/test-text-pass-bridge-suppression-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
