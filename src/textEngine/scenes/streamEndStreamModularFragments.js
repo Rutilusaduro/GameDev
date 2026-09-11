@@ -94,3 +94,48 @@ for (const reason of ['stamina', 'fullness', 'performance']) {
     },
   ]);
 }
+
+registerPool('stream.scene.betweenRoundGlow', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Between rounds she catches her breath — belly loud in the mic, ring light kind on sweat and fullness.',
+      'Late-semester stream cadence: chew, swallow, chat scream, repeat — growth as lifestyle on a timer.',
+      'Challenge pauses; appetite does not — she wipes her mouth and grins like seconds are already queued.',
+      'Hall Ambiance is a memory; only mods, donations, and the soft creak of her chair under weight.',
+      'Wellness framing dropped hours ago; honesty tastes like sugar and performance metrics.',
+    ],
+  },
+]);
+
+registerPool('stream.scene.betweenRoundChat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Chat floods clip timestamps; she reads the thirst aloud and pretends to scold them.',
+      'Tips ping mid-breath — parasocial hunger keeping pace with her chewing.',
+      'Someone posts a delivery link; she laughs once and says "after this round" like a promise.',
+      'Mods pin FEED HER again; she rolls her eyes and leans into the bit because it pays.',
+      'The overlay counts down; appetite metrics climb even while the challenge rests.',
+    ],
+  },
+]);
+
+const BETWEEN_LATE = '{stream.scene.betweenRoundGlow} {stream.scene.betweenRoundChat|prefix: }';
+
+registerModuleVariants('stream.betweenRound', [
+  {
+    when: { weekMin: 22 },
+    weight: 9,
+    priority: 9,
+    text: [BETWEEN_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 5,
+    priority: 5,
+    text: [BETWEEN_LATE],
+  },
+]);

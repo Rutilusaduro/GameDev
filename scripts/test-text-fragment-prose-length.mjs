@@ -39,6 +39,8 @@ const POOLS = [
   'stream.scene.tapOutBreath',
   'opposition.scene.boardPressure',
   'talk.refusal.command_finish.lateHush',
+  'stream.scene.betweenRoundGlow',
+  'opposition.scene.removalDocket',
 ];
 
 for (const key of POOLS) {

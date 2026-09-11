@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import '../src/textEngine/scenes/index.js';
 import { render } from '../src/textEngine/engine.js';
-import { renderHearingChoiceResult } from '../src/textEngine/scenes/opposition/hearingBridge.js';
+import { renderHearingChoiceResult, renderHearingPhase } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { buildHearingCtx } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
@@ -30,6 +30,17 @@ for (let s = 0; s < 16; s += 1) {
   if (FEAST_FP.test(line)) feastHit = true;
 }
 assert.ok(feastHit, `expected modular feast_bribe @ week ${week}`);
+
+const REM_FP = /removalDocket|restraintFarce|institutional emergency|conditional enrollment/i;
+let remHit = false;
+for (let s = 0; s < 16; s += 1) {
+  const p0 = renderHearingPhase('removal', 0, destiny, week)?.trim() || '';
+  const p1 = renderHearingPhase('removal', 1, destiny, week)?.trim() || '';
+  assert.ok(p0.length > 80 && p1.length > 80, 'short removal phase');
+  assert.ok(!p0.includes('{unresolved}') && !p1.includes('{unresolved}'), 'unresolved removal phase');
+  if (REM_FP.test(p0) || REM_FP.test(p1)) remHit = true;
+}
+assert.ok(remHit, `expected modular removal hearing phases @ week ${week}`);
 
 const SYN_FP = /endgameAbundance|synthesisEcho|Scarcity folds|Passive abundance/i;
 let synHit = false;

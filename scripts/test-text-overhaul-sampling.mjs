@@ -37,6 +37,7 @@ const MODULAR_MARKERS = [
   /calibrated hunger|mesh flickers|deployEcho|Hall Ambiance muted|peer-reviewed ritual/i,
   /lateHallAir|latePermission|signoffAir|chatAfterglow|tips still ticking/i,
   /boardPressure|cateredVote|endgameAbundance|lateHush|lateTremor/i,
+  /betweenRoundGlow|betweenRoundChat|removalDocket|restraintFarce/i,
 ];
 
 function isModular(line) {

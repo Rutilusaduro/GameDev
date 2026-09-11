@@ -133,3 +133,64 @@ registerModuleVariants('opposition.endgame.synthesis', [
     text: [ENDGAME_SYNTH_LATE],
   },
 ]);
+
+registerPool('opposition.scene.removalDocket', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Removal hearing opens — {subject.name} at {studentLbs} lbs projected like liability, appetite framed as institutional emergency.',
+      'Vance queues slides: meal photos, timestamps, wellness language thick enough to hide envy.',
+      'The docket smells like toner and denial; your resident sits warm, enormous, unapologetic beside you.',
+      'Documentation performs concern while {subject.name} performs hunger — two stories fighting for the room.',
+      'Late-semester scrutiny counts pounds like votes; the Board pretends neutrality and watches her breathe.',
+    ],
+  },
+]);
+
+registerPool('opposition.scene.restraintFarce', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Vance asks for restraint spoken like virtue — conditional enrollment hanging on vocabulary, not portions.',
+      'Second motion: discretion promises while bellies remember lunch with perfect clarity.',
+      'The word restraint lands wrong; {subject.name}\'s middle answers with honest weight and soft fabric strain.',
+      'Language wars appetite tonight — you will need testimony, warmth, and nerve, not shame.',
+      'Folders stay open; forks wait in the hall memory — growth as lifestyle on trial in public.',
+    ],
+  },
+]);
+
+const REMOVAL_P0_LATE = '{opposition.scene.removalDocket|suffix:\n\n}{opposition.scene.boardPressure|suffix:\n\n}';
+const REMOVAL_P1_LATE = '{opposition.scene.restraintFarce|suffix:\n\n}{opposition.scene.hearingHeat|suffix:\n\n}';
+
+registerModuleVariants('opposition.hearing.removal.phase0', [
+  {
+    when: { weekMin: 22 },
+    weight: 8,
+    priority: 7,
+    text: [REMOVAL_P0_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 4,
+    priority: 4,
+    text: [REMOVAL_P0_LATE],
+  },
+]);
+
+registerModuleVariants('opposition.hearing.removal.phase1', [
+  {
+    when: { weekMin: 22 },
+    weight: 8,
+    priority: 7,
+    text: [REMOVAL_P1_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 4,
+    priority: 4,
+    text: [REMOVAL_P1_LATE],
+  },
+]);

@@ -28,6 +28,22 @@ for (const tier of ['excellent', 'good', 'average']) {
   assert.ok(hit, `expected modular stream.endStream.${tier} @ week ${week}`);
 }
 
+const BETWEEN_FP = /betweenRoundGlow|betweenRoundChat|parasocial|growth as lifestyle|Hall Ambiance is a memory/i;
+let betweenHit = false;
+for (let s = 0; s < 16; s += 1) {
+  const ctx = buildTextContext({
+    subject: destiny,
+    week,
+    seed: 66200 + s,
+    globals: { featureId: 'destiny_stream', perf: 'good' },
+  });
+  const line = renderStreamBeat('{stream.betweenRound}', ctx, { v2DepthChance: 0 })?.trim() || '';
+  assert.ok(line.length > 55, 'short stream.betweenRound');
+  assert.ok(!line.includes('{unresolved}'), 'unresolved betweenRound');
+  if (BETWEEN_FP.test(line)) betweenHit = true;
+}
+assert.ok(betweenHit, `expected modular stream.betweenRound @ week ${week}`);
+
 const TAP_FP = /tapOutBreath|tapOutChat|ring light|parasocial|growth as lifestyle/i;
 for (const reason of ['fullness', 'stamina']) {
   let tapHit = false;
