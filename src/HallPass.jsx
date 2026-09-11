@@ -22,7 +22,8 @@ import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveContro
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
 import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
-import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
+import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
+import { renderFeedRefusal, renderForceFeedSuccess } from './textEngine/scenes/feedForce/index.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLIMENT_BACKFIRE_SCRUTINY } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEMS } from './gameData/items.js';
@@ -1418,13 +1419,15 @@ export default function HallPass(){
         if(weeklyArms.mesmerizingStudentId===s.id&&eff.mesmerizingAura) chance+=TALK_CONFIG.auraBonus;
         if(s.suggestDebuffWeek===week) chance+=TALK_CONFIG.suggestResistReduction;
         if(Math.random()>=chance){
-          const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
+          const feedRoom=feedRoomFromFullness((s.fullness||0)/Math.max(1,cap),false);
+          const line=renderFeedRefusal(s,week,{feedRoom});
           push(`🚫 ${line}`);
           return null;
         }
         forced=true;
       }
-      const line=FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
+      const feedRoom=feedRoomFromFullness(((s.fullness||0)+scaledFullEarly)/Math.max(1,cap),true);
+      const line=renderForceFeedSuccess(s,week,{feedRoom});
       setTimeout(()=>push(`🔥 ${line}`),60);
     }
     let calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);

@@ -58,21 +58,6 @@ export const forceFeedChance = (s, fullnessCost, reachLevel = 1) => {
   return Math.min(c.max, Math.max(c.min, chance));
 };
 
-// Refusal lines when a force-feed fails.
-export const REFUSAL_LINES = [
-  (s) => `${s.name} presses a hand flat against her stomach and shakes her head. "I can't. I physically can't." She means it — this time.`,
-  (s) => `${s.name} leans back, breathing carefully around the fullness. "Give me a minute. Or a week." She is not taking another bite.`,
-  (s) => `${s.name} looks at the food, looks at you, and laughs — a short, breathless sound. "You're joking. Look at me. There's no room."`,
-  (s) => `${s.name} groans softly and pushes the plate a deliberate inch away. "I'm at my limit. A real one. The kind with consequences."`,
-];
-
-// Lines when a force-feed past capacity succeeds.
-export const FORCE_SUCCESS_LINES = [
-  (s) => `${s.name} hesitates — visibly, genuinely — and then opens her mouth anyway. Past full. Past sense. She finishes it with her eyes closed.`,
-  (s) => `${s.name} whimpers, "I shouldn't," and keeps eating. The fullness has stopped being a wall and become a place she lives.`,
-  (s) => `${s.name} takes it down slowly, one careful swallow at a time, both hands braced on the table. When it's gone she just breathes.`,
-];
-
 // End-of-week digestion for one student. Pure: returns the result and
 // the updated stat fields; the caller applies weight via its own pipeline
 // so stage-up reactions/narratives still fire.
