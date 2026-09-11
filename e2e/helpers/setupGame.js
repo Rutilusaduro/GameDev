@@ -55,6 +55,13 @@ export async function unlockDinnerQA(page) {
   await dismissBlockingModals(page);
 }
 
+/** Debug: unlock Lilith on the roster. */
+export async function unlockLilithQA(page) {
+  await page.getByRole('button', { name: '🐛 Debug' }).click();
+  await page.getByRole('button', { name: /Unlock Lilith/ }).click();
+  await page.getByRole('button', { name: '✕ Close' }).click();
+}
+
 /** Debug: Cassidy sumo evolved arc + open student detail. */
 export async function unlockEvolvedArcQA(page) {
   await page.getByRole('button', { name: '🐛 Debug' }).click();
