@@ -19,6 +19,7 @@ export const SALON_COURSES = [
   { id: 'milkshake', label: 'Milkshake Flight', type: 'american', lbs: 8, prestige: 3, indulgence: 14 },
   { id: 'fusion', label: 'Croissant Burger', type: 'fusion', lbs: 7, prestige: 8, indulgence: 10 },
   { id: 'renée', label: "Reneé's Tasting Menu", type: 'special', lbs: 11, prestige: 12, indulgence: 15, needsGuest: 'renée' },
+  { id: 'night_tray', label: 'After-Hours Tray', type: 'american', lbs: 8, prestige: 4, indulgence: 13 },
 ];
 
 export const SALON_SERVICE_CHOICES = [
@@ -159,6 +160,7 @@ export const SALON_EVOLVED_EVENTS = [
         choices: [
           { id: 'formal', label: 'Keep it formal — cheese, wine, restraint', result: 'She nods. The evening is elegant. Guests leave curious.', lbs: 5, rel: 8, flag: 'formal_opening' },
           { id: 'indulgent', label: 'Push indulgence early — American portions', result: 'Her eyes widen with delight. "*C\'est obscène.*" she says, meaning praise.', lbs: 9, rel: 10, flag: 'indulgent_opening' },
+          { id: 'night_service', label: 'Serve until the corridor is quiet', result: 'Guests stay past the last RA check. Chloé calls it hospitality.', lbs: 8, rel: 9, flag: 'indulgent_opening' },
         ],
       },
       {
@@ -166,6 +168,7 @@ export const SALON_EVOLVED_EVENTS = [
         choices: [
           { id: 'weekly', label: 'Approve weekly salons', result: 'She smiles like a woman who got exactly what she wanted.', lbs: 4, rel: 12, flag: 'weekly_salon' },
           { id: 'special', label: 'Special occasions only', result: 'She pouts once, then shrugs. "Special can mean frequent."', lbs: 3, rel: 7 },
+          { id: 'nightly', label: 'Approve after-hours sittings', result: '"Then we eat when Housing sleeps," she says, already pouring.', lbs: 6, rel: 11, flag: 'weekly_salon' },
         ],
       },
     ],

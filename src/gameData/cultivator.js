@@ -59,6 +59,7 @@ export const RECIPES = {
           { id:"one_glass",     label:"One glass — normal portion",           desc:"Professional. Measured. She finishes it and thanks you.",                                       fatGain:6,  suspChange:0  },
           { id:"large_cup",     label:"Large cup — 'I made a fresh batch'",   desc:"'I had extra.' She accepts this without a second thought. It's twice the glass.",              fatGain:13, suspChange:4  },
           { id:"full_blender",  label:"'Just finish the blender'",            desc:"The whole thing. You frame it as efficiency. She somehow always does.",                         fatGain:19, suspChange:9  },
+          { id:"to_go_carafe",  label:"Carafe to go — 'for later'",           desc:"She takes it back to her room. Later never happens. The carafe comes back empty.",             fatGain:16, suspChange:5  },
         ]
       },
     ]
@@ -74,6 +75,7 @@ export const RECIPES = {
           { id:"std_dough",     label:"Standard recipe",                    desc:"Butter, flour, sugar, a reliable cookie. Nothing to explain.",                                    fatGain:6,  suspChange:0  },
           { id:"sweet_chips",   label:"Extra sugar and chocolate chips",     desc:"'New recipe I've been testing.' She'll ask for them specifically next time.",                    fatGain:11, suspChange:3  },
           { id:"stuffed_dough", label:"Cream-filled center",                 desc:"Filling hidden inside each one. She won't realize the caloric difference until she's done the plate.", fatGain:16, suspChange:5 },
+          { id:"brown_butter",  label:"Brown-butter dough — 'bakery test'",  desc:"She thinks it is technique. It is density. The plate comes back with crumbs only.",              fatGain:14, suspChange:4 },
         ]
       },
       {
@@ -82,6 +84,7 @@ export const RECIPES = {
           { id:"twelve",        label:"Twelve — standard dozen",             desc:"Nothing unusual. A normal amount to have around.",                                               fatGain:7,  suspChange:0  },
           { id:"double_batch",  label:"Double batch — 'I always overbake'",  desc:"'I never know when to stop.' She'll take the extras home. Most won't make it.",                 fatGain:14, suspChange:4  },
           { id:"underbaked",    label:"Underbaked — warm and soft",          desc:"More indulgent texture. Harder to stop at two. She won't.",                                      fatGain:17, suspChange:6  },
+          { id:"sheet_pan",     label:"Sheet pan — 'I lost count'",          desc:"Too many to plate. She eats standing at the counter until the pan looks theoretical.",          fatGain:20, suspChange:8  },
         ]
       },
       {
@@ -90,6 +93,7 @@ export const RECIPES = {
           { id:"three_plated",  label:"Three on a plate — professional",     desc:"Clean. Polite. Defensible. She eats three and doesn't ask for more.",                           fatGain:5,  suspChange:-2 },
           { id:"finish_batch",  label:"'Help me finish the batch'",          desc:"Framed as a favor to you. She accepts. The batch is substantial.",                               fatGain:15, suspChange:5  },
           { id:"add_milk",      label:"Warm milk alongside",                 desc:"Classic pairing. The volume doubles in the stomach. She thanks you for the thoughtfulness.",     fatGain:18, suspChange:3  },
+          { id:"ice_cream_scoop",label:"A scoop melting on top",             desc:"She calls it temperature contrast. You call it the rest of the calories.",                      fatGain:21, suspChange:7  },
         ]
       },
     ]
@@ -105,6 +109,7 @@ export const RECIPES = {
           { id:"std_batter",    label:"Standard recipe — reliable crumb",    desc:"Flour, sugar, eggs, butter. A cake anyone would bake. Nothing to explain.",                     fatGain:7,  suspChange:0  },
           { id:"extra_butter",  label:"Extra butter — 'richer today'",       desc:"Twice the fat content. She notices the taste and attributes it to quality ingredients.",        fatGain:14, suspChange:4  },
           { id:"lard_sub",      label:"Lard substitution — bakery method",   desc:"Old trade trick. Denser, heavier, more of everything. She won't know what made the difference.", fatGain:18, suspChange:7 },
+          { id:"sour_cream",    label:"Sour cream batter — 'moisture test'", desc:"She praises the crumb. The crumb is an excuse. The cake sits heavier than it looks.",           fatGain:16, suspChange:5 },
         ]
       },
       {
@@ -113,6 +118,7 @@ export const RECIPES = {
           { id:"light_glaze",   label:"Light glaze — minimal, tasteful",     desc:"Thin coat, looks restrained, she eats around it. Suspicious of nothing.",                       fatGain:5,  suspChange:-3 },
           { id:"buttercream",   label:"Thick buttercream",                    desc:"A generous coat. She will scrape the plate with her fork and not comment on it.",              fatGain:12, suspChange:3  },
           { id:"ganache",       label:"Ganache poured over",                  desc:"Glossy, heavy, no structural restraint. She accepts this as an aesthetic choice.",              fatGain:20, suspChange:8  },
+          { id:"cream_cheese",  label:"Cream cheese frosting — 'classic'",    desc:"She knows the flavor. She does not know the density. The knife comes back clean.",             fatGain:15, suspChange:4  },
         ]
       },
       {
@@ -121,6 +127,7 @@ export const RECIPES = {
           { id:"one_slice",     label:"One slice — normal portion",           desc:"Standard serving. She finishes it and seems satisfied.",                                         fatGain:6,  suspChange:0  },
           { id:"generous",      label:"Generous slice — 'it'll go stale'",   desc:"Standard excuse. She takes the larger piece without questioning the framing.",                  fatGain:15, suspChange:4  },
           { id:"whole_cake",    label:"'Just take the rest home'",            desc:"'I can't eat it all anyway.' She can. She does. She doesn't bring the container back.",        fatGain:21, suspChange:10 },
+          { id:"two_plates",    label:"Two plates — 'share with a roommate'", desc:"There is no roommate waiting. Both plates come back empty. She thanks you for thinking of her.", fatGain:18, suspChange:6 },
         ]
       },
       {
@@ -129,6 +136,7 @@ export const RECIPES = {
           { id:"as_is",         label:"As-is — clean and finished",           desc:"Simple. Professional. Nothing that requires explanation.",                                       fatGain:4,  suspChange:0  },
           { id:"cream_sauce",   label:"Cream sauce drizzle",                  desc:"'Just a finishing touch.' It doubles the caloric density of the slice. She doesn't ask.",      fatGain:14, suspChange:5  },
           { id:"ice_cream",     label:"Scoop of ice cream alongside",         desc:"'It pairs well.' She's already full and she eats all of it. She always does.",                 fatGain:21, suspChange:9  },
+          { id:"hot_milk",      label:"Warm milk on the side",                desc:"She drinks it between bites. The cake lasts longer in her. So does the fullness.",              fatGain:12, suspChange:3  },
         ]
       },
     ]

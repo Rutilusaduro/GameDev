@@ -7,6 +7,8 @@ import { FACULTY, FACULTY_CONFIG, FACULTY_AFFINITY_TIERS, getFacultyTier } from 
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { C } from '../styles.js';
+import { createContext, render } from '../textEngine/engine.js';
+import '../textEngine/scenes/proseOverhaulPass4.js';
 
 // ── affinity bar ──────────────────────────────────────────────
 
@@ -31,6 +33,9 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnable
   if(!node) return null;
 
   const text = typeof node.text === "function" ? node.text(teacher, affinity) : node.text;
+  const glow = (nodeId === 'nights' || nodeId === 'nights2')
+    ? (render('{faculty.afterglow}', createContext({ week: 1 }))?.trim() || '')
+    : '';
   const availableOptions = node.options.filter(opt => {
     if(opt.minAffinity && affinity < opt.minAffinity) return false;
     return true;
@@ -87,6 +92,7 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnable
           fontStyle:"italic",
         }}>
           {text}
+          {glow ? <div style={{ marginTop: 10, opacity: 0.85 }}>{glow}</div> : null}
         </div>
 
         {/* options */}

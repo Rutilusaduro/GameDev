@@ -9,6 +9,7 @@ export const HIVE_TASKS = [
   { id:"expansion", label:"Expansion", icon:"🕸️", color:"#c78bff", desc:"Soft pressure on adjacent rooms until they accept the Nest's warmth." },
   { id:"maintenance", label:"Maintenance", icon:"🧺", color:"#80d8c0", desc:"Keep the Nest stable, fed, and functional as bodies and deliveries multiply." },
   { id:"recruitment", label:"Recruitment", icon:"💌", color:"#ff91b8", desc:"Delivery people, lonely dorm-mates, and anyone already listening to hunger." },
+  { id:"night", label:"Night Kitchen", icon:"🌙", color:"#6ec4ff", desc:"After-hours trays. Members eat when Housing sleeps. Biomass and BMI climb without a daytime paper trail." },
 ];
 
 export const HIVE_VPS = {
@@ -105,7 +106,7 @@ export function createInitialHiveState(mayaStudentId){
     avgBmi:31,
     stability:82,
     vpId:null,
-    assignments:{ food:1, supply:0, expansion:1, maintenance:1, recruitment:0 },
+    assignments:{ food:1, supply:0, expansion:1, maintenance:1, recruitment:0, night:0 },
     rooms:createInitialHiveRooms(),
     log:[
       { tag:"[MayaHive_CentralNest_Initial]", text:"The Central Nest is established. Maya waits at the warm center of it.", type:"scene" },
@@ -211,14 +212,15 @@ export function executeHiveShift(state,{mayaStageId=5}={}){
   const expansionEff=getHiveTaskEfficiency(assignments.expansion,optimal)*(vp.expansionMult||1);
   const maintenanceEff=getHiveTaskEfficiency(assignments.maintenance,optimal)*(vp.maintenanceMult||1);
   const recruitEff=getHiveTaskEfficiency(assignments.recruitment,optimal)*(vp.recruitMult||1);
+  const nightEff=getHiveTaskEfficiency(assignments.night||0,optimal);
   const deliveryBonus=state.rooms.some(r=>r.status==="conquered"&&r.bonus?.id==="delivery_pin") ? 1.1 : 1;
   const quietBonus=state.rooms.some(r=>r.status==="conquered"&&r.bonus?.id==="quiet_pull") ? 1.1 : 1;
   const laundryBonus=state.rooms.some(r=>r.status==="conquered"&&r.bonus?.id==="laundry_warmth") ? 1.1 : 1;
 
-  const biomassGain=Math.round((5+foodEff*8+roomsControlled*0.75)*deliveryBonus*(vp.biomassMult||1));
+  const biomassGain=Math.round((5+foodEff*8+nightEff*6+roomsControlled*0.75)*deliveryBonus*(vp.biomassMult||1));
   const comfortGain=Math.round(2+supplyEff*7);
   const resonanceGain=Math.round(2+roomsControlled*0.35+(vp.resonancePerShift||0));
-  const avgBmiGain=Math.max(0.2,Math.round((0.25+foodEff*0.18+recruitEff*0.05)*10)/10);
+  const avgBmiGain=Math.max(0.2,Math.round((0.25+foodEff*0.18+nightEff*0.12+recruitEff*0.05)*10)/10);
   const maintenanceGain=Math.round((maintenanceEff*8+(vp.stabilityBonus||0))*laundryBonus);
   const stabilityLoss=Math.max(0,Math.round(3+roomsControlled*0.3+assignments.food*0.5-maintenanceEff*1.8-(vp.stabilityBonus||0)/3));
 
@@ -260,7 +262,13 @@ export function executeHiveShift(state,{mayaStageId=5}={}){
       type:"conquest",
     });
   }
-  newMilestones.forEach(m=>logs.push({ tag:m.tag, text:`Dorm control milestone reached: ${Math.round((m.rooms/HIVE_ROOM_COUNT)*100)}%.`, type:"milestone" }));
+  if((assignments.night||0)>0){
+    logs.push({
+      tag:makeHiveTag("NightKitchen",{mayaStage,vpId:state.vpId||"none",bmiTier,rooms:nextRoomsControlled,task:"night",roomId:state.selectedRoomId}),
+      text:`Night kitchen shift: trays after Housing. +${Math.round(nightEff*6)} biomass in the dark.`,
+      type:"scene",
+    });
+  }
 
   return {
     ...state,

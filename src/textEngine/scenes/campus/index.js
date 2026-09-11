@@ -6,15 +6,16 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
 import './campusSceneDepth.js';
+import '../proseOverhaulPass4.js';
 
 registerPool('campus.scene', [
   { when: {}, text: [
-    '{campus.localeIntro} {campus.moveSentence} {campus.spaceObs|prefix: }',
-    '{campus.moveSentence} {campus.obstacle|prefix: }{campus.spaceObs|prefix: }',
-    '{campus.localeIntro} {campus.obstacle}{campus.soundTex|prefix:, }.',
-    '{campus.moveSentence} {campus.destination}{campus.soundTex|prefix:, }.',
-    '{campus.localeIntro} {campus.moveSentence} {campus.seenBeat|prefix: }',
-    '{campus.moveSentence} {campus.seenBeat|prefix: }{campus.spaceObs|prefix: }',
+    '{campus.localeIntro} {campus.moveSentence} {campus.spaceObs|prefix: } {campus.linger}',
+    '{campus.moveSentence} {campus.obstacle|prefix: }{campus.spaceObs|prefix: } {campus.linger}',
+    '{campus.localeIntro} {campus.obstacle}{campus.soundTex|prefix:, }. {campus.linger}',
+    '{campus.moveSentence} {campus.destination}{campus.soundTex|prefix:, } {campus.linger}',
+    '{campus.localeIntro} {campus.moveSentence} {campus.seenBeat|prefix: } {campus.linger}',
+    '{campus.moveSentence} {campus.seenBeat|prefix: }{campus.spaceObs|prefix: } {campus.linger}',
   ] },
 ]);
 

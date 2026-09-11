@@ -12,6 +12,7 @@ import './personas.js';
 import './immobileOverrides.js';
 import './intimacySceneDepth.js';
 import '../proseOverhaul.js';
+import '../proseOverhaulPass4.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
@@ -71,6 +72,7 @@ export function renderIntimacyEnding(sceneId, endingIdx, student, week = 1, opts
   const main = render(`{intimacy.${sceneId}.end${endingIdx}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = composeOverlay(main, renderIntimacyOverlay(ctx, opts));
   const after = render('{intimacy.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const withAfter = after ? `${composed}\n\n${after}` : composed;
+  const linger = render('{intimacy.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const withAfter = [composed, after, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(withAfter, 'intimacy', ctx, opts.v2DepthChance ?? 0.3);
 }

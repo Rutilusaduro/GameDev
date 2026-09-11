@@ -23,6 +23,7 @@ import {
   blueprintStudentDoors,
   fitCount,
 } from '../gameData/dormBlueprint.js';
+import { REFIT_OPTIONS, needsRefit, worstFitState } from '../gameData/outfits.js';
 
 function RoomTile({ room, selected, ownedRatio, onSelect, nightMode, dimmed }) {
   const complete = ownedRatio >= 1 && room.category !== 'resident';
@@ -111,7 +112,7 @@ function ResidentDoorList({ students, dormState, selectedDoorId, onSelectDoor, n
   );
 }
 
-function FitOutList({ student, dormState, students, ownedHallSkills, onBuyFit }) {
+function FitOutList({ student, dormState, students, ownedHallSkills, onBuyFit, onRefitWardrobe, currency }) {
   if (!student) {
     return <div className="dorm-bp-empty">Pick a door on the wing.</div>;
   }
@@ -143,6 +144,39 @@ function FitOutList({ student, dormState, students, ownedHallSkills, onBuyFit })
           </div>
         );
       })}
+      {student && (
+        <div className="dorm-bp-upgrade">
+          <div className="dorm-bp-upgrade-copy">
+            <div className="dorm-bp-upgrade-title">Wardrobe {needsRefit(student) ? '· straining' : '· holding'}</div>
+            <div className="dorm-bp-upgrade-desc">
+              {worstFitState(student)
+                ? `Clothes ${worstFitState(student)}. Let them out or cut a new set with prestige.`
+                : 'No garments logged yet. First refit writes her current measurements.'}
+            </div>
+          </div>
+        </div>
+      )}
+      {student && REFIT_OPTIONS.map((opt) => {
+        const affordable = currency >= opt.cost;
+        return (
+          <div key={opt.id} className="dorm-bp-upgrade">
+            <div className="dorm-bp-upgrade-copy">
+              <div className="dorm-bp-upgrade-title">{opt.label}</div>
+              <div className="dorm-bp-upgrade-desc">{opt.desc}</div>
+            </div>
+            <button
+              type="button"
+              style={{ ...C.smBtn, flexShrink: 0, opacity: affordable ? 1 : 0.45 }}
+              disabled={!affordable}
+              onClick={() => onRefitWardrobe?.(opt.id, student.id)}
+              title={affordable ? undefined : `Need ${opt.cost} lbs prestige`}
+              aria-label={`${opt.label} for ${student.name}, ${opt.cost} lbs prestige`}
+            >
+              {opt.cost} lbs
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -159,6 +193,7 @@ export function HallLoungeView({
   nightMode = false,
   nightTargetId = null,
   onNightKnock,
+  onRefitWardrobe,
 }) {
   const owned = ownedHallSkills || {};
   const total = computeHallLoungeSkillTotal(students);
@@ -266,6 +301,8 @@ export function HallLoungeView({
                   students={students}
                   ownedHallSkills={owned}
                   onBuyFit={onPurchaseRoomFit}
+                  onRefitWardrobe={onRefitWardrobe}
+                  currency={currency}
                 />
               )}
             </>

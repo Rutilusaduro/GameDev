@@ -118,6 +118,18 @@ export const PHARMACIST_CAMPUS_EVENTS = [
     gain: [3, 6],
     text: () => `The hall kitchen stays warm past quiet hours. Sophia's samples migrated from the union table into your fridge without anyone filing a form. Residents find them. Residents finish them.`,
   },
+  {
+    id: 'wardrobe_van',
+    target: 'hall',
+    gain: [2, 4],
+    text: () => `A campus tailor van parks by the loading dock. Residents come back with bags that zip for now. By evening the bags look optimistic.`,
+  },
+  {
+    id: 'night_samples',
+    target: 'hall',
+    gain: [3, 5],
+    text: () => `Sophia's samples appear in the hall fridge after lights-out. Nobody files a wellness form. By breakfast the bottles are empty and the waistbands are negotiating.`,
+  },
 ];
 
 export function pickPharmacistCampusEvent(students, ctx = {}) {

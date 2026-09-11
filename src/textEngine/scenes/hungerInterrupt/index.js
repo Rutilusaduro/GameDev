@@ -6,6 +6,7 @@
 import { registerPool, createContext, render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaul.js';
+import '../proseOverhaulPass4.js';
 import './fragments.js';
 import '../hungerArchetypeBehavior.js';
 
@@ -204,7 +205,7 @@ registerPool('scene.hungerInterrupt.tone', [
 export const HUNGER_INTERRUPT_TEMPLATE =
   '{scene.hungerInterrupt.starter} You open the door and find {subject.name}. ' +
   '{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.archetypeBehavior|prefix: }{scene.hungerInterrupt.behavior|prefix: }' +
-  '{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone} {hunger.afterglow}';
+  '{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone} {hunger.afterglow} {hunger.linger}';
 
 // Pass a shared createFacts() Map (and optionally a sceneStems Set) as
 // opts.facts across the interrupt render and its outcome render so tone
@@ -216,14 +217,22 @@ export function renderHungerInterrupt(student, week = 1, opts = {}) {
 }
 
 export function renderHungerOutcome(student, action, week = 1, opts = {}) {
-  const key = { feed: 'scene.hunger.response.feed', compound: 'scene.hunger.response.compound', deny: 'scene.hunger.response.deny', talk: 'scene.hunger.response.talk' }[action];
+  const key = {
+    feed: 'scene.hunger.response.feed',
+    compound: 'scene.hunger.response.compound',
+    deny: 'scene.hunger.response.deny',
+    talk: 'scene.hunger.response.talk',
+    leftover: 'scene.hunger.response.leftover',
+  }[action];
   if (!key) return '';
   const ctx = createContext({ subject: student, week, facts: opts.facts, sceneStems: opts.sceneStems });
   const trace = opts.trace || null;
   let text = render(`{${key}}`, ctx, { trace }).trim();
-  if (action === 'feed' || action === 'compound') {
+  if (action === 'feed' || action === 'compound' || action === 'leftover') {
     const style = render('{eating.style}', ctx, { trace }).trim();
     if (style) text = `${text} ${style}`;
   }
+  const linger = render('{hunger.linger}', ctx, { trace })?.trim() || '';
+  if (linger) text = `${text} ${linger}`;
   return appendV2Depth(text, 'hunger', ctx, opts.v2DepthChance ?? 0.28);
 }

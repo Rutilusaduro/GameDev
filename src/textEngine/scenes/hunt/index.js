@@ -5,6 +5,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
 import './feastStageUp.js';
 import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass3.js';
 
 export { renderLilithFeast, renderLilithDeliveryIntro } from './feastStageUp.js';
 
@@ -31,7 +32,8 @@ export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
   const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
   const glow = render('{hunt.afterglow}', ctx)?.trim() || '';
-  return appendV2Depth([base, glow].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  const linger = render('{hunt.linger}', ctx)?.trim() || '';
+  return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
@@ -41,5 +43,6 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
   const glow = render('{hunt.afterglow}', ctx)?.trim() || '';
-  return appendV2Depth([base, glow].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  const linger = render('{hunt.linger}', ctx)?.trim() || '';
+  return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }

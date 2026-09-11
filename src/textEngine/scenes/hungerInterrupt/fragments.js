@@ -182,3 +182,15 @@ registerPool('scene.hunger.response.talk', [
     '{hunger.response.talk.calm}{hunger.response.talk.depart|prefix: }',
   ] },
 ]);
+
+registerPool('scene.hunger.response.leftover', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'You walk her to the galley. She eats standing, guilty and grateful, like Housing might still be awake.',
+    'Leftovers wait under foil. She peels it back like a secret and finishes the tray.',
+  ] },
+  { when: {}, text: [
+    'The kitchen is still warm. She eats from the tray you meant for morning and does not apologize.',
+    'You do not turn the lounge lights on. She finishes a pan in the quiet.',
+    'Midnight leftovers. She takes a plate, then the rest of the plate, then sits on the counter to be sure.',
+  ] },
+]);

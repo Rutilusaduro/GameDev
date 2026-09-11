@@ -47,6 +47,20 @@ export const DEVICE_ACTIONS = [
     requires: { owned: 'growth_accelerator_chamber' },
     when: (_student, ctx) => (ctx?.deviceInventory?.growth_accelerator_chamber ?? 0) > 0,
   },
+  {
+    id: 'overnight_belt',
+    label: 'Leave the belt on overnight',
+    icon: '🌙',
+    requires: { equipped: 'auto_bloating_belt' },
+    when: (student) => student?.equip?.waist?.defId === 'auto_bloating_belt',
+  },
+  {
+    id: 'overnight_feeder',
+    label: 'Leave the feeder running overnight',
+    icon: '🌙',
+    requires: { equipped: 'auto_feeder_arm' },
+    when: (student) => student?.equip?.back?.defId === 'auto_feeder_arm',
+  },
 ];
 
 export function getAvailableDeviceActions(student, ctx = {}) {

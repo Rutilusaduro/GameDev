@@ -1,7 +1,9 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A5 Editor
 // Salon + gallery hub prose and form-specific evolved event depth.
 // Loads after oppositionSalonGallery.js and v2ProseExpansion.js.
-import { registerModuleVariants, registerPool } from '../engine.js';
+import { registerModuleVariants, registerPool, render } from '../engine.js';
+import { buildTextContext } from '../../../gameData/textContext.js';
+import './proseOverhaulPass3.js';
 
 const W = 4;
 
@@ -223,3 +225,15 @@ registerModuleVariants('homeroom.activity.health_unit.p1', [
     `Pickup time. Mrs. Monroe watched from back row. Eyes on scale. "Can I—" she starts.`,
   ]},
 ]);
+
+export function renderSalonDigestif(chloe, week = 1) {
+  if (!chloe) return '';
+  const ctx = buildTextContext({ subject: chloe, week });
+  return render('{salon.afterglow}', ctx)?.trim() || '';
+}
+
+export function renderGalleryClosing(fiona, week = 1) {
+  if (!fiona) return '';
+  const ctx = buildTextContext({ subject: fiona, week });
+  return render('{gallery.afterglow}', ctx)?.trim() || '';
+}

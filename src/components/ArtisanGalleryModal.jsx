@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { FIELD_LOCATIONS, GALLERY_MOTIFS, GALLERY_MEDIUMS, STUDIO_ACTIONS } from '../gameData/fionaGallery.js';
+import { renderGalleryClosing } from '../textEngine/scenes/salonGallerySceneDepth.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 const ACCENT = '#c47a2a';
@@ -28,6 +29,7 @@ export function ArtisanGalleryModal({
   onExhibition,
   onConfirmEnroll,
   soundEnabled = true,
+  week = 1,
 }) {
   const fiona = students.find((s) => s.id === galleryState?.fionaStudentId);
   const session = galleryState?.session;
@@ -109,7 +111,13 @@ export function ArtisanGalleryModal({
         <button type="button" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close gallery</button>
 
         {galleryState.lastCritic && (
-          <div style={{ marginTop: 10, fontSize: 11, color: '#c9a87c' }}>Last critic: {galleryState.lastCritic}</div>
+          <div style={{ marginTop: 10, fontSize: 11, color: '#c9a87c' }}>
+            Last critic: {galleryState.lastCritic}
+            {(() => {
+              const closeLine = fiona ? renderGalleryClosing(fiona, week) : '';
+              return closeLine ? <div style={{ marginTop: 6, fontStyle: 'italic', color: '#dcc8b0' }}>{closeLine}</div> : null;
+            })()}
+          </div>
         )}
       </div>
     </GalleryOverlay>

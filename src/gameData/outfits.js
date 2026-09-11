@@ -56,6 +56,52 @@ export function outfitFor(student) {
   return student?.outfit ?? defaultOutfitFor(student);
 }
 
+/** Prestige-cost refits — weekly wardrobe loop, not a one-shot integrity tick. */
+export const REFIT_OPTIONS = [
+  {
+    id: 'let_out',
+    label: 'Let out the seams',
+    cost: 40,
+    integrityRestore: 0.4,
+    fitLbsBump: 14,
+    desc: 'A needle, extra fabric, and an honest measurement. The old clothes keep working for a while.',
+  },
+  {
+    id: 'new_set',
+    label: 'Commission a new set',
+    cost: 75,
+    integrityRestore: 1,
+    refitToCurrent: true,
+    extraFit: 10,
+    desc: 'Cut to the body she has now. Nothing pretends she is last month.',
+  },
+];
+
+export function needsRefit(student) {
+  const worst = worstFitState(student);
+  if (!worst) return false;
+  return FIT_STATES.indexOf(worst) >= FIT_STATES.indexOf('straining');
+}
+
+export function applyOutfitRefit(student, optionId = 'let_out') {
+  if (!student) return student;
+  const opt = REFIT_OPTIONS.find((o) => o.id === optionId) || REFIT_OPTIONS[0];
+  const base = outfitFor(student);
+  const lbs = student.lbs || 130;
+  const next = { ...base };
+  for (const slot of ['top', 'bottom', 'waist']) {
+    const g = next[slot];
+    if (!g) continue;
+    const slotMult = slot === 'top' ? 1.12 : slot === 'bottom' ? 1.05 : 1;
+    const fitLbs = opt.refitToCurrent
+      ? Math.round(lbs * slotMult + (opt.extraFit || 0))
+      : (g.fitLbs || lbs) + (opt.fitLbsBump || 0);
+    const integrity = Math.min(1, (g.integrity ?? 1) + (opt.integrityRestore || 0));
+    next[slot] = { ...g, fitLbs, integrity };
+  }
+  return { ...student, outfit: next };
+}
+
 /** Most-severe fit state across worn slots (index into FIT_STATES). */
 export function worstFitState(student) {
   const outfit = outfitFor(student);

@@ -389,6 +389,7 @@ import {
   habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
   tickOutfitWeek,
 } from './gameData/mechanicDepth.js';
+import { applyOutfitRefit, REFIT_OPTIONS } from './gameData/outfits.js';
 import './textEngine/scenes/proseOverhaul.js';
 import './textEngine/scenes/proseOverhaulPass2.js';
 import {
@@ -1033,6 +1034,7 @@ export default function HallPass(){
     asceticCircle:!!opposition?.proxies?.asceticCircle,
     opposition,
     saturationTier:campusState.saturation?.tier??0,
+    nightIntimacy:dormState?.nightRounds?.floorIntimacy||0,
   });
 
   const huntPortionSaint=()=>{
@@ -1058,6 +1060,28 @@ export default function HallPass(){
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setDormState(result.dormState);
     push(`🛏 ${student?.name}'s room: ${result.fit.label} (${result.fit.cost} lbs prestige).`);
+  };
+
+  const purchaseWardrobeRefit=(optionId,studentId)=>{
+    const student=students.find(s=>s.id===studentId);
+    const opt=REFIT_OPTIONS.find(o=>o.id===optionId);
+    if(!student||!opt){push('⚠️ Pick a resident door.');return;}
+    const currency=computeHallLoungeSkillCurrency(students,ownedHallSkills||{});
+    if(currency<opt.cost){push(`⚠️ Need ${opt.cost} lbs prestige.`);return;}
+    setStudents(prev=>prev.map(s=>{
+      if(s.id!==studentId) return s;
+      const next=applyOutfitRefit(s,optionId);
+      return { ...next, memories: appendMemory(next.memories,'refit',week,optionId) };
+    }));
+    setDormState(ds=>{
+      const cur=ds||createInitialDormState();
+      return {
+        ...cur,
+        wardrobeSpend:(cur.wardrobeSpend||0)+opt.cost,
+        wardrobeRefits:{ ...(cur.wardrobeRefits||{}), [studentId]: { week, optionId } },
+      };
+    });
+    push(`🪡 ${student.name}: ${opt.label} (${opt.cost} lbs prestige). Clothes catch up.`);
   };
 
   const startNightRound=()=>{
@@ -4949,6 +4973,22 @@ export default function HallPass(){
       push(`⭕ Belt bloat triggered on ${s.name}.${extra?` ${extra}`:''}`);
       return;
     }
+    if(actionId==='overnight_belt'){
+      if(!gateDeviceUse('auto_bloating_belt')) return;
+      const applied=applyDeviceEffect(s,{ gainLbs:[3,6], psychDelta:{ dependence:2 } },{ week, sourceDeviceId:'auto_bloating_belt', rng:Math.random });
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.auto_bloating_belt);
+      awardDeviceMastery('auto_bloating_belt', 'good');
+      push(`🌙 Belt left on overnight for ${s.name}. Morning finds more of her.`);
+      return;
+    }
+    if(actionId==='overnight_feeder'){
+      if(!gateDeviceUse('auto_feeder_arm')) return;
+      const applied=applyDeviceEffect(s,{ gainLbs:[4,8], psychDelta:{ dependence:2 } },{ week, sourceDeviceId:'auto_feeder_arm', rng:Math.random });
+      applyStudentDeviceResult(studentId,{ ok:true, ...applied },DEVICES.auto_feeder_arm);
+      awardDeviceMastery('auto_feeder_arm', 'good');
+      push(`🌙 Feeder left running overnight for ${s.name}. The arm kept count. She did not.`);
+      return;
+    }
     if(actionId==='run_feeder_session'){
       if(!gateDeviceUse('auto_feeder_arm')) return;
       setDeviceUsageModal({ type:'route', deviceDefId:'auto_feeder_arm', studentId, actionId, deviceLabel:DEVICES.auto_feeder_arm?.label });
@@ -5094,6 +5134,15 @@ export default function HallPass(){
       const relGain=getInterruptTalkRelGain(ns);
       ns={...ns,relationship:Math.min(100,ns.relationship+relGain)};
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
+    }else if(action==='leftover'){
+      const portion=getInterruptFeedPortion(ns);
+      const fed=feedStudentCalories(ns,Math.round(portion.calories*0.72),Math.round(portion.fullness*0.8),portion.relGain,'Kitchen leftovers');
+      if(fed) ns=fed;
+      const eatLine=isSlenderEligible(fed||ns)
+        ?renderSlenderEatBeat(fed||ns,week,{mealType:'snack'})
+        :renderEatScene(fed||ns,week,{mealType:'snack'});
+      if(eatLine) setTimeout(()=>push(`🍽️ ${eatLine}`),70);
+      setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'leftover',week)}`),100);
     }else if(action==='echoed_will'){
       if((ownedSkills.echoed_will||0)<1){
         push('⚠️ Echoed Will not unlocked.');
@@ -5529,6 +5578,12 @@ export default function HallPass(){
       else if(om==='drop'){ring=W(2);ob-=4;tag='you_brace';}
       else if(om==='thrust'){ring=W(3);tag='you_brace';}
       else{ring=0;tag='you_brace';}
+    }else if(ym==='hip_check'){
+      yb-=12;
+      if(om==='sidestep'){ring=-10;tag='dodge_waste';}
+      else if(om==='brace'){ring=W(small);ob-=6;tag='clash';}
+      else if(om==='charge'){ring=W(med);ob-=10;tag='you_drive';}
+      else{ring=W(med)-4;ob-=8;tag=ring>=0?'you_drive':'clash';}
     }else{ // sidestep
       yb-=10;
       if(om==='charge'){ring=Math.round(big*1.25);ob-=20;tag='you_dodge';}
@@ -5545,7 +5600,7 @@ export default function HallPass(){
     if(oppBalance<25) pool=['brace','brace','thrust'];
     else if(ringPos>40) pool=['charge','charge','drop','thrust','sidestep'];
     else if(ringPos<-40) pool=['charge','drop','thrust','thrust','brace'];
-    else pool=['charge','thrust','drop','brace','sidestep','thrust','drop'];
+    else pool=['charge','thrust','drop','brace','sidestep','thrust','drop','hip_check'];
     const move=pool[Math.floor(Math.random()*pool.length)];
     const tl=SUMO_TELEGRAPH[move];
     return {move,telegraph:tl[Math.floor(Math.random()*tl.length)]};
@@ -7105,6 +7160,10 @@ export default function HallPass(){
       let ns={...x};
       if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
       if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
+      if(effect.refit){
+        ns=applyOutfitRefit(ns,effect.refit);
+        ns={...ns,memories:appendMemory(ns.memories,'refit',week,effect.refit)};
+      }
       // Talking to her is attention — it cools discontent.
       if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-DISCONTENT_EASE_TALK);
       return ns;
@@ -8907,7 +8966,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} dormState={dormState||createInitialDormState()} ap={ap} week={week} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} onPurchaseRoomFit={purchaseRoomFit} onStartNightRound={startNightRound} nightMode={nightMode} nightTargetId={nightTargetId} onNightKnock={knockNightDoor}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} dormState={dormState||createInitialDormState()} ap={ap} week={week} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} onPurchaseRoomFit={purchaseRoomFit} onRefitWardrobe={purchaseWardrobeRefit} onStartNightRound={startNightRound} nightMode={nightMode} nightTargetId={nightTargetId} onNightKnock={knockNightDoor}/>}
 
           {view==="influence"&&<InfluenceView
             students={students}
@@ -9259,9 +9318,9 @@ export default function HallPass(){
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
       {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled}/>}
 
-      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
+      {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} week={week} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
 
-      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition} soundEnabled={soundEnabled}/>}
+      {galleryOpen&&galleryState&&<ArtisanGalleryModal galleryState={galleryState} students={students} week={week} onClose={closeGalleryHub} onOpenSubjectPicker={galleryOpenSubjectPicker} onConfirmEnroll={galleryConfirmEnroll} onStartStudio={galleryBeginStudio} onStudioAction={galleryStudioAction} onFieldShoot={galleryDoFieldShoot} onExhibition={galleryDoExhibition} soundEnabled={soundEnabled}/>}
 
       {supernaturalModalOpen&&<SupernaturalAscensionModal students={students} opposition={opposition} onAscend={ascendSupernatural} onDismiss={dismissSupernaturalAct} soundEnabled={soundEnabled}/>}
       {refeedSurgeState&&(()=>{
@@ -9560,6 +9619,8 @@ export default function HallPass(){
             }}
             onDeny={()=>finishHungerInterrupt(hs.id,'deny')}
             onTalk={()=>finishHungerInterrupt(hs.id,'talk')}
+            leftoverAvailable={roomCompletion('kitchen',ownedHallSkills||{}).owned>=1}
+            onLeftover={()=>finishHungerInterrupt(hs.id,'leftover')}
             echoedWillAvailable={echoedWillAvailable}
             onEchoedWill={()=>finishHungerInterrupt(hs.id,'echoed_will')}
             soundEnabled={soundEnabled}

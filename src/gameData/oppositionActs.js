@@ -88,6 +88,8 @@ export const ACT_I_RUMORS = [
   '📣 Someone pinned a wellness flyer outside your hall lounge door.',
   '📣 The dining hall manager mentions your residents twice in one sentence.',
   '📣 A peer RA jokes about your roster "filling out" — the joke lands wrong.',
+  '📣 Facilities logged "after-hours kitchen use" on your floor. The log smiles.',
+  '📣 Someone saw a night-round tray and called it programming. Housing filed it.',
 ];
 
 export function pickActIRumor(week, rnd = Math.random) {

@@ -7,6 +7,7 @@ export const GALLERY_MOTIFS = [
   { id: 'still_life', label: 'Still Life', relBonus: 3, scrutiny: 0 },
   { id: 'portrait', label: 'Portrait', corruption: 2, scrutiny: 1 },
   { id: 'performance', label: 'Performance', lbsMult: 1.15, scrutiny: 4 },
+  { id: 'nocturne', label: 'Nocturne', lbsMult: 1.08, relBonus: 2, scrutiny: 1 },
 ];
 
 export const GALLERY_ZONES = ['belly', 'bust', 'hips', 'full'];
@@ -16,6 +17,7 @@ export const GALLERY_MEDIUMS = [
   { id: 'cream', label: 'Cream' },
   { id: 'chocolate', label: 'Chocolate' },
   { id: 'pastry', label: 'Pastry' },
+  { id: 'night_kitchen', label: 'Night Kitchen Light' },
 ];
 
 export const FIELD_LOCATIONS = [
@@ -24,6 +26,7 @@ export const FIELD_LOCATIONS = [
   { id: 'food_court', label: 'Food Court', tag: 'street', quality: 'Study' },
   { id: 'gym', label: 'Gym Aftermath', tag: 'contrast', quality: 'Print' },
   { id: 'faculty_lounge', label: 'Staff Lounge', tag: 'scandal', quality: 'Masterwork', scrutiny: 5 },
+  { id: 'night_wing', label: 'Night Wing', tag: 'afterhours', quality: 'Print', scrutiny: 2 },
 ];
 
 export const STUDIO_ACTIONS = [
@@ -31,6 +34,7 @@ export const STUDIO_ACTIONS = [
   { id: 'feed_together', label: 'Feed together', subjectLbs: 5, fionaLbs: 4, quality: 'Study' },
   { id: 'shoot_only', label: 'Shoot only', subjectLbs: 0, fionaLbs: 0, quality: 'Masterwork' },
   { id: 'direct_feed', label: 'Direct & feed', subjectLbs: 11, fionaLbs: 3, quality: 'Masterwork' },
+  { id: 'night_still', label: 'Still after hours', subjectLbs: 6, fionaLbs: 2, quality: 'Print' },
 ];
 
 export const CRITIC_TIERS = [
@@ -102,7 +106,9 @@ export function studioAction(state, actionId) {
       ? 'Fiona eats from the same tray, camera dangling, unashamed.'
       : action.id === 'shoot_only'
         ? 'She shoots without feeding — hunger in the frame.'
-        : 'Model fed. Shutter clicks.';
+        : action.id === 'night_still'
+          ? 'After hours. Fridge light. The shutter is quieter than her swallow.'
+          : 'Model fed. Shutter clicks.';
   if (round >= 3) {
     const critic = CRITIC_TIERS[Math.floor(Math.random() * CRITIC_TIERS.length)];
     return {
@@ -188,6 +194,7 @@ export const GALLERY_EVOLVED_EVENTS = [
         choices: [
           { id: 'enroll', label: 'Enroll the first official model', result: 'Release forms become art contracts. Everyone signs.', lbs: 4, rel: 10, flag: 'first_subject' },
           { id: 'candid', label: 'Start with candid field work only', result: 'She shoots from the hip. The quad yields gold.', lbs: 3, rel: 8, flag: 'field_first' },
+          { id: 'night_door', label: 'Shoot the first night-round door', result: 'Fridge light, a resident mid-bite. Fiona pins it as proof.', lbs: 5, rel: 9, flag: 'night_first' },
         ],
       },
       {
@@ -195,6 +202,7 @@ export const GALLERY_EVOLVED_EVENTS = [
         choices: [
           { id: 'wall', label: 'Help her hang the first wall', result: 'Thumbtacks, twine, bodies at every stage.', lbs: 5, rel: 9, flag: 'wall_up' },
           { id: 'wait', label: 'Wait for a stronger series', result: 'She nods. Shoots more. Eats while she shoots.', lbs: 6, rel: 7 },
+          { id: 'feed_frame', label: 'Feed her while she hangs', result: 'One hand on the print. One hand on the plate. The wall goes up full.', lbs: 7, rel: 8, flag: 'wall_up' },
         ],
       },
     ],

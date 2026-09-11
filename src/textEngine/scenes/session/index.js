@@ -10,6 +10,7 @@ import './aftermathDepth.js';
 import './selectors.js';
 import './selectorDepth.js';
 import '../proseOverhaul.js';
+import '../proseOverhaulPass4.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';

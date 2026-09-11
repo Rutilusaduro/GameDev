@@ -254,3 +254,11 @@ registerPool('dinner.conv.dining_nook', [
     `Talk of the nook becomes a second dessert. {subject.name} calls it floor research.`,
   ] },
 ]);
+
+registerPool('dinner.conv.wardrobe_ease', [
+  { when: {}, text: [
+    `You mention the seams you let out. {subject.name} looks down, then orders like the extra inch was an invitation.`,
+    `"Those clothes were already losing," {subject.name} says. She eats as if the new ease needs filling.`,
+    `Wardrobe talk becomes another course. {subject.name} tests the waistband with a breath and a bite.`,
+  ] },
+]);

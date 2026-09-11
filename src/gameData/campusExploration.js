@@ -138,6 +138,7 @@ export function buildExplorationContext({
   asceticCircle = false,
   opposition = null,
   saturationTier = 0,
+  nightIntimacy = 0,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -159,6 +160,7 @@ export function buildExplorationContext({
     deviceInventory,
     asceticCircle,
     opposition,
+    nightIntimacy,
   };
 }
 
@@ -178,6 +180,15 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
   if (ctx.campusFattening && rng() < 0.35) {
     lines.push(`🌿 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
+  }
+
+  if ((ctx.nightIntimacy || 0) >= 18 && rng() < 0.24) {
+    const nightLines = [
+      '🔑 The path back to your hall still smells like the kitchen. Someone is still eating.',
+      '🔑 A resident crosses the quad with a foil tray. Quiet hours are a rumor on your floor.',
+      '🔑 Campus lighting hits a waistband that lost an argument after midnight.',
+    ];
+    lines.push(pick(rng, nightLines));
   }
 
   const satTier = ctx.saturationTier ?? 0;

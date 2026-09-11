@@ -32,8 +32,8 @@ function rpick(arr) {
  */
 export function pickStudentMemory(student, week) {
   const mems = student?.memories || [];
-  const sameWeek = mems.filter((m) => m.w === week && (m.t === 'feast' || m.t === 'forced'));
-  const longArc = mems.filter((m) => m.w < week && (m.t === 'stageUp' || m.t === 'scaleBreak' || m.t === 'stuffed' || m.t === 'bondShift' || m.t === 'night'));
+  const sameWeek = mems.filter((m) => m.w === week && (m.t === 'feast' || m.t === 'forced' || m.t === 'night'));
+  const longArc = mems.filter((m) => m.w < week && (m.t === 'stageUp' || m.t === 'scaleBreak' || m.t === 'stuffed' || m.t === 'bondShift' || m.t === 'night' || m.t === 'refit'));
   const pools = [];
   if (sameWeek.length) pools.push({ scope: 'sameWeek', m: sameWeek[sameWeek.length - 1] });
   if (longArc.length) pools.push({ scope: 'longArc', m: rpick(longArc) });
@@ -58,7 +58,7 @@ export function pickHallMemory(students, week, excludeId) {
     if (s.id === excludeId || s.hidden) continue;
     for (const m of s.memories || []) {
       const ago = week - m.w;
-      if ((m.t === 'scaleBreak' || m.t === 'stageUp') && ago >= 0 && ago <= 3) {
+      if ((m.t === 'scaleBreak' || m.t === 'stageUp' || m.t === 'night') && ago >= 0 && ago <= 3) {
         recent.push({ memName: s.name, memType: m.t, memWeeksAgo: Math.max(1, ago) });
       }
     }

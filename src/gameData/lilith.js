@@ -143,6 +143,13 @@ export const HUNT_MEN = [
     location: 'dorm', difficulty: 0,
     desc: () => "He knocks twice, the way they always do. You ordered a lot tonight. You always order a lot now. He's been your regular for three weeks.",
   },
+  {
+    id: 'owen_k', name: "Owen Keller", tag: "Night Cook",
+    location: 'dining_hall', difficulty: 2,
+    desc: (stage) => stage < 5
+      ? "Closing shift, apron still on, a tray he was going to throw out. He looks at you like you might be the reason he kept it."
+      : "He stopped scraping plates when you came in. The leftover tray is still warm. So is he, in a way he will not name.",
+  },
 ];
 
 // ── TURN-BASED ENCOUNTER SYSTEM ────────────────────────────────────
@@ -222,6 +229,7 @@ export const REPLY_POOL = [
   { id:'r_laugh',     label:"Laugh at whatever he just said.",          effect:'neutral',  wpDelta:-6  },
   { id:'r_name',      label:"Say his name when you answer.",            effect:'neutral',  wpDelta:-5  },
   { id:'r_story',     label:"Tell him something harmless about your evening.", effect:'neutral', wpDelta:-4 },
+  { id:'r_kitchen',   label:"\"The kitchen is still warm. Come see.\"",       effect:'good',    wpDelta:-19 },
 ];
 
 // Physical seduction moves — unlocked by Lilith's weight
@@ -248,6 +256,12 @@ export const PHYSICAL_MOVES = {
     label: "Gut Press",
     unlockLbs: 540,
     power: 0.2,
+    vignette: (_stageBand) => "[Vignette: coming soon]",
+  },
+  lap_claim: {
+    label: "Lap Claim",
+    unlockLbs: 420,
+    power: 0.18,
     vignette: (_stageBand) => "[Vignette: coming soon]",
   },
 };

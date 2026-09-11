@@ -8,7 +8,7 @@ import { habitatForStudent, neighborStudentIds, roomCompletion, studentFits } fr
 import { getStage } from './stages.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { applyPsychDelta } from './psychState.js';
-import { garmentFitState, outfitFor } from './outfits.js';
+import { FIT_STATES, garmentFitState, outfitFor, worstFitState } from './outfits.js';
 
 export const DEPTH_TALK_TOPICS = [
   {
@@ -55,6 +55,24 @@ export const DEPTH_TALK_TOPICS = [
     engineTemplate: '{talk.raid_stash}',
     dormGate: 'snacks',
   },
+  {
+    id: 'refit_wardrobe',
+    label: 'Let out her clothes',
+    icon: '🪡',
+    group: 'floor',
+    effect: { rel: 3, refit: 'let_out' },
+    engineTemplate: '{talk.refit_wardrobe}',
+    dormGate: 'straining',
+  },
+  {
+    id: 'leftover_plate',
+    label: 'Bring kitchen leftovers',
+    icon: '🥡',
+    group: 'floor',
+    effect: { rel: 2, cals: 2200, full: 10 },
+    engineTemplate: '{talk.leftover_plate}',
+    dormGate: 'fridge',
+  },
 ];
 
 export function talkTopicAvailable(topic, student, dormState) {
@@ -64,6 +82,12 @@ export function talkTopicAvailable(topic, student, dormState) {
   if (topic.dormGate === 'habit') return !!dormState?.nightRounds?.habits?.[student?.id];
   if (topic.dormGate === 'scale') return !!fits.scale;
   if (topic.dormGate === 'snacks') return !!fits.snacks;
+  if (topic.dormGate === 'fridge') return !!fits.fridge;
+  if (topic.dormGate === 'straining') {
+    if (!Object.values(fits).some(Boolean)) return false;
+    const worst = worstFitState(student);
+    return !!worst && FIT_STATES.indexOf(worst) >= FIT_STATES.indexOf('straining');
+  }
   return true;
 }
 

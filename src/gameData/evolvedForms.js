@@ -2838,6 +2838,7 @@ Daisy is behind the counter, warm and purposeful, refilling things before they'r
           choices:[
             {id:"watched",label:"Watch Daisy watch them eat",result:(s)=>`She doesn't look at you. She looks at them. There's something careful and pleased in her expression — the satisfaction of a calculation that came out right. Kayla has had three pieces. Bri hasn't stopped. Sofia is on something like a fourth.`,lbs:5,rel:8,flag:"watched"},
             {id:"helped_serve",label:"Help serve — pass things around",result:(s)=>`You help pass things around. Daisy gives you a look that might be gratitude, might be you-figured-it-out. The session is easy and warm and loud. By the end, everyone — including Daisy — is noticeably fuller.`,lbs:4,rel:11,flag:"helped_served"},
+            {id:"night_batch",label:"Save a night tray for the wing",result:(s)=>`Daisy packs a second pan "for later." Later is the corridor. Residents find it. Daisy pretends she did not plan this.`,lbs:6,rel:9,flag:"helped_served"},
           ]
         },
         {
@@ -2847,6 +2848,7 @@ She doesn't say anything. She takes her daughter home. Mrs. Monroe, at the windo
           choices:[
             {id:"played_safe",label:"Smile and wave — nothing to see here",result:(s)=>`Daisy waves. Mrs. Calloway moves on. Mrs. Monroe pauses to say "that smells wonderful," and Daisy hands her a wrapped piece for the drive home. Nobody asks any questions.`,lbs:3,rel:7,flag:"played_safe"},
             {id:"offered_leftovers",label:"Offer the moms the leftovers",result:(s)=>`Daisy offers the container. Mrs. Calloway hesitates one beat and then accepts. Mrs. Monroe accepts immediately and with visible enthusiasm. The leftovers are gone before they reach the parking lot, by Daisy's estimation.`,lbs:4,rel:9,flag:"offered_leftovers"},
+            {id:"invite_round",label:"Invite a mom to night-round snacks",result:(s)=>`Daisy mentions the kitchen stays warm. Mrs. Monroe laughs like she already knew. Mrs. Calloway pretends she did not hear.`,lbs:5,rel:8,flag:"offered_leftovers"},
           ]
         },
       ],

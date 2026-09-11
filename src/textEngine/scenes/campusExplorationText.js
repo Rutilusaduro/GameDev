@@ -1,10 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: CAMPUS EXPLORATION — modular travel & sighting prose
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, createContext, render } from '../engine.js';
+import { registerPool, registerModuleVariants, createContext, render } from '../engine.js';
 import { getStage } from '../../gameData/stages.js';
 import { appendV2Depth } from './v2/depthRenderer.js';
 import '../modules.js'; // subject.name etc.
+import './proseOverhaulPass4.js';
 
 // ── student sightings (weight-band × archetype) ───────────────
 
@@ -262,13 +263,26 @@ registerPool('campus.travel', [
     ] },
 ]);
 
+registerModuleVariants('campus.travel', [
+  { when: {}, text: [
+    'A resident cuts across the quad with a foil tray and no explanation.',
+    'The dining hall steam follows people out the doors like a rumor.',
+    'Someone sits on a bench to finish a milkshake that was supposed to be portable.',
+  ] },
+]);
+
 registerPool('campus.location', [
   { when: { nodeId: 'quad' }, priority: 2,
     text: ['Food trucks idle in a row like predators that learned parking etiquette.', 'The lawn has more blankets than grass on a weekday afternoon.', 'Someone naps on a bench with a pastry balanced on their stomach like a trophy.'] },
   { when: { nodeId: 'library' }, priority: 2,
     text: ['The third floor smells like coffee and surrender.', 'Someone snores gently between stacks. A textbook rises and falls on their belly.', 'A study carrel holds crumbs, wrappers, and the ghost of a third snack break.'] },
   { when: { nodeId: 'dining_hall' }, priority: 2,
-    text: ['The dessert station has a queue that behaves like a single organism.', 'A staff member plates a fourth serving without being asked.', 'Steam and sugar hang in the air — the whole building smells like seconds.'] },
+    text: [
+      'The dessert station has a queue that behaves like a single organism.',
+      'A staff member plates a fourth serving without being asked.',
+      'Steam and sugar hang in the air — the whole building smells like seconds.',
+      'A night cook scrapes nothing. The leftover tray is already spoken for.',
+    ] },
   { when: { nodeId: 'gym' }, priority: 2,
     text: ['The juice bar blender never stops during peak hours.', 'A poster advertises "recovery" portions the size of small pets.', 'Someone leaves the treadmill for the smoothie line and does not return.'] },
   { when: { nodeId: 'garden' }, priority: 2,
@@ -339,7 +353,8 @@ export function renderCampusTravelLine(explorationCtx, nodeId, category = 'trave
   });
   const key = category === 'location' ? '{campus.location}' : '{campus.travel}';
   const base = render(key, ctx)?.trim() || '';
-  return appendV2Depth(base, 'campusNav', ctx, 0.2);
+  const linger = render('{campus.linger}', ctx)?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join(' '), 'campusNav', ctx, 0.2);
 }
 
 export function renderCampusFindFlavor(explorationCtx) {

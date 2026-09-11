@@ -1,8 +1,9 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Eating contest — engine bridge for competitive_circuit evolved form.
-import { registerDimension } from '../../engine.js';
+import { registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
 import {
   CONTEST_FOOD_POPUPS,
   CONTEST_ACTION_POPUPS,
@@ -68,8 +69,8 @@ export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, may
 export function renderContestPayoff(stageIdx, student, yourGain, week) {
   const fn = CONTEST_PAYOFF_TEXT[stageIdx];
   const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
-  return renderContestLegacy(raw, student, week, stageIdx, {
-    globals: { yourGain },
-    v2DepthChance: 0.3,
-  });
+  const ctx = buildContestCtx(student, week, stageIdx, { globals: { yourGain } });
+  const glow = render('{contest.afterglow}', ctx)?.trim() || '';
+  const composed = [raw, glow].filter(Boolean).join('\n\n');
+  return appendV2Depth(composed, 'eatingContest', ctx, 0.3);
 }

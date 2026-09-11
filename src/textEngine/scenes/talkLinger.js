@@ -224,3 +224,97 @@ registerPool('talk.raid_stash', [
     '{talk.raid_stash.line}\n\n{talk.raid_stash.body}',
   ] },
 ]);
+
+registerPool('talk.refit_wardrobe.open', [
+  { when: {}, text: [
+    'You bring a kit and an honest eye. The clothes have been losing all week.',
+    'She already knows why you are here. The waistband announced it first.',
+    'Needle, extra fabric, a tape that does not lie. The room gets quiet.',
+  ] },
+]);
+
+registerPool('talk.refit_wardrobe.line', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    `"It was already tight this morning," {subject.name} says. "Don't look at me like that."`,
+  ] },
+  { when: { corruption: [2] }, weight: 2, text: [
+    `"Make them honest," {subject.name} says. "I want to feel the new size."`,
+  ] },
+  { when: {}, text: [
+    `"If you let them out, I'll fill them again," {subject.name} says.`,
+    `{subject.name} holds the fabric away from her middle. "See? It was already arguing."`,
+    `"Do it," {subject.name} says. "I am tired of pretending these still fit."`,
+  ] },
+]);
+
+registerPool('talk.refit_wardrobe.body', [
+  { when: { stageMax: 3 }, text: [
+    'The extra inch of fabric is small. The relief on her face is not. She breathes and the shirt stays closed.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, text: [
+    'You work around a belly that keeps arriving while you sew. She watches, fond, as the waistband learns her name again.',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'The garment becomes a project of geography. She sits. You sew around the heat of her. The new ease is already a promise.',
+  ] },
+  { when: {}, text: [
+    'Thread, warmth, a body that has outgrown last week\'s numbers. The clothes catch up for now.',
+    'She turns so you can mark the seam. Softness fills the space the old size left empty.',
+    'When she stands, the fabric holds. She tests it with a breath. Then she looks at you like dessert.',
+  ] },
+]);
+
+registerPool('talk.refit_wardrobe', [
+  { when: {}, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.refit_wardrobe.open} {talk.refit_wardrobe.body}\n\n{talk.refit_wardrobe.line}',
+    '{talk.refit_wardrobe.open}\n\n{talk.refit_wardrobe.line} {talk.refit_wardrobe.body}',
+    '{talk.refit_wardrobe.line}\n\n{talk.refit_wardrobe.body}',
+  ] },
+]);
+
+registerPool('talk.leftover_plate.open', [
+  { when: {}, text: [
+    'You bring a foil tray from the galley. The fridge light has been working overtime.',
+    'Kitchen leftovers, still warm. You knock with both hands full.',
+    'You do not pretend this is a wellness check. The food is the check.',
+  ] },
+]);
+
+registerPool('talk.leftover_plate.line', [
+  { when: { studentId: 10 }, weight: 4, text: [
+    `"If this sat too long I will be offended," Reneé says, already peeling foil.`,
+  ] },
+  { when: { corruption: [0] }, weight: 2, text: [
+    `"I already ate," {subject.name} says. She takes the tray anyway.`,
+  ] },
+  { when: {}, text: [
+    `"You brought me the good leftovers," {subject.name} says, pleased.`,
+    `{subject.name} makes room on the bed for the tray. "Stay while I finish it."`,
+    `"If you leave it, I'll eat it," {subject.name} says. "So. Leave it."`,
+  ] },
+]);
+
+registerPool('talk.leftover_plate.body', [
+  { when: { stageMax: 3 }, text: [
+    'She eats standing first, then sits when the tray gets serious. The shirt rides. She tugs it and keeps going.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, text: [
+    'The tray lands in her lap and she treats that as the serving dish. Warmth, foil, a belly that makes a table of itself.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'You set the tray where she can reach without standing. She reaches. The room smells like the kitchen coming to her.',
+  ] },
+  { when: {}, text: [
+    'Foil, steam, a resident who was not going to sleep hungry. She finishes what the floor forgot.',
+    'She eats with a fork from the galley drawer. The leftovers become dinner. Then they become seconds.',
+    'When the tray is empty she looks at you like there might be another one. There might.',
+  ] },
+]);
+
+registerPool('talk.leftover_plate', [
+  { when: {}, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.leftover_plate.open} {talk.leftover_plate.body}\n\n{talk.leftover_plate.line}',
+    '{talk.leftover_plate.open}\n\n{talk.leftover_plate.line} {talk.leftover_plate.body}',
+    '{talk.leftover_plate.line}\n\n{talk.leftover_plate.body}',
+  ] },
+]);

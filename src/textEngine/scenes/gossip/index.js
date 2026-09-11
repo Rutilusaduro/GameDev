@@ -12,6 +12,7 @@ import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass4.js';
 
 // ── gossip.react.notice ───────────────────────────────────────
 // Neutral, observational. The hall notices someone changed.
@@ -108,7 +109,7 @@ registerPool('gossip.murmur', [
     `Glances cross the room — at thighs, at waistbands, at who's going back for seconds. A whole conversation without words.`,
     `She knows the room is watching her. They all know. The watching has become the weather.`,
     `The residents have their own accounting. It runs parallel to whatever you think is happening.`,
-    '',
+    `Someone laughs too loud at seconds. The laugh is doing paperwork the RA desk will never see.`,
   ]},
 ]);
 
@@ -132,7 +133,8 @@ export function renderGossipReact(reactor, week = 1, opts = {}) {
   const line = render('{gossip.react.line}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = notice && line ? `${notice} ${line}` : notice || line;
   const glow = render('{gossip.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const withGlow = [composed, glow].filter(Boolean).join(' ');
+  const linger = render('{gossip.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const withGlow = [composed, glow, linger].filter(Boolean).join(' ');
   return appendV2Depth(withGlow, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
 }
 
@@ -141,5 +143,6 @@ export function renderGossipMurmur(reactor, week = 1, opts = {}) {
   if (!reactor) return '';
   const ctx = buildTextContext({ subject: reactor, week, ...opts });
   const base = render('{gossip.murmur}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'gossip', ctx, opts.v2DepthChance ?? 0.22);
+  const linger = render('{gossip.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join(' '), 'gossip', ctx, opts.v2DepthChance ?? 0.22);
 }

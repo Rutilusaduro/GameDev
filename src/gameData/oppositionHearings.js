@@ -21,6 +21,7 @@ export const REMOVAL_HEARING = {
         { id: 'hold_firm', label: 'Hold firm — abundance is the hall program', resultPool: 'opposition.hearing.removal.result.hold_firm', flag: 'firm' },
         { id: 'negotiate', label: 'Negotiate — private indulgence, public discretion', resultPool: 'opposition.hearing.removal.result.negotiate', flag: 'negotiate' },
         { id: 'floor_pressure', label: 'Floor pressure — mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.floor_pressure', flag: 'floor_pressure' },
+        { id: 'night_log', label: 'Submit night-round logs as community hours', resultPool: 'opposition.hearing.removal.result.night_log', flag: 'night_log' },
       ],
     },
   ],
@@ -39,6 +40,11 @@ export const REMOVAL_HEARING = {
       poolKey: 'testify_firm',
       condition: (h) => h.includes('testify') && h.includes('firm'),
       studentHiddenWeeks: 0, scrutinyDelta: -5, resolveHitAll: 8,
+    },
+    {
+      poolKey: 'night_paperwork',
+      condition: (h) => h.includes('night_log'),
+      studentHiddenWeeks: 0, scrutinyDelta: -4, resolveHitAll: 6,
     },
     {
       poolKey: 'messy_victory',
@@ -62,6 +68,7 @@ export const EMERGENCY_HEARING = {
         { id: 'deflect', label: 'Deflect to campus culture metrics', resultPool: 'opposition.hearing.emergency.result.deflect', flag: 'deflect' },
         { id: 'feast_bribe', label: 'Cater the hearing itself', resultPool: 'opposition.hearing.emergency.result.feast_bribe', flag: 'catered' },
         { id: 'sacrifice', label: 'Sacrifice a compromised member as scapegoat', resultPool: 'opposition.hearing.emergency.result.sacrifice', flag: 'scapegoat' },
+        { id: 'night_hours', label: 'Recast after-hours traffic as wellness programming', resultPool: 'opposition.hearing.emergency.result.night_hours', flag: 'night_hours' },
       ],
     },
     {
@@ -70,6 +77,7 @@ export const EMERGENCY_HEARING = {
         { id: 'double_down', label: 'Double down — this is the future of the floor', resultPool: 'opposition.hearing.emergency.result.double_down', flag: 'double' },
         { id: 'absorb', label: 'Absorb blame — protect the hall', resultPool: 'opposition.hearing.emergency.result.absorb', flag: 'absorb' },
         { id: 'hive', label: 'Maya hive misdirect — wrong building, wrong records', resultPool: 'opposition.hearing.emergency.result.hive', flag: 'misdirect' },
+        { id: 'invite_home', label: 'Invite the Board to a night round', resultPool: 'opposition.hearing.emergency.result.invite_home', flag: 'invite_home' },
       ],
     },
   ],
@@ -78,6 +86,11 @@ export const EMERGENCY_HEARING = {
       poolKey: 'catered_future',
       condition: (h) => h.includes('catered') && h.includes('double'),
       scrutinyDelta: -15, scandalDelta: -40, truceWeeks: 1,
+    },
+    {
+      poolKey: 'night_truce',
+      condition: (h) => h.includes('night_hours') || h.includes('invite_home'),
+      scrutinyDelta: -8, scandalDelta: -15, truceWeeks: 1,
     },
     {
       poolKey: 'scapegoat_survive',

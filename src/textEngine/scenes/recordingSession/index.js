@@ -3,6 +3,7 @@
 import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
 import {
   RECORDING_OPENING_TEXT,
   RECORDING_TAKE_INTRO_TEXT,
@@ -94,8 +95,9 @@ export function renderRecordingWrapEnding(bestClip, stageIdx, student, week) {
   });
   const clip = ['good', 'great', 'perfect'].includes(bestClip) ? bestClip : 'good';
   const fromPool = render(`{recording.wrap.${clip}}`, ctx)?.trim();
+  const glow = render('{recording.afterglow}', ctx)?.trim() || '';
   if (fromPool) {
-    return appendV2Depth(fromPool, 'recordingSession', ctx, 0.3);
+    return appendV2Depth([fromPool, glow].filter(Boolean).join('\n\n'), 'recordingSession', ctx, 0.3);
   }
   const endArr = RECORDING_WRAP_ENDINGS[bestClip] || RECORDING_WRAP_ENDINGS.good;
   const endFn = endArr[stageIdx] || endArr[0];
@@ -109,8 +111,9 @@ export function renderRecordingWrapEnding(bestClip, stageIdx, student, week) {
 export function renderRecordingPayoff(stageIdx, student, week) {
   const ctx = buildRecordingCtx(student, week, stageIdx);
   const fromPool = render('{recording.payoff}', ctx)?.trim();
+  const glow = render('{recording.afterglow}', ctx)?.trim() || '';
   if (fromPool) {
-    return appendV2Depth(fromPool, 'recordingSession', ctx, 0.32);
+    return appendV2Depth([fromPool, glow].filter(Boolean).join('\n\n'), 'recordingSession', ctx, 0.32);
   }
   const raw = resolveLegacy(RECORDING_PAYOFF_TEXT[stageIdx], student.lbs);
   return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.32 });

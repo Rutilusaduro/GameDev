@@ -23,14 +23,16 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
           food_heavy:'🍖 Heavy food — dense and filling',
           food_build:'🥗 Start light, build to heavier',
           food_hers:'💜 Let her choose what she wants',
+          food_night:'🌙 Night kitchen leftovers',
           pace_push:'⚡ Push her — more, faster',
           pace_settle:'🌊 Let her set the pace',
           pace_surge:'🌀 Pause — let it land — then surge',
+          pace_linger:'🕯 Linger — keep rolling after the last bite',
         };
         const stepLabels=['📷 Camera angle','🍽️ Food','⏱️ Pacing'];
         const angleChoices=['angle_low','angle_wide','angle_close'];
-        const foodChoices=['food_heavy','food_build','food_hers'];
-        const paceChoices=['pace_push','pace_settle','pace_surge'];
+        const foodChoices=['food_heavy','food_build','food_hers','food_night'];
+        const paceChoices=['pace_push','pace_settle','pace_surge','pace_linger'];
         const stepChoices=[angleChoices,foodChoices,paceChoices];
         const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);
         const dismissRecording=()=>{ playHallPassSound('click', soundEnabled); closeRecordingSession(); };

@@ -10,6 +10,7 @@ import './chairIncident.js';
 import './teamWeighIn.js';
 import './narrativeEvents.js';
 import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass3.js';
 
 const POOL_BY_EVENT_ID = {
   uniform_split: 'weekly.uniform_split',
@@ -55,7 +56,8 @@ export function renderWeeklyEvent(eventId, student, opts = {}) {
   });
   const base = render(`{${poolKey}}`, ctx, { trace: opts.trace });
   const glow = render('{weekly.afterglow}', ctx, { trace: opts.trace })?.trim() || '';
-  const composed = [base, glow].filter(Boolean).join('\n\n');
+  const linger = render('{weekly.linger}', ctx, { trace: opts.trace })?.trim() || '';
+  const composed = [base, glow, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(composed, 'weekly', ctx, opts.v2DepthChance ?? 0.3);
 }
 

@@ -78,6 +78,14 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.floor_pressure', [
   ]},
 ]);
 
+registerPoolAutoDecompose('opposition.hearing.removal.result.night_log', [
+  { when: {}, text: [
+    'You slide the night-round log across the table. Community hours, timestamps, leftovers accounted for.',
+    'After-hours traffic becomes programming on paper. Vance reads. The pen slows.',
+    'Quiet hours, recast as care. The Board cannot unsee the signatures of residents who stayed to eat.',
+  ]},
+]);
+
 registerPoolAutoDecompose('opposition.hearing.removal.ending.advocate_voice', [
   { when: {}, text: [
     'Resident voice carries. Removal denied with the advocate on record.',
@@ -99,6 +107,14 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.testify_firm', [
     'Testimony lands. You hold the line. Removal denied — narrowly.',
     '{subject.name} stays. The gavel never finds the word suspend.',
     'Devotion spoken plain. Vance closes without the signature she wanted.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.removal.ending.night_paperwork', [
+  { when: {}, text: [
+    'The night log does the work the speech could not. She stays. The kitchen stays open.',
+    'Community hours, signed. Removal tabled. Appetite continues after lights-out.',
+    'Paperwork eats the complaint. {subject.name} walks out still enrolled, still hungry.',
   ]},
 ]);
 
@@ -183,11 +199,35 @@ registerPoolAutoDecompose('opposition.hearing.emergency.result.hive', [
   ]},
 ]);
 
+registerPoolAutoDecompose('opposition.hearing.emergency.result.night_hours', [
+  { when: {}, text: [
+    'You rename the noise. Wellness programming. Community hours. The observer writes it down.',
+    'After-hours traffic becomes a program with a budget line. Scandal cools around the paperwork.',
+    'Quiet hours recast as care. The chart still glows. The language does not.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.emergency.result.invite_home', [
+  { when: {}, text: [
+    'You invite them to walk the wing after dark. Two members look interested. One looks hungry.',
+    'A night round offered as evidence. The Board imagines the kitchen light and does not like how much they want it.',
+    'Come see, you say. Come eat, you mean. The observer underlines both.',
+  ]},
+]);
+
 registerPoolAutoDecompose('opposition.hearing.emergency.ending.catered_future', [
   { when: {}, text: [
     'They ate through the emergency. Scandal dissipates like steam.',
     'Full bellies adjourn the crisis. The meter cools around crumbs.',
     'Procedure drowned in hospitality. Crisis deferred, appetites satisfied.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.emergency.ending.night_truce', [
+  { when: {}, text: [
+    'After-hours recast as care. The Board adjourns hungry and slightly convinced.',
+    'Night rounds become a line item. Scandal cools. The kitchen stays lit.',
+    'They accept the programming. They do not accept how much they wanted the invitation.',
   ]},
 ]);
 

@@ -3,6 +3,7 @@
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../../../gameData/evolvedForms.js';
 
@@ -43,7 +44,9 @@ export function renderHomeroomPool(poolKey, daisyStudent, week = 1, opts = {}) {
   try {
     const line = render(`{${poolKey}}`, ctx)?.trim();
     if (!line || line.includes('{unresolved}')) return '';
-    return appendV2Depth(line, 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
+    const intro = /\.intro$/.test(poolKey) || /^homeroom\.activity\.[^.]+\.p\d+$/.test(poolKey);
+    const glow = intro ? (render('{homeroom.afterglow}', ctx)?.trim() || '') : '';
+    return appendV2Depth([line, glow].filter(Boolean).join('\n\n'), 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
   } catch {
     return '';
   }

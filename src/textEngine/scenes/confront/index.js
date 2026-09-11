@@ -9,6 +9,7 @@ import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass4.js';
 
 // ── confront.open ─────────────────────────────────────────────
 registerPool('confront.open', [
@@ -125,7 +126,8 @@ export function renderConfront(student, week = 1, opts = {}) {
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
   const scene = render('{confront}', ctx, { trace: opts.trace || null })?.trim() || '';
   const glow = render('{confront.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const base = [scene, glow].filter(Boolean).join('\n\n');
+  const linger = render('{confront.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = [scene, glow, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(base, 'confront', ctx, opts.v2DepthChance ?? 0.28);
 }
 
@@ -136,6 +138,7 @@ export function renderConfrontWithMemory(student, week = 1, opts = {}) {
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
   const scene = render('{confront.withMemory}', ctx, { trace: opts.trace || null })?.trim() || '';
   const glow = render('{confront.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const base = [scene, glow].filter(Boolean).join('\n\n');
+  const linger = render('{confront.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = [scene, glow, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(base, 'confront', ctx, opts.v2DepthChance ?? 0.3);
 }

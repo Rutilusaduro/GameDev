@@ -3,6 +3,7 @@ import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { FLOOR_SCENES } from '../../../gameData/floorEvents.js';
 import { INIT_STUDENTS } from '../../../gameData/students.js';
+import '../proseOverhaulPass4.js';
 
 const sampleStudent = INIT_STUDENTS[0];
 
@@ -42,8 +43,10 @@ export function renderFloorSceneText(scene, student, week = 1, opts = {}) {
   const modular = render(`{campusEvent.scene.${scene.id}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   const legacy = resolveLegacyText(scene.text, student);
   const body = modular || legacy;
-  if (beat && body) return `${beat} ${body}`;
-  return beat || body;
+  const linger = render('{floor.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const withLinger = linger ? `${body} ${linger}` : body;
+  if (beat && withLinger) return `${beat} ${withLinger}`;
+  return beat || withLinger;
 }
 
 export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opts = {}) {
@@ -52,7 +55,9 @@ export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opt
   if (!choice) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const modular = render(`{campusEvent.choice.${scene.id}.${choiceIdx}}`, ctx, { trace: opts.trace || null })?.trim();
-  return modular || resolveLegacyText(choice.result, student);
+  const linger = render('{floor.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const body = modular || resolveLegacyText(choice.result, student);
+  return linger ? `${body} ${linger}` : body;
 }
 
 /** @deprecated use renderFloorSceneText */

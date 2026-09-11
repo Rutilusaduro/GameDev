@@ -3,6 +3,7 @@
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -16,7 +17,10 @@ const EVOLVED_FORM_POOLS = {
   homeroom_queen: 'evolved.homeroomQueen.v2.depth',
 };
 
-/** Evolved event prose beat — V2 depth on legacy phase/choice/ending text. */
+const EVOLVED_AFTERGLOW = {
+  salon_appetit: 'salon.afterglow',
+  artisan_gallery: 'gallery.afterglow',
+};
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   const line = typeof text === 'string' ? text.trim() : '';
   if (!line) return '';
@@ -37,6 +41,11 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   if (formPool && out?.trim() && Math.random() < chance * 0.85) {
     const extra = render(`{${formPool}}`, ctx)?.trim();
     if (extra) out = `${out}\n\n${extra}`;
+  }
+  const glowKey = EVOLVED_AFTERGLOW[formId];
+  if (glowKey && opts.ending && out?.trim()) {
+    const glow = render(`{${glowKey}}`, ctx)?.trim();
+    if (glow) out = `${out}\n\n${glow}`;
   }
   return out;
 }

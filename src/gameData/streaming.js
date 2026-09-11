@@ -157,6 +157,8 @@ export const CHALLENGES = [
     baseLbs: 11, staminaDrain: 16, speedDelta: 0.08, gainMult: 1.25, payoutMult: 1.4, roundCount: [6, 7], roundSeconds: 16 },
   { id: 'late_nosh', category: 'sensual', label: 'Late-Night Nosh', intensity: 'normal',
     baseLbs: 8, staminaDrain: 10, speedDelta: -0.1, gainMult: 1.08, payoutMult: 1.16, roundCount: [5, 6], roundSeconds: 19 },
+  { id: 'floor_cam', category: 'greedy', label: 'Floor Cam Feast', intensity: 'high',
+    baseLbs: 8, staminaDrain: 12, speedDelta: 0.04, gainMult: 1.14, payoutMult: 1.22, roundCount: [5, 6], roundSeconds: 16 },
 ];
 
 export const DESTINY_MONEY_FLAVOR = [
@@ -438,6 +440,9 @@ export const DESTINY_SPEND_ITEMS = [
   { id: 'chat_feast', label: 'Chat Food Delivery', emoji: '🍕', cost: 55,
     desc: 'Treat chat — +30 audience on next stream (consumes).',
     effect: { audienceBurst: 30 }, max: 8, stackable: true, consumable: true },
+  { id: 'night_ring', label: 'Night Ring Light', emoji: '🌙', cost: 70,
+    desc: 'Warm after-hours lighting. +5% gain, +4% audience.',
+    effect: { gainMult: 1.05, audienceMult: 1.04 }, max: 1 },
 ];
 
 export function getDestinyShare(rewards) {

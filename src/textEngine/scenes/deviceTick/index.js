@@ -14,6 +14,7 @@ import '../../modules.js';
 import './deviceTickSceneDepth.js';
 import '../proseOverhaul.js';
 import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass4.js';
 
 registerPool('device.tick.beat', [
   { when: { isMalfunction: true, gainLbsMin: SUDDEN_GROWTH_LBS_MIN }, text: [
@@ -101,5 +102,6 @@ export function renderDeviceTickLine({
   });
   const base = render('{device.tick.beat}', ctx, { trace });
   const glow = render('{device.afterglow}', ctx, { trace })?.trim() || '';
-  return appendV2Depth([base, glow].filter(Boolean).join(' '), 'device', ctx, 0.3);
+  const linger = render('{device.linger}', ctx, { trace })?.trim() || '';
+  return appendV2Depth([base, glow, linger].filter(Boolean).join(' '), 'device', ctx, 0.3);
 }

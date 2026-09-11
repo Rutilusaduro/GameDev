@@ -54,6 +54,7 @@ export const DISH_ITEM_LINKS = {
   home_second: 'feast_platter',
   midnight: 'donut_box',
   pr_night_tray: 'snack_crate',
+  pr_refit_cake: 'cake_whole',
   eggs_bene: 'butter_coffee',
   atelier_main: 'feast_platter',
   atelier_cheese: 'cake_whole',

@@ -148,6 +148,7 @@ export const PRIVATE_FOODS=[
   {id:"pr_wine_cheese",label:"Wine & Cheese",            course:"extra",   gain:[2,4], fullness:12, desc:"It pairs well with everything she's already eaten. She agrees."},
   {id:"pr_chocolates", label:"Box of Chocolates",        course:"extra",   gain:[1,4], fullness:10, desc:"She doesn't even pick them up one at a time anymore."},
   {id:"pr_night_tray", label:"Night-Wing Tray",          course:"extra",   gain:[3,6], fullness:18, desc:"Whatever the fridge was hiding, now on a plate, now in her lap."},
+  {id:"pr_refit_cake", label:"Seam-Letting Cake",        course:"dessert", gain:[3,5], fullness:16, desc:"You timed dessert to the new waistband. She notices. She eats like the clothes already lost."},
 ];
 
 export const SESSION_FULLNESS_STAGES=[
@@ -198,6 +199,9 @@ export const ENCOURAGEMENT_ACTIONS=[
   {id:"enc_scale", label:"Ask what the scale said",
    line:(s)=>`You ask about the number. ${s.name} names it once, then eats like the number was an appetizer.`,
    toleranceBoost:15, relBonus:3, lbsBonus:[1,2]},
+  {id:"enc_refit", label:"Mention the clothes you let out",
+   line:(s)=>`"Those seams were losing," you say. ${s.name} looks down, then eats like the new ease was an invitation.`,
+   toleranceBoost:13, relBonus:4, lbsBonus:[0,2]},
 ];
 
 export const DINNER_VENUES = [
@@ -308,6 +312,7 @@ export const DINNER_CONVERSATION = [
   { id:"night_round_hint", label:"Mention you walk the hall after hours", requires:null, gainBonus:[1,3], relBonus:5 },
   { id:"room_upgrade_brag", label:"Promise her room a better chair", requires:null, gainBonus:[2,4], relBonus:4 },
   { id:"dining_nook", label:"Talk about the hall dining nook", requiresDining:true, gainBonus:[2,5], relBonus:5 },
+  { id:"wardrobe_ease", label:"Mention you let her clothes out", requires:null, gainBonus:[1,3], relBonus:4 },
 ];
 
 

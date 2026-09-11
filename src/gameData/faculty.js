@@ -62,6 +62,7 @@ export const FACULTY = [
         options:[
           {label:"Ask about the team", next:"team"},
           {label:"Ask about the juice bar's new menu", next:"juicebar", affinity:2},
+          {label:"Ask what she hears after hours", next:"nights", affinity:2},
           {label:"\"Settle something: bulking season?\"", next:"bulk", minAffinity:30},
           {label:"Head out", end:true},
         ]},
@@ -86,6 +87,13 @@ export const FACULTY = [
         ]},
       constantly:{ text:()=>`"I KNEW it." She points the empty shake cup at you like a trophy. "Hartley owes me ten bucks. We bet on which floor was making everyone thick and happy." A grin like a stadium light. "Mine's second. Yours is first. Respect."`,
         options:[ {label:"Back", next:"hub"} ]},
+      nights:{ text:()=>`"Lights out is a suggestion on your floor," Brooks says. "I hear the kitchen at midnight when I cut through from the gym. Someone is always eating. I respect a program that does not clock out."`,
+        options:[
+          {label:"\"Come knock sometime. We feed coaches.\"", next:"nights2", affinity:5},
+          {label:"Back", next:"hub"},
+        ]},
+      nights2:{ text:()=>`She laughs like a locker room. "Don't tempt me. I already drink two Goliaths. A night tray would finish the argument my belt has been losing."`,
+        options:[ {label:"Back", next:"hub"} ]},
     },
   },
   {
@@ -99,6 +107,7 @@ export const FACULTY = [
         options:[
           {label:"Ask what she's working on", next:"work"},
           {label:"Volunteer as a taste tester", next:"taste", affinity:3},
+          {label:"Ask about the floor after hours", next:"nights", affinity:2},
           {label:"Propose a joint study", next:"study", minAffinity:35},
           {label:"Leave her to the data", end:true},
         ]},
@@ -123,6 +132,13 @@ export const FACULTY = [
         ]},
       shake:{ text:()=>`Her handshake is precise, like everything else. "Partners, then. I'll bring the engineered desserts. You bring whatever it is you bring — and one day you'll tell me what that is." She picks her pen back up. "No rush. The data will tell me first."`,
         options:[ {label:"Back", next:"hub"} ]},
+      nights:{ text:()=>`"Your corridor keeps a second shift," Mori says. "I walked past at 1 a.m. Fridge light. A resident eating standing up. Satiety arriving late, as designed." She almost smiles. "I would like the timestamps."`,
+        options:[
+          {label:"\"Night rounds are the protocol.\"", next:"nights2", affinity:4},
+          {label:"Back", next:"hub"},
+        ]},
+      nights2:{ text:()=>`"Then keep walking them," she says. "I will keep measuring what walks back."`,
+        options:[ {label:"Back", next:"hub"} ]},
     },
   },
   {
@@ -136,6 +152,7 @@ export const FACULTY = [
         options:[
           {label:"\"What's fascinating about it?\"", next:"fascinating"},
           {label:"Ask about her workshop", next:"students", affinity:2},
+          {label:"Mention night rounds", next:"nights", affinity:2},
           {label:"\"What do you think you've noticed?\"", next:"noticed", minAffinity:40},
           {label:"Excuse yourself", end:true},
         ]},
@@ -160,6 +177,13 @@ export const FACULTY = [
         ]},
       observer:{ text:()=>`Abara laughs — a real one, surprised out of her. "Touché. Yes. The longer I watch, the hungrier the watching makes me. I've decided to file that under 'occupational benefit.'" She raises her cup to you. "To mutual observation."`,
         options:[ {label:"Back", next:"hub"} ]},
+      nights:{ text:()=>`"After hours is when the vector is loudest," Abara says. "Residents who meant to sleep find the kitchen. Refusal arrives late. I have a theory about unlocked doors and unlocked appetites."`,
+        options:[
+          {label:"\"Come on a round. Bring the notebook.\"", next:"nights2", affinity:5},
+          {label:"Back", next:"hub"},
+        ]},
+      nights2:{ text:()=>`"I will," she says. "I'll write 'field observation' on the IRB form. The form will not mention how much I eat while I watch."`,
+        options:[ {label:"Back", next:"hub"} ]},
     },
   },
   {
@@ -173,6 +197,7 @@ export const FACULTY = [
         options:[
           {label:"Submit to being fed", next:"fed"},
           {label:"Ask about her kitchen crew", next:"students", affinity:2},
+          {label:"Ask about late-night trays", next:"nights", affinity:2},
           {label:"Ask for the family recipe", next:"recipe", minAffinity:40},
           {label:"Escape with your waistline", end:true},
         ]},
@@ -197,6 +222,13 @@ export const FACULTY = [
         ]},
       honor:{ text:()=>`Rosa pretends she isn't misty and threatens you with the spoon again. "If you change the chile ratio I will know. I will feel it." Then, softer: "Go. Make someone happy with it. That's the whole recipe, really."`,
         options:[ {label:"Back", next:"hub"} ]},
+      nights:{ text:()=>`"Your floor cooks after Housing goes home," Rosa says. "I can smell it from the loading dock. Someone is doing my job without calling it a class. I approve."`,
+        options:[
+          {label:"\"Send a pan. We'll finish it.\"", next:"nights2", affinity:5},
+          {label:"Back", next:"hub"},
+        ]},
+      nights2:{ text:()=>`She is already wrapping leftovers. "Take this. If anyone asks, it is a practicum. If nobody asks, eat."`,
+        options:[ {label:"Back", next:"hub"} ]},
     },
   },
   {
@@ -210,6 +242,7 @@ export const FACULTY = [
         options:[
           {label:"Trade pastry for gossip", next:"gossip"},
           {label:"Ask how enrollment's looking", next:"enrollment", affinity:2},
+          {label:"Ask what the night shift reports", next:"nights", affinity:2},
           {label:"Ask what people say about you", next:"aboutYou", minAffinity:35},
           {label:"Back to work", end:true},
         ]},
@@ -233,6 +266,13 @@ export const FACULTY = [
           {label:"Back", next:"hub"},
         ]},
       knows:{ text:()=>`She smiles the smile of a woman holding a full house. "Everything, RA. I know everything. I know what the scales in the gym say and what the tailoring invoices say and which vending machine routes tripled." A beat, perfectly timed. "And I know that whatever you're doing... nobody wants you to stop. Now." She opens the éclair box and turns it toward you. "Eat one with me. Co-conspirators split dessert. House rules."`,
+        options:[ {label:"Back", next:"hub"} ]},
+      nights:{ text:()=>`"Quiet hours on your floor are a rumor," Penny says, delighted. "Work orders say 'fridge running hot.' Incident logs say 'community programming.' I file both. I eat pastry while I file."`,
+        options:[
+          {label:"\"Keep filing it as wellness.\"", next:"nights2", affinity:4},
+          {label:"Back", next:"hub"},
+        ]},
+      nights2:{ text:()=>`"RA, I invented that budget line." She toasts you with shortbread. "Night rounds, pastry, paperwork. The holy trinity."`,
         options:[ {label:"Back", next:"hub"} ]},
     },
   },

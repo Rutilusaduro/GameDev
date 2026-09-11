@@ -18,6 +18,8 @@ export function HungerInterruptModal({
   onTalk,
   onEchoedWill,
   echoedWillAvailable = false,
+  leftoverAvailable = false,
+  onLeftover,
   soundEnabled = true,
 }) {
   useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, student?.id]);
@@ -65,6 +67,11 @@ export function HungerInterruptModal({
           <button type="button" className="scene-choice-btn" style={{ ...C.btn('#3a3060'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onTalk(); }}>
             Talk her down on the hall
           </button>
+          {leftoverAvailable && onLeftover && (
+            <button type="button" className="scene-choice-btn" style={{ ...C.btn('#4a3040'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onLeftover(); }}>
+              Walk her to the kitchen leftovers
+            </button>
+          )}
           {echoedWillAvailable && onEchoedWill && (
             <button type="button" className="scene-choice-btn" style={{ ...C.btn('#2a4060'), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onEchoedWill(); }}>
               Echoed Will — reverse hunger curse (backlash scrutiny)

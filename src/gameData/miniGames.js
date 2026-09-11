@@ -9,6 +9,7 @@ export const CONTEST_FOODS = [
   { id:'pie',      name:'Pie',        emoji:'🥧', fullness:13, lbs:5 },
   { id:'nachos',   name:'Nachos',     emoji:'🧀', fullness:9,  lbs:4 },
   { id:'icecream', name:'Ice Cream',  emoji:'🍨', fullness:7,  lbs:4 },
+  { id:'milkshake', name:'Milkshake', emoji:'🥤', fullness:9,  lbs:5 },
 ];
 
 // Food selection per stage (0=stage5, 4=stage9). Your side vs Maya's side.
@@ -18,8 +19,7 @@ export const CONTEST_STAGE_FOODS = [
   { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos'] },
   { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream'] },
   { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream','pie'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream','cake'] },
-  // stage 10 — ~820 lbs — Grand Invitational (blob)
-  { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream','pie'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream','cake'] },
+  { your:['hotdogs','wings','burger','pizza','ribs','pasta','cake','nachos','icecream','pie','milkshake'], maya:['hotdogs','wings','burger','pizza','ribs','pasta','pie','nachos','icecream','cake','milkshake'] },
 ];
 
 // Maya's weight at each stage (starts heavier — she wins early events)
@@ -57,6 +57,14 @@ export const CONTEST_FOOD_POPUPS = {
     `You eat the pizza and feel your belly push the table edge. It's doing that now — pressing into things, occupying more space than the seat was designed for. You push the table back an inch and keep eating.`,
     `Five slices. You eat them like they're nothing, your belly enormous and warm and pressing everything around you, the table creaking against your waist, the crowd watching you eat like it's the most natural thing in the world. It is.`,
     `You eat the pizza and your belly pushes the table hard to the side and you let it. Your belly is an architectural presence in this room — it dominates the space between you and the competition, it fills the front half of your lane — and five slices of pizza go into it and it fills fractionally more and settles forward fractionally further and you keep going.`,
+  ],
+  milkshake:[
+    `Cold, thick, easy. You drink it between heavier plates and it still counts. Your belly takes the sweetness like it was waiting.`,
+    `The shake is dessert pretending to be a drink. You finish it standing. The crowd clocks the empty cup.`,
+    `You drink it down and feel it land on everything else. Cold going in. Warm staying.`,
+    `A milkshake at this size is punctuation. You swallow it as a rest and it is not rest.`,
+    `The cup looks small in your hands. The contents do not feel small once they arrive.`,
+    `You drink the shake the way the sea takes a river. The crowd watches the cup tip. Your belly already knew.`,
   ],
   ribs:[
     `Heavy. Your belly really knows about the ribs. You eat through them with the focused attention of someone who can feel the fullness climbing — really climbing now — your waistband pressing, your belly warm and round and present. You eat another rib anyway.`,
@@ -317,6 +325,7 @@ export const SUMO_MOVES = [
   { id:'drop',      label:'Belly Drop',      emoji:'🫸', desc:'Drop your full weight forward. Scales hard with how heavy you are. Your signature.',          balanceCost:15 },
   { id:'brace',     label:'Brace',           emoji:'🛡️', desc:'Plant and root. Negate her push and recover your balance. No ground gained.',                balanceCost:-30 },
   { id:'sidestep',  label:'Sidestep',        emoji:'↪️', desc:'Slip aside. Devastating if she charges. Wasted if she doesn\'t.',                            balanceCost:10 },
+  { id:'hip_check', label:'Hip Check',       emoji:'🍑', desc:'Turn and put hip and belly into her line. Cheap ground if she is already close.',            balanceCost:12 },
   { id:'fill_ring', label:'Fill the Ring',   emoji:'🌕', desc:'Blob only. You relax completely — belly and ass expanding to claim the dohyo. She bounces out.', balanceCost:0, blobOnly:true },
 ];
 
@@ -330,6 +339,7 @@ export const SUMO_TELEGRAPH = {
   drop:[`Dana hauls her belly back and up — she's loading a drop.`,`Dana lowers her center of gravity. A belly drop is coming.`],
   brace:[`Dana plants wide and roots down. She's bracing.`,`Dana sets her feet and sinks her hips. She's going to hold.`],
   sidestep:[`Dana's weight goes light on one side. She might slip aside.`,`Dana's eyes flick to her left — she's thinking about stepping.`],
+  hip_check:[`Dana turns her hip in. She's going to put mass into your line.`,`Dana loads her near side. A hip check is coming.`],
 };
 
 // Exchange commentary, keyed by outcome bucket, indexed [stageIdx 0..4]
@@ -715,9 +725,9 @@ export const RECORDING_PERFECT_COMBOS = [
 ];
 
 // Lbs gained per food choice per take
-export const RECORDING_FOOD_LBS = { food_heavy:[10,15], food_build:[6,10], food_hers:[7,12] };
+export const RECORDING_FOOD_LBS = { food_heavy:[10,15], food_build:[6,10], food_hers:[7,12], food_night:[8,13] };
 // Pace modifier to lbs
-export const RECORDING_PACE_LBS = { pace_push:4, pace_settle:1, pace_surge:5 };
+export const RECORDING_PACE_LBS = { pace_push:4, pace_settle:1, pace_surge:5, pace_linger:3 };
 // Quality bonus lbs
 export const RECORDING_QUALITY_BONUS = { okay:0, good:1, great:2, perfect:6 };
 
@@ -788,6 +798,14 @@ export const RECORDING_DIRECTION_POPUPS = {
     (lbs)=>`Colossal at ${Math.round(lbs)} pounds, she weakly points to what she desires most. You bring it to her, watching her vast body accept the calories, every roll quivering with warm satisfaction.`, // stage 4
     (lbs)=>`Your ${Math.round(lbs)}-pound blob chooses with a soft whisper. You feed her exactly what she wants, watching it disappear into her immense, immobile form—proof of how completely she has given herself to you.`, // stage 5
   ],
+  food_night: [
+    (lbs)=>`You bring what the hall kitchen hid after hours. At ${Math.round(lbs)} pounds Kylie eats it like a secret that wants to be filmed.`,
+    (lbs)=>`Night-tray food in both hands. At ${Math.round(lbs)} pounds she swallows leftover density and looks at the lens like it was invited.`,
+    (lbs)=>`After-hours portions. At ${Math.round(lbs)} pounds her belly takes the unofficial meal and the camera keeps it.`,
+    (lbs)=>`You feed her the corridor's leftovers. Enormous at ${Math.round(lbs)} pounds, she treats quiet hours as a course.`,
+    (lbs)=>`Colossal at ${Math.round(lbs)} pounds, she eats the night kitchen. The clip smells like butter and locked doors.`,
+    (lbs)=>`Your ${Math.round(lbs)}-pound blob opens for the late tray. Geography deepens. Housing will never see this take.`,
+  ],
   pace_push: [
     (lbs)=>`You push her firmly — more, faster, don't stop. At ${Math.round(lbs)} pounds Kylie obeys with flushed cheeks, eating rapidly as her noticeably fat belly jiggles and swells quicker with each swallow. Her heavy breasts bounce rhythmically while her plush thighs quiver from the effort. She moans around the food, eyes locked on you with eager devotion.`, // stage 0
     (lbs)=>`You command a relentless pace. At ${Math.round(lbs)} pounds her very fat belly grows visibly tighter and rounder, heavy rolls pressing forward as she keeps eating without pause. Warm fat shifts fast between her thick thighs while she breathes harder, surrendering to your direction.`, // stage 1
@@ -811,6 +829,14 @@ export const RECORDING_DIRECTION_POPUPS = {
     (lbs)=>`Pause on enormous Kylie. At ${Math.round(lbs)} pounds her massive belly rests heavily between her thighs, visibly distended. After the fullness sinks in you command the surge — she eats slower but greedily, rolls deepening as her body accepts even more.`, // stage 3
     (lbs)=>`You let colossal Kylie feel the weight, pausing as her vast belly strains. Then the final push — she takes more, her near-immobile body quivering while enormous breasts heave and her immense gut spreads wider with warm fat.`, // stage 4
     (lbs)=>`Long pause on your ${Math.round(lbs)}-pound blob as her endless belly settles. Then the surge — even immobile she opens for more, new layers of soft warm fat rippling across her geography as the final calories disappear into her devoted mass.`, // stage 5
+  ],
+  pace_linger: [
+    (lbs)=>`You hold the camera and do not rush her. At ${Math.round(lbs)} pounds she eats between takes, fullness landing on camera whether you called cut or not.`,
+    (lbs)=>`Linger. At ${Math.round(lbs)} pounds each swallow gets a second of quiet. The belly answers in the extra second.`,
+    (lbs)=>`You let the take run long. At ${Math.round(lbs)} pounds she keeps eating after the planned last bite.`,
+    (lbs)=>`Enormous at ${Math.round(lbs)} pounds, she uses the linger as permission. The clip overruns. So does she.`,
+    (lbs)=>`Colossal at ${Math.round(lbs)} pounds, lingering is the whole direction. She eats. The camera stays.`,
+    (lbs)=>`Your ${Math.round(lbs)}-pound blob does not need a cue to continue. You linger. She fills the frame.`,
   ],
 };
 

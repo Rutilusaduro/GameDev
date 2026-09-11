@@ -3,6 +3,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
 
@@ -63,7 +64,8 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
   });
   const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
   const base = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
-  return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
+  const glow = render('{wife.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth([base, glow].filter(Boolean).join('\n\n'), 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 /** 1-on-1 talk line — V2 depth on merged legacy/depth prose. */
