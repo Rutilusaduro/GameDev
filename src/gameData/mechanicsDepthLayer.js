@@ -327,3 +327,14 @@ export function depthLilithDifficulty(base = 0) {
   if (base <= 0) return 0;
   return Math.max(0, base - Math.floor(BONUS_FRAC * 2));
 }
+
+/** Nav tab week gates — unlock pantry/campus/reach one week earlier at depth. */
+export function depthNavWeekThreshold(baseWeek = 1) {
+  const w = Math.max(1, baseWeek);
+  return Math.max(1, w - Math.floor(BONUS_FRAC * 2));
+}
+
+/** Outfit fit — garments tolerate slightly more lbs before straining. */
+export function depthOutfitFitEaseMult() {
+  return 1 + BONUS_FRAC * 0.1;
+}

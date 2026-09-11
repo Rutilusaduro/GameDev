@@ -104,4 +104,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'lilithAibHunt', file: 'lilithAibHunt.js' },
   { id: 'origins', file: 'origins/index.js' },
   { id: 'customStudent', file: 'customStudent/index.js' },
+  { id: 'navUnlock', file: 'navUnlock.js' },
+  { id: 'outfits', file: 'outfits.js' },
 ];
