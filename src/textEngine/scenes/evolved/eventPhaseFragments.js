@@ -11,6 +11,7 @@ registerPool('evolved.scene.atmosphere', [
       'Ambient noise drops when plates arrive; appetite becomes the only agenda.',
       'Fabric strains, chairs creak, and the mood stays tender instead of tense.',
       'Floor heat and cooking scent braid together — the hall feels complicit tonight.',
+      'Someone whispers that the floor smells like food; nobody disagrees, and plates keep arriving.',
     ],
   },
 ]);

@@ -284,6 +284,7 @@ import './homeroom/homeroomSceneDepth.js';
 import './homeroom/homeroomActivityDepth.js';
 import './evolved/index.js';
 import './evolved/eventPhaseFragments.js';
+import './evolved/eventStreamerFragments.js';
 import './evolved/reactionFragments.js';
 import './evolved/activityModularFragments.js';
 import './evolved/evolutionOfferFragments.js';
