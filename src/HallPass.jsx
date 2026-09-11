@@ -25,7 +25,7 @@ import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLIMENT_BACKFIRE_SCRUTINY } from './gameData/talkSystem.js';
-import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS } from './gameData/items.js';
+import { INVENTORY_CONFIG, rollWeeklyItem, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { RaSetupWizard } from './components/RaSetupWizard.jsx';
@@ -96,6 +96,7 @@ import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js'
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
+import { renderItemUseOpen } from './textEngine/scenes/itemUse/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
@@ -1325,7 +1326,7 @@ export default function HallPass(){
     if(!fed) return;
     setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
     setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    const line=renderItemUseOpen(target,item,week);
     setTimeout(()=>push(`🎒 ${line}${compoundLabel?` (${compoundLabel})`:''}`),80);
   };
 
@@ -7344,7 +7345,7 @@ export default function HallPass(){
     setInventory(prev=>({...prev,[itemId]:Math.max(0,(prev[itemId]||0)-1)}));
     const { fed, cap, newFullness, sessionCals, prevFullness, overfillEnd }=result;
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
+    const line=renderItemUseOpen(fed,item,week);
     push(`🎒 ${item.label} shared at dinner.`);
     if(overfillEnd){
       setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${renderDinnerOverfill(fed, week)}`]);
