@@ -292,11 +292,14 @@ export function styleMatch(challenge, brand) {
   return b.favStyles.includes(challenge.category) ? 1 : 0.35;
 }
 
-export function pickRoundCount(challenge, rng = Math.random) {
+export function pickRoundCount(challenge, rng = Math.random, extras = {}) {
   if (!challenge?.roundCount) return STREAM_DEFAULT_ROUNDS;
   const [min, max] = challenge.roundCount;
-  if (min >= max) return min;
-  return min + Math.floor(rng() * (max - min + 1));
+  let n = min >= max ? min : min + Math.floor(rng() * (max - min + 1));
+  if (extras.leftover) n += 1;
+  if (extras.night) n += 1;
+  if (extras.originRound) n += 1;
+  return Math.min(n, (max || STREAM_DEFAULT_ROUNDS) + 2);
 }
 
 /** Rolling performance over last 2–3 rounds for reactive dialogue. */

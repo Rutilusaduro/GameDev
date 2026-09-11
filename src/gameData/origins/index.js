@@ -121,3 +121,54 @@ export function applyOriginPick(student, originId, week = 1, extras = {}) {
     triggeredEvents: [...(student.triggeredEvents || []), `origin_${card.id}`].filter((v, i, a) => a.indexOf(v) === i),
   };
 }
+
+const FEED_CAL = new Set(['dataset_hunger', 'off_camera', 'hostess', 'overperformance', 'territory', 'heirloom', 'harvest', 'pantry', 'speedrun', 'self_care']);
+const FEED_HOLD = new Set(['scorekeeper', 'split_time', 'clinical', 'bedside', 'kpi', 'blessing']);
+const TALK_REL = new Set(['found_family', 'temporary', 'bedside', 'self_care', 'chapter_face', 'hostess']);
+const TALK_COR = new Set(['off_camera', 'mirror_early', 'canvas', 'on_camera']);
+const HUNT_REG = new Set(['predator', 'court']);
+const STREAM_REG = new Set(['meta', 'speedrun', 'on_camera', 'off_camera']);
+const LAB_REG = new Set(['prototype', 'optimization', 'compound', 'double_check', 'clinical']);
+const SALON_REG = new Set(['salon_armor', 'found_family', 'hostess', 'composition']);
+const GALLERY_REG = new Set(['composition', 'canvas', 'mirror_early']);
+const DINNER_REG = new Set(['kitchen_rank', 'heirloom', 'hostess', 'harvest']);
+
+/** Origin chainBeat was stored at pick and never consumed. */
+export function originChainBeat(student) {
+  return Math.min(8, student?.originFlags?.chainBeat || 0);
+}
+
+export function bumpOriginChain(student, amount = 1) {
+  if (!student?.origin || student.origin === 'default') return student;
+  const flags = student.originFlags || { register: student.originRegister, chainBeat: 0 };
+  const beat = Math.min(8, (flags.chainBeat || 0) + amount);
+  if (beat === flags.chainBeat) return student;
+  return { ...student, originFlags: { ...flags, chainBeat: beat } };
+}
+
+/** Origin register was stored and unused — mechanical branch per backstory. */
+export function originRegisterFx(student) {
+  const empty = {
+    calorieMult: 1, refusalBonus: 0, talkRel: 0, talkCor: 0,
+    huntSeduce: 0, huntWp: 0, streamLbs: 0, streamAud: 0,
+    labGain: 1, salonLbs: 0, galleryLbs: 0, dinnerFull: 0, wifeLbs: 0,
+  };
+  const reg = student?.originRegister || student?.originFlags?.register;
+  const beat = originChainBeat(student);
+  if (!reg && !beat) return empty;
+  return {
+    calorieMult: (FEED_CAL.has(reg) ? 1.07 : 1) * (1 + beat * 0.008),
+    refusalBonus: FEED_HOLD.has(reg) ? -0.04 : (FEED_CAL.has(reg) ? 0.03 : 0),
+    talkRel: (TALK_REL.has(reg) ? 1 : 0) + (beat >= 3 ? 1 : 0),
+    talkCor: TALK_COR.has(reg) ? 1 : 0,
+    huntSeduce: (HUNT_REG.has(reg) ? 0.06 : 0) + (beat >= 2 ? 0.02 : 0),
+    huntWp: HUNT_REG.has(reg) ? -4 : 0,
+    streamLbs: (STREAM_REG.has(reg) ? 1 : 0) + (beat >= 4 ? 1 : 0),
+    streamAud: (STREAM_REG.has(reg) ? 8 : 0) + (beat >= 3 ? 4 : 0),
+    labGain: (LAB_REG.has(reg) ? 1.08 : 1) * (1 + beat * 0.01),
+    salonLbs: (SALON_REG.has(reg) ? 2 : 0) + (beat >= 3 ? 1 : 0),
+    galleryLbs: (GALLERY_REG.has(reg) ? 1 : 0) + (beat >= 3 ? 1 : 0),
+    dinnerFull: DINNER_REG.has(reg) ? 0.04 : 0,
+    wifeLbs: beat >= 2 ? 1 : 0,
+  };
+}

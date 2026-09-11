@@ -465,6 +465,7 @@ registerPool('talk.checkIn.linger', [
     'She does not rush you out. The visit has a second course in it.',
     'You stay a minute past the script. She lets you.',
     'The room keeps the warmth of her after the official part ends.',
+    'She glances at the door and does not stand. Check-in becomes lingering.',
   ] },
 ]);
 
@@ -474,14 +475,17 @@ registerPool('talk.check_in', [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }{talk.interior.aside|prefix:\n\n}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}\n\n{talk.checkIn.dining} {talk.checkIn.diningLine}\n\n{talk.checkIn.earlyWeight}{talk.interior.aside|prefix:\n\n}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }\n\n{talk.checkIn.earlyWeight}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}\n\n{talk.checkIn.linger}',
   ] },
   { when: { corruption: [1] }, priority: 1, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.acceptClose}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen} {talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{origin.stirring.line} {talk.checkIn.acceptClose}',
   ] },
   { when: { corruption: [2] }, priority: 1, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.ownedClose}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen} {talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{origin.stirring.line}\n\n{talk.checkIn.ownedSpread} {talk.checkIn.ownedClose}',
   ] },
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}',

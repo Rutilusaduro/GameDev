@@ -1,4 +1,5 @@
 // Lilith — Feasting Beauty evolved form
+import { originRegisterFx } from './origins/index.js';
 
 export const LILITH_ID = 15;
 
@@ -20,17 +21,17 @@ export const HUNT_NODES = {
 
 // Node connections: from → to[]
 export const HUNT_MAP = {
-  dorm:        ['quad'],
+  dorm:        ['quad','dorm_row'],
   quad:        ['dorm','dining_hall','campus_park','admin','crossroads'],
-  dining_hall: ['quad','dorm_row','coffee_shop'],
-  dorm_row:    ['dining_hall'],
+  dining_hall: ['quad','dorm_row','coffee_shop','frat_row'],
+  dorm_row:    ['dining_hall','dorm'],
   crossroads:  ['quad','gym','library','frat_row','coffee_shop'],
-  gym:         ['crossroads'],
-  library:     ['crossroads'],
-  frat_row:    ['crossroads'],
+  gym:         ['crossroads','campus_park'],
+  library:     ['crossroads','admin','campus_park'],
+  frat_row:    ['crossroads','dining_hall'],
   coffee_shop: ['crossroads','dining_hall'],
-  campus_park: ['quad'],
-  admin:       ['quad'],
+  campus_park: ['quad','gym','library'],
+  admin:       ['quad','library'],
 };
 
 // Which nodes are accessible at each weight stage id (0-10)
@@ -261,6 +262,8 @@ export const REPLY_POOL = [
   { id:'r_name',      label:"Say his name when you answer.",            effect:'neutral',  wpDelta:-5  },
   { id:'r_story',     label:"Tell him something harmless about your evening.", effect:'neutral', wpDelta:-4 },
   { id:'r_kitchen',   label:"\"The kitchen is still warm. Come see.\"",       effect:'good',    wpDelta:-19 },
+  { id:'r_remember',  label:"\"You came back.\"",                             effect:'good',    wpDelta:-21, needsMark:true },
+  { id:'r_savedseat', label:"\"I saved you a seat.\"",                        effect:'good',    wpDelta:-23, needsMark:true },
 ];
 
 // Physical seduction moves — unlocked by Lilith's weight
@@ -367,6 +370,9 @@ export function huntEncounterMods(nodeId, student, week = 0, manId = null) {
     seduceBonus += 0.03;
     wpDelta -= 2;
   }
+  const originFx = originRegisterFx(student);
+  seduceBonus += originFx.huntSeduce;
+  wpDelta += originFx.huntWp;
   const marks = manId ? (student?.huntMarks?.[manId] || 0) : 0;
   if (marks) {
     seduceBonus += Math.min(0.15, marks * 0.04);
@@ -376,11 +382,11 @@ export function huntEncounterMods(nodeId, student, week = 0, manId = null) {
 }
 
 // Draw 3 reply options: 1 good + 1 bad + 1 neutral, shuffled
-export function drawReplies(usedIds = []) {
+export function drawReplies(usedIds = [], marks = 0) {
   const pick = (type) => {
-    const pool = REPLY_POOL.filter(r => r.effect === type);
+    const pool = REPLY_POOL.filter(r => r.effect === type && (!r.needsMark || marks > 0));
     const avail = pool.filter(r => !usedIds.includes(r.id));
-    const src = avail.length ? avail : pool;
+    const src = avail.length ? avail : pool.filter(r => r.effect === type);
     return src[Math.floor(Math.random() * src.length)];
   };
   const three = [pick('good'), pick('bad'), pick('neutral')];

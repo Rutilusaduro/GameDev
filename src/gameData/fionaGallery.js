@@ -111,10 +111,16 @@ export function studioAction(state, actionId) {
           : 'Model fed. Shutter clicks.';
   if (round >= 3) {
     const critic = CRITIC_TIERS[Math.floor(Math.random() * CRITIC_TIERS.length)];
+    const motif = GALLERY_MOTIFS.find((m) => m.id === session.setup?.motif);
+    const lbsMult = motif?.lbsMult || 1;
+    const nightStill = action.id === 'night_still' || session.log.some((line) => /After hours/.test(line));
+    const extra = nightStill ? 2 : 0;
+    const subjectLbs = Math.round(subjectGain * lbsMult) + extra;
+    const fionaLbs = Math.round(fionaGain * lbsMult) + (nightStill ? 1 : 0);
     return {
       ...state,
-      patrons: Math.min(100, state.patrons + critic.patrons),
-      scrutinyHeat: state.scrutinyHeat + critic.scrutiny,
+      patrons: Math.min(100, state.patrons + critic.patrons + (motif?.relBonus || 0)),
+      scrutinyHeat: state.scrutinyHeat + critic.scrutiny + (motif?.scrutiny || 0),
       subjects: state.subjects.map((s) => {
         if (s.studentId !== session.subjectId) return s;
         return {
@@ -126,7 +132,7 @@ export function studioAction(state, actionId) {
       fieldArchive: [...state.fieldArchive, { id: `studio-${Date.now()}`, location: 'studio', tag: 'portrait', quality: action.quality, caption: 'Studio progression' }],
       session: null,
       lastCritic: critic.label,
-      pendingGains: { subjectId: session.subjectId, subjectLbs: subjectGain, fionaLbs: fionaGain, scrutiny: critic.scrutiny },
+      pendingGains: { subjectId: session.subjectId, subjectLbs, fionaLbs, scrutiny: critic.scrutiny + (motif?.scrutiny || 0) },
       sessionLog: [...session.log, logLine, `Critic: ${critic.label}.`],
     };
   }

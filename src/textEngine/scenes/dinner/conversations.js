@@ -14,6 +14,8 @@ registerPool('dinner.conv.compliment_appetite', [
   ] },
   { when: {}, text: [
     `You mention how much she's enjoying herself. {subject.name} meets your eyes and eats with quiet purpose.`,
+    `{subject.name} hears the compliment and answers with another bite, unhurried.`,
+    `Praise lands. Her fork does the rest of the conversation.`,
   ] },
 ]);
 
@@ -37,6 +39,8 @@ registerPool('dinner.conv.food_talk_dinner', [
     `You and {subject.name} spend ten minutes discussing the dish in detail. She is an enthusiastic critic. She demonstrates her critique by eating more of it.`,
     `{subject.name} rates the sauce, then the portion, then eats enough to make the rating irrelevant.`,
     `Food talk turns into a second plate. {subject.name} calls it research. Her fork agrees.`,
+    `She talks with her mouth full and does not apologize. The review is the meal.`,
+    `Critique, then seconds. {subject.name} treats the distinction as academic.`,
   ] },
 ]);
 
@@ -55,6 +59,9 @@ registerPool('dinner.conv.order_for_her', [
 registerPool('dinner.conv.wine_and_cheese', [
   { when: {}, text: [
     `"We're having the cheese course," you say. It is not a question. {subject.name} settles back with a smile. "Obviously we are." The board that arrives is enormous. She works through all of it.`,
+    `The cheese board arrives like a dare. {subject.name} takes the dare personally.`,
+    `"Wine and cheese is not dessert," {subject.name} says, already cutting. "It is a second dinner wearing a nicer name."`,
+    `{subject.name} pairs wine with another wedge and treats the pairing like a dare she intends to win.`,
   ] },
 ]);
 

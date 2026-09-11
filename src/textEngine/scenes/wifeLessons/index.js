@@ -1,11 +1,23 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A7 Artisan
 // Wife Lessons (Flabwife) — engine bridge from legacy WL_LESSONS / WL_DIALOGUES.
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
+
+registerModuleVariants('wife.linger', [
+  { when: { stageMin: 6 }, weight: 3, text: [
+    'Daughters take leftover heat home in their clothes. Mary Jane keeps the rest.',
+    'The lesson table is wreckage. Softness is the homework.',
+  ] },
+  { when: {}, text: [
+    'She tastes the sauce again after they leave, as if grading her own middle.',
+    'Wine down to the dregs. Appetite still on the syllabus.',
+    'The kitchen clock is ignored. Fullness is the remaining class period.',
+  ] },
+]);
 
 const DAUGHTERS = new Set(['Emma', 'Chloe', 'Kezia', 'Lila']);
 

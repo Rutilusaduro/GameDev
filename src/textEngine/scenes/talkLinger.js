@@ -72,6 +72,7 @@ registerPool('talk.notice_room.line', [
     `"You did this for me," {subject.name} says, not quite a question.`,
     `{subject.name} follows your gaze to the chair, the fridge, the light. "It's better," she admits.`,
     `"If housing asks, it was always like this," {subject.name} says.`,
+    `"Don't write this up as furniture," {subject.name} says. "Write it as me."`,
   ] },
 ]);
 
@@ -291,6 +292,7 @@ registerPool('talk.leftover_plate.line', [
     `"You brought me the good leftovers," {subject.name} says, pleased.`,
     `{subject.name} makes room on the bed for the tray. "Stay while I finish it."`,
     `"If you leave it, I'll eat it," {subject.name} says. "So. Leave it."`,
+    `"Warm still," {subject.name} says. "You timed this. I like that."`,
   ] },
 ]);
 
@@ -308,6 +310,7 @@ registerPool('talk.leftover_plate.body', [
     'Foil, steam, a resident who was not going to sleep hungry. She finishes what the floor forgot.',
     'She eats with a fork from the galley drawer. The leftovers become dinner. Then they become seconds.',
     'When the tray is empty she looks at you like there might be another one. There might.',
+    'The foil remembers the kitchen. Her middle remembers the extra. She keeps eating until both are empty.',
   ] },
 ]);
 
@@ -316,6 +319,7 @@ registerPool('talk.leftover_plate', [
     '{talk.moodOpener|suffix:\n\n}{talk.leftover_plate.open} {talk.leftover_plate.body}\n\n{talk.leftover_plate.line}',
     '{talk.leftover_plate.open}\n\n{talk.leftover_plate.line} {talk.leftover_plate.body}',
     '{talk.leftover_plate.line}\n\n{talk.leftover_plate.body}',
+    '{talk.leftover_plate.open} {talk.leftover_plate.line}\n\n{talk.leftover_plate.body}',
   ] },
 ]);
 
@@ -389,6 +393,75 @@ registerPool('talk.origin_echo.line', [
   { when: { studentId: 14, origin: 'mj_homestead_abundance' }, weight: 4, text: [
     `"No sense being shy around a table," Mary Jane says. "I proved the proverb."`,
   ] },
+  { when: { studentId: 3, origin: 'serena_missed_nationals' }, weight: 4, text: [
+    `"Fuel used to be a split," Serena says. "Tonight it is the whole event."`,
+  ] },
+  { when: { studentId: 3, origin: 'serena_bored_undefeated' }, weight: 4, text: [
+    `"Winning got dull," Serena says. "Eating is a heat I can still take."`,
+  ] },
+  { when: { studentId: 4, origin: 'fiona_model_sidegig' }, weight: 4, text: [
+    `"Hold still was the job," Fiona says. "The belly started moving first."`,
+  ] },
+  { when: { studentId: 4, origin: 'fiona_self_portrait' }, weight: 4, text: [
+    `"The subject keeps changing," Fiona says. "I am the sitting."`,
+  ] },
+  { when: { studentId: 5, origin: 'destiny_ranked_grind' }, weight: 4, text: [
+    `"Hunger was a debuff," Destiny says. "I stacked it on purpose."`,
+  ] },
+  { when: { studentId: 5, origin: 'destiny_offline_lobby' }, weight: 4, text: [
+    `"No spectators used to mean more snacks," Destiny says. "I kept the snacks."`,
+  ] },
+  { when: { studentId: 7, origin: 'priya_parental_track' }, weight: 4, text: [
+    `"Deviation was supposed to get remediated," Priya says. "I ordered dessert."`,
+  ] },
+  { when: { studentId: 7, origin: 'priya_reward_system' }, weight: 4, text: [
+    `"Milestone reached," Priya says. "The bonus is always edible."`,
+  ] },
+  { when: { studentId: 9, origin: 'chloe_scandal_abroad' }, weight: 4, text: [
+    `"Armor used to be silk and portions," Chloé says. "The portions went soft."`,
+  ] },
+  { when: { studentId: 9, origin: 'chloe_first_to_leave' }, weight: 4, text: [
+    `"I had to host myself first," Chloé says. "The table finally has company."`,
+  ] },
+  { when: { studentId: 11, origin: 'kaylee_perfect_rotation' }, weight: 4, text: [
+    `"Care plans do not skip lunch," Kaylee says. "Mine started including dessert."`,
+  ] },
+  { when: { studentId: 11, origin: 'kaylee_self_care' }, weight: 4, text: [
+    `"Orders for me too," Kaylee says. "Tonight the order is another helping."`,
+  ] },
+  { when: { studentId: 12, origin: 'nadia_thesis_others' }, weight: 4, text: [
+    `"Observation was supposed to stay clean," Nadia says. "The observer is chewing."`,
+  ] },
+  { when: { studentId: 12, origin: 'nadia_dream_journal' }, weight: 4, text: [
+    `"I woke hungry before the journal caught up," Nadia says. "Breakfast is the footnote."`,
+  ] },
+  { when: { studentId: 13, origin: 'daisy_potluck_virtue' }, weight: 4, text: [
+    `"Bring enough for everyone included a plate I skipped," Daisy says. "I do not skip."`,
+  ] },
+  { when: { studentId: 13, origin: 'daisy_snack_mom' }, weight: 4, text: [
+    `"I packed extra," Daisy says. "Tonight the extra has my name on it."`,
+  ] },
+  { when: { studentId: 15, origin: 'lilith_always_watching' }, weight: 4, text: [
+    `"Soon began before anyone noticed," Lilith says. "The noticing is the treat."`,
+  ] },
+  { when: { studentId: 16, origin: 'sophia_dissertation_stress' }, weight: 4, text: [
+    `"Baseline check," Sophia says. "The baseline just asked for more."`,
+  ] },
+  { when: { studentId: 16, origin: 'sophia_sample_closet' }, weight: 4, text: [
+    `"Statistically significant," Sophia says, and reaches for another sample.`,
+  ] },
+  { when: { studentId: 17, origin: 'indy_trust_fund_expedition' }, weight: 4, text: [
+    `"Field rations can be decadent," Indiana says. "I packed like I meant it."`,
+  ] },
+  { when: { studentId: 17, origin: 'indy_map_vault' }, weight: 4, text: [
+    `"Treasure is stored value," Indiana says. "Calories count. I am cataloguing."`,
+  ] },
+  { when: { studentId: 18, origin: 'talia_lab_accident' }, weight: 4, text: [
+    `"The experiment affected the experimenter," Talia says. "Noted. Repeating."`,
+  ] },
+  { when: { studentId: 18, origin: 'talia_optimization_run' }, weight: 4, text: [
+    `"I was already testing myself," Talia says. "The floor is a better lab."`,
+  ] },
   { when: { corruption: [0] }, weight: 2, text: [
     `"I didn't plan this," {subject.name} says. "I just stopped leaving food."`,
     `"If housing asks, I transferred for the quiet," {subject.name} says. "The quiet is a kitchen."`,
@@ -432,6 +505,7 @@ registerPool('talk.origin_echo', [
     '{talk.moodOpener|suffix:\n\n}{talk.origin_echo.open} {origin.stirring.line}\n\n{talk.origin_echo.line} {talk.origin_echo.body}',
     '{talk.moodOpener|suffix:\n\n}{talk.origin_echo.line}\n\n{origin.stirring.line} {talk.origin_echo.body}',
     '{talk.origin_echo.open}\n\n{talk.origin_echo.line} {origin.stirring.line}',
+    '{talk.origin_echo.line}\n\n{talk.origin_echo.body} {talk.origin_echo.linger}',
   ] },
 ]);
 

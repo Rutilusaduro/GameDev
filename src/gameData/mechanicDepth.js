@@ -9,6 +9,7 @@ import { getStage } from './stages.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { applyPsychDelta } from './psychState.js';
 import { FIT_STATES, garmentFitState, outfitFor, worstFitState } from './outfits.js';
+import { originRegisterFx } from './origins/index.js';
 
 export const DEPTH_TALK_TOPICS = [
   {
@@ -116,6 +117,9 @@ export function applyTalkHabitatBonus(effect, student, dormState, week = 0, topi
   if ((student?.psych?.shame ?? 0) >= 50 && next.rel && !next.cals) next.rel += 1;
   if (student?.originFlags?.galleySeeded && next.cals) next.cals = Math.round(next.cals * 1.06);
   if (student?.originFlags?.nightSeeded && next.rel) next.rel += 1;
+  const originFx = originRegisterFx(student);
+  if (originFx.talkRel && next.rel) next.rel += originFx.talkRel;
+  if (originFx.talkCor && next.corruption) next.corruption += originFx.talkCor;
   if (topicId === 'origin_echo' && student?.origin && student.origin !== 'default' && next.rel) {
     next.rel += 1;
   }

@@ -8,6 +8,7 @@ import { getCorruptionTier } from './corruption.js';
 import { getForceFeedComplianceBonus } from './deviceGating.js';
 import { ITEMS } from './items.js';
 import { getStage } from './stages.js';
+import { originRegisterFx } from './origins/index.js';
 
 /**
  * Venue/private dish ids linked to pantry ITEMS[] for a shared cal/full model.
@@ -125,6 +126,10 @@ export function getFeedingModifiers(student, {
   else if (stance === 'secret') calorieMult += 0.06;
   if (student?.originFlags?.galleySeeded) fullnessMult += 0.03;
   if (student?.originFlags?.nightSeeded) refusalBonus += 0.03;
+  const originFx = originRegisterFx(student);
+  calorieMult *= originFx.calorieMult;
+  refusalBonus += originFx.refusalBonus;
+  fullnessMult += originFx.dinnerFull;
   if ((student?.fullness || 0) > 40) calorieMult += 0.04;
   if ((student?.fullness || 0) > 70) refusalBonus += 0.04;
 
@@ -368,6 +373,8 @@ export function getTapOutProbability(fPct, tapOutResistance = 0, extras = {}) {
   let p = Math.max(0, tapProb - tapOutResistance);
   if (extras.leftoverFed) p *= 0.85;
   if (extras.nightVisit) p *= 0.92;
+  if (extras.lastPace === 'savor' || extras.lastPace === 'linger' || extras.lastPace === 'gentle') p *= 0.9;
+  if (extras.lastPace === 'push' || extras.lastPace === 'fill') p *= 1.08;
   return p;
 }
 

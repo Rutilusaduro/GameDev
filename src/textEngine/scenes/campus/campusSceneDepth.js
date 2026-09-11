@@ -52,6 +52,17 @@ registerModuleVariants('campus.seenBeat', [
   { when: { studentId: 17, stageMin: 4 }, weight: W, text: [
     `Indiana's gear belt catches on a turnstile. He laughs, unbothered, keeps digging metaphorically.`,
   ]},
+  { when: { studentId: 9, campusLocale: 'quad', stageMin: 4 }, weight: W, text: [
+    `Chloé crosses the quad like a guest of honor at her own picnic. Appetite follows.`,
+  ]},
+  { when: { studentId: 14, campusLocale: 'cafeteria', stageMin: 5 }, weight: W, text: [
+    `Mary Jane treats the cafeteria line as a harvest. Trays stack. She does not hurry.`,
+  ]},
+  { when: {}, text: [
+    `Someone looks twice. She lets them. The second look is the honest one.`,
+    `Campus traffic parts a little. She fills the gap without meaning to.`,
+    `A glance lands on her middle and stays. She keeps walking, warmer for it.`,
+  ]},
 ]);
 
 registerModuleVariants('campus.moveSentence', [

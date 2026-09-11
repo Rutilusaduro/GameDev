@@ -85,7 +85,9 @@ export function salonServiceChoice(state, choiceId) {
   if (!choice) return state;
   const round = session.round + 1;
   const course = session.menuPicks[Math.min(session.menuPicks.length - 1, session.round)] || session.menuPicks[0];
-  const chloeGain = session.chloeGain + choice.chloeLbs + (course?.lbs || 0);
+  const prevCourse = session.round > 0 ? session.menuPicks[session.round - 1] : null;
+  const chainLbs = prevCourse && course && prevCourse.type === course.type ? 2 : 0;
+  const chloeGain = session.chloeGain + choice.chloeLbs + (course?.lbs || 0) + chainLbs;
   const prestigeGain = session.prestigeGain + choice.prestige + (course?.prestige || 0);
   const indulgenceGain = session.indulgenceGain + (choice.indulgence || 0) + (course?.indulgence || 0);
   const scrutinyHit = session.scrutinyHit + (session.guests.includes('platt') && choice.id === 'feed' ? 6 : 0);
@@ -130,11 +132,16 @@ export function salonServiceChoice(state, choiceId) {
 export function salonFinishDigestif(state) {
   const session = state.session;
   if (!session || session.phase !== 'digestif') return { state, done: false };
-  const surge = 8 + Math.floor(session.indulgenceGain / 10);
+  const log = session.serviceLog || [];
+  const feeds = log.filter((id) => id === 'feed').length;
+  const lingers = log.filter((id) => id === 'linger').length;
+  const charms = log.filter((id) => id === 'charm').length;
+  const surge = 8 + Math.floor(session.indulgenceGain / 10) + feeds * 2 + (lingers ? 3 : 0);
+  const extraPrestige = lingers * 2 + charms;
   const finalGain = session.chloeGain + surge;
   const next = {
     ...state,
-    prestige: Math.min(100, state.prestige + session.prestigeGain + 5),
+    prestige: Math.min(100, state.prestige + session.prestigeGain + 5 + extraPrestige),
     indulgence: Math.min(100, state.indulgence + session.indulgenceGain),
     eveningsHosted: state.eveningsHosted + 1,
     guestBook: [...new Set([...state.guestBook, ...session.guests])],
@@ -146,7 +153,7 @@ export function salonFinishDigestif(state) {
     chloeLbs: finalGain,
     prestige: session.prestigeGain,
     scrutiny: session.scrutinyHit,
-    log: `La soirée closes. Chloé gained ${finalGain} lbs. Prestige +${session.prestigeGain + 5}.`,
+    log: `La soirée closes. Chloé gained ${finalGain} lbs. Prestige +${session.prestigeGain + 5 + extraPrestige}.`,
   };
 }
 

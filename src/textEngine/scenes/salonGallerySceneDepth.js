@@ -23,6 +23,8 @@ registerPool('evolved.salon.v2.depth', [
   { when: {}, text: [
     `The salon hums — wine, warmth, appetite dressed as civilization.`,
     `Courses arrive. Laughter thickens. Scandal tastes like dessert.`,
+    `Candles pool. Guests stay. Chloé treats leaving as a failed course.`,
+    `Silk, steam, a second pour. The room learns her outline again.`,
   ]},
 ]);
 
@@ -42,6 +44,8 @@ registerPool('evolved.gallery.v2.depth', [
   { when: {}, text: [
     `Prints on twine. Bodies in frame. Growth made exhibition.`,
     `The archive grows — appetite caught mid-bite, mid-laugh, mid-surrender.`,
+    `Shutter rest. Softness does not. The wall keeps the proof warm.`,
+    `Patrons leave slower than they entered. The subject stays seated on purpose.`,
   ]},
 ]);
 

@@ -6,6 +6,7 @@ import { applyDeviceEffect, rollMalfunction } from './deviceEffects.js';
 import { getDependenceLevel } from './deviceDependence.js';
 import { DEVICES } from './devices.js';
 import { canStudentUseDevice, deviceAcceptanceBlockReason } from './deviceGating.js';
+import { originRegisterFx } from './origins/index.js';
 
 export const DEVICE_INTERACTION_TYPES = {
   feeding_mask: 'rhythm',
@@ -69,12 +70,13 @@ export function scoreRouteSession(session, discoveryRiskBase = 0.15, labState = 
   discoveryRisk *= Math.max(0.45, 1 - reserve / 130);
   const gainMult = 1 + belly / 120 + reserve / 400;
   const efficiency = Math.min(100, belly + campus * 0.7 + reserve * 0.25);
+  const aftercareLbs = Math.floor(reserve / 40);
   let tier = 'good';
   if (efficiency >= 88 && discoveryRisk < 0.2) tier = 'perfect';
   else if (efficiency >= 65) tier = 'good';
   else if (efficiency >= 40) tier = 'messy';
   else tier = 'failure';
-  return { performanceTier: tier, gainMult, discoveryRisk, efficiency };
+  return { performanceTier: tier, gainMult, discoveryRisk, efficiency, aftercareLbs };
 }
 
 export function applyDeviceUsageReward(labState, deviceDefId, performanceTier, extras = {}) {
@@ -128,10 +130,12 @@ export function runRouteDeviceSession(student, deviceDefId, week, routeResult, r
     return { ok: false, lines: [`⚠️ ${deviceAcceptanceBlockReason(student, deviceDefId)}`] };
   }
   const tier = routeResult?.performanceTier ?? 'good';
-  const gainMult = routeResult?.gainMult ?? 1;
+  const fx = originRegisterFx(student);
+  const gainMult = (routeResult?.gainMult ?? 1) * fx.labGain;
+  const aftercare = routeResult?.aftercareLbs ?? 0;
   const base = def?.useEffect?.gainLbs ?? [4, 8];
   const effect = {
-    gainLbs: base.map((g) => Math.max(1, Math.round(g * gainMult))),
+    gainLbs: base.map((g) => Math.max(1, Math.round(g * gainMult) + aftercare)),
     psychDelta: def?.useEffect?.psychDelta ?? { dependence: 2 },
   };
   const effectCtx = { week, sourceDeviceId: deviceDefId, rng, labState: routeResult?.labState };
