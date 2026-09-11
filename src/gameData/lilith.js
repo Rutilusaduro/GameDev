@@ -408,3 +408,30 @@ export const LILITH_DIGEST_COMPLETE = (name, lbsGained) =>
 
 export const LILITH_DIGEST_BLOCKED = (weeksLeft) =>
   `Lilith holds up one hand without opening her eyes. "Not yet. ${weeksLeft} ${weeksLeft === 1 ? "week" : "weeks"}." The mass of her shifts as she breathes. "I am busy."`;
+
+export function createInitialLilithDigest() {
+  return { weeksLeft: 0, totalWeeks: 0, lbsPending: 0 };
+}
+
+export function startLilithDigest(stageId = 0) {
+  const sid = Math.min(10, Math.max(0, Number(stageId) || 0));
+  const weeks = LILITH_DIGEST_WEEKS[sid] ?? 1;
+  const lbs = LILITH_DIGEST_LBS[sid] ?? 8;
+  return { weeksLeft: weeks, totalWeeks: weeks, lbsPending: lbs };
+}
+
+export function canStartLilithHunt(digest) {
+  return !digest || Number(digest.weeksLeft || 0) <= 0;
+}
+
+export function tickLilithDigest(digest) {
+  const cur = digest && typeof digest === 'object' ? digest : createInitialLilithDigest();
+  if (Number(cur.weeksLeft || 0) <= 0) {
+    return { digest: createInitialLilithDigest(), complete: false, lbs: 0 };
+  }
+  const weeksLeft = cur.weeksLeft - 1;
+  if (weeksLeft > 0) {
+    return { digest: { ...cur, weeksLeft }, complete: false, lbs: 0 };
+  }
+  return { digest: createInitialLilithDigest(), complete: true, lbs: Number(cur.lbsPending || 0) };
+}

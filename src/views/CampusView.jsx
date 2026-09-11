@@ -195,7 +195,7 @@ export function CampusView({
             }}>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:13,fontWeight:700,color:"#a0d080"}}>{node.emoji} {node.label}</div>
-                <div style={{fontSize:11,color:"#5a7a4a",marginTop:3,lineHeight:1.5}}>{renderCampusArrive(node.id, week) || node.desc}</div>
+                <div style={{fontSize:11,color:"#5a7a4a",marginTop:3,lineHeight:1.5}}>{renderCampusArrive(node.id, week)}</div>
               </div>
               <button
                 type="button"

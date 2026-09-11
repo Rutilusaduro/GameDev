@@ -27,7 +27,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'circuit', before: 0, after: 3, hook: 'walkAfterHours' },
   { id: 'planner', before: 1, after: 3, hook: 'resolveWeekPlan+venuePick' },
   { id: 'floorCheckIn', before: 1, after: 3, hook: 'kitchenChoice+loungeGainMult' },
-  { id: 'hunt', before: 1, after: 3, hook: 'kitchenHuntBonus+extraMove' },
+  { id: 'hunt', before: 1, after: 4, hook: 'kitchenHuntBonus+extraMove+digestGate' },
   { id: 'trust', before: 1, after: 2, hook: 'socialTrustDrip' },
   { id: 'discontent', before: 1, after: 2, hook: 'comfortFramingDecay' },
   { id: 'evolved', before: 1, after: 5, hook: 'minigameExtras+floorBonus+extraEventChoice+followup' },

@@ -1,6 +1,6 @@
 // The Squad — Lead: A5 Editor | Support: A6 Slender, A1 Mobile
 // Slot-composed floor check-in body. Prefer over leftover FLOOR_SCENES monoliths.
-import { registerPool, registerDimension, render } from '../../engine.js';
+import { registerPool, registerDimension, registerModule, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 
 registerDimension('floorSceneId', (ctx) => ctx.globals?.floorSceneId ?? '');
@@ -107,6 +107,23 @@ registerPool('floor.checkin.result.body', [
     'There is so much of her that fullness is weather. You can watch it move.',
   ]},
 ]);
+
+registerModule('floor.checkin.hall', [
+  { when: { floorSceneId: 'hall_group_project' }, priority: 5, text: [
+    'Hall plans are cancelled. A meal-plan challenge has replaced them. Bring tasting supplies. Tasting samples already on the table.',
+  ]},
+  { when: { floorSceneId: 'hall_snack_break' }, priority: 4, text: [
+    'The whole floor leans toward the food like it was the point of the meeting.',
+  ]},
+  { when: { floorSceneId: 'hall_potluck' }, priority: 4, text: [
+    'Dishes in a line. Everyone is expected to try everything. The lounge smells like a decision you already made.',
+  ]},
+  { when: {}, text: [
+    'The whole floor leans toward the food like it was the point of the meeting.',
+    'Chairs scrape closer. Someone laughs with her mouth full. Nobody apologizes.',
+    'The lounge smells like a decision you already made for them.',
+  ]},
+], { select: 'best' });
 
 function prefer(poolKey, ctx) {
   const line = render(`{${poolKey}}`, ctx)?.trim();

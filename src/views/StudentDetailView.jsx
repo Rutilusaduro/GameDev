@@ -9,8 +9,9 @@ import { getCorruptionTier, CORRUPTION_CONFIG } from '../gameData/corruption.js'
 import { CASE_STUDY_PAIRS } from '../gameData/communityResearcher.js';
 import { EVOLVED_SKILL_TREES } from '../gameData/skills.js';
 import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
-import { LILITH_ID } from '../gameData/lilith.js';
+import { LILITH_ID, canStartLilithHunt } from '../gameData/lilith.js';
 import { renderLilithHuntStatus } from '../textEngine/scenes/hunt/index.js';
+import { renderOriginVoice } from '../textEngine/scenes/overhaul/originVoice.js';
 import { getRecruitmentScene, TESTER_APPEARANCE } from '../gameData/cultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
@@ -96,11 +97,11 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     </div>
                     {isBlob?(
                       <button style={{...C.btn("#500060"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
-                        📱 Call for Delivery
+                        {canStartLilithHunt(s.lilithDigest) ? '📱 Call for Delivery' : '📱 Still processing'}
                       </button>
                     ):(
                       <button style={{...C.btn("#400050"),width:"100%",fontSize:13}} onClick={openLilithHunt}>
-                        🌑 Go Hunting (free)
+                        {canStartLilithHunt(s.lilithDigest) ? '🌑 Go Hunting (free)' : '🌑 Still processing'}
                       </button>
                     )}
                   </div>
@@ -231,7 +232,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     <div style={C.infoBox('rgba(80,40,140,0.22)')}>
                       <div style={{ fontSize: 9, color: '#a878ff', letterSpacing: 2, marginBottom: 4 }}>ORIGIN · LOCKED</div>
                       <div style={{ fontSize: 12, color: '#d8c0ff', lineHeight: 1.7 }}>
-                        <b>{originCard.label}</b> · {originCard.voiceLine}
+                        <b>{originCard.label}</b> · {renderOriginVoice(s, s.origin, week)}
                       </div>
                       <div style={{ fontSize: 10, color: '#9c86b8', marginTop: 4 }}>
                         {originCard.gainStance} register · fixation {originCard.psych.fixation} · obsession {originCard.psych.obsession} · dependence {originCard.psych.dependence} · shame {originCard.psych.shame}
@@ -260,7 +261,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                 {/* Outfit */}
                 <div style={C.infoBox("rgba(50,10,90,0.25)")}>
                   <div style={{fontSize:9,color:"#5028a0",letterSpacing:2,marginBottom:4}}>OUTFIT</div>
-                  <div style={{fontSize:12,color:"#c0a8d8",lineHeight:1.7}}>{getOutfit(s)}</div>
+                  <div style={{fontSize:12,color:"#c0a8d8",lineHeight:1.7}}>{getOutfit(s, week)}</div>
                 </div>
 
                 {/* Stage reaction */}

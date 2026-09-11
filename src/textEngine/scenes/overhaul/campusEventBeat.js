@@ -2,6 +2,7 @@
 // Overwrite leftover campusEvent.observation/result/beat (registerPool last-wins).
 import { registerPool } from '../../engine.js';
 
+export function applyCampusEventOverhaul() {
 registerPool('campusEvent.observation', [
   { when: {}, text: [
     '{floor.checkin.setup} {floor.checkin.body}',
@@ -68,3 +69,6 @@ registerPool('campus.v2.depth', [
     'The quad smells like fried dough and nobody is pretending otherwise.',
   ]},
 ]);
+}
+
+applyCampusEventOverhaul();

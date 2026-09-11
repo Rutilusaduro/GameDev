@@ -41,6 +41,7 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
       if (scene && !scene.includes('{unresolved}')) {
         return appendV2Depth(scene, 'evolved', ctx, chance);
       }
+      return '';
     }
   }
   const line = typeof text === 'string' ? text.trim() : '';

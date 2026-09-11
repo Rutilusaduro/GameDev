@@ -10,6 +10,7 @@ test('origin pick modal locks Cassidy backstory with RA framing', async ({ page 
   await expect(modal.getByText('Cassidy: first meaningful contact')).toBeVisible();
   await expect(modal.getByText('Protocol subject zero')).toBeVisible();
   await expect(modal.getByText('Hidden dorm binge arc')).toBeVisible();
+  await expect(modal.getByText(/Methodology begins at home/i)).toHaveCount(0);
 
   await modal.locator('.origin-pick-card').filter({ hasText: 'Protocol subject zero' }).click();
 

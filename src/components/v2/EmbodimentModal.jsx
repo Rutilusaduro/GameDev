@@ -153,7 +153,7 @@ export function EmbodimentModal({
               </p>
             )}
             <p style={{ fontSize: 10, color: '#708878', margin: '0 0 8px', lineHeight: 1.5 }}>
-              {renderCampusArrive(atNode, week) || node.desc}
+              {renderCampusArrive(atNode, week)}
             </p>
 
             {pendingEvent && (

@@ -228,6 +228,16 @@ registerPool('hunt.status.setup', [
     'She stays. Hunger stays with her. The knock is the hunt now.',
     'Things come to her. A knock, then the extra of her filling the bed.',
   ]},
+  { when: { digestBand: 'early' }, weight: 5, text: [
+    'She is still. Processing. The extra of the last hunt is still landing.',
+    'Couch claimed. Eyes half closed. "Give me time."',
+    'Warm, busy, focused. Hunt later. Digest now.',
+  ]},
+  { when: { digestBand: 'late' }, weight: 5, text: [
+    'Almost done. Heavier in the couch. Hungry again in a quiet way.',
+    'The last hunt has settled into her. She is waiting on the last of it.',
+    'Near the end of processing. The extra of her looks permanent.',
+  ]},
 ]);
 
 registerPool('hunt.status.body', [
@@ -289,5 +299,7 @@ export function renderLilithDigestBlocked(student, week = 1) {
 
 export function renderLilithHuntStatus(student, week = 1) {
   if (!student) return '';
-  return prefer('hunt.status.scene', feastCtx(student, week));
+  const weeks = Number(student.lilithDigest?.weeksLeft || 0);
+  const digestBand = weeks <= 0 ? '' : (weeks <= 2 ? 'late' : 'early');
+  return prefer('hunt.status.scene', feastCtx(student, week, { digestBand, digestWeeks: weeks }));
 }

@@ -48,7 +48,10 @@ import { renderHuntNode, renderHuntTarget } from '../src/textEngine/scenes/hunt/
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import { renderResearcherChat, renderResearcherThesis, renderResearcherReview, renderBoardReaction } from '../src/textEngine/scenes/overhaul/researcherChat.js';
-import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
+import { extraHuntMoves, physicalMovesForOwned, startLilithDigest, tickLilithDigest, canStartLilithHunt } from '../src/gameData/lilith.js';
+import { renderOriginVoice } from '../src/textEngine/scenes/overhaul/originVoice.js';
+import { renderStageDrop } from '../src/textEngine/scenes/overhaul/stageDrop.js';
+import { renderDeviceCatalogDesc } from '../src/textEngine/scenes/deviceFlavor.js';
 import { getBodyDesc, getBodyDescRich, getOutfit, getAttitude } from '../src/utils/gameHelpers.js';
 import { renderHearingPhase } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { renderEvolvedActivity, renderEvolvedEventProse, renderEvolvedFollowup } from '../src/textEngine/scenes/evolved/index.js';
@@ -66,6 +69,7 @@ import { renderIntimacyChoice, renderIntimacyPhase, renderIntimacyEnding } from 
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
+import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
 assert.equal(missing.length, 0, `unmapped skills: ${missing.join(', ')}`);
@@ -640,6 +644,43 @@ assert.equal(/abundance framed as concern/i.test(hearingOpen), false, 'hearing p
 const hearingEmerg = renderHearingPhase('emergency', 0, brit, 3);
 assert.ok(hearingEmerg && !hearingEmerg.includes('{unresolved}'));
 assert.equal(/no notice, no mercy/i.test(hearingEmerg), false);
+
+const cassidyOrigin = { id: 1, name: 'Cassidy', lbs: 140, startLbs: 138, archetype: 'swimmer' };
+const originVoice = renderOriginVoice(cassidyOrigin, 'madd_subject_zero', 1);
+assert.ok(originVoice && !originVoice.includes('{unresolved}'));
+assert.equal(/Methodology begins at home/i.test(originVoice), false, 'origin voice should not dump leftover ORIGIN_DECKS.voiceLine');
+const dropLine = renderStageDrop(brit, 3);
+assert.ok(dropLine && !dropLine.includes('{unresolved}'));
+assert.equal(/Wait, I'm actually lighter/i.test(dropLine), false, 'stage drop should not dump leftover STAGE_DROP_REACTIONS');
+const catalog = renderDeviceCatalogDesc('feeding_mask', brit, 3);
+assert.ok(catalog && !catalog.includes('{unresolved}'));
+assert.equal(/deliberate, mechanical stage advancement/i.test(catalog), false, 'device catalog should not dump leftover DEVICE_CATALOG_BLURBS');
+assert.equal(catalog.includes('—'), false);
+const homesteadEvent = renderEvolvedEventProse(
+  'You knock. The door opens on warmth and cinnamon and Mary Jane',
+  homestead,
+  4,
+  { preferComposed: true, formId: 'homestead_queen' },
+);
+assert.ok(homesteadEvent);
+assert.equal(/flour on one arm, her enormous chest testing the bib/i.test(homesteadEvent), false);
+assert.equal(canStartLilithHunt(null), true);
+const digest = startLilithDigest(4);
+assert.equal(canStartLilithHunt(digest), false, 'digest should block hunt');
+assert.ok(digest.weeksLeft >= 2);
+let digestCur = digest;
+let digestDone = false;
+for (let i = 0; i < 20; i++) {
+  const t = tickLilithDigest(digestCur);
+  digestCur = t.digest;
+  if (t.complete) {
+    digestDone = true;
+    assert.ok(t.lbs > 0, 'digest complete should pay leftover lbs');
+    break;
+  }
+}
+assert.ok(digestDone);
+assert.equal(canStartLilithHunt(digestCur), true);
 
 const challengeStudent = {
   id: 9, name: 'Talia', lbs: 210, startLbs: 135, evolvedForm: 'campus_legend',

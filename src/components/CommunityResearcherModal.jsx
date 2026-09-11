@@ -145,9 +145,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         // ── HAVE A CHAT ──
         if(crs.modalPhase==='have_a_chat'){
           const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx];
-          const phase=scene?.phases[crs.chatPhaseIdx];
-          const leftoverChat=typeof phase?.text==='function'?phase.text(crs.chatHistory):phase?.text;
-          const phaseText=renderResearcherChat(crs.chatMemberIdx, crs.chatPhaseIdx, crs.chatHistory, cassidy, week) || leftoverChat;
+          const phaseText=renderResearcherChat(crs.chatMemberIdx, crs.chatPhaseIdx, crs.chatHistory, cassidy, week) || '';
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 OFF THE RECORD</div>
             <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:8}}>{scene?.member||''}</div>
@@ -178,12 +176,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         // ── THESIS APPROVED ──
         if(crs.modalPhase==='thesis_approved'){
           const bracket=getSuspicionBracket(crs.totalSuspicion||0);
-          const leftoverApproved=bracket==='green'
-            ?`The panel approves without reservation. Cassidy walks out of the athletics building into the afternoon light and does not look back.`
-            :bracket==='yellow'
-            ?`Conditional approval. The consent appendix will need to be written. Cassidy has a great deal to say in it.`
-            :`The private meetings were productive. The season plan is approved. Whatever was said in those rooms stays in those rooms.`;
-          const outcomeText=renderResearcherThesis(true, bracket, cassidy, week) || leftoverApproved;
+          const outcomeText=renderResearcherThesis(true, bracket, cassidy, week);
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
             <div style={{fontSize:13,fontWeight:700,color:"#6aaa80",marginBottom:12}}>Approved</div>
@@ -197,8 +190,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
           <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
-            {renderResearcherThesis(false, getSuspicionBracket(crs.totalSuspicion||0), cassidy, week)
-              || `The panel was not convinced. The file is closed. Cassidy keeps the training log, edited pages and raw ones both, and begins something in the margins that she will finish on her own terms.`}
+            {renderResearcherThesis(false, getSuspicionBracket(crs.totalSuspicion||0), cassidy, week)}
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeThesisOutcome(false); }}>Close</button>
         </>);

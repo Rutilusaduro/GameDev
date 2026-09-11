@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { getOriginDeck } from '../gameData/origins/index.js';
+import { renderOriginVoice } from '../textEngine/scenes/overhaul/originVoice.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 const AXES = [
@@ -11,7 +12,7 @@ const AXES = [
   ['shame', 'Shame'],
 ];
 
-export function OriginPickModal({ student, onPick, soundEnabled = true }) {
+export function OriginPickModal({ student, onPick, soundEnabled = true, week = 1 }) {
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, student?.id]);
   if (!student) return null;
   const deck = getOriginDeck(student);
@@ -34,7 +35,7 @@ export function OriginPickModal({ student, onPick, soundEnabled = true }) {
               onClick={() => { playHallPassSound('confirm', soundEnabled); onPick(card.id); }}
             >
               <div style={{ fontSize: 15, fontWeight: 700, color: '#d8c0ff', marginBottom: 5 }}>{card.label}</div>
-              <div style={{ fontSize: 12, color: '#cbb8df', fontStyle: 'italic', lineHeight: 1.6, marginBottom: 10 }}>{card.voiceLine}</div>
+              <div style={{ fontSize: 12, color: '#cbb8df', fontStyle: 'italic', lineHeight: 1.6, marginBottom: 10 }}>{renderOriginVoice(student, card.id, week)}</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, fontSize: 10, color: '#9c86b8' }}>
                 {AXES.map(([key, label]) => (
                   <span key={key}>{label}: {card.psych[key]}</span>

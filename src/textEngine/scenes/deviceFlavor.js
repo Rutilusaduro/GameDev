@@ -128,7 +128,7 @@ for (const [deviceId, def] of Object.entries(DEVICES)) {
 export function renderDeviceCatalogDesc(deviceId, student = null, week = 1, opts = {}) {
   const id = deviceId && DEVICES[deviceId] ? deviceId : 'feeding_mask';
   const key = `device.catalog.${id}`;
-  if (!hasModule(key)) return DEVICE_CATALOG_BLURBS[id] || '';
+  if (!hasModule(key)) return '';
   const def = DEVICES[id];
   const ctx = createContext({
     subject: student || defaultSubject(),
@@ -136,7 +136,7 @@ export function renderDeviceCatalogDesc(deviceId, student = null, week = 1, opts
     globals: deviceGlobals(def, opts.globals),
     ...opts,
   });
-  return render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || DEVICE_CATALOG_BLURBS[id] || '';
+  return render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || '';
 }
 
 /** Runtime sensation + psych beat when a device is active on a student. */
