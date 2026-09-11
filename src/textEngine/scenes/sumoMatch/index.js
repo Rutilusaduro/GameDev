@@ -36,6 +36,60 @@ registerPool('sumo.linger', [
   ] },
 ]);
 
+registerPool('sumo.beat.clash', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her hips. The tachi-ai lands heavier for it.',
+    'Kitchen tray from earlier. Clay underfoot. Both count when she hits.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round heat still in the middle. She uses it like extra mass on the charge.',
+  ] },
+  { when: { stageMax: 4 }, weight: 2, text: [
+    'She hits lower than she meant to. The belly arrives a half-beat later and still wins the bump.',
+    'Footwork is honest. The new softness is still learning the ring.',
+  ] },
+  { when: {}, text: [
+    'Shoulder, belly, clay. She drives until Dana has to give ground or give air.',
+    'The collision is meat and momentum. She likes how much of her is in it.',
+    'She plants, then pours. Dana feels the pour first.',
+  ] },
+]);
+
+registerPool('sumo.beat.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Last night\'s tray plus this bout. The mawashi reports both.',
+    'Leftover heat under silk. The next shove makes more of her.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'Mass keeps arriving after the clash names itself over. She lets it.',
+    'Getting her set again is a ceremony. She enjoys the audience.',
+  ] },
+  { when: {}, text: [
+    'The ring keeps a warm dent where she was. She is already more than that dent.',
+    'She breathes like a door closing. The belly does not close.',
+    'Pounds finish arriving while Dana resets her feet.',
+  ] },
+]);
+
+registerPool('sumo.beat.line', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '"Still heavy from the kitchen," she says, pleased, and sets again.',
+  ] },
+  { when: {}, text: [
+    'Dana grunts. She answers with another inch of middle.',
+    '"Again," she says, already settling her weight like furniture that fights.',
+    'The crowd likes the wobble. She likes that they like it.',
+  ] },
+]);
+
+registerPool('sumo.beat.scene', [
+  { when: {}, text: [
+    '{sumo.beat.clash} {sumo.beat.growth} {sumo.beat.line}',
+    '{sumo.beat.clash} {sumo.beat.line} {sumo.beat.growth}',
+    '{sumo.beat.growth} {sumo.beat.clash} {sumo.beat.line}',
+  ] },
+]);
+
 function stageText(arr, stageIdx) {
   const item = arr?.[stageIdx];
   return typeof item === 'string' ? item.trim() : '';
@@ -67,7 +121,9 @@ export function renderSumoLegacy(text, student, week, stageIdx = 0, opts = {}) {
 }
 
 export function renderSumoOpening(stageIdx, student, oppLbs, week) {
-  const raw = `The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`;
+  const ctx = buildSumoCtx(student, week, stageIdx, { globals: { oppLbs } });
+  const scene = render('{sumo.beat.scene}', ctx)?.trim() || '';
+  const raw = scene || `The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`;
   return renderSumoLegacy(raw, student, week, stageIdx, {
     globals: { oppLbs },
     v2DepthChance: 0.3,
@@ -75,7 +131,9 @@ export function renderSumoOpening(stageIdx, student, oppLbs, week) {
 }
 
 export function renderSumoExchangeLine(bucket, stageIdx, student, week, oppStumbleNote = '') {
-  const raw = (stageText(SUMO_EXCHANGE_LINES[bucket] || SUMO_EXCHANGE_LINES.clash, stageIdx)) + oppStumbleNote;
+  const ctx = buildSumoCtx(student, week, stageIdx);
+  const scene = render('{sumo.beat.scene}', ctx)?.trim() || '';
+  const raw = (scene || stageText(SUMO_EXCHANGE_LINES[bucket] || SUMO_EXCHANGE_LINES.clash, stageIdx)) + oppStumbleNote;
   return renderSumoLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.24 });
 }
 

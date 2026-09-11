@@ -33,9 +33,11 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, leftoverKit
   if(!node) return null;
 
   const text = typeof node.text === "function" ? node.text(teacher, affinity) : node.text;
+  const leftoverish = leftoverKitchen || nightRound;
   const facCtx = createContext({ week: 1, globals: { leftoverFed: leftoverKitchen, nightVisit: nightRound } });
-  const beat = render('{faculty.beat}', facCtx)?.trim() || '';
-  const glow = render('{faculty.afterglow}', facCtx)?.trim() || '';
+  const scene = leftoverish ? (render('{faculty.scene}', facCtx)?.trim() || '') : '';
+  const beat = scene ? '' : (render('{faculty.beat}', facCtx)?.trim() || '');
+  const glow = scene ? '' : (render('{faculty.afterglow}', facCtx)?.trim() || '');
   const availableOptions = node.options.filter(opt => {
     if(opt.minAffinity && affinity < opt.minAffinity) return false;
     return true;
@@ -91,6 +93,7 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, leftoverKit
           lineHeight:1.75,
           fontStyle:"italic",
         }}>
+          {scene ? <div style={{ marginBottom: 10, opacity: 0.95 }}>{scene}</div> : null}
           {text}
           {beat ? <div style={{ marginTop: 10, opacity: 0.9 }}>{beat}</div> : null}
           {glow ? <div style={{ marginTop: 10, opacity: 0.85 }}>{glow}</div> : null}

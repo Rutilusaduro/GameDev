@@ -134,6 +134,7 @@ import './researchJournal/swimmerDepth.js';
 import './scrutiny/index.js';
 import './wifeLessons/index.js';
 import './wifeLessons/lessonDepth.js';
+import './wifeLessons/talkBeats.js';
 import './wifeLessons/talkDepth.js';
 import './homeroom/index.js';
 import './homeroom/homeroomSceneDepth.js';

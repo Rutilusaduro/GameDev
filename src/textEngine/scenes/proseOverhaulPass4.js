@@ -145,8 +145,8 @@ oncePool('stream.linger', [
 
 oncePool('faculty.beat', [
   { when: { leftoverFed: true }, weight: 3, text: [
-    'Galley leftover still on the floor. She talks like the kitchen is a second syllabus.',
-    'Pastry plate gone. She files your hall under appetite and does not pretend otherwise.',
+    'Galley leftover still on the floor. She files your hall under appetite and does not pretend otherwise.',
+    'Pastry plate gone. She talks housing with a mouth that already voted.',
   ] },
   { when: { nightVisit: true }, weight: 3, text: [
     'After-hours knocks reached staff. She keeps her voice low and her plate closer.',
@@ -173,7 +173,54 @@ oncePool('faculty.afterglow', [
   ] },
 ]);
 
+oncePool('faculty.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley surplus still in the building. She treats your floor like a second dining hall.',
+    'The pastry plate is already gone. She talks housing with crumbs still on the notes.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Someone walked your corridor late. Staff lounge treats that as a catering brief.',
+    'The after-hours kitchen light reached this table. She orders like it is still on.',
+  ] },
+  { when: {}, text: [
+    'She shifts in the chair and the chair reports the term so far.',
+    'A pastry flake on her sleeve. She leaves it. Appetite is the meeting.',
+    'Housing talk waits until the plate is empty. The plate does not wait long.',
+  ] },
+]);
+
+oncePool('faculty.line', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '"Your kitchen is doing scholarship," she says, and means the seconds.',
+    '"Save me a plate," she says, already reaching.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    '"Roman hours," she says. "Keep the kitchen light on."',
+    '"I walked past," she says. "Continue the research."',
+  ] },
+  { when: {}, text: [
+    '"Sit," she says, and the chair already knows the rest.',
+    '"We are taking notes," she says, and the notes have crumbs.',
+    '"Do continue," she says, which is permission and a second helping.',
+  ] },
+]);
+
+oncePool('faculty.scene', [
+  { when: {}, text: [
+    '{faculty.beat} {faculty.growth} {faculty.line} {faculty.afterglow}',
+    '{faculty.growth} {faculty.beat} {faculty.line} {faculty.afterglow}',
+    '{faculty.line} {faculty.beat} {faculty.growth} {faculty.afterglow}',
+  ] },
+]);
+
 oncePool('floor.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her. Check-in treats the lounge like seconds.',
+    'Last night\'s tray plus this hour. The couches keep both.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. Daylight check-in uses the same open door.',
+  ] },
   { when: {}, text: [
     'Check-in ends. The couches keep the heat of whoever just ate.',
     'Someone leaves a box on a side table. The box does not last the hour.',

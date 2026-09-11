@@ -11,6 +11,7 @@ import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '../gameData/evolvedMinigames.js';
+import { depthGainLbs } from '../gameData/mechanicDepth.js';
 
 
 export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
@@ -221,13 +222,20 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
         leftoverFed: !!s.leftoverFedThisWeek,
         nightVisit: s.lastNightVisitWeek === week,
       });
-      setStudents((ss) => ss.map((st) => (st.id === studentId ? processStudentGain(st, result.gain, result.rel) : st)));
+      const leftoverPad = s.leftoverFedThisWeek ? 2 : 0;
+      const baseGain = Math.max(0, result.gain - leftoverPad);
+      const applied = baseGain > 0
+        ? depthGainLbs(s, baseGain, week, {})
+        : leftoverPad
+          ? depthGainLbs(s, leftoverPad, week, { skipNight: true })
+          : 0;
+      setStudents((ss) => ss.map((st) => (st.id === studentId ? processStudentGain(st, applied, result.rel) : st)));
       const labels = {
         campus_challenge: 'Campus Challenge',
         delivery_order: 'Home Nest Delivery',
         presentation_defense: 'Hall Log Defense',
       };
-      push(`✦ ${s.name} — ${labels[gameId]}: ${minigameTierLabel(result.tier)} · +${result.gain} lbs · +${result.rel} rel`);
+      push(`✦ ${s.name} — ${labels[gameId]}: ${minigameTierLabel(result.tier)} · +${applied} lbs · +${result.rel} rel`);
       setOutcome(result);
       setLog(nextLog);
       setHistory(nextHistory);

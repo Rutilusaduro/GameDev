@@ -7,6 +7,7 @@ import '../proseOverhaulPass3.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
 import './beat.js';
+import './talkBeats.js';
 
 registerModuleVariants('wife.linger', [
   { when: { leftoverFed: true }, weight: 3, text: [
@@ -88,7 +89,7 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
   return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
 }
 
-/** 1-on-1 talk line — V2 depth on merged legacy/depth prose. */
+/** 1-on-1 talk line — unique voice first, leftover/night scene wrap, linger. */
 export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 1, opts = {}) {
   if (!line?.trim()) return '';
   const ctx = buildTextContext({
@@ -98,8 +99,12 @@ export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 
     ...opts,
   });
   const base = line.trim();
+  const leftoverish = !!mjStudent?.leftoverFedThisWeek || !!(week && mjStudent?.lastNightVisitWeek === week);
+  const wrap = leftoverish
+    ? (render('{wifeLessons.talk.scene}', ctx, { trace: opts.trace || null })?.trim() || '')
+    : '';
   const linger = render('{wife.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const composed = [base, linger].filter(Boolean).join('\n\n');
+  const composed = [base, wrap, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(composed, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
 }
 

@@ -326,6 +326,22 @@ registerModuleVariants('campus.sighting', [
   ] },
 ]);
 
+registerPool('campus.leftover.scene', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The kiosk line is a second course she did not have to name. Hall foil still on her fingers.',
+    'She buys the walk anyway. Last night\'s tray made the path hungrier than the map.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Daylight eating uses the same open door the night-round knock taught her.',
+    'You saw her after hours. Campus is that appetite with better lighting.',
+  ] },
+  { when: {}, text: [
+    'She stops once more. The path is already a table.',
+    'Campus keeps moving. She keeps eating like the next tray was scheduled.',
+    'You lose her in a cluster of trays and find her again by the laugh.',
+  ] },
+]);
+
 registerPool('campus.find', [
   { when: { campusTierMin: 3 }, priority: 2,
     text: [
@@ -369,9 +385,13 @@ export function renderCampusSighting(student, explorationCtx, nodeId) {
   const ctx = campusSightingContext(student, explorationCtx, nodeId);
   const line = render('{campus.sighting}', ctx);
   if (!line) return null;
+  const leftoverish = !!student?.leftoverFedThisWeek || !!(explorationCtx.week && student?.lastNightVisitWeek === explorationCtx.week);
+  const leftoverScene = leftoverish
+    ? (render('{campus.leftover.scene}', ctx)?.trim() || '')
+    : '';
   const depth = appendV2Depth(line, 'campusNav', ctx, 0.22);
   const linger = render('{campus.linger}', ctx)?.trim() || '';
-  const body = [depth, linger].filter(Boolean).join('\n\n');
+  const body = [depth, leftoverScene, linger].filter(Boolean).join('\n\n');
   return body ? `👁 ${body}` : null;
 }
 
