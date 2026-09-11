@@ -102,6 +102,78 @@ registerPool('fair.day.result', [
   ]},
 ]);
 
+registerPool('cg.selfReview.scene', [
+  { when: {}, text: [
+    '{cg.selfReview.setup} {cg.selfReview.body}',
+    '{cg.selfReview.body} {cg.selfReview.setup}',
+    '{cg.selfReview.setup}\n\n{cg.selfReview.body}',
+  ]},
+]);
+
+registerPool('cg.selfReview.setup', [
+  { when: {}, text: [
+    'Tape, scale, the board. She measures herself like a rival she intends to beat.',
+    'Priya takes her own number. The drive likes being quantified.',
+    'She wraps the tape and does not flinch at what it says.',
+  ]},
+]);
+
+registerPool('cg.selfReview.body', [
+  { when: {}, text: [
+    '{word.size} of her is the data. Soft mass, heat, a waist the oldest photo no longer owns.',
+    'She files the measurement next to the threat map. Fuel. Then she wants food.',
+    'The number is hers. She wants it bigger next week. You are here to witness the plan.',
+  ]},
+]);
+
+registerPool('cg.measure.scene', [
+  { when: {}, text: [
+    '{cg.measure.setup} {cg.measure.body}',
+    '{cg.measure.body} {cg.measure.setup}',
+    '{cg.measure.setup}\n\n{cg.measure.body}',
+  ]},
+]);
+
+registerPool('cg.measure.setup', [
+  { when: {}, text: [
+    'She measures a hall resident the way she measures a threat. Tape, then the board.',
+    'Comparison night. Priya wants the numbers honest. The tape does not lie.',
+    'Another body on the ledger. She stands close enough to feel the difference.',
+  ]},
+]);
+
+registerPool('cg.measure.body', [
+  { when: {}, text: [
+    'She wants to be the biggest fact in the comparison. The tape is how she argues.',
+    '{word.size} of her against the other set of numbers. She files whoever is winning.',
+    'Threat or confirmation. Either way she reaches for more after the last category.',
+  ]},
+]);
+
+registerPool('fair.train.scene', [
+  { when: {}, text: [
+    '{fair.train.setup} {fair.train.body}',
+    '{fair.train.body} {fair.train.setup}',
+    '{fair.train.setup}\n\n{fair.train.body}',
+  ]},
+]);
+
+registerPool('fair.train.setup', [
+  { when: {}, text: [
+    'Training plate. Partner across. Mary Jane treats the session like a weigh-in rehearsal.',
+    'Pre-fair work. Food, pride, a body she intends to walk onto the scale heavier.',
+    'She trains by eating. The collaborator keeps pace. The fair is the exam.',
+  ]},
+]);
+
+registerPool('fair.train.body', [
+  { when: {}, text: [
+    '{word.size} of her takes the session. Soft mass working. Pride is a calorie count.',
+    'She eats through the partner\'s pace and then a little past it. Fair Day will notice.',
+    'Belly first. The trophy wall will want a photo. She is already posing by chewing.',
+  ]},
+]);
+
 function fairCtx(student, week, opts = {}) {
   return buildTextContext({
     subject: student,
@@ -145,6 +217,23 @@ export function renderFairBeat(slot, student, week = 1, opts = {}) {
   const key = slot === 'weighin.open' ? 'fair.day.open'
     : slot === 'judging' ? 'fair.day.judging'
     : slot === 'afterparty.open' ? 'fair.day.afterparty'
+    : slot === 'train' ? 'fair.train.scene'
     : 'fair.day.result';
   return prefer(key, ctx);
+}
+
+export function renderCgSelfReview(student, week = 1) {
+  if (!student) return '';
+  const ctx = createContext({ subject: student, week });
+  return prefer('cg.selfReview.scene', ctx);
+}
+
+export function renderCgMeasure(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = createContext({
+    subject: student,
+    week,
+    globals: { targetName: opts.targetName || 'a resident' },
+  });
+  return prefer('cg.measure.scene', ctx);
 }

@@ -254,3 +254,68 @@ registerPool('sumo.bout.lost', [
     'Loss on the clay. Win in the plan. You eat anyway, in public, on purpose.',
   ]},
 ]);
+
+registerPool('contest.weigh2.scene', [
+  { when: {}, text: [
+    '{contest.weigh2.setup} {contest.weigh2.body}',
+    '{contest.weigh2.body} {contest.weigh2.setup}',
+    '{contest.weigh2.setup}\n\n{contest.weigh2.body}',
+  ]},
+]);
+
+registerPool('contest.weigh2.setup', [
+  { when: {}, text: [
+    'Eating over. Judges call both of you to the scale. The room is still warm from the work.',
+    'Horn, then the walk. Maya is already moving. You are the larger fact in the aisle.',
+    'Final weigh-in. Catering tables gone. The scale is the last course.',
+  ]},
+]);
+
+registerPool('contest.weigh2.body', [
+  { when: {}, text: [
+    '{word.size} of you takes the platform. Soft mass, heat, the extra you just installed.',
+    'You step on. Maya steps on. The judge writes both numbers without performing surprise.',
+    'Belly forward onto the scale. The crowd does the math before the microphone does.',
+  ]},
+  { when: { contestStage: [4, 5] }, weight: 3, text: [
+    'At this size the walk to the scale is a procession. The platform takes you like a promise.',
+  ]},
+]);
+
+registerPool('sumo.fill.scene', [
+  { when: {}, text: [
+    'You expand into the ring until there is no argument left. Dana steps outside.',
+    'Fill as tactic. Soft mass, hard geography. The tawara loses.',
+    'You occupy the dohyo. She has to leave it. Bout to you.',
+  ]},
+]);
+
+registerPool('sumo.next.scene', [
+  { when: {}, text: [
+    'Center again. Dana sets her feet. You choose the next opening.',
+    'You square up. The extra of you is still arriving from the corner.',
+    'Another bout. Clay, mawashi, the particular quiet before contact.',
+  ]},
+  { when: { matchWon: true }, weight: 2, text: [
+    'You return heavier than you left. Dana already knows the next one will feel it.',
+  ]},
+]);
+
+registerPool('sumo.aftermath.scene', [
+  { when: {}, text: [
+    '{sumo.open.setup} The match is over. {word.size} of you is the record the clay kept.',
+    'You step off heavier than you stepped on. Dana files it. So does the crowd.',
+    'Dohyo behind you. Extra of you in front. The hour did what hours of mass do.',
+  ]},
+  { when: { matchWon: true }, weight: 3, text: [
+    'Win on the clay. Win in the body. You can feel the added pounds working already.',
+  ]},
+]);
+
+registerPool('sumo.payoff.scene', [
+  { when: {}, text: [
+    'Pounds added on purpose, in public. You feel them. You want the next card.',
+    'The number is a receipt. {word.size} of you is the event. Dana already knows.',
+    'You leave the venue heavier than you entered. That was the point of the hour.',
+  ]},
+]);

@@ -42,11 +42,13 @@ import { renderFloorSceneText } from '../src/textEngine/scenes/campusEvent/floor
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
 import { renderEvolvedActivity, renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
-import { renderContestFoodPopup, renderContestActionPopup } from '../src/textEngine/scenes/eatingContest/index.js';
-import { renderSumoOpening, renderSumoExchangeLine } from '../src/textEngine/scenes/sumoMatch/index.js';
-import { renderRecordingOpening, renderRecordingDirectionPopup } from '../src/textEngine/scenes/recordingSession/index.js';
+import { renderContestFoodPopup, renderContestActionPopup, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
+import { renderSumoOpening, renderSumoExchangeLine, renderSumoAftermath, renderSumoPayoff } from '../src/textEngine/scenes/sumoMatch/index.js';
+import { renderRecordingOpening, renderRecordingDirectionPopup, renderRecordingTakeResult } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
-import { renderCgBinge, renderCgCorkboard, renderFairBeat } from '../src/textEngine/scenes/overhaul/cgFair.js';
+import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure } from '../src/textEngine/scenes/overhaul/cgFair.js';
+import { renderHiveVisit } from '../src/textEngine/scenes/overhaul/leftoverDisplay.js';
+import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
 const missing = assertSkillRoomCoverage();
@@ -316,6 +318,33 @@ const mj = {
 const fairOpen = renderFairBeat('weighin.open', mj, 4, { influenceKey: 'None', stageIdx: 0 });
 assert.ok(fairOpen && !fairOpen.includes('{unresolved}'), `fair open should resolve, got: ${String(fairOpen).slice(0, 160)}`);
 assert.ok(/Fairgrounds|tank|scale|mass|pinned/i.test(fairOpen));
+const fairTrain = renderFairBeat('train', mj, 4, { stageIdx: 0 });
+assert.ok(fairTrain && !fairTrain.includes('{unresolved}'));
+const selfRev = renderCgSelfReview(cgPriya, 3);
+assert.ok(selfRev && !selfRev.includes('{unresolved}'));
+const measure = renderCgMeasure(cgPriya, 3, { targetName: 'Cassidy' });
+assert.ok(measure && !measure.includes('{unresolved}'));
+assert.equal(/\[MeasurementScene_/i.test(measure), false);
+
+const recResult = renderRecordingTakeResult('perfect', 0, 250, recStudent, 3);
+assert.ok(recResult && !recResult.includes('{unresolved}'));
+assert.equal(/serviceable footage/i.test(recResult), false);
+const weigh2 = renderContestWeighIn2(0, contestStudent, 12, 8, 330, 3);
+assert.ok(weigh2 && !weigh2.includes('{unresolved}'));
+assert.equal(/The eating is over. The judges call both competitors/i.test(weigh2), false);
+const sumoAf = renderSumoAftermath(0, sumoStudent, 18, true, 340, 4);
+assert.ok(sumoAf && !sumoAf.includes('{unresolved}'));
+const sumoPay = renderSumoPayoff(0, sumoStudent, 18, 4);
+assert.ok(sumoPay && !sumoPay.includes('{unresolved}'));
+const hiveVisit = renderHiveVisit({
+  id: 8, name: 'Maya', lbs: 280, startLbs: 130, evolvedForm: 'delivery_hive',
+  relationship: 40, corruption: 1, fullness: 10, stomachCapacity: 120,
+}, 3);
+assert.ok(hiveVisit && !hiveVisit.includes('{unresolved}'));
+assert.equal(/You bring tribute directly to the Central Nest/i.test(hiveVisit), false);
+const collabPay = renderCollabPayoff(0, 8, 6, { id: 0, name: 'Brittany', lbs: 200 }, recStudent, 3);
+assert.ok(collabPay && !collabPay.includes('{unresolved}'));
+assert.equal(/pounds on Kylie/i.test(collabPay), false);
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

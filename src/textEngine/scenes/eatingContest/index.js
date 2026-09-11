@@ -81,6 +81,11 @@ export function renderContestDevourPopup(stageIdx, student, week) {
 }
 
 export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, mayaLbs, week) {
+  const composed = preferContestPool('contest.weigh2.scene', student, week, stageIdx, {
+    globals: { yourGain, mayaGain, mayaLbs },
+    v2DepthChance: 0.32,
+  });
+  if (composed) return composed;
   const fn = CONTEST_WEIGH_IN_2_TEXT[stageIdx];
   const raw = fn ? fn(student, yourGain, mayaGain, mayaLbs) : '';
   return renderContestLegacy(raw, student, week, stageIdx, {

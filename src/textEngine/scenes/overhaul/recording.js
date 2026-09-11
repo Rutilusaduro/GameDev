@@ -124,3 +124,43 @@ registerPool('recording.direction.body', [
     'At this size the direction is geography. You move the frame. She occupies it.',
   ]},
 ]);
+
+registerPool('recording.result.scene', [
+  { when: {}, text: [
+    '{recording.result.setup} {recording.result.body}',
+    '{recording.result.body} {recording.result.setup}',
+    '{recording.result.setup}\n\n{recording.result.body}',
+  ]},
+]);
+
+registerPool('recording.result.setup', [
+  { when: {}, text: [
+    'You watch the take back. The frame is full of her. The question is how true it got.',
+    'Playback. She leans in to see herself eat. The extra of her is the subject.',
+    'Monitor glow. She is still on the bed, still warm, still waiting on the verdict.',
+  ]},
+  { when: { takeQuality: 'perfect' }, weight: 4, text: [
+    'Perfect take. The lens caught the swallow and the pride in the same beat.',
+    'You do not need a second look. The clip is the body doing exactly what you asked.',
+  ]},
+  { when: { takeQuality: 'great' }, weight: 4, text: [
+    'Great take. Heat, softness, the look she saved for you. Keepable.',
+    'The footage sparkles. She knows. She is already thinking about one more bite for the next.',
+  ]},
+  { when: { takeQuality: 'good' }, weight: 3, text: [
+    'Good take. Usable, warm, honest. The extra of her reads on camera.',
+    'Solid clip. She looks heavier than the last session and she likes that it shows.',
+  ]},
+  { when: { takeQuality: 'okay' }, weight: 3, text: [
+    'Okay take. Serviceable. The size is there. The spark is waiting on another pass.',
+    'Fine footage. She is still the subject. The next take can be hungrier.',
+  ]},
+]);
+
+registerPool('recording.result.body', [
+  { when: {}, text: [
+    '{word.size} of her fills the playback. Soft mass, heat, the crop top still losing.',
+    'Belly in the frame. She watches herself chew like the clip was a promise kept.',
+    'The extra that was not here last week is the whole shot. She does not hide it.',
+  ]},
+]);

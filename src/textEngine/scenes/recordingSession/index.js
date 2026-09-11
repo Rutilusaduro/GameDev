@@ -90,6 +90,11 @@ export function renderRecordingDirectionPopup(choiceId, stageIdx, student, week)
 
 export function renderRecordingTakeResult(quality, stageIdx, postGainLbs, student, week) {
   const isPerfect = quality === 'perfect';
+  const composed = preferRecordingPool('recording.result.scene', student, week, stageIdx, {
+    globals: { takeQuality: quality },
+    v2DepthChance: isPerfect ? 0.34 : 0.28,
+  });
+  if (composed) return composed;
   const fn = isPerfect
     ? RECORDING_PERFECT_TAKE[stageIdx]
     : (RECORDING_TAKE_RESULT[quality] || [])[stageIdx];

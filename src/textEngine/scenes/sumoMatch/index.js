@@ -92,6 +92,8 @@ export function renderSumoBoutLost(stageIdx, student, week) {
 }
 
 export function renderSumoFillRing(stageIdx, student, week) {
+  const composed = preferSumoPool('sumo.fill.scene', student, week, stageIdx, { v2DepthChance: 0.34 });
+  if (composed) return composed;
   const raw = SUMO_FILL_RING_TEXT[stageIdx]
     || 'You expand completely into the ring. Your opponent steps outside. Bout to you.';
   return renderSumoLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.34 });
@@ -111,6 +113,11 @@ export function renderSumoCornerFeed(stageIdx, student, week) {
 }
 
 export function renderSumoNextBoutLine(boutNum, stageIdx, student, week, heavier = false) {
+  const composed = preferSumoPool('sumo.next.scene', student, week, stageIdx, {
+    globals: { matchWon: heavier },
+    v2DepthChance: 0.22,
+  });
+  if (composed) return `Bout ${boutNum}. ${composed}`;
   const raw = heavier
     ? `Bout ${boutNum}. You return to center heavier than you left it. ${SUMO_RIVAL_NAME} sets her feet across from you.`
     : `Bout ${boutNum}. You square up at the center again. ${SUMO_RIVAL_NAME} sets her feet across from you.`;
@@ -118,6 +125,11 @@ export function renderSumoNextBoutLine(boutNum, stageIdx, student, week, heavier
 }
 
 export function renderSumoAftermath(stageIdx, student, gainAccum, won, oppLbs, week) {
+  const composed = preferSumoPool('sumo.aftermath.scene', student, week, stageIdx, {
+    globals: { gainAccum, matchWon: won, oppLbs },
+    v2DepthChance: 0.32,
+  });
+  if (composed) return composed;
   const fn = SUMO_MATCH_AFTERMATH[stageIdx];
   const raw = fn ? fn(student, gainAccum, won, oppLbs) : '';
   return renderSumoLegacy(raw, student, week, stageIdx, {
@@ -127,6 +139,11 @@ export function renderSumoAftermath(stageIdx, student, gainAccum, won, oppLbs, w
 }
 
 export function renderSumoPayoff(stageIdx, student, gainAccum, week) {
+  const composed = preferSumoPool('sumo.payoff.scene', student, week, stageIdx, {
+    globals: { gainAccum },
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   const fn = SUMO_PAYOFF_TEXT[stageIdx];
   const raw = fn ? fn(gainAccum) : `${Math.round(gainAccum)} pounds added to your frame since you stepped onto the dohyo. You can feel it. More.`;
   return renderSumoLegacy(raw, student, week, stageIdx, {

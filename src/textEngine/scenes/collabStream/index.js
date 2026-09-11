@@ -4,6 +4,7 @@ import { registerPool, registerDimension, registerModule, render } from '../../e
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { COLLAB_WREN_LINES, COLLAB_STAGEUP_TEXT, COLLAB_PAYOFF_TEXT } from '../../../gameData/miniGames.js';
+import { renderCollabStageUpPool, renderCollabPayoffPool } from '../overhaul/leftoverDisplay.js';
 import './fragments.js';
 import './collabStreamSceneDepth.js';
 
@@ -130,6 +131,8 @@ export function pickCollabWrenLine(stageIdx, kylie, partner, week) {
 }
 
 export function renderCollabStageUp(stageIdx, kylie, partner, newLbs, week) {
+  const composed = renderCollabStageUpPool(kylie, partner, week, stageIdx);
+  if (composed) return appendV2Depth(composed, 'collabStream', buildCollabCtx(kylie, partner, week, stageIdx), 0.3);
   const fn = COLLAB_STAGEUP_TEXT[stageIdx];
   const raw = fn
     ? fn(kylie.name, partner.name, newLbs)
@@ -138,6 +141,10 @@ export function renderCollabStageUp(stageIdx, kylie, partner, newLbs, week) {
 }
 
 export function renderCollabPayoff(stageIdx, kylieGain, partnerGain, partner, kylie, week) {
+  const composed = renderCollabPayoffPool(kylie, partner, week, stageIdx);
+  if (composed) return appendV2Depth(composed, 'collabStream', buildCollabCtx(kylie, partner, week, stageIdx, {
+    globals: { kylieGain, partnerGain },
+  }), 0.32);
   const fn = COLLAB_PAYOFF_TEXT[stageIdx];
   const raw = fn
     ? fn(kylieGain, partnerGain, partner.name)

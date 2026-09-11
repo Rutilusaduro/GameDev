@@ -413,7 +413,8 @@ import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
 import { renderCampusLook } from './textEngine/scenes/overhaul/campusHunt.js';
-import { renderCgBinge, renderCgCorkboard, renderFairBeat } from './textEngine/scenes/overhaul/cgFair.js';
+import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure } from './textEngine/scenes/overhaul/cgFair.js';
+import { renderHiveVisit } from './textEngine/scenes/overhaul/leftoverDisplay.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -3547,7 +3548,10 @@ export default function HallPass(){
       const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
-      const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
+      let sceneText=renderCgSelfReview(priya,week);
+      if(!sceneText||sceneText.includes('{unresolved}')){
+        sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
+      }
       const driveGain=rnd(2,5);
       return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
@@ -3579,7 +3583,10 @@ export default function HallPass(){
       const driveGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
         : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
-      const sceneText=`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
+      let sceneText=renderCgMeasure(priya,week,{targetName:target.name});
+      if(!sceneText||sceneText.includes('{unresolved}')){
+        sceneText=`Priya measures ${target.name} against the board. The tape keeps score.`;
+      }
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
@@ -3748,9 +3755,12 @@ export default function HallPass(){
       const biomass=Math.round(gain*0.8);
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
       push(`🕸️ Maya — Central Nest Visit: +${gain} lbs`);
-      let visitText=`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`;
-      const linger=render('{overhaul.linger.hive}',createContext({subject:maya,week}))?.trim();
-      if(linger) visitText=`${visitText} ${linger}`;
+      let visitText=renderHiveVisit(maya,week);
+      if(!visitText||visitText.includes('{unresolved}')){
+        visitText=`You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`;
+        const linger=render('{overhaul.linger.hive}',createContext({subject:maya,week}))?.trim();
+        if(linger) visitText=`${visitText} ${linger}`;
+      }
       return {
         ...prev,
         hiveBiomass:prev.hiveBiomass+biomass,
@@ -6438,10 +6448,10 @@ export default function HallPass(){
       }));
       const avg=recruits.reduce((a,r)=>a+r.stage,0)/3;
       const group=avg<=2?'Early':avg<=4?'Mid':'Late';
-      sceneTag=FAIR_TRAINING_SCENES.Lilith[`MJ${mjStage}_L${cStage}_${group}`];
+      sceneTag=renderFairBeat('train',mj,week,{stageIdx:mjStage})||FAIR_TRAINING_SCENES.Lilith[`MJ${mjStage}_L${cStage}_${group}`];
       photoTag=FAIR_TRAINING_PHOTOS.Lilith[`MJ${mjStage}_L${cStage}`];
     } else {
-      sceneTag=FAIR_TRAINING_SCENES[collabKey][`MJ${mjStage}_C${cStage}`];
+      sceneTag=renderFairBeat('train',mj,week,{stageIdx:mjStage})||FAIR_TRAINING_SCENES[collabKey][`MJ${mjStage}_C${cStage}`];
       photoTag=FAIR_TRAINING_PHOTOS[collabKey][`MJ${mjStage}_C${cStage}`];
     }
     // pride boost — halved if she keeps leaning on the same collaborator
