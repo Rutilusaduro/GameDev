@@ -2,6 +2,7 @@ import { C } from '../styles.js';
 import { AIB_AGENDA_CARDS, getAvailableCounters, getCounterGateHints, getOversightTelegraph, getAgendaCounterHint } from '../gameData/opposition.js';
 import { getOppositionActSummary, isBoardDormant } from '../gameData/oppositionActs.js';
 import { canArchivistFreeDiscredit } from '../gameData/supernaturalForms.js';
+import { renderOversightCounterDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 export function OversightView({
   opposition,
@@ -218,7 +219,7 @@ export function OversightView({
               style={{ ...C.btn(ap >= c.ap ? '#5a3030' : '#333'), textAlign: 'left', fontSize: 12, opacity: ap >= c.ap ? 1 : 0.5 }}
               onClick={() => onRunCounter(c.id)}
             >
-              {c.label} ({c.ap} AP) — {c.desc}
+              {c.label} ({c.ap} AP) — {renderOversightCounterDesc(c.id, students?.[0], week) || c.desc}
             </button>
           ))}
         </div>

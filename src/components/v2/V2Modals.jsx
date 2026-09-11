@@ -14,6 +14,7 @@ import { renderEchoReplay } from '../../textEngine/scenes/v2/echo/index.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
 import { ModalOverlay } from '../ModalOverlay.jsx';
+import { renderRitualCardDesc } from '../../textEngine/scenes/overhaul/leftoverSystems.js';
 
 export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week = 1, reachLevel = 1, onRun, onClose, soundEnabled = true }) {
   const [selected, setSelected] = useState([]);
@@ -43,7 +44,7 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
             <button key={r.id} type="button" className="feast-ritual-choice-row" style={{ ...C.btn(ritualId === r.id ? '#8a4020' : '#3a2818'), fontSize: 11, textAlign: 'left' }}
               onClick={() => { playHallPassSound('click', soundEnabled); setRitualId(r.id); setSelected([]); }}>
               {r.icon} {r.label} — {r.apCost} AP
-              <span style={{ display: 'block', fontSize: 9, color: '#a08060' }}>{r.desc}</span>
+              <span style={{ display: 'block', fontSize: 9, color: '#a08060' }}>{renderRitualCardDesc(r.id, students[0], week) || r.desc}</span>
             </button>
           ))}
         </div>

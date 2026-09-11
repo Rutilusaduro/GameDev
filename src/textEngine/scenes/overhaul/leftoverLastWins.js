@@ -13,7 +13,8 @@ import { applyHarvestOverhaul } from './leftoverHarvest.js';
 import { applySessionBeatsOverhaul } from './leftoverSessionBeats.js';
 import { applySkillOverhaul } from './leftoverSkills.js';
 import { applyUiBeatsOverhaul } from './leftoverUiBeats.js';
-import { applyMoreUiOverhaul } from './leftoverMoreUi.js';
+import { applyMoreUiOverhaul } from './leftoverMoreUi.js'
+import { applySystemsOverhaul } from './leftoverSystems.js';
 
 applyCultivatorOverhaul();
 applyDishOverhaul();
@@ -23,3 +24,4 @@ applySessionBeatsOverhaul();
 applySkillOverhaul();
 applyUiBeatsOverhaul();
 applyMoreUiOverhaul();
+applySystemsOverhaul();

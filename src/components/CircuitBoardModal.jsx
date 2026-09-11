@@ -16,6 +16,7 @@ import {
   getNodeLayout,
   getBoardEdges,
 } from '../gameData/inventionUpgrades.js';
+import { renderCircuitNodeDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const ACCENT = '#6a5088';
 const LINE_MAIN = '#5090c8';
@@ -154,7 +155,7 @@ export function CircuitBoardModal({ deviceDefId, labState, students = [], onUnlo
               {selected.label}
               {selected.milestone && <span style={{ fontSize: 9, color: '#c0a040', marginLeft: 6 }}>Tier {selected.milestone} milestone</span>}
             </div>
-            <div style={{ fontSize: 10, color: '#9080b0', lineHeight: 1.55, marginBottom: 10 }}>{selected.desc}</div>
+            <div style={{ fontSize: 10, color: '#9080b0', lineHeight: 1.55, marginBottom: 10 }}>{renderCircuitNodeDesc(selected.id, students[0]) || selected.desc}</div>
             {hasCircuitNode(labState, deviceDefId, selected.id) ? (
               <div style={{ fontSize: 9, color: '#4a9a5a' }}>✓ Node installed on circuit board</div>
             ) : (

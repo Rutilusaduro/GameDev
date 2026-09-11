@@ -7,6 +7,7 @@ import { FACULTY, FACULTY_CONFIG, FACULTY_AFFINITY_TIERS, getFacultyTier } from 
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { C } from '../styles.js';
+import { renderFacultyDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 // ── affinity bar ──────────────────────────────────────────────
 
@@ -147,7 +148,7 @@ function FacultyCard({ teacher, affinity, onClick }){
             }}>{tier.label}</div>
           </div>
           <div style={{fontSize:10,color:"#7a5a90",marginTop:2}}>{teacher.role}</div>
-          <div style={{fontSize:11,color:"#9a7ab8",marginTop:5,lineHeight:1.5}}>{teacher.desc}</div>
+          <div style={{fontSize:11,color:"#9a7ab8",marginTop:5,lineHeight:1.5}}>{renderFacultyDesc(teacher.id) || teacher.desc}</div>
 
           {/* affinity bar */}
           <div style={{marginTop:8}}>

@@ -10,6 +10,7 @@ import { canTriggerDream } from '../gameData/v2/appetiteDreams.js';
 import { getAvailableRituals } from '../gameData/v2/feastRituals.js';
 import { witnessEntrySummary } from '../gameData/campusWitness.js';
 import { StudentPortrait } from '../components/StudentPortrait.jsx';
+import { renderResonanceTierDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const ACCENT = '#c44a2a';
 
@@ -155,7 +156,7 @@ export function InfluenceView({
           <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>Unlock Hunger Web in the Gluttony skill tree.</p>
         ) : (
           <>
-            <p style={{ fontSize: 10, color: '#8090a0', marginBottom: 8 }}>{tier.desc} · {links.length} links</p>
+            <p style={{ fontSize: 10, color: '#8090a0', marginBottom: 8 }}>{renderResonanceTierDesc(tier.id, students[0], week) || tier.desc} · {links.length} links</p>
             {visible.length >= 2 && (
               <div style={{ marginBottom: 10 }}>
                 <p style={{ fontSize: 10, color: '#90a8c0', marginBottom: 6 }}>{pickLabel}</p>

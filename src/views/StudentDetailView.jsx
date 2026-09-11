@@ -19,6 +19,7 @@ import { renderArrivalCapstoneDesc } from '../textEngine/scenes/overhaul/leftove
 import { renderAbilityCard, renderSettleArrival, renderSettleRefit, renderSettleComfort } from '../textEngine/scenes/overhaul/leftoverSessionBeats.js';
 import { renderEvolvedSkillDesc } from '../textEngine/scenes/overhaul/leftoverSkills.js';
 import { renderPharmacistActDesc, renderFloorActionDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
+import { renderPsycheTierDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
@@ -179,7 +180,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                               const ct=getCorruptionTier(s.corruption||0);
                               return(
                                 <div style={{fontSize:10,marginTop:4,color:ct.color}}>
-                                  🕯️ Psyche: <b>{ct.label}</b> <span style={{color:"#705050"}}>— {ct.desc}</span>
+                                  🕯️ Psyche: <b>{ct.label}</b> <span style={{color:"#705050"}}>— {renderPsycheTierDesc(ct.id, s, week) || ct.desc}</span>
                                 </div>
                               );
                             })()}

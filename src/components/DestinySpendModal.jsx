@@ -7,6 +7,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { BRANDS, DESTINY_SPEND_ITEMS, getStreamVoiceLabel } from '../gameData/streaming.js';
 import { formatMoney } from '../gameData/wallet.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { renderDestinyItemDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const RED = '#e74c3c';
 
@@ -81,7 +82,7 @@ export function DestinySpendModal({
                     )}
                   </div>
                   <div style={{ fontSize: 10, color: '#a09090', lineHeight: 1.5, marginTop: 4 }}>
-                    {item.desc}
+                    {renderDestinyItemDesc(item.id, student) || item.desc}
                   </div>
                   {locked && (
                     <div style={{ fontSize: 9, color: '#e08060', marginTop: 4 }}>Requires sponsor contract</div>

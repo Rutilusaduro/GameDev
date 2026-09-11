@@ -80,6 +80,12 @@ import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect, re
 import { renderHallSkillDesc, renderRaSkillDesc, renderEvolvedSkillDesc } from '../src/textEngine/scenes/overhaul/leftoverSkills.js';
 import { renderSessionPaceDesc, renderHiveTaskDesc, renderSumoMoveDesc, renderPharmacistActDesc, renderPharmacistOptDesc, renderFloorActionDesc, renderRoomBlurb, renderPhysicalTraitDesc } from '../src/textEngine/scenes/overhaul/leftoverUiBeats.js';
 import { renderAchievementDesc, renderFinalFormDesc, renderSettleBranchDesc, renderGatheringDesc, renderSaturationDesc } from '../src/textEngine/scenes/overhaul/leftoverMoreUi.js';
+import {
+  renderCustomBodyDesc, renderFacultyDesc, renderLabStageDesc, renderNetworkNodeDesc,
+  renderOversightCounterDesc, renderLabTechDesc, renderDestinyItemDesc, renderEmbodimentActDesc,
+  renderRitualCardDesc, renderResonanceTierDesc, renderPsycheTierDesc, renderHiveVpPassive,
+  renderHiveRoomBonus, renderEvolutionPathDesc, renderCircuitNodeDesc,
+} from '../src/textEngine/scenes/overhaul/leftoverSystems.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
@@ -853,6 +859,52 @@ assert.equal(/The room is hers now, and the others come to it/i.test(gatherLine)
 const satLine = renderSaturationDesc(0, students[0], 2);
 assert.ok(satLine && !satLine.includes('{unresolved}'));
 assert.equal(/Standard college rhythms/i.test(satLine), false, 'saturation should not dump leftover SATURATION_TIERS.desc');
+
+const bodyLine = renderCustomBodyDesc('straight', students[0], 2);
+assert.ok(bodyLine && !bodyLine.includes('{unresolved}'));
+assert.equal(/Even gain, technical silhouette/i.test(bodyLine), false, 'custom body should not dump leftover CUSTOM_BODY_OPTIONS.desc');
+const facultyLine = renderFacultyDesc('hartley', students[0], 2);
+assert.ok(facultyLine && !facultyLine.includes('{unresolved}'));
+assert.equal(/devastatingly well-read/i.test(facultyLine), false, 'faculty should not dump leftover FACULTY.desc');
+const labStageLine = renderLabStageDesc(1, students[0], 2);
+assert.ok(labStageLine && !labStageLine.includes('{unresolved}'));
+assert.equal(/Hands-on device builds, private workshop experiments/i.test(labStageLine), false, 'lab stage should not dump leftover INVENTOR_PATH_STAGES.desc');
+const nodeLine = renderNetworkNodeDesc('relay', students[0], 2);
+assert.ok(nodeLine && !nodeLine.includes('{unresolved}'));
+assert.equal(/Routes passive drip to the roster each week/i.test(nodeLine), false, 'network node should not dump leftover NETWORK_NODE_TYPES.desc');
+const counterLine = renderOversightCounterDesc('feast_bribe', students[0], 2);
+assert.ok(counterLine && !counterLine.includes('{unresolved}'));
+assert.equal(/Pause AIB actions one week with a lavish feast/i.test(counterLine), false, 'oversight counter should not dump leftover AIB_COUNTERS.desc');
+const techLine = renderLabTechDesc('foundation', students[0], 2);
+assert.ok(techLine && !techLine.includes('{unresolved}'));
+assert.equal(/Salvage discipline, tolerances, and the habit of thinking in systems/i.test(techLine), false, 'lab tech should not dump leftover LAB_TECH_NODES.desc');
+const destinyLine = renderDestinyItemDesc('delivery_stash', students[0], 2);
+assert.ok(destinyLine && !destinyLine.includes('{unresolved}'));
+assert.equal(/Always-stocked pre-stream snacks/i.test(destinyLine), false, 'destiny item should not dump leftover DESTINY_SPEND_ITEMS.desc');
+const embodyLine = renderEmbodimentActDesc('raid_pantry', students[0], 2);
+assert.ok(embodyLine && !embodyLine.includes('{unresolved}'));
+assert.equal(/Her hands move before her mind catches up/i.test(embodyLine), false, 'embodiment should not dump leftover EMBODIMENT_ACTIONS.desc');
+const ritualLine = renderRitualCardDesc('communion_snack', students[0], 2);
+assert.ok(ritualLine && !ritualLine.includes('{unresolved}'));
+assert.equal(/Nobody pretends they are not watching/i.test(ritualLine), false, 'ritual should not dump leftover FEAST_RITUALS.desc');
+const resLine = renderResonanceTierDesc(0, students[0], 2);
+assert.ok(resLine && !resLine.includes('{unresolved}'));
+assert.equal(/No resonance web yet/i.test(resLine), false, 'resonance should not dump leftover RESONANCE_TIERS.desc');
+const psycheLine = renderPsycheTierDesc(0, students[0], 2);
+assert.ok(psycheLine && !psycheLine.includes('{unresolved}'));
+assert.equal(/doesn't understand what's happening to her appetite/i.test(psycheLine), false, 'psyche should not dump leftover CORRUPTION_TIERS.desc');
+const hiveVpLine = renderHiveVpPassive('lilith', students[0], 2);
+assert.ok(hiveVpLine && !hiveVpLine.includes('{unresolved}'));
+assert.equal(/Absorb one devotee for a huge Maya gain/i.test(hiveVpLine), false, 'hive VP should not dump leftover HIVE_VPS.passive');
+const hiveRoomLine = renderHiveRoomBonus('corner_cache', students[0], 2);
+assert.ok(hiveRoomLine && !hiveRoomLine.includes('{unresolved}'));
+assert.equal(/hidden snack shelving/i.test(hiveRoomLine), false, 'hive room should not dump leftover HIVE_ROOM_BONUSES.desc');
+const evoLine = renderEvolutionPathDesc('sumo', students[0], 2);
+assert.ok(evoLine && !evoLine.includes('{unresolved}'));
+assert.equal(/The ring awaits. So does the crowd/i.test(evoLine), false, 'evolution path should not dump leftover EVOLUTION_OFFER.desc');
+const circuitLine = renderCircuitNodeDesc('ff_main_1', students[0], 2);
+assert.ok(circuitLine && !circuitLine.includes('{unresolved}'));
+assert.equal(/Smoother pump handoff between pulses/i.test(circuitLine), false, 'circuit node should not dump leftover inventionUpgrades.desc');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,

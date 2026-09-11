@@ -16,6 +16,7 @@ import {
 } from '../gameData/mayaHive.js';
 import { extraHiveActions } from '../gameData/mechanicDepth.js';
 import { renderHiveTaskDesc } from '../textEngine/scenes/overhaul/leftoverUiBeats.js';
+import { renderHiveVpPassive, renderHiveRoomBonus } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const HIVE_BG = "#07040d";
 const HIVE_PANEL = "rgba(78, 36, 96, 0.28)";
@@ -112,6 +113,7 @@ export function MayaHiveModal({
   closeMayaHive,
   soundEnabled = true,
   owned = {},
+  week = 1,
 }){
   const hs=hiveState;
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, hs?.view, hs?.mayaStudentId]);
@@ -183,7 +185,7 @@ export function MayaHiveModal({
               }}>
                 <div style={{fontSize:12,fontWeight:900,color:"#fff"}}>{opt.label}{active?" ✓":""}</div>
                 <div style={{fontSize:9,color:HIVE_SUB,margin:"4px 0"}}>{student?`${student.name} · ${Math.round(student.lbs)} lbs`:"Not available"}{locked?" · locked":""}</div>
-                <div style={{fontSize:10,lineHeight:1.5,color:HIVE_TEXT}}>{opt.passive}</div>
+                <div style={{fontSize:10,lineHeight:1.5,color:HIVE_TEXT}}>{renderHiveVpPassive(id, student || maya, week) || opt.passive}</div>
               </button>
             );
           })}
@@ -247,7 +249,7 @@ export function MayaHiveModal({
               <div style={{fontSize:10,color:HIVE_SUB,margin:"5px 0"}}>{selected.status} · craving {selected.craving}%</div>
               <Bar pct={selected.status==="conquered"?100:selected.progress} color={selected.status==="conquered"?HIVE_ACC:HIVE_ACC_2}/>
               <div style={{fontSize:10,color:HIVE_TEXT,lineHeight:1.55,marginTop:8}}>
-                <strong style={{color:HIVE_ACC}}>{selected.bonus?.label}</strong><br/>{selected.bonus?.desc}
+                <strong style={{color:HIVE_ACC}}>{selected.bonus?.label}</strong><br/>{renderHiveRoomBonus(selected.bonus?.id, maya, week) || selected.bonus?.desc}
               </div>
               {selected.lastTag && !String(selected.lastTag).startsWith('[MayaHive_') && (
                 <div style={{fontSize:8,letterSpacing:1,color:HIVE_ACC_2,marginTop:8}}>{selected.lastTag}</div>

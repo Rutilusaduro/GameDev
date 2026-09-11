@@ -23,6 +23,7 @@ import { ensureStreamFields } from '../gameData/streaming.js';
 import { toggleInstantText, toggleSound } from '../gameData/playerPrefs.js';
 import { INNER_CIRCLE_TIERS, TIER_SCENES } from '../gameData/sessions.js';
 import { EVOLUTION_OFFER } from '../gameData/evolvedForms.js';
+import { renderEvolutionPathDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
@@ -369,7 +370,7 @@ export function DebugPanel({
                       paths: Object.keys(archPaths).map((k) => ({
                         id: k,
                         label: archPaths[k].label,
-                        desc: archPaths[k].desc,
+                        desc: renderEvolutionPathDesc(k, subject, week) || archPaths[k].desc,
                       })),
                     });
                     setDebugOpen(false);

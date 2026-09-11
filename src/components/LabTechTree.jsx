@@ -7,6 +7,7 @@ import {
   BREAKTHROUGH_ICON,
   BREAKTHROUGH_LABEL,
 } from '../gameData/labTechTree.js';
+import { renderLabTechDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const ACCENT = '#4a6080';
 const UNLOCKED = '#50a070';
@@ -38,7 +39,7 @@ function TechNodeCard({ node, labState, taliaStudent, onUnlock }) {
             {node.icon} {node.label}
             {owned && <span style={{ color: UNLOCKED, fontSize: 9, marginLeft: 6 }}>✓ unlocked</span>}
           </div>
-          <div style={{ fontSize: 9, color: '#607090', lineHeight: 1.45, marginTop: 4 }}>{node.desc}</div>
+          <div style={{ fontSize: 9, color: '#607090', lineHeight: 1.45, marginTop: 4 }}>{renderLabTechDesc(node.id, taliaStudent) || node.desc}</div>
           {node.blueprint && (
             <div style={{ fontSize: 8, color: '#5080a0', marginTop: 4 }}>
               Unlocks blueprint: {node.blueprint.replace('bp_', '').replace(/_/g, ' ')}

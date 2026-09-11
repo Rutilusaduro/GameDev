@@ -21,6 +21,7 @@ import { RecipeCostDisplay } from '../components/RecipeCostDisplay.jsx';
 import { LabTechTree } from '../components/LabTechTree.jsx';
 import { CircuitBoardModal } from '../components/CircuitBoardModal.jsx';
 import { CIRCUIT_BOARDS } from '../gameData/inventionUpgrades.js';
+import { renderLabStageDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const RARITY_COLORS = { common: '#8a8a7a', uncommon: '#4a9a5a', rare: '#c8860a' };
 const ACCENT = '#4a6080';
@@ -144,6 +145,7 @@ export function LabView({
   ap,
   students = [],
   soundEnabled = true,
+  week = 1,
 }) {
   const [circuitDevice, setCircuitDevice] = useState(null);
 
@@ -170,7 +172,7 @@ export function LabView({
 
       <div style={{ ...C.card, border: `1px solid ${ACCENT}60`, marginBottom: 12 }}>
         <div style={{ fontSize: 11, color: '#8090b0', lineHeight: 1.6, marginBottom: 8 }}>
-          {stageMeta.desc}
+          {renderLabStageDesc(stageMeta.id, taliaStudent, week) || stageMeta.desc}
           {taliaStudent && (
             <div style={{ marginTop: 6 }}>
               Talia: <strong>{Math.round(taliaStudent.lbs)} lbs</strong> build material

@@ -10,6 +10,12 @@ import {
   customDraftPointSpend,
   defaultCustomDraft,
 } from '../gameData/customStudent/index.js';
+import {
+  renderCustomBodyDesc,
+  renderCustomStanceDesc,
+  renderCustomVoiceDesc,
+  renderCustomWeightDesc,
+} from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const MAX_POINTS = 4;
 
@@ -95,14 +101,16 @@ export function CustomStudentWizard({
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 8 }}>
             {CUSTOM_BODY_OPTIONS.map((opt) => (
               <ChoiceButton key={opt.id} active={draft.bodyType === opt.id} accent={accent} onClick={() => patch({ bodyType: opt.id })}>
-                <b>{opt.label}</b><div style={{ fontSize: 11, color: '#a894c0' }}>{opt.desc}</div>
+                <b>{opt.label}</b><div style={{ fontSize: 11, color: '#a894c0' }}>{renderCustomBodyDesc(opt.id) || opt.desc}</div>
               </ChoiceButton>
             ))}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
             {CUSTOM_WEIGHT_PRESETS.map((opt) => (
               <ChoiceButton key={opt.id} active={draft.weightPreset === opt.id} accent={accent} onClick={() => patch({ weightPreset: opt.id })}>
-                <b>{opt.label}</b><div style={{ fontSize: 11, color: '#a894c0' }}>{opt.lbs} lbs</div>
+                <b>{opt.label}</b>
+                <div style={{ fontSize: 11, color: '#a894c0' }}>{opt.lbs} lbs</div>
+                <div style={{ fontSize: 10, color: '#8c789e', marginTop: 3 }}>{renderCustomWeightDesc(opt.id)}</div>
               </ChoiceButton>
             ))}
           </div>
@@ -114,7 +122,7 @@ export function CustomStudentWizard({
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 8 }}>
             {Object.entries(CUSTOM_STANCE_PRESETS).map(([id, opt]) => (
               <ChoiceButton key={id} active={draft.gainStance === id} accent={accent} onClick={() => patch({ gainStance: id, psychBuys: {} })}>
-                <b>{opt.label}</b><div style={{ fontSize: 11, color: '#a894c0' }}>{opt.desc}</div>
+                <b>{opt.label}</b><div style={{ fontSize: 11, color: '#a894c0' }}>{renderCustomStanceDesc(id) || opt.desc}</div>
               </ChoiceButton>
             ))}
           </div>
@@ -148,7 +156,7 @@ export function CustomStudentWizard({
           {Object.entries(CUSTOM_VOICE_PRESETS).map(([id, opt]) => (
             <ChoiceButton key={id} active={draft.voicePreset === id} accent={accent} onClick={() => patch({ voicePreset: id })}>
               <b>{opt.label}</b>
-              <div style={{ fontSize: 11, color: '#a894c0', margin: '4px 0' }}>{opt.desc}</div>
+              <div style={{ fontSize: 11, color: '#a894c0', margin: '4px 0' }}>{renderCustomVoiceDesc(id) || opt.desc}</div>
               <div style={{ fontSize: 10, color: '#8c789e' }}>{opt.owned.join(' · ')}</div>
             </ChoiceButton>
           ))}

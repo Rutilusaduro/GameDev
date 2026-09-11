@@ -18,6 +18,7 @@ import {
   renderEmbodiedMove,
   renderEmbodiedEvent,
 } from '../../textEngine/scenes/v2/embodiment/campusWalk.js';
+import { renderEmbodimentActDesc } from '../../textEngine/scenes/overhaul/leftoverSystems.js';
 import { renderCampusArrive } from '../../textEngine/scenes/overhaul/campusHunt.js';
 import '../../textEngine/scenes/v2/embodiment/depth.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
@@ -195,7 +196,7 @@ export function EmbodimentModal({
                       onClick={() => handleAction(act)}
                     >
                       {act.icon} {act.label}
-                      <span style={{ display: 'block', fontSize: 9, color: '#9080a8', marginTop: 2 }}>{act.desc}</span>
+                      <span style={{ display: 'block', fontSize: 9, color: '#9080a8', marginTop: 2 }}>{renderEmbodimentActDesc(act.id, student, week) || act.desc}</span>
                     </button>
                   ))}
                 </div>

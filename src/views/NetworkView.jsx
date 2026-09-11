@@ -9,6 +9,7 @@ import {
   NETWORK_EXPERIMENTS,
   automationThreshold,
 } from '../gameData/networkState.js';
+import { renderLabStageDesc, renderNetworkNodeDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 const ACCENT = '#1a5068';
 
@@ -39,6 +40,7 @@ export function NetworkView({
   onDenyProposal,
   onAdjustIntegration,
   onUpgradeNexus,
+  week = 1,
 }) {
   if (!labState || (labState.stage ?? 1) < 2) {
     return (
@@ -63,7 +65,7 @@ export function NetworkView({
       <p style={C.secT}>Campus Mesh — {stageMeta.label}</p>
       <div style={{ ...C.card, borderColor: `${ACCENT}80`, marginBottom: 12 }}>
         <div style={{ fontSize: 11, color: '#90b8d8', lineHeight: 1.6, marginBottom: 10 }}>
-          {stageMeta.desc}
+          {renderLabStageDesc(stageMeta.id, taliaStudent, week) || stageMeta.desc}
           {taliaStudent && (
             <div style={{ marginTop: 6, fontSize: 10, color: '#6080a0' }}>
               Talia: {Math.round(taliaStudent.lbs)} lbs · Instability {labState.instability ?? 0}%
@@ -102,7 +104,7 @@ export function NetworkView({
             <button
               key={type.id}
               type="button"
-              title={type.desc}
+              title={renderNetworkNodeDesc(type.id, taliaStudent, week) || type.desc}
               style={{ ...C.btn('#1a3848'), fontSize: 10, flex: '1 1 140px' }}
               onClick={() => onAddNode(type.id)}
             >

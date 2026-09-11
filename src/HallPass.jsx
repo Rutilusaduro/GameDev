@@ -103,6 +103,7 @@ import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect } f
 import { renderHallSkillDesc } from './textEngine/scenes/overhaul/leftoverSkills.js';
 import { renderSessionPaceDesc } from './textEngine/scenes/overhaul/leftoverUiBeats.js';
 import { renderAchievementDesc, renderSaturationDesc } from './textEngine/scenes/overhaul/leftoverMoreUi.js';
+import { renderEvolutionPathDesc, renderHiveVpPassive } from './textEngine/scenes/overhaul/leftoverSystems.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
@@ -2403,7 +2404,7 @@ export default function HallPass(){
     setEvolutionModal({
       student:s,
       intro:offer.intro(s),
-      paths: pathKeys.map(k=>({id:k, label:archPaths[k].label, desc:archPaths[k].desc})),
+      paths: pathKeys.map(k=>({id:k, label:archPaths[k].label, desc:renderEvolutionPathDesc(k, s, week)||archPaths[k].desc})),
     });
   };
 
@@ -3732,13 +3733,15 @@ export default function HallPass(){
         return prev;
       }
       const tag=makeHiveTag("VPChoice",{mayaStage:"Any",vpId,rooms:getHiveControl(prev.rooms),bmiTier:getHiveBmiTier(prev.avgBmi),task:"vp",roomId:prev.selectedRoomId});
+      const maya=students.find(st=>st.id===prev.mayaStudentId)||students[0];
+      const vpLine=renderHiveVpPassive(vpId, maya, week)||opt.passive;
       push(`🕸️ Maya names ${opt.name} Vice Queen.`);
       return {
         ...prev,
         vpId,
         hiveBiomass:prev.hiveBiomass-cost,
         view:"main",
-        log:[{tag,text:`${opt.name} moves into the Central Nest as Vice Queen. ${opt.passive}`,type:"vp"},...prev.log].slice(0,40),
+        log:[{tag,text:`${opt.name} moves into the Central Nest as Vice Queen. ${vpLine}`,type:"vp"},...prev.log].slice(0,40),
       };
     });
   };
@@ -9094,6 +9097,7 @@ export default function HallPass(){
             onOpenSession={()=>{ const t=taliaStudent(); if(t) runLabSessionOpen(t); }}
             onOpenForceFeeder={openForceFeeder}
             labStage={labState?.stage??1}
+            week={week}
             soundEnabled={soundEnabled}
           />}
 
@@ -9125,6 +9129,7 @@ export default function HallPass(){
             onDenyProposal={handleDenyProposal}
             onAdjustIntegration={handleAdjustIntegration}
             onUpgradeNexus={handleUpgradeNexus}
+            week={week}
           />}
 
           {/* ── CAMPUS EXPLORATION ── */}
@@ -9446,7 +9451,7 @@ export default function HallPass(){
       {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
-      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
+      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled} owned={ownedHallSkills||{}} week={week}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup} owned={ownedHallSkills||{}} soundEnabled={soundEnabled}/>}
