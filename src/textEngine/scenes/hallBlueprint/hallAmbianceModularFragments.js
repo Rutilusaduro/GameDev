@@ -53,6 +53,13 @@ registerModuleVariants('hall.ambiance.pulse.appetite', [
       PULSE_LATE,
     ],
   },
+  {
+    when: { hallAmbiancePeakMin: [50] },
+    weight: 1,
+    text: [
+      'The wing hums at peak ambiance — residents move slower, fuller, happier.',
+    ],
+  },
 ]);
 
 registerModuleVariants('hall.ambiance.summary', [

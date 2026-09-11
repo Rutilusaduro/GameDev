@@ -110,6 +110,16 @@ for (const key of MODULAR_LESSON_KEYS) {
   ]);
 }
 
+registerModuleVariants('wifeLessons.lesson.s4.lasagna', [
+  {
+    when: { hallAmbiancePeakMin: [20] },
+    weight: 1,
+    text: [
+      'Lasagna steam meets hall warmth — Wednesday feels like policy now.',
+    ],
+  },
+]);
+
 registerModuleVariants('wifeLessons.v2.depth', [
   {
     when: { weekMin: 20 },

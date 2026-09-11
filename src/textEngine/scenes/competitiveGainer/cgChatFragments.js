@@ -121,6 +121,16 @@ for (const [name, replies] of Object.entries(CG_CHAT_TEMPLATES.residents || {}))
   }
 }
 
+registerModuleVariants('cg.chat.priyaPost.leading.High', [
+  {
+    when: { cgDriveTier: ['High'] },
+    weight: 1,
+    text: [
+      'Priya posts the leaderboard screenshot — your hall’s name sits at the top, soft and undeniable.',
+    ],
+  },
+]);
+
 for (const name of RESIDENT_EXTRA) {
   for (const replyType of RESIDENT_REPLY_TYPES) {
     registerModuleVariants(`cg.chat.resident.${name}.${replyType}`, [

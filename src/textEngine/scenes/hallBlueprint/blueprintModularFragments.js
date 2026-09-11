@@ -98,3 +98,23 @@ registerModuleVariants('hall.room.blurb', [
     ],
   },
 ]);
+
+registerModuleVariants('hall.blueprint.synergy', [
+  {
+    when: { hallAmbiancePeakMin: [45] },
+    weight: 1,
+    text: [
+      'Every labeled room breathes together — the wing feels like one warm organism.',
+    ],
+  },
+]);
+
+registerModuleVariants('hall.lounge.skill.unlock', [
+  {
+    when: { hallRoomId: ['kitchen'] },
+    weight: 1,
+    text: [
+      'The kitchen unlock hums — blueprint labels and stove heat finally agree.',
+    ],
+  },
+]);

@@ -101,6 +101,16 @@ for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   }
 }
 
+registerModuleVariants('homeroom.conference.Bri.brought_something', [
+  {
+    when: { hallAmbiancePeakMin: [30] },
+    weight: 1,
+    text: [
+      'Daisy opens the drawer — your hall’s warmth follows the container out like a second serving.',
+    ],
+  },
+]);
+
 registerModuleVariants('homeroom.bridge.opening', [
   {
     when: { weekMin: 20 },

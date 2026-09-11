@@ -31,6 +31,16 @@ registerPool('session.fullness.permission', [
 
 const FULLNESS_SKELETON = '{session.fullness.pressure|prefix:} {session.fullness.permission|prefix: }';
 
+registerModuleVariants('session.fullness', [
+  {
+    when: { hallAmbiancePeakMin: [25] },
+    weight: 1,
+    text: [
+      'The room holds warmth from the blueprint wing — fullness feels invited, not accidental.',
+    ],
+  },
+]);
+
 for (const archetype of ['default', 'cheerleader', 'swimmer', 'gamer', 'bookworm']) {
   for (let f = 0; f <= 5; f += 1) {
     registerModuleVariants(`session.fullness.${archetype}.f${f}`, [

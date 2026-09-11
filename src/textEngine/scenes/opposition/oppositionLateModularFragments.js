@@ -377,3 +377,13 @@ registerModuleVariants('opposition.counter.discredit', [
     ],
   },
 ]);
+
+registerModuleVariants('opposition.proxy.wellness_coalition', [
+  {
+    when: { weekMin: [10] },
+    weight: 1,
+    text: [
+      'The coalition smiles through policy — your hall’s abundance is the exhibit they fear.',
+    ],
+  },
+]);

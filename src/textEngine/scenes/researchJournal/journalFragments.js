@@ -116,3 +116,13 @@ for (const [archetype, journal] of Object.entries(NADIA_SUBJECT_JOURNALS)) {
     });
   });
 }
+
+registerModuleVariants('journal.feeder.cheerleader.s1', [
+  {
+    when: { archetype: ['cheerleader'] },
+    weight: 1,
+    text: [
+      'Field notes: pom-poms aside, appetite leads the squad now.',
+    ],
+  },
+]);
