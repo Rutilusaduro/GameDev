@@ -359,6 +359,7 @@ import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { renderCGMeasurementScene, renderCGRaReply } from './textEngine/scenes/competitiveGainer/index.js';
+import { renderEvolvedEventProse } from './textEngine/scenes/evolved/index.js';
 import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
@@ -2493,8 +2494,7 @@ export default function HallPass(){
       const off=render('{destiny.offstream.activity}',offCtx);
       if(off) text=`${off}\n\n${text}`;
     }
-    const evolvedCtx=createContext({subject:s,week});
-    text=appendV2Depth(text,'evolved',evolvedCtx,0.35);
+    text=renderEvolvedEventProse(text,s,week,{formId:s.evolvedForm,stageIdx,v2DepthChance:0.35});
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -2502,10 +2502,10 @@ export default function HallPass(){
     const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
     const doubleCharge=tree.find(sk=>skills.includes(sk.id)&&sk.doubleActivityCharge);
     const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain+getSupernaturalActivityBonus(s).gainBonus;
-    const gain=doubleCharge?rawGain*2:rawGain;
-    const relGain=meta.relBonus+bonusRel;
+    const gain=scaleEvolvedEventLbs(doubleCharge?rawGain*2:rawGain);
+    const relGain=scaleEvolvedEventRel(meta.relBonus+bonusRel);
     setAp(a=>a-meta.apCost);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+relGain)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:processStudentGain(st,gain,relGain)));
     if(s.supernaturalForm){
       const pressureFx=applySupernaturalActivityPressure(opposition,s);
       setOpposition(pressureFx.opposition);
@@ -9221,7 +9221,7 @@ export default function HallPass(){
       {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgRaReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
-      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
+      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} week={week} getCGDriveTier={getCGDriveTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
       {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled}/>}

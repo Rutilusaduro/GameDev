@@ -66,6 +66,24 @@ export function renderCGMeasurementScene(target, priya, week, driveTierLabel = '
 }
 
 /** Legacy tag `[MeasurementScene_Name_S#]` or raw placeholder. */
+/** Corkboard / self-review / binge / measurement prose — V2 depth on rendered beat. */
+export function renderCGSceneBeat(rawText, priya, week = 1, driveTierLabel = 'Invested', beat = 'scene', opts = {}) {
+  const line = (rawText || '').trim();
+  if (!line || !priya) return line;
+  const ctx = buildTextContext({
+    subject: priya,
+    week,
+    globals: {
+      featureId: 'competitive_gainer',
+      cgDriveTier: driveTierLabel,
+      cgBeat: beat,
+      ...(opts.globals || {}),
+    },
+    ...opts,
+  });
+  return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.26);
+}
+
 export function renderCGRaReply(optId, priya, week, stageKey, vars = {}, hasComparison = false, opts = {}) {
   if (!priya || !optId) return '';
   const ctx = buildTextContext({

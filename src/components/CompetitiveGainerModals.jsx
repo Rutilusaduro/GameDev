@@ -8,6 +8,7 @@ import { cgDrive, cgDriveDelta, cgIsRaMessage, cgSubstateGain } from '../gameDat
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { renderCGSceneBeat } from '../textEngine/scenes/competitiveGainer/index.js';
 
 const CG_BG = '#0a0306';
 const CG_ACC = '#e8294a';
@@ -58,7 +59,7 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
         );
 }
 
-export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGDriveTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true }){
+export function CompetitiveGainerMainModal({ competitiveGainerState, students, week = 1, getCGDriveTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true }){
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.id===cgS.priyaStudentId);
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, cgS?.view, cgS?.priyaStudentId]);
@@ -82,7 +83,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📌 CORKBOARD</div>
-                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{renderCGSceneBeat(sceneText,priya,week,tier.label,'corkboard')}</div>
                 <div style={{fontSize:10,color:CG_ACC,marginBottom:12}}>Drive +{gain} · Now {tier.label} ({drive})</div>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={()=>setCompetitiveGainerState(p=>({...p,view:null,subState:null}))}>← Back</button>
               </div>
@@ -96,7 +97,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:540,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📏 SELF-REVIEW</div>
-                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:12,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:12,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{renderCGSceneBeat(sceneText,priya,week,tier.label,'self_review')}</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:12}}>
                   {CG_CONFIG.categories.map(cat=>(
                     <div key={cat} style={{background:"rgba(232,41,74,0.05)",border:`1px solid ${CG_DIM}40`,borderRadius:4,padding:"6px 8px",textAlign:"center"}}>
@@ -154,7 +155,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:560,background:CG_BG,border:`1px solid ${CG_ACC}40`,maxHeight:"88vh",overflowY:"auto"}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>📐 MEASURING {target.name.toUpperCase()}</div>
-                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{renderCGSceneBeat(sceneText,priya,week,tier.label,'measurement')}</div>
                 {/* Comparison table */}
                 <div style={{marginBottom:12}}>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:4,marginBottom:4}}>
@@ -172,7 +173,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                           <div style={{fontSize:11,fontWeight:700,color:priyaWins?CG_ACC:CG_TEXT,textAlign:"center"}}>{pM[cat]}"</div>
                           <div style={{fontSize:11,fontWeight:700,color:priyaWins?CG_SUBTLE:CG_TEXT,textAlign:"center"}}>{tM[cat]}"</div>
                         </div>
-                        {reaction&&<div style={{fontSize:9,color:CG_SUBTLE,fontStyle:"italic",padding:"2px 0 4px 8px"}}>{reaction.text}</div>}
+                        {reaction&&<div style={{fontSize:9,color:CG_SUBTLE,fontStyle:"italic",padding:"2px 0 4px 8px"}}>{renderCGSceneBeat(reaction.text,priya,week,tier.label,'reaction')}</div>}
                       </div>
                     );
                   })}
@@ -196,7 +197,7 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
           return wrap(
               <div className="hall-pass-modal-in competitive-gainer-modal" style={{...C.modal,maxWidth:520,background:CG_BG,border:`1px solid ${CG_ACC}40`}}>
                 <div style={{fontSize:9,letterSpacing:4,color:CG_ACC,marginBottom:12}}>🔴 {tier.label.toUpperCase()} BINGE</div>
-                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{sceneText}</div>
+                <div style={{fontSize:12,color:CG_TEXT,lineHeight:1.8,marginBottom:14,padding:"10px 12px",background:"rgba(232,41,74,0.06)",borderRadius:5}}>{renderCGSceneBeat(sceneText,priya,week,tier.label,'binge')}</div>
                 <div style={{fontSize:13,fontWeight:700,color:CG_ACC,textAlign:"center",marginBottom:14}}>+{gain} lbs</div>
                 <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_ACC),width:"100%"}} onClick={applyAndCloseCGBinge}>Apply Gains</button>
               </div>

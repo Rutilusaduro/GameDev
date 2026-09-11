@@ -55,6 +55,8 @@ const POOLS = {
   wifeLessons: 'wifeLessons.v2.depth',
   wifeLessonsTalk: 'wifeLessonsTalk.v2.depth',
   homeroom: 'homeroom.v2.depth',
+  competitiveGainer: 'cg.v2.depth',
+  fairQueen: 'evolved.fairQueen.v2.depth',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits. */
