@@ -6,7 +6,12 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../gameData/evolvedForms.js';
-import { renderHomeroomNpcDesc } from '../textEngine/scenes/homeroom/index.js';
+import {
+  renderHomeroomNpcDesc,
+  renderHomeroomPool,
+  homeroomConferencePoolKey,
+  homeroomActivityPoolKey,
+} from '../textEngine/scenes/homeroom/index.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
@@ -96,6 +101,11 @@ export function HomeroomQueenModal({ homeroomSessionState, students, week = 1, b
             const phase=phases[phaseIdx];
             phaseText=phase?.text; choices=phase?.choices||[]; actTitle=actDef?.label||type;
           }
+          const enginePhase=(!resultText && daisy)
+            ? (type === 'conference'
+              ? renderHomeroomPool(homeroomConferencePoolKey(key), daisy, week, { globals: { homeroomKey: key } })
+              : renderHomeroomPool(homeroomActivityPoolKey(type, phaseIdx), daisy, week, { globals: { homeroomAct: type } }))
+            : '';
           return(
             <ModalOverlay onClose={done ? dismissHomeroomActivity : undefined} dismissible={!!done} soundEnabled={soundEnabled} style={{ zIndex: 350 }}>
               <div className="hall-pass-modal-in homeroom-queen-modal" style={{...C.modal,maxWidth:560,background:WARM_BG,border:`1px solid ${warmAccent}40`,maxHeight:"85vh",overflowY:"auto"}}>
@@ -112,7 +122,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, week = 1, b
                 <div style={{fontSize:9,letterSpacing:3,color:warmAccent,marginBottom:8}}>{actTitle.toUpperCase()}</div>
                 <FlaggedProse
                   section={`homeroom.${type}.${key}`}
-                  text={resultText || phaseProse || phaseText || ''}
+                  text={resultText || phaseProse || enginePhase || phaseText || ''}
                   student={daisy}
                   week={week}
                   style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}

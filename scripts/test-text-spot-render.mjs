@@ -16,6 +16,7 @@ const cassidy = INIT_STUDENTS.find((s) => s.id === 1) || {
 const destiny = INIT_STUDENTS.find((s) => s.id === 5) || { ...cassidy, id: 5, name: 'Destiny', archetype: 'gamer' };
 const mj = { ...cassidy, id: 0, name: 'MJ', archetype: 'cheerleader', evolvedForm: 'state_fair_queen', lbs: 280 };
 const daisy = INIT_STUDENTS.find((s) => s.id === 13) || { ...cassidy, id: 13, name: 'Daisy', archetype: 'eced' };
+const brittany = INIT_STUDENTS.find((s) => s.id === 0) || { ...cassidy, id: 0, name: 'Brittany', archetype: 'cheerleader' };
 
 const cases = [
   {
@@ -54,6 +55,21 @@ const cases = [
     label: 'homeroom conference',
     template: '{homeroom.conference.Kayla.intro}',
     ctx: buildTextContext({ subject: daisy, week: 5, globals: { homeroomKey: 'Kayla' } }),
+  },
+  {
+    label: 'wife lesson',
+    template: '{wifeLessons.lesson.s1.honey_butter}',
+    ctx: buildTextContext({ subject: mj, week: 4, globals: { featureId: 'wife_lessons' } }),
+  },
+  {
+    label: 'feeder journal',
+    template: '{journal.feeder.cheerleader.s0}',
+    ctx: buildTextContext({ subject: brittany, week: 6 }),
+  },
+  {
+    label: 'evolution offer',
+    template: '{evolution.offer.swimmer.intro}',
+    ctx: buildTextContext({ subject: cassidy, week: 7 }),
   },
 ];
 
