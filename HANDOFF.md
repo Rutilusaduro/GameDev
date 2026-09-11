@@ -101,3 +101,17 @@ npm run build
 ## Suggested next passes
 
 All core objective gates green. Optional: human playtest for subjective feel tuning.
+
+---
+
+## Goal in progress (Pass 253+) — mechanics + prose overhaul
+
+| Deliverable | Status |
+|-------------|--------|
+| Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
+| New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
+| Mechanics depth layer (partial) | 🟡 `mechanicsDepthLayer.js` — feeding, rel ecology, talk rel; more systems TBD |
+| Full 50% depth all mechanics | 🔴 Not done |
+| Full text overhaul | 🔴 Seed pools only (`hallBlueprint`, `raPivotMechanicsProseDepth`, room visit) |
+
+Verify: `npm run test:hall-blueprint`, `npm run text:lint`, `npm run test:smoke` (full).
