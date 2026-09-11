@@ -3,6 +3,7 @@
 // Registered verbatim; decomposition deferred (author-approved standardized vignettes).
 import { registerPool, render, createContext, hasModule } from '../../engine.js';
 import { getConsumeText } from '../../../gameData/lilith.js';
+import { wrapLeftoverLinger } from '../../../gameData/textContext.js';
 
 const FEAST_BY_STAGE = {
   0: `Lilith's dark eyes gleamed with predatory hunger as she lured the eager young man into her dimly lit dorm room. The sultry sway of her narrow hips and the low-cut black top clinging to her small, perky breasts had him hooked from the first whispered invitation. Goth music pulsed heavily around them. He grinned, already imagining claiming his prize — every inch of her lithe pale form his for the taking.
@@ -179,5 +180,6 @@ export function renderLilithFeast(student, stageId, week = 1, opts = {}) {
 export function renderLilithDeliveryIntro(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = createContext({ subject: student, week, ...opts });
-  return render('{hunt.feast.deliveryIntro}', ctx, { trace: opts.trace || null })?.trim() || DELIVERY_INTRO;
+  const base = render('{hunt.feast.deliveryIntro}', ctx, { trace: opts.trace || null })?.trim() || DELIVERY_INTRO;
+  return wrapLeftoverLinger(base, student, week, 'hunt.linger');
 }

@@ -7136,7 +7136,7 @@ export default function HallPass(){
         let ns=s;
         if(s.supernaturalForm){
           const beforePct=(s.memoryMass??s.lbs)>0?Math.round((s.lbs/(s.memoryMass??s.lbs))*100):0;
-          ns=applyRefeedSurge(ns,rnd(10,16));
+          ns=applyRefeedSurge(ns,rnd(10,16)+leftoverNightGainBump(ns,week));
           const afterPct=(ns.memoryMass??ns.lbs)>0?Math.round((ns.lbs/(ns.memoryMass??ns.lbs))*100):0;
           if(!surgeStudent&&(beforePct<50&&afterPct>=50)) surgeStudent=ns;
         }

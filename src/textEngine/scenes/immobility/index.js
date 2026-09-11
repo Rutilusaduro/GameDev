@@ -59,10 +59,9 @@ export function renderImmobVisit(immobile, visitor, week = 1, opts = {}) {
   return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.3);
 }
 
-/** Leftover/night wrap under unique immobile redirect / blob intro. Empty when neither flag is set. */
+/** Linger wrap under unique immobile redirect / blob intro. Always appends; leftover/night keys fire when live. */
 export function renderImmobWrap(student, week = 1, opts = {}) {
   if (!student) return '';
-  if (!student.leftoverFedThisWeek && !(week && student.lastNightVisitWeek === week)) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   return render('{immob.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
 }

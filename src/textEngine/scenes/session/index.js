@@ -63,10 +63,9 @@ export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
   return appendV2Depth(withLinger, 'session', ctx, opts.v2DepthChance ?? 0.28);
 }
 
-/** Leftover/night wrap under unique tap-out dialogue. Empty when neither flag is set. */
+/** Linger wrap under unique tap-out dialogue. Always appends; leftover/night keys fire when live. */
 export function renderTapOutWrap(student, week = 1, opts = {}) {
   if (!student) return '';
-  if (!student.leftoverFedThisWeek && !(week && student.lastNightVisitWeek === week)) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   return render('{session.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
 }
