@@ -41,6 +41,8 @@ const POOLS = [
   'ge.scene.growthFrame',
   'device.use.scene.labHum',
   'device.campus.scene.meshAir',
+  'talk.encourage.lateHallAir',
+  'stream.scene.signoffAir',
 ];
 
 for (const key of POOLS) {

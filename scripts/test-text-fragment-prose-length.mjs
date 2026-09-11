@@ -33,6 +33,8 @@ const POOLS = [
   'session.tapOut.breath',
   'device.use.scene.labHum',
   'device.campus.scene.meshAir',
+  'talk.encourage.lateHallAir',
+  'stream.scene.signoffAir',
 ];
 
 for (const key of POOLS) {

@@ -35,6 +35,7 @@ const MODULAR_MARKERS = [
   /choiceWarmth|oven heat still on her hands|kitchen politics/i,
   /dinner\.dish|venueMood|hallTone|choiceEcho|hungerCall|yieldBeat|crowdHeat|tableStakes/i,
   /calibrated hunger|mesh flickers|deployEcho|Hall Ambiance muted|peer-reviewed ritual/i,
+  /lateHallAir|latePermission|signoffAir|chatAfterglow|tips still ticking/i,
 ];
 
 function isModular(line) {

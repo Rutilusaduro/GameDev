@@ -122,6 +122,8 @@ execSync('node scripts/test-homeroom-batch-baker-modular-late.mjs', { cwd: root,
 
 execSync('node scripts/test-growth-event-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 execSync('node scripts/test-device-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+execSync('node scripts/test-talk-encourage-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+execSync('node scripts/test-stream-end-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-evolved-events-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 

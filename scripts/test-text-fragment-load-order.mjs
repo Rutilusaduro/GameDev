@@ -56,6 +56,8 @@ const pairs = [
   ['growthEvent/depth.js', 'growthEvent/growthEventLateModularFragments.js'],
   ['deviceUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
   ['deviceCampusUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
+  ['talkEncourage.js', 'talkEncourageModularFragments.js'],
+  ['raPivotProseDepthPass112.js', 'streamEndStreamModularFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {
