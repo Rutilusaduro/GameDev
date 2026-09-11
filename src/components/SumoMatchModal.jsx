@@ -5,17 +5,18 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED } from '../gameData/miniGames.js';
+import { SUMO_MOVES, SUMO_RIVAL_NAME, SUMO_CORNER_FEED, extraSumoCornerFeeds } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { renderSumoAftermath, renderSumoPayoff } from '../textEngine/scenes/sumoMatch/index.js';
 
-export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup, soundEnabled = true }){
+export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMove, sumoCornerFeed, sumoStartNextBout, setSumoMatchState, closeSumoMatch, dismissSumoPopup, owned = {}, soundEnabled = true }){
         const{studentId,stageIdx,oppLbs,ringPos,yourBalance,oppBalance,yourBouts,oppBouts,gainAccum,telegraph,exchangeLine,phase,popupText,fillRingUsed}=sumoMatchState;
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, studentId, phase, stageIdx]);
         const s=students.find(st=>st.id===studentId); if(!s) return null;
         const won=yourBouts>oppBouts;
         const markerPct=Math.max(0,Math.min(100,(ringPos+100)/2));
         const feed=SUMO_CORNER_FEED[stageIdx]||SUMO_CORNER_FEED[0];
+        const extraFeeds=extraSumoCornerFeeds(owned,stageIdx);
         const isBlob=getStage(s.lbs).id>=10;
         const payoffText=renderSumoPayoff(stageIdx,s,gainAccum,week);
         const aftermathText=renderSumoAftermath(stageIdx,s,gainAccum,won,oppLbs,week);
@@ -97,9 +98,14 @@ export function SumoMatchModal({ sumoMatchState, students, week = 1, sumoPlayMov
                 <div style={{fontSize:12,color:"#e0b0a0",lineHeight:1.85,marginBottom:14,fontStyle:"italic"}}>
                   Your corner is set up between bouts. The chanko is hot and waiting. Every pound you add now is a pound Dana has to move in the next bout — and getting heavier is the whole strategy.
                 </div>
-                <button style={{...C.btn("#7a3010"),width:"100%",marginBottom:8}} onClick={sumoCornerFeed}>
+                <button style={{...C.btn("#7a3010"),width:"100%",marginBottom:8}} onClick={()=>sumoCornerFeed('default')}>
                   🍲 Fuel in Your Corner <span style={{color:"#ffd080",fontSize:11}}>+{feed.lbs} lbs · restores balance</span>
                 </button>
+                {extraFeeds.map(extra=>(
+                  <button key={extra.id} style={{...C.btn("#5a2810"),width:"100%",marginBottom:8}} onClick={()=>sumoCornerFeed(extra.id)}>
+                    🍲 {extra.label} <span style={{color:"#ffd080",fontSize:11}}>+{extra.lbs} lbs</span>
+                  </button>
+                ))}
                 <button style={{...C.btn("#3a1810"),width:"100%"}} onClick={sumoStartNextBout}>
                   Skip — straight back to center
                 </button>

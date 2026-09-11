@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
+import { WL_CONFIG } from '../gameData/evolvedForms.js';
+import { wifeLessonsForOwned } from '../gameData/evolvedFloorExtras.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
@@ -18,7 +19,7 @@ function wlNextThresholdCap(stage, daughters) {
   return exitCap;
 }
 
-export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession, soundEnabled = true }){
+export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession, owned = {}, soundEnabled = true }){
         const{stage,daughters,moms,session}=wifeLessonsState;
         const{lessonChosen,lessonId,lessonProse,mjGainAccum,relAccum,conversationState,log}=session;
         useEffect(() => {
@@ -33,7 +34,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         const cap=wlNextThresholdCap(stage, daughters);
         const exitCap=WL_CONFIG.stageCaps[stage];
         const isDaughterStage=stage>=WL_CONFIG.daughtersFrom;
-        const lessons=WL_LESSONS[stage]||[];
+        const lessons=wifeLessonsForOwned(stage,owned);
         const chosenLesson=lessonId?lessons.find(l=>l.id===lessonId):null;
         const endSession=()=>{ playHallPassSound('click', soundEnabled); closeWifeLessonsSession(); };
 

@@ -133,8 +133,28 @@ export const CONTEST_ACTION_POPUPS = {
     `You look at Maya. She is 530 lbs and she came to the Grand Invitational because she was invited and she is eating hard and she is not going to win. She knows this. You both know this. "I'm going to eat your whole side," you tell her. She looks at you — really looks, for one held moment — and says: "I believe you." You do.`,
   ],
   steal:[
-    `You reach across the divider — your arm, your enormous warm arm — and take the pasta from Maya's side. The crowd makes a noise. Maya stops eating for exactly two seconds. She watches you pull it to your side. "Oh," she says quietly. "That's how it is." She goes back to what's left. You eat her pasta.`,
+    `You reach across the divider and take the pasta from Maya's side. The crowd makes a noise. Maya stops eating for two seconds. She watches you pull it over. "Oh," she says quietly. "That's how it is." She goes back to what's left. You eat her pasta.`,
     `You reach over and take the ribs. Maya's hand comes toward them at the same time. You get there first. Your belly presses the divider when you reach and you don't care. "Mine now," you say. Maya laughs, one short sound, and goes back to the rest. You eat her ribs.`,
+    `You take her pizza. The judges look at each other. Maya looks at the empty plate, then at the round of you filling the lane, then back at the plate. "Keep it," she says. You already are.`,
+    `You steal the cake. Maya watches it travel into you with the calm of someone rewriting a strategy. "You're going to weigh more than the table," she says. You eat her cake anyway.`,
+    `You take whatever is left on her side. The crowd has a sound for this now. Maya sits back, hands on her own belly, and lets you. "Show them," she says. You do.`,
+    `You eat her last item in front of her. 820 pounds of you, reaching, taking, finishing. Maya nods once, like a rival signing the receipt. The table on her side is a rumor. Yours is a furnace.`,
+  ],
+  kitchen_plate:[
+    `A runner from the hall kitchen slides a warm plate under your elbow. Leftovers, officially. Fuel, actually. You eat it between official items and your belly takes it like it had been waiting in the wings.`,
+    `Hall kitchen leftovers land beside your station. Dense, still hot, not on Maya's inventory. You eat them standing a little more open in the waist. The judges pretend not to see the extra plate.`,
+    `The floor kitchen sent a plate. You eat it with the same focus as the contest food. Your belly settles lower. Maya glances at the extra dish and files it away as unfair, which it is.`,
+    `Leftovers from your hall arrive like a secret course. You clean the plate. The extra weight is already working. Maya's side has no runner. Hers never did.`,
+    `A second plate, hall-stamped, disappears into you between official items. Your belly presses the table harder. The crowd thinks it is still the listed menu. You know better.`,
+    `The kitchen plate is enormous and you treat it as a sip. 820 pounds of competitive eater, plus hall leftovers, plus whatever Maya still thinks is hers. You eat. The floor kitchen did its job.`,
+  ],
+  lounge_cheer:[
+    `Someone from your lounge starts a chant. The sound hits your belly like permission. You rub once, breathe, and the tightness eases enough to keep going.`,
+    `A cheer from the hall section. You put a palm on the warm round of yourself and the fullness redistributes. Maya hears it. She eats faster.`,
+    `The lounge brought a section. They know your name. You work the pressure out of your middle while they watch, and there is room again.`,
+    `Cheer as strategy. You breathe into the noise, rub the vast warm press of your belly, and the next item fits after all.`,
+    `The hall section is loud enough that the judges glance over. You use the noise to reset, hands on the enormity of you, then you eat.`,
+    `They came from the lounge and they came to watch you grow. You rub the geological fact of your belly, the fullness eases a fraction, and you reach for more food like the chant was a serving spoon.`,
   ],
   table_cleared:[
     ``,
@@ -417,6 +437,66 @@ export const SUMO_CORNER_FEED = [
   { lbs:18, text:`The corner ritual, refined over two years: between bouts you eat, and you eat seriously — bowls of chanko, the works, your belly filling past full and settling into your stance like ballast. You return to center heavier than any human being should be, exactly as planned. Dana watches you grow between bouts. There's nothing she can do about it.` },
   { lbs:22, text:`Your corner doesn't ask how you're doing. They just bring the chanko — enormous bowls of it, the proper Invitational portion — and you eat it down to nothing while your belly sits enormous and warm and between your thighs and receives it. Each bowl goes in and your belly settles further forward and heavier against the mawashi. You stand up. The floor registers the weight shift. You go back to the dohyo bigger than you left it. That is the whole plan.` },
 ];
+
+export function extraContestActions(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({
+      id: 'kitchen_plate',
+      label: 'Plate from the floor kitchen',
+      pantsDelta: 6,
+      fullnessDelta: -4,
+      lbs: 3,
+      once: true,
+    });
+  }
+  if (owned.dinner_basic || owned.legendary_host || owned.dinner_casual) {
+    extras.push({ id: 'steal', label: "Steal Maya's plate", steal: true, once: true });
+  }
+  if (owned.comfy_chairs || owned.media_nook || owned.reinforced_seating) {
+    extras.push({
+      id: 'lounge_cheer',
+      label: 'Cue the lounge cheer section',
+      fullnessDelta: -3,
+      once: true,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function contestActionsForOwned(owned = {}) {
+  return extraContestActions(owned);
+}
+
+export function extraSumoCornerFeeds(owned = {}, stageIdx = 0) {
+  const base = SUMO_CORNER_FEED[stageIdx] || SUMO_CORNER_FEED[0];
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({
+      id: 'kitchen_chanko',
+      label: 'Hall kitchen chanko',
+      lbs: base.lbs + 4,
+      text: `Your corner swaps the standard bowl for a hall-kitchen pot. Denser. Hotter. You eat it standing because sitting would waste the extra mass. You go back out heavier on purpose.`,
+    });
+  }
+  if (owned.dinner_basic || owned.legendary_host || owned.dinner_upscale) {
+    extras.push({
+      id: 'dining_second',
+      label: 'Second bowl from dining',
+      lbs: base.lbs + 6,
+      text: `Dining sends a second bowl like a host sending a date back for more. You finish it. Dana watches the added weight settle into your stance and does the math she already hates.`,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function sumoCornerFeedsForOwned(owned = {}, stageIdx = 0) {
+  const base = SUMO_CORNER_FEED[stageIdx] || SUMO_CORNER_FEED[0];
+  return [
+    { id: 'default', label: 'Fuel in Your Corner', lbs: base.lbs, text: base.text },
+    ...extraSumoCornerFeeds(owned, stageIdx),
+  ];
+}
 
 export const SUMO_BOUT_WON = [
   `You drive her foot past the straw and the bout is yours. Dana steps back in, re-ties her mawashi, breathing hard. "One," she allows. "You've got one." The crowd is louder than it was. You're not the novelty anymore.`,

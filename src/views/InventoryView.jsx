@@ -1,11 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // PANTRY — inventory of foods & items usable on residents
 // ═══════════════════════════════════════════════════════════════
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from '../components/ModalOverlay.jsx';
-import { ITEMS } from '../gameData/items.js';
+import { ITEMS, itemUseModesForOwned } from '../gameData/items.js';
 import { foodProfile } from '../textEngine/scenes/feedReaction/index.js';
 
 const RARITY_COLORS = { common:"#8a8a7a", uncommon:"#4a9a5a", rare:"#c8860a" };
@@ -47,8 +47,10 @@ export function InventoryView({ inventory, setItemTargetPicker }){
   );
 }
 
-export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, students, lilithUnlocked, useItemOn, soundEnabled = true }){
+export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, students, lilithUnlocked, useItemOn, owned = {}, soundEnabled = true }){
   const { item } = itemTargetPicker;
+  const modes = itemUseModesForOwned(owned);
+  const [modeId, setModeId] = useState('feed');
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, item?.id]);
   const dismiss = () => { playHallPassSound('click', soundEnabled); setItemTargetPicker(null); };
   return(
@@ -61,13 +63,29 @@ export function ItemTargetPicker({ itemTargetPicker, setItemTargetPicker, studen
             {p.icon} {p.kindLabel} · <span style={{fontStyle:"italic",color:"#7a6a55"}}>{p.fill}</span> — {item.cal.toLocaleString()} cal · {item.full} fullness — who's it for?
           </div>
         );})()}
+        {modes.length>1&&(
+          <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:10}}>
+            {modes.map(mode=>(
+              <button
+                key={mode.id}
+                type="button"
+                style={{...C.smBtn,padding:"5px 10px",border:modeId===mode.id?"1px solid #c090e8":"1px solid transparent",opacity:modeId===mode.id?1:0.7}}
+                onClick={()=>{ playHallPassSound('click', soundEnabled); setModeId(mode.id); }}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        )}
         <div style={{maxHeight:320,overflowY:"auto",marginBottom:10}}>
           {students.filter(s=>(!s.hidden||lilithUnlocked)&&s.lockState!=='locked').map(s=>{
             const cap=s.stomachCapacity||100;
-            const over=(s.fullness||0)+item.full>cap;
+            const mode=modes.find(m=>m.id===modeId)||modes[0];
+            const fullCost=Math.round(item.full*(mode.fullMult||1));
+            const over=(s.fullness||0)+fullCost>cap;
             return(
               <button key={s.id} style={{...C.smBtn,display:"flex",width:"100%",justifyContent:"space-between",marginBottom:3,padding:"7px 10px"}}
-                onClick={()=>{ playHallPassSound('click', soundEnabled); useItemOn(item,s.id); }}>
+                onClick={()=>{ playHallPassSound('click', soundEnabled); useItemOn(item,s.id,modeId); }}>
                 <span>{s.name}</span>
                 <span style={{fontSize:10,color:over?"#e07030":"#60a060"}}>{s.fullness||0}/{cap}{over?" — over capacity!":""}</span>
               </button>

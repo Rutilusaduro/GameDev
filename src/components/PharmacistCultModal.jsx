@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { CULT_DISTRIBUTION_ROUTES } from '../gameData/pharmacistCult.js';
+import { cultRoutesForOwned } from '../gameData/pharmacistCult.js';
 
 const PURPLE = '#6b4a8a';
 const LILAC = '#b090d8';
@@ -18,6 +18,7 @@ export function PharmacistCultModal({
   onSelectRoute,
   onConfirm,
   onCancel,
+  owned = {},
   soundEnabled = true,
 }) {
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, cultSession?.phase, student?.id]);
@@ -50,7 +51,7 @@ export function PharmacistCultModal({
         <div style={{ fontSize: 11, color: '#a080c0', marginBottom: 12, fontStyle: 'italic' }}>
           Route this week's wellness supply. The area gets fatter when distribution runs.
         </div>
-        {CULT_DISTRIBUTION_ROUTES.map(route => (
+        {cultRoutesForOwned(owned).map(route => (
           <button
             key={route.id}
             type="button"

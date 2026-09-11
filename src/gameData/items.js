@@ -63,3 +63,33 @@ export const ITEM_USE_LINES = [
   (s, item) => `${s.name} takes the ${item.label.toLowerCase()} with both hands. The wrapper lasts longer than her resolve.`,
   (s, item) => `The ${item.label.toLowerCase()} is gone before ${s.name} finishes pretending she would share.`,
 ];
+
+export function extraItemUseModes(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.dinner_basic || owned.dinner_casual) {
+    extras.push({
+      id: 'share',
+      label: 'Share the plate',
+      calMult: 0.55,
+      fullMult: 0.6,
+      extraRel: 4,
+    });
+  }
+  if (owned.artisan_bakery || owned.legendary_host || owned.luxury_pantry) {
+    extras.push({
+      id: 'binge',
+      label: 'Binge it down',
+      calMult: 1.4,
+      fullMult: 1.25,
+      extraRel: 1,
+    });
+  }
+  return extras;
+}
+
+export function itemUseModesForOwned(owned = {}) {
+  return [
+    { id: 'feed', label: 'Feed her', calMult: 1, fullMult: 1, extraRel: 0 },
+    ...extraItemUseModes(owned),
+  ];
+}

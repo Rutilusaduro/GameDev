@@ -16,7 +16,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'roomVisit', before: 1, after: 2, hook: 'roomVisitRelBonus' },
   { id: 'intimacy', before: 1, after: 3, hook: 'intimacyRelBonus+extraChoice' },
   { id: 'devices', before: 1, after: 3, hook: 'deviceTickBonus+extraUseLbs' },
-  { id: 'pantry', before: 1, after: 2, hook: 'pantryBonus+itemCalBonus' },
+  { id: 'pantry', before: 1, after: 3, hook: 'pantryBonus+itemCalBonus+useModes' },
   { id: 'campus', before: 1, after: 2, hook: 'campusYieldBonus' },
   { id: 'opposition', before: 1, after: 3, hook: 'oppositionCover+extraHearingChoice' },
   { id: 'clothing', before: 1, after: 2, hook: 'clothingEase' },
@@ -34,6 +34,11 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'salon', before: 1, after: 3, hook: 'salonFloorLbs+extraService' },
   { id: 'gallery', before: 1, after: 3, hook: 'galleryFloorLbs+extraStudio+field' },
   { id: 'pharmacist', before: 1, after: 3, hook: 'pharmacistFloorCalMult+extraAcquire' },
+  { id: 'contest', before: 1, after: 2, hook: 'extraContestAction' },
+  { id: 'sumo', before: 1, after: 2, hook: 'extraCornerFeed' },
+  { id: 'homeroom', before: 1, after: 2, hook: 'extraHomeroomChoice' },
+  { id: 'wifeLessons', before: 1, after: 2, hook: 'extraLesson' },
+  { id: 'cult', before: 1, after: 2, hook: 'extraCultRoute' },
 ];
 
 export function kitchenHuntBonus(baseGain, owned = {}) {

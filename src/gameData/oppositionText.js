@@ -39,7 +39,15 @@ export function supernaturalActLine(week) {
 
 export function agendaResolveLine(cardId, week) {
   const pool = `opposition.agenda.${cardId}`;
-  return renderOppositionLine(pool, { week, globals: { card: cardId } });
+  const ctx = { week, globals: { card: cardId } };
+  const line = renderOppositionLine(pool, ctx);
+  if (!line) return null;
+  try {
+    const linger = render('{overhaul.linger.opposition}', createContext(ctx))?.trim();
+    return linger ? `${line} ${linger}` : line;
+  } catch {
+    return line;
+  }
 }
 
 export function counterSuccessLine(counterId) {

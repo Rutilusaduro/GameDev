@@ -77,8 +77,47 @@ export function initCultOnUnlock(prevCult) {
   };
 }
 
-export function applyCultDistribution(state, routeId, rndFn) {
-  const route = CULT_DISTRIBUTION_ROUTES.find(r => r.id === routeId);
+export function extraCultRoutes(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.luxury_pantry || owned.artisan_bakery) {
+    extras.push({
+      id: 'floor_tasting',
+      label: 'Hall tasting cart',
+      desc: 'Route doses through the floor kitchen as wellness samples. Your hall feels it first.',
+      apCost: 1,
+      exposure: 5,
+      circleGrowth: [1, 2],
+      supplyGain: [3, 5],
+      devotionGain: [6, 10],
+      classGain: [2, 4],
+      addictedGain: [1, 2],
+      flavor: () => `Sophia parks a tasting cart in the kitchen. Stickers say wellness. Portions say otherwise. Residents leave softer and vague about the recipe.`,
+    });
+  }
+  if (owned.comfy_chairs || owned.legendary_host || owned.dedicated_suite) {
+    extras.push({
+      id: 'lounge_circle',
+      label: 'Lounge circle night',
+      desc: 'Devotees gather in the lounge. Low foot traffic, high devotion.',
+      apCost: 1,
+      exposure: 4,
+      circleGrowth: [2, 3],
+      supplyGain: [2, 4],
+      devotionGain: [8, 12],
+      classGain: [0, 1],
+      addictedGain: [2, 3],
+      flavor: () => `They take the wide chairs and do not get up. Sophia leaves tubs on the side table. Softness stays. The lounge smells like vanilla and agreement.`,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function cultRoutesForOwned(owned = {}) {
+  return [...CULT_DISTRIBUTION_ROUTES, ...extraCultRoutes(owned)];
+}
+
+export function applyCultDistribution(state, routeId, rndFn, owned = {}) {
+  const route = cultRoutesForOwned(owned).find(r => r.id === routeId);
   if (!route || !state?.cultActive) return { state, outcome: null };
   const cult = { ...(state.cult || defaultCultState()) };
   const roll = (range) => {

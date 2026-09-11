@@ -26,6 +26,39 @@ const LOOK_HEAVY = {
   library: [
     'A textbook rides the shelf of a belly. The page turns. The belly does not.',
   ],
+  science_wing: [
+    'A sensory trial sign is smudged with frosting. Volunteers left slower than they arrived.',
+  ],
+  faculty_lounge: [
+    'A faculty mug sits beside a plate that needed two hands. Nobody claims either.',
+  ],
+  garden: [
+    'A picnic blanket has become a serving table. She is still sitting on the grass like furniture.',
+  ],
+  food_court: [
+    'Trays travel in pairs. One resident, two stations, no apology.',
+  ],
+  student_union: [
+    'A couch built for a committee holds one resident and her snacks. The meeting can wait.',
+  ],
+  coffee_shop: [
+    'The pastry case is open. She is the reason. She knows.',
+  ],
+  arts_wing: [
+    'Clay, paint, and a stool that has learned a wider sit. She wipes frosting off a brush.',
+  ],
+  outdoor_track: [
+    'A recovery shake in each hand. Nobody is timing laps. Everybody is timing fullness.',
+  ],
+  health_center: [
+    'The waiting room scale is unplugged. Someone left a muffin anyway.',
+  ],
+  theater: [
+    'An aisle seat is a project. She takes two and looks pleased about the overlap.',
+  ],
+  rooftop: [
+    'Night air, a takeout bag, a body that makes the bench look borrowed.',
+  ],
 };
 
 function lintSafe(s) {

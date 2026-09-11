@@ -38,5 +38,6 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   const key = man ? `hunt.man.${man.id}` : 'hunt.man.chad_w';
   const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
-  return appendV2Depth(base, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  const linger = render('{overhaul.linger.hunt}', ctx)?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join(' '), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }

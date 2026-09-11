@@ -84,6 +84,36 @@ registerPool('overhaul.linger.campus', [
   ]},
 ]);
 
+registerPool('overhaul.linger.hunt', [
+  { when: {}, text: [
+    'Heat off her body reaches him before her greeting does.',
+    'He looks at the extra of her and forgets the line he prepared.',
+    'Softness fills the space between them. He stays in it.',
+  ]},
+  { when: { stageMin: 7 }, weight: 2, text: [
+    'She fills the approach. He has already lost the argument with his own attention.',
+  ]},
+]);
+
+registerPool('overhaul.linger.opposition', [
+  { when: {}, text: [
+    'Clipboard, lanyard, appetite. The hall still smells like dinner after they leave.',
+    'They write concern. Your residents keep eating. The paper does not get the last word.',
+    'Policy talks. The lounge answers with crumbs and a wider sit.',
+  ]},
+]);
+
+registerPool('overhaul.linger.evolved', [
+  { when: {}, text: [
+    'The extra of her keeps arriving after the beat ends. You let it.',
+    'She stays in the warmth a little longer than the scene required.',
+    'Softness takes a bow. She does not hurry the looking.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'Soft mass settles. The room rearranges around her and does not complain.',
+  ]},
+]);
+
 registerPool('overhaul.linger.body', [
   { when: {}, text: [
     'You take her in again before she covers. Soft mass, heat, the extra that was not here last week.',
@@ -186,6 +216,28 @@ registerPool('pantry.use', [
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
     'She does not pretend this was accidental. She eats it in front of you and waits to be watched.',
+  ]},
+]);
+
+registerPool('pantry.use.share', [
+  { when: {}, text: [
+    'You split it. She still takes the larger half, then looks at you like that was the point.',
+    'Two forks. One plate. She leans in until the sharing is mostly her.',
+    'She offers you a bite, then eats it herself, laughing, already reaching again.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'Sharing, she calls it. Her belly takes the last bite anyway and she smiles like you agreed.',
+  ]},
+]);
+
+registerPool('pantry.use.binge', [
+  { when: {}, text: [
+    'She stops pretending this is a snack. The whole thing goes, fast, warm, watched.',
+    'She eats it standing. Wrapper gone. Breath caught. Hand on the new press of herself.',
+    'No plates. No pause. She finishes it and looks down like the work pleased her.',
+  ]},
+  { when: { stageMin: 7 }, weight: 2, text: [
+    'A binge in the pantry light. Soft mass working. She wants you to see the finish.',
   ]},
 ]);
 

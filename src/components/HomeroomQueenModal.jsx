@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
+import { homeroomChoicesForPhase } from '../gameData/evolvedFloorExtras.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
@@ -67,7 +68,7 @@ function ParticipantCard({ name, descIdx, npcKey, canAfford, onSelect, accent, d
   );
 }
 
-export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession, soundEnabled = true }){
+export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession, owned = {}, soundEnabled = true }){
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, homeroomSessionState?.daisyStudentId]);
         const{daisyStudentId,ap:classAp,log,activeActivity,daisyGain,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
         const daisy=students.find(st=>st.id===daisyStudentId);
@@ -94,7 +95,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
             const actDef=HOMEROOM_GROUP_ACTIVITIES[type];
             const phases=actDef?.phases||[{text:actDef?.text,choices:actDef?.choices||[]}];
             const phase=phases[phaseIdx];
-            phaseText=phase?.text; choices=phase?.choices||[]; actTitle=actDef?.label||type;
+            phaseText=phase?.text; choices=homeroomChoicesForPhase(actDef,type,phaseIdx,owned); actTitle=actDef?.label||type;
           }
           return(
             <ModalOverlay onClose={done ? dismissHomeroomActivity : undefined} dismissible={!!done} soundEnabled={soundEnabled} style={{ zIndex: 350 }}>

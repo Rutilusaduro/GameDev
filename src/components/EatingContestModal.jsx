@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { CONTEST_MAYA_WEIGHTS } from '../gameData/miniGames.js';
+import { CONTEST_MAYA_WEIGHTS, extraContestActions } from '../gameData/miniGames.js';
 import { renderContestWeighIn2, renderContestPayoff } from '../textEngine/scenes/eatingContest/index.js';
 
-export function EatingContestModal({ eatingContestState, students, week = 1, toggleFoodSelection, eatContestFood, doContestAction, doDevour, setEatingContestState, closeEatingContest, dismissContestPopup, soundEnabled = true }){
+export function EatingContestModal({ eatingContestState, students, week = 1, toggleFoodSelection, eatContestFood, doContestAction, doDevour, setEatingContestState, closeEatingContest, dismissContestPopup, owned = {}, soundEnabled = true }){
         const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,popupText,phase,pantsFactor,actions}=eatingContestState;
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, studentId, phase, stageIdx]);
         const s=students.find(st=>st.id===studentId); if(!s) return null;
@@ -123,6 +123,14 @@ export function EatingContestModal({ eatingContestState, students, week = 1, tog
                     <button style={{...C.btn(actions.taunted?"#0a1a0a":"#1a2a10"),fontSize:11,padding:"6px 10px",opacity:actions.taunted?0.4:1}} disabled={actions.taunted} onClick={()=>doContestAction('taunt')}>
                       😏 Taunt Maya{actions.taunted?" ✓":""}
                     </button>
+                    {extraContestActions(owned).map(extra=>{
+                      const used=!!actions[extra.id];
+                      return(
+                        <button key={extra.id} style={{...C.btn(used?"#0a1a0a":"#1a3820"),fontSize:11,padding:"6px 10px",opacity:used?0.4:1}} disabled={used} onClick={()=>doContestAction(extra.id)}>
+                          {extra.label}{used?" ✓":""}
+                        </button>
+                      );
+                    })}
                     {devourUnlocked&&(
                       <button style={{...C.btn(selectedCount>0?"#2a4800":"#1a2a08"),fontSize:12,padding:"6px 14px",fontWeight:700,color:selectedCount>0?"#c0ff40":"#507030",opacity:selectedCount>0?1:0.5,border:selectedCount>0?"1px solid #80c020":"none"}} disabled={selectedCount===0} onClick={doDevour}>
                         🍽️ DEVOUR{selectedCount>0?` (${selectedCount})`:""}

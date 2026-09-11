@@ -38,5 +38,9 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
     const extra = render(`{${formPool}}`, ctx)?.trim();
     if (extra) out = `${out}\n\n${extra}`;
   }
+  if (out?.trim() && Math.random() < chance * 0.55) {
+    const linger = render('{overhaul.linger.evolved}', ctx)?.trim();
+    if (linger) out = `${out} ${linger}`;
+  }
   return out;
 }

@@ -8,14 +8,14 @@ export const HUNT_NODES = {
   dorm:         { id:'dorm',         label:"Her Dorm",       desc:"The narrow hallway outside your door. Incense and something sweet you will not name. Safest place on campus. Emptiest, until she fills it." },
   quad:         { id:'quad',         label:"The Quad",       desc:"Open grass, diagonal paths. Residents move through it without looking at each other, which suits you perfectly." },
   dining_hall:  { id:'dining_hall',  label:"Dining Hall",    desc:"Fluorescence, trays, institutional garlic bread. They are distracted here. Easy to approach. Easy to leave rounder." },
-  dorm_row:     { id:'dorm_row',     label:"Dorm Row",       desc:"A long stretch of residence halls. Boys coming and going, propped-open doors, music bleeding into hallways." },
-  crossroads:   { id:'crossroads',   label:"The Crossroads", desc:"Where the south path splits. A bench, a bike rack, the particular energy of people deciding which way to go." },
-  gym:          { id:'gym',          label:"The Gym",        desc:"Glass walls. Men mid-effort, self-conscious about being watched. You give them something to be self-conscious about." },
-  library:      { id:'library',      label:"The Library",    desc:"Quiet floors, focused faces. The ones who look up from their books are already halfway there." },
-  frat_row:     { id:'frat_row',     label:"Frat Row",       desc:"Three houses, two with music. The ratio here has always been favorable." },
-  coffee_shop:  { id:'coffee_shop',  label:"Coffee Shop",    desc:"Exposed brick, too-loud playlists, men who think they're interesting. Some of them almost are." },
-  campus_park:  { id:'campus_park',  label:"Campus Park",    desc:"A loop path around a pond. Runners, readers, people sitting alone. They think they're alone." },
-  admin:        { id:'admin',        label:"Admin Building", desc:"Hushed hallways. Men in ties with institutional ambitions. The specific fragility of people who need to seem important." },
+  dorm_row:     { id:'dorm_row',     label:"Dorm Row",       desc:"A long stretch of residence halls. Boys coming and going, propped-open doors, music bleeding into hallways. Easy to be seen. Easier to be followed." },
+  crossroads:   { id:'crossroads',   label:"The Crossroads", desc:"Where the south path splits. A bench, a bike rack, the particular energy of people deciding which way to go, and who they will look at while they decide." },
+  gym:          { id:'gym',          label:"The Gym",        desc:"Glass walls. Men mid-effort, self-conscious about being watched. You give them something to be self-conscious about, and they keep looking anyway." },
+  library:      { id:'library',      label:"The Library",    desc:"Quiet floors, focused faces. The ones who look up from their books are already halfway there, heat in the hush, appetite wearing a study face." },
+  frat_row:     { id:'frat_row',     label:"Frat Row",       desc:"Three houses, two with music. The ratio here has always been favorable. Warmth, beer, and boys who think they are hunting." },
+  coffee_shop:  { id:'coffee_shop',  label:"Coffee Shop",    desc:"Exposed brick, too-loud playlists, men who think they're interesting. Some of them almost are. The pastry case helps the rest." },
+  campus_park:  { id:'campus_park',  label:"Campus Park",    desc:"A loop path around a pond. Runners, readers, people sitting alone. They think they're alone until the heat of you arrives." },
+  admin:        { id:'admin',        label:"Admin Building", desc:"Hushed hallways. Men in ties with institutional ambitions. The specific fragility of people who need to seem important, and who look twice when you pass." },
 };
 
 // Node connections: from → to[]
@@ -106,7 +106,7 @@ export const HUNT_MEN = [
     id: 'ryan_w', name: "Ryan Walsh", tag: "Graduate TA",
     location: 'admin', difficulty: 3,
     desc: (stage) => stage < 6
-      ? "Professionalveneer, badge lanyard, the practiced authority of a man used to having control of a room. Interesting thing to take from someone."
+      ? "Professional veneer, badge lanyard, the practiced authority of a man used to having control of a room. Interesting thing to take from someone."
       : "He sees you and visibly recalculates. Whatever he was about to say doesn't come out. His professional posture is doing a lot of work right now.",
   },
   {

@@ -25,6 +25,11 @@ import { extraSalonServiceChoices, salonChoicesForOwned, startSalonSession, salo
 import { extraStudioActions, extraFieldLocations, studioActionsForOwned, fieldLocationsForOwned } from '../src/gameData/fionaGallery.js';
 import { extraMinigameChoices, minigameChoicesForPhase, computeMinigameOutcome } from '../src/gameData/evolvedMinigames.js';
 import { extraAcquisitionChoices, acquisitionChoicesForOwned, startChemSession } from '../src/gameData/pharmacistIngredients.js';
+import { extraCultRoutes, cultRoutesForOwned, applyCultDistribution } from '../src/gameData/pharmacistCult.js';
+import { extraContestActions, extraSumoCornerFeeds, contestActionsForOwned, sumoCornerFeedsForOwned } from '../src/gameData/miniGames.js';
+import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned } from '../src/gameData/evolvedFloorExtras.js';
+import { extraItemUseModes, itemUseModesForOwned } from '../src/gameData/items.js';
+import { HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/evolvedForms.js';
 import { extraIntimacyChoices, intimacyChoicesForPhase } from '../src/gameData/intimacy.js';
 import { extraStreamRounds, pickRoundCount } from '../src/gameData/streaming.js';
 import { resolveWeekPlan, plannerSlotCount, venuePayoffHint } from '../src/gameData/weekPlanner.js';
@@ -115,7 +120,7 @@ const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
 const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
 assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
-assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 27, 'depth inventory covers live systems');
+assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 33, 'depth inventory covers live systems');
 for (const row of MECHANIC_DEPTH_INVENTORY) {
   assert.ok(row.after > row.before, `${row.id} after (${row.after}) must beat before (${row.before})`);
   assert.ok(row.hook, `${row.id} missing hook`);
@@ -168,6 +173,28 @@ assert.ok(intimacyChoicesForPhase({ choices: [{ id: 'wrap_arms' }] }, { oversize
 assert.equal(extraStreamRounds({ media_nook: true }), 1);
 assert.ok(pickRoundCount(null, () => 0, { media_nook: true }) > pickRoundCount(null, () => 0, {}));
 assert.ok(extraDeviceUseLbs({ device_bay: true }) >= 1);
+
+assert.ok(extraContestActions({ snack_station: true, dinner_basic: true }).length >= 2, 'contest extras cap at 2');
+assert.ok(contestActionsForOwned({ snack_station: true }).some((a) => a.id === 'kitchen_plate'));
+assert.ok(extraSumoCornerFeeds({ artisan_bakery: true }, 0).some((f) => f.id === 'kitchen_chanko'));
+assert.ok(sumoCornerFeedsForOwned({ dinner_basic: true }, 1).length > 1);
+
+assert.ok(extraHomeroomChoices('parent_meeting', 0, { snack_station: true }).some((c) => c.id === 'floor_potluck'));
+assert.ok(
+  homeroomChoicesForPhase(HOMEROOM_GROUP_ACTIVITIES.parent_meeting, 'parent_meeting', 0, { snack_station: true }).length
+    > HOMEROOM_GROUP_ACTIVITIES.parent_meeting.choices.length,
+);
+assert.ok(extraWifeLessons(1, { artisan_bakery: true }).some((l) => l.id === 'floor_kitchen_swap'));
+assert.ok(wifeLessonsForOwned(1, { dinner_basic: true }).length > 3);
+
+assert.ok(extraCultRoutes({ luxury_pantry: true }).some((r) => r.id === 'floor_tasting'));
+assert.ok(cultRoutesForOwned({ legendary_host: true }).length > 4);
+const cultOut = applyCultDistribution({ cultActive: true, cult: { circleSize: 4, devotion: 15, supplyReservoir: 0, distributionsRun: 0 } }, 'floor_tasting', (lo, hi) => lo, { snack_station: true });
+assert.ok(cultOut.outcome, 'cult extra route is playable');
+
+assert.ok(extraItemUseModes({ snack_station: true, luxury_pantry: true }).length >= 2);
+assert.ok(itemUseModesForOwned({ dinner_basic: true }).some((m) => m.id === 'share'));
+assert.ok(itemUseModesForOwned({}).length === 1, 'bare pantry stays one mode');
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');
