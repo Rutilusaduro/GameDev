@@ -102,7 +102,7 @@ const MAN_EXTRA = {
     'Confidence falters mid-sentence. Her scale rewrites the room.',
   ],
   prof_hayes: [
-    'Office hours. A closed door. Curiosity dressed as concern.',
+    'Posted hours. A closed door. Curiosity dressed as concern.',
     'He meant to ask a question. Appetite answered first.',
   ],
   danny_d: [
