@@ -381,7 +381,7 @@ import {
 import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave, summarizeHallEnvironment } from './gameData/hallBlueprint.js';
 import {
   hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
-  oppositionScrutinyEaseFromHall, oppositionCounterRelBonus,
+  oppositionScrutinyEaseFromHall,
 } from './gameData/mechanicsDepth.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
@@ -7271,6 +7271,7 @@ export default function HallPass(){
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'dinner',
+        hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
         forcePush:!!opts.forcePush,
         gainLbs:rnd(dish.gain[0],dish.gain[1]),
       },
@@ -7339,6 +7340,7 @@ export default function HallPass(){
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'dinner',
+        hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
         extraRel:2,
       },
     });
@@ -7382,7 +7384,7 @@ export default function HallPass(){
     const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=renderDinnerConversation(conv.id, s, week);
     const fullnessChange=conv.fullnessEffect||0;
-    const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner'});
+    const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner',hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount});
     let fed=s;
     if(scaledBonus>0||fullnessChange!==0){
       const bonusFed=feedStudentCalories(s,scaledBonus,Math.max(0,fullnessChange),conv.relBonus||0,conv.label,{
@@ -7463,6 +7465,7 @@ export default function HallPass(){
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
+        hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
         forcePush:!!opts.forcePush,
         gainLbs:rnd(dish.gain[0],dish.gain[1]),
       },
@@ -7575,6 +7578,7 @@ export default function HallPass(){
         softStartBonus:capOpts.softStartBonus,
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
+        hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
         extraRel:2,
       },
     });
@@ -7613,7 +7617,7 @@ export default function HallPass(){
     push(`💬 Group conversation: ${conv.label}`);
     if(fullE>0){
       liveStudents.forEach(ls=>{
-        const mods=getFeedingModifiers(ls,{generousTrait:hasTrait('generous'),context:'group_dinner'});
+        const mods=getFeedingModifiers(ls,{generousTrait:hasTrait('generous'),context:'group_dinner',hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount});
         const fed=feedStudentCalories(ls,0,fullE,0,'',{
           refusalBonus:mods.refusalBonus,
           fullnessMult:mods.fullnessMult,

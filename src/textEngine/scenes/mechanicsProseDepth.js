@@ -17,28 +17,13 @@ registerModuleVariants('talk.encourage.hook', [
   ]},
 ]);
 
-registerModuleVariants('feed.reaction.soft', [
-  { when: {}, text: [
-    'She eats with unhurried focus — warmth, fullness, and the pleasure of not stopping yet.',
-  ]},
-  { when: { stageMin: 0, stageMax: 4 }, text: [
-    'She chews slowly, surprised at how good surrender tastes when someone trustworthy is watching.',
-  ]},
-  { when: { stageMin: 5, stageMax: 8 }, text: [
-    'Fullness spreads warm under her hand; she sighs and keeps going because the sigh felt like yes.',
-  ]},
-  { when: { stageMin: 9 }, weight: 2, text: [
-    'Her belly resists the chair and wins; each swallow lands heavy, pleased, impossible to rush.',
-  ]},
-]);
-
 registerModuleVariants('hallAction.aftermath', [
   { when: {}, text: [
     'The floor quiets into the drowsy hush that follows a meal nobody pretended to moderate.',
     'Plates sit empty; belts rest open; the hall feels closer than it did an hour ago.',
   ]},
   { when: { stageMin: 5 }, weight: 2, text: [
-    'Chairs creak kindly; belts rest open; laughter returns slower, fuller, closer to the kitchen.',
+    'Chairs creak kindly; laughter returns slower, fuller, closer to the kitchen.',
   ]},
 ]);
 

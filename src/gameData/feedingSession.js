@@ -77,6 +77,7 @@ export function getSessionPaceModifiers(paceId = 'steady') {
 export function getFeedingModifiers(student, {
   generousTrait = false,
   context = 'meal',
+  hallSynergyCount = 0,
 } = {}) {
   const hunger = getHungerTier(student);
   const addiction = getAddictionLevel(student);
@@ -94,6 +95,8 @@ export function getFeedingModifiers(student, {
   let calorieMult = 1;
   if (hunger >= 3 && addiction >= 2) calorieMult = 1.12;
   else if (hunger >= 2) calorieMult = 1.05;
+  if (hallSynergyCount >= 2) calorieMult *= 1.04;
+  if (hallSynergyCount >= 4) refusalBonus += 0.03;
 
   return { refusalBonus, fullnessMult, calorieMult, hunger, corruption: cor };
 }
@@ -191,7 +194,11 @@ export function runVenueFeedAttempt({
     feedOpts = {},
   } = gameCtx;
 
-  const feedMods = getFeedingModifiers(student, { generousTrait, context });
+  const feedMods = getFeedingModifiers(student, {
+    generousTrait,
+    context,
+    hallSynergyCount: gameCtx.hallSynergyCount ?? 0,
+  });
   const pace = getSessionPaceModifiers(sessionPace);
   const pushBonus = forcePush ? 0.12 : 0;
   const hungerBonus = pendingHungerResolve ? 0.1 : 0;
