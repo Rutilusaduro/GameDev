@@ -110,7 +110,7 @@ All core objective gates green. Optional: human playtest for subjective feel tun
 |-------------|--------|
 | Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
 | New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
-| Mechanics depth layer (partial) | 🟡 `test:mechanics-depth` — **52** wired; `test:mechanics-depth-coverage` reports ~73 unwired mechanical files |
+| Mechanics depth layer (partial) | 🟡 `test:mechanics-depth` — **55** wired; coverage ~54/124 layer-import (~70 unwired) |
 | Full text overhaul | 🟡 Pass 53–56 bulk top-ups; skeleton scenes not fully migrated |
 | Full 50% depth all mechanics | 🔴 Cultivator vignettes, weekly events, room visit rewards, collab-only paths, etc. still unwired |
 | Full text overhaul | 🟡 Pass 53–54 + **pass 55** (dinner/session/weighIn prefixes); skeleton scenes not fully migrated |
