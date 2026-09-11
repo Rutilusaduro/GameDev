@@ -1,4 +1,5 @@
 import { buildCustomOutfit } from '../outfits.js';
+import { depthPsychDelta, depthTalkRelGrant } from '../mechanicsDepthLayer.js';
 
 export const CUSTOM_STUDENT_ID = 18;
 
@@ -111,7 +112,7 @@ export function psychFromDraft(draft = {}) {
     const buys = Math.max(0, Math.min(2, draft.psychBuys?.[axis.id] || 0));
     psych[axis.id] = Math.min(100, psych[axis.id] + buys * 25);
   }
-  return psych;
+  return depthPsychDelta(psych);
 }
 
 export function customDraftPointSpend(draft = {}) {
@@ -149,7 +150,7 @@ export function createCustomStudent(draft = {}, baseStudent = {}) {
     favFood: 'meal replacement paste',
     hobby: 'prototyping',
     personality: 'clinical',
-    relationship: Math.max(20, baseStudent.relationship || 20),
+    relationship: Math.max(20, depthTalkRelGrant(Math.max(0, (baseStudent.relationship || 20) - 20)) + 20),
     mood: 'focused',
     gainStance: draft.gainStance || 'reluctant',
     psych: psychFromDraft(draft),

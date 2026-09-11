@@ -102,4 +102,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'pharmacistCult', file: 'pharmacistCult.js' },
   { id: 'lilith', file: 'lilith.js' },
   { id: 'lilithAibHunt', file: 'lilithAibHunt.js' },
+  { id: 'origins', file: 'origins/index.js' },
+  { id: 'customStudent', file: 'customStudent/index.js' },
 ];
