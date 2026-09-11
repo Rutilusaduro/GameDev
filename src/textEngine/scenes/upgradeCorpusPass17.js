@@ -377,10 +377,10 @@ registerModuleVariants('comp.show', [
   ] },
 ]);
 registerModuleVariants('slender.mirror', [
-  { when: { studentId: 8, stageMax: 4, gainStance: 'secret' }, weight: 6, text: [
+  { when: { studentId: 8, stageMax: 4 }, weight: 6, text: [
     `Maya looks once. Keeps it. The glass does not get a speech.`,
   ] },
-  { when: { studentId: 0, stageMax: 4, gainStance: 'reluctant' }, weight: 6, text: [
+  { when: { studentId: 0, stageMax: 4 }, weight: 6, text: [
     `Brittany checks the glass like a score she did not mean to post.`,
   ] },
   { when: { studentId: 1, stageMax: 4 }, weight: 5, text: [
@@ -395,35 +395,35 @@ registerModuleVariants('slender.scene', [
 
 // ── leftover dinner reaction IDs ──────────────────────────────
 registerModuleVariants('dinner.reaction.thinJealousy', [
-  { when: { studentId: 11, reactionLevel: [0, 1] }, weight: 7, text: [
+  { when: { studentId: 11 }, weight: 8, text: [
     `Kaylee watches {ref.name}'s plate like care she forgot to give herself.`,
   ] },
-  { when: { studentId: 12, reactionLevel: [0, 1] }, weight: 7, text: [
+  { when: { studentId: 12 }, weight: 8, text: [
     `Nadia observes her own envy. Then she watches another bite land.`,
   ] },
-  { when: { studentId: 16, reactionLevel: [0, 1] }, weight: 7, text: [
+  { when: { studentId: 16 }, weight: 8, text: [
     `Sophia counts {ref.name}'s courses. The count is not theoretical.`,
   ] },
-  { when: { studentId: 17, reactionLevel: [0, 1] }, weight: 7, text: [
+  { when: { studentId: 17 }, weight: 8, text: [
     `Indiana eyes the other plate like a cache she has not opened yet.`,
   ] },
 ]);
 registerModuleVariants('dinner.reaction.fatEncourage', [
-  { when: { studentId: 11, reactionLevel: [2, 3] }, weight: 7, text: [
+  { when: { studentId: 11 }, weight: 8, text: [
     `Kaylee presses {ref.name}'s hand to her own middle. "Self-care. Try mine."`,
   ] },
-  { when: { studentId: 13, reactionLevel: [2, 3] }, weight: 7, text: [
+  { when: { studentId: 13 }, weight: 8, text: [
     `Daisy wants that fullness for {ref.name}. Bless it. The plate is the sermon.`,
   ] },
-  { when: { studentId: 18, reactionLevel: [2, 3] }, weight: 7, text: [
+  { when: { studentId: 18 }, weight: 8, text: [
     `Talia treats encouragement like a successful trial. "Repeat the input."`,
   ] },
 ]);
 registerModuleVariants('dinner.reaction.fatRetort', [
-  { when: { studentId: 12, reactionLevel: [2, 3] }, weight: 7, text: [
+  { when: { studentId: 12 }, weight: 8, text: [
     `Nadia names the jab, then eats through it. The analysis is the retort.`,
   ] },
-  { when: { studentId: 17, reactionLevel: [2, 3] }, weight: 7, text: [
+  { when: { studentId: 17 }, weight: 8, text: [
     `Indiana grins at the comment. "Find your own cache."`,
   ] },
 ]);
