@@ -4,7 +4,7 @@ import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
-import { renderRecordingOpeningBeat, renderRecordingTakeBeat } from './recordingBeats.js';
+import { renderRecordingOpeningBeat, renderRecordingTakeBeat, renderRecordingDirectBeat } from './recordingBeats.js';
 import {
   RECORDING_OPENING_TEXT,
   RECORDING_TAKE_INTRO_TEXT,
@@ -72,10 +72,14 @@ export function renderRecordingTakeIntro(stageIdx, student, week) {
 }
 
 export function renderRecordingDirectionPopup(choiceId, stageIdx, student, week) {
+  const ctx = buildRecordingCtx(student, week, stageIdx, { globals: { recDirect: choiceId } });
+  const beat = renderRecordingDirectBeat(student, week, stageIdx, choiceId);
+  const glow = render('{recording.afterglow}', ctx)?.trim() || '';
+  if (beat) {
+    return appendV2Depth([beat, glow].filter(Boolean).join('\n\n'), 'recordingSession', ctx, 0.26);
+  }
   const arr = RECORDING_DIRECTION_POPUPS[choiceId];
   const raw = resolveLegacy(arr?.[stageIdx], student.lbs);
-  const ctx = buildRecordingCtx(student, week, stageIdx);
-  const glow = render('{recording.afterglow}', ctx)?.trim() || '';
   const body = renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
   return [body, glow].filter(Boolean).join('\n\n');
 }

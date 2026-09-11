@@ -5958,20 +5958,25 @@ export default function HallPass(){
     }
 
     // Apply lbs gains
-    if(kylieGainThisAction>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,depthGainLbs(st,kylieGainThisAction,week,{skipNight:kylieGain>0}),0):st));
+    if(kylieGainThisAction>0) setStudents(prev=>prev.map(st=>{
+      if(st.id!==kylieId) return st;
+      const grown=processStudentGain(st,depthGainLbs(st,kylieGainThisAction,week,{skipNight:kylieGain>0}),0);
+      return kylieGain===0?bumpOriginChain(grown):grown;
+    }));
     if(partnerGainThisAction>0){
       setStudents(prev=>prev.map(st=>{
         if(st.id!==partnerId) return st;
         const updated=processStudentGain(st,depthGainLbs(st,partnerGainThisAction,week,{skipNight:partnerGain>0}),0);
+        const grown=partnerGain===0?bumpOriginChain(updated):updated;
         // Check for stage-up
-        if(getStage(updated.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
-          const newStage=getStage(updated.lbs);
+        if(getStage(grown.lbs).id>partnerStageAtStart+(!stagedUp?0:0)){
+          const newStage=getStage(grown.lbs);
           if(newStage.id>partnerStageAtStart){
-            const stageUpText=renderCollabStageUp(stageIdx,kylie,partner,Math.round(updated.lbs),week);
+            const stageUpText=renderCollabStageUp(stageIdx,kylie,partner,Math.round(grown.lbs),week);
             setCollabStreamState(prev=>prev?{...prev,stagedUp:true,popupText:stageUpText,phaseAfterPopup:'stage_up_resolve',qualityBar:Math.min(100,(prev.qualityBar||0)+35)}:prev);
           }
         }
-        return updated;
+        return grown;
       }));
     }
 
@@ -6082,7 +6087,11 @@ export default function HallPass(){
       const newGain=prev.kylieGain+gainThisTake;
       const kylie=students.find(st=>st.id===prev.studentId);
       if(kylie){
-        setStudents(p=>p.map(st=>st.id!==prev.studentId?st:processStudentGain(st,depthGainLbs(st,gainThisTake,week,{skipNight:prev.kylieGain>0}),0)));
+        setStudents(p=>p.map(st=>{
+          if(st.id!==prev.studentId) return st;
+          const grown=processStudentGain(st,depthGainLbs(st,gainThisTake,week,{skipNight:prev.kylieGain>0}),0);
+          return prev.kylieGain===0?bumpOriginChain(grown):grown;
+        }));
       }
       const newRatings=[...prev.clipRatings,quality];
       const qualityOrder=['okay','good','great','perfect'];

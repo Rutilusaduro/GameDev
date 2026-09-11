@@ -69,6 +69,10 @@ oncePool('contest.afterglow', [
 ]);
 
 oncePool('sumo.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Dohyo dust on leftover heat. Mass still arriving after the bout called itself over.',
+    'Galley sitting plus the ring. Dana resets. The belly does not.',
+  ] },
   { when: {}, text: [
     'Dohyo dust on her. Mass still arriving after the bout called itself over.',
     'She breathes like a door closing. The ring remembers her outline.',
