@@ -91,3 +91,19 @@ registerPool('dream.wake.depth', [
     'Morning finds her sticky with want. The dream clings like warmth she does not want to wash away.',
   ]},
 ]);
+
+registerPool('dream.night_kitchen.depth', [
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'The fridge light is the only witness. She takes a bite she would deny in daylight.',
+    'Foil peels back. She eats standing, quiet, already planning the walk back to bed.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'Trays multiply on the counter. She sits because standing is optional now.',
+    'The galley rearranges around her. Leftovers keep coming. She keeps room.',
+  ]},
+  { when: {}, text: [
+    'Night kitchen: warm trays, open fridge, appetite with a key.',
+    'Leftovers wait with her name on the foil.',
+    'The dream tastes like leftover gravy and permission.',
+  ]},
+]);

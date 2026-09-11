@@ -10,9 +10,9 @@ export const ACTIONS_HALL = [
   { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
   { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
   { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
-  { id:"leftover_run", label:"🍪 Midnight Leftover Run", cost:1, cal:[6000,11000], full:22, requiresUnlock:"snacks_free", desc:"Kitchen still warm. You walk trays door to door. Nobody pretends they were asleep." },
-  { id:"movie_night", label:"🎞 Lounge Movie Night", cost:2, cal:[8000,15000], full:28, requiresHallSkill:"comfy_chairs", desc:"Blankets, a double feature, and a table that never quite empties. Residents sink and stay." },
-  { id:"terrace_spread", label:"🌇 Terrace Spread", cost:2, cal:[7000,13000], full:24, requiresRoomMin:{ room:'terrace', min:1 }, desc:"Roof air, warm trays, and nowhere to hide how much she takes. The terrace was built for this." },
+  { id:"leftover_run", label:"🍪 Midnight Leftover Run", cost:1, money:40, cal:[6000,11000], full:22, requiresUnlock:"snacks_free", desc:"Kitchen still warm. You buy extra trays and walk them door to door. Nobody pretends they were asleep. ($40)" },
+  { id:"movie_night", label:"🎞 Lounge Movie Night", cost:2, money:50, cal:[8000,15000], full:28, requiresHallSkill:"comfy_chairs", desc:"Blankets, a double feature, and a table that never quite empties. Residents sink and stay. ($50 snacks)" },
+  { id:"terrace_spread", label:"🌇 Terrace Spread", cost:2, money:35, cal:[7000,13000], full:24, requiresRoomMin:{ room:'terrace', min:1 }, desc:"Roof air, warm trays, and nowhere to hide how much she takes. The terrace was built for this. ($35)" },
   { id:"annex_quiet", label:"🕯 Annex Quiet Feast", cost:2, cal:[6500,12000], full:22, requiresRoomMin:{ room:'annex', min:1 }, desc:"The annex door closes. Plates stay. Nobody logs the hours. She eats like the floor cannot hear." },
 ];
 

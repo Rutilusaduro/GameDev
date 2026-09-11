@@ -387,7 +387,7 @@ import {
   tickHabitatWeek, applyTalkHabitatBonus, pantryDropBonus, neighborEcologyPatch,
   sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
   habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
-  tickOutfitWeek,
+  tickOutfitWeek, digestStuffedExtras,
 } from './gameData/mechanicDepth.js';
 import { applyOutfitRefit, REFIT_OPTIONS } from './gameData/outfits.js';
 import './textEngine/scenes/proseOverhaul.js';
@@ -1116,7 +1116,7 @@ export default function HallPass(){
         if(fed) ns=fed;
       }
       if(choice.lbs) ns=processStudentGain(ns,choice.lbs,0);
-      ns={...ns,memories:appendMemory(ns.memories,'night',week,choice.id)};
+      ns={...ns,lastNightVisitWeek:week,memories:appendMemory(ns.memories,'night',week,choice.id)};
       return ns;
     }));
     const remaining=(nightRoundVisitCap(ownedHallSkills||{})-((hallDorm.nightRounds?.lastWeek===week?hallDorm.nightRounds.visitsThisWeek||0:0)+1));
@@ -1788,7 +1788,7 @@ export default function HallPass(){
       ns=tickOutfitWeek(ns,dormState||createInitialDormState());
       ns=tickPhysicalTraits(ns,ownedSkills);
       ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
-      ns=tickRelationshipDecay(ns);
+      ns=tickRelationshipDecay(ns,week);
       if(hungerEff.gluttonsInstinct){
         const cap=ns.stomachCapacity||GAIN_CONFIG.baseCapacity;
         if((ns.fullness||0)/cap>=0.7&&Math.random()<0.45) ns=adjustHunger(ns,1);
@@ -1999,7 +1999,7 @@ export default function HallPass(){
     const recapMovers=[];
     const milestones=[];
     updated=updated.map(s=>{
-      if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return s;
+      if((s.consumedCalories||0)<=0&&(s.fullness||0)<=0&&!s.stuffedStreak) return {...s,leftoverFedThisWeek:false};
       const digestTextSession={
         sessionUsed:createSessionUsed(),
         weekUsed:weekUsedFromStudent(s),
@@ -2009,6 +2009,8 @@ export default function HallPass(){
         s.embodimentEchoWeek===newWeek
           ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, V2_CONFIG.embodimentEchoDigestMult) }
           : s,
+        Math.random,
+        digestStuffedExtras(s,dormState||createInitialDormState(),week),
       );
       const oldStageId=getStage(s.lbs).id;
       const preLbs=s.lbs;
@@ -2102,6 +2104,7 @@ export default function HallPass(){
         stomachCapacity:growth.stomachCapacity+d.capacityGained,
         capacityChunkProgress:growth.capacityChunkProgress,
         stuffedStreak:d.stuffedStreak,
+        leftoverFedThisWeek:false,
         corruption,
         weeklyDigestMult:undefined,
         ...d.reset,
@@ -2360,6 +2363,9 @@ export default function HallPass(){
     if(loungeSkillFx.scrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-loungeSkillFx.scrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
     if(hallFx.scrutinyEase>0) setAdminScrutiny(prev=>Math.max(0,prev-hallFx.scrutinyEase));
+    if((dormState?.nightRounds?.lastWeek===week)&&((dormState.nightRounds.visitsThisWeek||0)>=2)){
+      setAdminScrutiny(prev=>Math.max(0,prev-2));
+    }
     const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.${scrutinyTier.apPenalty?` (Scrutiny: −${scrutinyTier.apPenalty} AP)`:""}`);
@@ -6935,6 +6941,9 @@ export default function HallPass(){
 
   const executeFloorFeed=(action,compoundId)=>{
     const actionCost=getHallActionCost(action,ownedHallSkills||{});
+    if(action.money&&!spendMoney(action.money,action.label)){
+      return;
+    }
     setAp(a=>a-actionCost);
     if(action.id==='refeast_ritual'){
       setOpposition(prev=>({
@@ -6976,13 +6985,16 @@ export default function HallPass(){
     }
     let refusals=0,fedCount=0,totalCals=0;
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
+    const leftoverBonus=action.id==='leftover_run'?pantryDropBonus(ownedHallSkills||{},dormState||{}):0;
+    const feedFull=(action.full||0)+leftoverBonus*2;
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
       const cals=rnd(action.cal[0],action.cal[1]);
-      const fed=feedStudentCalories(s,cals,action.full,1,'',compoundId?{compoundId}:{});
+      const fed=feedStudentCalories(s,cals,feedFull,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
       fedCount++;totalCals+=cals;
+      if(action.id==='leftover_run') return {...fed,leftoverFedThisWeek:true};
       return fed;
     });
     push(`🎉 ${action.label}: ${fedCount} residents dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}${compoundLabel?` · laced with ${compoundLabel}`:""}.`);
@@ -7015,6 +7027,10 @@ export default function HallPass(){
     trackAction(`doFloorAction:${action.id}`);
     const actionCost=getHallActionCost(action,ownedHallSkills||{});
     if(ap<actionCost){push("⚠️ Not enough AP!");return;}
+    if(action.money&&money<(action.money||0)){
+      push(`⚠️ Need ${formatMoney(action.money)} — you have ${formatMoney(money)}.`);
+      return;
+    }
     if(scrutinyBlocksClassFeast(adminScrutiny,action.id)){
       push('⚠️ Administration review — public hall feasts are suspended until scrutiny eases.');
       return;
@@ -8988,7 +9004,7 @@ export default function HallPass(){
           {view==="student"&&sel&&!selSettled&&<StudentDetailView openWeighIn={openWeighIn} openTalk={openTalk} openEmbodiment={openEmbodiment} openDream={(s)=>setDreamStudent(s)} openEchoReplay={openEchoReplay} v2State={v2} ownedSkills={ownedSkills} ownedHallSkills={ownedHallSkills} onEchoResonate={runEchoResonate} ap={ap} chapterHostessState={chapterHostessState} communityResearcherState={communityResearcherState} cultivatorState={cultivatorState} pharmacistState={pharmacistState} labState={labState} deviceInventory={deviceInventory} player={player} runPharmacistSynthesis={runPharmacistSynthesis} runPharmacistCultDistribution={runPharmacistCultDistribution} runLabSession={runLabSessionOpen} openLabView={openLabView} openNetworkView={openNetworkView} openNetworkControl={openNetworkControl} openEquipModal={setEquipModalStudentId} runDeviceAction={runDeviceAction} unequipDeviceSlot={unequipDeviceSlot} doEvolvedActivity={doEvolvedActivity} runArrivalCapstone={runArrivalCapstone} runImmobilityArrival={runImmobilityArrival} runImmobilityRefit={runImmobilityRefit} runComfortMilestone={runComfortMilestone} runConfirmCourtPreference={runConfirmCourtPreference} runBrokeredVisit={runBrokeredVisit} doSingle={doSingle} effectiveSingleActions={effectiveSingleActions} lilithKillCount={lilithKillCount} lilithUnlocked={lilithUnlocked} openCaseStudyGrid={openCaseStudyGrid} openCultivatorHarvest={openCultivatorHarvest} openCultivatorRecruit={openCultivatorRecruit} openDigestCheck={openDigestCheck} openEvolutionModal={openEvolutionModal} openFeastPrep={openFeastPrep} openFinalReview={openFinalReview} openIntimacySelector={openIntimacySelector} openLilithHunt={openLilithHunt} openThesisBoard={openThesisBoard} startCommunityResearcherPanelReview={startCommunityResearcherPanelReview} purchaseEvolvedSkill={purchaseEvolvedSkill} openDestinySpend={openDestinySpend} fireAscensionAbility={fireAscensionAbility} openAscensionCeremony={openAscensionCeremony} sel={sel} sessionHistory={sessionHistory} setChapterHostessState={setChapterHostessState} setNadiaNotesState={setNadiaNotesState} setStudents={setStudents} setSubjectJournalState={setSubjectJournalState} setView={setView} startCultivatorSession={startCultivatorSession} startPrivateSession={startPrivateSession} startRecordingSession={startRecordingSession} startStream={startStream} students={students} week={week} salonState={salonState} galleryState={galleryState} dossierOpen={dossierOpen} setDossierOpen={setDossierOpen} soundEnabled={soundEnabled}/>}
 
           {/* ── FLOOR ACTIONS ── */}
-          {view==="actions"&&<ActionsView ap={ap} doFloorAction={doFloorAction} effectiveHallActions={effectiveHallActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
+          {view==="actions"&&<ActionsView ap={ap} money={money} doFloorAction={doFloorAction} effectiveHallActions={effectiveHallActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
 
           {/* ── PANTRY / INVENTORY ── */}
           {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}

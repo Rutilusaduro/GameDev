@@ -214,6 +214,22 @@ export function labInstabilityEase(dormState, ownedHallSkills = {}) {
   return (desk.owned >= 1 ? 1 : 0) + (outletCount >= 2 ? 1 : 0);
 }
 
+/** End-of-week stuffed chance from leftover trays, fridge fit-out, and night visits. */
+export function digestStuffedExtras(student, dormState, week = 0) {
+  const fits = studentFits(dormState, student?.id);
+  let chance = 0;
+  if (fits.fridge) chance += 0.1;
+  if (student?.leftoverFedThisWeek) chance += 0.22;
+  if (week && student?.lastNightVisitWeek === week) chance += 0.16;
+  const habit = dormState?.nightRounds?.habits?.[student?.id];
+  if (habit === 'midnight_snack') chance += 0.08;
+  return {
+    stuffedChance: Math.min(0.5, chance),
+    nearCapRatio: 0.86,
+  };
+}
+
+
 /** Weekly garment strain. Wider doorway eases fabric catching on the frame. */
 export function tickOutfitWeek(student, dormState) {
   if (!student) return student;

@@ -281,3 +281,14 @@ registerPoolAutoDecompose('opposition.hearing.verdict', [
     'Ambiguous adjournment. Neither victory nor surrender — yet.',
   ]},
 ]);
+
+registerPoolAutoDecompose('opposition.hearing.linger', [
+  { when: {}, text: [
+    'The folder stays closed. Appetite does not.',
+    'You walk {subject.name} out. The hallway is warmer than the hearing.',
+    'Vance\'s pen stops. The body in the chair did the rest of the arguing.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    '{subject.name} takes the corridor slowly. The Board watches the space she occupies leave.',
+  ]},
+]);

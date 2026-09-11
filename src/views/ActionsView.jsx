@@ -1,6 +1,6 @@
 import { C } from '../styles.js';
 
-export function ActionsView({ ap, doFloorAction, effectiveHallActions, famineWeek = false }){
+export function ActionsView({ ap, money = 0, doFloorAction, effectiveHallActions, famineWeek = false }){
   const sortedActions=[...effectiveHallActions].sort((a,b)=>{
     if(famineWeek&&a.id==='refeast_ritual') return -1;
     if(famineWeek&&b.id==='refeast_ritual') return 1;
@@ -16,17 +16,22 @@ export function ActionsView({ ap, doFloorAction, effectiveHallActions, famineWee
               )}
               <p style={C.secT}>Hall-Wide Actions · {ap} AP remaining</p>
               <div style={C.grid2}>
-                {sortedActions.map(a=>(
-                  <div key={a.id} style={{...C.card,opacity:ap<a.cost?0.35:1,border:famineWeek&&a.id==='refeast_ritual'?'1px solid #c0404060':undefined}}>
+                {sortedActions.map(a=>{
+                  const blocked=ap<a.cost||(a.money&&money<a.money);
+                  const costLabel=a.cost===0?"FREE":`${a.cost} AP`;
+                  const moneyLabel=a.money?` · $${a.money}`:'';
+                  return (
+                  <div key={a.id} style={{...C.card,opacity:blocked?0.35:1,border:famineWeek&&a.id==='refeast_ritual'?'1px solid #c0404060':undefined}}>
                     <div style={{fontWeight:700,color:famineWeek&&a.id==='refeast_ritual'?"#f08080":"#c090e8",marginBottom:3}}>{a.label}</div>
                     <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{a.desc}</div>
                     <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-                      <span style={{fontSize:11,color:a.cost===0?"#60c060":"#e07030"}}>{a.cost===0?"FREE":a.cost+" AP"}</span>
+                      <span style={{fontSize:11,color:a.cost===0&&!a.money?"#60c060":"#e07030"}}>{costLabel}{moneyLabel}</span>
                       <span style={{fontSize:10,color:"#604030"}}>+{(a.cal[0]/1000).toFixed(0)}k–{(a.cal[1]/1000).toFixed(0)}k cal · {a.full} fullness</span>
                     </div>
-                    <button style={{...C.btn(famineWeek&&a.id==='refeast_ritual'?"#6a2838":"#401890"),width:"100%",opacity:ap<a.cost?0.4:1}} disabled={ap<a.cost} onClick={()=>doFloorAction(a)}>Use Action</button>
+                    <button style={{...C.btn(famineWeek&&a.id==='refeast_ritual'?"#6a2838":"#401890"),width:"100%",opacity:blocked?0.4:1}} disabled={blocked} onClick={()=>doFloorAction(a)}>Use Action</button>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
   );

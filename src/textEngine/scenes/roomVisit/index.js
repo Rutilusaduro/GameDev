@@ -64,6 +64,23 @@ registerPool('room.visit.ambient', [
     'You linger in the doorway a minute. The room is quiet — lived in, familiar.',
     `{subject.name} waves you in. "Nothing urgent. I just like when you stop by, {ra.name}."`,
     `Same posters, same chair, same girl — but the air between you feels settled now.`,
+    `She left the chair pulled out. You are expected.`,
+  ] },
+]);
+
+registerPool('room.visit.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She stands a little too long at the door after you turn to go, like the room got quieter.',
+    'She covers the snack shelf with a textbook, then leaves a corner showing.',
+  ] },
+  { when: { stageMin: 7 }, weight: 2, text: [
+    'The threshold keeps a little of her warmth after you step back into the hall.',
+    'She does not get up to see you out. The room is built around staying.',
+  ] },
+  { when: {}, text: [
+    'You leave the door a little open. She does not close it.',
+    'The hall smells like whatever she just finished.',
+    'Her chair still holds the shape of her when you look back.',
   ] },
 ]);
 
@@ -85,6 +102,7 @@ export function renderRoomVisitScene(student, week, opts = {}) {
       render('{room.visit.intro.lead}', ctx),
       render('{room.visit.intro.meet}', ctx),
       render('{room.visit.stage.room}', ctx),
+      render('{room.visit.linger}', ctx),
     ].filter(Boolean).join('\n\n');
   }
   if (mode === 'stage') {
@@ -93,7 +111,8 @@ export function renderRoomVisitScene(student, week, opts = {}) {
       render('{room.visit.stage.beat}', ctx, { trace: opts.trace || null }),
       render('{room.visit.stage.beat.persona}', ctx, { trace: opts.trace || null }),
       render('{talk.roomFitCoda}', ctx),
+      render('{room.visit.linger}', ctx),
     ].filter((p) => p?.trim()).join('\n\n');
   }
-  return render('{room.visit.ambient}', ctx);
+  return [render('{room.visit.ambient}', ctx), render('{room.visit.linger}', ctx)].filter((p) => p?.trim()).join('\n\n');
 }

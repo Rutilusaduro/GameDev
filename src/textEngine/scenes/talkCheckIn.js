@@ -17,6 +17,8 @@ registerPool('talk.checkIn.greetQuote', [
     `"Hi, {ra.name}."`,
     `"Good to see you,"`,
     `"Hey, {ra.name}."`,
+    `"You're early. I like that."`,
+    `"Come in. Sit. I already made space."`,
   ] },
 ]);
 
@@ -448,6 +450,22 @@ registerPool('talk.interior.aside', [
     `Her breathing slows for just a moment. Her body takes up so much of the room, and she knows it, and the knowing is a kind of pleasure.`,
     '',
   ]},
+]);
+
+registerPool('talk.checkIn.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She glances at the snack stash after you sit, then away, then back.',
+    'The check-in is official. Her appetite is already making other plans.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The chair complains once and then learns her. She smiles at the sound.',
+    'She settles heavier as you talk. The conversation has a lap now.',
+  ] },
+  { when: {}, text: [
+    'She does not rush you out. The visit has a second course in it.',
+    'You stay a minute past the script. She lets you.',
+    'The room keeps the warmth of her after the official part ends.',
+  ] },
 ]);
 
 // ── talk.check_in — corruption-tier skeletons

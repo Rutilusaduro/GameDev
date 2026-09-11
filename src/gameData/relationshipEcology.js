@@ -14,8 +14,9 @@ export const RELATIONSHIP_ECOLOGY = {
   favoredInterruptWeight: 0.85,
 };
 
-export function tickRelationshipDecay(student) {
+export function tickRelationshipDecay(student, week = 0) {
   if (!student || student.hidden) return student;
+  if (week && student.lastNightVisitWeek === week) return student;
   const weeks = student.weeksWithoutPlayerFeed ?? 0;
   if (weeks < RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay) return student;
   const rel = student.relationship ?? 0;

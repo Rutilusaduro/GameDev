@@ -39,7 +39,9 @@ function renderHearingPool(poolKey, student, week, type, phaseIdx = 0, opts = {}
   try {
     const line = render(`{${poolKey}}`, ctx)?.trim();
     if (!line || line.includes('{unresolved}')) return '';
-    return appendV2Depth(line, 'opposition', ctx, opts.v2DepthChance ?? 0.36);
+    const linger = opts.linger ? (render('{opposition.hearing.linger}', ctx)?.trim() || '') : '';
+    const composed = [line, linger].filter(Boolean).join('\n\n');
+    return appendV2Depth(composed, 'opposition', ctx, opts.v2DepthChance ?? 0.36);
   } catch {
     return '';
   }
@@ -61,6 +63,6 @@ export function renderHearingChoiceResult(type, choiceId, student, week, phaseId
 
 export function renderHearingEnding(type, poolKey, student, week) {
   const pool = `opposition.hearing.${type}.ending.${poolKey}`;
-  return renderHearingPool(pool, student, week, type, 2, { v2DepthChance: 0.34 })
+  return renderHearingPool(pool, student, week, type, 2, { v2DepthChance: 0.34, linger: true })
     || 'The hearing adjourns.';
 }

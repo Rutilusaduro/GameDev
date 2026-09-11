@@ -74,14 +74,19 @@ export const FORCE_SUCCESS_LINES = [
 // End-of-week digestion for one student. Pure: returns the result and
 // the updated stat fields; the caller applies weight via its own pipeline
 // so stage-up reactions/narratives still fire.
-export const digestStudent = (s, rng = Math.random) => {
+export const digestStudent = (s, rng = Math.random, extras = {}) => {
   const cap = s.stomachCapacity || GAIN_CONFIG.baseCapacity;
   const surplus = s.consumedCalories || 0;
   const metabolicMult = 1 + (s.metabolicSlowdown || 0);
   const digestMult = s.weeklyDigestMult ?? 1;
   const lbsGained = surplus > 0 ? Math.max(0, Math.round(calsToLbs(surplus) * metabolicMult * digestMult)) : 0;
-  // stuffed check happens against the fullness she's carrying into the night
-  const stuffed = (s.fullness || 0) > cap;
+  // stuffed check happens against the fullness she's carrying into the night.
+  // Leftover trays / night-round grazing can count as stuffed when she is already near cap.
+  const fullness = s.fullness || 0;
+  const stuffedByCap = fullness > cap;
+  const nearCap = fullness > cap * (extras.nearCapRatio ?? 0.86);
+  const leftoverStuffed = !stuffedByCap && nearCap && (extras.stuffedChance || 0) > 0 && rng() < extras.stuffedChance;
+  const stuffed = stuffedByCap || leftoverStuffed;
   let stuffedStreak = stuffed ? (s.stuffedStreak || 0) + 1 : 0;
   let capacityGained = 0;
   if (stuffed) {
