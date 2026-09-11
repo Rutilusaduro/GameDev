@@ -77,6 +77,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'deviceActions', file: 'deviceActions.js' },
   { id: 'fionaGallery', file: 'fionaGallery.js' },
   { id: 'miniGames', file: 'miniGames.js' },
+  { id: 'wallet', file: 'wallet.js' },
   { id: 'ascensionForms', file: 'ascension/forms.js' },
   { id: 'ascensionState', file: 'ascension/state.js' },
   { id: 'dossier', file: 'dossier.js' },

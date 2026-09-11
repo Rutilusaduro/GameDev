@@ -113,6 +113,12 @@ export function depthDigestLbsBonus(lbsGained = 0) {
   return Math.max(0, Math.floor(lbsGained * BONUS_FRAC * 0.22));
 }
 
+/** Positive money grants — hall economy rewards scale slightly with depth layer. */
+export function depthMoneyGrant(amount = 0) {
+  if (amount <= 0) return amount;
+  return Math.max(amount, Math.round(amount * (1 + BONUS_FRAC * 0.28)));
+}
+
 export function depthForceFeedReachBonus(reachLevel = 1) {
   return Math.max(0, (reachLevel - 1) * 0.018 * (1 + BONUS_FRAC * 0.35));
 }

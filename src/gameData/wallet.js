@@ -2,6 +2,8 @@
 // WALLET — player funds (costs/earnings wired up elsewhere later)
 // ═══════════════════════════════════════════════════════════════
 
+import { depthMoneyGrant } from './mechanicsDepthLayer.js';
+
 export const WALLET_CONFIG = {
   startingBalance: 850,
   currencyName: 'Funds',
@@ -20,7 +22,8 @@ export function canAfford(balance, cost) {
 
 /** Add funds; returns the new balance (clamped at min). */
 export function addFunds(balance, amount) {
-  return Math.max(WALLET_CONFIG.minBalance, (balance ?? 0) + (amount ?? 0));
+  const grant = (amount ?? 0) > 0 ? depthMoneyGrant(amount) : (amount ?? 0);
+  return Math.max(WALLET_CONFIG.minBalance, (balance ?? 0) + grant);
 }
 
 /** Spend if possible. Returns { ok, balance, shortfall }. */
