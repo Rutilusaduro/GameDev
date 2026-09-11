@@ -6,6 +6,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_EVENTS } from '../../../gameData/evolvedForms.js';
 import './activityPools.js';
 import './eventPools.js';
+import './reactionPools.js';
 
 function legacyBodyChanceFromCtx(ctx, fallback = 0.12) {
   const peak = ctx.globals?.hallAmbiancePeak ?? 0;

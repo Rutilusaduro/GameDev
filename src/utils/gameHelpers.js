@@ -4,7 +4,8 @@
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
 import { OUTFITS } from '../gameData/content.js';
-import { EVOLVED_REACTIONS, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
+import { EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
+import { renderEvolvedReaction } from '../textEngine/scenes/evolved/reactionPools.js';
 import { getStage } from '../gameData/stages.js';
 import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
@@ -43,11 +44,8 @@ export function getDiary(s, week = 1, opts = {}){
   if (modular) return appendCampusDiary(modular, s, { ...opts, week });
   return null;
 }
-export function getEvolvedReaction(s){
-  if(!s.evolvedForm) return null;
-  const arr=EVOLVED_REACTIONS[s.evolvedForm]; if(!arr) return null;
-  const idx=getStage(s.lbs).id-5; if(idx<0) return null;
-  return arr[Math.min(idx,arr.length-1)];
+export function getEvolvedReaction(s, week = 1, opts = {}){
+  return renderEvolvedReaction(s, week, opts);
 }
 export function getAttitude(s, week = 1, opts = {}){
   const evR=getEvolvedReaction(s);
