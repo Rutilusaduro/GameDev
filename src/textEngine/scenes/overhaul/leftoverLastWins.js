@@ -6,3 +6,8 @@ import './leftoverFeast.js';
 import './leftoverHunt.js';
 import './leftoverCampusEvent.js';
 import './leftoverDevice.js';
+import { applyCultivatorOverhaul } from './leftoverCultivator.js';
+import { applyDishOverhaul } from './leftoverDish.js';
+
+applyCultivatorOverhaul();
+applyDishOverhaul();

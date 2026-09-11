@@ -62,31 +62,37 @@ export function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 export function extraFloorChoices(owned = {}) {
   const extras = [];
   if (owned.snack_station) extras.push({
+    extraId: 'kitchen_walk',
     label: 'Walk her to the floor kitchen',
     effect: { gain: [5, 9], mood: 'content', rel: 6 },
     result: (st) => `${st.name} follows you to the kitchen. Leftover heat does the talking. She eats standing, then sitting, then smiling.`,
   });
   if (owned.comfy_chairs) extras.push({
+    extraId: 'lounge_chair',
     label: 'Park her in the new chairs',
     effect: { gain: [2, 5], mood: 'content', rel: 5 },
     result: (st) => `${st.name} sinks into the padded chair and does not get up. The seat takes her. She lets it.`,
   });
   if (owned.dinner_basic) extras.push({
+    extraId: 'dining_nook',
     label: 'Walk her to the dining nook',
     effect: { gain: [4, 8], mood: 'content', rel: 5 },
     result: (st) => `Leftovers from the venue book wait in the nook. ${st.name} sits like the table was saved for her and finishes what you plated.`,
   });
   if (owned.laundry_refit) extras.push({
+    extraId: 'laundry_snack',
     label: 'Send her through laundry with a snack',
     effect: { gain: [3, 6], mood: 'content', rel: 4 },
     result: (st) => `Warm machines, bigger towels. ${st.name} eats while the cycle runs and comes back softer in the shoulders.`,
   });
   if (owned.media_nook) extras.push({
+    extraId: 'media_couch',
     label: 'Put her on the couch under the ring light',
     effect: { gain: [3, 7], mood: 'excited', rel: 5 },
     result: (st) => `The ring light finds her. ${st.name} performs a bite, then a real one. The camera was never the point.`,
   });
   if (owned.floor_scale) extras.push({
+    extraId: 'alcove_scale',
     label: 'Stop at the alcove scale',
     effect: { gain: [1, 3], mood: 'focused', rel: 7 },
     result: (st) => `The plant almost hides the readout. ${st.name} steps on anyway. The number is a private joke you both keep.`,

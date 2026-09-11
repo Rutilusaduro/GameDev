@@ -69,6 +69,11 @@ import { renderIntimacyChoice, renderIntimacyPhase, renderIntimacyEnding } from 
 import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
+import { renderDinnerArrive } from '../src/textEngine/scenes/overhaul/dinnerVenue.js';
+import { renderStudentBlurb } from '../src/textEngine/scenes/overhaul/studentBlurb.js';
+import { renderDinnerDishDesc } from '../src/textEngine/scenes/dinner/index.js';
+import { renderCultivatorChoice } from '../src/textEngine/scenes/cultivator/index.js';
+import { renderTesterLook } from '../src/textEngine/scenes/overhaul/leftoverCultivator.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
@@ -526,6 +531,7 @@ assert.equal(/She follows you to the floor kitchen and eats standing/i.test(foll
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');
 assert.ok(extras.some((c) => /kitchen/i.test(c.label)), 'kitchen walk is a live extra');
+assert.ok(extras.some((c) => c.extraId === 'kitchen_walk'), 'kitchen extra carries extraId');
 
 const checkIn = generateFloorCheckIn(students, 1, { snack_station: true });
 const studentScene = checkIn.find((s) => s.type === 'student');
@@ -551,6 +557,32 @@ const hallScene = FLOOR_SCENES.find((s) => s.id === 'hall_group_project');
 const hallText = renderFloorHallText(hallScene, 2);
 assert.ok(hallText && !hallText.includes('{unresolved}'));
 assert.ok(/meal-plan challenge/i.test(hallText), `hall composed should keep meal-plan challenge, got: ${hallText.slice(0, 180)}`);
+
+const extraScene = {
+  ...stressed,
+  choices: [...stressed.choices, extras.find((c) => c.extraId === 'kitchen_walk')],
+};
+const extraFeed = renderFloorChoiceResult(extraScene, extraScene.choices.length - 1, students[1], 2);
+assert.ok(extraFeed && !extraFeed.includes('{unresolved}'));
+assert.equal(/Leftover heat does the talking/i.test(extraFeed), false, 'extra kitchen should prefer composed extra pool');
+const dinnerArrive = renderDinnerArrive({ id: 'bistro' }, students[1], 2);
+assert.ok(dinnerArrive && !dinnerArrive.includes('{unresolved}'));
+assert.equal(/Cosy neighbourhood bistro/i.test(dinnerArrive), false, 'dinner arrive should not dump leftover venue.desc');
+const blurb = renderStudentBlurb(students[0], 2);
+assert.ok(blurb && !blurb.includes('{unresolved}'));
+assert.equal(/Squad captain, tight ponytail, commands the room with a look/i.test(blurb), false, 'blurb should not dump leftover INIT_STUDENTS.desc');
+const dishDesc = renderDinnerDishDesc({ id: 'soup_bread', label: 'Soup & Bread Board', desc: 'Thick potato soup with a full bread board.' }, students[1], 2);
+assert.ok(dishDesc && !dishDesc.includes('{unresolved}'));
+assert.equal(/Thick potato soup with a full bread board/i.test(dishDesc), false, 'dish desc should not dump leftover dish.desc');
+const cultChoice = renderCultivatorChoice('milkshake', 'cream_base', 'Petra', 2);
+assert.ok(cultChoice && !cultChoice.includes('{unresolved}'));
+assert.equal(/Replace the milk with cream/i.test(cultChoice), false, 'cultivator choice should not dump leftover choice.desc');
+const kitchenBatch = renderCultivatorChoice('cookies', 'floor_kitchen_batch', 'Petra', 2);
+assert.ok(kitchenBatch && !kitchenBatch.includes('{unresolved}'));
+assert.equal(/Leftovers from the floor kitchen/i.test(kitchenBatch), false, 'cultivator extra should not dump leftover extra desc');
+const testerLook = renderTesterLook(6, 'Petra', 2);
+assert.ok(testerLook && !testerLook.includes('{unresolved}'));
+assert.equal(/Full figure, clothes fitting tightly, belly rounding forward when seated/i.test(testerLook), false, 'tester look should not dump leftover TESTER_APPEARANCE');
 
 const lilith = {
   id: 15, name: 'Lilith', lbs: 280, startLbs: 140, evolvedForm: 'feasting_beauty',

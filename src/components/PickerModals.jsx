@@ -209,14 +209,11 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, gameId, studentId, phaseIdx, done]);
   if (!def || !s) return null;
 
-  const ctx = { studentName: s.name, stageIdx };
   const phase = !done ? def.phases[phaseIdx] : null;
-  const leftoverPhase = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
-  const phaseText = phase ? (renderMinigamePhase(gameId, phaseIdx, s, week) || leftoverPhase) : null;
+  const phaseText = phase ? renderMinigamePhase(gameId, phaseIdx, s, week) : null;
 
   const pickChoice = (choice) => {
-    const leftoverLog = choice.log;
-    const composedLog = renderMinigameLog(choice.id, gameId, s, week) || leftoverLog;
+    const composedLog = renderMinigameLog(choice.id, gameId, s, week);
     const nextLog = [...log, composedLog];
     const nextHistory = [...history, choice];
     const nextPhase = phaseIdx + 1;
@@ -251,7 +248,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
           <div key={i} style={{ fontSize: 11, color: '#806050', fontStyle: 'italic', marginBottom: 6, paddingLeft: 8, borderLeft: `2px solid ${def.accent}30` }}>{line}</div>
         ))}
         <div style={{ color: '#a09080', fontSize: 12, lineHeight: 1.7, marginBottom: 16 }}>
-          {done ? (renderMinigameWrap(outcome?.tier, gameId, s, week) || `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}`) : phaseText}
+          {done ? (renderMinigameWrap(outcome?.tier, gameId, s, week)) : phaseText}
         </div>
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

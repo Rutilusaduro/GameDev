@@ -68,13 +68,17 @@ export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opt
   const choice = scene.choices?.[choiceIdx];
   if (!choice) return '';
   const foodish = (choice.effect?.gain?.[1] || 0) > 0;
+  const extraChoiceId = choice.extraId || '';
   const ctx = buildTextContext({
     subject: student,
     week,
     ...opts,
-    globals: { floorSceneId: scene.id, floorChoiceKind: foodish ? 'feed' : 'talk', ...(opts.globals || {}) },
+    globals: { floorSceneId: scene.id, floorChoiceKind: foodish ? 'feed' : 'talk', extraChoiceId, ...(opts.globals || {}) },
   });
-  const composed = renderFloorCheckinResult(scene.id, foodish ? 'feed' : 'talk', student, week, opts);
+  const composed = renderFloorCheckinResult(scene.id, foodish ? 'feed' : 'talk', student, week, {
+    ...opts,
+    globals: { extraChoiceId, ...(opts.globals || {}) },
+  });
   const modular = render(`{campusEvent.choice.${scene.id}.${choiceIdx}}`, ctx, { trace: opts.trace || null })?.trim();
   const linger = render(foodish ? '{overhaul.linger.food}' : '{overhaul.linger.social}', ctx, { trace: opts.trace || null })?.trim()
     || render('{overhaul.linger}', ctx, { trace: opts.trace || null })?.trim();

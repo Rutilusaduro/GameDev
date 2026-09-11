@@ -12,7 +12,9 @@ import { INNER_CIRCLE_TIERS, getTier } from '../gameData/sessions.js';
 import { LILITH_ID, canStartLilithHunt } from '../gameData/lilith.js';
 import { renderLilithHuntStatus } from '../textEngine/scenes/hunt/index.js';
 import { renderOriginVoice } from '../textEngine/scenes/overhaul/originVoice.js';
-import { getRecruitmentScene, TESTER_APPEARANCE } from '../gameData/cultivator.js';
+import { renderStudentBlurb } from '../textEngine/scenes/overhaul/studentBlurb.js';
+import { getRecruitmentScene } from '../gameData/cultivator.js';
+import { renderTesterLook } from '../textEngine/scenes/overhaul/leftoverCultivator.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
@@ -64,7 +66,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                       </div>
                       <StageTag stage={st}/>
                     </div>
-                    <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {s.desc}</div>
+                    <div style={{fontSize:11,color:"#604070",marginBottom:8}}>{s.role} · age {s.age} · {renderStudentBlurb(s, week)}</div>
                     <div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
                       <LilithPixelArt stageId={stageId} size={170}/>
                     </div>
@@ -146,7 +148,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                       <span style={C.tag("#2a1050","#b080e0")}>{s.personality}</span>
                     </div>
                   </div>
-                  <div style={{fontSize:11,color:"#70509a",marginBottom:8}}>{s.role||s.archetype} · {s.archetype} · age {s.age} · {s.bodyType} body · fav: {s.favFood} · hobby: {s.hobby}</div>
+                  <div style={{fontSize:11,color:"#70509a",marginBottom:8}}>{s.role||s.archetype} · {s.archetype} · age {s.age} · {renderStudentBlurb(s, week)}</div>
 
                   <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:8}}>
                     <div style={{flex:1,minWidth:150}}>
@@ -486,7 +488,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                                     </button>
                                   </div>
                                   <div style={{textAlign:"center",fontSize:9,color:"#5a3020",marginTop:6}}>
-                                    Cycle {cs.harvestsCompleted+1} of 4 · {TESTER_APPEARANCE[cs.testerStageId]||""}
+                                    Cycle {cs.harvestsCompleted+1} of 4 · {renderTesterLook(cs.testerStageId, cs.testerName, week)}
                                   </div>
                                 </div>
                               )}

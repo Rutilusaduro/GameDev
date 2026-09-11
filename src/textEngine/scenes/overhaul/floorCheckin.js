@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 
 registerDimension('floorSceneId', (ctx) => ctx.globals?.floorSceneId ?? '');
 registerDimension('floorChoiceKind', (ctx) => ctx.globals?.floorChoiceKind ?? '');
+registerDimension('extraChoiceId', (ctx) => ctx.globals?.extraChoiceId ?? '');
 
 registerPool('floor.checkin.scene', [
   { when: {}, text: [
@@ -125,6 +126,48 @@ registerModule('floor.checkin.hall', [
   ]},
 ], { select: 'best' });
 
+registerPool('floor.checkin.extra.scene', [
+  { when: {}, text: [
+    '{floor.checkin.extra.setup} {floor.checkin.extra.body}',
+    '{floor.checkin.extra.body} {floor.checkin.extra.setup}',
+    '{floor.checkin.extra.setup}',
+  ]},
+]);
+
+registerPool('floor.checkin.extra.setup', [
+  { when: {}, text: [
+    'You walk her off the agenda. Food does the rest.',
+    'The extra stop was the real check-in. She already knows.',
+    'A detour with a plate. {subject.name} does not argue.',
+  ]},
+  { when: { extraChoiceId: 'kitchen_walk' }, weight: 5, text: [
+    '{subject.name} follows you to the kitchen. Heat does the talking. She eats standing, then sitting.',
+  ]},
+  { when: { extraChoiceId: 'lounge_chair' }, weight: 5, text: [
+    '{subject.name} sinks into the padded chair and does not get up. The seat takes her. She lets it.',
+  ]},
+  { when: { extraChoiceId: 'dining_nook' }, weight: 5, text: [
+    'Venue leftovers wait in the nook. {subject.name} sits like the table was saved for her.',
+  ]},
+  { when: { extraChoiceId: 'laundry_snack' }, weight: 5, text: [
+    'Warm machines, bigger towels. {subject.name} eats while the cycle runs.',
+  ]},
+  { when: { extraChoiceId: 'media_couch' }, weight: 5, text: [
+    'The ring light finds her. {subject.name} performs a bite, then a real one.',
+  ]},
+  { when: { extraChoiceId: 'alcove_scale' }, weight: 5, text: [
+    'The plant almost hides the readout. {subject.name} steps on anyway.',
+  ]},
+]);
+
+registerPool('floor.checkin.extra.body', [
+  { when: {}, text: [
+    'She smiles after. Soft heat. The floor did its job.',
+    'Rapport sits in the chair with her. A little sticky. Not leaving yet.',
+    'Another bite would be greedy. She takes it anyway.',
+  ]},
+]);
+
 function prefer(poolKey, ctx) {
   const line = render(`{${poolKey}}`, ctx)?.trim();
   if (line && !line.includes('{unresolved}')) return line;
@@ -143,10 +186,15 @@ export function renderFloorCheckinScene(sceneId, student, week = 1, opts = {}) {
 
 export function renderFloorCheckinResult(sceneId, choiceKind, student, week = 1, opts = {}) {
   if (!student) return '';
+  const extraChoiceId = opts.globals?.extraChoiceId || opts.extraChoiceId || '';
   const ctx = buildTextContext({
     subject: student,
     week,
-    globals: { floorSceneId: sceneId || '', floorChoiceKind: choiceKind || 'talk', ...(opts.globals || {}) },
+    globals: { floorSceneId: sceneId || '', floorChoiceKind: choiceKind || 'talk', extraChoiceId, ...(opts.globals || {}) },
   });
+  if (extraChoiceId) {
+    const extra = prefer('floor.checkin.extra.scene', ctx);
+    if (extra) return extra;
+  }
   return prefer('floor.checkin.result.scene', ctx);
 }

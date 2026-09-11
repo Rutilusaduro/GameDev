@@ -17,7 +17,7 @@ for (const food of PRIVATE_FOODS) registerDishDesc(food);
 
 export function renderDinnerDishDesc(dish, student, week = 1, opts = {}) {
   if (!dish) return '';
-  const fallback = dish.desc || dish.label || '';
+  const fallback = dish.label || '';
   if (!student) return fallback;
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const line = render(`{dinner.dish.${dish.id}}`, ctx, { trace: opts.trace || null })?.trim();

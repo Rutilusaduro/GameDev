@@ -28,6 +28,8 @@ import './hearing.js';
 import './originVoice.js';
 import './stageDrop.js';
 import './deviceCatalog.js';
+import './dinnerVenue.js';
+import './studentBlurb.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

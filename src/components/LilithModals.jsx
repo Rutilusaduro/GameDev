@@ -14,8 +14,8 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
         useEffect(() => { playHallPassSound('alert', soundEnabled); }, [soundEnabled, lilithClueModal]);
         const accent="#8020a0";
         const ignoreClue=()=>{ playHallPassSound('click', soundEnabled); setLilithClueModal(null); };
-        const investigateText=renderHuntClueInvestigate(null, week) || CLUE_INVESTIGATION.text;
-        const resultText=renderHuntClueResult(null, week) || CLUE_INVESTIGATION.resultText;
+        const investigateText=renderHuntClueInvestigate(null, week);
+        const resultText=renderHuntClueResult(null, week);
         return(
           <ModalOverlay onClose={ignoreClue} dismissible={lilithClueModal==='feast_clue'} soundEnabled={soundEnabled} style={{ zIndex: 1300 }}>
             <div className="hall-pass-modal-in lilith-modal" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0a000f,#14001a,#0a000f)",border:`1px solid ${accent}50`,maxHeight:"88vh",overflowY:"auto",padding:22}}>

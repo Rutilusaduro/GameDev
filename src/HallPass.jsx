@@ -97,6 +97,7 @@ import './textEngine/scenes/hungerLexicon.js';
 import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
+import { renderDinnerArrive } from './textEngine/scenes/overhaul/dinnerVenue.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
@@ -2619,12 +2620,11 @@ export default function HallPass(){
     const extraList=extraEvolvedChoices(formId,stageIdx,phaseIdx,ownedHallSkills||{});
     const choice=extraList.find(c=>c.id===choiceId)||phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const leftoverResult=typeof choice.result==='function'?choice.result(s):choice.result;
-    const composedResult=renderEvolvedEventProse(leftoverResult,s,week,{
+    const composedResult=renderEvolvedEventProse('',s,week,{
       formId,stageIdx,phaseIdx,preferResult:true,v2DepthChance:0,
       globals:{choiceId},
     });
-    const newLog=[...logLines,composedResult||leftoverResult];
+    const newLog=[...logLines,composedResult];
     const newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     // Handle feedOther — feed residents of matching archetype
@@ -2666,11 +2666,10 @@ export default function HallPass(){
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
-      const leftoverEnd=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
-      const composedEnd=renderEvolvedEventProse(leftoverEnd,s,week,{
+      const composedEnd=renderEvolvedEventProse('',s,week,{
         formId,stageIdx,phaseIdx,preferEnding:true,v2DepthChance:0,
       });
-      const endText=composedEnd||leftoverEnd;
+      const endText=composedEnd;
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge,startsSalon:!!ending.startsSalon,startsGallery:!!ending.startsGallery}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
@@ -3114,7 +3113,7 @@ export default function HallPass(){
       };
     }));
     const abilityLine=renderAscensionAbility(live,week);
-    push(`✦ ${live.name} — ${ability.name}: ${abilityLine||ability.desc}`);
+    push(`✦ ${live.name} — ${ability.name}: ${abilityLine}`);
   };
 
   // ── HALL KITCHEN QUEEN handlers ───────────────────────────────────
@@ -4151,7 +4150,7 @@ export default function HallPass(){
     const newFat=session.sessionFatAccum+choice.fatGain;
     const newSusp=session.sessionSuspAccum+choice.suspChange;
     const newChoices=[...session.choices,choice.id];
-    const choiceLine=renderCultivatorChoice(session.foodType,choice.id,cs.testerName,week)||choice.desc;
+    const choiceLine=renderCultivatorChoice(session.foodType,choice.id,cs.testerName,week);
     const newLog=[...session.log,choiceLine];
     const nextIdx=session.junctionIdx+1;
     const isDone=nextIdx>=recipe.junctions.length;
@@ -6897,8 +6896,7 @@ export default function HallPass(){
     }
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const composedChoice=renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum);
-    const leftoverChoice=typeof choice.result==='function'?choice.result(s):choice.result;
-    const newLog=[...logLines, (composedChoice&&!composedChoice.includes('{unresolved}'))?composedChoice:(leftoverChoice||composedChoice)];
+    const newLog=[...logLines, composedChoice];
     let newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
@@ -7446,17 +7444,11 @@ export default function HallPass(){
         :path==="verdant"?"root_hall"
         :path==="primordial"?"convergence_point"
         :"her_room";
-      const venueDesc=path==="celestial"
-        ?"Golden light fills every corner. She sits at the centre of it, vast and warm and immovable. The chef arrives and says nothing about the wings."
-        :path==="umbral"||path==="convergence"?"Cold. The room is cold and very still. She sits in the dark and waits. The food arrives. She accepts it without speaking."
-        :path==="sanguine"?"The room is ten degrees too warm and smells faintly of copper. She is flushed and enormous and hungry. The heat reaches you before she does."
-        :path==="verdant"?"Root-filaments trace the baseboards. The room smells of turned earth. She sits vast and still, patient as old growth, watching the door."
-        :path==="primordial"?"Copper and deep soil. The floor is cracked around her. The building is hers. You have arrived to bring tribute."
-        :`Her room. She is here, she is enormous, she is warm. She knew you were coming.`;
+      const arrive=renderDinnerArrive({id:venueId},s,week);
       const atelier=DINNER_VENUES.find(v=>v.id==="atelier");
-      const homeVenue={id:venueId,label:venueLabel,desc:venueDesc,dishes:atelier?atelier.dishes:[]};
+      const homeVenue={id:venueId,label:venueLabel,desc:arrive,dishes:atelier?atelier.dishes:[]};
       setDinnerEvent({student:s,phase:"dishes",venue:homeVenue,dishes:[],conversationUsed:[],totalGain:0,offenseLevel:0,sessionStartCalories,sessionPace:'steady',pendingHungerResolve,textSession:{sessionUsed:createSessionUsed(),weekUsed:weekUsedFromStudent(s)}});
-      setDinnerLog([`You bring dinner to ${s.name}. ${venueDesc}`]);
+      setDinnerLog([`You bring dinner to ${s.name}. ${arrive}`]);
       addScrutiny(2);
       push(`🏠 Visiting ${s.name}.`);
       return;
@@ -7468,7 +7460,7 @@ export default function HallPass(){
 
   const chooseDinnerVenue=(venue)=>{
     setDinnerEvent(prev=>({...prev, venue, phase:"dishes"}));
-    setDinnerLog(dl=>[...dl, [`You arrive at ${venue.label}. ${venue.desc}`, renderDinnerDepth(dinnerEvent.student, week, { globals: { venueId: venue.id }, ...(pickStudentMemory(dinnerEvent.student,week)??{}) })].filter(Boolean).join(' ')]);
+    setDinnerLog(dl=>[...dl, [`You arrive at ${venue.label}. ${renderDinnerArrive(venue, dinnerEvent.student, week)}`, renderDinnerDepth(dinnerEvent.student, week, { globals: { venueId: venue.id }, ...(pickStudentMemory(dinnerEvent.student,week)??{}) })].filter(Boolean).join(' ')]);
     push(`🍽️ Dinner with ${dinnerEvent.student.name} at ${venue.label}.`);
   };
 
@@ -7661,7 +7653,7 @@ export default function HallPass(){
   const chooseGroupVenue=(venue)=>{
     setGroupDinnerEvent(prev=>({...prev,venue,phase:"dishes"}));
     const names=groupDinnerEvent.students.map(gs=>students.find(st=>st.id===gs.id)?.name?.split(' ')[0]||'her').join(" & ");
-    setGroupDinnerLog(dl=>[...dl,`You arrive at ${venue.label} with ${names}. ${venue.desc}`]);
+    setGroupDinnerLog(dl=>[...dl,`You arrive at ${venue.label} with ${names}. ${renderDinnerArrive(venue, students.find(st=>st.id===groupDinnerEvent.students[0]?.id), week)}`]);
     push(`🍽️ Group dinner at ${venue.label}.`);
   };
 
@@ -8442,7 +8434,7 @@ export default function HallPass(){
                       <div key={v.id} role="button" tabIndex={0} className="dinner-venue-choice-row" style={{...C.card,cursor:"pointer",border:v.id==="atelier"?"1px solid #806020":"1px solid #180830"}} onClick={()=>chooseDinnerVenue(v)}
                         onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                         <div style={{fontWeight:700,fontSize:13,color:v.id==="atelier"?"#f0d060":"#d8a8ff",marginBottom:3}}>{v.label}</div>
-                        <div style={{fontSize:11,color:"#6a4888",lineHeight:1.4,marginBottom:5}}>{v.desc}</div>
+                        <div style={{fontSize:11,color:"#6a4888",lineHeight:1.4,marginBottom:5}}>{renderDinnerArrive(v, ds, week)}</div>
                         <div style={{fontSize:10,color:"#7a5040"}}>{v.baseCourses} courses · +{v.gainRange[0]}–{v.gainRange[1]} lbs est.</div>
                         {v.id==="atelier"&&<div style={{fontSize:9,color:"#a08030",marginTop:3}}>✦ Specialty — stage 6+ only</div>}
                       </div>
@@ -8456,7 +8448,7 @@ export default function HallPass(){
               {dinnerEvent.phase==="dishes"&&dinnerEvent.venue&&(
                 <div>
                   <div style={{fontSize:11,color:"#7a5090",marginBottom:10,fontStyle:"italic"}}>
-                    {dinnerEvent.venue.label} — {dinnerEvent.venue.desc}
+                    {dinnerEvent.venue.label} — {renderDinnerArrive(dinnerEvent.venue, dinnerEvent.student, week)}
                   </div>
 
                   {/* Dishes grid */}
@@ -8745,7 +8737,7 @@ export default function HallPass(){
                         onClick={()=>chooseGroupVenue(v)}
                         onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); e.currentTarget.click(); } }}>
                         <div style={{fontWeight:700,fontSize:12,color:v.id==="atelier"?"#f0d060":"#d8a8ff",marginBottom:2}}>{v.label}</div>
-                        <div style={{fontSize:10,color:"#5a3860",lineHeight:1.4}}>{v.desc}</div>
+                        <div style={{fontSize:10,color:"#5a3860",lineHeight:1.4}}>{renderDinnerArrive(v, students.find(st=>st.id===gev.students[0]?.id), week)}</div>
                       </div>
                     ))}
                   </div>
@@ -8756,7 +8748,7 @@ export default function HallPass(){
               {/* Dining phase */}
               {gev.phase==="dishes"&&gev.venue&&(
                 <div>
-                  <div style={{fontSize:10,color:"#7a5090",marginBottom:10,fontStyle:"italic"}}>{gev.venue.label} — {gev.venue.desc}</div>
+                  <div style={{fontSize:10,color:"#7a5090",marginBottom:10,fontStyle:"italic"}}>{gev.venue.label} — {renderDinnerArrive(gev.venue, students.find(st=>st.id===gev.students[0]?.id), week)}</div>
 
                   {/* Menu — each dish shows Feed buttons per resident */}
                   <div style={{...C.secT,marginBottom:6}}>Menu</div>
