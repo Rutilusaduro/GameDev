@@ -358,6 +358,7 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
+import { renderCGMeasurementScene } from './textEngine/scenes/competitiveGainer/index.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -3493,7 +3494,8 @@ export default function HallPass(){
       const driveGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
         : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
-      const sceneText=`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
+      const sceneText=renderCGMeasurementScene(target,priya,week,tier.label)
+        ||`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
@@ -3515,7 +3517,7 @@ export default function HallPass(){
       const stageId=Math.min(7,getStage(priya.lbs).id);
       const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
       const mult=CG_CONFIG.bingeDriveMults[Math.max(0,tierIdx)];
-      const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
+      const gain=scaleEvolvedEventLbs(Math.round(baseGain*mult*(0.85+Math.random()*0.30)));
       const stageKey=getCGStageKey(priya.lbs);
       const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
