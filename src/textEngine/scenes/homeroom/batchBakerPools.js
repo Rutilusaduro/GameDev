@@ -1,28 +1,37 @@
 // Hall kitchen NPC stage blurbs — BATCH_BAKER_NPCS → pools.
-import { registerDimension, registerPool } from '../../engine.js';
+import { registerDimension, registerPool, render } from '../../engine.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 import { BATCH_BAKER_NPCS } from '../../../gameData/evolvedForms.js';
 
 registerDimension('npcStage', (ctx) => ctx.globals?.npcStage ?? 0);
 registerDimension('npcKey', (ctx) => ctx.globals?.npcKey ?? 'Kayla');
 
+function registerNpcStage(poolKey, npcKey, stageIdx, prose) {
+  const text = String(prose).trim();
+  if (!text) return;
+  const bodyKey = `${poolKey}.legacyBody`;
+  registerDecomposedPool(bodyKey, text);
+  const lead = text.split(/(?<=[.!?])\s+/)[0] || text;
+  const slot = (ctx) => {
+    const line = render(`{${bodyKey}}`, ctx)?.trim();
+    return line && !line.includes('{unresolved}') ? line : text;
+  };
+  const snippet = (ctx) => (ctx.globals?.snippetOnly ? lead : slot(ctx));
+  registerPool(poolKey, [
+    {
+      when: { npcKey: [npcKey], npcStage: [Number(stageIdx)] },
+      weight: 2,
+      text: [slot, snippet],
+    },
+    {
+      when: {},
+      text: [slot, snippet, slot],
+    },
+  ]);
+}
+
 for (const [npcKey, stages] of Object.entries(BATCH_BAKER_NPCS)) {
   for (const [si, prose] of Object.entries(stages)) {
-    const text = String(prose).trim();
-    const lead = text.split(/(?<=[.!?])\s+/)[0] || text;
-    registerPool(`homeroom.npc.${npcKey}.s${si}`, [
-      {
-        when: { npcKey: [npcKey], npcStage: [Number(si)] },
-        weight: 2,
-        text: [text],
-      },
-      {
-        when: {},
-        text: [
-          text,
-          (ctx) => text,
-          (ctx) => (ctx.globals?.snippetOnly ? lead : text),
-        ],
-      },
-    ]);
+    registerNpcStage(`homeroom.npc.${npcKey}.s${si}`, npcKey, si, prose);
   }
 }

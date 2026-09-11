@@ -25,7 +25,7 @@ import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, getHiveFloorResonance, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
-import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
+import { IMMOBILE_REDIRECT, BLOB_PRIVATE_INTRO, INIT_STUDENTS, initDeviceState, initPsychState } from './gameData/students.js';
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { renderFeedRefusal, renderForceFeedSuccess } from './textEngine/scenes/feedForce/index.js';
@@ -121,7 +121,7 @@ import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryHall } from './textEngine/scenes/memory/index.js';
-import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
+import { renderSessionFullness, renderSessionAftermath, renderTapOutLine } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
 import { renderStreamBeat } from './textEngine/scenes/stream/liveBridge.js';
@@ -7786,15 +7786,7 @@ export default function HallPass(){
     const tapsOut=Math.random()<adjustedTapProb;
     if(tapsOut){
       const liveS=fed;
-      let tapLine;
-      if(fPct>=250){
-        const entry250=TAP_OUT_250[s.id]||TAP_OUT_250.default;
-        tapLine=typeof entry250==='function'?entry250(liveS):entry250;
-      } else {
-        const tapStage=liveS.lbs<160?0:liveS.lbs<240?1:liveS.lbs<320?2:3;
-        const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
-        tapLine=dialogueSet[tapStage](liveS);
-      }
+      const tapLine=renderTapOutLine(liveS,fPct,week);
       const currentTotalGain=sessionCals;
       const hist2=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
       const newCapBonus2=hist2.capacityBonus+8;

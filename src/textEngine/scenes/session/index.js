@@ -10,6 +10,7 @@ import './aftermath.js';
 import './aftermathDepth.js';
 import './selectors.js';
 import './selectorDepth.js';
+import './tapOutPools.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
@@ -47,6 +48,8 @@ export function renderSessionFullness(student, fullnessStageId, week = 1, opts =
 }
 
 /** Closing beat when a private session ends (keyed by fullness percent band). */
+export { renderTapOutLine } from './tapOutPools.js';
+
 export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({
