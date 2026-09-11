@@ -165,6 +165,7 @@ import './upgradeCorpusPass15.js';
 import './upgradeCorpusPass16.js';
 import './upgradeCorpusPass17.js';
 import './upgradeCorpusPass18.js';
+import './upgradeCorpusPass19.js';
 import './session/fullnessUpgrade.js';
 import './campusEvent/choiceUpgrade.js';
 import './intimacy/upgrade.js';

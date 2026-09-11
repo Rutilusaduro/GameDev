@@ -204,10 +204,10 @@ registerModuleVariants('dinner.groupConv.order_for_table.l3', [
 
 // ── leftover emb.action parents ───────────────────────────────
 registerModuleVariants('emb.action.public_eating', [
-  { when: { studentId: 2, stageMin: 5 }, weight: 6, text: [
+  { when: { studentId: 2, stageMin: 5 }, weight: 8, text: [
     'Kylie eats where people can see. The wrappers are the caption.',
   ] },
-  { when: { studentId: 8, stageMin: 5 }, weight: 6, text: [
+  { when: { studentId: 8, stageMin: 5 }, weight: 8, text: [
     'Maya eats in public without performing it. The body keeps the receipt.',
   ] },
 ]);
