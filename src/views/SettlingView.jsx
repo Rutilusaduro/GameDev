@@ -17,6 +17,7 @@ import {
   getSettleDominant, getFinalForm, FINAL_FORMS,
   GATHERING, getAttendees, getFinalFormFx,
 } from '../gameData/immobilityArrival.js';
+import { renderFinalFormDesc, renderSettleBranchDesc, renderGatheringDesc } from '../textEngine/scenes/overhaul/leftoverMoreUi.js';
 
 // The Settling reads in warm amber/gold against the hall roster's cold violet —
 // these residents have arrived; the palette says so.
@@ -25,7 +26,7 @@ const GOLD_DIM = '#9a7838';
 const BRANCH_TINT = { socialize: '#c878d8', feed: '#e08850', care: '#70b8a0' };
 
 // ── Destiny bar — which final form she's drifting toward ──────────
-function DestinyBar({ student }) {
+function DestinyBar({ student, week = 1 }) {
   const counts = student.settleCounts || { socialize: 0, feed: 0, care: 0 };
   const total = (counts.socialize || 0) + (counts.feed || 0) + (counts.care || 0);
   const dominant = getSettleDominant(student);
@@ -35,7 +36,7 @@ function DestinyBar({ student }) {
     return (
       <div style={{ marginTop: 6 }}>
         <span style={{ ...C.tag(`${GOLD}22`, GOLD), fontSize: 9 }}>✦ {form.label}</span>
-        <div style={{ fontSize: 9.5, color: GOLD_DIM, marginTop: 3, fontStyle: 'italic' }}>{form.desc}</div>
+        <div style={{ fontSize: 9.5, color: GOLD_DIM, marginTop: 3, fontStyle: 'italic' }}>{renderFinalFormDesc(student.finalForm, student, week) || form.desc}</div>
         {fx && <div style={{ fontSize: 9, color: GOLD, marginTop: 2 }}>⟡ {fx.perk}</div>}
       </div>
     );
@@ -79,7 +80,7 @@ function SettlingTile({ s, week, onOpen }) {
       <div style={{ fontSize: 11, color: '#b08840', margin: '2px 0' }}>
         {s.lbs.toLocaleString()} lbs  (+{(s.lbs - s.startLbs).toLocaleString()}) · ❤ {s.relationship}%
       </div>
-      <DestinyBar student={s} />
+      <DestinyBar student={s} week={week} />
     </div>
   );
 }
@@ -158,7 +159,7 @@ function SubButton({ sub, s, students, ap, onRun }) {
   );
 }
 
-function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun }) {
+function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun, week = 1 }) {
   const subs = branch === 'care' ? getAvailableCareSubs(s) : def.subs;
   const tint = BRANCH_TINT[branch];
   // Live build readout — mirrors the bonuses runSettlingAction applies, so the
@@ -187,7 +188,7 @@ function TreeCard({ branch, def, s, students, ap, open, onToggle, onRun }) {
         <span style={{ fontSize: 20 }} aria-hidden="true">{def.icon}</span>
         <span style={{ flex: 1 }}>
           <span style={{ fontSize: 15, fontWeight: 700, color: tint }}>{def.label}</span>
-          <span style={{ display: 'block', fontSize: 10.5, color: '#80708a', marginTop: 1, lineHeight: 1.4 }}>{def.desc}</span>
+          <span style={{ display: 'block', fontSize: 10.5, color: '#80708a', marginTop: 1, lineHeight: 1.4 }}>{renderSettleBranchDesc(branch, s, week) || def.desc}</span>
           {buildNote && <span style={{ display: 'block', fontSize: 9.5, color: tint, marginTop: 2, fontWeight: 600, letterSpacing: 0.2 }}>✦ {buildNote}</span>}
         </span>
         <span style={{ fontSize: 12, color: tint, transform: open ? 'rotate(90deg)' : 'none', transition: 'transform 0.18s' }} aria-hidden="true">▸</span>
@@ -264,7 +265,7 @@ export function SettlingDetailView({
             <div style={{ fontSize: 9, color: GOLD_DIM, letterSpacing: 2, marginBottom: 1 }}>RELATIONSHIP</div>
             <Bar val={s.relationship} max={100} color="#c040e0" />
             <div style={{ fontSize: 11, color: '#b08840' }}>{s.relationship}% · {(() => { const t = getTier(s.relationship); return <span style={{ color: t.color }}>{t.emoji} {t.label}</span>; })()}</div>
-            <DestinyBar student={s} />
+            <DestinyBar student={s} week={week} />
           </div>
         </div>
       </div>
@@ -282,7 +283,7 @@ export function SettlingDetailView({
                 style={{ textAlign: 'left', background: `${BRANCH_TINT[b]}1a`, border: `1px solid ${BRANCH_TINT[b]}66`, borderRadius: 8, padding: '7px 11px', cursor: 'pointer', fontFamily: 'inherit' }}
               >
                 <div style={{ fontSize: 12.5, fontWeight: 700, color: BRANCH_TINT[b] }}>{FINAL_FORMS[b].label}</div>
-                <div style={{ fontSize: 10, color: '#a08850', marginTop: 1, lineHeight: 1.35 }}>{FINAL_FORMS[b].desc}</div>
+                <div style={{ fontSize: 10, color: '#a08850', marginTop: 1, lineHeight: 1.35 }}>{renderFinalFormDesc(b, s, week) || FINAL_FORMS[b].desc}</div>
               </button>
             ))}
           </div>
@@ -340,7 +341,7 @@ export function SettlingDetailView({
               <span style={{ fontSize: 14, fontWeight: 700, color: GOLD }}>✦ {GATHERING.label}</span>
               <span style={{ fontSize: 9.5, color: GOLD_DIM, whiteSpace: 'nowrap' }}>{GATHERING.apCost} AP</span>
             </div>
-            <div style={{ fontSize: 10.5, color: '#80708a', lineHeight: 1.4, marginBottom: 7 }}>{GATHERING.desc}</div>
+            <div style={{ fontSize: 10.5, color: '#80708a', lineHeight: 1.4, marginBottom: 7 }}>{renderGatheringDesc(s, week) || GATHERING.desc}</div>
             {attendees.length > 0 ? (
               <div style={{ fontSize: 10, color: '#a08850', marginBottom: 7 }}>
                 attending: {attendees.map((a) => a.name).join(', ')} · each ❤ +{GATHERING.attendeeRel}, +{GATHERING.attendeeGain[0]}–{GATHERING.attendeeGain[1]} lbs
@@ -367,6 +368,7 @@ export function SettlingDetailView({
           open={openBranch === branch}
           onToggle={() => setOpenBranch(openBranch === branch ? null : branch)}
           onRun={onRun}
+          week={week}
         />
       ))}
     </div>

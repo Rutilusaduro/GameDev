@@ -11,6 +11,7 @@ import { availableSecretsAtNode } from '../gameData/campusSecrets.js';
 import { availableElaraQuests } from '../gameData/relicHunter.js';
 import { CAMPUS_NARRATIVE_LABELS } from '../gameData/pharmacistCampus.js';
 import { SATURATION_TIERS } from '../gameData/campusSaturation.js';
+import { renderSaturationDesc } from '../textEngine/scenes/overhaul/leftoverMoreUi.js';
 import { CampusDeviceEncounterPanel } from '../components/CampusDeviceEncounterPanel.jsx';
 import { FacultyLoungeView } from './FacultyLoungeView.jsx';
 
@@ -133,7 +134,7 @@ export function CampusView({
             <div style={{ width: `${saturation.score ?? 0}%`, height: '100%', background: 'linear-gradient(90deg,#3a6080,#70a8c8)', transition: 'width 0.4s' }} />
           </div>
           <div style={{ fontSize: 10, color: '#7088a0', lineHeight: 1.5 }}>
-            {SATURATION_TIERS[saturation.tier ?? 0]?.desc}
+            {renderSaturationDesc(saturation.tier ?? 0, null, week) || SATURATION_TIERS[saturation.tier ?? 0]?.desc}
             {(saturation.tier ?? 0) >= 2 && (
               <span style={{ display: 'block', color: '#90c0a8', marginTop: 4 }}>
                 Heavier new residents · softer ambient events · richer exploration finds.

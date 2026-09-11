@@ -73,7 +73,7 @@ export function PharmacistCultModal({
               <span style={{ color: LILAC, fontWeight: 700, fontSize: 12 }}>{route.label}</span>
               <span style={{ fontSize: 9, color: '#8060a0' }}>{route.apCost} AP</span>
             </div>
-            <div style={{ fontSize: 10, color: '#9070b0', lineHeight: 1.45, marginBottom: 4 }}>{route.desc}</div>
+            <div style={{ fontSize: 10, color: '#9070b0', lineHeight: 1.45, marginBottom: 4 }}>{renderPharmacistCult(route.id, student, week) || route.desc}</div>
             <div style={{ fontSize: 9, color: route.exposure > 10 ? '#c08060' : '#605080' }}>
               +{route.exposure}% exposure{route.scrutiny ? ` · +${route.scrutiny} scrutiny` : ''}
             </div>

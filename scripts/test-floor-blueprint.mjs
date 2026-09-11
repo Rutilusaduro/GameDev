@@ -79,6 +79,7 @@ import { renderIntimacyPicker } from '../src/textEngine/scenes/overhaul/intimacy
 import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect, renderSettleArrival, renderSettleRefit, renderSettleComfort, renderAbilityCard } from '../src/textEngine/scenes/overhaul/leftoverSessionBeats.js';
 import { renderHallSkillDesc, renderRaSkillDesc, renderEvolvedSkillDesc } from '../src/textEngine/scenes/overhaul/leftoverSkills.js';
 import { renderSessionPaceDesc, renderHiveTaskDesc, renderSumoMoveDesc, renderPharmacistActDesc, renderPharmacistOptDesc, renderFloorActionDesc, renderRoomBlurb, renderPhysicalTraitDesc } from '../src/textEngine/scenes/overhaul/leftoverUiBeats.js';
+import { renderAchievementDesc, renderFinalFormDesc, renderSettleBranchDesc, renderGatheringDesc, renderSaturationDesc } from '../src/textEngine/scenes/overhaul/leftoverMoreUi.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
@@ -837,6 +838,21 @@ assert.equal(/the kitchen that never really closes/i.test(roomLine), false, 'roo
 const traitLine = renderPhysicalTraitDesc('accelerated_settling', students[0], 2);
 assert.ok(traitLine && !traitLine.includes('{unresolved}'));
 assert.equal(/newly gained pounds settle without a fight/i.test(traitLine), false, 'trait should not dump leftover PHYSICAL_TRAITS.desc');
+const achLine = renderAchievementDesc('first_gain', students[0], 2);
+assert.ok(achLine && !achLine.includes('{unresolved}'));
+assert.equal(/Successfully feed a resident for the first time/i.test(achLine), false, 'achievement should not dump leftover ACHIEVEMENT_LIST.desc');
+const formLine = renderFinalFormDesc('feed', students[0], 2);
+assert.ok(formLine && !formLine.includes('{unresolved}'));
+assert.equal(/without ceiling/i.test(formLine), false, 'final form should not dump leftover FINAL_FORMS.desc');
+const branchLine = renderSettleBranchDesc('socialize', students[0], 2);
+assert.ok(branchLine && !branchLine.includes('{unresolved}'));
+assert.equal(/Campus oracle, confidante/i.test(branchLine), false, 'settle branch should not dump leftover SETTLING_ACTIONS.desc');
+const gatherLine = renderGatheringDesc(students[0], 2);
+assert.ok(gatherLine && !gatherLine.includes('{unresolved}'));
+assert.equal(/The room is hers now, and the others come to it/i.test(gatherLine), false, 'gathering should not dump leftover GATHERING.desc');
+const satLine = renderSaturationDesc(0, students[0], 2);
+assert.ok(satLine && !satLine.includes('{unresolved}'));
+assert.equal(/Standard college rhythms/i.test(satLine), false, 'saturation should not dump leftover SATURATION_TIERS.desc');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,

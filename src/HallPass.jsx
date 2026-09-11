@@ -101,7 +101,8 @@ import { renderDinnerArrive } from './textEngine/scenes/overhaul/dinnerVenue.js'
 import { renderQuestDesc, renderPrivateVenueIntro, renderPrivateBlobIntro } from './textEngine/scenes/overhaul/leftoverCatalog.js';
 import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect } from './textEngine/scenes/overhaul/leftoverSessionBeats.js';
 import { renderHallSkillDesc } from './textEngine/scenes/overhaul/leftoverSkills.js';
-import { renderSessionPaceDesc, renderFloorActionDesc } from './textEngine/scenes/overhaul/leftoverUiBeats.js';
+import { renderSessionPaceDesc } from './textEngine/scenes/overhaul/leftoverUiBeats.js';
+import { renderAchievementDesc, renderSaturationDesc } from './textEngine/scenes/overhaul/leftoverMoreUi.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
@@ -758,7 +759,7 @@ export default function HallPass(){
     const newAch=ACHIEVEMENT_LIST.filter(a=>!achievements.includes(a.id)&&a.check(students,globalStats));
     if(newAch.length){
       playHallPassSound('unlock', soundEnabled);
-      newAch.forEach(a=>{ setTimeout(()=>push(`🏆 Achievement unlocked: ${a.label} — ${a.desc}`),100); });
+      newAch.forEach(a=>{ setTimeout(()=>push(`🏆 Achievement unlocked: ${a.label} — ${renderAchievementDesc(a.id, students[0], week)||a.desc}`),100); });
       setAchievements(prev=>[...prev,...newAch.map(a=>a.id)]);
     }
   },[students,globalStats]);
@@ -1829,7 +1830,7 @@ export default function HallPass(){
     setCampusState(prev=>({...prev,saturation:nextSaturation}));
     if(nextSaturation.crossedTier){
       const tierMeta=getSaturationTier(nextSaturation.score);
-      setTimeout(()=>push(`🌐 Campus saturation — ${tierMeta.label}: ${tierMeta.desc}`),130);
+      setTimeout(()=>push(`🌐 Campus saturation — ${tierMeta.label}: ${renderSaturationDesc(tierMeta.id, updated[0], week)||tierMeta.desc}`),130);
     }
     const satPassive=saturationWeeklyPassiveBonus(nextSaturation.tier);
     if(satPassive>0){
