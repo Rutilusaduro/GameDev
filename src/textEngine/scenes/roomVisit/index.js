@@ -3,6 +3,8 @@ import './personas.js';
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { getStage } from '../../../gameData/stages.js';
+import '../dorm/index.js';
+import '../proseOverhaul.js';
 
 registerPool('room.visit.intro.lead', [
   { when: {}, text: [
@@ -89,6 +91,7 @@ export function renderRoomVisitScene(student, week, opts = {}) {
       render('{room.visit.stage.room}', ctx),
       render('{room.visit.stage.beat}', ctx, { trace: opts.trace || null }),
       render('{room.visit.stage.beat.persona}', ctx, { trace: opts.trace || null }),
+      render('{talk.roomFitCoda}', ctx),
     ].filter((p) => p?.trim()).join('\n\n');
   }
   return render('{room.visit.ambient}', ctx);

@@ -6,6 +6,8 @@ export const GROUP_CONVERSATIONS=[
   { id:"let_it_settle", label:"Let it settle", relBonus:2, fullnessEffect:5 },
   { id:"toast_together_group", label:"Toast the evening", relBonus:4, fullnessEffect:-3 },
   { id:"order_for_table", label:"Order another round", relBonus:3, fullnessEffect:8 },
+  { id:"compare_rooms", label:"Let them compare rooms", relBonus:3, fullnessEffect:4 },
+  { id:"floor_secret", label:"Share a floor secret", relBonus:5, fullnessEffect:-2 },
 ];
 
 // RA CHARACTER CREATION (legacy exports — unused by Hall Pass setup; kept for tooling snapshots)
@@ -182,6 +184,12 @@ export const ENCOURAGEMENT_ACTIONS=[
      ?`You describe the soft, gentle swell of her belly — how it's grown through the meal, how warm and round it looks. ${s.name}'s cheeks colour. She doesn't stop eating.`
      :`You describe her belly carefully and specifically — the roundness, the firmness, the way it sits in her lap with real weight. ${s.name} looks down at herself. Then at you. "You really see it," she says. She keeps eating, slower now, like she's savouring both things at once.`,
    toleranceBoost:20, relBonus:5, lbsBonus:[0,2]},
+  {id:"enc_room_quiet", label:"Close the door. Keep going",
+   line:(s)=>`You ease the door shut. ${s.name} exhales like the floor just got smaller and safer. She eats with both hands free.`,
+   toleranceBoost:14, relBonus:3, lbsBonus:[0,2]},
+  {id:"enc_habit", label:"Remind her what you saw after hours",
+   line:(s)=>`"I remember last night," you say. ${s.name} colors, then reaches anyway. The secret is already spent; the food is not.`,
+   toleranceBoost:16, relBonus:4, lbsBonus:[1,2]},
 ];
 
 export const DINNER_VENUES = [
@@ -288,6 +296,9 @@ export const DINNER_CONVERSATION = [
   { id:"suggest_diet", label:"Point out the lighter option", requires:null, gainBonus:[0,0], relBonus:-8, offenseRisk:3, fullnessEffect:0 },
   { id:"ask_about_weight", label:"Ask about the gaining", requires:null, gainBonus:[0,0], relBonus:-6, offenseRisk:2, fullnessEffect:0 },
   { id:"second_table", label:"Move to a more comfortable spot", requires:"dinner_private", gainBonus:[2,4], relBonus:5, fullnessEffect:-6 },
+  { id:"dorm_gossip", label:"Ask what the floor is eating", requires:null, gainBonus:[2,4], relBonus:4 },
+  { id:"night_round_hint", label:"Mention you walk the hall after hours", requires:null, gainBonus:[1,3], relBonus:5 },
+  { id:"room_upgrade_brag", label:"Promise her room a better chair", requires:null, gainBonus:[2,4], relBonus:4 },
 ];
 
 
@@ -304,7 +315,7 @@ export const ACHIEVEMENT_LIST = [
   { id:"total100",      label:"💯 Century Club",        desc:"Total hall weight gain reaches 100 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=100 },
   { id:"total500",      label:"🎖️ Five Hundred",        desc:"Total hall weight gain reaches 500 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=500 },
   { id:"total1000",     label:"🏆 One Thousand",        desc:"Total hall weight gain reaches 1,000 lbs.",                check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=1000 },
-  { id:"rel_max",       label:"❤️ Beloved RA",  desc:"Any resident reaches 100% relationship.",                    check:(sts)=>sts.some(s=>s.relationship>=100) },
+  { id: 'rel_max',    label:"❤️ Beloved RA",  desc:"Any resident reaches 100% relationship.",                    check:(sts)=>sts.some(s=>s.relationship>=100) },
   { id:"all_rel50",     label:"💜 Well-Loved",          desc:"All residents at 50%+ relationship.",                        check:(sts)=>sts.every(s=>s.relationship>=50) },
   { id:"narrative5",    label:"📖 Storyteller",         desc:"Trigger 5 narrative events.",                               check:(sts,g)=>g.narrativeCount>=5 },
   { id:"narrative10",   label:"📚 Epic Saga",           desc:"Trigger 10 narrative events.",                              check:(sts,g)=>g.narrativeCount>=10 },

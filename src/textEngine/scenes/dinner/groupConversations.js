@@ -94,3 +94,33 @@ registerPool('dinner.groupConv.order_for_table.l2', [
 registerPool('dinner.groupConv.order_for_table.l3', [
   { when: {}, text: [`{ref.name}: "We didn't need more."\n{subject.name}, already reaching: "I know." {ref.name} reaches too.`] },
 ]);
+
+registerPool('dinner.groupConv.compare_rooms', [
+  { when: {}, text: [
+    '{dinner.groupConv.compare_rooms.l1}\n{dinner.groupConv.compare_rooms.l2}\n{dinner.groupConv.compare_rooms.l3}',
+  ] },
+]);
+registerPool('dinner.groupConv.compare_rooms.l1', [
+  { when: {}, text: [`{subject.name} mentions her chair. {ref.name} mentions her fridge. It becomes a contest nobody wanted to lose.`] },
+]);
+registerPool('dinner.groupConv.compare_rooms.l2', [
+  { when: {}, text: [`They compare snack drawers like trophies. You stay quiet and let the floor do the recruiting.`] },
+]);
+registerPool('dinner.groupConv.compare_rooms.l3', [
+  { when: {}, text: [`Dessert arrives. Both of them eat like the comparison is still running.`] },
+]);
+
+registerPool('dinner.groupConv.floor_secret', [
+  { when: {}, text: [
+    '{dinner.groupConv.floor_secret.l1}\n{dinner.groupConv.floor_secret.l2}\n{dinner.groupConv.floor_secret.l3}',
+  ] },
+]);
+registerPool('dinner.groupConv.floor_secret.l1', [
+  { when: {}, text: [`You mention the hall after midnight. Both of them look at each other first, then at you.`] },
+]);
+registerPool('dinner.groupConv.floor_secret.l2', [
+  { when: {}, text: [`{subject.name}: "You walk."\n{ref.name}: "We knew."`] },
+]);
+registerPool('dinner.groupConv.floor_secret.l3', [
+  { when: {}, text: [`The next course lands. Nobody pretends this dinner is only dinner anymore.`] },
+]);

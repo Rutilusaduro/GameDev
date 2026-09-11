@@ -220,3 +220,24 @@ registerPool('dinner.conv.second_table', [
     `You suggest a more comfortable spot. {subject.name} settles in and orders again.`,
   ] },
 ]);
+
+registerPool('dinner.conv.dorm_gossip', [
+  { when: {}, text: [
+    `"The floor is eating like this too," you say. {subject.name} leans in, delighted. "I knew it wasn't just me." She orders another plate as proof.`,
+    `{subject.name} wants names. You give her the shape of the hall without names. She eats like gossip is a condiment.`,
+  ] },
+]);
+
+registerPool('dinner.conv.night_round_hint', [
+  { when: {}, text: [
+    `"I walk the hall after hours," you say. {subject.name} goes still, then smiles. "I know. I leave the light on."`,
+    `{subject.name} colors. "You heard me last night." She takes a bite anyway. "Good."`,
+  ] },
+]);
+
+registerPool('dinner.conv.room_upgrade_brag', [
+  { when: {}, text: [
+    `You mention a better chair for her room. {subject.name} looks at the restaurant seat, then at you. "Please." She means it.`,
+    `"Your door deserves better furniture," you say. {subject.name} laughs and eats like the promise already landed.`,
+  ] },
+]);

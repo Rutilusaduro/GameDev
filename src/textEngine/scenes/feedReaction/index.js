@@ -19,6 +19,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
 
 // ── feed.react.beat ───────────────────────────────────────────
 // Shape: FULL SENTENCE — the act of eating, shaded by what it is
@@ -228,7 +229,8 @@ export function renderFeedReaction(student, week = 1, opts = {}) {
     ...opts,
   });
   const raw = render('{feed.react}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(raw, 'feed', ctx, opts.v2DepthChance ?? 0.38);
+  const after = render('{feed.afterglow|prefix:\n\n}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(after ? `${raw}\n\n${after}` : raw, 'feed', ctx, opts.v2DepthChance ?? 0.38);
 }
 
 /** Categorize any feed into a foodKind from its label + cal/fullness profile.

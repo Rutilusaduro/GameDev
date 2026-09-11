@@ -10,6 +10,8 @@ export const ACTIONS_HALL = [
   { id:"feast",        label:"🦃 Holiday Floor Feast",       cost:5, cal:[28000,52000], full:70, desc:"A full holiday spread. This one really goes far." },
   { id:"group_dinner", label:"👥 Arrange Group Dinner",      cost:3, cal:[14000,30000], full:45, desc:"Take two residents to dinner together. Their bond amplifies the result for both.", requiresUnlock:"group_dinner" },
   { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
+  { id:"leftover_run", label:"🍪 Midnight Leftover Run", cost:1, cal:[6000,11000], full:22, requiresUnlock:"snacks_free", desc:"Kitchen still warm. You walk trays door to door. Nobody pretends they were asleep." },
+  { id:"movie_night", label:"🎞 Lounge Movie Night", cost:2, cal:[8000,15000], full:28, requiresHallSkill:"comfy_chairs", desc:"Blankets, a double feature, and a table that never quite empties. Residents sink and stay." },
 ];
 
 /** @deprecated use ACTIONS_HALL */
@@ -227,5 +229,21 @@ export const FLOOR_SCENES = [
       { label:"Order delivery for the room",         effect:{gain:[5,10]}, result:"You produce your phone and order three different things. The floor nominates favorites. The food arrives and disappears without interrupting the discussion." },
       { label:"Break with a spread you brought",     effect:{gain:[3,7]},  result:"You pull out a prepared spread from your bag. The floor is impressed you came prepared. Someone says 'this is the best night.' You feel it's true." },
       { label:"Push through without food",           effect:{gain:[0,2]},  result:"Nobody gets fed but everyone gets educated. Grudging respect. Several stomachs are audibly registering their objection." },
+    ] },
+  { id:"hall_night_noise", target:"hall",
+    title:"After-Hours Traffic",
+    text:"The corridor is loud after lights-out — fridge doors, wrappers, someone claiming they were 'just getting water.' Housing would call it a noise complaint. You call it a floor that has learned its hours.",
+    choices:[
+      { label:"Make the leftover run official", effect:{gain:[5,10]}, result:"You put trays in the lounge and declare the kitchen open. The hallway empties because everyone is eating. Quiet returns as fullness." },
+      { label:"Walk the wing and knock",        effect:{gain:[3,7]},  result:"You knock three doors. Each one opens on a resident who was already eating. You leave them fuller and less secretive." },
+      { label:"Log it as community hours",      effect:{gain:[2,5]},  result:"You write 'wellness programming' in the log. The floor eats. The paperwork smiles." },
+    ] },
+  { id:"hall_new_chairs", target:"hall",
+    title:"Furniture Arrives",
+    text:"A delivery of wider chairs blocks the lounge door. Residents gather to watch Housing struggle. Someone sits in one immediately and does not get up.",
+    choices:[
+      { label:"Host a sit-and-eat christening", effect:{gain:[4,9]},  result:"You bring pastries 'to test the seats.' The test lasts an hour. The chairs pass. So do the pastries." },
+      { label:"Let them claim spots",           effect:{gain:[2,6]},  result:"Territory is established by sitting. Snack bags appear as flags. The lounge has a new map." },
+      { label:"File the work order as complete",effect:{gain:[1,3]},  result:"You sign. They sit. The floor feels finished in a way the old plastic never did." },
     ] },
 ];

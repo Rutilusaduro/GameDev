@@ -63,7 +63,9 @@ export const DISH_ITEM_LINKS = {
 export const SESSION_PACE_ACTIONS = [
   { id: 'gentle', label: 'Gentle pace', refusalBonus: -0.06, tapOutMult: 0.82, desc: 'Easier refusal, less tap-out pressure.' },
   { id: 'steady', label: 'Steady pace', refusalBonus: 0, tapOutMult: 1, desc: 'Default rhythm.' },
+  { id: 'savor', label: 'Savor pace', refusalBonus: -0.03, tapOutMult: 0.9, desc: 'Slow bites. More talk. She lasts longer and notices more.' },
   { id: 'push', label: 'Push harder', refusalBonus: 0.14, tapOutMult: 1.22, desc: 'Higher force-feed odds when she\'s stuffed.' },
+  { id: 'fill', label: 'Fill the silence', refusalBonus: 0.08, tapOutMult: 1.1, desc: 'Keep plates moving so she never has a clean stopping point.' },
 ];
 
 export function getSessionPaceModifiers(paceId = 'steady') {

@@ -238,6 +238,7 @@ import { appendEmbodimentWalkLog } from './gameData/v2/embodiedCampus.js';
 import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
 import './textEngine/scenes/v2/index.js';
 import { HallLoungeView } from './views/HallLoungeView.jsx';
+import { NightRoundModal } from './components/NightRoundModal.jsx';
 import { StudentDetailView } from './views/StudentDetailView.jsx';
 import { ActionsView } from './views/ActionsView.jsx';
 import { InventoryView, ItemTargetPicker } from './views/InventoryView.jsx';
@@ -379,6 +380,15 @@ import {
   hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
 import {
+  createInitialDormState, buyRoomFit, canStartNightRound, applyNightVisit,
+  nightEncounterKind, nightRoundVisitCap, habitatForStudent,
+} from './gameData/dormBlueprint.js';
+import {
+  tickHabitatWeek, applyTalkHabitatBonus, pantryDropBonus, neighborEcologyPatch,
+  sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
+} from './gameData/mechanicDepth.js';
+import './textEngine/scenes/dorm/index.js';
+import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
 import {
@@ -444,7 +454,7 @@ export default function HallPass(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedHallSkills, facultyAffinity, raProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State,
+    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, dormState,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -452,6 +462,10 @@ export default function HallPass(){
   const setWeek = (updater) => setPlayer((p) => updatePlayerField(p, 'week', updater));
   const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
   const setOwnedHallSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedHallSkills', updater));
+  const setDormState = (updater) => setPlayer((p) => updatePlayerField(p, 'dormState', (cur) => {
+    const base = cur || createInitialDormState();
+    return typeof updater === 'function' ? updater(base) : updater;
+  }));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
   const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', (cur) => {
     const next = typeof updater === 'function' ? updater(cur) : updater;
@@ -502,6 +516,8 @@ export default function HallPass(){
   const [_semesterData,setSemesterData]=useState({weeksCompleted:0,classHistory:[]});
   const [skillPurchase,setSkillPurchase]=useState(null);
   const [talkStudentId,setTalkStudentId]=useState(null);
+  const [nightMode,setNightMode]=useState(false);
+  const [nightTargetId,setNightTargetId]=useState(null);
   const [roomVisitStudentId,setRoomVisitStudentId]=useState(null);
   const [embodimentStudent,setEmbodimentStudent]=useState(null);
   const [feastRitualOpen,setFeastRitualOpen]=useState(false);
@@ -1030,7 +1046,55 @@ export default function HallPass(){
     const result=buyHallLoungeSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedHallSkills(result.owned);
-    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
+    push(`🏛️ ${result.skill.label} installed on the plan (${result.spent} lbs prestige).`);
+  };
+
+  const purchaseRoomFit=(fitId,studentId)=>{
+    const student=students.find(s=>s.id===studentId);
+    const result=buyRoomFit(fitId,student,dormState||createInitialDormState(),students,ownedHallSkills||{});
+    if(!result.ok){push(`⚠️ ${result.reason}`);return;}
+    setDormState(result.dormState);
+    push(`🛏 ${student?.name}'s room: ${result.fit.label} (${result.fit.cost} lbs prestige).`);
+  };
+
+  const startNightRound=()=>{
+    const hallDorm=dormState||createInitialDormState();
+    const check=canStartNightRound(ap,week,hallDorm,ownedHallSkills||{});
+    if(!check.ok){push(`⚠️ ${check.reason}`);return;}
+    if((check.cost||0)>0) setAp(a=>a-check.cost);
+    setNightMode(true);
+    setView('hall-lounge');
+    push(check.cost?`🔑 Night rounds — ${check.remaining} doors.`:`🔑 Night rounds continue — ${check.remaining} doors left.`);
+  };
+
+  const knockNightDoor=(studentId)=>{
+    const s=students.find(x=>x.id===studentId);
+    if(!s||s.hidden){push('⚠️ Door stays shut.');return;}
+    setNightTargetId(studentId);
+  };
+
+  const resolveNightChoice=(choice)=>{
+    const s=students.find(x=>x.id===nightTargetId);
+    if(!s||!choice){setNightTargetId(null);return;}
+    const hallDorm=dormState||createInitialDormState();
+    const kind=nightEncounterKind(s,hallDorm);
+    setDormState(prev=>applyNightVisit(prev||createInitialDormState(),week,s,choice,kind));
+    setStudents(prev=>prev.map(st=>{
+      if(st.id!==s.id) return st;
+      let ns={...st,relationship:Math.min(100,(st.relationship||0)+(choice.rel||0)),corruption:(st.corruption||0)+(choice.corruption||0)};
+      if(choice.hunger) ns=adjustHunger(ns,choice.hunger);
+      if(choice.full&&choice.full<0) ns={...ns,fullness:Math.max(0,(ns.fullness||0)+choice.full)};
+      if(choice.cals){
+        const fed=feedStudentCalories(ns,choice.cals,choice.full>0?choice.full:0,0,'Night round');
+        if(fed) ns=fed;
+      }
+      if(choice.lbs) ns=processStudentGain(ns,choice.lbs,0);
+      return ns;
+    }));
+    const remaining=(nightRoundVisitCap(ownedHallSkills||{})-((hallDorm.nightRounds?.lastWeek===week?hallDorm.nightRounds.visitsThisWeek||0:0)+1));
+    push(`🔑 ${s.name}: ${choice.label}${remaining<=0?' — floor gone quiet.':''}`);
+    if(remaining<=0) setNightMode(false);
+    setNightTargetId(null);
   };
 
   const grantExplorationReward=(grants)=>{
@@ -1611,6 +1675,8 @@ export default function HallPass(){
     }
     skipHungerCheckRef.current=false;
     setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
+    setNightMode(false);
+    setNightTargetId(null);
     const newWeek=week+1;
     setWeek(newWeek);
     setWeekPulse((p) => p + 1);
@@ -1657,10 +1723,13 @@ export default function HallPass(){
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,LILITH_PASSIVE_GAIN,0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
-      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0);
+      const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{});
+      let nsHab=habTick.student;
+      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0)+(habTick.extraLbs||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
-      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(s)*formPassiveGainMultiplier(s)*(1+(loungeSkillFx.gainMult||0))*withdrawalGainMultiplier(s)));
+      const habGain=1+(habTick.gainMult||0);
+      gain=Math.max(0,Math.round(gain*oppGainMult*asceticMult*mirrorMult*getSupernaturalGainMult(nsHab)*formPassiveGainMultiplier(nsHab)*(1+(loungeSkillFx.gainMult||0))*habGain*withdrawalGainMultiplier(nsHab)));
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
@@ -1677,7 +1746,7 @@ export default function HallPass(){
         const evPassive=evTree.filter(sk=>(s.evolvedSkills||[]).includes(sk.id)&&sk.passiveBonus).reduce((a,b)=>a+(b.passiveBonus||0),0);
         gain+=evPassive;
       }
-      let ns=processStudentGain(s,gain,0);
+      let ns=processStudentGain(nsHab,gain,0);
       ns=tickPhysicalTraits(ns,ownedSkills);
       ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
       ns=tickRelationshipDecay(ns);
@@ -1687,6 +1756,14 @@ export default function HallPass(){
       }
       return {...ns,playerFedThisWeek:false};
     });
+    const neigh=neighborEcologyPatch(updated,dormState||createInitialDormState());
+    if(Object.keys(neigh).length){
+      updated=updated.map(s=>{
+        const d=neigh[s.id];
+        if(!d) return s;
+        return {...s,relationship:Math.max(0,Math.min(100,(s.relationship||0)+d))};
+      });
+    }
     // Final-form campus radiate: Comfort Queens soothe, The Adored warm.
     updated=applyFinalFormRadiate(updated);
     if(pharmacistState?.campusFattening){
@@ -1755,6 +1832,9 @@ export default function HallPass(){
       const preLbs=ns.lbs;
       const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player, labState });
       ns=tick.student;
+      if(deviceTickHabitatMult(ns,dormState||createInitialDormState())>1){
+        ns=processStudentGain(ns,1,0);
+      }
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
         const{ _pendingGainLbs,...rest}=ns;
@@ -1824,7 +1904,7 @@ export default function HallPass(){
             push(`🌿 ${campusEv.text()}`);
             setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
           }else{
-            const gainTargets=updated.filter(studentReceivesPassiveGain);
+            const gainTargets=updated.filter(s=>studentReceivesPassiveGain(s)&&!campusStayHome(s,dormState||createInitialDormState()));
             const target=gainTargets.length?gainTargets[rnd(0,gainTargets.length-1)]:null;
             if(target){
               push(`🌿 ${campusEv.text(target)}`);
@@ -1836,7 +1916,7 @@ export default function HallPass(){
     }
     // ── PANTRY RESTOCK ──
     {
-      const drops=rnd(INVENTORY_CONFIG.weeklyDrops[0],INVENTORY_CONFIG.weeklyDrops[1]);
+      const drops=rnd(INVENTORY_CONFIG.weeklyDrops[0],INVENTORY_CONFIG.weeklyDrops[1])+pantryDropBonus(ownedHallSkills||{},dormState||{});
       const found=[];
       setInventory(prev=>{
         const next={...prev};
@@ -6940,6 +7020,8 @@ export default function HallPass(){
     if(!talkStudentId) return;
     gainFavor('talk');
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
+    const targetForHab=students.find(x=>x.id===talkStudentId);
+    effect=applyTalkHabitatBonus(effect,targetForHab,dormState||createInitialDormState());
     if(applySuggest){
       setStudents(prev=>prev.map(x=>x.id===talkStudentId?{...x,suggestDebuffWeek:week}:x));
       push(`🗣 Suggestion planted — ${students.find(s=>s.id===talkStudentId)?.name||'she'} resists less this week.`);
@@ -7627,7 +7709,7 @@ export default function HallPass(){
       setSessionLog([]);
       setPrivateSession({
         student:s,phase:"venue",venue:null,foods:[],totalGain:0,
-        capacityBonus:(hist.capacityBonus||0)+skillSessionCapBonus,
+        capacityBonus:(hist.capacityBonus||0)+skillSessionCapBonus+sessionCapHabitatBonus(s,dormState||createInitialDormState(),ownedHallSkills||{}),
         sessionStartCalories:s.consumedCalories||0,
         encouragementsUsed:[],toleranceBuffer:0,sessionNum:hist.count+1,
         refillRound:0,tappedOut:false,tapOutDialogue:null,sessionPace:'steady',
@@ -7844,6 +7926,7 @@ export default function HallPass(){
   const effectiveHallActions=ACTIONS_HALL.filter(a=>{
     if(a.supernaturalOnly&&!opposition?.supernatural?.actTriggered) return false;
     if(a.requiresUnlock&&!hasHallLoungeUnlock(ownedHall,a.requiresUnlock)) return false;
+    if(a.requiresHallSkill&&!ownedHall[a.requiresHallSkill]) return false;
     return true;
   });
 
@@ -8790,7 +8873,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} dormState={dormState||createInitialDormState()} ap={ap} week={week} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} onPurchaseRoomFit={purchaseRoomFit} onStartNightRound={startNightRound} nightMode={nightMode} nightTargetId={nightTargetId} onNightKnock={knockNightDoor}/>}
 
           {view==="influence"&&<InfluenceView
             students={students}
@@ -9056,6 +9139,15 @@ export default function HallPass(){
         } : undefined}
         onPersistWeekTextUsed={persistStudentWeekTextUsed}
         onComplete={(s)=>{
+          const hab=habitatForStudent(s,dormState||createInitialDormState());
+          if(hab.weighRel||hab.weighLbs){
+            setStudents(prev=>prev.map(st=>{
+              if(st.id!==s.id) return st;
+              let ns={...st,relationship:Math.min(100,(st.relationship||0)+(hab.weighRel||0))};
+              if(hab.weighLbs) ns=processStudentGain(ns,hab.weighLbs,0);
+              return ns;
+            }));
+          }
           if((ownedSkills.memory_palace||0)>=1){
             const sid=getStage(s.lbs).id;
             applyEchoCapture(s, prev=>captureWeighInEcho(prev,s.id,week,sid));
@@ -9318,7 +9410,18 @@ export default function HallPass(){
       {/* ── LILITH — CLUE / INVESTIGATION MODAL ── */}
       {!raProfile?.floorBriefingDone&&<FloorBriefingModal raProfile={raProfile} onContinue={dismissFloorBriefing} soundEnabled={soundEnabled}/>}
       {roomVisitStudent&&<RoomVisitModal student={roomVisitStudent} week={week} raProfile={raProfile} onClose={()=>setRoomVisitStudentId(null)} onComplete={completeRoomVisit} soundEnabled={soundEnabled}/>}
-      {talkStudent&&<TalkModal student={talkStudent} raProfile={raProfile} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)} soundEnabled={soundEnabled}/>}
+      {talkStudent&&<TalkModal student={talkStudent} raProfile={raProfile} skillEffects={skillEffects} week={week} weeklyArms={weeklyArms} onArmDevouring={()=>armDevouringPresence(talkStudent.id)} onArmMesmerizing={()=>armMesmerizingPresence(talkStudent.id)} onClose={()=>setTalkStudentId(null)} onApplyEffect={applyTalkEffect} campusFattening={!!pharmacistState?.campusFattening} campusTier={getCampusNarrativeTier(pharmacistState)} soundEnabled={soundEnabled} dormState={dormState||createInitialDormState()}/>}
+      {nightTargetId!=null&&students.find(s=>s.id===nightTargetId)&&(
+        <NightRoundModal
+          student={students.find(s=>s.id===nightTargetId)}
+          dormState={dormState||createInitialDormState()}
+          week={week}
+          raProfile={raProfile}
+          soundEnabled={soundEnabled}
+          onChoose={resolveNightChoice}
+          onClose={()=>setNightTargetId(null)}
+        />
+      )}
 
       {pharmacistChemSession&&pharmacistChemStudentId!=null&&(()=>{
         const chemStudent=students.find(st=>st.id===pharmacistChemStudentId);

@@ -59,7 +59,7 @@ export function computeNavVisibility({
 
 export const NAV_TAB_META = [
   ['roster', '📋 RA Desk'],
-  ['hall-lounge', '🏠 Hall Lounge'],
+  ['hall-lounge', '🏠 Blueprint'],
   ['influence', '✨ Influence'],
   ['student', null],
   ['actions', '🎭 Actions'],
@@ -75,7 +75,7 @@ export const NAV_TAB_META = [
 ];
 
 export const NAV_UNLOCK_BLURB = {
-  'hall-lounge': 'Hall Lounge — spend floor weight on permanent upgrades.',
+  'hall-lounge': 'Hall Blueprint — labeled rooms, upgrades, and night rounds.',
   influence: 'Influence — resonance links and floor rituals.',
   actions: 'Hall-Wide Actions — feed the whole floor at once.',
   inventory: 'Pantry — items and gifts for residents.',
