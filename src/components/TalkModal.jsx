@@ -81,6 +81,7 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
     if (afterglow?.trim()) text += afterglow.startsWith('\n') ? afterglow : `\n\n${afterglow}`;
     const lingerKey = topic.id === 'encourage' ? 'talk.encourage.linger'
       : topic.id === 'command_finish' ? 'talk.command_finish.linger'
+      : topic.id === 'origin_echo' ? 'talk.origin_echo.linger'
       : 'talk.checkIn.linger';
     const linger = render(`{${lingerKey}|prefix:\n\n}`, ctx, { ...renderOpts, noSmooth: true });
     if (linger?.trim()) text += linger.startsWith('\n') ? linger : `\n\n${linger}`;

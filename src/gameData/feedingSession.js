@@ -75,6 +75,27 @@ export function getSessionPaceModifiers(paceId = 'steady') {
   return SESSION_PACE_ACTIONS.find((p) => p.id === paceId) || SESSION_PACE_ACTIONS[1];
 }
 
+/** Prior course pace changes the next plate — warmed-up push, recovery linger. */
+export function getCourseChainModifiers(lastPaceId, thisPaceId) {
+  if (!lastPaceId) return { refusalBonus: 0, calorieMult: 1, extraRel: 0 };
+  if (lastPaceId === thisPaceId) {
+    if (thisPaceId === 'push' || thisPaceId === 'fill') {
+      return { refusalBonus: 0.04, calorieMult: 1.03, extraRel: 0 };
+    }
+    if (thisPaceId === 'savor' || thisPaceId === 'linger' || thisPaceId === 'gentle') {
+      return { refusalBonus: -0.02, calorieMult: 1.02, extraRel: 1 };
+    }
+    return { refusalBonus: 0, calorieMult: 1, extraRel: 0 };
+  }
+  const lastSoft = lastPaceId === 'savor' || lastPaceId === 'linger' || lastPaceId === 'gentle';
+  const thisHard = thisPaceId === 'push' || thisPaceId === 'fill';
+  if (lastSoft && thisHard) return { refusalBonus: 0.06, calorieMult: 1.05, extraRel: 0 };
+  const lastHard = lastPaceId === 'push' || lastPaceId === 'fill';
+  const thisSoft = thisPaceId === 'gentle' || thisPaceId === 'savor' || thisPaceId === 'linger';
+  if (lastHard && thisSoft) return { refusalBonus: -0.04, calorieMult: 1.04, extraRel: 2 };
+  return { refusalBonus: 0, calorieMult: 1, extraRel: 0 };
+}
+
 /** Hunger/corruption/trait modifiers for feed attempts (DEPTH_PLAN §8). */
 export function getFeedingModifiers(student, {
   generousTrait = false,
@@ -97,6 +118,15 @@ export function getFeedingModifiers(student, {
   let calorieMult = 1;
   if (hunger >= 3 && addiction >= 2) calorieMult = 1.12;
   else if (hunger >= 2) calorieMult = 1.05;
+
+  const stance = student?.gainStance;
+  if (stance === 'opposed') refusalBonus -= 0.05;
+  else if (stance === 'reluctant') refusalBonus -= 0.02;
+  else if (stance === 'secret') calorieMult += 0.06;
+  if (student?.originFlags?.galleySeeded) fullnessMult += 0.03;
+  if (student?.originFlags?.nightSeeded) refusalBonus += 0.03;
+  if ((student?.fullness || 0) > 40) calorieMult += 0.04;
+  if ((student?.fullness || 0) > 70) refusalBonus += 0.04;
 
   if (student?.leftoverFedThisWeek) {
     calorieMult += 0.08;
@@ -205,12 +235,17 @@ export function runVenueFeedAttempt({
 
   const feedMods = getFeedingModifiers(student, { generousTrait, context, week: sessionCtx.week || 0 });
   const pace = getSessionPaceModifiers(sessionPace);
+  const chain = getCourseChainModifiers(sessionCtx.lastPace, sessionPace);
   const pushBonus = forcePush ? 0.12 : 0;
   const hungerBonus = pendingHungerResolve ? 0.1 : 0;
+  let extraRelOut = extraRel;
+  if (sessionPace === 'savor') extraRelOut += 2;
+  if (sessionPace === 'linger') extraRelOut += 1;
+  extraRelOut += chain.extraRel;
 
   const payload = resolveFeedPayload(source, student, {
     skillGainMult,
-    profGainMult: profGainMult * feedMods.calorieMult,
+    profGainMult: profGainMult * feedMods.calorieMult * chain.calorieMult,
     gainLbs,
   });
 
@@ -228,7 +263,7 @@ export function runVenueFeedAttempt({
     student,
     payload.calories,
     payload.fullness,
-    extraRel,
+    extraRelOut,
     labelOverride || payload.label,
     {
       ...capOpts,
@@ -236,6 +271,7 @@ export function runVenueFeedAttempt({
       refusalBonus: (feedOpts.refusalBonus ?? 0)
         + feedMods.refusalBonus
         + pace.refusalBonus
+        + chain.refusalBonus
         + pushBonus
         + hungerBonus,
       fullnessMult: feedOpts.fullnessMult ?? feedMods.fullnessMult,

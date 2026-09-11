@@ -110,10 +110,17 @@ export function DeviceRouteModal({
         <div style={{ fontSize: 9, letterSpacing: 2, color: '#5080a0', marginBottom: 6 }}>ROUTE BUDGET</div>
         <div style={{ fontSize: 14, fontWeight: 700, color: '#d0e0f0', marginBottom: 4 }}>{deviceLabel}</div>
         <div style={{ fontSize: 11, color: '#8090b0', marginBottom: 14 }}>Target: {studentName}</div>
-        {['belly', 'campus', 'reserve'].map((key) => (
-          <label key={key} style={{ display: 'block', fontSize: 10, color: '#7090b0', marginBottom: 10, textTransform: 'capitalize' }}>
-            {key}: {alloc[key]}%
-            <input type="range" min={0} max={100} value={alloc[key]} style={{ width: '100%', marginTop: 4 }} onChange={(e) => setVal(key, e.target.value)} />
+        <div style={{ fontSize: 11, color: '#90a8c0', lineHeight: 1.55, marginBottom: 12 }}>
+          Belly load grows her. Campus exposure risks discovery. Aftercare reserve lowers that risk and still counts a little toward the run.
+        </div>
+        {[
+          { key: 'belly', label: 'Belly load' },
+          { key: 'campus', label: 'Campus exposure' },
+          { key: 'reserve', label: 'Aftercare reserve' },
+        ].map(({ key, label }) => (
+          <label key={key} style={{ display: 'block', fontSize: 10, color: '#7090b0', marginBottom: 10 }}>
+            {label}: {alloc[key]}%
+            <input type="range" min={0} max={100} value={alloc[key]} style={{ width: '100%', marginTop: 4 }} onChange={(e) => setVal(key, e.target.value)} aria-label={label} />
           </label>
         ))}
         <button type="button" className="device-choice-row" style={{ ...C.btn('#406080'), width: '100%', marginBottom: 8 }} onClick={() => { playHallPassSound('confirm', soundEnabled); commit(); }}>Deploy route</button>

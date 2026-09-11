@@ -22,13 +22,13 @@ export const HUNT_NODES = {
 export const HUNT_MAP = {
   dorm:        ['quad'],
   quad:        ['dorm','dining_hall','campus_park','admin','crossroads'],
-  dining_hall: ['quad','dorm_row'],
+  dining_hall: ['quad','dorm_row','coffee_shop'],
   dorm_row:    ['dining_hall'],
   crossroads:  ['quad','gym','library','frat_row','coffee_shop'],
   gym:         ['crossroads'],
   library:     ['crossroads'],
   frat_row:    ['crossroads'],
-  coffee_shop: ['crossroads'],
+  coffee_shop: ['crossroads','dining_hall'],
   campus_park: ['quad'],
   admin:       ['quad'],
 };
@@ -52,92 +52,121 @@ export const HUNT_NODE_ACCESS = {
 // difficulty: 1=easy, 2=medium, 3=hard
 // oblivious→uneasy tone shifts with her weight (see SEDUCTION_MOVE)
 
+function huntBand(stage, early, mid, late) {
+  if (stage >= 7) return late;
+  if (stage >= 4) return mid;
+  return early;
+}
+
 export const HUNT_MEN = [
   {
     id: 'chad_w', name: "Chad Whitmore", tag: "Frat Bro",
     location: 'frat_row', difficulty: 1,
-    desc: (stage) => stage < 4
-      ? "He's exactly what he looks like — polo shirt half-tucked, that particular confidence of someone who's never had to try very hard. You can work with that."
-      : "He's been watching you approach for thirty seconds without blinking. Something about the way you move has already made the decision for him.",
+    desc: (stage) => huntBand(stage,
+      "Polo half-tucked, the ease of someone who never had to try. You can work with that.",
+      "He has been watching you approach. The polo is tighter on him now too. He has not noticed his own staring.",
+      "He stops talking when you fill the porch light. Whatever he was performing is already over.",
+    ),
   },
   {
     id: 'tyler_b', name: "Tyler Banks", tag: "Gym Bro",
     location: 'gym', difficulty: 1,
-    desc: (stage) => stage < 4
-      ? "Post-workout flush, protein shaker in hand, checking himself in the mirror. Vanity is a useful thing."
-      : "His eyes find you the second you enter. The protein shaker stops mid-lift. Something deep in his nervous system has already registered what's about to happen.",
+    desc: (stage) => huntBand(stage,
+      "Post-workout flush, protein shaker, a mirror he trusts more than people. Vanity is useful.",
+      "The shaker stops mid-lift. His eyes find the new width of you and stay there.",
+      "He forgets the set. The glass wall shows you arriving, and he watches the reflection like it is the workout.",
+    ),
   },
   {
     id: 'zack_m', name: "Zack Morris", tag: "Coffee Regular",
     location: 'coffee_shop', difficulty: 1,
-    desc: (stage) => stage < 4
-      ? "He's been making eyes at interesting-looking people in this café for three semesters. You finally qualify. He just doesn't know what it'll cost."
-      : "He's stopped pretending to read. You walked through the door and something in the room changed. He felt it before he saw you.",
+    desc: (stage) => huntBand(stage,
+      "He has been making eyes at interesting people here for three semesters. You finally qualify.",
+      "He stopped pretending to read. You walked in and the room changed temperature for him.",
+      "The laptop is closed. He felt you in the doorway before he saw you. He is already paying.",
+    ),
   },
   {
     id: 'marcus_w', name: "Marcus Webb", tag: "Campus Runner",
     location: 'campus_park', difficulty: 2,
-    desc: (stage) => stage < 5
-      ? "Earbuds in, mid-stride, not looking. You'll need to actually get his attention. He's in his head. Pull him out of it."
-      : "He slowed when he saw you. He's still pretending to run, but his eyes are tracking you. He knows he slowed. He can't help it.",
+    desc: (stage) => huntBand(stage,
+      "Earbuds in, mid-stride. You will need to actually get his attention.",
+      "He slowed when he saw you. He is still pretending to run. His eyes are not.",
+      "The loop path makes room. He jogs in place because stopping would mean admitting he stopped.",
+    ),
   },
   {
     id: 'derek_o', name: "Derek Okafor", tag: "Dining Regular",
     location: 'dining_hall', difficulty: 2,
-    desc: (stage) => stage < 5
-      ? "Mid-bite, mid-conversation with a table full of friends. You'll need to hold his attention past the social friction. It's possible."
-      : "He's been watching you from across the hall since you came in. His table is still talking. He's somewhere else.",
+    desc: (stage) => huntBand(stage,
+      "Mid-bite, mid-conversation. You will have to hold him past the table's social friction.",
+      "He has been watching from across the hall. His friends are still talking. He is somewhere else.",
+      "The tray line parts. He forgets his own plate. Yours is the only one he can look at.",
+    ),
   },
   {
     id: 'noah_k', name: "Noah Kim", tag: "The Quiet One",
     location: 'dorm_row', difficulty: 2,
-    desc: (stage) => stage < 5
-      ? "He lives two doors down. He's seen you before, always looked away quickly. Shyness is just a door that opens inward — you know how to push."
-      : "He freezes when he sees you in the hallway. Doesn't run. Can't. Something about the scale of you has locked him in place.",
+    desc: (stage) => huntBand(stage,
+      "Two doors down. He always looked away. Shyness is a door that opens inward.",
+      "He freezes in the hallway. Does not run. The scale of you has locked his feet.",
+      "He is still in the doorway when you pass. There is no looking away left in him.",
+    ),
   },
   {
     id: 'jason_p', name: "Jason Park", tag: "Study Nerd",
     location: 'library', difficulty: 2,
-    desc: (stage) => stage < 5
-      ? "He looks up when you sit across from him, then looks back down. That second look — the one he didn't want you to see — is the one you needed."
-      : "He watched you come through the door and has not looked at his book since. His pen has been on the same word for two minutes.",
+    desc: (stage) => huntBand(stage,
+      "He looks up, then down. The second look — the one he did not want seen — is the one you needed.",
+      "He watched you come through the door and has not looked at his book since.",
+      "The pen has been on the same word since you sat. He knows. He stays.",
+    ),
   },
   {
     id: 'ryan_w', name: "Ryan Walsh", tag: "Graduate TA",
     location: 'admin', difficulty: 3,
-    desc: (stage) => stage < 6
-      ? "Professionalveneer, badge lanyard, the practiced authority of a man used to having control of a room. Interesting thing to take from someone."
-      : "He sees you and visibly recalculates. Whatever he was about to say doesn't come out. His professional posture is doing a lot of work right now.",
+    desc: (stage) => huntBand(stage,
+      "Badge lanyard, practiced authority. Interesting thing to take from someone who likes control.",
+      "He sees you and recalculates. The sentence he prepared does not come out.",
+      "The lanyard is still there. The authority is not. He holds the door because you fill it.",
+    ),
   },
   {
     id: 'connor_b', name: "Connor Briggs", tag: "Frat President",
     location: 'frat_row', difficulty: 3,
-    desc: (stage) => stage < 6
-      ? "He's used to being the most confident person in any room. That's a specific kind of brittle. You know where to press."
-      : "He started to say something when you approached, the automatic ease of someone who never has to think about it. Then he looked at you properly and the sentence didn't finish.",
+    desc: (stage) => huntBand(stage,
+      "Used to being the most confident person in a room. Brittle in a specific way. You know where to press.",
+      "He started to say something easy. Then he looked at you properly and the sentence died.",
+      "The porch belongs to you now. He yields it like a vote he already lost.",
+    ),
   },
   {
     id: 'ethan_c', name: "Ethan Cole", tag: "Campus Security",
     location: 'campus_park', difficulty: 3,
-    desc: (stage) => stage < 6
-      ? "He's trained to notice things that are wrong. You are very much wrong, in a way he can't name or file a report about. That's the opening."
-      : "He's been following you with his eyes for two minutes, one hand on his radio, not using it. Something is keeping him from using it.",
+    desc: (stage) => huntBand(stage,
+      "Trained to notice things that are wrong. You are wrong in a way he cannot file.",
+      "He has been following you with his eyes, one hand on the radio, not using it.",
+      "The radio stays clipped. He escorts nothing. He is the one being led.",
+    ),
   },
   {
     id: 'brendan_m', name: "Brendan Marsh", tag: "Library Regular",
     location: 'library', difficulty: 3,
-    desc: (stage) => stage < 6
-      ? "He's been here long enough to see patterns. You are a new pattern. He's watching you with the careful attention of someone who reads people well. He's reading you right now."
-      : "He looked up the moment you came in and hasn't looked away. He's not pretending to be busy. He's just watching. He knows something is wrong. He's still here.",
+    desc: (stage) => huntBand(stage,
+      "He reads people. He is reading you right now with the care of someone who keeps notes.",
+      "He looked up the moment you came in and has not looked away. He knows something is off. He stays.",
+      "The stack of books is a prop. You are the text. He has already marked the page.",
+    ),
   },
   {
     id: 'prof_hayes', name: "RA Hayes", tag: "Visiting RA",
     location: 'admin', difficulty: 3,
-    desc: (stage) => stage < 6
-      ? "Older. Careful. Actually perceptive — the kind of person who notices things most people don't bother to. The most interesting of them. The most useful challenge."
-      : "He looked at you and something shifted in his expression — not desire exactly. Recognition. Like he's read about something and is now watching it happen.",
+    desc: (stage) => huntBand(stage,
+      "Older. Careful. The kind of person who notices what most people skip.",
+      "Recognition, not just desire. Like he has read about this and is watching it arrive.",
+      "He holds the visitor badge like it might explain you. It will not. He still follows.",
+    ),
   },
-  // Special: delivery (blob only)
   {
     id: 'danny_d', name: "Danny", tag: "Delivery Driver",
     location: 'dorm', difficulty: 0,
@@ -146,9 +175,11 @@ export const HUNT_MEN = [
   {
     id: 'owen_k', name: "Owen Keller", tag: "Night Cook",
     location: 'dining_hall', difficulty: 2,
-    desc: (stage) => stage < 5
-      ? "Closing shift, apron still on, a tray he was going to throw out. He looks at you like you might be the reason he kept it."
-      : "He stopped scraping plates when you came in. The leftover tray is still warm. So is he, in a way he will not name.",
+    desc: (stage) => huntBand(stage,
+      "Closing shift, apron still on, a tray he was going to throw out. He looks at you like you might be the reason he kept it.",
+      "He stopped scraping plates when you came in. The leftover tray is still warm.",
+      "The kitchen light finds you first. He plates without being asked. The tray was always yours.",
+    ),
   },
 ];
 
@@ -294,6 +325,16 @@ export const PHYSICAL_MOVES = {
       ? "You mention the kitchen is still plating. He forgets the errand he was on."
       : "You tilt your head toward warm trays. He takes a step before he decides to.",
   },
+  door_fill: {
+    label: "Fill the doorway",
+    unlockLbs: 180,
+    power: 0.11,
+    vignette: (band) => band >= 2
+      ? "You occupy the frame. There is no path around you. He looks up, then stays."
+      : band >= 1
+      ? "You pause in the doorway until he has to look. Softness takes the light first."
+      : "You hold the threshold a beat too long. He notices the new width of you.",
+  },
 };
 
 export const HUNT_NODE_MODS = {
@@ -310,7 +351,7 @@ export const HUNT_NODE_MODS = {
   quad: { seduceBonus: 0.01, wpDelta: 0 },
 };
 
-export function huntEncounterMods(nodeId, student, week = 0) {
+export function huntEncounterMods(nodeId, student, week = 0, manId = null) {
   const base = HUNT_NODE_MODS[nodeId] || { seduceBonus: 0, wpDelta: 0 };
   let seduceBonus = base.seduceBonus || 0;
   let wpDelta = base.wpDelta || 0;
@@ -321,6 +362,15 @@ export function huntEncounterMods(nodeId, student, week = 0) {
   if (week && student?.lastNightVisitWeek === week) {
     seduceBonus += 0.05;
     wpDelta -= 3;
+  }
+  if (student?.originFlags?.nightSeeded) {
+    seduceBonus += 0.03;
+    wpDelta -= 2;
+  }
+  const marks = manId ? (student?.huntMarks?.[manId] || 0) : 0;
+  if (marks) {
+    seduceBonus += Math.min(0.15, marks * 0.04);
+    wpDelta -= Math.min(12, marks * 3);
   }
   return { seduceBonus, wpDelta };
 }

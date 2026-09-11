@@ -350,3 +350,99 @@ registerPool('talk.command_finish.linger', [
     'She sets the fork down only when you let her. Softness lives in the waiting.',
   ] },
 ]);
+
+// Shape: FULL SENTENCE. Setup for asking how she landed on the floor.
+registerPool('talk.origin_echo.open', [
+  { when: {}, text: [
+    'You ask how she landed on this floor. She does not rush the answer.',
+    'The origin question sits between you like a plate she has been saving.',
+    'You leave room for the story she has not told housing.',
+  ] },
+]);
+
+// Shape: DIALOGUE BEAT. How she got here — origin keyed, then generic.
+registerPool('talk.origin_echo.line', [
+  { when: { studentId: 0, origin: 'britt_gymnast' }, weight: 4, text: [
+    `"Coach had a speech about hunger," Brittany says. "I stopped attending."`,
+  ] },
+  { when: { studentId: 0, origin: 'britt_pageant' }, weight: 4, text: [
+    `"Pretty was homework," Brittany says. "Full is the elective I actually wanted."`,
+  ] },
+  { when: { studentId: 8, origin: 'maya_moved_often' }, weight: 4, text: [
+    `"Third address," Maya says. "First kitchen that let me leave a dish in the sink."`,
+  ] },
+  { when: { studentId: 8, origin: 'maya_eight_siblings' }, weight: 4, text: [
+    `"We ate in shifts at home," Maya says. "Here the table waits for me."`,
+  ] },
+  { when: { studentId: 1, origin: 'madd_subject_zero' }, weight: 4, text: [
+    `"I was supposed to stay on the page," Cassidy says. "The protocol followed me in."`,
+  ] },
+  { when: { studentId: 2, origin: 'kylie_brand_body' }, weight: 4, text: [
+    `"The brand had a size," Kylie says. "I ate past it and kept the ring light on."`,
+  ] },
+  { when: { studentId: 6, origin: 'tiffany_feast_founder' }, weight: 4, text: [
+    `"Wednesday was always extra," Tiffany says. "I started keeping Thursday too."`,
+  ] },
+  { when: { studentId: 10, origin: 'renee_line_cook' }, weight: 4, text: [
+    `"Staff meal was still a meal," Reneé says. "I stopped pretending it was small."`,
+  ] },
+  { when: { studentId: 14, origin: 'mj_homestead_abundance' }, weight: 4, text: [
+    `"No sense being shy around a table," Mary Jane says. "I proved the proverb."`,
+  ] },
+  { when: { corruption: [0] }, weight: 2, text: [
+    `"I didn't plan this," {subject.name} says. "I just stopped leaving food."`,
+    `"If housing asks, I transferred for the quiet," {subject.name} says. "The quiet is a kitchen."`,
+  ] },
+  { when: { corruption: [2] }, weight: 2, text: [
+    `"You already know," {subject.name} says. "You just wanted to hear me say it."`,
+    `"This floor is the plot," {subject.name} says, fond. "I walked into it on purpose."`,
+  ] },
+  { when: {}, text: [
+    `"That's how I got here," {subject.name} says, palm on her middle like a footnote.`,
+    `{subject.name} shrugs, then does not. "I stayed. The food stayed."`,
+    `"You asked," {subject.name} says. "So here is the part I do not put in the file."`,
+    `{subject.name} looks at the plate, then at you. "This is the transfer story."`,
+  ] },
+]);
+
+// Shape: FULL SENTENCE. Body of the origin talk.
+registerPool('talk.origin_echo.body', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'The story still fits a smaller frame. Appetite is already rewriting the ending.',
+    'She tells it with her shirt tugged down. The tug does not last the whole paragraph.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, weight: 2, text: [
+    'She tells it with her belly in her lap, like the plot needed somewhere to sit.',
+    'The origin arrives between bites. She does not pause the fork for history.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'The origin is small next to her. She tells it anyway, warm and certain.',
+    'She fills the chair while she talks. The past has to share the furniture.',
+  ] },
+  { when: {}, text: [
+    'The past arrives as warmth and a second helping she does not name.',
+    'She talks with food still in reach. Origin and plate share a table.',
+    'Whatever brought her here is still working. You can see it in how she sits.',
+    'The story has crumbs on it. She does not brush them off.',
+  ] },
+]);
+
+registerPool('talk.origin_echo', [
+  { when: {}, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.origin_echo.open} {origin.stirring.line}\n\n{talk.origin_echo.line} {talk.origin_echo.body}',
+    '{talk.moodOpener|suffix:\n\n}{talk.origin_echo.line}\n\n{origin.stirring.line} {talk.origin_echo.body}',
+    '{talk.origin_echo.open}\n\n{talk.origin_echo.line} {origin.stirring.line}',
+  ] },
+]);
+
+registerPool('talk.origin_echo.linger', [
+  { when: { stageMax: 3 }, text: [
+    'The story stays in the room after she stops talking. So does her appetite.',
+    'She looks at you like the origin is still happening.',
+  ] },
+  { when: {}, text: [
+    'Whatever she admitted keeps working after you leave.',
+    'She sits with the telling. The plate does too.',
+    'The origin does not close. It just gets quieter.',
+  ] },
+]);

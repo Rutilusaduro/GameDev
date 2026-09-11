@@ -31,6 +31,7 @@ registerPool('device.tick.beat', [
   { when: {}, text: [
     '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.sensation|prefix: — }{join:device.tick.synergy|prefix: }.',
     '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.gainTag|prefix: }.',
+    '{device.tick.action}{device.tick.anchor}; {device.tick.growth}{join:device.tick.sensation|prefix: — }.',
   ] },
 ]);
 

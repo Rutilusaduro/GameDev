@@ -249,7 +249,7 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     }
   }
 
-  if (rng() < EXPLORATION_CONFIG.studentSightingChance) {
+  if (rng() < EXPLORATION_CONFIG.studentSightingChance + Math.min(0.18, (ctx.exploration?.observeCounts?.[nodeId] || 0) * 0.04)) {
     const { lines: sightingLines, trustGrants } = pickStudentSighting(ctx.students, travelCtx, rng);
     if (sightingLines.length) lines.push(...sightingLines);
     if (trustGrants.length) effects.trustGrants = trustGrants;

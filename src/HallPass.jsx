@@ -1123,7 +1123,10 @@ export default function HallPass(){
     }));
     const remaining=(nightRoundVisitCap(ownedHallSkills||{})-((hallDorm.nightRounds?.lastWeek===week?hallDorm.nightRounds.visitsThisWeek||0:0)+1));
     push(`🔑 ${s.name}: ${choice.label}${remaining<=0?' — floor gone quiet.':''}`);
-    if(remaining<=0) setNightMode(false);
+    if(remaining<=0){
+      setNightMode(false);
+      earnMoney(20,'Night-round community hours');
+    }
   };
 
   const grantExplorationReward=(grants)=>{
@@ -3964,7 +3967,7 @@ export default function HallPass(){
     if(!man) return;
     const stageId=getStage(lilith.lbs).id;
     const diff=getEffectiveDifficulty(man.difficulty,stageId);
-    const mods=huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week);
+    const mods=huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week,manId);
     const willpower=Math.max(5,(WILLPOWER_START[diff]??45)+mods.wpDelta);
     const maxApprehension=MAX_APPREHENSION[diff]??5;
     const firstLine=getGuyLine(diff,willpower);
@@ -4019,7 +4022,7 @@ export default function HallPass(){
     if(encounter.won||encounter.failed||encounter.consumed) return;
     const stageId=getStage(lilith.lbs).id;
     const stageBand=stageId>=7?2:stageId>=3?1:0;
-    const success=Math.random()<seduceSuccessChance(encounter.willpower,move.power||0,{seduceBonus:huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week).seduceBonus});
+    const success=Math.random()<seduceSuccessChance(encounter.willpower,move.power||0,{seduceBonus:huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week,encounter.manId).seduceBonus});
     const logs=[{text:move.vignette(stageBand),type:'action'}];
     let{willpower,apprehension}=encounter;
     if(success){const wpDrop=Math.round(25+Math.random()*10);willpower=Math.max(0,willpower-wpDrop);}
@@ -4044,7 +4047,13 @@ export default function HallPass(){
     const stageId=getStage(lilith.lbs).id;
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):20;
-    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    setStudents(prev=>prev.map(s=>{
+      if(s.id!==LILITH_ID) return s;
+      const marks={...(s.huntMarks||{})};
+      const mid=lilithHuntState?.encounter?.manId;
+      if(mid) marks[mid]=(marks[mid]||0)+1;
+      return {...s,lbs:s.lbs+gain,huntMarks:marks};
+    }));
     setLilithKillCount(k=>k+1);
     if(isAib){
       setOpposition(prev=>removeConsumedAibMember(prev,aibTarget.aibMemberId));
@@ -7142,7 +7151,7 @@ export default function HallPass(){
     gainFavor('talk');
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     const targetForHab=students.find(x=>x.id===talkStudentId);
-    effect=applyTalkHabitatBonus(effect,targetForHab,dormState||createInitialDormState(),week);
+    effect=applyTalkHabitatBonus(effect,targetForHab,dormState||createInitialDormState(),week,meta.topicId);
     if(applySuggest){
       setStudents(prev=>prev.map(x=>x.id===talkStudentId?{...x,suggestDebuffWeek:week}:x));
       push(`🗣 Suggestion planted — ${students.find(s=>s.id===talkStudentId)?.name||'she'} resists less this week.`);
@@ -7427,6 +7436,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:dinnerEvent.sessionStartCalories||0,
         sessionPace:dinnerEvent.sessionPace||'steady',
+        lastPace:dinnerEvent.lastPace||null,
         pendingHungerResolve:!!dinnerEvent.pendingHungerResolve,
         week,
       },
@@ -7474,6 +7484,7 @@ export default function HallPass(){
       dishes:newDishes,
       totalGain:sessionCals,
       student:fed,
+      lastPace:dinnerEvent.sessionPace||'steady',
       pendingHungerResolve:result.clearedHungerResolve?false:prev.pendingHungerResolve,
     }));
     setDinnerLog(dl=>[...dl,
@@ -7496,6 +7507,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:dinnerEvent.sessionStartCalories||0,
         sessionPace:dinnerEvent.sessionPace||'steady',
+        lastPace:dinnerEvent.lastPace||null,
         pendingHungerResolve:!!dinnerEvent.pendingHungerResolve,
         week,
       },
@@ -7528,6 +7540,7 @@ export default function HallPass(){
       ...prev,
       totalGain:sessionCals,
       student:fed,
+      lastPace:dinnerEvent.sessionPace||'steady',
       pendingHungerResolve:result.clearedHungerResolve?false:prev.pendingHungerResolve,
     }));
     setDinnerLog(dl=>[...dl,`🎒 ${line}${fullMsg}`]);
@@ -7622,6 +7635,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:evtStudent.sessionStartCalories||0,
         sessionPace:groupDinnerEvent.sessionPace||'steady',
+        lastPace:groupDinnerEvent.lastPace||null,
         week,
       },
       gameCtx:{
@@ -7716,6 +7730,7 @@ export default function HallPass(){
       ...prev,
       students:prev.students.map(s=>s.id===targetId?{...s,dishes:newDishes,totalGain:sessionCals}:s),
       reactionLevels:newReactionLevels,
+      lastPace:groupDinnerEvent.sessionPace||'steady',
     }));
   };
 
@@ -7735,6 +7750,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:evtStudent.sessionStartCalories||0,
         sessionPace:groupDinnerEvent.sessionPace||'steady',
+        lastPace:groupDinnerEvent.lastPace||null,
         week,
       },
       gameCtx:{
@@ -7757,6 +7773,7 @@ export default function HallPass(){
     setGroupDinnerEvent(prev=>({
       ...prev,
       students:prev.students.map(s=>s.id===targetId?{...s,totalGain:sessionCals}:s),
+      lastPace:groupDinnerEvent.sessionPace||'steady',
     }));
     setGroupDinnerLog(dl=>[...dl,`🎒 ${live.name.split(' ')[0]} — ${item.label} from your pantry.`]);
   };
@@ -7872,6 +7889,7 @@ export default function HallPass(){
       sessionCtx:{
         sessionStartCalories:privateSession.sessionStartCalories||0,
         sessionPace:privateSession.sessionPace||'steady',
+        lastPace:privateSession.lastPace||null,
         capacityBonus:capOpts.capacityBonus,
         toleranceBuffer:capOpts.toleranceBuffer,
         week,
@@ -7921,7 +7939,7 @@ export default function HallPass(){
       setPrivateSession(null);
       setTapOutPopup({student:liveS,text:tapLine,totalGain:currentTotalGain});
     } else {
-      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:sessionCals,student:fed}));
+      setPrivateSession(prev=>({...prev,foods:[...prev.foods,food.id],totalGain:sessionCals,student:fed,lastPace:privateSession.sessionPace||'steady'}));
     }
   };
 

@@ -73,9 +73,21 @@ export const DEPTH_TALK_TOPICS = [
     engineTemplate: '{talk.leftover_plate}',
     dormGate: 'fridge',
   },
+  {
+    id: 'origin_echo',
+    label: 'Ask how she got here',
+    icon: '📖',
+    group: 'talk',
+    effect: { rel: 4, corruption: 1 },
+    engineTemplate: '{talk.origin_echo}',
+    originGate: true,
+  },
 ];
 
 export function talkTopicAvailable(topic, student, dormState) {
+  if (topic?.originGate) {
+    return !!(student?.origin && student.origin !== 'default');
+  }
   if (!topic?.dormGate) return true;
   const fits = dormState?.roomFits?.[student?.id] || {};
   if (topic.dormGate === 'anyFit') return Object.values(fits).some(Boolean);
@@ -91,11 +103,30 @@ export function talkTopicAvailable(topic, student, dormState) {
   return true;
 }
 
-export function applyTalkHabitatBonus(effect, student, dormState, week = 0) {
+export function applyTalkHabitatBonus(effect, student, dormState, week = 0, topicId = '') {
   const hab = habitatForStudent(student, dormState);
   if (!effect) return effect;
   const next = { ...effect };
   if (next.rel) next.rel += hab.talkRel;
+  const stance = student?.gainStance;
+  if (stance === 'opposed' && next.rel) next.rel += 1;
+  if (stance === 'reluctant' && next.rel) next.rel += 1;
+  if (stance === 'secret' && next.corruption) next.corruption += 1;
+  if ((student?.psych?.fixation ?? 0) >= 50 && next.corruption) next.corruption += 1;
+  if ((student?.psych?.shame ?? 0) >= 50 && next.rel && !next.cals) next.rel += 1;
+  if (student?.originFlags?.galleySeeded && next.cals) next.cals = Math.round(next.cals * 1.06);
+  if (student?.originFlags?.nightSeeded && next.rel) next.rel += 1;
+  if (topicId === 'origin_echo' && student?.origin && student.origin !== 'default' && next.rel) {
+    next.rel += 1;
+  }
+  if (topicId === 'encourage') {
+    if (stance === 'secret' && next.corruption) next.corruption += 1;
+    if (stance === 'opposed' && next.rel) next.rel += 1;
+  }
+  if (topicId === 'command_finish' && next.cals) {
+    if (stance === 'secret' || stance === 'neutral') next.cals = Math.round(next.cals * 1.08);
+    if ((student?.fullness || 0) > 50) next.full = (next.full || 0) + 4;
+  }
   if (student?.leftoverFedThisWeek) {
     if (next.rel) next.rel += 1;
     if (next.corruption) next.corruption += 1;

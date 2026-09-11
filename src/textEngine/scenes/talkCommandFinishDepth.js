@@ -145,9 +145,22 @@ pad('talk.command_finish.t2', [
 ]);
 
 registerModuleVariants('talk.command_finish', [
+  { when: { corruption: [0] }, priority: 1, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t0}',
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t0v1}\n\n{talk.command_finish.t0v0}',
+  ] },
+  { when: { corruption: [1] }, priority: 1, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t1}',
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t1v1} {talk.command_finish.t1v0}',
+  ] },
+  { when: { corruption: [2] }, priority: 1, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t2}',
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t2v0}\n\n{talk.command_finish.t2v1}',
+  ] },
   { when: {}, text: [
     `{talk.command_finish.t1}`,
     `{talk.command_finish.t2}`,
+    '{talk.moodOpener|suffix:\n\n}{talk.command_finish.t0}',
   ] },
 ]);
 

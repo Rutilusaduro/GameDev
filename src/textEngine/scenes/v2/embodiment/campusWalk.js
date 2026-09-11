@@ -23,6 +23,9 @@ registerPool('emb.walk.arrive', [
     'You steer her feet from the inside. The world tilts toward food and witnesses.',
     'Her pulse quickens with each step — yours and hers braided together.',
     'Campus noise washes over her skin. You feel every glance she pretends not to notice.',
+    'She walks like the next door might have a plate behind it. You keep her pointed that way.',
+    'Each stride is a small argument with her old pace. The new one wins.',
+    'You feel the sway of her through the shared body and do not hurry it.',
   ]},
 ]);
 
@@ -35,6 +38,9 @@ registerPool('emb.walk.move', [
     '→ {campus.destination}',
     '→ she crosses campus toward {campus.destination}, appetite trailing behind her.',
     '→ waddling toward {campus.destination}, every step a small surrender to gravity.',
+    '→ {campus.destination}, slower than last week, warmer than she admits.',
+    '→ toward {campus.destination} with a snack already in mind.',
+    '→ {campus.destination} — the path is short; her appetite makes it longer.',
   ]},
 ]);
 

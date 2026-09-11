@@ -42,6 +42,11 @@ export const REMOVAL_HEARING = {
       studentHiddenWeeks: 0, scrutinyDelta: -5, resolveHitAll: 8,
     },
     {
+      poolKey: 'night_testimony',
+      condition: (h) => h.includes('night_log') && h.includes('testify'),
+      studentHiddenWeeks: 0, scrutinyDelta: -8, resolveHitAll: 12,
+    },
+    {
       poolKey: 'night_paperwork',
       condition: (h) => h.includes('night_log'),
       studentHiddenWeeks: 0, scrutinyDelta: -4, resolveHitAll: 6,
@@ -111,5 +116,11 @@ export const EMERGENCY_HEARING = {
 };
 
 export function pickHearingEnding(hearingDef, history) {
-  return hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
+  const ending = hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
+  const flagCount = (history || []).filter(Boolean).length;
+  if (flagCount < 2) return ending;
+  const next = { ...ending };
+  if ((next.scrutinyDelta ?? 0) < 0) next.scrutinyDelta = next.scrutinyDelta - Math.min(4, flagCount);
+  if (next.resolveHitAll) next.resolveHitAll += Math.min(4, flagCount);
+  return next;
 }

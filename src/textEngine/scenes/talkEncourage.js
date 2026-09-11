@@ -76,16 +76,19 @@ registerPool("talk.encourage", [
   { when: { corruption: [0] }, priority: 1, text: [
     "{talk.moodOpener|suffix:\n\n}{enc.deflect} {enc.reach}\n\n{enc.giveIn}{join:enc.bodyAside,enc.flush|prefix: }",
     "{talk.moodOpener|suffix:\n\n}{enc.deflect}\n\n{enc.giveIn} {enc.reach}{enc.flush|prefix: }",
+    "{talk.moodOpener|suffix:\n\n}{enc.reach}\n\n{enc.deflect} {enc.giveIn}{enc.flush|prefix: }",
   ]},
   // Tier 1 — acceptance, release, resolve
   { when: { corruption: [1] }, priority: 1, text: [
     "{talk.moodOpener|suffix:\n\n}{enc.accept} {enc.release}\n\n{enc.resolve}{enc.bodyAside|prefix: }",
     "{talk.moodOpener|suffix:\n\n}{enc.accept}{enc.bodyAside|prefix: }\n\n{enc.release} {enc.resolve}",
+    "{talk.moodOpener|suffix:\n\n}{enc.release}\n\n{enc.accept} {enc.resolve}{enc.bodyAside|prefix: }",
   ]},
   // Tier 2 — ownership, display, bottomless
   { when: { corruption: [2] }, priority: 1, text: [
     "{talk.moodOpener|suffix:\n\n}{enc.owned}\n\n{enc.display} {enc.stillHungry}",
     "{talk.moodOpener|suffix:\n\n}{enc.owned}{enc.bodyAside|prefix: }\n\n{enc.display} {enc.stillHungry}",
+    "{talk.moodOpener|suffix:\n\n}{enc.display}\n\n{enc.owned} {enc.stillHungry}{enc.bodyAside|prefix: }",
   ]},
   { when: {}, text: [
     "{talk.moodOpener|suffix:\n\n}{enc.deflect} {enc.reach}",

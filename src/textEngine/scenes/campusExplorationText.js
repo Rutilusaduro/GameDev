@@ -240,6 +240,9 @@ registerPool('campus.sighting', [
     '{subject.name} crosses your path with the easy confidence of someone who belongs here.',
     'Campus noise softens for a moment around {subject.name}, then resumes.',
     'You catch {subject.name} in passing — unremarkable, unhurried, part of the day\'s texture.',
+    '{subject.name} has a snack in one hand and a schedule in the other. The snack is winning.',
+    'You see {subject.name} pause at a bench long enough to finish what she was carrying.',
+    '{subject.name} nods at you like the floor followed her off campus.',
   ] },
 ]);
 

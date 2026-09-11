@@ -12,6 +12,8 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase0', [
     'Vance taps the projector. {subject.name} at {studentLbs} pounds becomes a slide deck. The room performs worry while your resident performs hunger.',
     'The hearing begins with documentation — timestamps, meal photos, a body counted like liability. {subject.name} stays seated, warm and enormous beside you.',
     'A folder of night-round timestamps lands first. {subject.name} at {studentLbs} pounds sits like the evidence has hips.',
+    'Vance reads the charge as if appetite were a policy error. {subject.name} shifts in the chair and the chair answers first.',
+    'The Board wants a smaller story. {subject.name} is sitting in the larger one, {studentLbs} lbs of it, waiting.',
   ]},
 ]);
 
@@ -21,6 +23,8 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase1', [
     'Second motion: conditional enrollment. Restraint spoken like virtue while {subject.name}\'s belly still remembers lunch.',
     'Vance wants a promise of discretion. The Board wants language that makes appetite sound temporary.',
     'Someone mentions leftover trays as if they were contraband. {subject.name} smiles without meaning to.',
+    'The gavel waits on a word nobody in this room actually wants to keep. {subject.name} keeps eating in memory.',
+    'Conditional enrollment means: shrink the story, keep the resident. The resident does not shrink.',
   ]},
 ]);
 
@@ -117,6 +121,14 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.night_paperwork', [
     'The night log does the work the speech could not. She stays. The kitchen stays open.',
     'Community hours, signed. Removal tabled. Appetite continues after lights-out.',
     'Paperwork eats the complaint. {subject.name} walks out still enrolled, still hungry.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.removal.ending.night_testimony', [
+  { when: {}, text: [
+    'A resident speaks, then the night log lands. Vance cannot unhear either. {subject.name} stays.',
+    'Testimony plus timestamps. The Board files community hours and swallows the rest.',
+    'Devotion in the room, leftovers on the record. Removal dies of paperwork and affection.',
   ]},
 ]);
 

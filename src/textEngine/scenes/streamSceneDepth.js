@@ -16,6 +16,11 @@ registerModuleVariants('stream.endStream.excellent', [
   { when: { brandControl: 'soldOut', stageMin: 7 }, weight: 3, text: [
     `Sold out and still excellent. The brand got their monster. I got paid.`,
   ]},
+  { when: {}, text: [
+    `Clip that ending. I'm logging off fat and smug.`,
+    `That's a wrap. Belly first, chat second, dignity optional.`,
+    `Stream over. I'm going to sit here and enjoy being this size.`,
+  ]},
 ]);
 
 registerModuleVariants('stream.endStream.good', [

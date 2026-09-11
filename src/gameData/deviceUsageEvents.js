@@ -60,13 +60,15 @@ export function createRouteSession(deviceDefId, budget = 100) {
 export function scoreRouteSession(session, discoveryRiskBase = 0.15, labState = null, deviceDefId = null) {
   const campus = session.allocations?.campus ?? 0;
   const belly = session.allocations?.belly ?? 0;
+  const reserve = session.allocations?.reserve ?? 0;
   let discoveryRisk = discoveryRiskBase * (campus / 50);
   if (labState && deviceDefId) {
     const mods = getDeviceBoardMods(labState, deviceDefId);
     if (mods.discoveryMult) discoveryRisk *= mods.discoveryMult;
   }
-  const gainMult = 1 + belly / 120;
-  const efficiency = Math.min(100, belly + campus * 0.7);
+  discoveryRisk *= Math.max(0.45, 1 - reserve / 130);
+  const gainMult = 1 + belly / 120 + reserve / 400;
+  const efficiency = Math.min(100, belly + campus * 0.7 + reserve * 0.25);
   let tier = 'good';
   if (efficiency >= 88 && discoveryRisk < 0.2) tier = 'perfect';
   else if (efficiency >= 65) tier = 'good';
@@ -143,7 +145,8 @@ export function tuningGainMult(session, labState, deviceDefId) {
   const modMult = mods.gainMult ?? 1;
   const tier = tuningPerformanceToTier(session);
   const tierMult = { perfect: 1.25, good: 1.0, messy: 0.85, failure: 0.5 }[tier] ?? 1;
-  return base * modMult * tierMult;
+  const overclock = tier === 'perfect' && (session.magnitude ?? 0) >= 0.85 ? 1.1 : 1;
+  return base * modMult * tierMult * overclock;
 }
 
 export function tuningMalfunctionChance(session, labState, deviceDefId) {
