@@ -114,6 +114,8 @@ execSync('node scripts/test-social-scenes-modular-late.mjs', { cwd: root, stdio:
 
 execSync('node scripts/test-weekly-events-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-campus-session-unlock-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-evolved-events-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-evolved-phase-modular-late.mjs', { cwd: root, stdio: 'inherit' });

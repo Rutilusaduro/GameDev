@@ -41,6 +41,7 @@ const requiredFragments = [
   'sumoMatch/sumoMatchFragments.js',
   'recordingSession/recordingSessionFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',
+  'campusEvent/campusEventLateModularFragments.js',
 ];
 for (const rel of requiredFragments) {
   assert.ok(fragmentFiles.includes(rel) || existsSync(join(scenesRoot, rel)), `missing fragment ${rel}`);

@@ -52,6 +52,7 @@ const pairs = [
   ['session/index.js', 'session/immobileRedirectFragments.js'],
   ['homeroom/index.js', 'homeroom/batchBakerFragments.js'],
   ['weeklyEvent/index.js', 'weeklyEvent/weeklyEventLateModularFragments.js'],
+  ['campusEvent/depth.js', 'campusEvent/campusEventLateModularFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {

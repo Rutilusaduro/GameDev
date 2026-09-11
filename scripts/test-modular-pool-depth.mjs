@@ -34,6 +34,8 @@ const POOLS = [
   'sumo.scene.dohyo',
   'recording.scene.ringLight',
   'weekly.scene.floorEcho',
+  'session.aftermath.glow',
+  'roster.unlock.hallArrival',
 ];
 
 for (const key of POOLS) {

@@ -10,6 +10,8 @@ registerPool('roster.unlock.hallArrival', [
       'The hall door opens on appetite — new resident, new data, new possibilities.',
       'Floor check-in energy turns curious; someone is about to learn how we eat here.',
       'Wellness framing ready; hunger already leaking through the welcome smile.',
+      'Late-semester arrivals still feel ceremonial — Hall Ambiance climbs when the roster slot fills.',
+      'Blueprint ink dries somewhere down the hall; appetite walks in through the front door.',
     ],
   },
 ]);
@@ -22,6 +24,8 @@ registerPool('roster.unlock.firstHunger', [
       'She clocks the kitchen first — honest instinct in a building built for seconds.',
       'The roster slot is official; the body language is already unofficially hungry.',
       'You offer orientation; she hears invitation.',
+      'Hunger hums under polite small talk; co-conspirator smiles start on day one.',
+      'Every pound she gains here will feel like policy the floor already voted for.',
     ],
   },
 ]);
@@ -30,6 +34,12 @@ const UNLOCK_SKELETON = '{roster.unlock.hallArrival|prefix:} {roster.unlock.firs
 
 for (const studentId of Object.keys(UNLOCK_SCENES)) {
   registerModuleVariants(`roster.unlock.s${studentId}`, [
+    {
+      when: { weekMin: 22 },
+      weight: 6,
+      priority: 6,
+      text: [UNLOCK_SKELETON],
+    },
     {
       when: { weekMin: 10 },
       weight: 4,
