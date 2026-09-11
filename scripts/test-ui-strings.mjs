@@ -71,7 +71,7 @@ function assertClean(text, label) {
 const hallPass = readFileSync('src/HallPass.jsx', 'utf8');
 const navUnlock = readFileSync('src/gameData/navUnlock.js', 'utf8');
 assert(hallPass.includes('navTabs.map'), 'main nav must render from progressive navTabs');
-assert(navUnlock.includes('📋 RA Desk') && navUnlock.includes('🏠 Hall Lounge') && navUnlock.includes('✨ Influence'), 'nav labels must use RA Desk / Hall Lounge / Influence');
+assert(navUnlock.includes('📋 RA Desk') && navUnlock.includes('🏠 Blueprint') && navUnlock.includes('✨ Influence'), 'nav labels must use RA Desk / Blueprint / Influence');
 assert(hallPass.includes('RA DESK'), 'header must say RA DESK');
 assertClean(hallPass, 'HallPass.jsx');
 

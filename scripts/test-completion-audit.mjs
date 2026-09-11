@@ -756,7 +756,7 @@ check('influence-view-routes', () => {
   assert.match(desk, /computeNavVisibility/);
   assert.match(desk, /navTabs\.map/);
   assert.match(nav, /roster.*📋 RA Desk/);
-  assert.match(nav, /hall-lounge.*🏠 Hall Lounge/);
+  assert.match(nav, /hall-lounge.*🏠 Blueprint/);
   assert.match(nav, /influence.*✨ Influence/);
   assert.doesNotMatch(desk, /SpiritHubView/);
   assert.doesNotMatch(desk, /view==="class"/);

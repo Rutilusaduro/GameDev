@@ -98,6 +98,8 @@ registerPool('dinner.groupConv.order_for_table.l3', [
 registerPool('dinner.groupConv.compare_rooms', [
   { when: {}, text: [
     '{dinner.groupConv.compare_rooms.l1}\n{dinner.groupConv.compare_rooms.l2}\n{dinner.groupConv.compare_rooms.l3}',
+    '{dinner.groupConv.compare_rooms.l2}\n{dinner.groupConv.compare_rooms.l1}\n{dinner.groupConv.compare_rooms.l3}',
+    '{dinner.groupConv.compare_rooms.l1} {dinner.groupConv.compare_rooms.l3}\n{dinner.groupConv.compare_rooms.l2}',
   ] },
 ]);
 registerPool('dinner.groupConv.compare_rooms.l1', [
@@ -125,6 +127,8 @@ registerPool('dinner.groupConv.compare_rooms.l3', [
 registerPool('dinner.groupConv.floor_secret', [
   { when: {}, text: [
     '{dinner.groupConv.floor_secret.l1}\n{dinner.groupConv.floor_secret.l2}\n{dinner.groupConv.floor_secret.l3}',
+    '{dinner.groupConv.floor_secret.l2}\n{dinner.groupConv.floor_secret.l1}\n{dinner.groupConv.floor_secret.l3}',
+    '{dinner.groupConv.floor_secret.l1} {dinner.groupConv.floor_secret.l3}\n{dinner.groupConv.floor_secret.l2}',
   ] },
 ]);
 registerPool('dinner.groupConv.floor_secret.l1', [

@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { completeRaSetup, openRaDesk } from './helpers/setupGame.js';
 
-test('RA Desk nav returns home from Hall Lounge', async ({ page }) => {
+test('RA Desk nav returns home from Blueprint', async ({ page }) => {
   await completeRaSetup(page);
   await expect(page.getByRole('button', { name: '📋 RA Desk' })).toBeVisible();
 
-  await page.getByRole('button', { name: '🏠 Hall Lounge' }).click();
-  await expect(page.getByText(/HALL LOUNGE|PRESTIGE/i).first()).toBeVisible();
+  await page.getByRole('button', { name: '🏠 Blueprint' }).click();
+  await expect(page.getByText(/Hall Blueprint|prestige/i).first()).toBeVisible();
 
   await openRaDesk(page);
   await expect(page.getByText(/Residents — .* on your floor/)).toBeVisible();
