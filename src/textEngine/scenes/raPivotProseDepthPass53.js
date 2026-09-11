@@ -10,13 +10,13 @@ registerPool('room.visit.intro.lead', [
 ]);
 
 registerPool('ra.floor.briefing', [
-  { when: {}, weight: 2, text: [`The fire drill poster is still crooked. Your residents are not — they are settling into something softer.`, `You walk the hall with keys that weigh more each week — not metal, habit.`] },
+  { when: {}, weight: 2, text: [`The fire drill poster is still crooked. Your residents are not — they are settling into something softer.`, `You walk the hall with keys that weigh more each week — not metal, habit.`, `Clipboard in hand, you count doors the way other people count blessings.`] },
 ]);
 
 registerPool('dorm.unlock.arrival', [
-  { when: {}, weight: 2, text: [`A new wing opens and the elevator sighs like it knew this was coming.`, `Fresh nameplates, same hunger — the building learns another appetite.`] },
+  { when: {}, weight: 2, text: [`A new wing opens and the elevator sighs like it knew this was coming.`, `Fresh nameplates, same hunger — the building learns another appetite.`, `Another hall joins the map. Your reach grows heavier and sweeter.`] },
 ]);
 
 registerPool('talk.checkin.warm', [
-  { when: {}, weight: 2, text: [`{subject.name} pats the bedspread smooth, making room that is mostly for you.`, `"Tell me the gossip," she says. "{ra.name}. I trust your version."`] },
+  { when: {}, weight: 2, text: [`{subject.name} pats the bedspread smooth, making room that is mostly for you.`, `"Tell me the gossip," she says. "{ra.name}. I trust your version."`, `She offers tea she cannot possibly finish alone. You understand the invitation.`] },
 ]);

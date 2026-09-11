@@ -110,8 +110,8 @@ All core objective gates green. Optional: human playtest for subjective feel tun
 |-------------|--------|
 | Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
 | New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
-| Mechanics depth layer (partial) | 🟡 `mechanicsDepthLayer.js` — feeding, rel ecology, talk rel; more systems TBD |
-| Full 50% depth all mechanics | 🔴 Not done |
-| Full text overhaul | 🔴 Seed pools only (`hallBlueprint`, `raPivotMechanicsProseDepth`, room visit) |
+| Mechanics depth layer (partial) | 🟡 `mechanicsDepthLayer.js` + `test:mechanics-depth` (14 systems) |
+| Full 50% depth all mechanics | 🔴 Opposition, lab, evolved, weekly events, etc. still shallow |
+| Full text overhaul | 🔴 Pass 53 generator + seeds; bulk pools untouched |
 
 Verify: `npm run test:hall-blueprint`, `npm run text:lint`, `npm run test:smoke` (full).
