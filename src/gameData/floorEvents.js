@@ -190,10 +190,10 @@ export const FLOOR_SCENES = [
     ] },
   { id:"hall_group_project", target:"hall",
     title:"Group Project Day",
-    text:"Hall plans cancelled for a meal-plan challenge. Hypothetical menus. The floor gets very into it. Someone has already opened a container.",
+    text:"You announce today's hall plans are cancelled for a meal-plan challenge. Hypothetical menus. The floor gets very into it. Someone has already opened a container.",
     choices:[
       { label:"Let them be creative",             effect:{gain:[2,5]},  result:"The projects are elaborate and taste-tested using supplies they brought for this exact possibility." },
-      { label:"Bring tasting supplies",           effect:{gain:[4,9]},  result:"Extensive samples. Everyone treats it like a cook-off. They are still comparing plates after closing." },
+      { label:"Bring tasting supplies",           effect:{gain:[4,9]},  result:"You bring extensive tasting samples. Everyone treats it like a cook-off. They are still comparing plates after closing." },
       { label:"Award points for best proposal",   effect:{gain:[3,7]},  result:"Competition. Three residents present full spreads. Everyone eats everything, including the scoring." },
     ] },
   { id:"hall_birthday", target:"hall",
