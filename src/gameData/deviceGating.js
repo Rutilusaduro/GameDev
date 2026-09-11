@@ -5,6 +5,7 @@
 import { getCorruptionTier, CORRUPTION_CONFIG } from './corruption.js';
 import { getAddictionLevel } from './hungerAddiction.js';
 import { getDependenceRefusalBonus } from './deviceDependence.js';
+import { depthIntensityMult } from './mechanicsDepthLayer.js';
 
 /**
  * Minimum corruption tier (0–2) before a student accepts equipping or running a device.
@@ -53,7 +54,7 @@ export function getDeviceIntensityMult(student) {
   const base = CORRUPTION_INTENSITY[tier] ?? 1;
   const addiction = getAddictionLevel(student);
   const addictionMult = addiction >= 2 ? 1 + (addiction - 1) * 0.05 : 1;
-  return base * addictionMult;
+  return depthIntensityMult(base * addictionMult);
 }
 
 /** Continuous corruption → easier force-feed past capacity (resistance axis). */

@@ -4,6 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 import { HALL_ROOMS, countOwnedInRoom, roomDevelopmentTier } from './hallBlueprint.js';
 import { SKILL_TREE } from './skills.js';
+import { scaleDepthBonus } from './mechanicsDepthLayer.js';
+
+export function depthAmbianceMeterCap(raw) {
+  return Math.min(100, Math.round(raw * (1 + (scaleDepthBonus(1, 1.5) - 1) * 0.15)));
+}
 
 export const AMBIANCE_AXES = [
   { id: 'comfort', label: 'Comfort', roomId: 'common_lounge', color: '#88b8e8' },
@@ -20,7 +25,7 @@ function meterFromRoom(owned, roomId) {
   const tier = roomDevelopmentTier(owned, roomId);
   const count = countOwnedInRoom(owned, roomId);
   const base = tier * 22 + Math.min(12, count * 2);
-  return Math.min(MAX_METER, base);
+  return depthAmbianceMeterCap(Math.min(MAX_METER, base));
 }
 
 export function computeHallAmbianceMeters(owned = {}) {

@@ -10,6 +10,7 @@
 // future confrontation can throw the specifics back at you.
 // ═══════════════════════════════════════════════════════════════
 import { getCorruptionTier } from './corruption.js';
+import { depthDiscontentEase, depthDiscontentWeeklyDecay } from './mechanicsDepthLayer.js';
 
 export const DISCONTENT_TIERS = [
   { id: 0, min: 0,  key: 'content',    label: 'content' },
@@ -53,6 +54,18 @@ export function grievanceGain(student, type) {
 export const DISCONTENT_EASE_FEED = 2;     // attention, slowly
 export const DISCONTENT_EASE_TALK = 4;
 export const DISCONTENT_WEEKLY_DECAY = 5;  // fades if you stop offending
+
+export function discontentEaseFeed() {
+  return depthDiscontentEase(DISCONTENT_EASE_FEED);
+}
+
+export function discontentEaseTalk() {
+  return depthDiscontentEase(DISCONTENT_EASE_TALK);
+}
+
+export function discontentWeeklyDecayAmount() {
+  return depthDiscontentWeeklyDecay(DISCONTENT_WEEKLY_DECAY);
+}
 
 export function getDiscontentTier(student) {
   const v = student?.discontent || 0;

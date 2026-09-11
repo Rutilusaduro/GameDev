@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { getCorruptionTier } from './corruption.js';
+import { depthInterruptChance } from './mechanicsDepthLayer.js';
 import { PHYSICAL_TRAITS } from './skillTrees.js';
 import { getStage } from './stages.js';
 import { TALK_CONFIG } from './talkSystem.js';
@@ -363,9 +364,24 @@ export function needsHungerInterrupt(student, skillEffects = {}, weeklyArms = {}
   const withdrawal = isInWithdrawal(student);
   const chanceBonus = mod.interruptBonus;
 
-  if (withdrawal) return Math.random() < Math.min(1, HUNGER_CONFIG.interruptChance.withdrawal + chanceBonus);
-  if (tier >= 4 && addiction >= floor) return Math.random() < Math.min(1, HUNGER_CONFIG.interruptChance.starving + chanceBonus);
-  if (tier >= 3 && addiction >= floor) return Math.random() < Math.min(1, HUNGER_CONFIG.interruptChance.craving + chanceBonus);
+  if (withdrawal) {
+    return Math.random() < depthInterruptChance(
+      Math.min(1, HUNGER_CONFIG.interruptChance.withdrawal + chanceBonus),
+      tier,
+    );
+  }
+  if (tier >= 4 && addiction >= floor) {
+    return Math.random() < depthInterruptChance(
+      Math.min(1, HUNGER_CONFIG.interruptChance.starving + chanceBonus),
+      tier,
+    );
+  }
+  if (tier >= 3 && addiction >= floor) {
+    return Math.random() < depthInterruptChance(
+      Math.min(1, HUNGER_CONFIG.interruptChance.craving + chanceBonus),
+      tier,
+    );
+  }
   return false;
 }
 

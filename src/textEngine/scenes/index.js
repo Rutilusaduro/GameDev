@@ -80,6 +80,7 @@ import './rosterTell/depth.js';
 import './roomVisit/index.js';
 import './hallBlueprint/index.js';
 import './raPivotMechanicsProseDepth.js';
+import './raPivotProseDepthPass53.js';
 import './memory/index.js';
 import './memory/depth.js';
 import './gossip/index.js';

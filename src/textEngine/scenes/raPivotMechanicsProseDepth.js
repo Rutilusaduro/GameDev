@@ -36,5 +36,7 @@ registerPool('talk.checkin.warm', [
   ] },
   { when: {}, text: [
     `{subject.name} exhales like the chair is part of her now. "Thanks for checking in."`,
+    `She tucks a strand of hair back and smiles at you like you already know the answer.`,
+    `"{ra.name}," she says, easy. "I was hoping you'd stop by before the hall got loud again."`,
   ] },
 ]);

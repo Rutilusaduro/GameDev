@@ -106,7 +106,7 @@ import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline
 import { renderOriginStirring } from './textEngine/scenes/origin/index.js';
 import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickHallMemory } from './gameData/memory.js';
-import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
+import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, discontentEaseFeed, discontentEaseTalk, discontentWeeklyDecayAmount, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
@@ -380,7 +380,7 @@ import {
 } from './gameData/hallLoungeSkills.js';
 import { listActiveSynergies } from './gameData/hallBlueprint.js';
 import { rollWeeklyAmbiancePulse } from './gameData/hallAmbiance.js';
-import { depthTalkRelGrant } from './gameData/mechanicsDepthLayer.js';
+import { depthTalkRelGrant, depthCorruptionGrant, enrichTalkEffect } from './gameData/mechanicsDepthLayer.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -1349,7 +1349,7 @@ export default function HallPass(){
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
   const addCorruption=(s,amount,textOpts={})=>{
     const before=getCorruptionTier(s.corruption||0).id;
-    const scaled=amount>0?amount*raCorruptionMult:amount;
+    const scaled=amount>0?depthCorruptionGrant(amount)*raCorruptionMult:amount;
     const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+scaled);
     const after=getCorruptionTier(newC).id;
     if(after>before){
@@ -1532,7 +1532,7 @@ export default function HallPass(){
         discontent:bumpDiscontent(result.discontent,grievanceGain(s,'betrayed')),
         memories:appendMemory(result.memories,'betrayed',week)};
     } else if(!forced&&(result.discontent||0)>0){
-      result={...result,discontent:Math.max(0,(result.discontent||0)-DISCONTENT_EASE_FEED)};
+      result={...result,discontent:Math.max(0,(result.discontent||0)-discontentEaseFeed())};
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
@@ -2012,7 +2012,7 @@ export default function HallPass(){
     // stings visible residents who aren't yet comfortable being seen.
     let exposedCount=0;
     updated=updated.map(s=>{
-      let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY);
+      let disc=Math.max(0,(s.discontent||0)-discontentWeeklyDecayAmount());
       let mems=s.memories,mood=s.mood;
       const exposed=scrutinyTier?.id>=2&&!s.hidden&&getStage(s.lbs).id>=5&&getCorruptionTier(s.corruption||0).id===0;
       if(exposed&&Math.random()<0.5){
@@ -6964,6 +6964,7 @@ export default function HallPass(){
 
   const applyTalkEffect=(effect,meta={})=>{
     if(!talkStudentId) return;
+    effect=enrichTalkEffect(effect||{});
     gainFavor('talk');
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     if(applySuggest){
@@ -7024,7 +7025,7 @@ export default function HallPass(){
       if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
       if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
       // Talking to her is attention — it cools discontent.
-      if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-DISCONTENT_EASE_TALK);
+      if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-discontentEaseTalk());
       return ns;
     }));
   };

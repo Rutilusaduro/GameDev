@@ -3,6 +3,8 @@
 // corruption tier. Response prose lives in text-engine scenes;
 // this file defines topics, gates, and effects.
 // ═══════════════════════════════════════════════════════════════
+import { getStage } from './stages.js';
+import { enrichTalkEffect } from './mechanicsDepthLayer.js';
 
 export const TALK_TOPICS = [
   // ── always available ───────────────────────────────────────
@@ -73,11 +75,14 @@ export const TALK_CONFIG = {
 // (into the heavier stages) OR close enough to you. Before that it reads
 // as unsolicited and creepy: a negative interaction that also draws
 // admin scrutiny.
-import { getStage } from './stages.js';
 export const COMPLIMENT_WELCOME_STAGE = 5;   // Heavy+ — the body itself earns it
 export const COMPLIMENT_WELCOME_REL = 50;    // ...or she's close enough to want it
 export const COMPLIMENT_BACKFIRE_REL = 4;    // relationship lost when it lands wrong
 export const COMPLIMENT_BACKFIRE_SCRUTINY = 2;
+
+export function resolveTalkTopicEffect(topic) {
+  return enrichTalkEffect(topic?.effect || {});
+}
 
 export function isBodyComplimentUnwelcome(student) {
   if (!student) return false;

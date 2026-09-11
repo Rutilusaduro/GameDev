@@ -4,7 +4,7 @@
 // Register codas appended when corruption tier + skills qualify.
 // ═══════════════════════════════════════════════════════════════
 import { useEffect, useState } from 'react';
-import { TALK_TOPICS, TALK_CONFIG } from '../gameData/talkSystem.js';
+import { TALK_TOPICS, TALK_CONFIG, resolveTalkTopicEffect } from '../gameData/talkSystem.js';
 import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getDiscontentTier } from '../gameData/discontent.js';
@@ -119,9 +119,10 @@ function TopicCard({ topic, student, skillEffects, onSelect, disabled }){
           {topic.extreme&&<span style={{...C.tag(`${col}22`,col),fontSize:8}}>EXTREME</span>}
         </div>
         {topic.effect&&(()=>{
+          const eff=resolveTalkTopicEffect(topic);
           const parts=[];
-          if(topic.effect.rel)   parts.push(`+${topic.effect.rel} rel`);
-          if(topic.effect.corruption) parts.push(`+${topic.effect.corruption} corruption`);
+          if(eff.rel)   parts.push(`+${eff.rel} rel`);
+          if(eff.corruption) parts.push(`+${eff.corruption} corruption`);
           if(topic.suggestNote) parts.push(topic.suggestNote);
           if(topic.effect.cals)  parts.push(`~${(topic.effect.cals/1000).toFixed(0)}k cal`);
           return parts.length ? <div style={{fontSize:9,color:`${col}88`,marginTop:2}}>{parts.join(" · ")}</div> : null;

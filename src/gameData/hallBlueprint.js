@@ -2,6 +2,7 @@
 // HALL BLUEPRINT — spatial map of prestige upgrades by room wing
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
+import { scaleDepthBonus } from './mechanicsDepthLayer.js';
 
 /** @typedef {{ id: string, label: string, short: string, emoji: string, categories: string[], blurb: string }} HallRoom */
 
@@ -104,7 +105,7 @@ export function computeHallRoomSynergyBonus(owned = {}) {
   HALL_ROOM_ADJACENCY.forEach(([a, b]) => {
     if (roomDevelopmentTier(owned, a) >= 2 && roomDevelopmentTier(owned, b) >= 2) pairs += 1;
   });
-  return Math.min(0.12, pairs * 0.02);
+  return Math.min(0.14, scaleDepthBonus(pairs * 0.02, 1.5));
 }
 
 export function listActiveSynergies(owned = {}) {

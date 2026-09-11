@@ -18,6 +18,7 @@
     "test:ra-theme": "node scripts/test-ra-theme.mjs",
     "test:dorm-unlock-ui": "node scripts/test-dorm-unlock-ui.mjs",
     "test:hall-blueprint": "node scripts/test-hall-blueprint.mjs",
+    "test:mechanics-depth": "node scripts/test-mechanics-depth.mjs",
     "test:playthrough": "node scripts/test-playthrough.mjs",
     "test:semester-audit": "node scripts/test-semester-audit.mjs",
     "test:prose-coherence": "node scripts/test-prose-coherence.mjs",
