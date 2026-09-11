@@ -9,6 +9,8 @@ test('floor check-in modal shows weekly hall scene with RA framing', async ({ pa
   await expect(modal.getByText(/FLOOR CHECK-IN/)).toBeVisible();
   await expect(modal.getByText('Training Spiral')).toBeVisible();
   await expect(modal.getByText('How do you respond?')).toBeVisible();
+  await expect(modal).not.toContainText('{unresolved}');
+  await expect(modal).not.toContainText('found a split discrepancy Thursday');
 
   await modal.locator('.floor-checkin-choice').first().click({ force: true });
   await modal.getByRole('button', { name: /Continue →|View Summary →/ }).click({ force: true });

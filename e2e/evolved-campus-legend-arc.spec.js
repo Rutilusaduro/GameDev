@@ -20,5 +20,7 @@ test('campus legend arc opens food challenge minigame', async ({ page }) => {
   const challenge = page.locator('.picker-modal');
   await expect(challenge.getByText('CAMPUS LEGEND')).toBeVisible();
   await expect(challenge.getByText('Food Challenge')).toBeVisible();
+  await expect(challenge).not.toContainText('{unresolved}');
+  await expect(challenge).not.toContainText('The menu towers in front of her');
   await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
 });
