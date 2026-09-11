@@ -299,6 +299,7 @@ import './wifeLessons/talkDepth.js';
 import './homeroom/index.js';
 import './homeroom/conferenceFragments.js';
 import './homeroom/activityFragments.js';
+import './homeroom/homeroomV2ModularFragments.js';
 import './homeroom/batchBakerFragments.js';
 import './homeroom/homeroomSceneDepth.js';
 import './homeroom/homeroomActivityDepth.js';

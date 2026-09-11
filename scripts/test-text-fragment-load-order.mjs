@@ -22,6 +22,7 @@ const pairs = [
   ['fairQueen/index.js', 'fairQueen/dayModularFragments.js'],
   ['homeroom/index.js', 'homeroom/conferenceFragments.js'],
   ['homeroom/index.js', 'homeroom/activityFragments.js'],
+  ['homeroom/activityFragments.js', 'homeroom/homeroomV2ModularFragments.js'],
   ['researchJournal/index.js', 'researchJournal/journalFragments.js'],
   ['rankedSession/index.js', 'rankedSession/sessionFragments.js'],
   ['rankedSession/index.js', 'rankedSession/sessionPayoffFragments.js'],

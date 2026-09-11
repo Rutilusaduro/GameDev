@@ -3024,6 +3024,11 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.match(pass90, /campusTierMin/, 'pass90 keeps campus tier find vignette only');
   const pass108 = read('src/textEngine/scenes/raPivotProseDepthPass108.js');
   assert.match(pass108, /item\.use\.open/, 'pass108 keeps staged item-use beat');
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/homeroomV2ModularFragments.js')));
+  const pass83 = read('src/textEngine/scenes/raPivotProseDepthPass83.js');
+  assert.match(pass83, /cg\.raReply\.encourage/, 'pass83 keeps CG encourage vignette');
+  const pass91 = read('src/textEngine/scenes/raPivotProseDepthPass91.js');
+  assert.match(pass91, /wellness_nook/, 'pass91 keeps hall wellness nook blurb');
   assert.ok(existsSync(join(root, 'scripts/test-text-pass-bridge-suppression-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');

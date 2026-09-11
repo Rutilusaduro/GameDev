@@ -1,6 +1,7 @@
 // Competitive Gainer group chat — composable Priya post slots.
 import { registerPool, registerModuleVariants } from '../../engine.js';
 import { CG_FILLED_CHAT_TEMPLATES } from '../../../gameData/competitiveGainerText.js';
+import { CG_CHAT_TEMPLATES } from '../../../gameData/competitiveGainerData.js';
 
 registerPool('cg.chat.boardTone', [
   {
@@ -89,6 +90,42 @@ for (const stageKey of stageKeys) {
         when: { weekMin: 6 },
         weight: 2,
         priority: 2,
+        text: [CHAT_SKELETON],
+      },
+    ]);
+  }
+}
+
+const RESIDENT_EXTRA = ['Maya', 'Tiffany'];
+const RESIDENT_REPLY_TYPES = ['ahead', 'behind', 'close', 'proud', 'unmeasured'];
+
+for (const [name, replies] of Object.entries(CG_CHAT_TEMPLATES.residents || {})) {
+  const safeName = name.replace(/\s+/g, '_');
+  for (const replyType of Object.keys(replies || {})) {
+    registerModuleVariants(`cg.chat.resident.${safeName}.${replyType}`, [
+      {
+        when: { weekMin: 18 },
+        weight: 5,
+        priority: 5,
+        text: [CHAT_SKELETON],
+      },
+      {
+        when: { weekMin: 10 },
+        weight: 3,
+        priority: 3,
+        text: [CHAT_SKELETON],
+      },
+    ]);
+  }
+}
+
+for (const name of RESIDENT_EXTRA) {
+  for (const replyType of RESIDENT_REPLY_TYPES) {
+    registerModuleVariants(`cg.chat.resident.${name}.${replyType}`, [
+      {
+        when: { weekMin: 18 },
+        weight: 5,
+        priority: 5,
         text: [CHAT_SKELETON],
       },
     ]);

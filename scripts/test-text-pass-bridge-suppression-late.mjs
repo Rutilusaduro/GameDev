@@ -417,4 +417,57 @@ for (let s = 0; s < 12; s += 1) {
 }
 assert.ok(raeHit, 'session.rae.arrival.s1 modular @ w24');
 
+let recipes83Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.activity.parent_meeting.p0.recipes}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72300 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Cardamom rises off the page — Mrs\. Calloway pretends surprise, but her hand is already reaching\.$/.test(line), 'pass-83 recipes bridge alone @ w24');
+  if (line.length > 65) recipes83Hit = true;
+}
+assert.ok(recipes83Hit, 'pass-83 parent recipes modular @ w24');
+
+let refresh91Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.activity.parent_meeting.p0.refreshments_first}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72310 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Container opens before the agenda — Mrs\. Calloway eats three pieces while pretending she is still skeptical\.$/.test(line), 'pass-91 refreshments bridge alone @ w24');
+  if (line.length > 65) refresh91Hit = true;
+}
+assert.ok(refresh91Hit, 'pass-91 refreshments_first modular @ w24');
+
+let mayaHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{cg.chat.resident.Maya.close}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72320 + s,
+    globals: { featureId: 'competitive_gainer', priyaName: 'Priya' },
+  }))?.trim() || '';
+  assert.ok(!/^Close\. Good\.$/.test(line), 'pass-91 Maya close one-liner alone @ w24');
+  assert.ok(!/^Almost tied\. I like that\.$/.test(line), 'pass-91 Maya close alt alone @ w24');
+  if (line.length > 55 || /boardTone|residentReply|corkboard/i.test(line)) mayaHit = true;
+}
+assert.ok(mayaHit, 'cg.chat.resident.Maya.close modular @ w24');
+
+let fairWiHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{fair.day.weighIn.choice1}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72330 + s,
+    globals: { featureId: 'state_fair_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^MJ plants on the livestock scale — the crowd treats the number like weather: loud, inevitable, shared\.$/.test(line), 'pass-91 weighIn.choice1 bridge alone @ w24');
+  if (line.length > 65) fairWiHit = true;
+}
+assert.ok(fairWiHit, 'fair.day.weighIn.choice1 modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

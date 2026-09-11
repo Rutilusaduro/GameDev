@@ -37,6 +37,7 @@ const required = [
   'homeroom/batchBakerPools.js',
   'homeroom/conferenceFragments.js',
   'homeroom/activityFragments.js',
+  'homeroom/homeroomV2ModularFragments.js',
   'fairQueen/dayModularFragments.js',
   'competitiveGainer/cgChatPools.js',
   'competitiveGainer/cgChatFragments.js',
