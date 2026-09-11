@@ -10,7 +10,9 @@ import {
   applyWeeklyTrustDrip, isHallReachable, isRosterNew, openRosterResident,
   ROSTER_TRUST_GATE, getRosterSlotCount,
 } from '../src/gameData/rosterUnlock.js';
-import { SATURATION_TIERS } from '../src/gameData/campusSaturation.js';
+import { SATURATION_TIERS, computeSaturationScore } from '../src/gameData/campusSaturation.js';
+import { getMysteryTrustPulse } from '../src/gameData/mysteryTrust.js';
+import { computeSurrenderVector } from '../src/gameData/transformationPressure.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
@@ -186,6 +188,46 @@ assert.equal(getRosterSlotCount(3), 7, 'spirit level 3 should allow 7 roster slo
 for (const tier of SATURATION_TIERS) {
   assertCleanUi(tier.desc, `saturation tier ${tier.id}`);
 }
+
+const satBase = computeSaturationScore({ students: INIT_STUDENTS.slice(0, 4), week: 3 });
+const satLeftover = computeSaturationScore({
+  students: INIT_STUDENTS.slice(0, 4).map((s) => ({ ...s, leftoverFedThisWeek: true })),
+  week: 3,
+});
+assert.ok(satLeftover > satBase, 'leftover kitchen should bump campus saturation');
+const satNight = computeSaturationScore({
+  students: INIT_STUDENTS.slice(0, 4).map((s) => ({ ...s, lastNightVisitWeek: 3 })),
+  week: 3,
+});
+assert.ok(satNight > satBase, 'night visits should bump campus saturation');
+
+const surrenderBase = computeSurrenderVector(INIT_STUDENTS[0], { week: 3 });
+const surrenderLeftover = computeSurrenderVector(
+  { ...INIT_STUDENTS[0], leftoverFedThisWeek: true },
+  { week: 3 },
+);
+assert.ok(surrenderLeftover.composite > surrenderBase.composite, 'leftover should bump surrender pressure');
+const surrenderNight = computeSurrenderVector(
+  { ...INIT_STUDENTS[0], lastNightVisitWeek: 3 },
+  { week: 3 },
+);
+assert.ok(surrenderNight.composite > surrenderBase.composite, 'night visit should bump surrender pressure');
+
+const lockedBase = [{ ...INIT_STUDENTS[0], id: 0, lockState: 'locked', passiveTrust: 10 }];
+const pulseBase = getMysteryTrustPulse(lockedBase, { unlockedDorms: ['sporty'], reachLevel: 1, week: 3 });
+const pulseLeftover = getMysteryTrustPulse(
+  [{ ...lockedBase[0], leftoverFedThisWeek: true }],
+  { unlockedDorms: ['sporty'], reachLevel: 1, week: 3 },
+);
+assert.ok(pulseBase && pulseLeftover, 'mystery trust pulse should resolve for locked reachable');
+assert.ok(pulseLeftover.progress > pulseBase.progress, 'leftover kitchen should bump mystery trust');
+assert.match(pulseLeftover.hint, /leftover|trays|kitchen/i, 'leftover mystery hint');
+const pulseNight = getMysteryTrustPulse(
+  [{ ...lockedBase[0], lastNightVisitWeek: 3 }],
+  { unlockedDorms: ['sporty'], reachLevel: 1, week: 3 },
+);
+assert.ok(pulseNight.progress > pulseBase.progress, 'night visit should bump mystery trust');
+assert.match(pulseNight.hint, /knock|Quiet hours|late knock/i, 'night mystery hint');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

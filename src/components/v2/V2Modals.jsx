@@ -126,12 +126,12 @@ export function DreamModal({ student, week = 1, presetScenarioId, lucidUnlocked,
   );
 }
 
-export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedHallSkills, onOpenEcho, onResonate }) {
+export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedHallSkills, onOpenEcho, onResonate, week = 1 }) {
   const echoes = (echoesState?.moments || []).filter((m) => m.studentId === student?.id);
   if (!echoes.length) {
     return <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>No echoes captured yet. Milestones will preserve themselves here.</p>;
   }
-  const ctx = createContext({ subject: student });
+  const ctx = createContext({ subject: student, week });
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       {echoes.map((echo) => {

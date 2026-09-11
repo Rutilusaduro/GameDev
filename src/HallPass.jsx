@@ -57,7 +57,7 @@ import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFe
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN, huntEncounterMods } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
-import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderGuyLine } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
@@ -1859,6 +1859,7 @@ export default function HallPass(){
       labState,
       students:updated,
       cultSupply:nextPharmacistState?.cult?.supplyReservoir??pharmacistState?.cult?.supplyReservoir??0,
+      week:newWeek,
     };
     const nextSaturation=tickCampusSaturationState(campusState.saturation||{},satCtx);
     setCampusState(prev=>({...prev,saturation:nextSaturation}));
@@ -2233,6 +2234,7 @@ export default function HallPass(){
       facultyInformantRisk:informantRisk,
       rumorChance:oppositionRumorChance(dormState||createInitialDormState(),ownedHallSkills||{},{leftoverKitchen:updated.some(st=>st.leftoverFedThisWeek)}),
       nightRounds:(dormState?.nightRounds?.lastWeek===week)&&((dormState.nightRounds.visitsThisWeek||0)>=1),
+      leftoverKitchen:updated.some(st=>st.leftoverFedThisWeek),
     });
     nextOpposition=oppResult.opposition;
     updated=applyOppositionStudentPatches(updated,oppResult.studentPatches);
@@ -4043,7 +4045,7 @@ export default function HallPass(){
     const mods=huntEncounterMods(lilithHuntState?.currentNode||'dorm',lilith,week,manId);
     const willpower=Math.max(5,(WILLPOWER_START[diff]??45)+mods.wpDelta);
     const maxApprehension=MAX_APPREHENSION[diff]??5;
-    const firstLine=getGuyLine(diff,willpower);
+    const firstLine=renderGuyLine(diff,willpower,lilith,week);
     const replies=drawReplies([],lilith?.huntMarks?.[manId]||0);
     const desc=renderHuntTarget(man.id,lilith,week)||(typeof man.desc==='function'?man.desc(stageId):man.desc);
     const entries=[

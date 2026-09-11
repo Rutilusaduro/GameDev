@@ -24,7 +24,7 @@ export function getDominantEvolvedLabel(student) {
   return EVOLVED_FORM_META[student.evolvedForm]?.label || student.evolvedForm;
 }
 
-export function computeSurrenderVector(student) {
+export function computeSurrenderVector(student, extras = {}) {
   const stage = getStage(student?.lbs ?? 130);
   const corruption = getCorruptionTier(student?.corruption ?? 0);
   const addiction = getAddictionLevel(student);
@@ -32,14 +32,18 @@ export function computeSurrenderVector(student) {
   const relTier = getTier(student?.relationship ?? 0);
   const relValue = student?.relationship ?? 0;
   const favoritism = student?.rosterEcology?.favoritism ?? null;
+  const week = extras.week ?? 0;
 
   const stageScore = stage.id / 11;
   const corScore = (student?.corruption ?? 0) / 100;
   const addScore = addiction / 4;
   const hungerScore = hunger / 4;
   const relScore = relValue / 100;
-  const composite = stageScore * 0.30 + corScore * 0.28 + addScore * 0.18
+  let composite = stageScore * 0.30 + corScore * 0.28 + addScore * 0.18
     + hungerScore * 0.14 + relScore * 0.10;
+  if (student?.leftoverFedThisWeek) composite += 0.04;
+  if (week && student?.lastNightVisitWeek === week) composite += 0.03;
+  composite = Math.min(1, composite);
 
   let band = 'emerging';
   if (composite >= 0.72) band = 'surrendered';
@@ -61,8 +65,8 @@ export function computeSurrenderVector(student) {
   };
 }
 
-export function formatSurrenderSummary(student) {
-  const v = computeSurrenderVector(student);
+export function formatSurrenderSummary(student, extras = {}) {
+  const v = computeSurrenderVector(student, extras);
   const parts = [
     v.stage.label,
     v.corruption.label,

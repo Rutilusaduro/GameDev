@@ -2,7 +2,7 @@
 // Lilith hunt location + target flavor — from gameData/lilith.js (DEPTH_PLAN §9d).
 import { registerPool, render, createContext } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
-import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
+import { HUNT_NODES, HUNT_MEN, getGuyLine } from '../../../gameData/lilith.js';
 import './feastBeats.js';
 import './feastStageUp.js';
 import '../proseOverhaulPass2.js';
@@ -136,6 +136,25 @@ for (const man of HUNT_MEN) {
   registerPool(`hunt.man.${man.id}`, variants);
 }
 
+registerPool('hunt.guy.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'His glance keeps catching leftover softness she still treats like weather.',
+    'Foil warmth under a shirt that still almost fits. He talks around it.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat rides her corset while he tries to finish a sentence.',
+    'He stares at leftover swell like it is the rest of the conversation.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'He clocked the late knock. Daylight does not put that appetite away.',
+  ] },
+  { when: {}, text: [
+    'His pulse already lost the argument.',
+    'He keeps talking like appetite is not standing in front of him.',
+    'She lets him finish the sentence she already ate.',
+  ] },
+]);
+
 export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
   if (!nodeId || !student) return '';
   const key = HUNT_NODES[nodeId] ? `hunt.node.${nodeId}` : 'hunt.node.quad';
@@ -155,6 +174,15 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   const glow = render('{hunt.afterglow}', ctx)?.trim() || '';
   const linger = render('{hunt.linger}', ctx)?.trim() || '';
   return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+}
+
+/** Unique guy line first; leftover / night linger wrap on the approach. */
+export function renderGuyLine(difficulty, willpower, student, week = 1) {
+  const unique = getGuyLine(difficulty, willpower);
+  if (!student) return unique;
+  const ctx = createContext({ subject: student, week });
+  const linger = render('{hunt.guy.linger}', ctx)?.trim() || '';
+  return linger ? `${unique}\n\n${linger}` : unique;
 }
 
 import './depth.js';

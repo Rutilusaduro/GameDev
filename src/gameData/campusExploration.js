@@ -141,6 +141,7 @@ export function buildExplorationContext({
   nightIntimacy = 0,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
+  const leftoverKitchen = (students || []).some((s) => s.leftoverFedThisWeek);
   const avgLbs = students.length
     ? students.filter(s => !s.hidden).reduce((a, s) => a + s.lbs, 0) / students.filter(s => !s.hidden).length
     : 130;
@@ -151,6 +152,7 @@ export function buildExplorationContext({
     campusFattening: !!pharmacistState?.campusFattening,
     campusTier,
     saturationTier,
+    leftoverKitchen,
     sophiaStage: pharmacistState?.stage ?? 1,
     avgLbs,
     elaraDiscovered: !!exploration?.elaraDiscovered,
@@ -191,8 +193,20 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     lines.push(pick(rng, nightLines));
   }
 
+  if (ctx.leftoverKitchen && rng() < 0.22) {
+    const leftoverLines = [
+      '🥡 A foil tray crosses the quad. Your kitchen started it. Campus is finishing it.',
+      '🥡 Someone sits on a bench still warm from last night\'s sitting. The path knows your hall.',
+      '🥡 Dining-hall steam hits leftover heat. Your floor already voted.',
+    ];
+    lines.push(pick(rng, leftoverLines));
+  }
+
   const satTier = ctx.saturationTier ?? 0;
-  if (satTier > 0 && rng() < saturationSoftFlavorChance(satTier)) {
+  if (satTier > 0 && rng() < saturationSoftFlavorChance(satTier, {
+    leftoverKitchen: !!ctx.leftoverKitchen,
+    nightRound: (ctx.nightIntimacy || 0) >= 12,
+  })) {
     lines.push(`🌐 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
   }
 

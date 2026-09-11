@@ -438,6 +438,8 @@ export function renderCampusTravelLine(explorationCtx, nodeId, category = 'trave
       campusFattening: explorationCtx.campusFattening,
       campusTier: explorationCtx.campusTier ?? 0,
       nodeId,
+      leftoverFed: !!explorationCtx.leftoverKitchen,
+      nightVisit: (explorationCtx.nightIntimacy || 0) >= 12,
     },
   });
   const key = category === 'location' ? '{campus.location}' : '{campus.travel}';
@@ -452,8 +454,11 @@ export function renderCampusFindFlavor(explorationCtx) {
     globals: {
       campusTier: explorationCtx.campusTier ?? 0,
       campusFattening: explorationCtx.campusFattening,
+      leftoverFed: !!explorationCtx.leftoverKitchen,
+      nightVisit: (explorationCtx.nightIntimacy || 0) >= 12,
     },
   });
   const base = render('{campus.find}', ctx)?.trim() || '';
-  return appendV2Depth(base, 'campusNav', ctx, 0.2);
+  const linger = render('{campus.linger}', ctx)?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join('\n\n'), 'campusNav', ctx, 0.2);
 }

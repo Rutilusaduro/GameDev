@@ -36,10 +36,10 @@ export const OPPOSITION_ACTS = {
 };
 
 /** Class-average transformation pressure (0–100) for supernatural triggers. */
-export function computeClassTransformationPressure(students) {
+export function computeClassTransformationPressure(students, week = 0) {
   const visible = (students || []).filter((s) => !s.hidden);
   if (!visible.length) return 0;
-  const sum = visible.reduce((a, s) => a + computeSurrenderVector(s).composite, 0);
+  const sum = visible.reduce((a, s) => a + computeSurrenderVector(s, { week }).composite, 0);
   return Math.round(sum / visible.length);
 }
 
@@ -68,7 +68,7 @@ export function getOppositionAct(week, opposition) {
 export function getOppositionActSummary(week, opposition, scrutiny = 0, students = []) {
   const act = getOppositionAct(week, opposition);
   const dormant = isBoardDormant(week, scrutiny, opposition);
-  const pressure = computeClassTransformationPressure(students);
+  const pressure = computeClassTransformationPressure(students, week);
   return {
     act,
     boardDormant: dormant,
@@ -90,11 +90,15 @@ export const ACT_I_RUMORS = [
   '📣 A peer RA jokes about your roster "filling out" — the joke lands wrong.',
   '📣 Facilities logged "after-hours kitchen use" on your floor. The log smiles.',
   '📣 Someone saw a night-round tray and called it programming. Housing filed it.',
+  '📣 Dining staff asked who keeps sending leftover trays across halls. Your name came up.',
 ];
 
 export function pickActIRumor(week, rnd = Math.random, extras = {}) {
-  if (extras.nightRounds && rnd() < 0.45) {
+  if (extras.leftoverKitchen && rnd() < 0.4) {
     return ACT_I_RUMORS[ACT_I_RUMORS.length - 1];
+  }
+  if (extras.nightRounds && rnd() < 0.45) {
+    return ACT_I_RUMORS[ACT_I_RUMORS.length - 2];
   }
   const idx = Math.floor(rnd() * ACT_I_RUMORS.length);
   return ACT_I_RUMORS[idx];

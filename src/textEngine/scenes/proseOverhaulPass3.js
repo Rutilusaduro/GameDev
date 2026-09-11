@@ -59,6 +59,9 @@ oncePool('hunt.linger', [
     'A kiosk smells like seconds because the kitchen already started her.',
     'Campus buys her another plate. The first sitting was in-house.',
   ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Last night you knocked. Daylight hunt uses the same open door.',
+  ] },
   { when: {}, text: [
     'Hunger walks the path with her. The path makes room without being asked.',
     'Campus keeps its lights. She keeps her appetite and a slower gait.',

@@ -25,7 +25,25 @@ const HINTS_HIGH = [
   'Someone is ready to knock on your floor. Make sure you have room.',
 ];
 
-function pickHint(progress, week) {
+const HINTS_LEFTOVER = [
+  'Galley leftover travels farther than names. Another hall is smelling your kitchen.',
+  'Someone heard you send trays after hours. Trust is building on a floor you have not met.',
+  'Word of leftover plates moves between halls like heat. Curiosity is getting a name.',
+];
+
+const HINTS_NIGHT = [
+  'Night-round knock is campus gossip now. Distant halls are listening for the same door.',
+  'Quiet hours on your floor leaked. Someone is deciding you are worth knowing.',
+  'A late knock on your hall got retold. Trust is warming up somewhere you cannot see.',
+];
+
+function pickHint(progress, week, extras = {}) {
+  if (extras.leftoverKitchen) {
+    return HINTS_LEFTOVER[(week + Math.floor(progress * 10)) % HINTS_LEFTOVER.length];
+  }
+  if (extras.nightRound) {
+    return HINTS_NIGHT[(week + Math.floor(progress * 7)) % HINTS_NIGHT.length];
+  }
   const pool = progress >= 0.85 ? HINTS_HIGH : progress >= 0.45 ? HINTS_MID : HINTS_LOW;
   return pool[(week + Math.floor(progress * 10)) % pool.length];
 }
@@ -50,7 +68,10 @@ export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachL
 
   const maxTrust = Math.max(...lockedReachable.map((s) => s.passiveTrust || 0));
   const floorNudge = Math.min(8, Math.floor((dormState?.nightRounds?.floorIntimacy || 0) / 12));
-  const progress = Math.min(1, (maxTrust + floorNudge) / ROSTER_TRUST_GATE);
+  const leftoverKitchen = (students || []).some((s) => s.leftoverFedThisWeek);
+  const leftoverNudge = Math.min(6, (students || []).filter((s) => s.leftoverFedThisWeek).length);
+  const nightNudge = Math.min(4, (students || []).filter((s) => week && s.lastNightVisitWeek === week).length);
+  const progress = Math.min(1, (maxTrust + floorNudge + leftoverNudge + nightNudge) / ROSTER_TRUST_GATE);
   const nearlyReady = lockedReachable.some((s) => (s.passiveTrust || 0) >= ROSTER_TRUST_GATE);
 
   const homeIds = [...new Set(lockedReachable.map((s) => getStudentHomeDorm(s.id)).filter(Boolean))];
@@ -62,7 +83,7 @@ export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachL
 
   return {
     progress,
-    hint: pickHint(progress, week),
+    hint: pickHint(progress, week, { leftoverKitchen, nightRound: nightNudge > 0 }),
     hallFlavor,
     nearlyReady,
     slotsFull: false,

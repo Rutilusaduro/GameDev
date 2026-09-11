@@ -12,7 +12,7 @@ export const SATURATION_TIERS = [
   { id: 3, min: 80, label: 'Regional Excess', desc: 'Campus-wide appetite is the default social mode.' },
 ];
 
-export function computeSaturationScore({ pharmacistState, labState, students, cultSupply = 0 } = {}) {
+export function computeSaturationScore({ pharmacistState, labState, students, cultSupply = 0, week = 0 } = {}) {
   let score = 0;
   const narrative = pharmacistState?.campusFattening ? getCampusNarrativeTier(pharmacistState) : 0;
   score += narrative * 12;
@@ -22,6 +22,10 @@ export function computeSaturationScore({ pharmacistState, labState, students, cu
   if (visible.length) {
     const avgStage = visible.reduce((a, s) => a + getStage(s.lbs).id, 0) / visible.length;
     score += Math.min(30, avgStage * 2.5);
+    score += Math.min(8, visible.filter((s) => s.leftoverFedThisWeek).length * 2);
+    if (week) {
+      score += Math.min(6, visible.filter((s) => s.lastNightVisitWeek === week).length);
+    }
   }
   score += Math.min(15, cultSupply);
   return Math.min(100, Math.round(score));
@@ -58,8 +62,11 @@ export function saturationTravelEventBonus(tierId) {
 }
 
 /** Chance to inject soft ambient indulgence lines while exploring. */
-export function saturationSoftFlavorChance(tierId) {
-  return { 0: 0, 1: 0.22, 2: 0.38, 3: 0.52 }[tierId] ?? 0;
+export function saturationSoftFlavorChance(tierId, extras = {}) {
+  let chance = { 0: 0, 1: 0.22, 2: 0.38, 3: 0.52 }[tierId] ?? 0;
+  if (extras.leftoverKitchen) chance += 0.08;
+  if (extras.nightRound) chance += 0.05;
+  return Math.min(0.72, chance);
 }
 
 /** Minimum saturation tier to surface certain campus venues in exploration. */
