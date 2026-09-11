@@ -52,6 +52,7 @@ registerPool('overhaul.linger.social', [
   { when: {}, text: [
     'The conversation ends. The closeness does not. She eats the last thing in reach.',
     'She says your name once more, like a bookmark. Then she stays seated.',
+    'Rapport sits in the chair with her, warm, a little sticky, not leaving yet.',
   ]},
   { when: { corruption: [0], stageMax: 4 }, weight: 2, text: [
     'She laughs too bright and reaches for another bite like the laugh gave permission.',
@@ -65,6 +66,7 @@ registerPool('overhaul.linger.ceremony', [
   { when: {}, text: [
     'The number is only the receipt. The body is the event, still happening in front of you.',
     'She steps off and the platform keeps a memory of her. So do you.',
+    'Someone should clap. Nobody does. The quiet is the applause.',
   ]},
   { when: { stageMin: 6 }, weight: 2, text: [
     'Fabric files a quiet complaint. She answers by standing there, heavier, proud of the noise.',
@@ -75,6 +77,7 @@ registerPool('overhaul.linger.campus', [
   { when: {}, text: [
     'Campus keeps pretending this is ordinary. Her walk home argues otherwise.',
     'A stranger looks twice. She pretends not to notice. She notices.',
+    'The path back to the hall is downhill. She still takes it slow.',
   ]},
   { when: { stageMin: 5 }, weight: 2, text: [
     'The quad path is wide. She still takes it slower, a soft procession of one.',
@@ -85,6 +88,7 @@ registerPool('overhaul.linger.body', [
   { when: {}, text: [
     'You take her in again before she covers. Soft mass, heat, the extra that was not here last week.',
     'She lets the garment lose. The body that beat it stays, warm and obvious.',
+    'A seam remembers the fight. She does not. She is already thinking about food.',
   ]},
   { when: { stageMin: 8 }, weight: 2, text: [
     'There is a lot of her to look at. She knows. She does not hurry the looking.',
@@ -95,6 +99,7 @@ registerPool('overhaul.linger.night', [
   { when: {}, text: [
     'The hall is quiet enough to hear a mini-fridge working too hard somewhere.',
     'Lights-out is a suggestion. Hunger keeps its own hours.',
+    'Your keys tick against the rail. She is still awake behind at least one door.',
   ]},
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     'She came hungry. She will leave heavier if you let her.',
@@ -105,6 +110,7 @@ registerPool('overhaul.linger.media', [
   { when: {}, text: [
     'The ring light stays on a second too long. She uses it. The belly photographs well.',
     'Chat would have opinions. The room already has one: more.',
+    'She thumbs the recording off and keeps the pose. The camera was never the point.',
   ]},
   { when: { studentId: 2 }, weight: 3, text: [
     'Kylie angles for one more shot. The shot is her, overflowing the frame on purpose.',
@@ -118,6 +124,7 @@ registerPool('overhaul.linger.diary', [
   { when: {}, text: [
     'She writes it down like the page might argue. The page does not argue.',
     'The entry ends. The hunger that wrote it does not.',
+    'She dots the date harder than the rest, as if that made it official.',
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
     'She almost tears the page out. She does not. She dates it instead.',

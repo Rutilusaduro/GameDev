@@ -265,7 +265,7 @@ export function HallLoungeView({
           </div>
         </div>
 
-        <div style={{ ...C.card, cursor: 'default', borderColor: '#1a3040', padding: 12 }}>
+        <div style={{ ...C.card, cursor: 'default', borderColor: '#1a3040', padding: 12, maxHeight: 'min(72vh, 720px)', overflowY: 'auto' }}>
           <RoomDetail
             roomId={selected}
             owned={owned}

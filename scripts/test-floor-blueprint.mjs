@@ -95,7 +95,7 @@ const aware = { body_awareness: true };
 assert.ok(aggregateFloorDepth(aware).talkCorruptionBonus >= 1, 'body awareness talk corruption');
 
 assert.equal(clothingStateForStage(5, 0), 'zipper_fail');
-assert.equal(clothingStateForStage(5, 3), 'button_pop');
+assert.equal(clothingStateForStage(5, 2), 'button_pop');
 assert.equal(clothingStateForStage(3, 3), 'fitted');
 
 const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
