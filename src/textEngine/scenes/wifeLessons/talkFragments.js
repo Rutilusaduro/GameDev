@@ -45,15 +45,40 @@ registerPool('wl.talk.raPresence', [
   },
 ]);
 
+registerPool('wl.talk.branchPrompt', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She folds her hands over her belly and waits for you to pick the thread.',
+      'Her question hangs in the kitchen heat — honest, a little shy, hungry for an answer.',
+      'She watches your face the way mothers watch report cards — hoping for kindness.',
+    ],
+  },
+]);
+
+registerPool('wl.talk.branchAnswer', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      '"Thank you for saying that. We mean it every week."',
+      '"Honest answer: we\'re grateful to belong here."',
+      '"I\'ll tell the girls you said so. They\'ll glow."',
+      '"That\'s what matters — full plates, full hearts."',
+    ],
+  },
+]);
+
 const TALK_GREETING_SKELETON = '{wl.talk.warmOpen|prefix:} {wl.talk.raPresence|prefix: }';
+const TALK_BRANCH_SKELETON = '{wl.talk.branchPrompt|prefix:} {wl.talk.branchAnswer|prefix: }';
 
 for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
   if (!Array.isArray(stages)) continue;
-  stages.forEach((_, stageIdx) => {
+  stages.forEach((entry, stageIdx) => {
     const stage = talkStageNum(person, stageIdx);
-    const greetingKey = `wifeLessons.talk.${person}.s${stage}.greeting`;
-    const cappedKey = `wifeLessons.talk.${person}.s${stage}.capped`;
-    registerModuleVariants(greetingKey, [
+    const prefix = `wifeLessons.talk.${person}.s${stage}`;
+    registerModuleVariants(`${prefix}.greeting`, [
       {
         when: { weekMin: [5] },
         weight: 3,
@@ -61,7 +86,7 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
         text: [TALK_GREETING_SKELETON],
       },
     ]);
-    registerModuleVariants(cappedKey, [
+    registerModuleVariants(`${prefix}.capped`, [
       {
         when: { weekMin: [5] },
         weight: 3,
@@ -69,5 +94,35 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
         text: ['{wl.talk.scaleNote|prefix:} {wl.talk.raPresence|prefix: }'],
       },
     ]);
+    if (entry.overtookGreeting) {
+      registerModuleVariants(`${prefix}.overtook`, [
+        {
+          when: { weekMin: [5] },
+          weight: 2,
+          priority: 2,
+          text: ['{wl.talk.scaleNote|prefix:} {wl.talk.branchAnswer|prefix: }'],
+        },
+      ]);
+    }
+    entry.options?.forEach((opt, oi) => {
+      registerModuleVariants(`${prefix}.opt${oi}`, [
+        {
+          when: { weekMin: [6] },
+          weight: 2,
+          priority: 2,
+          text: [TALK_BRANCH_SKELETON],
+        },
+      ]);
+      opt.subs?.forEach((_, si) => {
+        registerModuleVariants(`${prefix}.opt${oi}.sub${si}`, [
+          {
+            when: { weekMin: [6] },
+            weight: 2,
+            priority: 2,
+            text: ['{wl.talk.branchAnswer|prefix:} {wl.talk.raPresence|prefix: }'],
+          },
+        ]);
+      });
+    });
   });
 }

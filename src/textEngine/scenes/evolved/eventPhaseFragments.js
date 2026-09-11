@@ -114,3 +114,66 @@ for (const key of MODULAR_EVENT_CHOICES) {
     },
   ]);
 }
+
+registerPool('evolved.ending.streamCoda', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'The challenge UI waits — chat climbing, belly warm, the format finally real.',
+      'Viewer count keeps ticking; she exhales and hits go-live like it was always inevitable.',
+      'Bags ready, mic hot, focus bar armed — performance and appetite braided together.',
+    ],
+  },
+]);
+
+registerPool('evolved.ending.relGain', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She feels seen in the way that makes appetite easier — not judged, just watched.',
+      'The room trusts her; she trusts the next bite.',
+    ],
+  },
+]);
+
+const MODULAR_EVENT_ENDINGS = [
+  'evolved.event.eating_streamer.s0.end0',
+  'evolved.event.eating_streamer.s0.end1',
+  'evolved.event.eating_streamer.s0.end2',
+  'evolved.event.feedee_creator.s0.end0',
+  'evolved.event.ranked_feedee.s0.end0',
+];
+
+const ENDING_SKELETON = '{evolved.ending.streamCoda|prefix:} {evolved.ending.relGain|prefix: }';
+
+for (const key of MODULAR_EVENT_ENDINGS) {
+  registerModuleVariants(key, [
+    {
+      when: { weekMin: [7] },
+      weight: 3,
+      priority: 2,
+      text: [ENDING_SKELETON],
+    },
+  ]);
+}
+
+const EXTRA_CHOICES = [
+  'evolved.event.eating_streamer.s0.p1.play_cool',
+  'evolved.event.feedee_creator.s0.p1.feed_her_first',
+  'evolved.event.feedee_creator.s0.p1.both_go',
+  'evolved.event.ranked_feedee.s0.p0.go_big',
+  'evolved.event.ranked_feedee.s0.p0.keep_light',
+];
+
+for (const key of EXTRA_CHOICES) {
+  registerModuleVariants(key, [
+    {
+      when: { weekMin: [6] },
+      weight: 2,
+      priority: 2,
+      text: [CHOICE_SKELETON],
+    },
+  ]);
+}

@@ -75,4 +75,20 @@ const choiceLine = render('{evolved.event.eating_streamer.s0.p0.hype_chat}', {
 assert.ok(choiceLine.length > 20, 'evolved choice modular render');
 assert.ok(!choiceLine.includes('{unresolved}'), 'evolved choice unresolved');
 
-console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + evolved phase/choice)`);
+const optLine = render('{wifeLessons.talk.Darlene.s1.opt0.sub0}', buildTextContext({
+  subject: mj,
+  week: 8,
+  seed: 401,
+}))?.trim() || '';
+assert.ok(optLine.length > 15, 'WL talk opt/sub modular render');
+assert.ok(!optLine.includes('{unresolved}'), 'WL talk opt/sub unresolved');
+
+const endLine = render('{evolved.event.eating_streamer.s0.end0}', {
+  ...evCtx,
+  week: 10,
+  seed: 402,
+})?.trim() || '';
+assert.ok(endLine.length > 15, 'evolved ending modular render');
+assert.ok(!endLine.includes('{unresolved}'), 'evolved ending unresolved');
+
+console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk branch + phase/choice/ending)`);
