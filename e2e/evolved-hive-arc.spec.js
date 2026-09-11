@@ -11,4 +11,9 @@ test('delivery hive arc opens central nest hub', async ({ page }) => {
   await expect(modal.getByText('DELIVERY HIVE QUEEN')).toBeVisible();
   await expect(modal.getByText("Maya's Central Nest")).toBeVisible();
   await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
+
+  await modal.getByRole('button', { name: /Observe Hive State/ }).click();
+  await expect(modal.getByText('HIVE STATE')).toBeVisible();
+  await expect(modal).not.toContainText('Maya documents the Hive: conquered rooms');
+  await expect(modal).not.toContainText('{unresolved}');
 });

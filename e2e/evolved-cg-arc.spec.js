@@ -13,4 +13,6 @@ test('competitive gainer arc opens hub and corkboard scene', async ({ page }) =>
 
   await modal.getByRole('button', { name: /Observe at Corkboard/ }).click();
   await expect(modal.getByText('📌 CORKBOARD')).toBeVisible();
+  await expect(modal).not.toContainText('{unresolved}');
+  await expect(modal).not.toContainText('[CorkboardScene');
 });
