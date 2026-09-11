@@ -1,5 +1,7 @@
 // Fair day tags bridge, evolved, WL, hall (Pass 96).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('fair.day.weighIn.endingA', [
   {
@@ -63,7 +65,7 @@ registerModuleVariants('evolved.activity.feedee_creator', [
 
 registerModuleVariants('wifeLessons.lesson.s1.cream_biscuits', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Cream biscuits melt on tongues — daughters learn tenderness is a recipe.',
@@ -73,7 +75,7 @@ registerModuleVariants('wifeLessons.lesson.s1.cream_biscuits', [
 
 registerModuleVariants('wifeLessons.talk.Wanda.s1.opt1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"Our recipes were simple once. Mary Jane taught us abundance tastes like home."',

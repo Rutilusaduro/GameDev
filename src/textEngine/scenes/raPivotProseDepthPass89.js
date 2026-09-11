@@ -1,5 +1,7 @@
 // CG resident variety, evolved beats, hall room blurbs (Pass 89).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 const cgResidentExtras = [
   ['Cassidy', 'ahead', 'Thigh column still mine — update the board before you celebrate.'],
@@ -97,7 +99,7 @@ registerModuleVariants('hall.room.blurb', [
 
 registerModuleVariants('wifeLessons.talk.Wanda.s2.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"The pound cake sat heavy on the ride home — Patrice and I talked about nothing else."',
@@ -107,7 +109,7 @@ registerModuleVariants('wifeLessons.talk.Wanda.s2.greeting', [
 
 registerModuleVariants('wifeLessons.lesson.s4.lasagna', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Cheese strings stretch between forks — lasagna night teaches daughters that layers are a lifestyle.',

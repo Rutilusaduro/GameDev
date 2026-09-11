@@ -1,5 +1,7 @@
 // Evolved endings, fair photos, WL + campus (Pass 94).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('evolved.event.sumo.s0.end0', [
   {
@@ -66,7 +68,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0.curriculum', [
 
 registerModuleVariants('wifeLessons.talk.Patrice.s4.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"Store cookies stayed on the counter — your cinnamon buns did not survive the drive home."',
@@ -76,7 +78,7 @@ registerModuleVariants('wifeLessons.talk.Patrice.s4.greeting', [
 
 registerModuleVariants('wifeLessons.lesson.s8.final_spread', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Every favorite dish at once — the table becomes a map of the whole journey.',

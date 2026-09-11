@@ -1,5 +1,7 @@
 // Campus finds, evolved arcs, CG + homeroom (Pass 90).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('campus.find', [
   {
@@ -140,7 +142,7 @@ registerModuleVariants('hall.blueprint.synergy', [
 
 registerModuleVariants('wifeLessons.talk.Patrice.s2.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"Store cookies stayed on the counter untouched — your cinnamon buns did not."',
@@ -150,7 +152,7 @@ registerModuleVariants('wifeLessons.talk.Patrice.s2.greeting', [
 
 registerModuleVariants('wifeLessons.lesson.s5.mac_cheese', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Four cheeses, one silence — spoons scrape the pot until mothers forget they brought Tupperware.',

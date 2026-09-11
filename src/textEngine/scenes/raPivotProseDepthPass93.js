@@ -1,5 +1,7 @@
 // Homeroom conferences, evolved arcs, hall blueprint (Pass 93).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('homeroom.conference.Bri.intro', [
   {
@@ -103,7 +105,7 @@ registerModuleVariants('cg.raReply.challenge', [
 
 registerModuleVariants('wifeLessons.lesson.s7.overnight_feast', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Night stretches past fullness — laughter and groans trade places until nobody wants to leave.',

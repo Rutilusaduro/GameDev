@@ -1,9 +1,11 @@
 // Wife lessons + CG measurement depth (Pass 82).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('wifeLessons.lesson.s1.honey_butter', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Butter glosses every knuckle — the kitchen teaches abundance before anyone speaks a lesson plan.',
@@ -13,7 +15,7 @@ registerModuleVariants('wifeLessons.lesson.s1.honey_butter', [
 
 registerModuleVariants('wifeLessons.v2.depth', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mary Jane ladles seconds like punctuation — nobody leaves the table still pretending they are full.',

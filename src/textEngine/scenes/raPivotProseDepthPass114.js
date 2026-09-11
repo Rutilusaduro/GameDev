@@ -1,5 +1,7 @@
 // Roster unlock tails + opposition + dinner + WL (Pass 114).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('roster.unlock.s7', [
   {
@@ -43,7 +45,7 @@ registerModuleVariants('dinner.depth', [
 
 registerModuleVariants('wifeLessons.lesson.s4.lasagna', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Lasagna for six, eaten by three — cheese stretching like the week’s ambition.',

@@ -13,7 +13,7 @@ const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
 const scene = FLOOR_SCENES.find((s) => s.id === 'mood_stressed') || FLOOR_SCENES[0];
 const dish = DINNER_VENUES[0]?.dishes?.[0];
 
-const MODULAR_FP = /hallTone|choiceEcho|savor|venueMood|hungerCall|yieldBeat|crowdHeat|tableStakes|dohyo|boutHeat|ringLight|takeYield|fieldNotes|subjectFocus|lateObsession|Clipboard margins|policy and takeout|plate looks expensive|summons|Cheering turns hungry|oven heat|yeasty warmth|warmOpen|raPresence|Residents orbit|unofficial agenda|Floor check-in energy|Portions meant|appetite as sport|Center ring, heavy|On camera she eats|datapoint for the algorithm|moment passes warm|kitchen fills with yeasty|Yeasty warmth hits|permission baked|appetite as family|ring light hums|Perfect take means|Steam and sweetness|upholstered|Hunger arrives enormous|built since the last feast|Tachi-ai|belt strain|dohyo holds|Impact lands soft|She keeps her voice neutral|wellness framing|circleEat|mjDoctrine|appetite as family calendar/i;
+const MODULAR_FP = /hallTone|choiceEcho|savor|venueMood|hungerCall|yieldBeat|crowdHeat|tableStakes|dohyo|boutHeat|ringLight|takeYield|fieldNotes|subjectFocus|lateObsession|Clipboard margins|policy and takeout|plate looks expensive|summons|Cheering turns hungry|oven heat|yeasty warmth|warmOpen|raPresence|Residents orbit|unofficial agenda|Floor check-in energy|Portions meant|appetite as sport|Center ring, heavy|On camera she eats|datapoint for the algorithm|moment passes warm|kitchen fills with yeasty|Yeasty warmth hits|permission baked|appetite as family|ring light hums|Perfect take means|Steam and sweetness|upholstered|Hunger arrives enormous|built since the last feast|Tachi-ai|belt strain|dohyo holds|Impact lands soft|She keeps her voice neutral|wellness framing|circleEat|mjDoctrine|appetite as family calendar|You date the entry before the ink dries|Observation beats intervention|They drove over hungry|warmest room on the floor|appetite walks in|Plates keep coming|Camera loves fullness|Direction lands soft|journal catches both|IRB notices/i;
 
 const pulls = [
   (seed) => render('{journal.feeder.cheerleader.s2}', buildTextContext({ subject: mj, week, seed })),
@@ -43,7 +43,7 @@ const pulls = [
 assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
 
 let modular = 0;
-const samplesPerPull = 4;
+const samplesPerPull = 8;
 for (let i = 0; i < pulls.length; i += 1) {
   let hit = false;
   for (let s = 0; s < samplesPerPull; s += 1) {

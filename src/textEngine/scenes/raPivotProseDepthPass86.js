@@ -1,5 +1,7 @@
 // Fair queen + wife lesson depth (Pass 86).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('fair.training.Brittany', [
   {
@@ -26,7 +28,7 @@ registerModuleVariants('fair.day.weighIn.open', [
 
 registerModuleVariants('wifeLessons.lesson.s2.peach_cobbler', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Peach juice runs down chins — daughters and mothers learn the same lesson in sticky sync.',

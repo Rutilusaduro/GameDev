@@ -1,5 +1,7 @@
 // Exploration find tiers + evolved legacyBody tails (Pass 98).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('campus.find', [
   {
@@ -59,7 +61,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s2.p0.legacyBody', [
 
 registerModuleVariants('wifeLessons.lesson.s3.potluck', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Potluck steam fogs the kitchen — every mother competes with butter and pride.',

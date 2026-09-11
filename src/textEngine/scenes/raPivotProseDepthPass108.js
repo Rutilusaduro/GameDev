@@ -1,5 +1,7 @@
 // Item use, session Rae, fair training, WL beat (Pass 108).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('item.use.open', [
   {
@@ -43,7 +45,7 @@ registerModuleVariants('fair.boost.Brittany', [
 
 registerModuleVariants('wifeLessons.talk.Darlene.s1.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"We drove over hungry," Darlene says — butter already on the counter before coats come off.',

@@ -1,5 +1,7 @@
 // Fair boost + WL talk + weekly (Pass 103).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('fair.boost.Serena', [
   {
@@ -13,7 +15,7 @@ registerModuleVariants('fair.boost.Serena', [
 
 registerModuleVariants('wifeLessons.talk.Darlene.s2.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Darlene’s greeting smells like butter — the lesson already started before words.',

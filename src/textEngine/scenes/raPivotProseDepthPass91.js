@@ -1,5 +1,7 @@
 // CG resident variety (thin pools), homeroom + fair day (Pass 91).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 const cgMaya = {
   ahead: [
@@ -127,7 +129,7 @@ registerModuleVariants('cg.chat.priyaFollowup.threatened.Frenzied', [
 
 registerModuleVariants('wifeLessons.talk.Wanda.s3.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"Kezia asked what we are baking before I could finish my coffee — I told her everything."',

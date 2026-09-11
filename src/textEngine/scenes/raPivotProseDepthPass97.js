@@ -1,5 +1,7 @@
 // Fair day influence variants + evolved/hall (Pass 97).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('fair.day.weighIn.open', [
   {
@@ -94,7 +96,7 @@ registerModuleVariants('cg.scene.corkboard.Frenzied', [
 
 registerModuleVariants('wifeLessons.lesson.s2.butter_cake', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Butter cake steam fogs the windows — mothers and daughters share the same sigh.',

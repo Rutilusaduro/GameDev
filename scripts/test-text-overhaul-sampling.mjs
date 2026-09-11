@@ -100,7 +100,7 @@ for (let i = 0; i < total; i += 1) {
 }
 
 const ratio = modularHits / total;
-assert.ok(ratio >= 0.5, `expected >=50% modular slot hits at week ${week}, got ${(ratio * 100).toFixed(0)}% (${modularHits}/${total})`);
+assert.ok(ratio >= 0.75, `expected >=75% modular slot hits at week ${week}, got ${(ratio * 100).toFixed(0)}% (${modularHits}/${total})`);
 
 const actKey = Object.keys(HOMEROOM_GROUP_ACTIVITIES).find(
   (k) => (HOMEROOM_GROUP_ACTIVITIES[k].phases || []).length > 0,

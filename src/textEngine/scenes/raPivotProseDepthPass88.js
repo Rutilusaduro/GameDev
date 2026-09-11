@@ -1,5 +1,7 @@
 // Fair collabs, homeroom tails, WL + CG beats (Pass 88).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('fair.boost.Brittany', [
   {
@@ -93,7 +95,7 @@ registerModuleVariants('homeroom.conference.Sofia.portfolio', [
 
 registerModuleVariants('wifeLessons.talk.Darlene.s1.opt0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Darlene’s yes is quiet but final — the kitchen schedule reshuffles around daughters who finally want seconds.',
@@ -103,7 +105,7 @@ registerModuleVariants('wifeLessons.talk.Darlene.s1.opt0', [
 
 registerModuleVariants('wifeLessons.lesson.s3.bread_pudding', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Berry juice stains aprons like badges — mothers teach daughters that sweetness is a skill, not an accident.',

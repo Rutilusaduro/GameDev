@@ -1,9 +1,11 @@
 // Wife Lessons + fair training + campus find depth (Pass 99).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('wifeLessons.lesson.s1.honey_butter', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Honey glaze on warm fingers — the kitchen teaches sweetness before anyone says the word aloud.',
@@ -13,7 +15,7 @@ registerModuleVariants('wifeLessons.lesson.s1.honey_butter', [
 
 registerModuleVariants('wifeLessons.lesson.s4.shortcake', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Strawberry towers wobble — daughters compete for height while cream claims every chin.',
@@ -23,7 +25,7 @@ registerModuleVariants('wifeLessons.lesson.s4.shortcake', [
 
 registerModuleVariants('wifeLessons.lesson.s6.daughters_bake', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Flour on aprons, butter on wrists — the lesson is touch and permission in the same breath.',

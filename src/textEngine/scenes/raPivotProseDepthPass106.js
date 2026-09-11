@@ -1,5 +1,7 @@
 // Remaining weekly narrative roots + homeroom health unit (Pass 106).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('weekly.overachiever_pivot', [
   {
@@ -73,7 +75,7 @@ registerModuleVariants('hall.blueprint.synergy', [
 
 registerModuleVariants('wifeLessons.lesson.s5.choc_cake', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Chocolate layer cake — mothers compete in frosting, daughters in seconds.',

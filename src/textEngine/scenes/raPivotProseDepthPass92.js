@@ -1,5 +1,7 @@
 // Evolved + fair + CG post depth (Pass 92).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
+
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.p1', [
   {
@@ -73,7 +75,7 @@ registerModuleVariants('cg.scene.binge.Heavy.Invested', [
 
 registerModuleVariants('wifeLessons.lesson.s6.daughters_bake', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Daughters run the counters now — mothers learn to applaud with full mouths.',
