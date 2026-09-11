@@ -13,6 +13,7 @@ import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverE
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
 import { campusNodeToLocale } from './textContext.js';
+import { depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 import { formatSecretDiscoverLine } from '../textEngine/scenes/campus/secrets.js';
 
@@ -122,7 +123,10 @@ function pickStudentSighting(students, ctx, rng) {
 
   const trustGrants = [];
   if (who.lockState === 'locked' && UNLOCK_POOL_IDS.includes(who.id)) {
-    trustGrants.push({ studentId: who.id, amount: 4 + Math.floor(rng() * 4) });
+    trustGrants.push({
+      studentId: who.id,
+      amount: depthPassiveTrustDrip(4 + Math.floor(rng() * 4)),
+    });
   }
   return { lines, trustGrants };
 }

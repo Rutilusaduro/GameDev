@@ -2,6 +2,8 @@
 // PERFORMANCE TIER CONTRACT — shared vocabulary for mini-games (§4)
 // ═══════════════════════════════════════════════════════════════
 
+import { depthGainMult } from './mechanicsDepthLayer.js';
+
 export const PERFORMANCE_TIERS = ['perfect', 'good', 'messy', 'failure'];
 
 const LEGACY_MAP = {
@@ -35,7 +37,8 @@ export function performanceTierLabel(tier) {
 /** Rel bonus multiplier for evolved mini-games keyed on normalized tier. */
 export function performanceRelMult(tier) {
   const map = { perfect: 1.35, good: 1.0, messy: 0.85, failure: 0.6 };
-  return map[tier] ?? 1;
+  const mult = map[tier] ?? 1;
+  return mult > 1 ? depthGainMult(mult) : mult;
 }
 
 /** Short UI suffix for push notifications. */

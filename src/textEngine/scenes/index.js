@@ -83,6 +83,7 @@ import './raPivotMechanicsProseDepth.js';
 import './raPivotProseDepthPass53.js';
 import './raPivotProseDepthPass54.js';
 import './raPivotProseDepthPass55.js';
+import './raPivotProseDepthPass56.js';
 import './memory/index.js';
 import './memory/depth.js';
 import './gossip/index.js';

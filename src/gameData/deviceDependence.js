@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { PSYCH_TIERS } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
-import { depthDeviceDependenceGain } from './mechanicsDepthLayer.js';
+import { depthDeviceDependenceGain, depthLbsGrant, depthPsychDelta } from './mechanicsDepthLayer.js';
 
 const WEEKLY_WEAR_GAIN = 3;
 const EQUIP_GAIN = 5;
@@ -92,15 +92,15 @@ export function applyDependenceBonuses(effectSpec, dependenceLevel = 0) {
   const next = { ...effectSpec };
   if (next.gainLbs) {
     next.gainLbs = [
-      Math.max(1, Math.round((next.gainLbs[0] || 0) * mult)),
-      Math.max(1, Math.round((next.gainLbs[1] || 0) * mult)),
+      depthLbsGrant(Math.max(1, Math.round((next.gainLbs[0] || 0) * mult))),
+      depthLbsGrant(Math.max(1, Math.round((next.gainLbs[1] || 0) * mult))),
     ];
   }
   if (next.psychDelta?.dependence) {
-    next.psychDelta = {
+    next.psychDelta = depthPsychDelta({
       ...next.psychDelta,
       dependence: Math.round(next.psychDelta.dependence * mult),
-    };
+    });
   }
   return next;
 }

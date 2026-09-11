@@ -19,6 +19,7 @@
 //   • Preferences    — food (pendingCourtPreference → courtPreference) +20% gain.
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from './stages.js';
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
 
 export const IMMOBILITY_THRESHOLD = 10;
 export const REFIT_INTERVAL = 50;
@@ -286,7 +287,8 @@ export function getFinalFormFx(student) {
 export function finalFormSelfGain(student, rng = Math.random) {
   if (student?.finalForm !== 'feed') return 0;
   const [lo, hi] = FINAL_FORM_FX.feed.selfGain;
-  return lo + Math.floor(rng() * (hi - lo + 1));
+  const raw = lo + Math.floor(rng() * (hi - lo + 1));
+  return depthLbsGrant(raw);
 }
 
 /**
@@ -303,7 +305,10 @@ export function applyFinalFormRadiate(students = []) {
     if (getImmobilityTier(s) >= 2 && s.finalForm) return s;
     let next = s;
     if (queens) next = { ...next, discontent: Math.max(0, (next.discontent ?? 0) - FINAL_FORM_FX.care.othersDiscontent * queens) };
-    if (adored) next = { ...next, relationship: Math.min(100, (next.relationship ?? 0) + FINAL_FORM_FX.socialize.othersRel * adored) };
+    if (adored) {
+      const rel = depthRelBonus(FINAL_FORM_FX.socialize.othersRel * adored);
+      next = { ...next, relationship: Math.min(100, (next.relationship ?? 0) + rel) };
+    }
     return next;
   });
 }
@@ -329,5 +334,5 @@ export function immobilitySettleGain(student, rng = Math.random) {
   const effectiveHi = capped ? lo : hi;
   let gain = lo + Math.floor(rng() * (effectiveHi - lo + 1));
   if (!capped && student.courtPreference) gain = Math.round(gain * 1.2);
-  return gain;
+  return depthLbsGrant(gain);
 }
