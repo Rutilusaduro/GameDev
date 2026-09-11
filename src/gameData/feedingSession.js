@@ -133,6 +133,12 @@ export function getFeedingModifiers(student, {
   if ((student?.fullness || 0) > 40) calorieMult += 0.04;
   if ((student?.fullness || 0) > 70) refusalBonus += 0.04;
 
+  if (student?.lastCompound) {
+    calorieMult += 0.04;
+    if (student.lastCompound === 'appetite_stimulant' || student.lastCompound === 'strong_appetite' || student.lastCompound === 'cult_appetite') {
+      refusalBonus += 0.04;
+    }
+  }
   if (student?.leftoverFedThisWeek) {
     calorieMult += 0.08;
     fullnessMult += 0.04;

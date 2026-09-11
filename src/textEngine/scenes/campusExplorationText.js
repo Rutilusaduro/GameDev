@@ -243,7 +243,24 @@ registerPool('campus.sighting', [
     '{subject.name} has a snack in one hand and a schedule in the other. The snack is winning.',
     'You see {subject.name} pause at a bench long enough to finish what she was carrying.',
     '{subject.name} nods at you like the floor followed her off campus.',
+    '{subject.name} walks with a snack she pretends is accidental. The campus does not argue.',
+    'You catch {subject.name} between buildings, slower than last month, warmer for it.',
   ] },
+]);
+
+registerModuleVariants('campus.sighting', [
+  { when: { lastCompound: 'appetite_stimulant' }, weight: 3, text: [
+    '{subject.name} keeps a hand on her middle between buildings. The last dose still has errands.',
+    'Campus air hits her and she thinks about food first. Sophia would call that expected.',
+  ]},
+  { when: { lastCompound: 'cult_appetite' }, weight: 3, text: [
+    '{subject.name} moves like the circle is still feeding her. Quad, then snack, then more snack.',
+  ]},
+  { when: {}, text: [
+    '{subject.name} has foil in her bag and no schedule that accounts for it.',
+    'You see {subject.name} choose the slower path because the faster one skips the trucks.',
+    '{subject.name} eats while walking. The walking is optional. The eating is not.',
+  ]},
 ]);
 
 registerPool('campus.travel', [

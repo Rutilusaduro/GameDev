@@ -87,11 +87,20 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random, ext
   const meshBonus = (getCircuitBoard(next, 'endless_hunger_engine').unlockedNodes || []).includes('ehe_mesh_arrival') ? 10 : 0;
   const leftoverVent = nodes.some((n) => (n.slots || []).includes('leftover_vent'));
   const leftoverVentBonus = extras.leftoverKitchen && leftoverVent ? 3 : 0;
+  const levelBonus = nodes.reduce((a, n) => a + Math.max(0, (n.level ?? 1) - 1) * 3, 0);
+  const areas = network.deploymentAreas || [];
+  const inDining = areas.includes('dining_hall');
+  const inDorms = areas.includes('dorms');
+  const inGym = areas.includes('gym');
+  const inLib = areas.includes('library');
+  const areaBonus = (inDining && extras.leftoverKitchen ? 2 : 0) + (inDorms && extras.nightRounds ? 3 : 0);
   const automationTotal = nodes.reduce((a, n) => a + (n.automation ?? 0), 0)
     + nodes.reduce((a, n) => a + (n.slots || []).filter(Boolean).length * 4, 0)
     + meshBonus
-    + leftoverVentBonus;
-  const deployed = (network.deploymentAreas || []).length;
+    + leftoverVentBonus
+    + levelBonus
+    + areaBonus;
+  const deployed = areas.length;
   const visible = (students || []).filter((s) => !s.hidden && s.id !== 18);
   const threshold = automationThreshold(network);
 
@@ -110,8 +119,11 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random, ext
   }
 
   if (deployed > 0) scrutinyDelta += Math.max(0, Math.floor(deployed / 2));
+  if (inGym) scrutinyDelta += 1;
   let detectionRisk = network.detectionRisk ?? 0;
   if (extras.nightRounds) detectionRisk = Math.max(0, detectionRisk - 2);
+  if (inLib) detectionRisk = Math.max(0, detectionRisk - 1);
+  if (inDorms && extras.nightRounds) detectionRisk = Math.max(0, detectionRisk - 1);
   if (detectionRisk > 15 && rng() < 0.28) {
     scrutinyDelta += 2;
     lines.push('🌐 Campus sensors logged an unusual thermal signature near your network nodes.');

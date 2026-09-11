@@ -127,6 +127,12 @@ registerPool("enc.reach", [
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     "She is already eating. The encouragement is mostly ceremonial at this point.",
   ]},
+  { when: { lastCompound: 'appetite_stimulant' }, weight: 3, text: [
+    "The last dose still has her reaching. Encouragement is just permission with a voice.",
+  ]},
+  { when: { lastCompound: 'strong_appetite' }, weight: 3, text: [
+    "Whatever Sophia gave her is still working. Her hand finds the plate like it was scheduled.",
+  ]},
 ]);
 
 // Shape: DIALOGUE BEAT — the capitulation.

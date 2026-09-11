@@ -5328,7 +5328,7 @@ export default function HallPass(){
     const maxFullness=maxFullnessByStage[stageIdx]||100;
     const maxFocus=maxFocusByStage[stageIdx]||90;
     const raeStage=Math.min(5,stageIdx);
-    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[SESSION_NPC_LINES[raeStage].arrival+` ${SESSION_NPC_LINES[raeStage].extra||''}`],done:false,endReason:null,raeDelivered:raeStage<=1});
+    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[SESSION_NPC_LINES[raeStage].arrival+` ${SESSION_NPC_LINES[raeStage].extra||''}`],done:false,endReason:null,raeDelivered:raeStage<=1,lastFoodId:null});
     setEvolvedEventState(null);
   };
 
@@ -5336,16 +5336,18 @@ export default function HallPass(){
     if(!rankedFeedeeState||rankedFeedeeState.done) return;
     playHallPassSound('click', soundEnabled);
     const food=SESSION_FOOD_ITEMS.find(f=>f.id===foodId); if(!food) return;
-    const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log,raeDelivered}=rankedFeedeeState;
+    const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log,raeDelivered,lastFoodId}=rankedFeedeeState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
+    const chain=lastFoodId===food.id?2:0;
+    const foodGain=Math.round(food.gain*originRegisterFx(s).calorieMult)+leftoverNightGainBump(s,week)+chain;
     // Decay focus first, then apply food
     const newFocus=Math.max(0,Math.min(maxFocus,focus-15+food.focusRestore));
     const newFullness=fullness+food.fullnessCost;
-    const newGain=gain+food.gain;
+    const newGain=gain+foodGain;
     const newTurn=turn+1;
-    const newLog=[...log,`${food.icon} ${food.label} — +${food.gain} lbs, focus ${newFocus>focus?'+':''}${Math.round(food.focusRestore-15)}`];
+    const newLog=[...log,`${food.icon} ${food.label} — +${foodGain} lbs, focus ${newFocus>focus?'+':''}${Math.round(food.focusRestore-15)}`];
     // Apply gain to student
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.gain,0):st));
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,foodGain,0):st));
     // Check Rae delivery event at turn 3 if not yet delivered and stage >= 2
     let updatedLog=newLog;
     let newRaeDelivered=raeDelivered;
@@ -5356,16 +5358,16 @@ export default function HallPass(){
     }
     // Check end conditions
     if(newFullness>=maxFullness){
-      setRankedFeedeeState(prev=>({...prev,focus:newFocus,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,done:true,endReason:'food_coma'}));
+      setRankedFeedeeState(prev=>({...prev,focus:newFocus,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,lastFoodId:food.id,done:true,endReason:'food_coma'}));
       push(`🎮 ${s.name} — Ranked session: +${Math.round(newGain)} lbs (food coma)`);
       return;
     }
     if(newFocus<=0){
-      setRankedFeedeeState(prev=>({...prev,focus:0,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,done:true,endReason:'focus_out'}));
+      setRankedFeedeeState(prev=>({...prev,focus:0,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,lastFoodId:food.id,done:true,endReason:'focus_out'}));
       push(`🎮 ${s.name} — Ranked session: +${Math.round(newGain)} lbs (focus out)`);
       return;
     }
-    setRankedFeedeeState(prev=>({...prev,focus:newFocus,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered}));
+    setRankedFeedeeState(prev=>({...prev,focus:newFocus,fullness:newFullness,gain:newGain,turn:newTurn,log:updatedLog,raeDelivered:newRaeDelivered,lastFoodId:food.id}));
   };
 
   const quitRankedSession=()=>{

@@ -126,10 +126,15 @@ export function applyTalkHabitatBonus(effect, student, dormState, week = 0, topi
   if (topicId === 'encourage') {
     if (stance === 'secret' && next.corruption) next.corruption += 1;
     if (stance === 'opposed' && next.rel) next.rel += 1;
+    if (student?.lastCompound && next.corruption) next.corruption += 1;
+  }
+  if (topicId === 'suggest_indulgence' && student?.lastCompound && next.corruption) {
+    next.corruption += 1;
   }
   if (topicId === 'command_finish' && next.cals) {
     if (stance === 'secret' || stance === 'neutral') next.cals = Math.round(next.cals * 1.08);
     if ((student?.fullness || 0) > 50) next.full = (next.full || 0) + 4;
+    if (student?.lastCompound) next.cals = Math.round(next.cals * 1.1);
   }
   if (student?.leftoverFedThisWeek) {
     if (next.rel) next.rel += 1;

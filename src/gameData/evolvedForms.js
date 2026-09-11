@@ -4082,19 +4082,19 @@ export const SESSION_FOOD_ITEMS = [
 
 export const SESSION_NPC_LINES = {
   0:{ arrival:"Delivery.", exit:"Have a good session.", extra:null,
-      desc:"New driver. Professional, quick, by the book." },
+      desc:"New driver. Professional, quick, by the book. She counts items twice and still leaves a napkin extra." },
   1:{ arrival:"Order's here — got the item count wrong on a previous delivery, so these extras are on us.",
-      exit:"Good luck with the game.", extra:"She leaves a dessert item. Unprompted.",
+      exit:"Good luck with the game.", extra:"She leaves a dessert item. Unprompted. Steam still on the lid.",
       desc:"She adds extras. Calls them mistakes. They are not." },
   2:{ arrival:"You were about to order, right? I was already heading over.",
-      exit:"I'll be back when the queue runs.", extra:"She has the right snacks pre-staged.",
+      exit:"I'll be back when the queue runs.", extra:"She has the right snacks pre-staged, still warm from the bag.",
       desc:"She knows the schedule. She was already on her way." },
   3:{ arrival:"Hey. Lobby code still works.", exit:"I'll set up and get out of your way.", extra:null,
       desc:"She has the building code. She did not ask for it." },
   4:{ arrival:"Had a feeling you'd want this tonight.", exit:"I've got more in the car if the session runs.",
-      extra:"She has the exact order Destiny was going to place.",
+      extra:"She has the exact order Destiny was going to place, including the thing Destiny only thinks about.",
       desc:"She arrives before the order is placed." },
-  5:{ arrival:"Hey.", exit:"I'm around.", extra:"She rearranges the desk slightly. Better now.",
+  5:{ arrival:"Hey.", exit:"I'm around.", extra:"She rearranges the desk slightly. Better now. Room for a second bag.",
       desc:"She's just here now. Sometimes with food. Always correct." },
 };
 

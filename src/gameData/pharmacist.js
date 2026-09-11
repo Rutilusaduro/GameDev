@@ -3,6 +3,7 @@
 // See docs/Pharmacist/
 // ═══════════════════════════════════════════════════════════════
 import { defaultCultState, initCultOnUnlock, cultLoyaltyRelBonus, consumeCultSupplyReservoir } from './pharmacistCult.js';
+import { originRegisterFx } from './origins/index.js';
 
 export const PHARMACIST_STAGES = [
   { id: 1, key: "corporate_chemist",  label: "Corporate Chemist",   desc: "Secret sabotage at her day job. Early compounds for the player." },
@@ -278,11 +279,19 @@ export function applyCompoundToFeed(student, compoundId, feedResult = {}, pharma
   if (compound.metabolicBonus) {
     s.metabolicSlowdown = (s.metabolicSlowdown ?? 0) + compound.metabolicBonus;
   }
+  const prevCompound = student?.lastCompound;
   s.lastCompound = compoundId;
   s.weeksWithoutPlayerFeed = 0;
   const fr = { ...feedResult };
   let calMult = compound.calMult ?? 1;
   let fullMult = compound.fullMult ?? 1;
+  if (prevCompound && prevCompound === compoundId) {
+    calMult *= 1.08;
+    fullMult *= 1.05;
+  } else if (prevCompound) {
+    fr.corruptionGain = (fr.corruptionGain ?? 0) + 1;
+  }
+  calMult *= originRegisterFx(student).labGain;
   if (student?.leftoverFedThisWeek) {
     calMult *= 1.06;
     fullMult *= 1.04;

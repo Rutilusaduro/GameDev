@@ -26,3 +26,19 @@ registerModuleVariants('opposition.hearing.emergency.result.night_hours', [
     'Night rounds become a program on paper. Appetite keeps the receipts.',
   ]},
 ]);
+
+registerModuleVariants('opposition.hearing.removal.phase1', [
+  { when: {}, text: [
+    'Vance wants restraint in writing. {subject.name} answers with how she sits.',
+    'The second motion smells like leftover trays. Someone in the room is still hungry.',
+    'Conditional enrollment is a smaller story. The chair under {subject.name} refuses it.',
+  ]},
+]);
+
+registerModuleVariants('opposition.hearing.emergency.phase1', [
+  { when: {}, text: [
+    'The observer writes faster. Appetite does not. {subject.name} stays the exhibit.',
+    'Second round of crisis language. The Board is still chewing the first.',
+    'Vance offers costs. You offer a hall that eats on schedule.',
+  ]},
+]);
