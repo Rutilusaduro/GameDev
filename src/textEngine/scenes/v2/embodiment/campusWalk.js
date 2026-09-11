@@ -7,6 +7,21 @@ import { campusNodeToLocale } from '../../../../gameData/textContext.js';
 import { normalizeEmbodiedEventId } from '../../../../gameData/v2/embodiedCampus.js';
 
 registerPool('emb.walk.arrive', [
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'She arrives leftover-heavy — mass first, foil still answering, apology never.',
+    'The hallway makes room for leftover heat and the rest of her. Same weather.',
+  ]},
+  { when: { leftoverFed: true, stageMin: 5 }, weight: 3, text: [
+    'Hips find leftover rhythm. Speed was never free. The kitchen made it slower.',
+    'She waddles with kitchen sitting still in her clothes. Campus notices the extra.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You steer leftover heat from the inside. Every door looks like a second sitting.',
+    'Galley warmth walks campus. You feel the sway of last night\'s tray.',
+  ]},
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. Daylight campus is the public version of that appetite.',
+  ]},
   { when: { stageMin: 8 }, text: [
     'She arrives like weather — mass first, apology later. Every step is negotiation with gravity.',
     'The hallway makes room the way water makes room for something large and warm.',

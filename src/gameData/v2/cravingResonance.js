@@ -66,16 +66,22 @@ export function getLinkedStudents(studentId, resonanceState) {
   return [...linked];
 }
 
-export function pulseResonance(fedStudentId, calories, students, resonanceState) {
+export function pulseResonance(fedStudentId, calories, students, resonanceState, week = 0) {
   const linkedIds = getLinkedStudents(fedStudentId, resonanceState);
   if (!linkedIds.length) return { pulses: [], bonusCalories: 0 };
   const hallLbs = getCombinedHallLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
-  const bonusCal = Math.round(calories * 0.08 * tier.pulseMult);
+  const fed = students.find((st) => st.id === fedStudentId);
+  let pulseMult = tier.pulseMult;
+  if (fed?.leftoverFedThisWeek) pulseMult *= 1.12;
+  if (week && fed?.lastNightVisitWeek === week) pulseMult *= 1.08;
+  const bonusCal = Math.round(calories * 0.08 * pulseMult);
   const pulses = linkedIds.map((id) => {
     const s = students.find((st) => st.id === id);
     if (!s || s.hidden) return null;
-    return { studentId: id, calories: bonusCal, rel: 1 };
+    let rel = 1;
+    if (s.leftoverFedThisWeek) rel += 1;
+    return { studentId: id, calories: bonusCal, rel };
   }).filter(Boolean);
   return { pulses, bonusCalories: bonusCal * pulses.length };
 }
@@ -97,7 +103,9 @@ export function applyResonancePassiveBonus(students, resonanceState) {
   const bonusCals = tier.passiveBonus * 250;
   const next = students.map((s) => {
     if (s.hidden) return s;
-    return { ...s, consumedCalories: (s.consumedCalories || 0) + bonusCals };
+    let extra = bonusCals;
+    if (s.leftoverFedThisWeek) extra = Math.round(extra * 1.1);
+    return { ...s, consumedCalories: (s.consumedCalories || 0) + extra };
   });
   return { students: next, tier };
 }

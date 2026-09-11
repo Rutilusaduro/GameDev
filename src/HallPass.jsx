@@ -1649,7 +1649,7 @@ export default function HallPass(){
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
     gainFavor((forced||fullnessCost>=40)?'stuff':'feed');
     if((ownedSkills.hunger_web||0)>=1&&scaledCals>=400){
-      const pulseResult=handleFeedResonancePulse(s.id,scaledCals,students,v2);
+      const pulseResult=handleFeedResonancePulse(s.id,scaledCals,students,v2,week);
       if(pulseResult.pulses?.length){
         setV2State(pulseResult.v2State);
         pulseResult.pulses.forEach((p)=>{
@@ -6777,7 +6777,7 @@ export default function HallPass(){
     push(`🌒 You slip inside ${s.name}.`);
   };
   const runEmbodimentAction=(act,s)=>{
-    const result=handleEmbodimentAction(act,s,v2);
+    const result=handleEmbodimentAction(act,s,v2,week);
     setV2State(result.v2State);
     setStudents(prev=>prev.map(st=>{
       if(st.id!==s.id) return st;
@@ -6820,7 +6820,7 @@ export default function HallPass(){
     const activeId=v2.embodiment?.activeStudentId;
     const s=students.find(st=>st.id===activeId);
     if(!s||!event) return;
-    const result=handleEmbodiedEventResolve(s,event,v2,{students,rng:Math.random});
+    const result=handleEmbodiedEventResolve(s,event,v2,{students,rng:Math.random,week});
     setV2State(result.v2State);
     setStudents(prev=>{
       const byId=new Map(result.students.map(st=>[st.id,st]));

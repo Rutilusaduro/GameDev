@@ -131,7 +131,7 @@ export function runWeeklyV2Events(v2State, students, ownedSkills, ownedHallSkill
   for (const id of dreamIds) {
     const s = students.find((st) => st.id === id);
     if (!s) continue;
-    const scenario = pickDreamScenario(s);
+    const scenario = pickDreamScenario(s, week);
     messages.push({ type: 'dream', studentId: id, scenarioId: scenario.id, interactive: true });
   }
 
@@ -145,16 +145,29 @@ export function handleEmbodimentStart(student, ctx) {
   return { ok: true, apCost: check.apCost, v2State };
 }
 
-export function handleEmbodimentAction(action, student, v2State) {
+export function handleEmbodimentAction(action, student, v2State, week = 0) {
   const act = EMBODIMENT_ACTIONS.find((a) => a.id === action.id) || action;
   const v2 = applyEmbodimentAction(v2State, act.id);
+  let calories = act.calories || 0;
+  let fullness = act.fullness || 0;
+  let rel = act.rel || 0;
+  let corruption = act.corruption || 0;
+  if (student?.leftoverFedThisWeek) {
+    calories = Math.round(calories * 1.12);
+    fullness += 4;
+    rel += 1;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    calories = Math.round(calories * 1.08);
+    corruption += 1;
+  }
   return {
     ok: true,
     v2State: v2,
-    calories: act.calories || 0,
-    fullness: act.fullness || 0,
-    rel: act.rel || 0,
-    corruption: act.corruption || 0,
+    calories,
+    fullness,
+    rel,
+    corruption,
     scrutiny: act.scrutiny || 0,
   };
 }
@@ -182,10 +195,10 @@ export function handleEmbodiedMove(student, fromId, toId, v2State, week, { stude
   return { ok: true, v2State: nextState, event, fromId, toId, week, students };
 }
 
-export function handleEmbodiedEventResolve(student, event, v2State, { students = [], rng = Math.random } = {}) {
+export function handleEmbodiedEventResolve(student, event, v2State, { students = [], rng = Math.random, week = 0 } = {}) {
   if (!event) return { ok: true, v2State, student, trustGrants: [], scrutiny: 0 };
   const locked = students.filter((s) => s.lockState === 'locked');
-  const applied = applyEmbodiedEvent(student, event, { lockedStudents: locked, rng });
+  const applied = applyEmbodiedEvent(student, event, { lockedStudents: locked, rng, week });
   const nextState = recordEmbodiedEvent(v2State, event.eventKey, '');
   const patchedStudents = applyTrustGrants(students, applied.trustGrants);
   return {
@@ -280,8 +293,8 @@ export function handleEchoResonate(echoId, v2State, ownedSkills, ownedHallSkills
 
 export { applyResonanceSurgeBonus, getCombinedHallLbs, getResonanceTier } from './cravingResonance.js';
 
-export function handleFeedResonancePulse(fedStudentId, calories, students, v2State) {
-  const { pulses } = pulseResonance(fedStudentId, calories, students, v2State.resonance);
+export function handleFeedResonancePulse(fedStudentId, calories, students, v2State, week = 0) {
+  const { pulses } = pulseResonance(fedStudentId, calories, students, v2State.resonance, week);
   if (!pulses.length) return { pulses: [], v2State };
   const totalPulses = (v2State.resonance.totalPulses || 0) + pulses.length;
   const hallLbs = getCombinedHallLbs(students);

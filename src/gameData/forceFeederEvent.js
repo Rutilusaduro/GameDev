@@ -194,6 +194,7 @@ export function getFeedAttitude(student, labState = null) {
   const cor = getCorruptionTier(student?.corruption ?? 0).id;
   const rel = getTier(student?.relationship ?? 0).id;
   const mods = labState ? getForceFeederBoardMods(labState) : null;
+  if (student?.leftoverFedThisWeek) return 'willing';
   if (mods?.gentleOverride && cor === 0 && rel <= 0) return 'willing';
   if (cor >= 2 || rel >= 2) return 'willing';
   if (cor === 0 && rel <= 0) return 'resistant';

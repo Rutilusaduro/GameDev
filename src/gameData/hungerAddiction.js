@@ -339,7 +339,8 @@ export function tickHungerAddiction(student, playerFedThisWeek = false, skillEff
   }
 
   const addiction = getAddictionLevel(s);
-  const rise = (HUNGER_CONFIG.passiveHungerRise[addiction] ?? 0) * mod.passiveRiseMult;
+  const leftoverFull = !!s.leftoverFedThisWeek;
+  const rise = leftoverFull ? 0 : (HUNGER_CONFIG.passiveHungerRise[addiction] ?? 0) * mod.passiveRiseMult;
   if (rise > 0 && Math.random() < rise) {
     s = adjustHunger(s, 1);
   }

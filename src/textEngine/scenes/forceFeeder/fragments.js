@@ -214,6 +214,17 @@ registerPool('ff.setup', [
 ]);
 
 registerPool('ff.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Kitchen sitting already in her. The pump lands on warm dough. She stays buckled a beat longer.',
+    'Last night\'s tray plus the tube. She notices both when the harness opens.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still answering under the paste. The chair reports both.',
+    'Second sitting, then the machine. She palms leftover work and lab work in the same place.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. The lab is the public version of that appetite.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She stays in the harness a beat after the pump stops, surprised she wants the quiet.',
     'The tube comes out. Her belly does not go back. She notices both.',

@@ -302,10 +302,15 @@ export function rollEmbodiedArrivalEvent(
   };
 }
 
-export function applyEmbodiedEvent(student, eventDef, { lockedStudents = [], rng = Math.random } = {}) {
+export function applyEmbodiedEvent(student, eventDef, { lockedStudents = [], rng = Math.random, week = 0 } = {}) {
   if (!eventDef) return { student, trustGrants: [] };
   let next = { ...student };
-  if (eventDef.calories) next.consumedCalories = (next.consumedCalories || 0) + eventDef.calories;
+  let calories = eventDef.calories || 0;
+  if (calories) {
+    if (student?.leftoverFedThisWeek) calories = Math.round(calories * 1.12);
+    if (week && student?.lastNightVisitWeek === week) calories = Math.round(calories * 1.08);
+    next.consumedCalories = (next.consumedCalories || 0) + calories;
+  }
   if (eventDef.fullness) {
     next.fullness = Math.min(
       next.stomachCapacity || 100,

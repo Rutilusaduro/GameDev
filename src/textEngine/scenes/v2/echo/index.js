@@ -108,6 +108,17 @@ registerPool('echo.type.evolution', [
 ]);
 
 registerPool('echo.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The memory tastes like foil. She keeps it next to last night\'s sitting.',
+    'Early echo plus leftover heat. She plays both back like a snack she will finish later.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The archive holds leftover warmth now. Replaying it finds the kitchen still in her.',
+    'Stored sitting. She will grow into last night\'s tray again.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'The knock from the round is still in the wood when the echo starts.',
+  ] },
   { when: { stageMax: 3 }, weight: 2, text: [
     'The memory is small and warm. She keeps it like a snack she will finish later.',
     'Early echo. Softness still surprising. She plays it back anyway.',
