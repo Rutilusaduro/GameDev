@@ -101,6 +101,17 @@ registerModuleVariants('fair.boost.Brittany', [
   },
 ]);
 
+registerModuleVariants('fair.boost.Kylie', [
+  {
+    when: { fairBoostTier: ['High'] },
+    weight: 2,
+    text: [
+      'Camera flash, fair grease, pride spike — Kylie turns training into content before MJ swallows.',
+      BOOST_SKELETON,
+    ],
+  },
+]);
+
 for (const c of COLLABS) {
   registerModuleVariants(`fair.photo.${c}`, [
     {

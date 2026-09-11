@@ -736,4 +736,18 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(homeroomP0Hit, 'pass-78 homeroom_queen s0.p0 modular @ w24');
 
+const PASS57_FP = /The moment stretches — unhurried, intimate, hall-quiet\./;
+let talk57Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{talk.suggest_indulgence.b00}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72540 + s,
+    globals: { corruption: 0 },
+  }))?.trim() || '';
+  assert.ok(!PASS57_FP.test(line), 'pass-57 suggest_indulgence bridge alone @ w24');
+  if (line.length > 72 || /talk\.suggest|hallQuiet|permissionFrame/i.test(line)) talk57Hit = true;
+}
+assert.ok(talk57Hit, 'pass-57 talk.suggest_indulgence modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');
