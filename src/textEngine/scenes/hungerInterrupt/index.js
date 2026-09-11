@@ -11,6 +11,26 @@ import './fragments.js';
 import '../hungerArchetypeBehavior.js';
 
 registerPool('scene.hungerInterrupt.starter', [
+  { when: { leftoverFed: true, addictionLevel: [4], hungerTier: [4] }, priority: 2, weight: 3,
+    text: [
+      'A sharp knock — leftover was not enough and she is done pretending it was.',
+      'Someone is knocking like the galley tray was a rumor.',
+    ] },
+  { when: { leftoverFed: true, inWithdrawal: true }, priority: 2, weight: 3,
+    text: [
+      'Harder knock than usual. Last night\'s foil did not close the night.',
+    ] },
+  { when: { leftoverFed: true }, weight: 3,
+    text: [
+      'A knock. She already ate leftover. She is still here.',
+      'Soft knock, impatient anyway. Galley heat did not finish her.',
+      'Someone at the door who had a tray and wants the next one.',
+    ] },
+  { when: { nightVisit: true }, weight: 3,
+    text: [
+      'A knock you already answered after hours. Hunger came back in daylight.',
+      'The same door. Night-round heat still in it. She knocks anyway.',
+    ] },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 2,
     text: [
       "There's a sharp, impatient knock at your door.",

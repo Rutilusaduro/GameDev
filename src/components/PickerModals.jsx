@@ -12,6 +12,8 @@ import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '../gameData/evolvedMinigames.js';
 import { depthGainLbs } from '../gameData/mechanicDepth.js';
+import { bumpOriginChain } from '../gameData/origins/index.js';
+import { renderMinigamePhase, renderMinigameDone } from '../textEngine/scenes/evolved/minigameBeats.js';
 
 
 export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
@@ -211,7 +213,13 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
 
   const ctx = { studentName: s.name, stageIdx };
   const phase = !done ? def.phases[phaseIdx] : null;
-  const phaseText = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const uniquePhase = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const phaseText = (!done && phase)
+    ? (renderMinigamePhase(s, week, gameId, phaseIdx) || uniquePhase)
+    : null;
+  const doneText = done
+    ? (renderMinigameDone(s, week, gameId) || `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}`)
+    : null;
 
   const pickChoice = (choice) => {
     const nextLog = [...log, choice.log];
@@ -229,7 +237,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
         : leftoverPad
           ? depthGainLbs(s, leftoverPad, week, { skipNight: true })
           : 0;
-      setStudents((ss) => ss.map((st) => (st.id === studentId ? processStudentGain(st, applied, result.rel) : st)));
+      setStudents((ss) => ss.map((st) => (st.id === studentId ? bumpOriginChain(processStudentGain(st, applied, result.rel)) : st)));
       const labels = {
         campus_challenge: 'Campus Challenge',
         delivery_order: 'Home Nest Delivery',
@@ -258,7 +266,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
           <div key={i} style={{ fontSize: 11, color: '#806050', fontStyle: 'italic', marginBottom: 6, paddingLeft: 8, borderLeft: `2px solid ${def.accent}30` }}>{line}</div>
         ))}
         <div style={{ color: '#a09080', fontSize: 12, lineHeight: 1.7, marginBottom: 16 }}>
-          {done ? `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}` : phaseText}
+          {done ? doneText : phaseText}
         </div>
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

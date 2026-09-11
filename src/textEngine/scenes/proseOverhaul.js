@@ -7,6 +7,26 @@ import './dorm/index.js';
 
 // ── talk.afterglow — extra paragraph after any talk topic
 registerPool('talk.afterglow', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    'Galley foil still on her fingers when she walks you out. She pretends the extra warmth is the conversation.',
+    'Last night\'s tray plus this talk. She checks the shirt again and still does not mention it.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    'Leftover heat in her lap. Standing would mean admitting the second sitting happened.',
+    'Kitchen tray from earlier. She lets the seat keep her after the topic ends.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6, stageMax: 8 }, weight: 3, text: [
+    'Rise is a show she enjoys you watching. Leftover still working. The wobble outlasts the goodbye.',
+    'She palms the leftover work in her middle. Fond. Occupied.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 9 }, weight: 3, text: [
+    'She stays put. Leftover and the talk both live in the furniture she has become.',
+    'You park the next snack in reach. Night tray, this visit, same courtesy.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. Daylight talk uses the same open door.',
+    'You saw her after hours. This goodbye is the public version of that appetite.',
+  ] },
   { when: { stageMax: 2, corruption: [0] }, weight: 2, text: [
     'When she stands, the shirt settles wrong for a second. She pretends not to check.',
     'She walks you to the door lighter in mood and not lighter in the middle.',
@@ -95,6 +115,17 @@ registerPool('session.afterglow', [
 
 // ── dinner.afterglow
 registerPool('dinner.afterglow', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'The walk back carries galley leftover and restaurant butter. Her shoulder keeps finding yours.',
+    'Two sittings in one night. She talks less. Fullness is occupying the small talk.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Outside, leftover heat plus the meal make her clothes feel tighter. She does not mind.',
+    'She takes the slow stairs. Last night\'s tray is still in there with dessert.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You walked her floor after hours. Dinner is the dressed-up version of that knock.',
+  ] },
   { when: {}, text: [
     'The walk back is slower. Her shoulder keeps brushing yours because there is more of her to brush.',
     'She talks less on the return. Fullness is occupying the part of her that makes small talk.',
@@ -188,6 +219,17 @@ registerPool('week.recap.afterglow', [
 ]);
 
 registerPool('hunger.afterglow', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She eats like leftover was a rumor. The knock was the honest part. The rest is chewing.',
+    'Second sitting in one night. Relief lands in her middle first.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Fullness sits her down twice. Galley tray, then this. The doorframe looks narrower on the way out.',
+    'She does not hurry back. Leftover opened her. The knock finished the job.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You already saw her after hours. This knock is hunger admitting it was not done.',
+  ] },
   { when: { stageMax: 3 }, text: [
     'She eats like the knock was the honest part. The rest is chewing.',
     'Relief lands in her middle first. Her face catches up a bite later.',

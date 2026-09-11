@@ -12,6 +12,21 @@ registerPool('talk.linger.open', [
 ]);
 
 registerPool('talk.linger.body', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Close up, leftover warmth is honest — a belly that stayed when the tray left.',
+    'Her sleep shirt rides. Galley foil smell on her. She tugs the hem and does not succeed.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'When she leans, leftover heat arrives first. She watches you notice and keeps leaning.',
+    'Her thigh is warm. Last night\'s tray is still in the room with her.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'Staying means leftover and this visit stacked in the same climate. The bed is her.',
+    'You sit where she indicates. The indication is a shift of occupied, yielding weight.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You were here after hours. Lingering now is the same permission in better light.',
+  ] },
   { when: { stageMax: 3 }, text: [
     'Close up, the new softness is honest — a belly that stays when she laughs.',
     'Her sleep shirt rides when she sits back. She tugs it and does not succeed.',
@@ -297,6 +312,18 @@ registerPool('talk.leftover_plate.line', [
 ]);
 
 registerPool('talk.leftover_plate.body', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Second foil tray this week. She eats standing, then sits when it gets serious. The shirt rides again.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'Another tray in her lap. Last night\'s leftover still there. She treats her belly like the table it has become.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'You set the tray where she can reach. She was already full from the last drop. She reaches anyway.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Foil again. She was not going to sleep hungry the first time either. She finishes what the floor forgot twice.',
+  ] },
   { when: { stageMax: 3 }, text: [
     'She eats standing first, then sits when the tray gets serious. The shirt rides. She tugs it and keeps going.',
   ] },

@@ -239,6 +239,15 @@ registerPool('dinner.conv.dorm_gossip', [
 ]);
 
 registerPool('dinner.conv.night_round_hint', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `"I walk the hall after hours," you say. {subject.name} glances at her middle. "You left leftovers. I finished them. Then I waited."`,
+    `{subject.name} colors. "You heard me last night, and the galley tray." She takes a bite anyway. "Good."`,
+    `"You knock late," {subject.name} says. Leftover heat still in her voice. She orders dessert while she says it.`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `"I was just there," you say. {subject.name} smiles into her plate. "Then you already know I was hungry."`,
+    `Night-round still between you. {subject.name} orders like the knock was the appetizer.`,
+  ] },
   { when: {}, text: [
     `"I walk the hall after hours," you say. {subject.name} goes still, then smiles. "I know. I leave the light on."`,
     `{subject.name} colors. "You heard me last night." She takes a bite anyway. "Good."`,

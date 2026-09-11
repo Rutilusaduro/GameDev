@@ -146,6 +146,7 @@ import {
   renderFairDayAfterpartyResult,
 } from './textEngine/scenes/fairTraining/index.js';
 import { renderEvolvedEventProse, renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
+import { renderCgBingeScene } from './textEngine/scenes/evolved/cgBingeBeats.js';
 import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -3690,7 +3691,7 @@ export default function HallPass(){
       const mult=CG_CONFIG.bingeDriveMults[Math.max(0,tierIdx)];
       const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
       const stageKey=getCGStageKey(priya.lbs);
-      const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+      const sceneText=renderCgBingeScene(priya,week,tier.label)||CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -3699,11 +3700,13 @@ export default function HallPass(){
     setCompetitiveGainerState(prev=>{
       if(!prev?.subState?.gain) return prev?{...prev,view:null,subState:null}:prev;
       const{gain}=prev.subState;
+      let applied=gain;
       setStudents(sp=>sp.map(s=>{
         if(s.id!==prev.priyaStudentId) return s;
-        return processStudentGain(s,depthGainLbs(s,gain,week,{}),0);
+        applied=depthGainLbs(s,gain,week,{});
+        return bumpOriginChain(processStudentGain(s,applied,0));
       }));
-      push(`📊 Priya — Competitive Binge: +${gain} lbs`);
+      push(`📊 Priya — Competitive Binge: +${applied} lbs`);
       return{...prev,view:null,subState:null};
     });
   };
@@ -6555,8 +6558,8 @@ export default function HallPass(){
     let cGain=depthGainLbs(collab,rnd(cLo,cHi),week,{});
     if(ft.lastCollaborator===collabKey) mjGain+=1;
     setStudents(prev=>prev.map(st=>{
-      if(st.id===mj.id) return processStudentGain(st,mjGain,3);
-      if(collab.id!==mj.id&&st.id===collab.id) return processStudentGain(st,cGain,2);
+      if(st.id===mj.id) return bumpOriginChain(processStudentGain(st,mjGain,3));
+      if(collab.id!==mj.id&&st.id===collab.id) return bumpOriginChain(processStudentGain(st,cGain,2));
       return st;
     }));
     push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
@@ -6638,7 +6641,7 @@ export default function HallPass(){
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
       const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
-      const gain=s?depthGainLbs(s,choice===1?(sc?.gainA??5):(sc?.gainB??3),week,{}):(choice===1?(sc?.gainA??5):(sc?.gainB??3));
+      const gain=s?depthGainLbs(s,choice===1?(sc?.gainA??5):(sc?.gainB??3),week,{skipNight:true}):(choice===1?(sc?.gainA??5):(sc?.gainB??3));
       const rel=choice===1?(sc?.relA??8):(sc?.relB??12);
       return {...prev,afterpartyChoice:choice,
         afterpartyResultText:s?renderFairDayAfterpartyResult(s,week,prev.influenceKey,choice):'',
@@ -6653,7 +6656,7 @@ export default function HallPass(){
     if(s){
       setStudents(ss=>ss.map(st=>{
         if(st.id!==fd.studentId) return st;
-        const next=processStudentGain(st,fd.totalGain,fd.relBonus);
+        const next=bumpOriginChain(processStudentGain(st,fd.totalGain,fd.relBonus));
         return {...next,contestCompletions:(next.contestCompletions||0)+1};
       }));
       push(`🏆 Fair Day complete — ${s.name} +${Math.round(fd.totalGain)} lbs, +${fd.relBonus} rel`);
@@ -6942,7 +6945,7 @@ export default function HallPass(){
     if(choiceCanPin(sceneId,choiceId,s) && Math.random()<pinBlackoutChance(s)){
       const passGain=choice.lbs?depthGainLbs(s,choice.lbs,week,{}):0;
       const passRel=(choice.rel||0)+PIN_PASSOUT_REL_BONUS;
-      setStudents(prev=>prev.map(st=>st.id!==studentId?st:processStudentGain(st,passGain,passRel)));
+      setStudents(prev=>prev.map(st=>st.id!==studentId?st:bumpOriginChain(processStudentGain(st,passGain,passRel))));
       push(`🕳️ ${s.name} pins you under her — the room goes dark. The week ends where you lie.`);
       setIntimacyEventState(prev=>({...prev,done:true,blackout:true,endingText:renderIntimacyPassout(s,sceneWeekNum),logLines:[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)]}));
       return;

@@ -9,6 +9,8 @@ import './salonGalleryBeats.js';
 import './activityBeats.js';
 import './formBeats.js';
 import './extraFormBeats.js';
+import './minigameBeats.js';
+import './cgBingeBeats.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
