@@ -374,6 +374,115 @@ oncePool('contest.linger', [
   ] },
 ]);
 
+oncePool('feed.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Yesterday\'s sitting is still chewing her. This plate is catching up.',
+    'She swallows like the kitchen already started this hour.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'Packed leftover, then this course. The chair files both as one occupancy.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Second sitting from midnight still works under this bite.',
+    'She eats like the tray left a bookmark in her middle.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'The after-hours knock taught her stomach to stay open. This meal uses the same lesson.',
+  ] },
+  { when: {}, text: [
+    'Appetite stays after the swallow. She lets it.',
+    'The plate empties. The warmth does not.',
+    'She breathes around the newest bite like it might stay.',
+  ] },
+]);
+
+oncePool('diary.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Midnight foil still in me. I wrote around the warmth.',
+    'Last night\'s seconds sit under this sentence.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'I am still eating last night while I try to describe this week.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The bin has the tray. My middle kept the rest.',
+    'I keep calling it a mood. It is leftover heat.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. I am still answering on the page with appetite.',
+  ] },
+  { when: {}, text: [
+    'I ate. I am writing. The order got blurry.',
+    'The week went into me. This is the receipt.',
+    'Hunger made the entry. I just held the pen.',
+  ] },
+]);
+
+oncePool('attitude.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Last night\'s sitting is still in my middle and I keep calling it a feeling.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'I am fuller than this mood has a right to be, leftover-warm and honest about it.',
+    'Galley surplus is doing half the talking. I let it.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw me after hours. Daylight me is still answering with appetite.',
+  ] },
+  { when: {}, text: [
+    'Hungry, I think. Always hungry lately.',
+    'The feeling has a temperature. Warm. Occupied.',
+    'I could eat again. That thought arrived before I finished this one.',
+  ] },
+]);
+
+oncePool('memory.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The feast she remembers and the leftover sitting share a temperature.',
+    'She calls it a callback. Her middle calls it seconds.',
+    'Memory and midnight foil occupy the same curve.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'After-hours heat sits under the memory like a second course.',
+  ] },
+  { when: {}, text: [
+    'The past week left a mark. Food did too.',
+    'She keeps touching the memory the way she keeps touching her middle.',
+    'History sits warm. So does she.',
+  ] },
+]);
+
+oncePool('journal.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Field note: galley surplus still occupying the subject.',
+    'Observation logged on a middle that finished the tray hours ago.',
+    'Notebook open. Appetite remains the independent variable.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'After-hours knock documented. Daylight entry uses the same open door.',
+  ] },
+  { when: {}, text: [
+    'The journal keeps eating the week after the week names itself over.',
+    'Ink dries. Softness does not.',
+    'Sample size: one warm resident. Result: more.',
+  ] },
+]);
+
+oncePool('sudden.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The surge rides last night\'s sitting like a running start.',
+    'Leftover heat, then this. Her body files them as one event.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Midnight visit opened her. These pounds use the opening.',
+  ] },
+  { when: {}, text: [
+    'The change is fast. She is slower about standing.',
+    'Sudden, then settled. The settling is the part that stays.',
+    'She looks down as if the new weight might still be arriving.',
+  ] },
+]);
+
 oncePool('stream.destiny.spend', [
   { when: { leftoverFed: true }, weight: 3, text: [
     'Destiny dumps the cut into a third delivery while leftover heat still has her ordering.',

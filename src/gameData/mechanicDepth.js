@@ -10,6 +10,7 @@ import { adjustHunger } from './hungerAddiction.js';
 import { applyPsychDelta } from './psychState.js';
 import { FIT_STATES, garmentFitState, outfitFor, worstFitState } from './outfits.js';
 import { originRegisterFx } from './origins/index.js';
+import { GAIN_CONFIG } from './gainSystem.js';
 
 export const DEPTH_TALK_TOPICS = [
   {
@@ -234,15 +235,16 @@ export function echoResonateMult(student, week = 0) {
   return m;
 }
 
-export function tickHabitatWeek(student, dormState, ownedHallSkills) {
+export function tickHabitatWeek(student, dormState, ownedHallSkills, week = 0) {
   if (!student || student.hidden) return { student, extraLbs: 0 };
   const hab = habitatForStudent(student, dormState, ownedHallSkills);
   let ns = student;
   const extraLbs = hab.passiveLbs || 0;
   if (hab.weeklyCals) {
+    const leftoverCals = leftoverNightGainBump(student, week) * GAIN_CONFIG.calsPerLb;
     ns = {
       ...ns,
-      consumedCalories: (ns.consumedCalories || 0) + hab.weeklyCals,
+      consumedCalories: (ns.consumedCalories || 0) + hab.weeklyCals + leftoverCals,
       fullness: (ns.fullness || 0) + (hab.weeklyFull || 0),
     };
   }
@@ -295,7 +297,7 @@ export function shouldSkipHungerInterrupt(student, dormState, weeklyArms = {}, r
   return fx.hungerInterruptEase > 0 && rng() < Math.min(0.55, fx.hungerInterruptEase);
 }
 
-export function neighborEcologyPatch(students, dormState) {
+export function neighborEcologyPatch(students, dormState, week = 0) {
   if (!students?.length) return {};
   const patches = {};
   students.forEach((s) => {
@@ -309,6 +311,8 @@ export function neighborEcologyPatch(students, dormState) {
         patches[s.id] = (patches[s.id] || 0) + 1;
       }
     });
+    if (s.leftoverFedThisWeek) patches[s.id] = (patches[s.id] || 0) + 1;
+    if (week && s.lastNightVisitWeek === week) patches[s.id] = (patches[s.id] || 0) + 1;
   });
   return patches;
 }

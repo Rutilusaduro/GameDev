@@ -19,6 +19,14 @@ registerPool('roster.tell', [
     'taking up her chair like she means to keep it',
   ]},
 
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'still round from last night\'s sitting',
+    'soft from the galley and unbothered about it',
+    'second-sitting warm and taking the chair fully',
+  ]},
+  { when: { nightVisit: true }, weight: 3, text: [
+    'knocked on after hours, still open for more',
+  ]},
   // ── corruption arc, expressed as behavior ──────────────────
   { when: { corruption: [0] }, weight: 2, text: [
     'still startled by every new softness',

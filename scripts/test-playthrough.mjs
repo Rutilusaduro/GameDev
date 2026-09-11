@@ -14,7 +14,9 @@ import { SATURATION_TIERS, computeSaturationScore } from '../src/gameData/campus
 import { getMysteryTrustPulse } from '../src/gameData/mysteryTrust.js';
 import { computeSurrenderVector } from '../src/gameData/transformationPressure.js';
 import { computePrestigeScore } from '../src/gameData/prestigeLite.js';
-import { labInstabilityEase } from '../src/gameData/mechanicDepth.js';
+import { labInstabilityEase, leftoverNightGainBump, neighborEcologyPatch } from '../src/gameData/mechanicDepth.js';
+import { getInterruptTalkRelGain, getInterruptDenyRelLoss } from '../src/gameData/hungerAddiction.js';
+import { applyFavoritismEcology } from '../src/gameData/relationshipEcology.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
@@ -243,6 +245,24 @@ assert.match(pulseNight.hint, /knock|Quiet hours|late knock/i, 'night mystery hi
 
 assert.ok(weeklyDiscontentDecayAmount({ leftover: true }) > weeklyDiscontentDecayAmount({}), 'leftover should ease weekly discontent');
 assert.ok(weeklyDiscontentDecayAmount({ nightVisit: true }) > weeklyDiscontentDecayAmount({}), 'night visit should ease weekly discontent');
+
+const talkBase = getInterruptTalkRelGain(INIT_STUDENTS[0]);
+const talkLeftover = getInterruptTalkRelGain({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true });
+assert.ok(talkLeftover > talkBase, 'leftover should bump hunger-interrupt talk rel');
+const talkNight = getInterruptTalkRelGain({ ...INIT_STUDENTS[0], lastNightVisitWeek: 3 }, 3);
+assert.ok(talkNight > talkBase, 'night visit should bump hunger-interrupt talk rel');
+const denyBase = getInterruptDenyRelLoss(INIT_STUDENTS[0]);
+const denyLeftover = getInterruptDenyRelLoss({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true });
+assert.ok(denyLeftover < denyBase, 'leftover should ease hunger-interrupt deny loss');
+assert.equal(leftoverNightGainBump({ leftoverFedThisWeek: true, lastNightVisitWeek: 3 }, 3), 2, 'leftover + night should bump 2');
+const neglectedSoothed = applyFavoritismEcology({ ...INIT_STUDENTS[0], relationship: 50, leftoverFedThisWeek: true }, 'neglected', 3);
+assert.equal(neglectedSoothed.relationship, 50, 'leftover should soothe neglected jealousy loss');
+const neighPatch = neighborEcologyPatch(
+  [{ ...INIT_STUDENTS[0], id: 0, leftoverFedThisWeek: true, hidden: false }],
+  { roomFits: {} },
+  3,
+);
+assert.equal(neighPatch[0], 1, 'leftover should give neighbor ecology +1');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

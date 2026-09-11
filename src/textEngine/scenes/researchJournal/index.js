@@ -1,6 +1,6 @@
 // Nadia / feeder-focus subject journals — engine render wrappers (§9d).
 import { registerPool, render } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../../../gameData/evolvedForms.js';
 
@@ -39,7 +39,7 @@ export function renderFeederJournalEntry(archetype, page, student, week = 1, opt
   if (!archetype || page == null) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const base = render(`{journal.feeder.${archetype}.s${page}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22);
+  return wrapLeftoverLinger(appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22), student, week, 'journal.linger');
 }
 
 export function renderNadiaJournalEntry(archetype, page, nadiaLevel, student, week = 1, opts = {}) {
@@ -56,7 +56,7 @@ export function renderNadiaJournalEntry(archetype, page, nadiaLevel, student, we
   } else {
     base = render(`{journal.nadia.${archetype}.s${page}.l${nadiaLevel ?? 0}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   }
-  return appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22);
+  return wrapLeftoverLinger(appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22), student, week, 'journal.linger');
 }
 
 export const FEEDER_JOURNAL_ARCHETYPES = Object.keys(FEEDER_SUBJECT_JOURNALS);

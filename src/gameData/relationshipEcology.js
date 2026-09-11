@@ -63,8 +63,11 @@ export function favoritismSummary(students, weeklyFeedCounts = {}) {
 /** Weekly roster-ecology stamp: rel deltas, mood drift, persisted favoritism flag. */
 export function applyFavoritismEcology(student, flag, week = 1) {
   if (!student || !flag) return student;
+  const leftover = !!student.leftoverFedThisWeek;
+  const night = !!(week && student.lastNightVisitWeek === week);
+  const soothed = leftover || night;
   let s = applyJealousyRelDelta(student, {
-    isNeglected: flag === 'neglected',
+    isNeglected: flag === 'neglected' && !soothed,
     isFavored: flag === 'favored',
   });
   s = {

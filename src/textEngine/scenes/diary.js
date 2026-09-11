@@ -11,6 +11,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
 import { gatewaySelectorGlobals } from '../../gameData/gatewayMoments.js';
+import { wrapLeftoverLinger } from '../../gameData/textContext.js';
 import './diaryPhaseD.js';
 
 // ── SUMO ──────────────────────────────────────────────────────
@@ -1797,7 +1798,9 @@ export function renderDiary(student, week) {
     const formId = formAliases[student.evolvedForm] || student.evolvedForm;
     const evolvedKey = `diary.${formId}`;
     const evolvedText = render(`{${evolvedKey}}`, ctx, { noSmooth: false });
-    if (evolvedText && evolvedText.trim()) return evolvedText;
+    if (evolvedText && evolvedText.trim()) {
+      return wrapLeftoverLinger(evolvedText, student, week, 'diary.linger');
+    }
   }
 
   // Base per-student diary. diary.innerBeat is the real base pool — keyed on
@@ -1806,7 +1809,9 @@ export function renderDiary(student, week) {
   // path mapped to diary.<name>.<arc> keys that were never registered, so base
   // diaries returned null and the gateway payoff entries were unreachable.)
   const innerText = render('{diary.innerBeat}', ctx, { noSmooth: false });
-  if (innerText && innerText.trim()) return innerText;
+  if (innerText && innerText.trim()) {
+    return wrapLeftoverLinger(innerText, student, week, 'diary.linger');
+  }
 
   return null;
 }

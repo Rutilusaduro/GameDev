@@ -12,7 +12,7 @@
 // Selectors arrive as ctx.globals: memScope, memType, memWeeksAgo, memName.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, render } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 
 // ── memory.self ───────────────────────────────────────────────
@@ -110,7 +110,7 @@ export function renderMemorySelf(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });
   const base = render('{memory.self}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.25);
+  return wrapLeftoverLinger(appendV2Depth(base, 'memory', ctx, opts.v2DepthChance ?? 0.25), student, week, 'memory.linger');
 }
 
 /** Render cross-resident gossip about another resident. */
@@ -144,10 +144,10 @@ export function renderMemoryCallback(student, week = 1, opts = {}) {
       ...(opts.globals || {}),
     },
   });
-  return appendV2Depth(
+  return wrapLeftoverLinger(appendV2Depth(
     render('{memory.self}', ctx, { trace: opts.trace || null })?.trim() || '',
     'memory',
     ctx,
     opts.v2DepthChance ?? 0.28,
-  );
+  ), student, week, 'memory.linger');
 }

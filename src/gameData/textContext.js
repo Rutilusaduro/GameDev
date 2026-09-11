@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 import {
   createContext, createSessionUsed, registerDimension,
-  registerSubjectDeriver, trackStemsFor, relSize,
+  registerSubjectDeriver, trackStemsFor, relSize, render,
 } from '../textEngine/engine.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
@@ -110,6 +110,20 @@ registerDimension('fitTop', fitDim('top'));
 registerDimension('fitBottom', fitDim('bottom'));
 registerDimension('fitWaist', fitDim('waist'));
 registerDimension('worstFit', (ctx) => worstFitState(ctx.subject));
+
+/** True when galley leftovers or a night-round visit still mark this resident. */
+export function leftoverOrNight(student, week = 0) {
+  return !!(student?.leftoverFedThisWeek || (week && student?.lastNightVisitWeek === week));
+}
+
+/** Append leftover/night linger. Skips when neither flag is live. */
+export function wrapLeftoverLinger(text, student, week, pool, opts = {}) {
+  if (!text || !student || !leftoverOrNight(student, week)) return text;
+  const ctx = createContext({ subject: student, week: week || 1 });
+  const linger = render(`{${pool}}`, ctx, { noSmooth: opts.noSmooth ?? false })?.trim() || '';
+  if (!linger) return text;
+  return `${text}${opts.sep ?? '\n\n'}${linger}`;
+}
 
 /** Infer clothing strain from stage when no explicit state is stored. */
 export function deriveClothingState(student) {

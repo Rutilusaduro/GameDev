@@ -7,6 +7,16 @@ registerPool('npc.bystander', [
     'Someone glances, looks away, glances again.',
     'A passing resident registers her size and recalibrates their path.',
   ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'Someone clocks the leftover-soft middle and pretends they were looking at a poster.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'A passerby notes she is still eating last night in public.',
+    'Someone glances at the leftover roundness and keeps walking too carefully.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Hall gossip already has the knock. Daylight just confirms the outline.',
+  ] },
   { when: { stageMin: 6, campusLocale: 'hallway' }, text: [
     'Foot traffic parts — not unkindly, simply spatially.',
     'A whispered comment she pretends not to hear.',

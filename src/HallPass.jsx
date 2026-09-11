@@ -1788,7 +1788,7 @@ export default function HallPass(){
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,depthGainLbs(s,LILITH_PASSIVE_GAIN,week,{}),0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
-      const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{});
+      const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{},week);
       let nsHab=habTick.student;
       const hallHab=habitatFx(s,dormState||createInitialDormState(),ownedHallSkills||{});
       const planFx=weekPlanBonusesFor(s,weekPlan,week);
@@ -1828,7 +1828,7 @@ export default function HallPass(){
       }
       return {...ns,playerFedThisWeek:false};
     });
-    const neigh=neighborEcologyPatch(updated,dormState||createInitialDormState());
+    const neigh=neighborEcologyPatch(updated,dormState||createInitialDormState(),week);
     if(Object.keys(neigh).length){
       updated=updated.map(s=>{
         const d=neigh[s.id];
@@ -5258,12 +5258,12 @@ export default function HallPass(){
       if(fed) ns=bumpOriginChain(fed);
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'compound',week)}`),100);
     }else if(action==='deny'){
-      ns=applyDenialConsequences(ns);
+      ns=applyDenialConsequences(ns,week);
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'deny',week)}`),100);
     }else if(action==='talk'){
       const hungerEff=aggregateSkillEffects(ownedSkills);
       ns=talkCalmsHunger(ns,hungerEff,weeklyArms);
-      const relGain=getInterruptTalkRelGain(ns);
+      const relGain=getInterruptTalkRelGain(ns,week);
       ns={...ns,relationship:Math.min(100,ns.relationship+relGain)};
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
     }else if(action==='leftover'){
