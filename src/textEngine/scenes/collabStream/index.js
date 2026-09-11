@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile, A5 Editor
 // Collab stream — engine bridge for Kylie × partner feedee_creator streams.
-import { registerPool, registerDimension, registerModule, render } from '../../engine.js';
+import { registerPool, registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { COLLAB_WREN_LINES, COLLAB_STAGEUP_TEXT, COLLAB_PAYOFF_TEXT } from '../../../gameData/miniGames.js';
@@ -13,21 +13,51 @@ registerDimension('partnerLbs', (ctx) => ctx.d?.partnerLbs ?? ctx.globals?.partn
 registerDimension('kylieGain', (ctx) => ctx.globals?.kylieGain ?? ctx.d?.kylieGain ?? 0);
 registerDimension('partnerGain', (ctx) => ctx.globals?.partnerGain ?? ctx.d?.partnerGain ?? 0);
 
-registerModule('partnerName', [
+registerPool('partnerName', [
   { when: {}, text: [(ctx) => ctx.d?.partnerName ?? ctx.globals?.partnerName ?? 'her partner'] },
 ]);
-registerModule('partnerLbs', [
+registerPool('partnerLbs', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.d?.partnerLbs ?? ctx.globals?.partnerLbs ?? 0))] },
 ]);
-registerModule('wrenLine', [
+registerPool('wrenLine', [
   { when: {}, text: [(ctx) => ctx.d?.wrenLine ?? ''] },
 ]);
-registerModule('kylieGain', [
+registerPool('kylieGain', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.kylieGain ?? ctx.d?.kylieGain ?? 0))] },
 ]);
-registerModule('partnerGain', [
+registerPool('partnerGain', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.partnerGain ?? ctx.d?.partnerGain ?? 0))] },
 ]);
+
+for (let si = 0; si < COLLAB_STAGEUP_TEXT.length; si++) {
+  const fn = COLLAB_STAGEUP_TEXT[si];
+  if (!fn) continue;
+  const stageupText = (ctx) => {
+    const newLbs = ctx.globals?.newLbs ?? ctx.d?.newLbs ?? 0;
+    return fn(ctx.subject?.name ?? 'Kylie', ctx.d?.partnerName ?? 'her partner', newLbs);
+  };
+  registerPool(`collab.stream.stageup.s${si}`, [
+    { when: {}, text: [stageupText] },
+    { when: { collabStage: [si] }, weight: 2, text: [stageupText] },
+    { when: { stageMin: 3 }, weight: 1, text: [stageupText] },
+  ]);
+}
+
+for (let si = 0; si < COLLAB_PAYOFF_TEXT.length; si++) {
+  const fn = COLLAB_PAYOFF_TEXT[si];
+  if (!fn) continue;
+  const payoffText = (ctx) => {
+    const kg = ctx.globals?.kylieGain ?? ctx.d?.kylieGain ?? 0;
+    const pg = ctx.globals?.partnerGain ?? ctx.d?.partnerGain ?? 0;
+    const pn = ctx.d?.partnerName ?? 'her partner';
+    return fn(kg, pg, pn);
+  };
+  registerPool(`collab.stream.payoff.s${si}`, [
+    { when: {}, text: [payoffText] },
+    { when: { collabStage: [si] }, weight: 2, text: [payoffText] },
+    { when: { kylieGainMin: 1 }, weight: 1, text: [payoffText] },
+  ]);
+}
 
 for (let si = 0; si < COLLAB_WREN_LINES.length; si++) {
   registerPool(`collab.stream.wren.s${si}`, [{ when: {}, text: COLLAB_WREN_LINES[si] }]);
@@ -130,17 +160,24 @@ export function pickCollabWrenLine(stageIdx, kylie, partner, week) {
 }
 
 export function renderCollabStageUp(stageIdx, kylie, partner, newLbs, week) {
-  const fn = COLLAB_STAGEUP_TEXT[stageIdx];
-  const raw = fn
-    ? fn(kylie.name, partner.name, newLbs)
-    : `${partner.name} just crossed ${Math.round(newLbs)} pounds on stream!`;
-  return renderCollabStreamLegacy(raw, kylie, partner, week, stageIdx, { v2DepthChance: 0.3 });
+  const si = Math.min(Math.max(0, stageIdx), COLLAB_STAGEUP_TEXT.length - 1);
+  const ctx = buildCollabCtx(kylie, partner, week, stageIdx, {
+    globals: { newLbs: Math.round(newLbs) },
+  });
+  const raw = render(`{collab.stream.stageup.s${si}}`, ctx)?.trim()
+    || `${partner.name} just crossed ${Math.round(newLbs)} pounds on stream!`;
+  return appendV2Depth(raw, 'collabStream', ctx, 0.3);
 }
 
 export function renderCollabPayoff(stageIdx, kylieGain, partnerGain, partner, kylie, week) {
-  const fn = COLLAB_PAYOFF_TEXT[stageIdx];
-  const raw = fn
-    ? fn(kylieGain, partnerGain, partner.name)
-    : `${Math.round(kylieGain)} pounds on Kylie, ${Math.round(partnerGain)} on ${partner.name}. Stream complete.`;
-  return renderCollabStreamLegacy(raw, kylie, partner, week, stageIdx, { v2DepthChance: 0.32 });
+  const si = Math.min(Math.max(0, stageIdx), COLLAB_PAYOFF_TEXT.length - 1);
+  const ctx = buildCollabCtx(kylie, partner, week, stageIdx, {
+    globals: {
+      kylieGain: Math.round(kylieGain),
+      partnerGain: Math.round(partnerGain),
+    },
+  });
+  const raw = render(`{collab.stream.payoff.s${si}}`, ctx)?.trim()
+    || `${Math.round(kylieGain)} pounds on Kylie, ${Math.round(partnerGain)} on ${partner.name}. Stream complete.`;
+  return appendV2Depth(raw, 'collabStream', ctx, 0.32);
 }
