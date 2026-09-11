@@ -41,16 +41,6 @@ registerModuleVariants('weekly.transfer_settled', [
   },
 ]);
 
-registerModuleVariants('evolved.event.salon_appetit.s0.p0', [
-  {
-    when: { evolvedStageIdx: [0] },
-    weight: 1,
-    text: [
-      'Salon doors open on steam — appetite introduced as curriculum.',
-    ],
-  },
-]);
-
 registerModuleVariants('memory.hall', [
   {
     when: { memType: ['scaleBreak'] },

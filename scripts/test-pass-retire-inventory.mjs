@@ -19,6 +19,8 @@ const RETIRED_EMPTY = new Set([
   'raPivotProseDepthPass84.js',
   'raPivotProseDepthPass104.js',
   'raPivotProseDepthPass106.js',
+  'raPivotProseDepthPass113.js',
+  'raPivotProseDepthPass114.js',
 ]);
 
 const passFiles = readdirSync(scenes).filter((f) => /^raPivotProseDepthPass\d+\.js$/.test(f));

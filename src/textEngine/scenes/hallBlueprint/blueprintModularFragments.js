@@ -64,3 +64,15 @@ for (const key of [
     },
   ]);
 }
+
+registerModuleVariants('hall.blueprint.purchase', [
+  {
+    when: { hallAmbiancePeakMin: [35], weekMin: 10 },
+    weight: 5,
+    priority: 5,
+    text: [
+      'Room upgrade seals — the wing exhales warmth through every labeled doorway.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+]);

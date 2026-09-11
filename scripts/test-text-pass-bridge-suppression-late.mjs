@@ -625,4 +625,38 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(sofia109Hit, 'Sofia.portfolio modular @ w24');
 
+let holdFirmHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = renderHearingChoiceResult('removal', 'hold_firm', destiny, week, 1)?.trim() || '';
+  assert.ok(!/^You hold the line — abundance named as policy, board members too full to argue\.$/.test(line), 'pass-114 hold_firm bridge alone @ w24');
+  if (line.length > 72 || /restraintFarce|counterMomentum|removalDocket|boardPressure/i.test(line)) holdFirmHit = true;
+}
+assert.ok(holdFirmHit, 'opposition hold_firm modular @ w24');
+
+let reyesHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Mrs_Reyes.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72460 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Mrs\. Reyes talks over everyone — voice warm, portions already multiplying in her bag\.$/.test(line), 'pass-113 Reyes bridge alone @ w24');
+  if (line.length > 55) reyesHit = true;
+}
+assert.ok(reyesHit, 'Mrs_Reyes intro modular @ w24');
+
+let salonPhaseHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{evolved.event.salon_appetit.s0.p0}', buildTextContext({
+    subject: { id: 3, name: 'Chloé', archetype: 'salon', lbs: 290, evolvedForm: 'salon_appetit' },
+    week,
+    seed: 72470 + s,
+    globals: { evolvedFormId: 'salon_appetit', evolvedStageIdx: 0 },
+  }))?.trim() || '';
+  assert.ok(!/^Salon doors open on steam — appetite introduced as curriculum\.$/.test(line), 'pass-110 salon phase bridge alone @ w24');
+  if (line.length > 72 || /salonAir|atmosphere|stakes|hungerCue/i.test(line)) salonPhaseHit = true;
+}
+assert.ok(salonPhaseHit, 'salon_appetit s0.p0 modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

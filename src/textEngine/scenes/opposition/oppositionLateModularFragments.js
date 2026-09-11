@@ -315,6 +315,8 @@ registerPool('opposition.scene.counterAfterglow', [
 const TESTIFY_LATE = '{opposition.scene.testifyWarmth|suffix:\n\n}{opposition.scene.testifyDevotion|suffix:\n\n}';
 const COUNTER_LATE = '{opposition.scene.counterMomentum|suffix:\n\n}{opposition.scene.counterAfterglow|suffix:\n\n}';
 
+const HOLD_FIRM_LATE = '{opposition.scene.restraintFarce|suffix:\n\n}{opposition.scene.counterMomentum|suffix:\n\n}{opposition.scene.counterAfterglow|suffix:\n\n}';
+
 for (const pool of [
   'opposition.hearing.removal.result.testify',
   'opposition.hearing.removal.result.advocate',
@@ -334,6 +336,21 @@ for (const pool of [
     },
   ]);
 }
+
+registerModuleVariants('opposition.hearing.removal.result.hold_firm', [
+  {
+    when: { weekMin: 22 },
+    weight: 8,
+    priority: 7,
+    text: [HOLD_FIRM_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 4,
+    priority: 4,
+    text: [HOLD_FIRM_LATE],
+  },
+]);
 
 registerModuleVariants('opposition.counter.success', [
   {
