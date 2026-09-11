@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
 import { getStage } from '../../gameData/stages.js';
+import { EXPLORATION_FINDS, getExplorationFind } from '../../gameData/campusIngredients.js';
 import { appendV2Depth } from './v2/depthRenderer.js';
 import '../modules.js'; // subject.name etc.
 
@@ -281,6 +282,26 @@ registerPool('campus.location', [
   ] },
 ]);
 
+for (const find of EXPLORATION_FINDS) {
+  const prose = (find.text || '').trim();
+  if (!prose) continue;
+  registerPool(`campus.find.${find.id}`, [
+    {
+      when: {},
+      weight: 3,
+      text: [
+        prose,
+        `You claim ${find.label} — ${prose.split('.')[0]}.`,
+        (ctx) => {
+          const tier = find.tier || 'common';
+          const w = ctx.week ?? 1;
+          return `Week ${w}: a ${tier} campus find (${find.label}) lands in your tote before anyone else notices.`;
+        },
+      ],
+    },
+  ]);
+}
+
 registerPool('campus.find', [
   { when: { campusTierMin: 3 }, priority: 2,
     text: [
@@ -352,6 +373,17 @@ export function renderCampusFindFlavor(explorationCtx) {
       explorationFindId: explorationCtx.findId || null,
     },
   });
-  const base = render('{campus.find}', ctx)?.trim() || '';
+  const findId = explorationCtx.findId;
+  let base = '';
+  if (findId) {
+    try {
+      base = render(`{campus.find.${findId}}`, ctx)?.trim() || '';
+    } catch {
+      base = '';
+    }
+    if (base.includes('{unresolved}')) base = '';
+  }
+  if (!base) base = render('{campus.find}', ctx)?.trim() || '';
+  if (!base && findId) base = getExplorationFind(findId)?.text?.trim() || '';
   return appendV2Depth(base, 'campusNav', ctx, 0.2);
 }

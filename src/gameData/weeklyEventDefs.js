@@ -1,6 +1,26 @@
 // Metadata for per-resident stage-up narrative beats — prose in textEngine/scenes/weeklyEvent/
 // (The hall-wide RANDOM_EVENTS / SEMESTER_EVENTS bulk-gain layer was removed: its
 //  balance assumptions predate the current tuning.)
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
+
+/** Depth-scaled narrative incident payouts (resolveNarrative). */
+export function scaleNarrativeEventLbs(lbs = 0) {
+  if (!lbs || lbs <= 0) return lbs || 0;
+  return depthLbsGrant(lbs);
+}
+
+export function scaleNarrativeEventRel(rel = 0) {
+  if (!rel) return 0;
+  if (rel < 0) return rel;
+  return depthRelBonus(rel);
+}
+
+export function narrativeEventGainBounds(gainRange = [0, 0]) {
+  const lo = gainRange[0] ?? 0;
+  const hi = gainRange[1] ?? lo;
+  return [scaleNarrativeEventLbs(lo), scaleNarrativeEventLbs(Math.max(lo, hi))];
+}
+
 export const NARRATIVE_EVENTS = [
   { id: 'uniform_split', stageMin: 3, archetype: 'cheerleader', title: 'Uniform Incident', gain: [4, 8], rel: 12 },
   { id: 'chair_breaks', stageMin: 4, archetype: null, title: 'The Chair Incident', gain: [3, 5], rel: 18 },

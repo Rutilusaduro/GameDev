@@ -3,6 +3,7 @@ import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition, scal
 import { GROUP_CONVERSATIONS, getGroupConversation, getDinnerConversation, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText } from './gameData/weeklyEventText.js';
+import { narrativeEventGainBounds, scaleNarrativeEventRel } from './gameData/weeklyEventDefs.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
 import { ACTIONS_SINGLE, ACTIONS_HALL } from './gameData/floorEvents.js';
@@ -7682,11 +7683,14 @@ export default function HallPass(){
 
   const resolveNarrative=(ev,s,accept)=>{
     if(accept&&ev.gain[1]>0){
-      const gain=rnd(ev.gain[0],ev.gain[1]);
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+ev.rel)}));
-      push(`📖 ${ev.title} resolved. ${s.name} +${gain} lbs, +${ev.rel} relationship.`);
+      const [lo,hi]=narrativeEventGainBounds(ev.gain);
+      const gain=rnd(lo,hi);
+      const rel=scaleNarrativeEventRel(ev.rel);
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+rel)}));
+      push(`📖 ${ev.title} resolved. ${s.name} +${gain} lbs, +${rel} relationship.`);
     } else {
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+Math.floor(ev.rel/2))}));
+      const rel=scaleNarrativeEventRel(Math.floor(ev.rel/2));
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+rel)}));
       push(`📖 ${ev.title} — noted.`);
     }
     setActiveEvent(null);
