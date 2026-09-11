@@ -58,7 +58,7 @@ import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFe
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, physicalMovesForOwned, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, extraCultivatorReneeLbs, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
-import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderHuntTravel, renderHuntDormOpen } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES, extraHaveAChatChoices } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
@@ -202,7 +202,7 @@ import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
 import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { EvolvedActivityModal } from './components/EvolvedActivityModal.jsx';
-import { renderEvolvedActivity, renderEvolvedFollowup } from './textEngine/scenes/evolved/index.js';
+import { renderEvolvedActivity, renderEvolvedFollowup, renderEvolvedEventProse } from './textEngine/scenes/evolved/index.js';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
@@ -413,6 +413,7 @@ import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
 import { renderCampusLook, renderCampusArrive } from './textEngine/scenes/overhaul/campusHunt.js';
+import { renderPharmacistCompound, renderPharmacistCult } from './textEngine/scenes/overhaul/pharmacist.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from './textEngine/scenes/overhaul/cgFair.js';
 import { renderHiveVisit, renderHivePhoto, renderDestinySpend } from './textEngine/scenes/overhaul/leftoverDisplay.js';
 import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from './textEngine/scenes/overhaul/cgChat.js';
@@ -1564,7 +1565,10 @@ export default function HallPass(){
       if(applied.feedResult.relGain) result.relationship=Math.min(100,result.relationship+(applied.feedResult.relGain||0));
       const dm=applied.feedResult.digestMult??1;
       if(dm>1) result.weeklyDigestMult=Math.max(result.weeklyDigestMult||1,dm);
-      if(applied.flavor) setTimeout(()=>push(`💊 ${applied.flavor}`),90);
+      if(applied.flavor){
+        const laced=renderPharmacistCompound(opts.compoundId,result,week)||applied.flavor;
+        setTimeout(()=>push(`💊 ${laced}`),90);
+      }
     }
     if(opts.compoundId&&pharmacistState){
       setPharmacistState(prev=>consumeCompoundDose(prev,opts.compoundId));
@@ -2603,7 +2607,12 @@ export default function HallPass(){
     const extraList=extraEvolvedChoices(formId,stageIdx,phaseIdx,ownedHallSkills||{});
     const choice=extraList.find(c=>c.id===choiceId)||phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
+    const leftoverResult=typeof choice.result==='function'?choice.result(s):choice.result;
+    const composedResult=renderEvolvedEventProse(leftoverResult,s,week,{
+      formId,stageIdx,phaseIdx,preferResult:true,v2DepthChance:0,
+      globals:{choiceId},
+    });
+    const newLog=[...logLines,composedResult||leftoverResult];
     const newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     // Handle feedOther — feed residents of matching archetype
@@ -2645,7 +2654,11 @@ export default function HallPass(){
       if(ending.unlockRecipe){
         setStudents(ss=>ss.map(st=>st.id===s.id?{...st,mjRecipes:[...(st.mjRecipes||[]),ending.unlockRecipe].filter((v,i,a)=>a.indexOf(v)===i)}:st));
       }
-      const endText=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
+      const leftoverEnd=typeof ending.text==='function'?ending.text(newHistory,s,totalGain):ending.text;
+      const composedEnd=renderEvolvedEventProse(leftoverEnd,s,week,{
+        formId,stageIdx,phaseIdx,preferEnding:true,v2DepthChance:0,
+      });
+      const endText=composedEnd||leftoverEnd;
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:endText,gainBonus:ending.gainBonus||0,relBonus:ending.relBonus||0,classGain:ending.classGain||0,momGain:ending.momGain||0,startsContest:!!ending.startsContest,startsMatch:!!ending.startsMatch,startsStream:!!ending.startsStream,startsFairDay:!!ending.startsFairDay,startsSession:!!ending.startsSession,startsPresentation:!!ending.startsPresentation,startsDelivery:!!ending.startsDelivery,startsChallenge:!!ending.startsChallenge,startsSalon:!!ending.startsSalon,startsGallery:!!ending.startsGallery}));
     } else {
       setEvolvedEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
@@ -3938,7 +3951,7 @@ export default function HallPass(){
       setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:intro,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false,aibTarget:null});
       return;
     }
-    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false,aibTarget:null});
+    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:renderHuntDormOpen(lilith,week)||LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false,aibTarget:null});
   };
   const openLilithAibHunt=(memberId)=>{
     const member=opposition?.aib?.members?.find(m=>m.id===memberId);
@@ -3951,7 +3964,7 @@ export default function HallPass(){
     setLilithHuntState({
       textLog:[
         {text:'HER DORM · ROOM 312',type:'location'},
-        {text:LILITH_DORM_TEXT(stageId),type:'narrative'},
+        {text:renderHuntDormOpen(lilith,week)||LILITH_DORM_TEXT(stageId),type:'narrative'},
         {text:`🩸 ${member.name} marked — find them at ${node?.label||aibTarget.location}.`,type:'system'},
       ],
       currentNode:'dorm',
@@ -3963,13 +3976,13 @@ export default function HallPass(){
   };
   const navigateHunt=(nodeId)=>{
     const node=HUNT_NODES[nodeId]; if(!node) return;
+    const lilith=students.find(s=>s.id===LILITH_ID);
     const fromNode=lilithHuntState?.currentNode||'dorm';
     const travelKey=`${fromNode}→${nodeId}`;
-    const travelText=LILITH_TRAVEL[travelKey]||null;
+    const travelText=(lilith&&renderHuntTravel(fromNode,nodeId,lilith,week))||LILITH_TRAVEL[travelKey]||null;
     const entries=[];
     if(travelText) entries.push({text:travelText,type:'action'});
     entries.push({text:node.label.toUpperCase(),type:'location'});
-    const lilith=students.find(s=>s.id===LILITH_ID);
     const nodeDesc=lilith?renderHuntNode(nodeId,lilith,week):node.desc;
     entries.push({text:nodeDesc||node.desc,type:'narrative'});
     setLilithHuntState(prev=>({...prev,currentNode:nodeId,encounter:null,textLog:[...prev.textLog,...entries]}));
@@ -5119,7 +5132,12 @@ export default function HallPass(){
     setPharmacistState(nextPs);
     setPharmacistCultSession({
       phase: 'summary',
-      outcome: { ...outcome, classGainApplied, addictedGainApplied },
+      outcome: {
+        ...outcome,
+        classGainApplied,
+        addictedGainApplied,
+        flavor: renderPharmacistCult(routeId, students.find(st=>st.id===pharmacistChemStudentId)||students[0], week) || outcome.flavor,
+      },
     });
   };
 
@@ -9569,9 +9587,9 @@ export default function HallPass(){
       })()}
 
       {/* ── EVOLVED PATH MINI-GAMES ── */}
-      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
-      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
-      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
+      {presentationState&&<PresentationDefenseModal presentationState={presentationState} processStudentGain={processStudentGain} push={push} setPresentationState={setPresentationState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}} week={week}/>}
+      {deliveryState&&<DeliveryOrderModal deliveryState={deliveryState} processStudentGain={processStudentGain} push={push} setDeliveryState={setDeliveryState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}} week={week}/>}
+      {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}} week={week}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}
       {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled}/>}
@@ -9622,6 +9640,7 @@ export default function HallPass(){
             onCancel={cancelPharmacistCult}
             owned={ownedHallSkills||{}}
             soundEnabled={soundEnabled}
+            week={week}
           />
         );
       })()}
@@ -9718,6 +9737,7 @@ export default function HallPass(){
         return(
           <CompoundFeedModal
             student={student}
+            week={week}
             unlockedCompoundIds={compounds}
             compoundInventory={pharmacistState?.compoundInventory}
             feedLabel={feedLabel}

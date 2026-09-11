@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { COMPOUNDS, COMPOUND_CATEGORIES, getCompoundCategory } from '../gameData/pharmacist.js';
+import { renderPharmacistCompound } from '../textEngine/scenes/overhaul/pharmacist.js';
 
 const CATEGORY_ORDER = ['control', 'cult', 'growth'];
 const CATEGORY_HINT = {
@@ -12,6 +13,7 @@ const CATEGORY_HINT = {
 
 export function CompoundFeedModal({
   student,
+  week = 1,
   unlockedCompoundIds = [],
   compoundInventory = {},
   feedLabel,
@@ -74,7 +76,7 @@ export function CompoundFeedModal({
                       <span style={{ fontWeight: 700, color: cat === 'control' ? '#d0b0e0' : '#90d8c8' }}>{c.label}</span>
                       <span style={{ fontSize: 10, color: '#68a888' }}>×{compoundInventory[c.id] ?? 0} doses</span>
                     </div>
-                    <div style={{ fontSize: 11, color: '#88a0a0', lineHeight: 1.5, fontStyle: 'italic' }}>{c.flavor}</div>
+                    <div style={{ fontSize: 11, color: '#88a0a0', lineHeight: 1.5, fontStyle: 'italic' }}>{renderPharmacistCompound(c.id, student, week) || c.flavor}</div>
                   </button>
                 ))}
               </div>

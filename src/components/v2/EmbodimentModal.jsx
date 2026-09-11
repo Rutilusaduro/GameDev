@@ -18,6 +18,7 @@ import {
   renderEmbodiedMove,
   renderEmbodiedEvent,
 } from '../../textEngine/scenes/v2/embodiment/campusWalk.js';
+import { renderCampusArrive } from '../../textEngine/scenes/overhaul/campusHunt.js';
 import '../../textEngine/scenes/v2/embodiment/depth.js';
 import { StudentPortrait } from '../StudentPortrait.jsx';
 import { SceneBackdrop } from './SceneBackdrop.jsx';
@@ -152,7 +153,7 @@ export function EmbodimentModal({
               </p>
             )}
             <p style={{ fontSize: 10, color: '#708878', margin: '0 0 8px', lineHeight: 1.5 }}>
-              {node.desc}
+              {renderCampusArrive(atNode, week) || node.desc}
             </p>
 
             {pendingEvent && (

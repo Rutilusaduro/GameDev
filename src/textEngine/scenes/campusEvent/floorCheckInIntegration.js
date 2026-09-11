@@ -3,6 +3,7 @@ import { registerPool, render, createContext } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { FLOOR_SCENES } from '../../../gameData/floorEvents.js';
 import { INIT_STUDENTS } from '../../../gameData/students.js';
+import { renderFloorCheckinScene, renderFloorCheckinResult } from '../overhaul/floorCheckin.js';
 
 const sampleStudent = INIT_STUDENTS[0];
 const SLOT_STUDENT = { ...sampleStudent, name: '{subject.name}', first: '{subject.first}' };
@@ -45,14 +46,20 @@ function joinBeats(parts) {
 /** Campus observation + floor check-in scene intro composed. */
 export function renderFloorSceneText(scene, student, week = 1, opts = {}) {
   if (!scene || !student) return '';
-  const ctx = buildTextContext({ subject: student, week, ...opts });
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    ...opts,
+    globals: { floorSceneId: scene.id, ...(opts.globals || {}) },
+  });
   const beat = render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
   const open = render('{floor.checkin.open}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const composed = renderFloorCheckinScene(scene.id, student, week, opts);
   const modular = render(`{campusEvent.scene.${scene.id}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   const legacy = resolveLegacyText(scene.text, student);
   const heat = render('{floor.checkin.heat}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{overhaul.linger.social}', ctx, { trace: opts.trace || null })?.trim();
-  const body = modular || legacy;
+  const body = composed || modular || legacy;
   return joinBeats([beat, open, body, heat, linger]);
 }
 
@@ -60,10 +67,16 @@ export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opt
   if (!scene || choiceIdx == null || !student) return '';
   const choice = scene.choices?.[choiceIdx];
   if (!choice) return '';
-  const ctx = buildTextContext({ subject: student, week, ...opts });
-  const modular = render(`{campusEvent.choice.${scene.id}.${choiceIdx}}`, ctx, { trace: opts.trace || null })?.trim();
-  const body = modular || resolveLegacyText(choice.result, student);
   const foodish = (choice.effect?.gain?.[1] || 0) > 0;
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    ...opts,
+    globals: { floorSceneId: scene.id, floorChoiceKind: foodish ? 'feed' : 'talk', ...(opts.globals || {}) },
+  });
+  const composed = renderFloorCheckinResult(scene.id, foodish ? 'feed' : 'talk', student, week, opts);
+  const modular = render(`{campusEvent.choice.${scene.id}.${choiceIdx}}`, ctx, { trace: opts.trace || null })?.trim();
+  const body = composed || modular || resolveLegacyText(choice.result, student);
   const resultBeat = render(foodish ? '{floor.checkin.result.feed}' : '{floor.checkin.result.talk}', ctx, { trace: opts.trace || null })?.trim();
   const linger = render(foodish ? '{overhaul.linger.food}' : '{overhaul.linger.social}', ctx, { trace: opts.trace || null })?.trim()
     || render('{overhaul.linger}', ctx, { trace: opts.trace || null })?.trim();
@@ -73,13 +86,21 @@ export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opt
 export function renderFloorHallText(scene, week = 1, opts = {}) {
   if (!scene) return '';
   const ctx = opts.subject
-    ? buildTextContext({ subject: opts.subject, week, ...opts })
-    : createContext({ week, globals: opts });
-  const legacy = resolveLegacyText(scene.text, null);
+    ? buildTextContext({
+      subject: opts.subject,
+      week,
+      ...opts,
+      globals: { floorSceneId: scene.id, ...(opts.globals || {}) },
+    })
+    : createContext({ week, globals: { floorSceneId: scene.id, ...(opts.globals || opts) } });
+  const composed = opts.subject
+    ? renderFloorCheckinScene(scene.id, opts.subject, week, opts)
+    : render('{floor.checkin.scene}', ctx, { trace: opts.trace || null })?.trim();
+  const body = (composed && !composed.includes('{unresolved}')) ? composed : resolveLegacyText(scene.text, null);
   const hall = render('{floor.checkin.hall}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{overhaul.linger.food}', ctx, { trace: opts.trace || null })?.trim()
     || render('{overhaul.linger}', ctx, { trace: opts.trace || null })?.trim();
-  return joinBeats([legacy, hall, linger]);
+  return joinBeats([body, hall, linger]);
 }
 
 /** @deprecated use renderFloorSceneText */

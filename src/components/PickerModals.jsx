@@ -11,6 +11,7 @@ import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameChoicesForPhase, minigameTierLabel } from '../gameData/evolvedMinigames.js';
+import { renderMinigamePhase, renderMinigameLog, renderMinigameWrap } from '../textEngine/scenes/overhaul/minigame.js';
 
 
 export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
@@ -197,7 +198,7 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
         );
 }
 
-function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true, owned = {} }) {
+function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true, owned = {}, week = 1 }) {
   const def = EVOLVED_MINIGAMES[gameId];
   const s = students.find((st) => st.id === studentId);
   const [phaseIdx, setPhaseIdx] = useState(0);
@@ -210,10 +211,13 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
 
   const ctx = { studentName: s.name, stageIdx };
   const phase = !done ? def.phases[phaseIdx] : null;
-  const phaseText = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const leftoverPhase = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const phaseText = phase ? (renderMinigamePhase(gameId, phaseIdx, s, week) || leftoverPhase) : null;
 
   const pickChoice = (choice) => {
-    const nextLog = [...log, choice.log];
+    const leftoverLog = choice.log;
+    const composedLog = renderMinigameLog(choice.id, gameId, s, week) || leftoverLog;
+    const nextLog = [...log, composedLog];
     const nextHistory = [...history, choice];
     const nextPhase = phaseIdx + 1;
     if (nextPhase >= def.phases.length) {
@@ -247,7 +251,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
           <div key={i} style={{ fontSize: 11, color: '#806050', fontStyle: 'italic', marginBottom: 6, paddingLeft: 8, borderLeft: `2px solid ${def.accent}30` }}>{line}</div>
         ))}
         <div style={{ color: '#a09080', fontSize: 12, lineHeight: 1.7, marginBottom: 16 }}>
-          {done ? `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}` : phaseText}
+          {done ? (renderMinigameWrap(outcome?.tier, gameId, s, week) || `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}`) : phaseText}
         </div>
         {!done && phase && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -266,7 +270,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
   );
 }
 
-export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true, owned = {} }) {
+export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true, owned = {}, week = 1 }) {
   if (!challengeState) return null;
   return (
     <EvolvedMinigameModal
@@ -280,11 +284,12 @@ export function CampusChallengeModal({ challengeState, processStudentGain, push,
       onClose={() => setChallengeState(null)}
       soundEnabled={soundEnabled}
       owned={owned}
+      week={week}
     />
   );
 }
 
-export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true, owned = {} }) {
+export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true, owned = {}, week = 1 }) {
   if (!deliveryState) return null;
   return (
     <EvolvedMinigameModal
@@ -298,11 +303,12 @@ export function DeliveryOrderModal({ deliveryState, processStudentGain, push, se
       onClose={() => setDeliveryState(null)}
       soundEnabled={soundEnabled}
       owned={owned}
+      week={week}
     />
   );
 }
 
-export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true, owned = {} }) {
+export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true, owned = {}, week = 1 }) {
   if (!presentationState) return null;
   return (
     <EvolvedMinigameModal
@@ -316,6 +322,7 @@ export function PresentationDefenseModal({ presentationState, processStudentGain
       onClose={() => setPresentationState(null)}
       soundEnabled={soundEnabled}
       owned={owned}
+      week={week}
     />
   );
 }

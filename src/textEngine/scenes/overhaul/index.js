@@ -16,6 +16,9 @@ import './wlTalk.js';
 import './homeroom.js';
 import './pharmacist.js';
 import './intimacy.js';
+import './minigame.js';
+import './huntArrive.js';
+import './floorCheckin.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

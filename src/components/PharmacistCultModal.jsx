@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { cultRoutesForOwned } from '../gameData/pharmacistCult.js';
+import { renderPharmacistCult } from '../textEngine/scenes/overhaul/pharmacist.js';
 
 const PURPLE = '#6b4a8a';
 const LILAC = '#b090d8';
@@ -20,6 +21,7 @@ export function PharmacistCultModal({
   onCancel,
   owned = {},
   soundEnabled = true,
+  week = 1,
 }) {
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, cultSession?.phase, student?.id]);
   if (!cultSession || !student) return null;
@@ -89,7 +91,7 @@ export function PharmacistCultModal({
       <>
         <div style={{ fontSize: 9, letterSpacing: 4, color: PURPLE, marginBottom: 4 }}>🕯️ DISTRIBUTION COMPLETE</div>
         <div style={{ fontSize: 13, fontWeight: 700, color: LILAC, marginBottom: 10 }}>{student.name}</div>
-        <div style={{ fontSize: 11, color: '#a090c0', fontStyle: 'italic', lineHeight: 1.75, marginBottom: 12 }}>{o.flavor}</div>
+        <div style={{ fontSize: 11, color: '#a090c0', fontStyle: 'italic', lineHeight: 1.75, marginBottom: 12 }}>{renderPharmacistCult(o.routeId, student, week) || o.flavor}</div>
         <div style={{ background: 'rgba(20,10,32,0.6)', borderRadius: 8, padding: '10px 12px', marginBottom: 14, fontSize: 11 }}>
           {o.circleDelta > 0 && <div style={{ color: LILAC, marginBottom: 4 }}>Circle +{o.circleDelta} devotees</div>}
           {o.supplyDelta > 0 && <div style={{ color: '#90c0a8', marginBottom: 4 }}>Supply stock +{o.supplyDelta}</div>}

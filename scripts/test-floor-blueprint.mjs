@@ -38,7 +38,11 @@ import { extraFloorChoices, generateFloorCheckIn } from '../src/utils/gameHelper
 import { FLOOR_SCENES } from '../src/gameData/floorEvents.js';
 import '../src/textEngine/modules.js';
 import '../src/textEngine/scenes/overhaul/index.js';
-import { renderFloorSceneText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
+import { renderPharmacistAcquire, renderPharmacistCompound, renderPharmacistCult } from '../src/textEngine/scenes/overhaul/pharmacist.js';
+import { renderMinigamePhase, renderMinigameLog, renderMinigameWrap } from '../src/textEngine/scenes/overhaul/minigame.js';
+import { renderHuntArrive, renderHuntTravel, renderHuntDormOpen } from '../src/textEngine/scenes/overhaul/huntArrive.js';
+import { renderHuntNode, renderHuntTarget } from '../src/textEngine/scenes/hunt/index.js';
+import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
 import { renderEvolvedActivity, renderEvolvedEventProse, renderEvolvedFollowup } from '../src/textEngine/scenes/evolved/index.js';
@@ -53,7 +57,6 @@ import { renderSessionNpc, renderSessionPayoff } from '../src/textEngine/scenes/
 import { renderWifeLessonTalkLine, renderWifeLessonBeat } from '../src/textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey } from '../src/textEngine/scenes/homeroom/index.js';
 import { renderIntimacyChoice } from '../src/textEngine/scenes/intimacy/index.js';
-import { renderPharmacistAcquire } from '../src/textEngine/scenes/overhaul/pharmacist.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
@@ -432,7 +435,7 @@ const destStudent = {
 const sessionPay = renderSessionPayoff(destStudent, 3, 0, 'food_coma');
 assert.ok(sessionPay && !sessionPay.includes('{unresolved}'));
 assert.equal(/Session complete\./i.test(sessionPay), false, 'ranked payoff should not be SESSION_PAYOFF_TEXT');
-assert.ok(/coma|chair|ranked|session/i.test(sessionPay), `session payoff should be composed, got: ${String(sessionPay).slice(0, 160)}`);
+assert.ok(/coma|chair|ranked|session|bags|game over/i.test(sessionPay), `session payoff should be composed, got: ${String(sessionPay).slice(0, 160)}`);
 
 const destSpend = renderDestinySpend(destStudent, 3);
 assert.ok(destSpend && !destSpend.includes('{unresolved}'));
@@ -499,6 +502,52 @@ const stressed = FLOOR_SCENES.find((s) => s.id === 'mood_stressed');
 const mayaText = renderFloorSceneText(stressed, students[1], 2);
 assert.ok(mayaText.includes('Maya'), `floor scene should name Maya, got: ${mayaText.slice(0, 180)}`);
 assert.equal(mayaText.includes('Brittany'), false, 'floor scene must not bake Brittany into every resident');
+assert.equal(/energy drink sweats on the table/i.test(mayaText), false, 'floor scene should not dump leftover mood_stressed body');
+const stressedFeed = renderFloorChoiceResult(stressed, 0, students[1], 2);
+assert.ok(stressedFeed && !stressedFeed.includes('{unresolved}'));
+assert.equal(/You set cookies on her knee/i.test(stressedFeed), false, 'floor choice should prefer composed result');
+const hallScene = FLOOR_SCENES.find((s) => s.id === 'hall_group_project');
+const hallText = renderFloorHallText(hallScene, 2);
+assert.ok(hallText && !hallText.includes('{unresolved}'));
+assert.ok(/meal-plan challenge/i.test(hallText), `hall composed should keep meal-plan challenge, got: ${hallText.slice(0, 180)}`);
+
+const lilith = {
+  id: 15, name: 'Lilith', lbs: 280, startLbs: 140, evolvedForm: 'feasting_beauty',
+  relationship: 40, corruption: 1, fullness: 10, stomachCapacity: 140,
+};
+const huntDorm = renderHuntNode('dorm', lilith, 3, { v2DepthChance: 0 });
+assert.ok(huntDorm && !huntDorm.includes('{unresolved}'));
+assert.equal(/The narrow hallway outside your door/i.test(huntDorm), false, 'hunt arrive should not dump leftover HUNT_NODES.desc');
+const huntTravel = renderHuntTravel('dorm', 'quad', lilith, 3);
+assert.ok(huntTravel && !huntTravel.includes('{unresolved}'));
+assert.equal(/You follow the main path out to the open quad/i.test(huntTravel), false, 'hunt travel should not dump leftover LILITH_TRAVEL');
+const huntOpen = renderHuntDormOpen(lilith, 3);
+assert.ok(huntOpen && !huntOpen.includes('{unresolved}'));
+assert.equal(/The door clicks shut behind you/i.test(huntOpen), false, 'hunt dorm open should not dump leftover LILITH_DORM_TEXT');
+const huntMan = renderHuntTarget('chad_w', lilith, 3, { v2DepthChance: 0 });
+assert.ok(huntMan && !huntMan.includes('{unresolved}'));
+assert.equal(/polo shirt half-tucked/i.test(huntMan), false, 'hunt target should not dump leftover man.desc');
+assert.ok(renderHuntArrive('quad', lilith, 3));
+
+const challengeStudent = {
+  id: 9, name: 'Talia', lbs: 210, startLbs: 135, evolvedForm: 'campus_legend',
+  relationship: 30, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const miniPhase = renderMinigamePhase('campus_challenge', 0, challengeStudent, 3);
+assert.ok(miniPhase && !miniPhase.includes('{unresolved}'));
+assert.equal(/The menu towers in front of her/i.test(miniPhase), false, 'minigame phase should not dump leftover phase.text');
+const miniLog = renderMinigameLog('speed', 'campus_challenge', challengeStudent, 3);
+assert.ok(miniLog && !miniLog.includes('{unresolved}'));
+assert.equal(/^She attacks the plate like a dare\.?$/i.test(miniLog), false, 'minigame log should not be leftover one-liner');
+const miniWrap = renderMinigameWrap('perfect', 'campus_challenge', challengeStudent, 3);
+assert.ok(miniWrap && !miniWrap.includes('{unresolved}'));
+
+const compoundLine = renderPharmacistCompound('appetite_stimulant', sophia, 3);
+assert.ok(compoundLine && !compoundLine.includes('{unresolved}'));
+assert.equal(/Nothing too strong/i.test(compoundLine), false, 'compound flavor should not dump leftover COMPOUNDS.flavor');
+const cultLine = renderPharmacistCult('circle_pickup', sophia, 3);
+assert.ok(cultLine && !cultLine.includes('{unresolved}'));
+assert.equal(/They arrive in twos and threes/i.test(cultLine), false, 'cult flavor should not dump leftover route.flavor');
 
 const planned = {
   slots: [

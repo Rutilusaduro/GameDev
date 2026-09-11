@@ -26,18 +26,39 @@ for (const man of HUNT_MEN) {
 
 export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
   if (!nodeId || !student) return '';
+  const ctx = createContext({
+    subject: student,
+    week,
+    ...opts,
+    globals: { huntNode: nodeId, featureId: 'hunt', ...(opts.globals || {}) },
+  });
+  const scene = render('{hunt.arrive.scene}', ctx)?.trim() || '';
+  if (scene && !scene.includes('{unresolved}')) {
+    return appendV2Depth(scene, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  }
   const key = HUNT_NODES[nodeId] ? `hunt.node.${nodeId}` : 'hunt.node.quad';
-  const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
   return appendV2Depth(base, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   if (!student) return '';
+  const ctx = createContext({
+    subject: student,
+    week,
+    ...opts,
+    globals: { huntMan: targetId || '', featureId: 'hunt', ...(opts.globals || {}) },
+  });
+  const scene = render('{hunt.target.scene}', ctx)?.trim() || '';
+  if (scene && !scene.includes('{unresolved}')) {
+    const linger = render('{overhaul.linger.hunt}', ctx)?.trim() || '';
+    return appendV2Depth([scene, linger].filter(Boolean).join(' '), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  }
   const man = HUNT_MEN.find((m) => m.id === targetId);
   const key = man ? `hunt.man.${man.id}` : 'hunt.man.chad_w';
-  const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
   const linger = render('{overhaul.linger.hunt}', ctx)?.trim() || '';
   return appendV2Depth([base, linger].filter(Boolean).join(' '), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
+
+export { renderHuntArrive, renderHuntTravel, renderHuntDormOpen, renderHuntMan } from '../overhaul/huntArrive.js';
