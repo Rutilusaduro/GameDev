@@ -185,4 +185,5 @@ import './upgradeCorpusPass19.js';
 import './upgradeCorpusPass20.js';
 import './upgradeCorpusPass21.js';
 import './upgradeCorpusPass22.js';
+import './upgradeCorpusPass23.js';
 import '../modules.js';
