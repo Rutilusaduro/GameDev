@@ -142,3 +142,38 @@ const FAIR_TAIL = [
 export function fairTailBeat(seed, slot = 0) {
   return pickTail(FAIR_TAIL, seed, slot);
 }
+
+const OUTFIT_TAIL = [
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} wears the body like a decision nobody is walking back.`;
+  },
+  'Seams forgive; belts surrender; the mirror stops arguing.',
+  'Residents clock the silhouette before the outfit — habit reads faster than fashion.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} — another layer that admits what the scale already confessed.`;
+  },
+  'Fabric stretches with permission the RA never had to write down.',
+];
+
+const SESSION_TAP_TAIL = [
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} taps out breathless — satisfied, spent, still hungry in the polite way.`;
+  },
+  'The session ends on a held note; fullness wins the argument.',
+  'Plates cool while she recovers — appetite already planning the rematch.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} logs another private surrender nobody on the floor will mock.`;
+  },
+];
+
+export function outfitTailBeat(seed, slot = 0) {
+  return pickTail(OUTFIT_TAIL, seed, slot);
+}
+
+export function sessionTapTailBeat(seed, slot = 0) {
+  return pickTail(SESSION_TAP_TAIL, seed, slot);
+}

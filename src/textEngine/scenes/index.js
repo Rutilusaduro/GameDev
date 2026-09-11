@@ -162,6 +162,7 @@ import './raPivotProseDepthPass124.js';
 import './raPivotProseDepthPass125.js';
 import './raPivotProseDepthPass126.js';
 import './raPivotProseDepthPass127.js';
+import './raPivotProseDepthPass128.js';
 import './memory/index.js';
 import './memory/depth.js';
 import './gossip/index.js';

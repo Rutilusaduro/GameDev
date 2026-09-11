@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { TAP_OUT_DIALOGUE, TAP_OUT_250, INIT_STUDENTS } from '../../../gameData/students.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
+import { sessionTapTailBeat } from '../evolved/proseTails.js';
 
 function sampleStudent(studentId) {
   const id = Number(studentId);
@@ -12,7 +13,7 @@ function sampleStudent(studentId) {
   return row ? { ...row, lbs: 220, fullness: 0.9 } : { id, name: 'Resident', lbs: 220 };
 }
 
-function registerTapOutBeat(poolKey, prose) {
+function registerTapOutBeat(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
   if (!text) return;
   const bodyKey = `${poolKey}.legacyBody`;
@@ -22,7 +23,16 @@ function registerTapOutBeat(poolKey, prose) {
     return line && !line.includes('{unresolved}') ? line : text;
   };
   registerPool(poolKey, [
-    { when: {}, weight: 3, text: [slot, slot, slot] },
+    {
+      when: {},
+      weight: 3,
+      text: [
+        slot,
+        sessionTapTailBeat(seed, 0),
+        sessionTapTailBeat(seed, 1),
+        sessionTapTailBeat(seed, 2),
+      ],
+    },
   ]);
 }
 

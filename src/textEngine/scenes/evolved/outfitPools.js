@@ -6,8 +6,9 @@ import { getStage } from '../../../gameData/stages.js';
 import { EVOLVED_OUTFITS } from '../../../gameData/evolvedForms.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
+import { outfitTailBeat } from './proseTails.js';
 
-function registerOutfitBeat(poolKey, prose) {
+function registerOutfitBeat(poolKey, prose, seed) {
   const text = (prose || '').trim();
   if (!text) return;
   const bodyKey = `${poolKey}.legacyBody`;
@@ -17,14 +18,23 @@ function registerOutfitBeat(poolKey, prose) {
     return line && !line.includes('{unresolved}') ? line : text;
   };
   registerPool(poolKey, [
-    { when: {}, weight: 3, text: [slot, slot, slot] },
+    {
+      when: {},
+      weight: 3,
+      text: [
+        slot,
+        outfitTailBeat(seed, 0),
+        outfitTailBeat(seed, 1),
+        outfitTailBeat(seed, 2),
+      ],
+    },
   ]);
 }
 
 for (const [formId, lines] of Object.entries(EVOLVED_OUTFITS)) {
   if (!Array.isArray(lines)) continue;
   lines.forEach((prose, idx) => {
-    registerOutfitBeat(`evolved.outfit.${formId}.s${idx}`, prose);
+    registerOutfitBeat(`evolved.outfit.${formId}.s${idx}`, prose, `${formId}:s${idx}`);
   });
 }
 

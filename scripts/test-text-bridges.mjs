@@ -19,6 +19,8 @@ const required = [
   'homeroom/batchBakerPools.js',
   'competitiveGainer/cgChatPools.js',
   'hallBlueprint/index.js',
+  'researchJournal/index.js',
+  'evolved/eventPools.js',
 ];
 
 const missing = required.filter((rel) => !existsSync(join(scenes, rel)));
