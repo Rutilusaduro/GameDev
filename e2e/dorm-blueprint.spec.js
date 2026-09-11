@@ -5,7 +5,7 @@ test('Blueprint rooms, resident doors, and night rounds', async ({ page }) => {
   await completeRaSetup(page);
 
   await page.getByRole('button', { name: '🏠 Blueprint' }).click();
-  await expect(page.getByText('Hall Blueprint')).toBeVisible();
+  await expect(page.getByText('Hall Blueprint', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /Common Lounge/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Galley Kitchen/ })).toBeVisible();
 
@@ -18,11 +18,14 @@ test('Blueprint rooms, resident doors, and night rounds', async ({ page }) => {
 
   const firstDoor = page.locator('.dorm-bp-door').first();
   await firstDoor.click();
-  await expect(page.getByText(/Mini-fridge|Reinforced bed|Warm lighting/)).toBeVisible();
+  await expect(page.getByText('Mini-fridge')).toBeVisible();
 
   await page.getByRole('button', { name: /Start night rounds/ }).click();
-  await expect(page.getByRole('button', { name: /Night rounds/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Night rounds ·/ })).toBeVisible();
   await firstDoor.click();
-  await expect(page.getByText('NIGHT ROUNDS')).toBeVisible();
-  await expect(page.getByRole('button').filter({ hasText: /Bring|Sit|Note|Dim|Tell|Watch|Restock|Share|Catch|Stay|Leave|Help|Pretend|Ask|Read|Accept|Mark|Attend|Learn/ }).first()).toBeVisible();
+  await expect(page.getByText('NIGHT ROUNDS', { exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByTestId('night-round-choice')).toHaveCount(3);
+  await page.getByTestId('night-round-choice').first().click();
+  await expect(page.getByRole('button', { name: 'Back to the plan' })).toBeVisible();
 });

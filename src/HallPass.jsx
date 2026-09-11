@@ -1095,7 +1095,6 @@ export default function HallPass(){
     const remaining=(nightRoundVisitCap(ownedHallSkills||{})-((hallDorm.nightRounds?.lastWeek===week?hallDorm.nightRounds.visitsThisWeek||0:0)+1));
     push(`🔑 ${s.name}: ${choice.label}${remaining<=0?' — floor gone quiet.':''}`);
     if(remaining<=0) setNightMode(false);
-    setNightTargetId(null);
   };
 
   const grantExplorationReward=(grants)=>{

@@ -72,6 +72,7 @@ export function NightRoundModal({
               <button
                 key={c.id}
                 type="button"
+                data-testid="night-round-choice"
                 style={{ ...C.btn('#3a1868'), textAlign: 'left', fontWeight: 600 }}
                 onClick={() => {
                   playHallPassSound('click', soundEnabled);
