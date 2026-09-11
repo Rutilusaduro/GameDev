@@ -1996,7 +1996,7 @@ export default function HallPass(){
       if(stagedUp){
         const newC=addCorruption(ns,CORRUPTION_CONFIG.perStageUp,textOpts);
         const newStageId=getStage(ns.lbs).id;
-        const clothState=clothingStateForStage(newStageId);
+        const clothState=clothingStateForStage(newStageId, loungeSkillFx.clothingEase||0);
         Object.assign(ns,{
           ...corruptionStudentPatch(ns,newC,week),
           clothingState:clothState,
@@ -2538,8 +2538,11 @@ export default function HallPass(){
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
-    const bonusGain=tree.filter(sk=>skills.includes(sk.id)&&sk.activityGainBonus).reduce((a,b)=>a+(b.activityGainBonus||0),0);
-    const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
+    const loungeAct=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+    const bonusGain=tree.filter(sk=>skills.includes(sk.id)&&sk.activityGainBonus).reduce((a,b)=>a+(b.activityGainBonus||0),0)
+      +Math.floor((loungeAct.floorDepth?.completedRooms||0)/3);
+    const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0)
+      +((s.evolvedForm==='eating_streamer'||s.evolvedForm==='feedee_creator')?(loungeAct.streamRelBonus||0):0);
     const doubleCharge=tree.find(sk=>skills.includes(sk.id)&&sk.doubleActivityCharge);
     const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain+getSupernaturalActivityBonus(s).gainBonus;
     const gain=doubleCharge?rawGain*2:rawGain;
@@ -2843,7 +2846,7 @@ export default function HallPass(){
       const history=[...(prev.history||[]),ch.flag||choiceId];
       const nextPhase=prev.phaseIdx+1;
       if(nextPhase>=def.phases.length){
-        const ending=pickHearingEnding(def,history);
+        const ending=pickHearingEnding(def,history,aggregateHallLoungeSkillEffects(ownedHallSkills||{}).oppositionCover||0);
         const endingText=ending.poolKey
           ?renderHearingEnding(hearingType,ending.poolKey,student,week)
           :'';
@@ -6226,7 +6229,9 @@ export default function HallPass(){
       newFavor[brandKey]=Math.min(100,(newFavor[brandKey]||0)+r.favorGain);
       const newStreaks={...(updated.brandStreaks||{})};
       if(prev.brand) newStreaks[prev.brand]=(newStreaks[prev.brand]||0)+1;
-      const newAudience=Math.round((updated.audience||120)+r.audienceGain*prev.audienceMult);
+      const newAudience=Math.round((updated.audience||120)+r.audienceGain*prev.audienceMult)
+        +(ownedHallSkills?.media_nook?Math.round((r.audienceGain||0)*0.15):0);
+      const streamRel=aggregateHallLoungeSkillEffects(ownedHallSkills||{}).streamRelBonus||0;
       updated={
         ...updated,
         audience:newAudience,
@@ -6234,6 +6239,7 @@ export default function HallPass(){
         brandStreaks:newStreaks,
         totalStreams:(updated.totalStreams||0)+1,
         fullness:prev.sessionFullness,
+        relationship:Math.min(100,(updated.relationship||0)+streamRel),
       };
       const{fired,milestones}=detectNewStreamMilestones(before,updated,prev.brand);
       const destinyShare=getDestinyShare(r);
@@ -7019,7 +7025,10 @@ export default function HallPass(){
 
   const applyTalkEffect=(effect,meta={})=>{
     if(!talkStudentId) return;
-    const talkBonus=aggregateHallLoungeSkillEffects(ownedHallSkills||{}).talkRelBonus||0;
+    const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+    const talkBonus=loungeFx.talkRelBonus||0;
+    const extraCor=loungeFx.talkCorruptionBonus||0;
+    const hungerDrop=loungeFx.hungerTalkDrop||0;
     gainFavor('talk');
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     if(applySuggest){
@@ -7032,16 +7041,25 @@ export default function HallPass(){
     if(meta.topicId==='compliment'){
       const target=students.find(x=>x.id===talkStudentId);
       if(target&&isBodyComplimentUnwelcome(target)){
+        const cover=ownedHallSkills?.comfort_framing?0.5:1;
+        const relHit=Math.max(1,Math.round(COMPLIMENT_BACKFIRE_REL*cover));
+        const scrHit=Math.max(0,Math.round(COMPLIMENT_BACKFIRE_SCRUTINY*cover));
         setStudents(prev=>prev.map(x=>x.id===talkStudentId
-          ?{...x,relationship:Math.max(0,(x.relationship||0)-COMPLIMENT_BACKFIRE_REL),mood:"stressed",
+          ?{...x,relationship:Math.max(0,(x.relationship||0)-relHit),mood:"stressed",
              discontent:bumpDiscontent(x.discontent,grievanceGain(x,'creeped')),
              memories:appendMemory(x.memories,'creeped',week)}
           :x));
-        addScrutiny(COMPLIMENT_BACKFIRE_SCRUTINY);
-        push(`😬 ${target.name} bristles — unsolicited and unwelcome. −${COMPLIMENT_BACKFIRE_REL} relationship · scrutiny +${COMPLIMENT_BACKFIRE_SCRUTINY}.`);
+        if(scrHit>0) addScrutiny(scrHit);
+        push(`😬 ${target.name} bristles — unsolicited and unwelcome. −${relHit} relationship${scrHit?` · scrutiny +${scrHit}`:''}.`);
         return;
       }
     }
+    const finishTalk=(ns)=>{
+      let out=ns;
+      if(extraCor) out={...out,corruption:addCorruption(out,extraCor)};
+      if(hungerDrop) out=adjustHunger(out,-hungerDrop);
+      return out;
+    };
     if(effect.cals){
       setStudents(prev=>{
         const st=prev.find(x=>x.id===talkStudentId);
@@ -7070,6 +7088,7 @@ export default function HallPass(){
         if((effect.rel || talkBonus) && !effect.devourShift){
           ns={...ns,relationship:Math.min(100,ns.relationship+(effect.rel||0)+talkBonus)};
         }
+        ns=finishTalk(ns);
         return prev.map(x=>x.id===ns.id?ns:x);
       });
       return;
@@ -7081,7 +7100,7 @@ export default function HallPass(){
       if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
       // Talking to her is attention — it cools discontent.
       if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-DISCONTENT_EASE_TALK);
-      return ns;
+      return finishTalk(ns);
     }));
   };
 

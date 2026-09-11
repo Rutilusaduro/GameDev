@@ -1797,7 +1797,7 @@ export function renderDiary(student, week) {
     const formId = formAliases[student.evolvedForm] || student.evolvedForm;
     const evolvedKey = `diary.${formId}`;
     const evolvedText = render(`{${evolvedKey}}`, ctx, { noSmooth: false });
-    if (evolvedText && evolvedText.trim()) return evolvedText;
+    if (evolvedText && evolvedText.trim()) return withDiaryLinger(evolvedText, ctx);
   }
 
   // Base per-student diary. diary.innerBeat is the real base pool — keyed on
@@ -1806,7 +1806,14 @@ export function renderDiary(student, week) {
   // path mapped to diary.<name>.<arc> keys that were never registered, so base
   // diaries returned null and the gateway payoff entries were unreachable.)
   const innerText = render('{diary.innerBeat}', ctx, { noSmooth: false });
-  if (innerText && innerText.trim()) return innerText;
+  if (innerText && innerText.trim()) return withDiaryLinger(innerText, ctx);
 
   return null;
+}
+
+function withDiaryLinger(text, ctx) {
+  const linger = render('{overhaul.linger.diary}', ctx, { noSmooth: false })?.trim()
+    || render('{overhaul.linger}', ctx, { noSmooth: false })?.trim();
+  if (linger && !linger.includes('{unresolved}')) return `${text.trim()}\n\n${linger}`;
+  return text;
 }

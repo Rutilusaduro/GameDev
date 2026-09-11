@@ -9,6 +9,7 @@ registerPool('circuit.open', [
   { when: {}, text: [
     'Lights-out on the floor. Your keys are warm. The hall still smells like whatever finished cooking.',
     'The corridor has gone quiet enough to hear a mini-fridge somewhere, working too hard.',
+    'Night shift. The carpet knows your route before you take it.',
   ]},
   { when: { stageMax: 3 }, text: [
     'Early in the semester the hall still sounds like people trying to be quiet. Doors click. Someone laughs into a pillow.',
@@ -23,6 +24,7 @@ registerPool('circuit.kitchen', [
   { when: {}, text: [
     'The kitchen light is the only honest one left on. A tray waits under a towel, still giving off heat.',
     'Someone has already been here. The spoon in the saucepan is warm. The saucepan is not empty.',
+    'Leftovers on the counter. She finds them before she finds you.',
   ]},
   { when: { stageMin: 4, stageMax: 7 }, text: [
     'The counter has been cleared to make room for a belly that likes to rest while she finishes what you left.',
@@ -37,6 +39,7 @@ registerPool('circuit.lounge', [
   { when: {}, text: [
     'The lounge chairs have learned her shape. She sits and the cushions keep the appointment.',
     'Warm lamps, a mug going cold, a body that has decided not to get up yet.',
+    'The common room after hours is just a nest with better lighting.',
   ]},
   { when: { corruption: [0], stageMax: 4 }, text: [
     'She pretends she only sat down to check her phone. The snack bowl is closer than the phone.',
@@ -51,6 +54,7 @@ registerPool('circuit.desk', [
   { when: {}, text: [
     'You straighten the log. Housing likes tidy logs. Housing does not ask what the extra hours were for.',
     'A wellness flyer has curled at the corner. You file it under the stapler. The stapler does not mind.',
+    'The desk lamp makes the paperwork look innocent. You let it.',
   ]},
 ]);
 
@@ -58,6 +62,8 @@ registerPool('circuit.desk', [
 registerPool('circuit.dining', [
   { when: {}, text: [
     'The dining nook still has a plate with manners. She does not. She finishes it standing, then sitting, then smiling.',
+    'One last course left out like an accident. It was not an accident.',
+    'She licks a finger and looks at you like dessert was the point of the furniture.',
   ]},
   { when: { stageMin: 5 }, text: [
     'The chair at the nook is the wide one now. She notices. She does not comment. She eats.',
@@ -68,6 +74,8 @@ registerPool('circuit.dining', [
 registerPool('circuit.psych', [
   { when: {}, text: [
     'The alcove is for watching how she eats when she thinks watching is care. Tonight she lets you.',
+    'She catches the look and keeps chewing. Data, she would call it if she were meaner.',
+    'You note how readily she says yes after midnight. She notes that you note it.',
   ]},
   { when: { corruption: [0] }, text: [
     'She catches you looking at the way her waistband sits and looks back at the food instead.',
@@ -78,6 +86,8 @@ registerPool('circuit.psych', [
 registerPool('circuit.corridor', [
   { when: {}, text: [
     'Quiet hours. Hunger still walks the carpet in socks. You meet it halfway with a wrapped something.',
+    'The hall is a throat. Something hungry moves through it.',
+    'A door clicks. A fridge. A sigh that is not sleep.',
   ]},
 ]);
 
@@ -86,6 +96,7 @@ registerPool('circuit.laundry', [
   { when: {}, text: [
     'Warm air, oversized cotton, the soft slap of a dryer that has learned bigger loads.',
     'She folds a shirt that used to be loose. She holds it up, snorts once, and keeps it anyway.',
+    'The machines take a bigger load now. So does she.',
   ]},
 ]);
 
@@ -93,6 +104,8 @@ registerPool('circuit.laundry', [
 registerPool('circuit.storage', [
   { when: {}, text: [
     'The supply cage yields. A hum behind the mesh keeps its own hours.',
+    'You take a spare from the shelf. The shelf is generous.',
+    'Hardware ticks in the dark like digestion.',
   ]},
 ]);
 
@@ -100,6 +113,8 @@ registerPool('circuit.storage', [
 registerPool('circuit.media', [
   { when: {}, text: [
     'The ring light makes her look fed even before she sits. She sits. The look improves.',
+    'Couch, camera, a belly that knows its good side.',
+    'She checks the thumbnail in the dark and snorts. "Yeah. That tracks."',
   ]},
   { when: { studentId: 2 }, weight: 4, text: [
     'Kylie angles her chin at the nook lighting like the floor owes her a thumbnail.',
@@ -113,6 +128,8 @@ registerPool('circuit.media', [
 registerPool('circuit.echo', [
   { when: {}, text: [
     'The gallery keeps last week\'s number. She passes it and her hand finds her middle without asking her.',
+    'Bells along the wall hum once, then settle into her appetite.',
+    'A captured weigh-in stares back. She does not look away.',
   ]},
 ]);
 
@@ -120,6 +137,8 @@ registerPool('circuit.echo', [
 registerPool('circuit.dream', [
   { when: {}, text: [
     'The dream room smells like butter and sleep. Hunger walks here with its shoes off.',
+    'She is already swallowing in her sleep. You do not wake her. You leave something anyway.',
+    'Soft light. Impossible portions on the inside of her eyelids.',
   ]},
 ]);
 
@@ -127,6 +146,8 @@ registerPool('circuit.dream', [
 registerPool('circuit.social', [
   { when: {}, text: [
     'Two residents, one leftover box, the kind of talk that ends with both of them fuller than they planned.',
+    'Rapport pools in the nook like spilled sauce. Nobody wipes it up.',
+    'They were going to split it. They did not split it.',
   ]},
 ]);
 
@@ -134,6 +155,8 @@ registerPool('circuit.social', [
 registerPool('circuit.suite', [
   { when: {}, text: [
     'Your door stays unlocked. Tomorrow\'s private session will find more room in her and more time on the clock.',
+    'The suite smells like last night\'s dessert and tomorrow\'s excuse.',
+    'You leave the lamp on. She will find it. She always does.',
   ]},
 ]);
 
@@ -141,6 +164,8 @@ registerPool('circuit.suite', [
 registerPool('circuit.resident', [
   { when: {}, text: [
     'You knock once. She is still awake. The fridge light in her room paints a slice of belly you are not supposed to notice. You notice.',
+    'A door opens a body-width. Invitation enough.',
+    'She was in bed. She was also eating. Both can be true.',
   ]},
   { when: { stageMin: 6 }, text: [
     'The door opens as far as her body allows. Plenty of room for you. Plenty of room for the snack in your hand.',
@@ -170,7 +195,11 @@ registerPool('circuit.line', [
 
 // Shape: SKELETON
 registerPool('circuit.beat', [
-  { when: {}, text: ['{circuit.open} {circuit.line}'] },
+  { when: {}, text: [
+    '{circuit.open} {circuit.line}',
+    '{circuit.open}',
+    '{circuit.line}',
+  ]},
 ]);
 
 const ROOM_POOL = {

@@ -81,6 +81,10 @@ export function aggregateClassSkillEffects(owned = {}) {
     ecologyDecayReduce: 0,
     campusYieldBonus: 0,
     oppositionCover: 0,
+    talkCorruptionBonus: 0,
+    hungerTalkDrop: 0,
+    streamRelBonus: 0,
+    clothingEase: 0,
   };
   SKILL_TREE.forEach((sk) => {
     if (!owned[sk.id]) return;
@@ -104,6 +108,11 @@ export function aggregateClassSkillEffects(owned = {}) {
   effects.ecologyDecayReduce = depth.ecologyDecayReduce;
   effects.campusYieldBonus = depth.campusYieldBonus;
   effects.oppositionCover = depth.oppositionCover;
+  effects.talkCorruptionBonus = depth.talkCorruptionBonus;
+  effects.hungerTalkDrop = depth.hungerTalkDrop;
+  effects.streamRelBonus = depth.streamRelBonus;
+  effects.clothingEase = depth.clothingEase;
+  effects.scrutinyReduce += Math.min(0.24, (depth.oppositionCover || 0) * 0.08);
   effects.floorDepth = depth;
   return effects;
 }

@@ -18,6 +18,8 @@ import {
 } from '../src/gameData/floorBlueprint.js';
 import { aggregateHallLoungeSkillEffects, buyHallLoungeSkill } from '../src/gameData/hallLoungeSkills.js';
 import { createInitialPlayer } from '../src/gameData/player.js';
+import { clothingStateForStage } from '../src/gameData/textContext.js';
+import { pickHearingEnding, REMOVAL_HEARING } from '../src/gameData/oppositionHearings.js';
 
 const missing = assertSkillRoomCoverage();
 assert.equal(missing.length, 0, `unmapped skills: ${missing.join(', ')}`);
@@ -76,6 +78,29 @@ const allOwned = Object.fromEntries(SKILL_TREE.map((s) => [s.id, true]));
 const full = aggregateFloorDepth(allOwned);
 assert.ok(full.completedRooms >= 8, `expected many complete rooms, got ${full.completedRooms}`);
 assert.ok(full.synergyGainMult > 0);
+
+const coverOwned = { institutional_cover: true, deep_cover: true };
+const coverFx = aggregateHallLoungeSkillEffects(coverOwned);
+assert.ok(coverFx.oppositionCover >= 2, 'cover stacks from desk upgrades');
+assert.ok(coverFx.scrutinyReduce > 0, 'cover feeds scrutinyReduce');
+
+const clothOwned = { laundry_refit: true, oversized_linens: true };
+const clothFx = aggregateHallLoungeSkillEffects(clothOwned);
+assert.ok(clothFx.clothingEase >= 2, 'linens ease clothing strain');
+
+const mediaOwned = { media_nook: true, snack_station: true };
+assert.ok(aggregateHallLoungeSkillEffects(mediaOwned).streamRelBonus >= 2, 'media nook stream rel');
+
+const aware = { body_awareness: true };
+assert.ok(aggregateFloorDepth(aware).talkCorruptionBonus >= 1, 'body awareness talk corruption');
+
+assert.equal(clothingStateForStage(5, 0), 'zipper_fail');
+assert.equal(clothingStateForStage(5, 3), 'button_pop');
+assert.equal(clothingStateForStage(3, 3), 'fitted');
+
+const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
+const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
+assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,

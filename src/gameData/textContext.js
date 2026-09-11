@@ -225,12 +225,14 @@ export function corruptionStudentPatch(student, newCorruption, week) {
   return patch;
 }
 
-/** Stage-up clothing state hint for digest / growth moments. */
-export function clothingStateForStage(stageId) {
-  if (stageId >= 10) return 'waistband_surrender';
-  if (stageId >= 7) return 'seam_split';
-  if (stageId >= 5) return 'zipper_fail';
-  if (stageId >= 3) return 'button_pop';
+/** Stage-up clothing state hint for digest / growth moments.
+ *  `ease` (laundry / linens) delays the next failure band by that many stages. */
+export function clothingStateForStage(stageId, ease = 0) {
+  const shifted = Math.max(0, (stageId || 0) - Math.max(0, ease || 0));
+  if (shifted >= 10) return 'waistband_surrender';
+  if (shifted >= 7) return 'seam_split';
+  if (shifted >= 5) return 'zipper_fail';
+  if (shifted >= 3) return 'button_pop';
   return 'fitted';
 }
 

@@ -17,8 +17,8 @@ import { isSlenderEligible } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 
 export const WI_INTRO_LEGACY = "{wi.arrival} {wi.settle} {wi.scaleApproach}";
-export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.bodyRead} {wi.approachSentence} {wi.scaleSentence} {wi.floor}";
-export const WI_INTRO_BIG = "{wi.arrival} {wi.settle} {wi.bodyRead} {wi.approachSentence} {wi.scaleSentence} {wi.floor}";
+export const WI_INTRO = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
+export const WI_INTRO_BIG = "{wi.arrival} {wi.settle} {wi.approachSentence} {wi.scaleSentence}";
 export const WI_APPROACH_V2 = "{wi.approachSentence} {wi.scaleSentence}";
 export const WI_REACTION = "{wi.stepOff}\n\n{wi.reply}{wi.foodAsk|prefix: }";
 export const WI_BREAK = "{wi.breakBeat} {wi.breakLine}";
@@ -52,6 +52,8 @@ export function renderWeighInIntro(student, week, goesDirectlyToBig = false, opt
   } else {
     base = render(introTpl, ctx, { trace: opts.trace });
   }
+  const bodyRead = render('{wi.bodyRead}', ctx, { trace: opts.trace })?.trim();
+  if (bodyRead) base = `${base} ${bodyRead}`;
   return appendV2Depth(base, 'wi', ctx, opts.v2DepthChance ?? 0.28);
 }
 

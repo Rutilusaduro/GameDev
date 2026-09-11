@@ -97,6 +97,13 @@ export const EMERGENCY_HEARING = {
   ],
 };
 
-export function pickHearingEnding(hearingDef, history) {
-  return hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
+export function pickHearingEnding(hearingDef, history, cover = 0) {
+  const ending = hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
+  if (!ending) return ending;
+  const shield = Math.max(0, cover || 0);
+  if (!shield) return ending;
+  return {
+    ...ending,
+    scrutinyDelta: (ending.scrutinyDelta || 0) - shield * 4,
+  };
 }

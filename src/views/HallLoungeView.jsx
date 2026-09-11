@@ -191,10 +191,15 @@ export function HallLoungeView({
   }, [circuit.pinned]);
 
   return (
-    <div>
+    <div data-panel="HallLoungeSkillsPanel">
       <style>{`
+        [data-room-id] { transition: background-color 160ms ease-out, border-color 160ms ease-out, box-shadow 160ms ease-out; }
+        [data-room-id]:hover { border-color: ${AMBER}; }
         [data-room-id]:focus-visible { outline: 2px solid #7ad4e6; outline-offset: 2px; }
         [data-action="walk-circuit"]:focus-visible { outline: 2px solid #c090ff; outline-offset: 2px; }
+        @media (max-width: 820px) {
+          [data-blueprint-layout] { grid-template-columns: 1fr !important; }
+        }
         @media (prefers-reduced-motion: reduce) {
           [data-room-id] { transition: none !important; }
         }
@@ -212,7 +217,7 @@ export function HallLoungeView({
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 1.4fr) minmax(240px, 1fr)', gap: 12, alignItems: 'start' }}>
+      <div data-blueprint-layout="" style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 1.4fr) minmax(240px, 1fr)', gap: 12, alignItems: 'start' }}>
         <div
           role="group"
           aria-label="Dorm floor blueprint"
@@ -225,8 +230,19 @@ export function HallLoungeView({
             boxShadow: 'inset 0 0 40px rgba(0,20,40,0.55)',
           }}
         >
-          <div style={{ fontSize: 9, letterSpacing: 2, color: 'rgba(120,210,230,0.7)', marginBottom: 8, textTransform: 'uppercase' }}>
-            Floor plan · north
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'flex-start', marginBottom: 8, borderBottom: `1px solid ${LINE_DIM}`, paddingBottom: 8 }}>
+            <div>
+              <div style={{ fontSize: 9, letterSpacing: 2.4, color: 'rgba(120,210,230,0.75)', textTransform: 'uppercase' }}>Residence Life · Sheet 01</div>
+              <div style={{ fontSize: 13, color: CREAM, marginTop: 2, letterSpacing: 0.6 }}>Floor plan · north up</div>
+              <div style={{ fontSize: 10, color: '#8aa8b0', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
+                Scale 1:120 · Week {week} · {selected ? (getRoom(selected)?.code || selected) : '—'}
+              </div>
+            </div>
+            <div aria-hidden="true" style={{ textAlign: 'center', color: 'rgba(120,210,230,0.85)', lineHeight: 1.05, minWidth: 36 }}>
+              <div style={{ fontSize: 9, letterSpacing: 2 }}>N</div>
+              <div style={{ fontSize: 16 }}>▲</div>
+              <div style={{ fontSize: 8, letterSpacing: 1, color: LINE }}>W  E</div>
+            </div>
           </div>
           <div
             style={{
@@ -283,3 +299,6 @@ export function HallLoungeView({
     </div>
   );
 }
+
+/** Audit alias — lounge prestige used to ship as HallLoungeSkillsPanel. */
+export const HallLoungeSkillsPanel = HallLoungeView;

@@ -2,12 +2,14 @@
 // PROSE OVERHAUL — longer modular beats, less repetition, context-keyed.
 // Extra linger / atmosphere slots stitched into high-traffic skeletons.
 import { registerPool, registerModuleVariants } from '../../engine.js';
+import './more.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [
   { when: {}, text: [
     'The hall lounge holds the conversation the way a warm room holds a body — close, unhurried, a little too comfortable to leave.',
     'Somewhere down the corridor a fridge kicks on. She notices. She does not get up.',
+    'A lamp buzzes. Snack wrappers tick in the trash. She stays seated.',
   ]},
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'The chair still feels too big for her. She sits in it like she is borrowing someone else\'s comfort.',
@@ -32,6 +34,7 @@ registerPool('talk.linger', [
   { when: {}, text: [
     'She does not rush you out. The silence after is full of snack wrappers and the heat she puts off.',
     'When she finally looks down at herself, it is not to hide. It is to check that you saw.',
+    'She takes one more bite after the conversation is over, like punctuation.',
   ]},
   { when: { corruption: [0], stageMax: 4 }, weight: 2, text: [
     'She laughs once, too bright, and reaches for another bite like the laugh gave her permission.',
@@ -51,6 +54,8 @@ registerPool('talk.linger', [
 registerPool('wi.bodyRead', [
   { when: {}, text: [
     'You take her in before the number does — the way she carries tonight, the heat, the extra that was not here last week.',
+    'Her body arrives in the room a half-beat before her greeting does.',
+    'You read the week on her before she steps toward the platform.',
   ]},
   { when: { stageMax: 2 }, weight: 2, text: [
     'There is not much to announce yet. A softer line at the waist. A shirt that meets her like a rumor.',
@@ -77,6 +82,8 @@ registerPool('wi.bodyRead', [
 registerPool('wi.floor', [
   { when: {}, text: [
     'The alcove light is kinder than Housing\'s fluorescent ever was. She uses that. You let her.',
+    'The hall is quiet enough that you hear the platform take her weight.',
+    'Someone left a plant next to the readout. It does not hide anything.',
   ]},
   { when: { stageMin: 5 }, weight: 2, text: [
     'The wide platform waits. She breathes out, then in, then commits her weight like a promise.',
@@ -87,6 +94,8 @@ registerPool('wi.floor', [
 registerPool('feed.react.body', [
   { when: {}, text: [
     'Each swallow has somewhere to go. You watch it arrive.',
+    'The bite lands. Softness answers it.',
+    'Her middle takes the food like it was expected.',
   ]},
   { when: { stageMax: 3 }, weight: 2, text: [
     'A small tight swell under her shirt, warm, still deniable if she keeps her hand off it. She does not keep her hand off it.',
@@ -112,6 +121,8 @@ registerPool('feed.react.body', [
 registerPool('room.visit.linger', [
   { when: {}, text: [
     'You stay in the doorway long enough for the room to tell on her — wrappers, the chair, the way she sits in it.',
+    'The mini-fridge hums like a third person in the conversation.',
+    'She makes space on the bed with a hip and a look. Sit or don\'t. The snack is already open.',
   ]},
   { when: { stageMax: 3 }, weight: 2, text: [
     'Move-in posters. A snack shelf winning against the textbooks. She notices you noticing and shrugs one shoulder.',
@@ -125,6 +136,8 @@ registerPool('room.visit.linger', [
 registerPool('enc.linger', [
   { when: {}, text: [
     'Permission, once given, does not go back in the bottle. She eats like she is testing that.',
+    'She waits to see if you will stop her. You do not. She continues.',
+    'Another bite. Then the look that asks for one more after that.',
   ]},
   { when: { corruption: [0] }, weight: 2, text: [
     'She mutters that she should stop. The mutter does not stop her. The next bite is slower and better.',
@@ -137,6 +150,8 @@ registerPool('enc.linger', [
 registerPool('comp.linger', [
   { when: {}, text: [
     'The compliment stays in the air until she decides where to put it. She puts it on her body.',
+    'She breathes in like the praise needed room. It did.',
+    'Her hand finds the place you named and stays there, pleased.',
   ]},
   { when: { corruption: [0], stageMax: 3 }, weight: 2, text: [
     'She does not know if she is allowed to like it. Her mouth likes it first. Her posture follows.',
@@ -150,6 +165,8 @@ registerPool('comp.linger', [
 registerPool('dinner.linger', [
   { when: {}, text: [
     'The walk back to the hall is slower. She keeps a hand on her middle like it might spill if she lets go.',
+    'She unbuttons one button in the elevator and pretends it was always that way.',
+    'The night air does nothing. She is still full when you reach her door.',
   ]},
   { when: { stageMin: 5 }, weight: 2, text: [
     'She chooses the wide chair in the lounge without asking. The dinner is still happening in her. You can see it.',
@@ -162,6 +179,8 @@ registerPool('dinner.linger', [
 registerPool('weekly.linger', [
   { when: {}, text: [
     'The floor notices before Housing does. Someone has gotten heavier in a way you can hear.',
+    'A chair complains. She sits anyway. The week keeps score.',
+    'Gossip in the bathroom: she looks different. She does.',
   ]},
   { when: { stageMin: 6 }, weight: 2, text: [
     'Furniture files a quiet complaint. She answers by sitting down harder, like winning.',
@@ -171,6 +190,8 @@ registerPool('weekly.linger', [
 registerPool('hunger.linger', [
   { when: {}, text: [
     'The craving has a temperature. It stands in the doorway with her, waiting for you to do something kind and irreversible.',
+    'She came hungry. She will leave heavier if you let her. You are going to let her.',
+    'Her stomach speaks first. Her mouth is only translating.',
   ]},
   { when: { hungerTierMin: 3 }, weight: 2, text: [
     'She is past polite hunger. The next thing you offer will not be a suggestion.',
@@ -219,15 +240,58 @@ registerModuleVariants('session.aftermath', [
 ]);
 
 // Lengthen talk.check_in — clothes AND dining AND linger, not one or the other.
+registerPool('talk.check_in.hi', [
+  { when: {}, text: [
+    '{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}',
+    '{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}',
+    '{talk.checkIn.greetBeat} {talk.checkIn.greetClose}',
+  ]},
+]);
+registerPool('talk.check_in.mid', [
+  { when: {}, text: [
+    '{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }\n\n{talk.checkIn.dining} {talk.checkIn.diningLine}',
+    '{talk.checkIn.clothes} {talk.checkIn.diningLine}',
+    '{talk.checkIn.dining} {talk.checkIn.clothesNote}',
+  ]},
+]);
+registerPool('talk.check_in.tail', [
+  { when: {}, text: [
+    '{talk.checkIn.earlyWeight}{talk.interior.aside|prefix:\n\n}\n\n{talk.floor.atmosphere} {talk.linger}',
+    '{talk.floor.atmosphere} {talk.linger}',
+    '{talk.checkIn.earlyWeight} {talk.linger}',
+  ]},
+]);
+registerPool('talk.check_in.ext0', [
+  { when: {}, text: [
+    '{talk.check_in.hi}\n\n{talk.check_in.mid}\n\n{talk.check_in.tail}',
+    '{talk.check_in.hi}\n\n{talk.check_in.tail}',
+    '{talk.check_in.mid}\n\n{talk.check_in.tail}',
+  ]},
+]);
+registerPool('talk.check_in.ext1', [
+  { when: {}, text: [
+    '{talk.checkIn.acceptOpen}\n\n{talk.checkIn.acceptBody}\n\n{talk.floor.atmosphere} {talk.linger}',
+    '{talk.checkIn.acceptOpen} {talk.checkIn.acceptClose}',
+    '{talk.checkIn.acceptBody} {talk.linger}',
+  ]},
+]);
+registerPool('talk.check_in.ext2', [
+  { when: {}, text: [
+    '{talk.checkIn.ownedOpen}\n\n{talk.checkIn.ownedSpread}\n\n{talk.floor.atmosphere} {talk.linger}',
+    '{talk.checkIn.ownedOpen} {talk.checkIn.ownedClose}',
+    '{talk.checkIn.ownedSpread} {talk.linger}',
+  ]},
+]);
+
 registerModuleVariants('talk.check_in', [
   { when: { corruption: [0] }, priority: 1, weight: 3, text: [
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }\n\n{talk.checkIn.dining} {talk.checkIn.diningLine}\n\n{talk.checkIn.earlyWeight}{talk.interior.aside|prefix:\n\n}\n\n{talk.floor.atmosphere} {talk.linger}',
+    '{talk.moodOpener|suffix:\n\n}{talk.check_in.ext0}',
   ]},
   { when: { corruption: [1] }, priority: 1, weight: 3, text: [
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.acceptClose}\n\n{talk.floor.atmosphere} {talk.linger}',
+    '{talk.moodOpener|suffix:\n\n}{talk.check_in.ext1}',
   ]},
   { when: { corruption: [2] }, priority: 1, weight: 3, text: [
-    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.ownedClose}\n\n{talk.floor.atmosphere} {talk.linger}',
+    '{talk.moodOpener|suffix:\n\n}{talk.check_in.ext2}',
   ]},
 ]);
 

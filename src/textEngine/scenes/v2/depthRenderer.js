@@ -1,5 +1,5 @@
 // V2.0 — optional depth layer appended to high-traffic scene renders
-import { render } from '../../engine.js';
+import { render, hasModule } from '../../engine.js';
 
 const POOLS = {
   feed: 'feed.v2.depth',
@@ -57,10 +57,42 @@ const POOLS = {
   homeroom: 'homeroom.v2.depth',
 };
 
-/** Append a V2 depth beat when pool resolves and chance hits. */
+const LINGER_KIND = {
+  feed: 'food', dinner: 'food', session: 'food', hunger: 'food', eating: 'food',
+  forceFeed: 'food', feedVoice: 'food', feast: 'food', eatingContest: 'food',
+  talk: 'social', weekRecap: 'social', roster: 'social', gossip: 'social',
+  discontent: 'social', confront: 'social', memory: 'social', origin: 'social',
+  wi: 'ceremony', milestone: 'ceremony', settling: 'ceremony', scrutiny: 'ceremony',
+  opposition: 'ceremony', lab: 'ceremony',
+  campus: 'campus', campusNav: 'campus', hunt: 'campus', campusDevice: 'campus',
+  campusSecret: 'campus', journal: 'campus',
+  clothing: 'body', intimacy: 'body', body: 'body', growth: 'body',
+  immobility: 'body', embodiment: 'body', earlyGain: 'body', psych: 'body',
+  dream: 'night', echo: 'night', ritual: 'night', resonance: 'night',
+  stream: 'media', streamPre: 'media', collabStream: 'media', recordingSession: 'media',
+  evolved: 'social', wifeLessons: 'social', wifeLessonsTalk: 'social', homeroom: 'social',
+  cultivator: 'food', sumoMatch: 'food',
+};
+
+/** Append a V2 depth beat when pool resolves and chance hits, then a linger coda. */
 export function appendV2Depth(baseText, kind, ctx, chance = 0.38) {
+  if (!baseText?.trim()) return baseText;
+  let out = baseText;
   const pool = POOLS[kind];
-  if (!pool || !baseText?.trim() || Math.random() > chance) return baseText;
-  const depth = render(`{${pool}}`, ctx)?.trim();
-  return depth ? `${baseText}\n\n${depth}` : baseText;
+  const boosted = Math.min(1, (chance ?? 0.38) * 1.5);
+  if (pool && Math.random() <= boosted) {
+    const depth = render(`{${pool}}`, ctx)?.trim();
+    if (depth && !depth.includes('{unresolved}')) out = `${out}\n\n${depth}`;
+  }
+  if (hasModule('overhaul.linger')) {
+    const family = LINGER_KIND[kind] || 'social';
+    const keyed = hasModule(`overhaul.linger.${family}`)
+      ? render(`{overhaul.linger.${family}}`, ctx)?.trim()
+      : '';
+    const linger = (keyed && !keyed.includes('{unresolved}'))
+      ? keyed
+      : render('{overhaul.linger}', ctx)?.trim();
+    if (linger && !linger.includes('{unresolved}')) out = `${out}\n\n${linger}`;
+  }
+  return out;
 }
