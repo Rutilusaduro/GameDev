@@ -6,11 +6,12 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { ITEMS, itemUseModesForOwned } from '../gameData/items.js';
+import { renderItemDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
 import { foodProfile } from '../textEngine/scenes/feedReaction/index.js';
 
 const RARITY_COLORS = { common:"#8a8a7a", uncommon:"#4a9a5a", rare:"#c8860a" };
 
-export function InventoryView({ inventory, setItemTargetPicker }){
+export function InventoryView({ inventory, setItemTargetPicker, week = 1 }){
   const owned = ITEMS.filter(i => (inventory[i.id]||0) > 0);
   return(
     <div>
@@ -27,7 +28,7 @@ export function InventoryView({ inventory, setItemTargetPicker }){
               <div style={{fontWeight:700,color:"#c090e8"}}>{item.emoji} {item.label}</div>
               <span style={{...C.tag(`${RARITY_COLORS[item.rarity]}30`,RARITY_COLORS[item.rarity])}}>×{inventory[item.id]}</span>
             </div>
-            <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{item.desc}</div>
+            <div style={{fontSize:11,color:"#5a3888",marginBottom:8,lineHeight:1.4}}>{renderItemDesc(item, null, week)}</div>
             {(()=>{const p=foodProfile(item.label,item.cal,item.full);return(
               <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8,fontSize:10}}>
                 <span style={{...C.tag(p.dense?"#7a3a1a30":"#3a5a7a30",p.dense?"#d88030":"#70a0d0")}}>{p.icon} {p.kindLabel}</span>

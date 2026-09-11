@@ -160,6 +160,63 @@ export function renderIntimacyPhasePool(sceneId, phaseIdx, student, week = 1, op
   return prefer('intimacy.phase.scene', ctx);
 }
 
+registerPool('intimacy.picker.scene', [
+  { when: {}, text: [
+    '{intimacy.phase.setup}',
+    'Close. Warm. The extra of her is the invitation.',
+    'A scene she already knows how to occupy. Heat first. Then the rest.',
+  ]},
+  { when: { intimacyScene: 'her_weight' }, weight: 5, text: [
+    'She lowers herself onto you. Sitting, leaning, settling. Her mass becomes a fact in your lap.',
+  ]},
+  { when: { intimacyScene: 'wall_press' }, weight: 5, text: [
+    'The wall takes her back. Soft mass filling the space between. She wants that witnessed.',
+  ]},
+  { when: { intimacyScene: 'belly_focus' }, weight: 5, text: [
+    'Hands on the extra of her middle. She breathes into the attention like it is owed.',
+  ]},
+  { when: { intimacyScene: 'chest_buried' }, weight: 5, text: [
+    'She draws you in. Warmth, give, the hush of a body that takes up more room than last week.',
+  ]},
+  { when: { intimacyScene: 'thighs_lap' }, weight: 5, text: [
+    'Her thighs claim your lap. Heavy, warm, certain. She does not ask if you can take it.',
+  ]},
+  { when: { intimacyScene: 'under_her' }, weight: 5, text: [
+    'You are under her. The weight is geography. She knows. She uses it.',
+  ]},
+  { when: { intimacyScene: 'feed_close' }, weight: 5, text: [
+    'Food between you. She eats close enough that every swallow is a press of her.',
+  ]},
+  { when: { intimacyScene: 'kissing_pull' }, weight: 5, text: [
+    'She kisses like she means the extra of her to arrive in your arms while she does it.',
+  ]},
+  { when: { intimacyScene: 'squeeze_thighs' }, weight: 5, text: [
+    'Both hands, her thighs. Soft mass answering the squeeze. She lets you measure.',
+  ]},
+  { when: { intimacyScene: 'squeeze_chest' }, weight: 5, text: [
+    'You take the weight of her chest in both hands. She watches you notice.',
+  ]},
+  { when: { intimacyScene: 'session_high_fullness' }, weight: 5, text: [
+    'She is packed from the session. Close now. The fullness is the whole conversation.',
+  ]},
+  { when: { intimacyScene: 'session_tapout' }, weight: 5, text: [
+    'She has tapped. Stay. Hands, heat, no more food. The extra is enough.',
+  ]},
+  { when: { intimacyScene: 'dinner_afterward' }, weight: 5, text: [
+    'Dinner done. She is still full. She wants you closer anyway.',
+  ]},
+]);
+
+export function renderIntimacyPicker(sceneId, student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { intimacyScene: sceneId || '', ...(opts.globals || {}) },
+  });
+  return prefer('intimacy.picker.scene', ctx);
+}
+
 export function renderIntimacyEndingPool(sceneId, student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({

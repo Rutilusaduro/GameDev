@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage, getTier } from '../gameData/sessions.js';
-import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
+import { renderDinnerDishDesc } from '../textEngine/scenes/dinner/index.js';
+import { renderPrivateVenueDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
 import { getStage } from '../gameData/stages.js';
 import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFeedingAppetiteNote } from '../gameData/feedingSession.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
-export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent, soundEnabled = true }){
+export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent, soundEnabled = true, week = 1 }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, privateSession?.student?.id]);
         const ps=privateSession;
     const s=liveStudent||ps.student;
@@ -57,7 +58,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                         onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); chooseSessionVenue(v); } }}
                       >
                         <div style={{fontWeight:700,fontSize:13,color:"#d8a8ff",marginBottom:2}}>{v.label}</div>
-                        <div style={{fontSize:11,color:"#6a4870"}}>{v.desc}</div>
+                        <div style={{fontSize:11,color:"#6a4870"}}>{renderPrivateVenueDesc(v, s, week)}</div>
                       </div>
                     ))}
                   </div>
@@ -135,7 +136,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                                   onClick={()=>!ordered&&feedInSession(food)}>
                                   <span style={{flex:1,fontSize:12,color:ordered?"#5a3888":"#c8a8f0"}}>{ordered?"✓ ":""}{food.label}</span>
                                   <span style={{fontSize:10,color:"#8060a0"}}>+{food.gain[0]}–{food.gain[1]} lbs</span>
-                                  {!ordered&&<div style={{fontSize:9,color:"#6a4880",maxWidth:140,textAlign:"right"}}>{food.desc.slice(0,45)}…</div>}
+                                  {!ordered&&<div style={{fontSize:9,color:"#6a4880",maxWidth:140,textAlign:"right"}}>{(renderDinnerDishDesc(food, s, week)||food.label).slice(0,45)}…</div>}
                                 </div>
                               );
                             })}

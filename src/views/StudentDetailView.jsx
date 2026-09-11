@@ -15,6 +15,7 @@ import { renderOriginVoice } from '../textEngine/scenes/overhaul/originVoice.js'
 import { renderStudentBlurb } from '../textEngine/scenes/overhaul/studentBlurb.js';
 import { getRecruitmentScene } from '../gameData/cultivator.js';
 import { renderTesterLook } from '../textEngine/scenes/overhaul/leftoverCultivator.js';
+import { renderArrivalCapstoneDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
 import { getAttitude, getBodyDesc, getDiary, getOutfit, pharmacistTextOpts } from '../utils/gameHelpers.js';
 import { COMPOUNDS, PHARMACIST_STAGES, PHARMACIST_ACTIVITIES } from '../gameData/pharmacist.js';
 import { INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES } from '../gameData/talia.js';
@@ -860,7 +861,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     <div style={{marginBottom:14}}>
                       <div style={{background:"rgba(50,36,8,0.55)",border:"1px solid #c0a04080",borderRadius:10,padding:12}}>
                         <div style={{fontSize:9,letterSpacing:3,color:"#c0a040",marginBottom:4}}>✦ ARRIVAL</div>
-                        <div style={{fontSize:12,color:"#e8d8a8",lineHeight:1.6,marginBottom:8}}>{cap.desc}</div>
+                        <div style={{fontSize:12,color:"#e8d8a8",lineHeight:1.6,marginBottom:8}}>{renderArrivalCapstoneDesc(cap.formId||s.evolvedForm, s, week)}</div>
                         <button
                           style={{...C.btn("#8a6020"),width:"100%",opacity:ap<cap.apCost?0.4:1}}
                           onClick={()=>runArrivalCapstone(s)}

@@ -98,6 +98,7 @@ import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderDinnerArrive } from './textEngine/scenes/overhaul/dinnerVenue.js';
+import { renderQuestDesc, renderPrivateVenueIntro, renderPrivateBlobIntro } from './textEngine/scenes/overhaul/leftoverCatalog.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
@@ -1358,7 +1359,7 @@ export default function HallPass(){
     const quest=availableElaraQuests(exploration,getCampusExplorationCtx()).find(q=>q.id===questId);
     if(!quest){ campusLog(['⚠️ That quest is not available yet.']); return; }
     const next=startElaraQuest(exploration,questId);
-    commitCampusExploration(next,[`🗺️ Indiana nods. "${quest.desc}"`, `→ First stop: ${quest.steps[0].nodeId.replace(/_/g,' ')}.`]);
+    commitCampusExploration(next,[`🗺️ Indiana nods. "${renderQuestDesc(quest, null, week)}"`, `→ First stop: ${quest.steps[0].nodeId.replace(/_/g,' ')}.`]);
   };
 
   // ── INVENTORY ──────────────────────────────────────────────────
@@ -7900,9 +7901,9 @@ export default function HallPass(){
     setPrivateSession(prev=>({...prev,venue,phase:"feeding"}));
     push(`🌙 Private session with ${s.name} — ${venue.label}.`);
     const isImmobile=getStage(s.lbs).id>=10||!!s.ascensionPath;
-    const blobEntry=isImmobile?(BLOB_PRIVATE_INTRO[s.id]||BLOB_PRIVATE_INTRO.default):null;
-    const blobIntroText=blobEntry?(typeof blobEntry==='function'?blobEntry(s):blobEntry):null;
-    setSessionLog(blobIntroText?[blobIntroText, venue.intro(s)]:[venue.intro(s)]);
+    const blobIntroText=isImmobile?renderPrivateBlobIntro(s, week):'';
+    const venueIntro=renderPrivateVenueIntro(venue, s, week);
+    setSessionLog([blobIntroText, venueIntro].filter(Boolean));
   };
 
   const feedInSession=(food,opts={})=>{
@@ -9073,7 +9074,7 @@ export default function HallPass(){
           {view==="actions"&&<ActionsView ap={ap} doFloorAction={doFloorAction} effectiveHallActions={effectiveHallActions} famineWeek={!!opposition?.supernatural?.famineWeek}/>}
 
           {/* ── PANTRY / INVENTORY ── */}
-          {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker}/>}
+          {view==="inventory"&&<InventoryView inventory={inventory} setItemTargetPicker={setItemTargetPicker} week={week}/>}
 
           {view==="lab"&&<LabView
             labState={labState}
@@ -9281,10 +9282,10 @@ export default function HallPass(){
       {/* ── SOCIAL EVENT RESULT ── */}
 
       {/* ── PRIVATE SESSION MODAL ── */}
-      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement} liveStudent={students.find(st=>st.id===privateSession.student.id)||privateSession.student} soundEnabled={soundEnabled}/>}
+      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement} liveStudent={students.find(st=>st.id===privateSession.student.id)||privateSession.student} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── EP5: INTIMACY SCENE SELECTOR ── */}
-      {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene} soundEnabled={soundEnabled}/>}
+      {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── EP5: ACTIVE INTIMACY SCENE ── */}
       {intimacyEventState&&<ActiveIntimacyScene closeIntimacyEvent={closeIntimacyEvent} intimacyEventState={intimacyEventState} makeIntimacyChoice={makeIntimacyChoice} students={students} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}

@@ -8,6 +8,7 @@ import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine
 import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES, intimacyChoicesForPhase } from '../gameData/intimacy.js';
 import { intimacySceneAllowed, choiceCanPin } from '../gameData/intimacyGating.js';
 import { renderIntimacyPhase } from '../textEngine/scenes/intimacy/index.js';
+import { renderIntimacyPicker } from '../textEngine/scenes/overhaul/intimacy.js';
 import { getStage } from '../gameData/stages.js';
 import { getTier } from '../gameData/sessions.js';
 import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameChoicesForPhase, minigameTierLabel } from '../gameData/evolvedMinigames.js';
@@ -375,7 +376,7 @@ export function ActiveIntimacyScene({ closeIntimacyEvent, intimacyEventState, ma
         );
 }
 
-export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySceneSelector, startIntimacyScene, soundEnabled = true }){
+export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySceneSelector, startIntimacyScene, soundEnabled = true, week = 1 }){
         const s=intimacySceneSelector.student;
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, s?.id]);
         const tier=getTier(s.relationship);
@@ -398,7 +399,7 @@ export function IntimacySceneSelector({ ap, intimacySceneSelector, setIntimacySc
                       <span style={{fontWeight:700,fontSize:13,color:"#e8a8d0"}}>{sc.icon} {sc.label}</span>
                       <span style={{fontSize:10,color:"#c050a0"}}>{sc.apCost} AP{tier.id>=3?<span style={{color:"#ff80c0",marginLeft:6}}>✦ Devoted</span>:""}</span>
                     </div>
-                    <div style={{fontSize:11,color:"#8050a0",lineHeight:1.5}}>{sc.desc}</div>
+                    <div style={{fontSize:11,color:"#8050a0",lineHeight:1.5}}>{renderIntimacyPicker(sc.id, s, week)}</div>
                   </button>
                 ))}
               </div>

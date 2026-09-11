@@ -8,6 +8,10 @@ import './leftoverCampusEvent.js';
 import './leftoverDevice.js';
 import { applyCultivatorOverhaul } from './leftoverCultivator.js';
 import { applyDishOverhaul } from './leftoverDish.js';
+import { applyCatalogOverhaul } from './leftoverCatalog.js';
+import { applyHarvestOverhaul } from './leftoverHarvest.js';
 
 applyCultivatorOverhaul();
 applyDishOverhaul();
+applyCatalogOverhaul();
+applyHarvestOverhaul();

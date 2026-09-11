@@ -28,7 +28,7 @@ import { extraAcquisitionChoices, acquisitionChoicesForOwned, startChemSession }
 import { extraCultRoutes, cultRoutesForOwned, applyCultDistribution } from '../src/gameData/pharmacistCult.js';
 import { extraContestActions, extraSumoCornerFeeds, contestActionsForOwned, sumoCornerFeedsForOwned, extraCollabFoods, collabFoodsForOwned, extraRecordingFoods, recordingFoodsForOwned, COLLAB_STREAM_FOODS } from '../src/gameData/miniGames.js';
 import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned, extraEvolvedChoices, evolvedChoicesForPhase, extraFairAfterparty, extraActivityFollowups, sessionFoodsForOwned } from '../src/gameData/evolvedFloorExtras.js';
-import { extraCultivatorChoices, cultivatorChoicesForJunction, extraCultivatorReneeLbs, RECIPES } from '../src/gameData/cultivator.js';
+import { extraCultivatorChoices, cultivatorChoicesForJunction, extraCultivatorReneeLbs, RECIPES, getPlannedVignette } from '../src/gameData/cultivator.js';
 import { extraItemUseModes, itemUseModesForOwned } from '../src/gameData/items.js';
 import { HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS } from '../src/gameData/evolvedForms.js';
 import { extraIntimacyChoices, intimacyChoicesForPhase } from '../src/gameData/intimacy.js';
@@ -74,6 +74,8 @@ import { renderStudentBlurb } from '../src/textEngine/scenes/overhaul/studentBlu
 import { renderDinnerDishDesc } from '../src/textEngine/scenes/dinner/index.js';
 import { renderCultivatorChoice } from '../src/textEngine/scenes/cultivator/index.js';
 import { renderTesterLook } from '../src/textEngine/scenes/overhaul/leftoverCultivator.js';
+import { renderItemDesc, renderPrivateVenueDesc, renderPrivateVenueIntro, renderPrivateBlobIntro, renderQuestDesc, renderArrivalCapstoneDesc } from '../src/textEngine/scenes/overhaul/leftoverCatalog.js';
+import { renderIntimacyPicker } from '../src/textEngine/scenes/overhaul/intimacy.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
@@ -583,6 +585,30 @@ assert.equal(/Leftovers from the floor kitchen/i.test(kitchenBatch), false, 'cul
 const testerLook = renderTesterLook(6, 'Petra', 2);
 assert.ok(testerLook && !testerLook.includes('{unresolved}'));
 assert.equal(/Full figure, clothes fitting tightly, belly rounding forward when seated/i.test(testerLook), false, 'tester look should not dump leftover TESTER_APPEARANCE');
+const itemLine = renderItemDesc({ id: 'protein_shake', label: 'Weight-Gain Shake' }, students[1], 2);
+assert.ok(itemLine && !itemLine.includes('{unresolved}'));
+assert.equal(/deceptively easy/i.test(itemLine), false, 'pantry item should not dump leftover item.desc');
+const privVenue = renderPrivateVenueDesc({ id: 'office' }, students[1], 2);
+assert.ok(privVenue && !privVenue.includes('{unresolved}'));
+assert.equal(/The hall empties by evening/i.test(privVenue), false, 'private venue should not dump leftover PRIVATE_VENUES.desc');
+const privIntro = renderPrivateVenueIntro({ id: 'office' }, students[1], 2);
+assert.ok(privIntro && !privIntro.includes('{unresolved}'));
+assert.equal(/It isn't a question/i.test(privIntro), false, 'private intro should not dump leftover venue.intro');
+const blobIntro = renderPrivateBlobIntro({ ...students[0], lbs: 900 }, 2);
+assert.ok(blobIntro && !blobIntro.includes('{unresolved}'));
+assert.equal(/doesn't come to you anymore/i.test(blobIntro), false, 'blob intro should not dump leftover BLOB_PRIVATE_INTRO');
+const questLine = renderQuestDesc({ id: 'tunnel_markings' }, students[17] || students[1], 2);
+assert.ok(questLine && !questLine.includes('{unresolved}'));
+assert.equal(/beneath the rec center/i.test(questLine), false, 'quest desc should not dump leftover ELARA_QUESTS.desc');
+const capLine = renderArrivalCapstoneDesc('sumo', students[1], 2);
+assert.ok(capLine && !capLine.includes('{unresolved}'));
+assert.equal(/repeatable, always heavier/i.test(capLine), false, 'capstone should not dump leftover ARRIVAL_CAPSTONES.desc');
+const intimacyPick = renderIntimacyPicker('her_weight', students[1], 2);
+assert.ok(intimacyPick && !intimacyPick.includes('{unresolved}'));
+assert.equal(/The weight is the point/i.test(intimacyPick), false, 'intimacy picker should not dump leftover INTIMACY_SCENES.desc');
+const harvestLine = getPlannedVignette(6, 7, 'Petra');
+assert.ok(harvestLine && !harvestLine.includes('{unresolved}'));
+assert.equal(/You watch from the doorway/i.test(harvestLine), false, 'harvest should not dump leftover HARVEST_VIGNETTES');
 
 const lilith = {
   id: 15, name: 'Lilith', lbs: 280, startLbs: 140, evolvedForm: 'feasting_beauty',

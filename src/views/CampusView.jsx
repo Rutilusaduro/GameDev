@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { C } from '../styles.js';
 import { CAMPUS_NODES } from '../gameData/campus.js';
 import { renderCampusArrive } from '../textEngine/scenes/overhaul/campusHunt.js';
+import { renderQuestDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
 import { explorationSummary } from '../gameData/campusExploration.js';
 import { availableSecretsAtNode } from '../gameData/campusSecrets.js';
 import { availableElaraQuests } from '../gameData/relicHunter.js';
@@ -270,7 +271,7 @@ export function CampusView({
               {quests.map(q=>(
                 <div key={q.id} style={{marginBottom:8}}>
                   <div style={{fontSize:11,color:"#d0c8a0",fontWeight:600}}>{q.label}</div>
-                  <div style={{fontSize:10,color:"#7a7a5a",marginBottom:4,lineHeight:1.4}}>{q.desc}</div>
+                  <div style={{fontSize:10,color:"#7a7a5a",marginBottom:4,lineHeight:1.4}}>{renderQuestDesc(q, null, week)}</div>
                   <button style={C.smBtn} onClick={()=>beginElaraQuest(q.id)} disabled={!!exploration.questId}>
                     Accept quest
                   </button>
