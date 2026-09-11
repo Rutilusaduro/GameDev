@@ -90,6 +90,17 @@ registerPool('ranked.payoff', [
 ]);
 
 registerPool('ranked.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Foil still on her fingers when the queue pings. She bites before she accepts.',
+    'Foil still on the overlay. The bag is already empty twice.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen leftover still in her lap. Ranked queue on top of it.',
+    'Last night\'s sitting sits in her lap like a ranked perk.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. She queues from the same open door.',
+  ] },
   { when: { stageMin: 8 }, weight: 2, text: [
     'Focus bar dropping. Belly still climbing. She plays seated because standing would be a load-in.',
     'The headset cable finds a new route around her. She lets it.',
@@ -127,7 +138,8 @@ export function renderRankedNpcDrop(student, week, raeStage = 0) {
   if (!student) return `📦 RAE: ${fallback}`;
   const ctx = rankedCtx(student, week, raeStage);
   const extra = render('{ranked.npc.extra}', ctx)?.trim() || fallback;
-  return `📦 RAE: ${extra}`;
+  const linger = render('{ranked.linger}', ctx)?.trim();
+  return appendV2Depth([`📦 RAE: ${extra}`, linger].filter(Boolean).join('\n\n'), 'rankedSession', ctx, 0.18);
 }
 
 export function renderRankedPayoff(student, week, raeStage = 0, gain = 0, endReason = 'food_coma') {

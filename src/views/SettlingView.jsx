@@ -332,7 +332,7 @@ export function SettlingDetailView({
 
       {/* Leviathan capstone — the others come to her unprompted (tier 2 only) */}
       {tier >= 2 && (() => {
-        const attendees = getAttendees(s, students);
+        const attendees = getAttendees(s, students, week);
         const can = attendees.length > 0 && ap >= GATHERING.apCost;
         return (
           <div style={{ ...C.infoBox('rgba(70,45,12,0.3)'), border: `1px solid ${GOLD}55`, marginBottom: 10 }}>

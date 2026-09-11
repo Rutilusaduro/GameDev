@@ -347,10 +347,13 @@ export function oppositionRumorChance(dormState, ownedHallSkills = {}, extras = 
   return Math.max(0.12, chance);
 }
 
-export function labInstabilityEase(dormState, ownedHallSkills = {}) {
+export function labInstabilityEase(dormState, ownedHallSkills = {}, extras = {}) {
   const desk = roomCompletion('ra_desk', ownedHallSkills);
   const outletCount = Object.values(dormState?.roomFits || {}).filter((f) => f.outlets).length;
-  return (desk.owned >= 1 ? 1 : 0) + (outletCount >= 2 ? 1 : 0);
+  return (desk.owned >= 1 ? 1 : 0)
+    + (outletCount >= 2 ? 1 : 0)
+    + (extras.leftoverKitchen ? 1 : 0)
+    + (extras.nightRound ? 1 : 0);
 }
 
 /** End-of-week stuffed chance from leftover trays, fridge fit-out, and night visits. */

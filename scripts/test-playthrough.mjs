@@ -8,11 +8,13 @@ import {
 } from '../src/gameData/dorms.js';
 import {
   applyWeeklyTrustDrip, isHallReachable, isRosterNew, openRosterResident,
-  ROSTER_TRUST_GATE, getRosterSlotCount,
+  ROSTER_TRUST_GATE, getRosterSlotCount, weeklyTrustDripAmount,
 } from '../src/gameData/rosterUnlock.js';
 import { SATURATION_TIERS, computeSaturationScore } from '../src/gameData/campusSaturation.js';
 import { getMysteryTrustPulse } from '../src/gameData/mysteryTrust.js';
 import { computeSurrenderVector } from '../src/gameData/transformationPressure.js';
+import { computePrestigeScore } from '../src/gameData/prestigeLite.js';
+import { labInstabilityEase } from '../src/gameData/mechanicDepth.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
@@ -200,6 +202,15 @@ const satNight = computeSaturationScore({
   week: 3,
 });
 assert.ok(satNight > satBase, 'night visits should bump campus saturation');
+
+const dripBase = weeklyTrustDripAmount({ reachLevel: 1, week: 3, rng: () => 0 });
+const dripLeftover = weeklyTrustDripAmount({ reachLevel: 1, week: 3, rng: () => 0, leftoverKitchen: true });
+const dripNight = weeklyTrustDripAmount({ reachLevel: 1, week: 3, rng: () => 0, nightRound: true });
+assert.ok(dripLeftover > dripBase, 'leftover kitchen should bump weekly trust drip');
+assert.ok(dripNight > dripBase, 'night rounds should bump weekly trust drip');
+assert.ok(computePrestigeScore({ leftoverKitchen: true }) > computePrestigeScore({}), 'leftover kitchen should bump prestige');
+assert.ok(computePrestigeScore({ nightRound: true }) > computePrestigeScore({}), 'night rounds should bump prestige');
+assert.ok(labInstabilityEase({}, {}, { leftoverKitchen: true }) > labInstabilityEase({}, {}), 'leftover kitchen should ease lab instability');
 
 const surrenderBase = computeSurrenderVector(INIT_STUDENTS[0], { week: 3 });
 const surrenderLeftover = computeSurrenderVector(

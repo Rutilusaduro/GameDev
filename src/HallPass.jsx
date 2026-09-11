@@ -1755,7 +1755,9 @@ export default function HallPass(){
       }
     }
     const scrutinyTier=getScrutinyTier(adminScrutiny);
-    const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
+    const leftoverKitchenThisWeek=students.some(st=>st.leftoverFedThisWeek);
+    const nightRoundThisWeek=students.some(st=>week&&st.lastNightVisitWeek===week);
+    const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats, leftoverKitchen:leftoverKitchenThisWeek, nightRound:nightRoundThisWeek });
     const loungeSkillFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
     const hallFx=habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{});
     const weeklyApBase=5+skillApBonus+(loungeSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny)+(hallFx.plannerAp||0);
@@ -1947,7 +1949,7 @@ export default function HallPass(){
       setDeviceTickQueue({ events: deviceTickEvents, index: 0 });
     }
     if(labState){
-      let nextLab=tickLabWeek(ensureNetwork(labState),{extraEase:labInstabilityEase(dormState||createInitialDormState(),ownedHallSkills||{})});
+      let nextLab=tickLabWeek(ensureNetwork(labState),{extraEase:labInstabilityEase(dormState||createInitialDormState(),ownedHallSkills||{},{leftoverKitchen:leftoverKitchenThisWeek,nightRound:nightRoundThisWeek})});
       if((nextLab.stage??1)>=2&&nextLab.network){
         const netTick=tickNetworkWeek(nextLab,updated,newWeek,Math.random,{
           leftoverKitchen:updated.some(s=>s.leftoverFedThisWeek),
@@ -2307,7 +2309,7 @@ export default function HallPass(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     // ── ROSTER UNLOCK ─ hall reach (slots) + passive trust (queue) ──
-    updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
+    updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random, leftoverKitchen: leftoverKitchenThisWeek, nightRound: nightRoundThisWeek });
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));
@@ -4595,19 +4597,23 @@ export default function HallPass(){
   // Leviathan capstone: the others come to her unprompted. Form-neutral — it
   // never touches settleCounts, so it can't tip Adored vs Comfort Queen.
   const runGathering=(s)=>{
-    const attendees=getAttendees(s,students);
+    const attendees=getAttendees(s,students,week);
     if(!attendees.length){ push('⚠️ No one free to attend her.'); return; }
     if(ap<GATHERING.apCost){ push(`⚠️ Need ${GATHERING.apCost} AP.`); return; }
     setAp(a=>a-GATHERING.apCost);
+    const leftoverHost = !!s.leftoverFedThisWeek;
+    const leftoverNight = week && s.lastNightVisitWeek === week;
+    const hostRel = GATHERING.rel + (leftoverHost ? 1 : 0) + (leftoverNight ? 1 : 0);
     const names=attendees.map(a=>a.name);
     const prose=renderSettlingScene('set.gather',s,{week,globals:{attendeeNames:names}});
     const ids=new Set(attendees.map(a=>a.id));
     gainFavor('comfort');
     setStudents(prev=>prev.map(st=>{
-      if(st.id===s.id) return markImmobilityArrived({...st,relationship:Math.min(100,(st.relationship??0)+GATHERING.rel)});
+      if(st.id===s.id) return markImmobilityArrived({...st,relationship:Math.min(100,(st.relationship??0)+hostRel)});
       if(ids.has(st.id)){
         const raw=Math.max(1,Math.round(rnd(GATHERING.attendeeGain[0],GATHERING.attendeeGain[1])*getSupernaturalGainMult(st)));
-        return bumpOriginChain(processStudentGain({...st,relationship:Math.min(100,(st.relationship??0)+GATHERING.attendeeRel)},depthGainLbs(st,raw,week,{}),0));
+        const attendeeRel = GATHERING.attendeeRel + (st.leftoverFedThisWeek ? 1 : 0);
+        return bumpOriginChain(processStudentGain({...st,relationship:Math.min(100,(st.relationship??0)+attendeeRel)},depthGainLbs(st,raw,week,{}),0));
       }
       return st;
     }));
@@ -4723,7 +4729,7 @@ export default function HallPass(){
     const ns=bumpOriginChain(processStudentGain(s,gain,8));
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
     const prevStage=labState.stage??1;
-    const prestigeScore=computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats });
+    const prestigeScore=computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats, leftoverKitchen:students.some(st=>st.leftoverFedThisWeek), nightRound:students.some(st=>week&&st.lastNightVisitWeek===week) });
     const btPrestige=prestigeBreakthroughBonus(prestigeScore);
     const sessionPayload={
       ...session,
@@ -9088,7 +9094,7 @@ export default function HallPass(){
             );
           })()}
           {(()=>{
-            const legacy=prestigeSummary(computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats }));
+            const legacy=prestigeSummary(computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats, leftoverKitchen:students.some(st=>st.leftoverFedThisWeek), nightRound:students.some(st=>week&&st.lastNightVisitWeek===week) }));
             if(!legacy) return null;
             return(
               <div className="ra-desk-stat-pill" style={{textAlign:"center",background:"rgba(80,18,140,0.3)",borderRadius:6,padding:"2px 11px",minWidth:72}} title={`+${legacy.apBonus} AP/wk · +${legacy.breakthroughBonus} breakthroughs on lab sessions`}>

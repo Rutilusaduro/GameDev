@@ -19,11 +19,11 @@ export function countOpenPoolStudents(students = []) {
 }
 
 /** Weekly passive trust for one locked pool resident — scales with hall reach + week. */
-export function weeklyTrustDripAmount({ reachLevel = 1, week = 1, rng = Math.random } = {}) {
+export function weeklyTrustDripAmount({ reachLevel = 1, week = 1, rng = Math.random, leftoverKitchen = false, nightRound = false } = {}) {
   const base = 6 + Math.floor(rng() * 7); // 6–12
   const reachBonus = Math.max(0, reachLevel - 2) * 3;
   const weekBonus = Math.floor(week / 8);
-  return base + reachBonus + weekBonus;
+  return base + reachBonus + weekBonus + (leftoverKitchen ? 2 : 0) + (nightRound ? 1 : 0);
 }
 
 export function getStudentHomeHall(student) {
@@ -45,12 +45,12 @@ export function grantPassiveTrust(student, amount, unlockedDorms = null) {
   return { ...student, passiveTrust: next };
 }
 
-export function applyWeeklyTrustDrip(students, { reachLevel = 1, week = 1, unlockedDorms = [], rng = Math.random } = {}) {
+export function applyWeeklyTrustDrip(students, { reachLevel = 1, week = 1, unlockedDorms = [], rng = Math.random, leftoverKitchen = false, nightRound = false } = {}) {
   const hasLocked = students.some((s) => s.lockState === 'locked' && isHallReachable(s, unlockedDorms));
   if (!hasLocked) return students;
   return students.map((s) => {
     if (s.lockState !== 'locked' || !isHallReachable(s, unlockedDorms)) return s;
-    const drip = weeklyTrustDripAmount({ reachLevel, week, rng });
+    const drip = weeklyTrustDripAmount({ reachLevel, week, rng, leftoverKitchen, nightRound });
     return grantPassiveTrust(s, drip);
   });
 }

@@ -259,11 +259,17 @@ export const GATHERING = {
  * relationship) other than her. Returns [] until tier 2. Capped at 4 so the
  * scene stays legible.
  */
-export function getAttendees(student, allStudents = []) {
+export function getAttendees(student, allStudents = [], week = 0) {
   if (!student || getImmobilityTier(student) < 2) return [];
   return allStudents
     .filter(s => s.id !== student.id && s.lockState !== 'locked' && !s.hidden && !s.withdrawn)
-    .sort((a, b) => (b.relationship ?? 0) - (a.relationship ?? 0))
+    .sort((a, b) => {
+      const leftoverDelta = (b.leftoverFedThisWeek ? 1 : 0) - (a.leftoverFedThisWeek ? 1 : 0);
+      if (leftoverDelta) return leftoverDelta;
+      const nightDelta = ((week && b.lastNightVisitWeek === week) ? 1 : 0) - ((week && a.lastNightVisitWeek === week) ? 1 : 0);
+      if (nightDelta) return nightDelta;
+      return (b.relationship ?? 0) - (a.relationship ?? 0);
+    })
     .slice(0, 4);
 }
 

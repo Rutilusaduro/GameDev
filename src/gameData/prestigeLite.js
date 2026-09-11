@@ -2,12 +2,14 @@
 // PRESTIGE-LITE — meta progression without hard reset
 // ═══════════════════════════════════════════════════════════════
 
-export function computePrestigeScore({ week = 1, labState, campusSaturation, globalStats } = {}) {
+export function computePrestigeScore({ week = 1, labState, campusSaturation, globalStats, leftoverKitchen = false, nightRound = false } = {}) {
   let score = 0;
   score += Math.floor((week - 1) / 10);
   score += Math.max(0, (labState?.stage ?? 1) - 1) * 2;
   score += (campusSaturation?.tier ?? 0) * 2;
   score += Math.floor((globalStats?.narrativeCount ?? 0) / 15);
+  if (leftoverKitchen) score += 1;
+  if (nightRound) score += 1;
   return score;
 }
 

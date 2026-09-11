@@ -323,7 +323,11 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
         return { lines, effects, exploration: nextExploration };
       }
     }
-    if (secret.solve === 'search' && rng() < EXPLORATION_CONFIG.searchSecretChance) {
+    if (secret.solve === 'search' && rng() < (
+      EXPLORATION_CONFIG.searchSecretChance
+      + (ctx.leftoverKitchen ? 0.08 : 0)
+      + ((ctx.nightIntimacy || 0) >= 12 ? 0.05 : 0)
+    )) {
       effects.solvedSecret = secret.id;
       lines.push(resolveSecretDiscoverLine(secret, ctx, nodeId, rng));
       if (secret.reward?.findId) {
