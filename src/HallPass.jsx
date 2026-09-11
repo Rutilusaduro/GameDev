@@ -358,7 +358,8 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
-import { renderCGMeasurementScene } from './textEngine/scenes/competitiveGainer/index.js';
+import { renderCGMeasurementScene, renderCGRaReply } from './textEngine/scenes/competitiveGainer/index.js';
+import { depthCgDriveGain } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -3432,7 +3433,7 @@ export default function HallPass(){
       const sceneText=scenes[idx];
       // Drive gain: check if any visible student is within threat range
       const priya=students.find(st=>st.id===prev.priyaStudentId);
-      let driveGain=rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
+      let driveGain=depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
       if(priya){
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
         const visible=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
@@ -3440,7 +3441,7 @@ export default function HallPass(){
           const sM=getMeasurements(s.lbs,s.bodyType);
           CG_CONFIG.categories.forEach(cat=>{
             if(sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){
-              driveGain+=rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]);
+              driveGain+=depthCgDriveGain(rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]));
             }
           });
         });
@@ -3463,7 +3464,7 @@ export default function HallPass(){
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
       const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
-      const driveGain=rnd(2,5);
+      const driveGain=depthCgDriveGain(rnd(2,5));
       return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
   };
@@ -3492,8 +3493,8 @@ export default function HallPass(){
         reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)})};
       });
       const driveGain=threats.length>0
-        ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
-        : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
+        ? depthCgDriveGain(threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]))
+        : depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
       const sceneText=renderCGMeasurementScene(target,priya,week,tier.label)
         ||`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
@@ -3545,13 +3546,12 @@ export default function HallPass(){
       const priya=students.find(s=>s.id===prev.priyaStudentId);
       const stageKey=priya?getCGStageKey(priya.lbs):"Heavy";
       const comparison=pickCGComparison(prev,optId);
-      const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
-      const text=formatCGText(template,{
+      const text=renderCGRaReply(optId,priya,week,stageKey,{
         residentName:comparison?.residentName||comparison?.girlName||"the hall",
         bodypart:comparison?.bodypart||"measurements",
         priyaValue:comparison?.priyaValue,
         targetValue:comparison?.targetValue,
-      });
+      },!!comparison);
       const msg={text:`[You] ${text}`,isRa:true,wk:week};
       const delta=cgDriveDelta(opt);
       return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
