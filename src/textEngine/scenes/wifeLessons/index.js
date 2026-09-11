@@ -1,6 +1,7 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A7 Artisan
 // Wife Lessons (Flabwife) — engine bridge from legacy WL_LESSONS / WL_DIALOGUES.
 import { registerPool, render } from '../../engine.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
@@ -36,9 +37,7 @@ for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
   if (!Array.isArray(lessons)) continue;
   for (const lesson of lessons) {
     if (!lesson?.text) continue;
-    registerPool(`wifeLessons.lesson.s${stage}.${lesson.id}`, [
-      { when: {}, text: [lesson.text] },
-    ]);
+    registerDecomposedPool(`wifeLessons.lesson.s${stage}.${lesson.id}`, lesson.text);
   }
 }
 

@@ -2,13 +2,14 @@
 import { registerDimension, registerPool } from '../../engine.js';
 import { CG_RA_REPLY_TEXT, CG_STAGE_KEYS } from '../../../gameData/competitiveGainerText.js';
 
-function fillCgTemplate(str, g = {}) {
+export function fillCgTemplate(str, g = {}) {
   if (!str) return '';
-  return str
-    .replace(/\{residentName\}/g, g.residentName || 'the hall')
-    .replace(/\{bodypart\}/g, g.bodypart || 'measurements')
-    .replace(/\{priyaValue\}/g, g.priyaValue != null ? String(g.priyaValue) : '')
-    .replace(/\{targetValue\}/g, g.targetValue != null ? String(g.targetValue) : '');
+  return String(str).replace(/\{(\w+)\}/g, (_, key) => {
+    if (g[key] != null) return String(g[key]);
+    if (key === 'residentName') return g.targetName || 'the hall';
+    if (key === 'bodypart') return g.bodypart || 'measurements';
+    return `{${key}}`;
+  });
 }
 
 export function cgTemplateFromCtx(ctx) {
@@ -42,5 +43,3 @@ for (const [optId, def] of Object.entries(CG_RA_REPLY_TEXT)) {
   });
   registerPool(`cg.raReply.${optId}`, entries);
 }
-
-export { fillCgTemplate };

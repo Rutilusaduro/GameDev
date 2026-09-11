@@ -11,6 +11,8 @@ import {
   CG_RA_REPLY_TEXT,
   CG_FILLED_CORKBOARD_SCENES,
   CG_FILLED_BINGE_SCENES,
+  CG_FILLED_SELF_REVIEW,
+  CG_FILLED_MEASUREMENT_REACTIONS,
 } from '../../../gameData/competitiveGainerText.js';
 
 registerDimension('targetStageBucket', (ctx) => ctx.globals?.targetStageBucket ?? 'mid');
@@ -93,6 +95,49 @@ export function renderCGCorkboardScene(priya, week, driveTierLabel = 'Invested',
     /* fallback */
   }
   return renderCGSceneBeat(fallback, priya, week, tier, 'corkboard', opts);
+}
+
+export function renderCGSelfReviewScene(priya, week, stageKey, driveTierLabel, vars = {}, opts = {}) {
+  if (!priya) return '';
+  const tier = driveTierLabel || 'Invested';
+  const sk = stageKey || 'Heavy';
+  const entry = CG_FILLED_SELF_REVIEW[sk]?.[tier] || CG_FILLED_SELF_REVIEW.Heavy?.Invested;
+  const fallback = fillCgTemplate(entry?.text || '', { ...vars, priyaName: priya.name });
+  const ctx = buildCGSceneCtx(priya, week, { cgDriveTier: tier, cgStageKey: sk, ...vars }, opts);
+  const poolKey = `cg.scene.selfReview.${sk}.${tier}`;
+  try {
+    const line = render(`{${poolKey}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) {
+      return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.26);
+    }
+  } catch {
+    /* fallback */
+  }
+  return renderCGSceneBeat(fallback, priya, week, tier, 'self_review', { ...opts, globals: ctx.globals });
+}
+
+export function renderCGMeasureReaction(rel, tierLabel, category, vars, priya, week = 1, opts = {}) {
+  if (!priya) return '';
+  const tier = tierLabel || 'Invested';
+  const cat = category || 'waist';
+  const template = CG_FILLED_MEASUREMENT_REACTIONS[rel]?.[tier]?.[cat] || '';
+  const fallback = fillCgTemplate(template, { ...vars, priyaName: priya.name });
+  const ctx = buildCGSceneCtx(priya, week, {
+    cgDriveTier: tier,
+    cgMeasureRel: rel,
+    cgMeasureCat: cat,
+    ...vars,
+  }, opts);
+  const poolKey = `cg.scene.reaction.${rel}.${tier}.${cat}`;
+  try {
+    const line = render(`{${poolKey}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) {
+      return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.22);
+    }
+  } catch {
+    /* fallback */
+  }
+  return fallback ? renderCGSceneBeat(fallback, priya, week, tier, 'reaction', { ...opts, globals: ctx.globals }) : '';
 }
 
 export function renderCGBingeScene(priya, week, stageKey = 'Heavy', driveTierLabel = 'Invested', opts = {}) {

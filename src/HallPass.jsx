@@ -358,7 +358,7 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
-import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene } from './textEngine/scenes/competitiveGainer/index.js';
+import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
 import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
@@ -3470,7 +3470,9 @@ export default function HallPass(){
       const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
-      const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
+      const measureVars={measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)};
+      const sceneText=renderCGSelfReviewScene(priya,week,stageKey,tier.label,measureVars)
+        ||formatCGText(entry.text||entry,measureVars);
       const driveGain=depthCgDriveGain(rnd(2,5));
       return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
@@ -3497,7 +3499,10 @@ export default function HallPass(){
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
         else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
         const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
-        reactions[cat]={rel,text:formatCGText(template,{targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)})};
+        const rxVars={targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)};
+        const rxText=renderCGMeasureReaction(rel,tier.label,cat,rxVars,priya,week)
+          ||formatCGText(template,rxVars);
+        reactions[cat]={rel,text:rxText};
       });
       const driveGain=threats.length>0
         ? depthCgDriveGain(threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]))
