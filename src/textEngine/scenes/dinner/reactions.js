@@ -1073,18 +1073,36 @@ registerPool('dinner.reaction.jealousyDefault', [
   { when: {"archetype":"overachiever"}, text: ["{subject.name} notes the disparity with a small sound — not quite a word, not quite not. She has already mentally logged the discrepancy. She will not forget it."] },
   { when: {"archetype":"quiet"}, text: ["{subject.name} watches {ref.name}'s dish arrive and says nothing. She watches it quite intently for someone who's saying nothing."] },
   { when: {"archetype":"transfer"}, text: ["{subject.name} glances at {ref.name}'s plate with a slight frown. \"At my last school,\" she starts, then doesn't finish. She doesn't need to."] },
-  { when: {"archetype":"culinary"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"nursing"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"psych"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"eced"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"farm_girl"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"predator"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"pharmacy_grad"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"explorer"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
-  { when: {"archetype":"inventor"}, text: ["{subject.name} looks meaningfully at {ref.name}'s food and then at her own empty place setting."] },
+  { when: {"archetype":"culinary"}, text: ["{subject.name} tastes the air over {ref.name}'s plate like a critic who was not invited to the tasting. Her own setting stays empty on purpose, and she hates that."] },
+  { when: {"archetype":"nursing"}, text: ["{subject.name} does the intake glance — plate, belly, color in {ref.name}'s cheeks — then looks at her own empty setting like a chart that is missing a meal."] },
+  { when: {"archetype":"psych"}, text: ["{subject.name} watches the dynamic form: {ref.name} fed, herself not. She names it in her head. She does not like the name."] },
+  { when: {"archetype":"eced"}, text: ["{subject.name} smiles too kindly at {ref.name}'s full plate. \"Bless it,\" she says, which is not the same as being fine."] },
+  { when: {"archetype":"farm_girl"}, text: ["{subject.name} looks at {ref.name}'s spread the way you look at a neighbor's harvest. \"Plenty over there,\" she says, and does not reach."] },
+  { when: {"archetype":"predator"}, text: ["{subject.name} watches {ref.name} eat with a stillness that is not patience. Her own place is empty. She lets that be a fact, for now."] },
+  { when: {"archetype":"pharmacy_grad"}, text: ["{subject.name} clocks portion, timing, and the empty space in front of her. \"The dosing is uneven,\" she says, almost to herself."] },
+  { when: {"archetype":"explorer"}, text: ["{subject.name} eyes {ref.name}'s plate like a map she was not given. \"So that's where the expedition went.\""] },
+  { when: {"archetype":"inventor"}, text: ["{subject.name} looks from {ref.name}'s food to her empty setting and mutters, \"Asymmetric by design. I did not design this.\""] },
 ]);
 
 registerPool('dinner.reaction.unbutton', [
-  { when: {}, text: ["{subject.name} shifts in her seat. There's a small, deliberate movement under the table — a button giving way, the waistband releasing. She exhales. Continues eating.","{subject.name} reaches down, adjusts something quietly, and settles deeper into her chair. She looks fractionally more comfortable. She doesn't mention it.","A quiet click from under the table. {subject.name} doesn't look up. She just keeps eating.","{subject.name} reaches down with the practiced ease of someone who has done this before, undoes her waistband, and picks up her fork again without comment.","{subject.name} pauses, does something discreet under the table, and continues. Her expression doesn't change. The pace of eating does."] },
+  { when: {}, text: [
+    "{subject.name} shifts in her seat. There's a small, deliberate movement under the table — a button giving way, the waistband releasing. She exhales. Continues eating.",
+    "{subject.name} reaches down, adjusts something quietly, and settles deeper into her chair. She looks fractionally more comfortable. She doesn't mention it.",
+    "A quiet click from under the table. {subject.name} doesn't look up. She just keeps eating.",
+    "{subject.name} reaches down with the practiced ease of someone who has done this before, undoes her waistband, and picks up her fork again without comment.",
+    "{subject.name} pauses, does something discreet under the table, and continues. Her expression doesn't change. The pace of eating does.",
+  ] },
+  { when: { corruption: [0], stageMin: 3 }, weight: 2, text: [
+    "{subject.name} works the button open like a secret, cheeks warm, fork already hunting the next bite.",
+    "She undoes the waistband under the cloth and pretends the relief is just good posture.",
+  ] },
+  { when: { corruption: [2], stageMin: 4 }, weight: 2, text: [
+    "{subject.name} pops the button in plain sight and keeps eating. The table can cope.",
+    "Waistband open, belly forward, fork moving. She looks at you like this was always the plan.",
+  ] },
+  { when: { bodyType: ['apple', 'rotund'], stageMin: 4 }, weight: 2, text: [
+    "The waistband loses to the belly first. She lets it. Dinner continues.",
+    "She frees the middle that has been writing this ending since the second course.",
+  ] },
 ]);
 
