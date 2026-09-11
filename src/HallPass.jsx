@@ -14,7 +14,7 @@ import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
@@ -5830,7 +5830,8 @@ export default function HallPass(){
       const baseLbs=lbsMin+Math.random()*(lbsMax-lbsMin);
       const paceLbs=RECORDING_PACE_LBS[newChoices.pace]||0;
       const qualityLbs=RECORDING_QUALITY_BONUS[quality]||0;
-      const gainThisTake=baseLbs+paceLbs+qualityLbs;
+      const rawGainThisTake=baseLbs+paceLbs+qualityLbs;
+      const gainThisTake=scaleRecordingSessionLbsGain(rawGainThisTake);
       const newGain=prev.kylieGain+gainThisTake;
       // Apply lbs to student
       const kylie=students.find(st=>st.id===prev.studentId);

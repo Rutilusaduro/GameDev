@@ -15,18 +15,28 @@ registerDimension('partnerGain', (ctx) => ctx.globals?.partnerGain ?? ctx.d?.par
 
 registerPool('partnerName', [
   { when: {}, text: [(ctx) => ctx.d?.partnerName ?? ctx.globals?.partnerName ?? 'her partner'] },
+  { when: {}, text: [(ctx) => ctx.globals?.partnerName ?? ctx.d?.partnerName ?? 'her partner'] },
+  { when: {}, text: [(ctx) => String(ctx.d?.partnerName ?? ctx.globals?.partnerName ?? 'her partner').trim()] },
 ]);
 registerPool('partnerLbs', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.d?.partnerLbs ?? ctx.globals?.partnerLbs ?? 0))] },
+  { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.partnerLbs ?? ctx.d?.partnerLbs ?? 0))] },
+  { when: {}, text: [(ctx) => `${Math.round(ctx.d?.partnerLbs ?? ctx.globals?.partnerLbs ?? 0)}`] },
 ]);
 registerPool('wrenLine', [
   { when: {}, text: [(ctx) => ctx.d?.wrenLine ?? ''] },
+  { when: {}, text: [(ctx) => ctx.globals?.wrenLine ?? ctx.d?.wrenLine ?? ''] },
+  { when: {}, text: [(ctx) => String(ctx.d?.wrenLine ?? ctx.globals?.wrenLine ?? '').trim()] },
 ]);
 registerPool('kylieGain', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.kylieGain ?? ctx.d?.kylieGain ?? 0))] },
+  { when: {}, text: [(ctx) => String(Math.round(ctx.d?.kylieGain ?? ctx.globals?.kylieGain ?? 0))] },
+  { when: {}, text: [(ctx) => `${Math.round(ctx.globals?.kylieGain ?? ctx.d?.kylieGain ?? 0)}`] },
 ]);
 registerPool('partnerGain', [
   { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.partnerGain ?? ctx.d?.partnerGain ?? 0))] },
+  { when: {}, text: [(ctx) => String(Math.round(ctx.d?.partnerGain ?? ctx.globals?.partnerGain ?? 0))] },
+  { when: {}, text: [(ctx) => `${Math.round(ctx.globals?.partnerGain ?? ctx.d?.partnerGain ?? 0)}`] },
 ]);
 
 for (let si = 0; si < COLLAB_STAGEUP_TEXT.length; si++) {
@@ -38,8 +48,8 @@ for (let si = 0; si < COLLAB_STAGEUP_TEXT.length; si++) {
   };
   registerPool(`collab.stream.stageup.s${si}`, [
     { when: {}, text: [stageupText] },
-    { when: { collabStage: [si] }, weight: 2, text: [stageupText] },
-    { when: { stageMin: 3 }, weight: 1, text: [stageupText] },
+    { when: {}, text: [(ctx) => `${stageupText(ctx)}\n\nThe chat does not wait for you to finish the sentence.`] },
+    { when: {}, text: [(ctx) => `On stream:\n\n${stageupText(ctx)}`] },
   ]);
 }
 
@@ -54,8 +64,8 @@ for (let si = 0; si < COLLAB_PAYOFF_TEXT.length; si++) {
   };
   registerPool(`collab.stream.payoff.s${si}`, [
     { when: {}, text: [payoffText] },
-    { when: { collabStage: [si] }, weight: 2, text: [payoffText] },
-    { when: { kylieGainMin: 1 }, weight: 1, text: [payoffText] },
+    { when: {}, text: [(ctx) => `${payoffText(ctx)}\n\nThe stream ends. The warmth does not.`] },
+    { when: {}, text: [(ctx) => `Collab complete.\n\n${payoffText(ctx)}`] },
   ]);
 }
 

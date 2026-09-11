@@ -13,6 +13,7 @@ import {
   RECORDING_WRAP_ENDINGS,
   RECORDING_PAYOFF_TEXT,
 } from '../../../gameData/miniGames.js';
+import './legacyPools.js';
 
 registerDimension('recordingStage', (ctx) => ctx.globals?.recordingStage ?? 0);
 registerDimension('takeQuality', (ctx) => ctx.globals?.takeQuality ?? 'okay');
@@ -50,31 +51,47 @@ export function renderRecordingLegacy(text, student, week, stageIdx = 0, opts = 
 }
 
 export function renderRecordingOpening(stageIdx, student, week) {
-  const raw = resolveLegacy(RECORDING_OPENING_TEXT[stageIdx], student.lbs);
-  return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
+  const ctx = buildRecordingCtx(student, week, stageIdx);
+  const si = Math.min(Math.max(0, stageIdx), RECORDING_OPENING_TEXT.length - 1);
+  const raw = render(`{recording.opening.s${si}}`, ctx)?.trim()
+    || resolveLegacy(RECORDING_OPENING_TEXT[stageIdx], student.lbs);
+  return appendV2Depth(raw, 'recordingSession', ctx, 0.3);
 }
 
 export function renderRecordingTakeIntro(stageIdx, student, week) {
-  const raw = resolveLegacy(RECORDING_TAKE_INTRO_TEXT[stageIdx], student.lbs);
-  return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.22 });
+  const ctx = buildRecordingCtx(student, week, stageIdx);
+  const si = Math.min(Math.max(0, stageIdx), RECORDING_TAKE_INTRO_TEXT.length - 1);
+  const raw = render(`{recording.takeIntro.s${si}}`, ctx)?.trim()
+    || resolveLegacy(RECORDING_TAKE_INTRO_TEXT[stageIdx], student.lbs);
+  return appendV2Depth(raw, 'recordingSession', ctx, 0.22);
 }
 
 export function renderRecordingDirectionPopup(choiceId, stageIdx, student, week) {
+  const ctx = buildRecordingCtx(student, week, stageIdx);
   const arr = RECORDING_DIRECTION_POPUPS[choiceId];
-  const raw = resolveLegacy(arr?.[stageIdx], student.lbs);
-  return renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
+  const si = Math.min(Math.max(0, stageIdx), (arr?.length || 1) - 1);
+  const raw = render(`{recording.direction.${choiceId}.s${si}}`, ctx)?.trim()
+    || resolveLegacy(arr?.[stageIdx], student.lbs);
+  return appendV2Depth(raw, 'recordingSession', ctx, 0.26);
 }
 
 export function renderRecordingTakeResult(quality, stageIdx, postGainLbs, student, week) {
   const isPerfect = quality === 'perfect';
+  const ctx = buildRecordingCtx(
+    { ...student, lbs: postGainLbs },
+    week,
+    stageIdx,
+    { globals: { takeQuality: quality } },
+  );
+  const si = Math.min(Math.max(0, stageIdx), RECORDING_PERFECT_TAKE.length - 1);
+  const poolKey = isPerfect
+    ? `recording.takeResult.perfect.s${si}`
+    : `recording.takeResult.${quality}.s${si}`;
   const fn = isPerfect
     ? RECORDING_PERFECT_TAKE[stageIdx]
     : (RECORDING_TAKE_RESULT[quality] || [])[stageIdx];
-  const raw = resolveLegacy(fn, postGainLbs);
-  return renderRecordingLegacy(raw, student, week, stageIdx, {
-    globals: { takeQuality: quality },
-    v2DepthChance: isPerfect ? 0.34 : 0.28,
-  });
+  const raw = render(`{${poolKey}}`, ctx)?.trim() || resolveLegacy(fn, postGainLbs);
+  return appendV2Depth(raw, 'recordingSession', ctx, isPerfect ? 0.34 : 0.28);
 }
 
 export function renderRecordingOneMoreTake(stageIdx, student, week) {
