@@ -378,11 +378,14 @@ import {
   computeHallLoungeSkillCurrency, buyHallLoungeSkill, aggregateHallLoungeSkillEffects, listPurchasableHallLoungeSkills,
   hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
-import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave, summarizeHallEnvironment } from './gameData/hallBlueprint.js';
+import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave, summarizeHallEnvironment, getActiveBlueprintSynergies } from './gameData/hallBlueprint.js';
 import {
   hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
-  oppositionScrutinyEaseFromHall,
+  oppositionScrutinyEaseFromHall, oppositionCounterRelBonus,
 } from './gameData/mechanicsDepth.js';
+import {
+  hallLabNetworkModifiers, depthLabSessionBreakthroughBonus, depthLabSessionInstability, depthNetworkTickAdjust,
+} from './gameData/labNetworkDepth.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -1034,11 +1037,22 @@ export default function HallPass(){
   };
 
   const purchaseHallLoungeSkill=(skillId)=>{
+    const prevSyns=new Set(getActiveBlueprintSynergies(ownedHallSkills||{}).map((s)=>s.id));
     const result=buyHallLoungeSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedHallSkills(result.owned);
     setAtmosphereWeave((prev)=>weaveOnHallPurchase({ atmosphereWeave: prev }, skillId, result.owned));
-    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
+    const proseStudent=students.find(s=>s.id===selectedId&&!s.hidden)||students.find(s=>!s.hidden);
+    const ctx=proseStudent?createContext({ subject: proseStudent, week }):null;
+    const installLine=ctx?render('{hallBlueprint.installBeat}', ctx):null;
+    push(installLine
+      ? `🏛️ ${installLine} (${result.skill.label} · ${result.spent} lbs prestige)`
+      : `🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).`);
+    const newSyns=getActiveBlueprintSynergies(result.owned).filter((s)=>!prevSyns.has(s.id));
+    newSyns.forEach((syn)=>{
+      const synLine=ctx?render('{hallBlueprint.synergyUnlock}', ctx):null;
+      push(synLine?`🔗 ${syn.label} — ${synLine}`:`🔗 Synergy unlocked: ${syn.label}.`);
+    });
   };
 
   const grantExplorationReward=(grants)=>{
@@ -1633,8 +1647,12 @@ export default function HallPass(){
     );
     if (weavePulseThisWeek) {
       setAtmosphereWeave(weaveAfterPulse);
+      const pulseStudent=students.find(s=>s.id===selectedId&&!s.hidden)||students.find(s=>!s.hidden);
+      const pulseLine=pulseStudent
+        ? render('{hallBlueprint.weavePulse}', createContext({ subject: pulseStudent, week: newWeek }))
+        : null;
       setTimeout(
-        () => push('🌬️ Atmosphere Weave pulses — warm air through every room; stuffed residents digest deeper this week.'),
+        () => push(pulseLine ? `🌬️ ${pulseLine}` : '🌬️ Atmosphere Weave pulses — warm air through every room; stuffed residents digest deeper this week.'),
         80,
       );
     }
@@ -1822,7 +1840,9 @@ export default function HallPass(){
     if(labState){
       let nextLab=tickLabWeek(ensureNetwork(labState));
       if((nextLab.stage??1)>=2&&nextLab.network){
-        const netTick=tickNetworkWeek(nextLab,updated,newWeek,Math.random);
+        const hallNetMods=hallLabNetworkModifiers(ownedHallSkills||{});
+        let netTick=tickNetworkWeek(nextLab,updated,newWeek,Math.random,hallNetMods);
+        netTick=depthNetworkTickAdjust(netTick,hallNetMods,Math.random);
         nextLab=netTick.labState;
         netTick.lines.forEach((line,idx)=>setTimeout(()=>push(line),80+idx*50));
         if(netTick.studentDeltas?.length){
@@ -2758,6 +2778,14 @@ export default function HallPass(){
     if(result.moneyDelta) setMoney(m=>m+(result.moneyDelta||0));
     if(result.message) push(result.message);
     else if(counterId!=='public_discredit') push('⚠️ Counter had no effect — check agenda queue or member resolve.');
+    const counterRelBump=oppositionCounterRelBonus(ownedHallSkills||{});
+    if(counterRelBump>0&&result.message&&!result.message.startsWith('⚠️')){
+      setStudents(prev=>prev.map(s=>{
+        if(s.hidden||s.id===TALIA_STUDENT_ID) return s;
+        return {...s,relationship:Math.min(100,(s.relationship||0)+counterRelBump)};
+      }));
+      push(`🏛️ Hall synergy steadies the floor — residents feel your win (+${counterRelBump} rel).`);
+    }
     if(result.boardCompromised) setGlobalStats(g=>({...g,boardCompromised:(g.boardCompromised||0)+1}));
     if(counterId==='feast_bribe'&&adminScrutiny>=90){
       setGlobalStats(g=>({...g,boardFeastInvestigation:true}));
@@ -4517,22 +4545,25 @@ export default function HallPass(){
     const prevStage=labState.stage??1;
     const prestigeScore=computePrestigeScore({ week, labState, campusSaturation:campusState.saturation, globalStats });
     const btPrestige=prestigeBreakthroughBonus(prestigeScore);
+    const hallBt=depthLabSessionBreakthroughBonus(ownedHallSkills||{});
     const sessionPayload={
       ...session,
       poolAfter: session.pool,
-      instabilityGained: act.instability||5,
-      breakthroughsGained: (session.breakthroughsGained ?? rollSessionBreakthroughs(Math.random)) + btPrestige,
+      instabilityGained: depthLabSessionInstability(act.instability||5, ownedHallSkills||{}),
+      breakthroughsGained: (session.breakthroughsGained ?? rollSessionBreakthroughs(Math.random)) + btPrestige + hallBt,
     };
     let next=completeLabSession(labState, sessionPayload, null, Math.random);
     next=maybeAdvanceInventorStage(next);
     next=normalizeLabTechState(next);
     setLabState(next);
+    const labCtx=createContext({ subject: s, week });
+    const labBeat=render('{lab.session.beat}', labCtx);
     const btMsg=` +${sessionPayload.breakthroughsGained} 💡`;
     if((next.stage??1)>prevStage){
       const stageMeta=INVENTOR_PATH_STAGES.find(x=>x.id===next.stage);
       push(`🎉 Talia advances — ${stageMeta?.label||'new stage'}! Sessions ${next.sessionsRun}${btMsg}`);
     } else {
-      push(`🔧 ${s.name} — lab session saved. Instability ${next.instability}% · parts stocked${btMsg}.`);
+      push(`🔧 ${labBeat || `${s.name} — lab session saved`}. Instability ${next.instability}% · parts stocked${btMsg}.`);
     }
     cancelLabSession();
   };

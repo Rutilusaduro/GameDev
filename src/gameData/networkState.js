@@ -60,7 +60,7 @@ export function syncSubjectInfluence(labState, students) {
   };
 }
 
-export function tickNetworkWeek(labState, students, week, rng = Math.random) {
+export function tickNetworkWeek(labState, students, week, rng = Math.random, hallMods = null) {
   const next = ensureNetwork(labState);
   const network = next.network;
   if (!network || (next.stage ?? 1) < 2) {
@@ -89,7 +89,10 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random) {
     + meshBonus;
   const deployed = (network.deploymentAreas || []).length;
   const visible = (students || []).filter((s) => !s.hidden && s.id !== 18);
-  const threshold = automationThreshold(network);
+  let threshold = automationThreshold(network);
+  if (hallMods?.meshThresholdReduction) {
+    threshold = Math.max(8, threshold - hallMods.meshThresholdReduction);
+  }
 
   if (automationTotal >= threshold && visible.length && rng() < 0.55) {
     const target = visible[Math.floor(rng() * visible.length)];
