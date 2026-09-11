@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { HALL_ROOMS, countOwnedInRoom, roomDevelopmentTier } from './hallBlueprint.js';
 import { SKILL_TREE } from './skills.js';
-import { depthAmbiancePerkScalars, scaleDepthBonus } from './mechanicsDepthLayer.js';
+import { depthAmbiancePerkScalars, depthLbsGrant, scaleDepthBonus } from './mechanicsDepthLayer.js';
 
 export function depthAmbianceMeterCap(raw) {
   return Math.min(100, Math.round(raw * (1 + (scaleDepthBonus(1, 1.5) - 1) * 0.15)));
@@ -85,7 +85,7 @@ export function rollWeeklyAmbiancePulse(owned = {}, week = 1, state = {}) {
   if (peak < 40) return null;
   const axis = dominantAmbianceAxis(meters);
   const axisMeta = AMBIANCE_AXES.find((a) => a.id === axis);
-  const passiveDrip = peak >= 70 ? Math.max(1, Math.round(scaleDepthBonus(1))) : 0;
+  const passiveDrip = peak >= 70 ? Math.max(1, depthLbsGrant(Math.round(scaleDepthBonus(1)))) : 0;
   return {
     week,
     axis,
