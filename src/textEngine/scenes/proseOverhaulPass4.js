@@ -289,6 +289,13 @@ oncePool('floor.linger', [
 ]);
 
 oncePool('evolved.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her. The vocation is the second sitting.',
+    'Last night\'s tray plus this ranking. Softness does the math without asking.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in her. Daylight uses the same open door.',
+  ] },
   { when: { featureId: 'salon_appetit' }, weight: 3, text: [
     'Wine rims keep a fingerprint. Chloé keeps the rest of the evening in her lap.',
     'Guests find the stairs slower. She finds another bite without standing.',

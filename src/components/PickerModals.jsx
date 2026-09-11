@@ -14,6 +14,7 @@ import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameTierLabel } from '..
 import { depthGainLbs } from '../gameData/mechanicDepth.js';
 import { bumpOriginChain } from '../gameData/origins/index.js';
 import { renderMinigamePhase, renderMinigameDone } from '../textEngine/scenes/evolved/minigameBeats.js';
+import { wrapLeftoverLinger } from '../gameData/textContext.js';
 
 
 export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
@@ -214,11 +215,12 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
   const ctx = { studentName: s.name, stageIdx };
   const phase = !done ? def.phases[phaseIdx] : null;
   const uniquePhase = phase ? (typeof phase.text === 'function' ? phase.text(ctx) : phase.text) : null;
+  const enginePhase = (!done && phase) ? renderMinigamePhase(s, week, gameId, phaseIdx) : '';
   const phaseText = (!done && phase)
-    ? (renderMinigamePhase(s, week, gameId, phaseIdx) || uniquePhase)
+    ? (enginePhase || wrapLeftoverLinger(uniquePhase, s, week, 'evolved.linger'))
     : null;
   const doneText = done
-    ? (renderMinigameDone(s, week, gameId) || `${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}`)
+    ? (renderMinigameDone(s, week, gameId) || wrapLeftoverLinger(`${s.name} exhales, full and satisfied. ${outcome ? minigameTierLabel(outcome.tier) : ''}`, s, week, 'evolved.linger'))
     : null;
 
   const pickChoice = (choice) => {

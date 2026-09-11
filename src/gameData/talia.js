@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // TALIA VALE — Inventor path & lab state (device workshop only)
 // ═══════════════════════════════════════════════════════════════
-import { partsAcquisitionByStage } from './labParts.js';
+import { partsAcquisitionByStage, mergeParts } from './labParts.js';
 import { defaultNetworkState, ensureNetwork } from './networkState.js';
 import {
   initialUnlockedTech,
@@ -139,7 +139,7 @@ export function maybeAdvanceInventorStage(state) {
   return ensureNetwork(next);
 }
 
-export function completeLabSession(state, session, builtDeviceId = null, rng = Math.random) {
+export function completeLabSession(state, session, builtDeviceId = null, rng = Math.random, extras = {}) {
   if (!state || !session) return state;
   let next = { ...state };
   next.sessionsRun = (next.sessionsRun ?? 0) + 1;
@@ -150,6 +150,13 @@ export function completeLabSession(state, session, builtDeviceId = null, rng = M
   if (builtDeviceId) {
     next.builtThisSession = [...(next.builtThisSession || []), builtDeviceId];
     next.breakthroughs += 1;
+  }
+  if (extras.leftoverKitchen) {
+    next.breakthroughs += 1;
+    next.instability = Math.max(0, next.instability - 2);
+  }
+  if (extras.nightRound) {
+    next.parts = mergeParts(next.parts || {}, { scrap: 1 });
   }
   return next;
 }

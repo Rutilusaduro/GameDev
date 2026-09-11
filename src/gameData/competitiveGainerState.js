@@ -10,6 +10,14 @@ export function cgDriveDelta(opt) {
   return opt?.driveDelta ?? opt?.spiritDelta ?? 0;
 }
 
+/** Extra competitive drive from galley leftovers / a night-round visit still on Priya. */
+export function cgLeftoverDriveBump(priya, week = 0) {
+  let n = 0;
+  if (priya?.leftoverFedThisWeek) n += 2;
+  if (week && priya?.lastNightVisitWeek === week) n += 1;
+  return n;
+}
+
 export function cgSubstateGain(subState) {
   return subState?.driveGain ?? subState?.spiritGain ?? 0;
 }

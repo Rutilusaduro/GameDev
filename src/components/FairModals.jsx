@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
+import { wrapLeftoverLinger } from '../gameData/textContext.js';
 import {
   renderFairDayWeighIn,
   renderFairDayJudging,
@@ -131,7 +132,7 @@ export function FairDayModal({ fd, students, week = 1, fairPride, getFairPrideTi
 
         {fd.phase==='weighin'&&(()=>{
           const sc=FAIR_DAY_SCENES.weighIn[key]||{};
-          const openText=renderFairDayWeighIn(s,week,fd.influenceKey)||sc.open;
+          const openText=renderFairDayWeighIn(s,week,fd.influenceKey)||wrapLeftoverLinger(sc.open,s,week,'fair.linger');
           return(
             <>
               {!fd.weighInChoice&&<>
@@ -154,14 +155,14 @@ export function FairDayModal({ fd, students, week = 1, fairPride, getFairPrideTi
 
         {fd.phase==='judging'&&(
           <>
-            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairDayJudging(s,week,fd.influenceKey)||FAIR_DAY_SCENES.judging[key]}</div>
+            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairDayJudging(s,week,fd.influenceKey)||wrapLeftoverLinger(FAIR_DAY_SCENES.judging[key],s,week,'fair.linger')}</div>
             <button style={{...C.btn(fairOrange),width:"100%"}} onClick={advanceFairDayPhase}>To the Afterparty →</button>
           </>
         )}
 
         {fd.phase==='afterparty'&&(()=>{
           const sc=FAIR_DAY_SCENES.afterparty[key]||{};
-          const openText=renderFairDayAfterparty(s,week,fd.influenceKey)||sc.open;
+          const openText=renderFairDayAfterparty(s,week,fd.influenceKey)||wrapLeftoverLinger(sc.open,s,week,'fair.linger');
           return(
             <>
               {!fd.afterpartyChoice&&<>

@@ -154,6 +154,7 @@ export function applyCampusDeviceEncounter({
   labState = null,
   adminScrutiny = 0,
   leftoverKitchen = false,
+  nightRound = false,
   nightIntimacy = 0,
   rng = Math.random,
 }) {
@@ -164,7 +165,12 @@ export function applyCampusDeviceEncounter({
   let npcGain = 0;
 
   if (encounter.target.type === 'student') {
-    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, { labState, adminScrutiny });
+    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, {
+      labState,
+      adminScrutiny,
+      leftoverKitchen,
+      nightRound,
+    });
     if (!result.ok) return result;
     const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student, week, { leftoverKitchen, nightIntimacy });
     const scrutinyDelta = result.discovered ? Math.max(2, Math.round(2 * scrutinyDiscoveryMult(adminScrutiny))) : 0;

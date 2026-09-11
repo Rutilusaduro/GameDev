@@ -16,7 +16,7 @@ import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
-import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
+import { cgDrive, cgDriveDelta, cgLeftoverDriveBump, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
 import { createInitialHiveState, executeHiveShift, getHiveBmiTier, getHiveControl, getHiveFloorResonance, makeHiveTag, HIVE_VPS } from './gameData/mayaHive.js';
 import { EVOLVED_SKILL_TREES } from './gameData/skills.js';
@@ -1274,6 +1274,7 @@ export default function HallPass(){
     const result=applyCampusDeviceEncounter({
       encounter, deviceId, modeId, student, week, exploration, labState, adminScrutiny,
       leftoverKitchen: students.some(st=>st.leftoverFedThisWeek),
+      nightRound: students.some(st=>week&&st.lastNightVisitWeek===week),
       nightIntimacy: dormState?.nightRounds?.floorIntimacy||0,
       rng:Math.random,
     });
@@ -3627,9 +3628,10 @@ export default function HallPass(){
       const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
       const idx=(prev.corkboardVisitCount||0)%scenes.length;
       const priya=students.find(st=>st.id===prev.priyaStudentId);
-      const sceneText=priya
-        ? (renderCgCorkboardScene(priya,week,tier.label)||scenes[idx])
-        : scenes[idx];
+      const engineText=priya
+        ? renderCgCorkboardScene(priya,week,tier.label)
+        : '';
+      const sceneText=engineText||wrapLeftoverLinger(scenes[idx],priya,week,'evolved.linger');
       let driveGain=rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
       if(priya){
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
@@ -3643,6 +3645,7 @@ export default function HallPass(){
           });
         });
       }
+      driveGain+=cgLeftoverDriveBump(priya,week);
       const nextDrive=cgDrive(prev)+driveGain;
       const priyaNow=students.find(st=>st.id===prev.priyaStudentId);
       const chatMsgs=priyaNow?generateCGChatMessages(priyaNow,students,{...prev,drive:nextDrive},week):[];
@@ -3661,8 +3664,8 @@ export default function HallPass(){
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
       const inch=priyaM[focus]??Math.round(priya.lbs);
-      const sceneText=renderCgSelfScene(priya,week,tier.label,inch)||formatCGText(entry.text||entry,{measurement:inch, measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
-      const driveGain=rnd(2,5);
+      const sceneText=renderCgSelfScene(priya,week,tier.label,inch)||wrapLeftoverLinger(formatCGText(entry.text||entry,{measurement:inch, measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)}),priya,week,'evolved.linger');
+      const driveGain=rnd(2,5)+cgLeftoverDriveBump(priya,week);
       return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
   };
@@ -3690,10 +3693,11 @@ export default function HallPass(){
         const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
         reactions[cat]={rel,text:renderCgReaction(priya,target,week,tier.label,rel,cat)||formatCGText(template,{targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)})};
       });
-      const driveGain=threats.length>0
+      const driveGain=(threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
-        : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
-      const sceneText=renderCgMeasureScene(priya,target,week,tier.label)||`Priya measures ${target.name} with the same tape she uses on herself.`;
+        : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]))
+        +cgLeftoverDriveBump(priya,week);
+      const sceneText=renderCgMeasureScene(priya,target,week,tier.label)||wrapLeftoverLinger(`Priya measures ${target.name} with the same tape she uses on herself.`,priya,week,'evolved.linger');
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
@@ -3717,7 +3721,7 @@ export default function HallPass(){
       const mult=CG_CONFIG.bingeDriveMults[Math.max(0,tierIdx)];
       const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
       const stageKey=getCGStageKey(priya.lbs);
-      const sceneText=renderCgBingeScene(priya,week,tier.label)||CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+      const sceneText=renderCgBingeScene(priya,week,tier.label)||wrapLeftoverLinger(CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested,priya,week,'evolved.linger');
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -3748,14 +3752,14 @@ export default function HallPass(){
       const tier=getCGDriveTier(cgDrive(prev));
       const beat=renderCgRaReply(priya,week,tier.label,optId,comparison);
       const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
-      const text=beat||formatCGText(template,{
+      const text=beat||wrapLeftoverLinger(formatCGText(template,{
         residentName:comparison?.residentName||comparison?.girlName||"the hall",
         bodypart:comparison?.bodypart||"measurements",
         priyaValue:comparison?.priyaValue,
         targetValue:comparison?.targetValue,
-      });
+      }),priya,week,'evolved.linger');
       const msg={text:`[You] ${text}`,isRa:true,wk:week};
-      const delta=cgDriveDelta(opt);
+      const delta=cgDriveDelta(opt)+cgLeftoverDriveBump(priya,week);
       return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
     });
   };
@@ -4762,7 +4766,10 @@ export default function HallPass(){
       instabilityGained: act.instability||5,
       breakthroughsGained: (session.breakthroughsGained ?? rollSessionBreakthroughs(Math.random)) + btPrestige,
     };
-    let next=completeLabSession(labState, sessionPayload, null, Math.random);
+    let next=completeLabSession(labState, sessionPayload, null, Math.random, {
+      leftoverKitchen:students.some(st=>st.leftoverFedThisWeek),
+      nightRound:students.some(st=>week&&st.lastNightVisitWeek===week),
+    });
     next=maybeAdvanceInventorStage(next);
     next=normalizeLabTechState(next);
     setLabState(next);

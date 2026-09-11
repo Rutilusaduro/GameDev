@@ -37,6 +37,9 @@ import { tickScarcityBanishment } from '../src/gameData/oppositionEndgame.js';
 import { getCampusWeeklyEventChance } from '../src/gameData/pharmacistCampus.js';
 import { bumpWeeklyDeviceDependence } from '../src/gameData/deviceDependence.js';
 import { scaleDiscoveryRisk } from '../src/gameData/campusWitness.js';
+import { resolveCampusDeviceUse } from '../src/gameData/deviceEffects.js';
+import { cgLeftoverDriveBump } from '../src/gameData/competitiveGainerState.js';
+import { completeLabSession, defaultLabState } from '../src/gameData/talia.js';
 import '../src/textEngine/scenes/proseOverhaulPass4.js';
 
 function sportyResidents() {
@@ -382,6 +385,25 @@ assert.ok(
 );
 const unlockLinger = wrapLeftoverLinger('She knocks.', { leftoverFedThisWeek: true, lbs: 140, name: 'Brittany' }, 3, 'unlock.linger');
 assert.ok(unlockLinger.length > 'She knocks.'.length, 'unlock leftover linger should append');
+
+const priyaStub = { leftoverFedThisWeek: true, lastNightVisitWeek: 3, lbs: 180, name: 'Priya' };
+assert.equal(cgLeftoverDriveBump(priyaStub, 3), 3, 'leftover + night should bump competitive drive');
+assert.equal(cgLeftoverDriveBump({ leftoverFedThisWeek: true, lbs: 180 }, 3), 2, 'leftover kitchen should bump competitive drive');
+const labBase = completeLabSession(defaultLabState(), { pool: {}, breakthroughsGained: 1, instabilityGained: 5 });
+const labLeftover = completeLabSession(defaultLabState(), { pool: {}, breakthroughsGained: 1, instabilityGained: 5 }, null, Math.random, { leftoverKitchen: true });
+assert.ok(labLeftover.breakthroughs > labBase.breakthroughs, 'leftover kitchen should add a lab breakthrough');
+assert.ok(labLeftover.instability < labBase.instability, 'leftover kitchen should ease lab instability on session close');
+const campusStub = { ...INIT_STUDENTS[0], leftoverFedThisWeek: true };
+const campusRng = () => 0.99;
+const campusBase = resolveCampusDeviceUse('endless_hunger_engine', 'pulse', campusStub, 3, campusRng, { adminScrutiny: 0 });
+const campusLeftover = resolveCampusDeviceUse('endless_hunger_engine', 'pulse', campusStub, 3, campusRng, { adminScrutiny: 0, leftoverKitchen: true });
+assert.ok(
+  campusLeftover.ok && campusBase.ok && campusLeftover.discoveryRisk > campusBase.discoveryRisk,
+  'campus student device leftoverKitchen should thicken discovery risk',
+);
+const evolvedLinger = wrapLeftoverLinger('Priya measures the hall.', priyaStub, 3, 'evolved.linger');
+assert.ok(evolvedLinger.length > 'Priya measures the hall.'.length, 'evolved leftover linger should append');
+assert.match(evolvedLinger, /surplus|galley|tray|sitting|knock/i, 'evolved leftover linger voice');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');
