@@ -13,6 +13,8 @@ const required = [
   'evolved/evolutionOfferPools.js',
   'evolved/evolutionBlurbPools.js',
   'session/tapOutPools.js',
+  'session/tapOutFragments.js',
+  'unlockScene/unlockFragments.js',
   'session/blobIntroPools.js',
   'session/immobileRedirectPools.js',
   'session/index.js',

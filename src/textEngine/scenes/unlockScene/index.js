@@ -45,7 +45,10 @@ export function renderRosterUnlockScene(student, week = 1) {
   } catch {
     line = '';
   }
-  if (!line || line.includes('{unresolved}')) line = legacy || '';
+  if (!line || line.includes('{unresolved}')) {
+    if ((week ?? 1) < 12) line = legacy || '';
+    else line = line || '';
+  }
   if (!line) return '';
   return appendV2Depth(line, 'roster', ctx, unlockSceneModularDepthChance());
 }

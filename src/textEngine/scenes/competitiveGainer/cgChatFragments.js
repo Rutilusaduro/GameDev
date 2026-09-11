@@ -28,6 +28,52 @@ registerPool('cg.chat.residentReply', [
 
 const CHAT_SKELETON = '{cg.chat.boardTone|prefix:} {cg.chat.residentReply|prefix: }';
 
+registerPool('cg.chat.followupSting', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Priya replies to the thread — numbers cool, ego warm, challenge unmistakable.',
+      'She quotes a measurement like a verdict; nobody pretends it is casual.',
+      'The follow-up lands sharp: lead secured, gap widening, appetite public.',
+    ],
+  },
+]);
+
+registerPool('cg.chat.followupPride', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Residents read between the lines; hunger spikes in the replies.',
+      'Someone vows a binge tonight; someone else already booked the scale.',
+      'Competition turns communal — envy and admiration in the same breath.',
+    ],
+  },
+]);
+
+const FOLLOWUP_SKELETON = '{cg.chat.followupSting|prefix:} {cg.chat.followupPride|prefix: }';
+
+for (const fkey of Object.keys(CG_FILLED_CHAT_TEMPLATES.priyaFollowup || {})) {
+  const tierMap = CG_FILLED_CHAT_TEMPLATES.priyaFollowup[fkey] || {};
+  for (const tier of Object.keys(tierMap)) {
+    registerModuleVariants(`cg.chat.priyaFollowup.${fkey}.${tier}`, [
+      {
+        when: { weekMin: 14 },
+        weight: 4,
+        priority: 3,
+        text: [FOLLOWUP_SKELETON],
+      },
+      {
+        when: { weekMin: 6 },
+        weight: 2,
+        priority: 2,
+        text: [FOLLOWUP_SKELETON],
+      },
+    ]);
+  }
+}
+
 const stageKeys = Object.keys(CG_FILLED_CHAT_TEMPLATES.priyaPost || {});
 for (const stageKey of stageKeys) {
   const tierMap = CG_FILLED_CHAT_TEMPLATES.priyaPost[stageKey] || {};

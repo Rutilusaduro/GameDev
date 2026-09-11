@@ -6,6 +6,9 @@ import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import { renderWifeLessonBeat } from '../src/textEngine/scenes/wifeLessons/index.js';
 import { WL_LESSONS } from '../src/gameData/wifeLessonsData.js';
+import { renderTapOutLine } from '../src/textEngine/scenes/session/tapOutPools.js';
+import { renderRosterUnlockScene } from '../src/textEngine/scenes/unlockScene/index.js';
+import { renderCGPriyaFollowup } from '../src/textEngine/scenes/competitiveGainer/index.js';
 
 const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 240, relationship: 70 };
 const ctx = buildTextContext({ subject: mj, week: 8, globals: { wlStage: 1, lessonId: 'honey_butter' } });
@@ -44,6 +47,7 @@ for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
 assert.ok(lessonKeys >= 24, `expected >=24 WL lessons, got ${lessonKeys}`);
 
 const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 210, evolvedForm: 'eating_streamer' };
+const cassidy = { id: 1, name: 'Cassidy', archetype: 'swimmer', lbs: 220, relationship: 55 };
 const evCtx = buildTextContext({
   subject: destiny,
   week: 12,
@@ -126,7 +130,7 @@ const outfitLine = render('{evolved.outfit.eating_streamer.s0}', buildTextContex
   seed: 801,
 }))?.trim() || '';
 assert.ok(outfitLine.length > 25, 'evolved outfit modular render');
-assert.match(outfitLine, /Seams whisper|wear the strain|Stretch panels/i, 'evolved outfit slots');
+assert.match(outfitLine, /Seams whisper|wears the strain|Stretch panels|Buttons hold/i, 'evolved outfit slots');
 
 const blurbLine = render('{evolution.blurb.gamer}', buildTextContext({
   subject: destiny,
@@ -136,5 +140,18 @@ const blurbLine = render('{evolution.blurb.gamer}', buildTextContext({
 }))?.trim() || '';
 assert.ok(blurbLine.length > 25, 'evolution blurb modular render');
 assert.match(blurbLine, /threshold|next stage|Floor favor/i, 'evolution blurb slots');
+
+const tapLine = renderTapOutLine(cassidy, 120, 16);
+assert.ok(tapLine.length > 25, 'tap-out modular render');
+assert.match(tapLine, /Breath comes shallow|Tap-out is mercy|session ends soft/i, 'tap-out slots');
+
+const unlockLine = renderRosterUnlockScene(cassidy, 12);
+assert.ok(unlockLine.length > 25, 'roster unlock modular render');
+assert.match(unlockLine, /hall door|Floor check-in|kitchen first/i, 'unlock slots');
+
+const priya = { id: 99, name: 'Priya', archetype: 'competitive_gainer', lbs: 260 };
+const fu = renderCGPriyaFollowup(priya, 18, 'leading', 'Invested', { seed: 803 });
+assert.ok(fu.length > 25, 'CG followup modular render');
+assert.match(fu, /follow-up|measurement|Competition turns communal/i, 'CG followup slots');
 
 console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + homeroom + evolved phase/choice/ending)`);

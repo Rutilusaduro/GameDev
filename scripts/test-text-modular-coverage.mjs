@@ -47,6 +47,12 @@ const SLOT_KEYS = [
   'evolved.outfit.pride',
   'evolution.blurb.threshold',
   'evolution.blurb.raStakes',
+  'session.tapOut.breath',
+  'session.tapOut.surrender',
+  'roster.unlock.hallArrival',
+  'roster.unlock.firstHunger',
+  'cg.chat.followupSting',
+  'cg.chat.followupPride',
 ];
 
 for (const key of SLOT_KEYS) {

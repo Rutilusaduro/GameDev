@@ -33,6 +33,8 @@ const pairs = [
   ['evolved/index.js', 'evolved/outfitFragments.js'],
   ['evolved/index.js', 'evolved/evolutionBlurbFragments.js'],
   ['competitiveGainer/index.js', 'competitiveGainer/cgChatFragments.js'],
+  ['session/index.js', 'session/tapOutFragments.js'],
+  ['unlockScene/index.js', 'unlockScene/unlockFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {

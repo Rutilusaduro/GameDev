@@ -27,7 +27,7 @@ const cases = [
   {
     label: 'roster unlock',
     template: '{roster.unlock.s1}',
-    ctx: buildTextContext({ subject: cassidy, week: 4 }),
+    ctx: buildTextContext({ subject: cassidy, week: 12 }),
   },
   {
     label: 'tap-out',

@@ -92,6 +92,9 @@ export function renderTapOutLine(student, fPct, week = 1, opts = {}) {
     line = '';
   }
   if (!line || line.includes('{unresolved}')) {
+    if ((week ?? ctx.week ?? 1) >= 14 && fPct < 250) {
+      return line || '';
+    }
     if (fPct >= 250) {
       const entry = TAP_OUT_250[student.id] || TAP_OUT_250.default;
       line = typeof entry === 'function' ? entry(student) : entry;
