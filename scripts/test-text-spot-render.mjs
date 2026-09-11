@@ -67,6 +67,15 @@ const cases = [
     ctx: buildTextContext({ subject: brittany, week: 6 }),
   },
   {
+    label: 'ranked session arrival',
+    template: '{session.rae.arrival.s2}',
+    ctx: buildTextContext({
+      subject: destiny,
+      week: 12,
+      globals: { featureId: 'ranked_session', sessionStage: 2 },
+    }),
+  },
+  {
     label: 'evolution offer',
     template: '{evolution.offer.swimmer.intro}',
     ctx: buildTextContext({ subject: cassidy, week: 7 }),

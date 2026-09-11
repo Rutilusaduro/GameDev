@@ -34,6 +34,10 @@ const SLOT_KEYS = [
   'homeroom.activity.kitchenHeat',
   'cg.chat.boardTone',
   'cg.chat.residentReply',
+  'journal.scene.fieldNotes',
+  'journal.scene.subjectFocus',
+  'session.scene.deliveryAir',
+  'session.scene.raePresence',
 ];
 
 for (const key of SLOT_KEYS) {

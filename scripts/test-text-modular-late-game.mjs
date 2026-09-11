@@ -66,4 +66,35 @@ for (let i = 0; i < 6; i += 1) {
 }
 assert.ok(fairSamples.size >= 2, 'fair judging should vary at week 20+');
 
-console.log('test-text-modular-late-game: ok (fair day, homeroom activity, CG chat @ week 20+)');
+const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 240 };
+let journalModularHit = false;
+for (let i = 0; i < 24; i += 1) {
+  const line = render('{journal.feeder.gamer.s0}', buildTextContext({
+    subject: destiny,
+    week: 20,
+    seed: 9000 + i,
+  }))?.trim() || '';
+  assert.ok(line.length > 30, 'feeder journal s0 late render');
+  assert.ok(!line.includes('{unresolved}'), 'feeder journal unresolved');
+  if (/Clipboard|Observation beats|datapoint|fieldNotes/i.test(line)
+    || /appetite curves|log what the body/i.test(line)) {
+    journalModularHit = true;
+  }
+}
+assert.ok(journalModularHit, 'feeder journal s0 should sometimes compose modular slots at week 20');
+
+let sessionModularHit = false;
+for (let i = 0; i < 24; i += 1) {
+  const line = render('{session.rae.arrival.s1}', buildTextContext({
+    subject: destiny,
+    week: 21,
+    seed: 9100 + i,
+    globals: { featureId: 'ranked_session', sessionStage: 1 },
+  }))?.trim() || '';
+  assert.ok(line.length > 30, 'session Rae arrival late render');
+  assert.ok(!line.includes('{unresolved}'), 'session arrival unresolved');
+  if (/cart squeaks|Rae arrives|Clipboard, timer/i.test(line)) sessionModularHit = true;
+}
+assert.ok(sessionModularHit, 'session Rae arrival should sometimes compose modular slots at week 21');
+
+console.log('test-text-modular-late-game: ok (fair, homeroom, CG, journal, session @ week 20+)');

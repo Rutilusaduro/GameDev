@@ -20,6 +20,8 @@ const required = [
   'homeroom/index.js',
   'unlockScene/index.js',
   'rankedSession/legacyPools.js',
+  'rankedSession/sessionFragments.js',
+  'researchJournal/journalFragments.js',
   'homeroom/batchBakerPools.js',
   'homeroom/conferenceFragments.js',
   'homeroom/activityFragments.js',
