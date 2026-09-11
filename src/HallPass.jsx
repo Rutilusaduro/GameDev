@@ -15,7 +15,7 @@ import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, scaleWlLessonLbs, scaleWlLessonRel, fairTrainingGainBounds, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { scaleCgDriveRange } from './gameData/competitiveGainerText.js';
-import { renderFairBoostSummary } from './textEngine/scenes/fairQueen/index.js';
+import { renderFairBoostSummary, resolveFairDayBlock } from './textEngine/scenes/fairQueen/index.js';
 import { CG_FILLED_SELF_REVIEW, CG_RA_REPLY_TEXT } from './gameData/competitiveGainerText.js';
 import { renderSessionRaeArrival, renderSessionRaeExtra, renderSessionPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
@@ -6415,13 +6415,22 @@ export default function HallPass(){
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='weighin'||prev.weighInChoice) return prev;
       const sc=FAIR_DAY_SCENES.weighIn[`${prev.stageIdx}_${prev.influenceKey}`];
+      const mj=students.find(st=>st.id===prev.studentId);
       const prideTier=getFairPrideTier(fairTrainingState.fairPride).label;
       const bonus=depthFairWeighInBonus(FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0);
       const baseGain=choice===1?sc.gainA:sc.gainB;
       const gain=scaleEvolvedEventLbs(Math.round(baseGain*(1+bonus)));
       const rel=scaleEvolvedEventRel(choice===1?sc.relA:sc.relB);
+      const fairExtra={
+        fairStageIdx:prev.stageIdx,
+        fairInfluence:prev.influenceKey,
+        fairCollab:prev.influenceKey,
+        partnerName:prev.influenceKey,
+      };
+      const raw=`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`;
+      const weighInResultText=mj?resolveFairDayBlock(raw,mj,week,fairExtra):raw;
       return {...prev,weighInChoice:choice,
-        weighInResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
+        weighInResultText,
         weighInGain:gain,weighInRel:rel,totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };
@@ -6439,10 +6448,19 @@ export default function HallPass(){
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
       const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
+      const mj=students.find(st=>st.id===prev.studentId);
       const gain=scaleEvolvedEventLbs(choice===1?sc.gainA:sc.gainB);
       const rel=scaleEvolvedEventRel(choice===1?sc.relA:sc.relB);
+      const fairExtra={
+        fairStageIdx:prev.stageIdx,
+        fairInfluence:prev.influenceKey,
+        fairCollab:prev.influenceKey,
+        partnerName:prev.influenceKey,
+      };
+      const raw=`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`;
+      const afterpartyResultText=mj?resolveFairDayBlock(raw,mj,week,fairExtra):raw;
       return {...prev,afterpartyChoice:choice,
-        afterpartyResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`,
+        afterpartyResultText,
         totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };

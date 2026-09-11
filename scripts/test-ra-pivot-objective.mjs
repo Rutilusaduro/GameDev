@@ -37,6 +37,8 @@ assert.match(cov, /unwired-payout=0/, cov);
 
 execSync('npm run test:text-bridges', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-text-pool-variety.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 
 console.log('test-ra-pivot-objective: ok (mechanics, blueprint, ambiance registry, text bridges, text:lint)');
