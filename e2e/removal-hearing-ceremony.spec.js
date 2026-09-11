@@ -10,7 +10,8 @@ test('removal hearing modal runs resident removal session with RA framing', asyn
   await expect(modal.locator('[style*="line-height"]').first()).not.toBeEmpty();
 
   await modal.getByRole('button', { name: /Stage a live tasting demonstration/ }).click();
-  await modal.getByRole('button', { name: /Negotiate — private indulgence/ }).click();
+  await modal.getByRole('button', { name: /Negotiate\. Private indulgence/ }).click();
+  await expect(modal.getByText(/abundance framed as concern/i)).toHaveCount(0);
 
   await expect(modal.getByRole('button', { name: 'Continue ✓' })).toBeVisible();
   await modal.getByRole('button', { name: 'Continue ✓' }).click();
