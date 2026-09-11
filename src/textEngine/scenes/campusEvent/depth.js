@@ -147,4 +147,39 @@ registerModuleVariants('campusEvent.choice.hall_new_chairs.2', [{ when: {}, text
   'You sign the work order. They sit. Appetite files the rest.',
   'Paperwork complete. The chairs do the recruiting.',
 ]}]);
+registerModuleVariants('campusEvent.choice.mood_content.3', [{ when: {}, text: [
+  'Leftovers walk her home. The corridor gets the rest.',
+  'She eats on the way back. The box is empty before the door.',
+  'You send her off fed. She does not pretend it is for later.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_snack_break.3', [{ when: {}, text: [
+  'The kitchen stays lit. Residents return in waves.',
+  'You do not pack up. Trays look theoretical by the hour.',
+  'After-hours becomes the actual meal. The lounge agrees.',
+]}]);
+registerModuleVariants('campusEvent.scene.hall_terrace', [{ when: {}, text: [
+  'Roof air, warm trays, nowhere to hide how much she takes.',
+  'The terrace is dinner with a view of campus and seconds.',
+  'Someone brought a blanket. Someone else brought three trays.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.0', [{ when: {}, text: [
+  'Picnic hours. Plates travel. The view is campus; the subject is seconds.',
+  'You declare the roof open. Appetite files outside.',
+  'Official picnic. The trays do not come back full.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.1', [{ when: {}, text: [
+  'A quiet RA treat. Two residents, one loaded tray.',
+  'The rest of the floor hears about it by morning.',
+  'You pick who eats under the sky. They remember.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.2', [{ when: {}, text: [
+  'The door stays propped. Heat finds a window. So do they.',
+  'People find the terrace. The trays empty themselves.',
+  'You leave it open. The floor does the rest.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.3', [{ when: {}, text: [
+  'Wellness air, according to the log. They eat.',
+  'You write outdoor programming. The paperwork smiles.',
+  'Logged as air. Practiced as dinner.',
+]}]);
 

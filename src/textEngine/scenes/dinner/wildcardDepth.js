@@ -363,3 +363,4 @@ registerModuleVariants("dinner.dish.pr_mille", [{ when: {}, text: ["Sweet densit
 registerModuleVariants("dinner.dish.pr_snack_tray", [{ when: {}, text: ["Small extra that feels enormous after everything else.", "Late generosity — no explanation required."] }]);
 registerModuleVariants("dinner.dish.pr_wine_cheese", [{ when: {}, text: ["Small extra that feels enormous after everything else.", "Late generosity — no explanation required."] }]);
 registerModuleVariants("dinner.dish.pr_chocolates", [{ when: {}, text: ["Late generosity — no explanation required.", "Small extra that feels enormous after everything else."] }]);
+registerModuleVariants("dinner.dish.pr_night_tray", [{ when: {}, text: ["Whatever the fridge was hiding, now in her lap.", "Late-wing food, no witnesses but the two of you.", "She eats it like midnight already approved."] }]);
