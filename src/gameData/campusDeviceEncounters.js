@@ -112,6 +112,8 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
       name: who.name,
       archetype: who.archetype,
       lbs: who.lbs,
+      leftoverFedThisWeek: !!who.leftoverFedThisWeek,
+      lastNightVisitWeek: who.lastNightVisitWeek,
       emoji: '👁',
     };
   }
@@ -151,6 +153,8 @@ export function applyCampusDeviceEncounter({
   exploration,
   labState = null,
   adminScrutiny = 0,
+  leftoverKitchen = false,
+  nightIntimacy = 0,
   rng = Math.random,
 }) {
   const def = getDevice(deviceId);
@@ -162,7 +166,7 @@ export function applyCampusDeviceEncounter({
   if (encounter.target.type === 'student') {
     const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, { labState, adminScrutiny });
     if (!result.ok) return result;
-    const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student);
+    const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student, week, { leftoverKitchen, nightIntimacy });
     const scrutinyDelta = result.discovered ? Math.max(2, Math.round(2 * scrutinyDiscoveryMult(adminScrutiny))) : 0;
     return {
       ...result,
@@ -186,7 +190,7 @@ export function applyCampusDeviceEncounter({
   const mode = def.campusModes?.find(m => m.id === modeId) || def.campusModes?.[0];
   const effect = mode || def.useEffect || {};
   const [lo, hi] = effect.gainLbs || [3, 6];
-  npcGain = lo + Math.floor(rng() * (hi - lo + 1));
+  npcGain = lo + Math.floor(rng() * (hi - lo + 1)) + (leftoverKitchen ? 1 : 0);
   const prev = nextExploration.npcFed[encounter.target.npcId] || {
     lbs: encounter.target.lbs,
     times: 0,
@@ -204,7 +208,7 @@ export function applyCampusDeviceEncounter({
     modeId: modeId || mode?.id,
     npcGain,
   };
-  const line = renderCampusDeviceResult(encounter, deviceId, modeId, fakeResult, encounter.nodeId);
+  const line = renderCampusDeviceResult(encounter, deviceId, modeId, fakeResult, encounter.nodeId, null, week, { leftoverKitchen, nightIntimacy, leftoverFed: leftoverKitchen });
   return {
     ok: true,
     logLines: [

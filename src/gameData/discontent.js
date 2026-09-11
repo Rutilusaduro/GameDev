@@ -54,6 +54,11 @@ export const DISCONTENT_EASE_FEED = 2;     // attention, slowly
 export const DISCONTENT_EASE_TALK = 4;
 export const DISCONTENT_WEEKLY_DECAY = 5;  // fades if you stop offending
 
+/** Weekly cool-off. Leftover trays and a night knock buy extra ease. */
+export function weeklyDiscontentDecayAmount({ leftover = false, nightVisit = false } = {}) {
+  return DISCONTENT_WEEKLY_DECAY + (leftover ? 2 : 0) + (nightVisit ? 1 : 0);
+}
+
 export function getDiscontentTier(student) {
   const v = student?.discontent || 0;
   let t = DISCONTENT_TIERS[0];

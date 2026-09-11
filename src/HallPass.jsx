@@ -54,10 +54,10 @@ import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNod
 import { getExplorationFind } from './gameData/campusIngredients.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
-import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN, huntEncounterMods } from './gameData/lilith.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN, huntEncounterMods } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
-import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderGuyLine } from './textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderGuyLine, wrapHuntLeftover } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
@@ -106,7 +106,7 @@ import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline
 import { renderOriginStirring } from './textEngine/scenes/origin/index.js';
 import { AscensionCeremonyModal } from './components/AscensionCeremonyModal.jsx';
 import { appendMemory, pickStudentMemory, pickHallMemory } from './gameData/memory.js';
-import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, DISCONTENT_WEEKLY_DECAY, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
+import { getDiscontentTier, bumpDiscontent, forceFeedIsBetrayal, discontentRefusalChance, grievanceGain, DISCONTENT_EASE_FEED, DISCONTENT_EASE_TALK, weeklyDiscontentDecayAmount, DISCONTENT_RIPPLE, shouldConfront, dominantGrievance, AMENDS_FLOOR, GIFT_FLOOR, GIFT_COST } from './gameData/discontent.js';
 import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js';
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
@@ -1270,7 +1270,10 @@ export default function HallPass(){
       };
     }
     const result=applyCampusDeviceEncounter({
-      encounter, deviceId, modeId, student, week, exploration, labState, adminScrutiny, rng:Math.random,
+      encounter, deviceId, modeId, student, week, exploration, labState, adminScrutiny,
+      leftoverKitchen: students.some(st=>st.leftoverFedThisWeek),
+      nightIntimacy: dormState?.nightRounds?.floorIntimacy||0,
+      rng:Math.random,
     });
     if(!result.ok){ campusLog(['⚠️ Device use failed.']); return; }
     if(result.scrutinyDelta) addScrutiny(result.scrutinyDelta);
@@ -1757,6 +1760,8 @@ export default function HallPass(){
     const scrutinyTier=getScrutinyTier(adminScrutiny);
     const leftoverKitchenThisWeek=students.some(st=>st.leftoverFedThisWeek);
     const nightRoundThisWeek=students.some(st=>week&&st.lastNightVisitWeek===week);
+    const leftoverIdsThisWeek=new Set(students.filter(st=>st.leftoverFedThisWeek).map(st=>st.id));
+    const nightIdsThisWeek=new Set(students.filter(st=>week&&st.lastNightVisitWeek===week).map(st=>st.id));
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats, leftoverKitchen:leftoverKitchenThisWeek, nightRound:nightRoundThisWeek });
     const loungeSkillFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
     const hallFx=habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{});
@@ -2165,7 +2170,7 @@ export default function HallPass(){
     // stings visible residents who aren't yet comfortable being seen.
     let exposedCount=0;
     updated=updated.map(s=>{
-      let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY);
+      let disc=Math.max(0,(s.discontent||0)-weeklyDiscontentDecayAmount({ leftover:leftoverIdsThisWeek.has(s.id), nightVisit:nightIdsThisWeek.has(s.id) }));
       let mems=s.memories,mood=s.mood;
       const exposed=scrutinyTier?.id>=2&&!s.hidden&&getStage(s.lbs).id>=5&&getCorruptionTier(s.corruption||0).id===0;
       if(exposed&&Math.random()<0.5){
@@ -4001,7 +4006,7 @@ export default function HallPass(){
       setLilithHuntState({textLog:[{text:"ROOM 312 — DELIVERY",type:'location'},{text:intro,type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:true,deliveryDone:false,aibTarget:null});
       return;
     }
-    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:LILITH_DORM_TEXT(stageId),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false,aibTarget:null});
+    setLilithHuntState({textLog:[{text:"HER DORM · ROOM 312",type:'location'},{text:wrapHuntLeftover(LILITH_DORM_TEXT(stageId),lilith,week,'hunt.dorm.linger'),type:'narrative'}],currentNode:'dorm',encounter:null,deliveryMode:false,deliveryDone:false,aibTarget:null});
   };
   const openLilithAibHunt=(memberId)=>{
     const member=opposition?.aib?.members?.find(m=>m.id===memberId);
@@ -4014,7 +4019,7 @@ export default function HallPass(){
     setLilithHuntState({
       textLog:[
         {text:'HER DORM · ROOM 312',type:'location'},
-        {text:LILITH_DORM_TEXT(stageId),type:'narrative'},
+        {text:wrapHuntLeftover(LILITH_DORM_TEXT(stageId),lilith,week,'hunt.dorm.linger'),type:'narrative'},
         {text:`🩸 ${member.name} marked — find them at ${node?.label||aibTarget.location}.`,type:'system'},
       ],
       currentNode:'dorm',
@@ -4029,10 +4034,10 @@ export default function HallPass(){
     const fromNode=lilithHuntState?.currentNode||'dorm';
     const travelKey=`${fromNode}→${nodeId}`;
     const travelText=LILITH_TRAVEL[travelKey]||null;
+    const lilith=students.find(s=>s.id===LILITH_ID);
     const entries=[];
     if(travelText) entries.push({text:travelText,type:'action'});
     entries.push({text:node.label.toUpperCase(),type:'location'});
-    const lilith=students.find(s=>s.id===LILITH_ID);
     const nodeDesc=lilith?renderHuntNode(nodeId,lilith,week):node.desc;
     entries.push({text:nodeDesc||node.desc,type:'narrative'});
     setLilithHuntState(prev=>({...prev,currentNode:nodeId,encounter:null,textLog:[...prev.textLog,...entries]}));
@@ -4079,7 +4084,8 @@ export default function HallPass(){
     if(won) logs.push({text:"His resistance is gone.",type:'system'});
     else if(failed) logs.push({text:"He pulls away. Something felt wrong.",type:'system'});
     else{
-      const nextLine=getGuyLine(encounter.diff,willpower);
+      const lilith=students.find(s=>s.id===LILITH_ID);
+      const nextLine=renderGuyLine(encounter.diff,willpower,lilith,week,{alwaysWrap:false});
       logs.push({text:nextLine,type:'guy'});
     }
     const newUsedIds=[...encounter.usedReplyIds,option.id];
@@ -4110,7 +4116,7 @@ export default function HallPass(){
     const failed=newApp>=encounter.maxApprehension;
     if(won) logs.push({text:"He has no resistance left.",type:'system'});
     else if(failed) logs.push({text:"He pulls away. Something felt too strange.",type:'system'});
-    else{const nextLine=getGuyLine(encounter.diff,willpower);logs.push({text:nextLine,type:'guy'});}
+    else{const nextLine=renderGuyLine(encounter.diff,willpower,lilith,week,{alwaysWrap:false});logs.push({text:nextLine,type:'guy'});}
     const newReplies=drawReplies(encounter.usedReplyIds,lilith?.huntMarks?.[encounter.manId]||0);
     setLilithHuntState(prev=>({...prev,
       encounter:{...prev.encounter,willpower,apprehension:newApp,won,failed,mode:'idle',
@@ -4911,6 +4917,7 @@ export default function HallPass(){
       ns=processStudentGain(rest,g>0?depthGainLbs(rest,g,week,{}):0,0);
     }
     const gainLbs=Math.max(0, Math.round(ns.lbs-preLbs));
+    if(locale==='campus'&&gainLbs>0) ns=bumpOriginChain(ns);
     setStudents(prev=>prev.map(st=>st.id===studentId?ns:st));
     if(consumeInventory&&def?.id){
       setDeviceInventory(prev=>{

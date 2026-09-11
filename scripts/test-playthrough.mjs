@@ -22,7 +22,7 @@ import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import { RA_APPROACH_LIST, profileGainMult, profileScrutinyMult } from '../src/gameData/raApproaches.js';
-import { getSwimmerTier } from '../src/gameData/communityResearcher.js';
+import { weeklyDiscontentDecayAmount } from '../src/gameData/discontent.js';
 
 function sportyResidents() {
   return Object.entries(STUDENT_HOME_DORM)
@@ -239,6 +239,9 @@ const pulseNight = getMysteryTrustPulse(
 );
 assert.ok(pulseNight.progress > pulseBase.progress, 'night visit should bump mystery trust');
 assert.match(pulseNight.hint, /knock|Quiet hours|late knock/i, 'night mystery hint');
+
+assert.ok(weeklyDiscontentDecayAmount({ leftover: true }) > weeklyDiscontentDecayAmount({}), 'leftover should ease weekly discontent');
+assert.ok(weeklyDiscontentDecayAmount({ nightVisit: true }) > weeklyDiscontentDecayAmount({}), 'night visit should ease weekly discontent');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

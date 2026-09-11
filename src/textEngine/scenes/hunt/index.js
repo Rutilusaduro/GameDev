@@ -155,6 +155,44 @@ registerPool('hunt.guy.linger', [
   ] },
 ]);
 
+registerPool('hunt.dorm.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Foil on the desk. She hunts on a kitchen that already voted.',
+    'Room 312 still smells like seconds. She steps out anyway.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley heat under the corset. The hunt is dessert after a tray that counted.',
+    'Incense and leftover swell. She leaves before the door can close on either.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked hours ago. She is still that open door, walking.',
+    'Quiet-hours heat has not cooled. The hunt borrows it.',
+  ] },
+  { when: {}, text: [
+    'The corridor already knows her step and her hunger.',
+    'Room 312 lets her go. Campus will not.',
+    'Incense, cold air, appetite. She picks the third.',
+  ] },
+]);
+
+function leftoverOrNight(student, week) {
+  return !!(student?.leftoverFedThisWeek || (week && student?.lastNightVisitWeek === week));
+}
+
+function wrapHuntUnique(unique, student, week, pool, { alwaysWrap = true } = {}) {
+  if (!unique) return unique;
+  if (!student) return unique;
+  if (!alwaysWrap && !leftoverOrNight(student, week)) return unique;
+  const ctx = createContext({ subject: student, week });
+  const linger = render(`{${pool}}`, ctx)?.trim() || '';
+  return linger ? `${unique}\n\n${linger}` : unique;
+}
+
+/** Leftover / night linger on unique hunt copy. Generic linger stays off. */
+export function wrapHuntLeftover(unique, student, week, pool) {
+  return wrapHuntUnique(unique, student, week, pool, { alwaysWrap: false });
+}
+
 export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
   if (!nodeId || !student) return '';
   const key = HUNT_NODES[nodeId] ? `hunt.node.${nodeId}` : 'hunt.node.quad';
@@ -176,13 +214,12 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
 
-/** Unique guy line first; leftover / night linger wrap on the approach. */
-export function renderGuyLine(difficulty, willpower, student, week = 1) {
+/** Unique guy line first. First approach always wraps; later replies leftover/night only. */
+export function renderGuyLine(difficulty, willpower, student, week = 1, opts = {}) {
   const unique = getGuyLine(difficulty, willpower);
-  if (!student) return unique;
-  const ctx = createContext({ subject: student, week });
-  const linger = render('{hunt.guy.linger}', ctx)?.trim() || '';
-  return linger ? `${unique}\n\n${linger}` : unique;
+  return wrapHuntUnique(unique, student, week, 'hunt.guy.linger', {
+    alwaysWrap: opts.alwaysWrap !== false,
+  });
 }
 
 import './depth.js';
