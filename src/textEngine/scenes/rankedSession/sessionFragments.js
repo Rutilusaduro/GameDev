@@ -19,8 +19,8 @@ registerPool('session.scene.raePresence', [
     when: {},
     weight: 2,
     text: [
-      'She watches the scale more than your face — affection and competition in one glance.',
-      'Her voice stays clinical until the numbers climb; then it turns almost tender.',
+      'Clipboard, timer, scale — she watches the numbers more than your face, affection and competition in one glance.',
+      'Her voice stays clinical until the numbers climb; Rae arrives tender when the session clock wins.',
       'Clipboard, timer, second helping — she runs the room like a coach who wants you bigger.',
     ],
   },

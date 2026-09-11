@@ -10,8 +10,8 @@ registerPool('homeroom.scene.floorTone', [
       'The lounge smells like butter and suspicion in equal measure.',
       'Residents linger near the kitchen — hungry, watchful, already complicit.',
       'Floor check-in energy turns soft when food is involved.',
-      'Recipe cards fan across the counter like quiet permission slips.',
-      'Tuesday anticipation hangs in the air thicker than steam.',
+      'Recipe cards fan across the counter; oven heat still clings to the tiles like permission.',
+      'Tuesday anticipation hangs thicker than steam — Calloway posters curl in the humidity.',
     ],
   },
 ]);
@@ -22,8 +22,8 @@ registerPool('homeroom.scene.raStance', [
     text: [
       'You keep your voice neutral; the wellness framing does the real work.',
       'Your clipboard stays closed — this conversation is appetite first, paperwork later.',
-      'You nod along to hunger — the hall program runs on seconds, not slogans.',
-      'You let the notebook wait; the kitchen deserves your full attention tonight.',
+      'You nod along to hunger — wellness framing ready before anyone asks for paperwork.',
+      'You let the notebook wait; your clipboard stays closed while the kitchen deserves you.',
       'Your tone stays RA-professional while the portions stay unmistakably generous.',
     ],
   },

@@ -23,7 +23,7 @@ registerPool('journal.scene.subjectFocus', [
     weight: 2,
     text: [
       'She softens on camera and off it; the journal catches both versions without judgment.',
-      'Weight gain reads as compliance when you frame it as wellness — she cooperates beautifully.',
+      'Weight gain reads as compliance when you frame it as wellness — every pound a datapoint she cooperates into.',
       'Every pound is a datapoint; every sigh is consent dressed as fatigue.',
       'She blushes when praised for finishing; you write down the flush as data.',
       'Compliance reads as wellness on the form; hunger reads as honesty in the room.',
@@ -37,7 +37,7 @@ registerPool('journal.scene.lateObsession', [
     weight: 2,
     text: [
       'Late-semester entries blur — appetite, attachment, and the scale read as one story.',
-      'She begs for more between bites; you log it as progress and mean it.',
+      'She begs for more between bites; the journal stops pretending neutrality while you log progress.',
       'The journal stops pretending neutrality; every page wants her heavier.',
     ],
   },

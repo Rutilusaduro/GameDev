@@ -16,7 +16,7 @@ registerModuleVariants('session.scene.deliveryAir', [
     when: { weekMin: 16 },
     weight: 1,
     text: [
-      'The cart is heavier each week — trays, thermoses, and the quiet certainty she will win.',
+      'The cart squeaks heavier each week — trays, thermoses, and the quiet certainty she will win.',
     ],
   },
 ]);

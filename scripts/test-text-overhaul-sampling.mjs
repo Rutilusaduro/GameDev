@@ -15,10 +15,10 @@ const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
 const brittany = { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 240 };
 
 const MODULAR_MARKERS = [
-  /smells like food|Ambient noise|Fabric strains|Every choice tonight|Hunger hums/i,
+  /smells like food|Ambient noise|Fabric strains|Every choice tonight|Hunger hums|Floor heat and cooking scent/i,
   /yeasty warmth|Fat is what makes a home|Steam and sweetness|Table groans under every favorite/i,
   /Oven heat|Calloway|wide tables groan|clipboard stays closed/i,
-  /Cotton candy|Mary Jane stands taller|Pride sits on her hips|Crowd noise swells|Phones rise|Hay-scent|co-conspirator|funnel-cake/i,
+  /Cotton candy|Mary Jane stands taller|Pride sits on her hips|Crowd noise swells|Phones rise|Hay-scent|co-conspirator|funnel[- ]cake/i,
   /Clipboard margins|Late-semester entries|datapoint|journal stops pretending/i,
   /cart squeaks|Rae arrives|Clipboard, timer|session clock starts/i,
   /butter and suspicion|wellness framing|Floor check-in energy/i,
@@ -100,7 +100,7 @@ for (let i = 0; i < total; i += 1) {
 }
 
 const ratio = modularHits / total;
-assert.ok(ratio >= 0.75, `expected >=75% modular slot hits at week ${week}, got ${(ratio * 100).toFixed(0)}% (${modularHits}/${total})`);
+assert.ok(ratio >= 0.9, `expected >=90% modular slot hits at week ${week}, got ${(ratio * 100).toFixed(0)}% (${modularHits}/${total})`);
 
 const actKey = Object.keys(HOMEROOM_GROUP_ACTIVITIES).find(
   (k) => (HOMEROOM_GROUP_ACTIVITIES[k].phases || []).length > 0,

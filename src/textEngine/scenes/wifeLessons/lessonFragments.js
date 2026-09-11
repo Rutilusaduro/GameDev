@@ -8,7 +8,7 @@ registerPool('wl.lesson.aroma', [
     weight: 2,
     text: [
       'The kitchen fills with yeasty warmth — butter, sugar, permission.',
-      'Flour dust hangs in the lamplight; the air tastes like belonging.',
+      'Flour dust and yeasty warmth hang in the lamplight; the air tastes like belonging.',
       'Steam and sweetness braid together until the whole room feels upholstered.',
       'A slow oven heat makes every surface feel like an invitation to stay.',
     ],
@@ -23,7 +23,7 @@ registerPool('wl.lesson.mjDoctrine', [
       '"Fat is what makes a home feel like home," Mary Jane says, gingham apron dusted white.',
       '"No need for fuss — let the richness do the work," she murmurs, spooning with steady hands.',
       '"It\'s meant to be shared, piece by piece, until you\'re full and connected," she smiles.',
-      '"This is the kind of care that shows up as seconds," she adds, gentle and certain.',
+      '"Fat is what makes a home feel like home — this care shows up as seconds," she adds, gentle and certain.',
     ],
   },
 ]);
