@@ -292,6 +292,8 @@ import './researchJournal/depth.js';
 import './researchJournal/nadiaDepth.js';
 import './researchJournal/swimmerDepth.js';
 import './scrutiny/index.js';
+import './scrutiny/scrutinyLateModularFragments.js';
+import './pharmacist/pharmacistCultModularFragments.js';
 import './wifeLessons/index.js';
 import './wifeLessons/lessonFragments.js';
 import './wifeLessons/talkFragments.js';

@@ -659,4 +659,43 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(salonPhaseHit, 'salon_appetit s0.p0 modular @ w24');
 
+let bri93Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Bri.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72480 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Bri arrives efficient and already eating — conference is a snack break with grades attached\.$/.test(line), 'pass-93 Bri intro bridge alone @ w24');
+  if (line.length > 55) bri93Hit = true;
+}
+assert.ok(bri93Hit, 'pass-93 Bri intro modular @ w24');
+
+let fairJudgingHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{fair.day.judging}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72490 + s,
+    globals: { featureId: 'state_fair_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Judges squint through grease-glow — MJ’s smile says the kitchen trained for this spotlight\.$/.test(line), 'pass-93 fair judging bridge alone @ w24');
+  if (line.length > 72 || /judgingBeat|crowdBeat|mjPride/i.test(line)) fairJudgingHit = true;
+}
+assert.ok(fairJudgingHit, 'pass-93 fair.day.judging modular @ w24');
+
+let blueprint93Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{hall.blueprint.purchase}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72500 + s,
+    globals: { hallAmbiancePeakMin: 42 },
+  }))?.trim() || '';
+  assert.ok(!/^Blueprint line fills in — the floor exhales like a body getting room to spread\.$/.test(line), 'pass-93 blueprint purchase bridge alone @ w24');
+  if (/construction|permission|labeled doorway|Hall Ambiance/i.test(line)) blueprint93Hit = true;
+}
+assert.ok(blueprint93Hit, 'pass-93 hall.blueprint.purchase modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

@@ -54,6 +54,24 @@ registerModuleVariants('campus.sighting', [
 
 const TRAVEL_LATE = '{campus.explore.lateFrame|prefix:} {campusEvent.scene.hallTone|prefix: }';
 
+registerModuleVariants('campus.exploration.reward', [
+  {
+    when: { hallAmbiancePeakMin: [40], weekMin: 20 },
+    weight: 6,
+    priority: 5,
+    text: [
+      'You find more than crumbs — the hall’s warmth seems to follow you off-floor.',
+      FIND_LATE,
+    ],
+  },
+  {
+    when: { hallAmbiancePeakMin: [30], weekMin: 12 },
+    weight: 4,
+    priority: 4,
+    text: [FIND_LATE],
+  },
+]);
+
 registerModuleVariants('campus.travel', [
   {
     when: { weekMin: 20 },

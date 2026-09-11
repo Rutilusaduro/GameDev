@@ -91,3 +91,21 @@ for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
     ]);
   }
 }
+
+registerModuleVariants('homeroom.bridge.opening', [
+  {
+    when: { weekMin: 20 },
+    weight: 5,
+    priority: 5,
+    text: [INTRO_SKELETON],
+  },
+  {
+    when: { weekMin: 12 },
+    weight: 3,
+    priority: 3,
+    text: [
+      INTRO_SKELETON,
+      'Homeroom smells like butter and policy — your residents arrive already hungry for the lecture.',
+    ],
+  },
+]);
