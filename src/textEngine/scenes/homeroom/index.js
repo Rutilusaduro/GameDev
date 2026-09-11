@@ -9,10 +9,28 @@ import { homeroomTailBeat } from '../evolved/proseTails.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/evolvedForms.js';
 import './batchBakerPools.js';
 
+const SAMPLE_HOMEROOM_DAISY = { id: 13, name: 'Daisy', lbs: 210, archetype: 'homeroom_queen' };
+
+function resolveHomeroomProse(prose) {
+  if (typeof prose === 'function') {
+    try {
+      return String(prose(SAMPLE_HOMEROOM_DAISY)).trim();
+    } catch {
+      try {
+        return String(prose()).trim();
+      } catch {
+        return '';
+      }
+    }
+  }
+  return (prose || '').trim();
+}
+
 function registerHomeroomBeat(poolKey, prose) {
-  if (!prose?.trim()) return;
+  const text = resolveHomeroomProse(prose);
+  if (!text) return;
   const bodyKey = `${poolKey}.body`;
-  registerDecomposedPool(bodyKey, prose);
+  registerDecomposedPool(bodyKey, text);
   registerPool(poolKey, [
     {
       when: {},
@@ -20,7 +38,7 @@ function registerHomeroomBeat(poolKey, prose) {
       text: [
         (ctx) => {
           const line = render(`{${bodyKey}}`, ctx)?.trim();
-          return line && !line.includes('{unresolved}') ? line : prose.trim();
+          return line && !line.includes('{unresolved}') ? line : text;
         },
         homeroomTailBeat(poolKey, 0),
         homeroomTailBeat(poolKey, 1),
@@ -32,9 +50,7 @@ function registerHomeroomBeat(poolKey, prose) {
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   if (ev.text) registerHomeroomBeat(`homeroom.conference.${key}.intro`, ev.text);
   for (const ch of ev.choices || []) {
-    if (typeof ch.result === 'string' && ch.result) {
-      registerHomeroomBeat(`homeroom.conference.${key}.${ch.id}`, ch.result);
-    }
+    if (ch.result) registerHomeroomBeat(`homeroom.conference.${key}.${ch.id}`, ch.result);
   }
 }
 
@@ -43,9 +59,7 @@ for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
   phases.forEach((phase, pi) => {
     if (phase.text) registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}`, phase.text);
     for (const ch of phase.choices || []) {
-      if (typeof ch.result === 'string' && ch.result) {
-        registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}.${ch.id}`, ch.result);
-      }
+      if (ch.result) registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}.${ch.id}`, ch.result);
     }
   });
 }

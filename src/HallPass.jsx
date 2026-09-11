@@ -3052,8 +3052,8 @@ export default function HallPass(){
       choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
       hasNextPhase=phaseIdx+1<phases.length;
     }
-    const resultText=typeof choice.result==='function'?choice.result():choice.result;
     const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
+    const resultText=typeof choice.result==='function'?choice.result(daisy):choice.result;
     const poolKey=type==='conference'
       ?homeroomConferencePoolKey(key,choiceId)
       :homeroomActivityPoolKey(type,phaseIdx,choiceId);
@@ -8720,11 +8720,14 @@ export default function HallPass(){
               accentColor="#2a7830"
               onPinBeat={(pin) => pinSceneForStudent(activeNarrativeCopy.student.id, pin)}
               {...sceneStageShared}
-              footer={activeNarrativeCopy.event.gain[1]>0 ? (
+              footer={activeNarrativeCopy.event.gain[1]>0 ? (() => {
+                const [lo, hi] = narrativeEventGainBounds(activeNarrativeCopy.event.gain);
+                return (
                 <p style={{ color: '#f09050', fontSize: 12, marginTop: 10 }}>
-                  This event may result in {activeNarrativeCopy.event.gain[0]}–{activeNarrativeCopy.event.gain[1]} additional lbs gained.
+                  This event may result in {lo}–{hi} additional lbs gained.
                 </p>
-              ) : null}
+                );
+              })() : null}
               choices={[
                 { id: 'continue', label: 'Continue →', intent: 'press', onClick: () => resolveNarrative(activeNarrativeCopy.event, activeNarrativeCopy.student, true) },
                 { id: 'dismiss', label: 'Dismiss', intent: 'wait', onClick: () => { push(`📖 ${activeNarrativeCopy.event.title} — dismissed.`); setActiveEvent(null); } },

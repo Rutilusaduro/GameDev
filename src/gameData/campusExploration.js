@@ -13,11 +13,8 @@ import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverE
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
 import { campusNodeToLocale } from './textContext.js';
-import {
-  depthExplorationFindChance,
-  depthExplorationIngredientGrant,
-  depthPassiveTrustDrip,
-} from './mechanicsDepthLayer.js';
+import { depthExplorationFindChance, depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
+import { scaleExplorationFindGrants } from './campusIngredients.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 import { formatSecretDiscoverLine } from '../textEngine/scenes/campus/secrets.js';
 
@@ -173,7 +170,7 @@ export function buildExplorationContext({
 /** Roll events when moving between nodes or looking around. */
 function applyFindToEffects(find, effects) {
   if (!find?.grants) return;
-  const scaled = depthExplorationIngredientGrant(find.grants);
+  const scaled = scaleExplorationFindGrants(find.grants);
   if (scaled.foodId) effects.foodGrant = scaled.foodId;
   const ing = { ...scaled };
   delete ing.foodId;
@@ -269,7 +266,7 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (find) {
       const prose = explorationFindProse(find, travelCtx);
       if (prose) lines.push(`🎒 ${prose}`);
-      lines.push(`   + ${formatExplorationGrant(depthExplorationIngredientGrant(find.grants))}`);
+      lines.push(`   + ${formatExplorationGrant(scaleExplorationFindGrants(find.grants))}`);
       applyFindToEffects(find, effects);
     }
   }
@@ -327,7 +324,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
         if (find) {
           const prose = explorationFindProse(find, travelCtx);
           if (prose) lines.push(`🎒 ${prose}`);
-          lines.push(`   + ${find.label}: ${formatExplorationGrant(depthExplorationIngredientGrant(find.grants))}`);
+          lines.push(`   + ${find.label}: ${formatExplorationGrant(scaleExplorationFindGrants(find.grants))}`);
           applyFindToEffects(find, effects);
         }
       }
@@ -348,7 +345,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
     if (find) {
       const prose = explorationFindProse(find, travelCtx);
       if (prose) lines.push(`🎒 ${prose}`);
-      lines.push(`   + ${formatExplorationGrant(depthExplorationIngredientGrant(find.grants))}`);
+      lines.push(`   + ${formatExplorationGrant(scaleExplorationFindGrants(find.grants))}`);
       applyFindToEffects(find, effects);
     }
   } else {

@@ -43,6 +43,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'networkState', file: 'networkState.js' },
   { id: 'cultivator', file: 'cultivator.js' },
   { id: 'campusExploration', file: 'campusExploration.js' },
+  { id: 'campusIngredients', file: 'campusIngredients.js' },
   { id: 'performanceContract', file: 'performanceContract.js' },
   { id: 'pharmacistCampus', file: 'pharmacistCampus.js' },
   { id: 'immobilityArrival', file: 'immobilityArrival.js' },
