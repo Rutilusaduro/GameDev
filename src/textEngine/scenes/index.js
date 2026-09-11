@@ -99,6 +99,8 @@ import './raPivotProseDepthPass64.js';
 import './raPivotProseDepthPass65.js';
 import './raPivotProseDepthPass66.js';
 import './raPivotProseDepthPass67.js';
+import './raPivotProseDepthPass68.js';
+import './fairQueen/index.js';
 import './memory/index.js';
 import './memory/depth.js';
 import './gossip/index.js';

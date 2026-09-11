@@ -6316,7 +6316,7 @@ export default function HallPass(){
     // gains
     const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
     const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
-    const mjGain=rnd(mjLo,mjHi), cGain=rnd(cLo,cHi);
+    const mjGain=scaleEvolvedEventLbs(rnd(mjLo,mjHi)), cGain=scaleEvolvedEventLbs(rnd(cLo,cHi));
     processStudentGain(mj,mjGain,3);
     if(collab.id!==mj.id) processStudentGain(collab,cGain,2);
     push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
@@ -6374,8 +6374,8 @@ export default function HallPass(){
       const prideTier=getFairPrideTier(fairTrainingState.fairPride).label;
       const bonus=FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0;
       const baseGain=choice===1?sc.gainA:sc.gainB;
-      const gain=Math.round(baseGain*(1+bonus));
-      const rel=choice===1?sc.relA:sc.relB;
+      const gain=scaleEvolvedEventLbs(Math.round(baseGain*(1+bonus)));
+      const rel=scaleEvolvedEventRel(choice===1?sc.relA:sc.relB);
       return {...prev,weighInChoice:choice,
         weighInResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
         weighInGain:gain,weighInRel:rel,totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
@@ -6395,8 +6395,8 @@ export default function HallPass(){
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
       const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
-      const gain=choice===1?sc.gainA:sc.gainB;
-      const rel=choice===1?sc.relA:sc.relB;
+      const gain=scaleEvolvedEventLbs(choice===1?sc.gainA:sc.gainB);
+      const rel=scaleEvolvedEventRel(choice===1?sc.relA:sc.relB);
       return {...prev,afterpartyChoice:choice,
         afterpartyResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`,
         totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
@@ -9432,10 +9432,10 @@ export default function HallPass(){
       {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
-      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
+      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} week={week} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
-      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled}/>}
+      {fairDayState&&<FairDayModal fd={fairDayState} students={students} week={week} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
       {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} soundEnabled={soundEnabled}/>}

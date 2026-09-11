@@ -6,11 +6,16 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
+import { resolveFairPlaceholder, resolveFairDayBlock } from '../textEngine/scenes/fairQueen/index.js';
 
-export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
+export function FairTrainingHub({ ft, students, ap, week = 1, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ft.open, ft.view, ft.cycleNum]);
   const mj=students.find(st=>st.id===ft.mjStudentId);
   if(!mj) return null;
+  const partner=ft.pendingCollab?students.find(st=>st.evolvedForm===FAIR_TRAINING_CONFIG.collaborators[ft.pendingCollab]?.evolvedForm):null;
+  const fairExtra={ partnerName: partner?.name, fairCollab: ft.pendingCollab };
+  const sessionProse=resolveFairPlaceholder(ft.sessionSceneTag,mj,week,fairExtra);
+  const boostProse=resolveFairPlaceholder(ft.sessionBoostSummary,mj,week,fairExtra);
   const fairOrange='#C8860A';
   const tier=getFairPrideTier(ft.fairPride);
   const fairReady=ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle;
@@ -65,13 +70,13 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
         {ft.view==='session'&&(
           <>
             <div style={{fontSize:9,letterSpacing:3,color:fairOrange,marginBottom:6}}>TRAINING SESSION — {ft.pendingCollab}</div>
-            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{ft.sessionSceneTag}</div>
+            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{sessionProse}</div>
             {ft.pendingRecruits&&(
               <div style={{...C.infoBox("rgba(20,0,20,0.5)"),marginBottom:10,fontSize:10,color:"#b080b0"}}>
                 Lilith's recruits: {ft.pendingRecruits.map((r)=>`a stage-${r.stage} ${r.bodyType.replace('_',' ')} woman`).join(', ')}
               </div>
             )}
-            <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060",fontStyle:"italic"}}>{ft.sessionBoostSummary}</div>
+            <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060",fontStyle:"italic"}}>{boostProse}</div>
             <div style={{...C.infoBox("rgba(10,8,0,0.6)"),marginBottom:10,fontSize:10,color:"#907050"}}>
               📸 Vignette pinned to the Trophy Wall: <span style={{fontStyle:"italic",color:"#c0a070"}}>{ft.sessionPhotoTag}</span>
             </div>
@@ -104,13 +109,14 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   );
 }
 
-export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true }){
+export function FairDayModal({ fd, students, week = 1, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, fd.studentId, fd.phase, fd.weighInChoice, fd.afterpartyChoice]);
   const s=students.find(st=>st.id===fd.studentId);
   if(!s) return null;
   const fairOrange='#C8860A';
   const key=`${fd.stageIdx}_${fd.influenceKey}`;
   const tier=getFairPrideTier(fairPride);
+  const fairExtra={ fairStageIdx: fd.stageIdx, fairInfluence: fd.influenceKey };
   const dismissFairDay=()=>{ playHallPassSound('click', soundEnabled); closeFairDay(); };
   return(
     <ModalOverlay onClose={dismissFairDay} dismissible={false} soundEnabled={soundEnabled}>
@@ -128,14 +134,14 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
           return(
             <>
               {!fd.weighInChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{resolveFairPlaceholder(sc.open,s,week,fairExtra)}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
                   <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
                 </div>
               </>}
               {fd.weighInChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{fd.weighInResultText}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{resolveFairDayBlock(fd.weighInResultText,s,week,fairExtra)}</div>
                 <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060"}}>
                   The scale reads <b style={{color:fairOrange}}>+{fd.weighInGain} lbs</b>{(FAIR_TRAINING_CONFIG.weighInBonus[tier.label]||0)>0&&<span> (Fair Pride bonus +{Math.round((FAIR_TRAINING_CONFIG.weighInBonus[tier.label])*100)}%)</span>} · +{fd.weighInRel} rel
                 </div>
@@ -147,7 +153,7 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
 
         {fd.phase==='judging'&&(
           <>
-            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{FAIR_DAY_SCENES.judging[key]}</div>
+            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{resolveFairPlaceholder(FAIR_DAY_SCENES.judging[key],s,week,fairExtra)}</div>
             <button style={{...C.btn(fairOrange),width:"100%"}} onClick={advanceFairDayPhase}>To the Afterparty →</button>
           </>
         )}
@@ -157,14 +163,14 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
           return(
             <>
               {!fd.afterpartyChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{resolveFairPlaceholder(sc.open,s,week,fairExtra)}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
                   <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>
                 </div>
               </>}
               {fd.afterpartyChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{fd.afterpartyResultText}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{resolveFairDayBlock(fd.afterpartyResultText,s,week,fairExtra)}</div>
                 <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080",textAlign:"center"}}>
                   <div style={{flex:1}}><div style={{color:fairOrange,fontWeight:"bold",fontSize:14}}>+{Math.round(fd.totalGain)} lbs</div><div style={{fontSize:10,color:"#907050"}}>total gained</div></div>
                   <div style={{flex:1}}><div style={{color:"#a08060",fontWeight:"bold",fontSize:14}}>+{fd.relBonus}</div><div style={{fontSize:10,color:"#907050"}}>relationship</div></div>
