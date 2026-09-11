@@ -3917,7 +3917,7 @@ export default function HallPass(){
       // Complete hangout — apply unlock and decrement days
       const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
       const bonus=vignette.gainBonus||0;
-      const leftoverRel=(tiffany?.leftoverFedThisWeek?1:0)+(week&&tiffany?.lastNightVisitWeek===week?1:0);
+      const leftoverRel=leftoverNightGainBump(tiffany,week);
       const relBonus=(vignette.relBonus||0)+leftoverRel;
       if(tiffany){
         setStudents(prev=>prev.map(s=>s.id===tiffany.id?bumpOriginChain(processStudentGain(s,depthGainLbs(s,bonus,week,{}),relBonus)):s));
@@ -3939,7 +3939,9 @@ export default function HallPass(){
   const beginFeast=()=>{
     if(!chapterHostessState) return;
     const{stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille}=chapterHostessState;
-    const{log,tiffanyGain,sisterGainMap,camilleGain,relGain}=generateFeastLog(stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille);
+    const leftoverKitchen=students.some(st=>st.leftoverFedThisWeek);
+    const nightRound=students.some(st=>week&&st.lastNightVisitWeek===week);
+    const{log,tiffanyGain,sisterGainMap,camilleGain,relGain}=generateFeastLog(stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille,{leftoverKitchen,nightRound});
     const finalLog=(stageIdx>=1&&!lilithClueFound)?[...log,{text:CLUE_FEAST_LINE,type:'scene'}]:log;
     setChapterHostessState(prev=>({...prev,feastPrepOpen:false,feastLogOpen:true,feastLog:finalLog,feastGainTotal:tiffanyGain,feastRelTotal:relGain,feastDone:false,pendingSisterGains:sisterGainMap,pendingCamilleGain:camilleGain}));
   };
@@ -3947,13 +3949,13 @@ export default function HallPass(){
     if(!chapterHostessState) return;
     const{stageIdx,feastGainTotal,feastRelTotal,pendingSisterGains,pendingCamilleGain,sisters,camille}=chapterHostessState;
     const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
+    const leftoverBump=leftoverNightGainBump(tiffany,week);
     if(tiffany){
-      setStudents(prev=>prev.map(s=>s.id===tiffany.id?bumpOriginChain(processStudentGain(s,depthGainLbs(s,feastGainTotal,week,{}),feastRelTotal)):s));
-      push(`✦ ${tiffany.name} — Wednesday Feast: +${feastGainTotal} lbs · +${feastRelTotal} rel`);
+      setStudents(prev=>prev.map(s=>s.id===tiffany.id?bumpOriginChain(processStudentGain(s,depthGainLbs(s,feastGainTotal,week,{}),feastRelTotal+leftoverBump)):s));
+      push(`✦ ${tiffany.name} — Wednesday Feast: +${feastGainTotal} lbs · +${feastRelTotal+leftoverBump} rel`);
     }
     const newStageIdx=Math.min(5,stageIdx+1);
     const newPrepDays=newStageIdx<6?3:0;
-    const leftoverBump=leftoverNightGainBump(tiffany,week);
     const newSisters=sisters.map(sis=>{
       const base=pendingSisterGains?.[sis.name]||0;
       return {...sis,lbs:sis.lbs+base+(base>0?leftoverBump:0)};
@@ -4264,7 +4266,8 @@ export default function HallPass(){
       const renee=students.find(st=>st.id===s.id)||s;
       const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
       const digestW=DIGEST_WEEKS[cs.testerStageId]||2;
-      const vignette=getEmergencyVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[emergency harvest]';
+      const cultOpts={ leftoverFed:!!renee?.leftoverFedThisWeek, nightVisit:!!(week&&renee?.lastNightVisitWeek===week) };
+      const vignette=getEmergencyVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName,week,cultOpts)||'[emergency harvest]';
       const _bSid=getStage(renee.lbs).id;
       const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);
       const gVignette=getGrowthVignette(_bSid,hGain,_stagesJumped);
@@ -4298,7 +4301,8 @@ export default function HallPass(){
     setAp(a=>a-1);
     const renee=students.find(st=>st.id===s.id)||s;
     const hGain=HARVEST_GAIN[cs.testerStageId]||HARVEST_GAIN[6];
-    const vignette=getPlannedVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName)||'[planned harvest]';
+    const cultOpts={ leftoverFed:!!renee?.leftoverFedThisWeek, nightVisit:!!(week&&renee?.lastNightVisitWeek===week) };
+    const vignette=getPlannedVignette(getStage(renee.lbs).id,cs.testerStageId,cs.testerName,week,cultOpts)||'[planned harvest]';
     const _bSid=getStage(renee.lbs).id;
     const _stagesJumped=Math.max(1,getStage(renee.lbs+hGain).id-_bSid);
     const gVignette=getGrowthVignette(_bSid,hGain,_stagesJumped);
@@ -9714,7 +9718,7 @@ export default function HallPass(){
       {challengeState&&<CampusChallengeModal challengeState={challengeState} processStudentGain={processStudentGain} push={push} setChallengeState={setChallengeState} setStudents={setStudents} students={students} week={week} soundEnabled={soundEnabled}/>}
 
       {/* ── CHAPTER HOSTESS — STUDENT PICKER / HANGOUT MODAL ── */}
-      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled}/>}
+      {chapterHostessState?.hangoutOpen&&<ChapterHostessHangoutModal chapterHostessState={chapterHostessState} students={students} openHostessHangout={openHostessHangout} setChapterHostessState={setChapterHostessState} makeHostessHangoutChoice={makeHostessHangoutChoice} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── CHAPTER HOSTESS — FEAST PREP MODAL ── */}
       {chapterHostessState?.feastPrepOpen&&<ChapterHostessFeastPrepModal chapterHostessState={chapterHostessState} beginFeast={beginFeast} setChapterHostessState={setChapterHostessState} soundEnabled={soundEnabled}/>}

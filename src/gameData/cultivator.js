@@ -162,12 +162,12 @@ export const EATING_REACTIONS = [
 // ── VIGNETTE RENDERS (text engine) ─────────────────────────────────────────
 // Prose lives in src/textEngine/scenes/cultivator/vignettes.js (DEPTH_PLAN §9d).
 
-export function getPlannedVignette(reneeStageId, testerStageId, testerName) {
-  return renderCultivatorHarvestPlanned(reneeStageId, testerStageId, testerName);
+export function getPlannedVignette(reneeStageId, testerStageId, testerName, week = 1, extras = {}) {
+  return renderCultivatorHarvestPlanned(reneeStageId, testerStageId, testerName, week, extras);
 }
 
-export function getEmergencyVignette(reneeStageId, testerStageId, testerName) {
-  return renderCultivatorHarvestEmergency(reneeStageId, testerStageId, testerName);
+export function getEmergencyVignette(reneeStageId, testerStageId, testerName, week = 1, extras = {}) {
+  return renderCultivatorHarvestEmergency(reneeStageId, testerStageId, testerName, week, extras);
 }
 
 export function getGrowthVignette(beforeStageId, gain, stagesJumped) {

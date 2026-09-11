@@ -312,7 +312,7 @@ function camilleFeastGain(stageIdx, menuTier) {
   return Math.max(3, Math.round(3 + stageIdx * 1.2 + menuTier * 0.8));
 }
 
-export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, sisters, camille) {
+export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, sisters, camille, extras = {}) {
   const log = [];
   const clampStage = Math.min(5, stageIdx);
   // Clamp tier indices to valid array bounds
@@ -323,6 +323,11 @@ export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, 
 
   // Opening
   log.push({ text: ATMOSPHERE_OPENINGS[atmoIdx](sisters), type: "scene" });
+  if (extras.leftoverKitchen) {
+    log.push({ text: 'Galley leftover trays found the sideboard before first course. Nobody sent them back.', type: 'scene' });
+  } else if (extras.nightRound) {
+    log.push({ text: 'Someone mentions the after-hours knock like it was a rehearsal for this table.', type: 'scene' });
+  }
 
   // Sister arrivals
   const arriveSentences = sisters.map((sis, i) => {

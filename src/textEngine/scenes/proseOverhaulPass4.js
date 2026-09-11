@@ -551,3 +551,18 @@ oncePool('opposition.linger', [
   ] },
 ]);
 
+oncePool('hostess.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley surplus still in Tiffany. The planning hour uses that same open appetite.',
+    'Last night\'s tray sits under this feast talk like a second guest list.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. Daylight planning is the public version of that warmth.',
+  ] },
+  { when: {}, text: [
+    'The chapter calendar keeps eating. She lets it.',
+    'Feast talk leaves her warmer than the notes.',
+    'She palms her middle like a guest count.',
+  ] },
+]);
+

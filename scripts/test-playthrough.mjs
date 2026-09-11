@@ -27,6 +27,7 @@ import { buildTextContext } from '../src/gameData/textContext.js';
 import { RA_APPROACH_LIST, profileGainMult, profileScrutinyMult } from '../src/gameData/raApproaches.js';
 import { getSwimmerTier } from '../src/gameData/communityResearcher.js';
 import { weeklyDiscontentDecayAmount } from '../src/gameData/discontent.js';
+import { generateFeastLog, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../src/gameData/chapterHostess.js';
 
 function sportyResidents() {
   return Object.entries(STUDENT_HOME_DORM)
@@ -293,6 +294,16 @@ assert.match(
   weeklyScrutinyNudge(80, 2, {}, { leftoverKitchen: true }).message,
   /Leftover trays/,
   'leftover kitchen should thicken scrutiny whisper',
+);
+const feastBase = generateFeastLog(0, 0, 0, 0, SISTER_INITIAL_STATE, { lbs: CAMILLE_INITIAL_LBS });
+const feastLeftover = generateFeastLog(0, 0, 0, 0, SISTER_INITIAL_STATE, { lbs: CAMILLE_INITIAL_LBS }, { leftoverKitchen: true });
+assert.ok(
+  feastLeftover.log.some((line) => /leftover trays/i.test(line.text)),
+  'leftover kitchen should land a feast-log leftover scene',
+);
+assert.ok(
+  !feastBase.log.some((line) => /leftover trays/i.test(line.text)),
+  'plain feast log should not mention leftover trays',
 );
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');

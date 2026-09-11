@@ -242,20 +242,25 @@ function harvestPoolKey(kind, reneeStageId, testerStageId) {
 
 function renderPool(key, testerName, week = 1, extra = {}) {
   if (!key || !hasModule(key)) return '';
+  const leftoverFed = !!extra.leftoverFed;
+  const nightVisit = !!extra.nightVisit;
   const ctx = createContext({
     subject: testerSubject(testerName),
     week,
-    globals: { featureId: 'cultivator', ...extra },
+    globals: { featureId: 'cultivator', leftoverFed, nightVisit, ...extra },
   });
-  return render(`{${key}}`, ctx)?.trim() || '';
+  const base = render(`{${key}}`, ctx)?.trim() || '';
+  if (!base || (!leftoverFed && !nightVisit)) return base;
+  const linger = render('{cultivator.linger}', ctx)?.trim() || '';
+  return linger ? `${base}\n\n${linger}` : base;
 }
 
-export function renderCultivatorHarvestPlanned(reneeStageId, testerStageId, testerName, week = 1) {
-  return renderPool(harvestPoolKey('planned', reneeStageId, testerStageId), testerName, week);
+export function renderCultivatorHarvestPlanned(reneeStageId, testerStageId, testerName, week = 1, extras = {}) {
+  return renderPool(harvestPoolKey('planned', reneeStageId, testerStageId), testerName, week, extras);
 }
 
-export function renderCultivatorHarvestEmergency(reneeStageId, testerStageId, testerName, week = 1) {
-  return renderPool(harvestPoolKey('emergency', reneeStageId, testerStageId), testerName, week);
+export function renderCultivatorHarvestEmergency(reneeStageId, testerStageId, testerName, week = 1, extras = {}) {
+  return renderPool(harvestPoolKey('emergency', reneeStageId, testerStageId), testerName, week, extras);
 }
 
 export function renderCultivatorStageUp(stageId, testerName, week = 1) {
