@@ -1,4 +1,5 @@
 import { getStage } from './stages.js';
+import { depthActivityGainBonus, depthRelBonus } from './mechanicsDepthLayer.js';
 import { SALON_EVOLVED_EVENTS } from './chloeSalon.js';
 import { GALLERY_EVOLVED_EVENTS } from './fionaGallery.js';
 import {
@@ -767,6 +768,21 @@ export const EVOLVED_ACTIVITY_META = {
   pharmacist:          { label:"🧪 Run Synthesis Session",  apCost:1, gainRange:[2,6],  relBonus:10 },
   machine_goddess:     { label:"🔧 Open The Lab",           apCost:1, gainRange:[2,6],  relBonus:10 },
 };
+
+/** Depth-scaled evolved activity payouts (gain range + relationship). */
+export function getEvolvedActivityMeta(formId) {
+  const raw = EVOLVED_ACTIVITY_META[formId];
+  if (!raw) return raw;
+  const meta = { ...raw };
+  if (meta.gainRange?.length === 2) {
+    meta.gainRange = [
+      depthActivityGainBonus(meta.gainRange[0]),
+      depthActivityGainBonus(meta.gainRange[1]),
+    ];
+  }
+  if (meta.relBonus) meta.relBonus = depthRelBonus(meta.relBonus);
+  return meta;
+}
 
 export const EVOLVED_EVENTS = {
   sumo:[

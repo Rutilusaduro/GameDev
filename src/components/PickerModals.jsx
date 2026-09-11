@@ -3,7 +3,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { COLLAB_CONTENT_CREATOR_ARCHETYPES } from '../gameData/miniGames.js';
-import { EVOLVED_ACTIVITY_META, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
+import { getEvolvedActivityMeta, EVOLVED_EVENTS } from '../gameData/evolvedForms.js';
 import { renderNadiaJournalEntry, renderFeederJournalEntry } from '../textEngine/scenes/researchJournal/index.js';
 import { INTIMACY_CONTEXTUAL, INTIMACY_SCENES } from '../gameData/intimacy.js';
 import { intimacySceneAllowed, choiceCanPin } from '../gameData/intimacyGating.js';
@@ -130,7 +130,7 @@ export function ResearchSubjectPicker({ researchSubjectPicker, setAp, setEvolved
                     setResearchSubjectPicker(null);
                     const stageIdx=Math.max(0,Math.min(5,getStage(nadia.lbs).id-5));
                     const evDef=EVOLVED_EVENTS['psych_researcher']?.[stageIdx];
-                    const meta=EVOLVED_ACTIVITY_META['psych_researcher'];
+                    const meta=getEvolvedActivityMeta('psych_researcher');
                     if(evDef){
                       setAp(a=>a-(meta?.apCost||1));
                       setEvolvedEventState({studentId:nadia.id,formId:'psych_researcher',stageIdx,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});

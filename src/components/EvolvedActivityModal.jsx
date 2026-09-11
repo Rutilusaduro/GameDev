@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
-import { EVOLVED_ACTIVITY_META } from '../gameData/evolvedForms.js';
+import { getEvolvedActivityMeta } from '../gameData/evolvedForms.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
 export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
@@ -10,7 +10,7 @@ export function EvolvedActivityModal({ modal, onClose, soundEnabled = true }) {
   }, [soundEnabled, modal?.student?.id, modal?.student?.evolvedForm]);
 
   if (!modal) return null;
-  const meta = EVOLVED_ACTIVITY_META[modal.student?.evolvedForm] || {};
+  const meta = getEvolvedActivityMeta(modal.student?.evolvedForm) || {};
   const label = meta.label || 'Activity';
 
   const dismiss = () => { playHallPassSound('click', soundEnabled); onClose?.(); };

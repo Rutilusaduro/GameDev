@@ -5,7 +5,8 @@ import { recordDeviceUse, getDeviceBoardMods } from './inventionUpgrades.js';
 import { applyDeviceEffect, rollMalfunction } from './deviceEffects.js';
 import { getDependenceLevel } from './deviceDependence.js';
 import { DEVICES } from './devices.js';
-import { canStudentUseDevice, deviceAcceptanceBlockReason } from './deviceGating.js';
+import { canStudentUseDevice, deviceAcceptanceBlockReason, scaleGainRangeForStudent } from './deviceGating.js';
+import { depthPsychDelta } from './mechanicsDepthLayer.js';
 
 export const DEVICE_INTERACTION_TYPES = {
   feeding_mask: 'rhythm',
@@ -90,8 +91,9 @@ export function runStationaryDeviceSession(student, deviceDefId, week, rng = Mat
   }
   const gainMult = opts.gainMult ?? 1;
   const effect = { ...def.useEffect };
-  if (effect.gainLbs && gainMult !== 1) {
-    effect.gainLbs = effect.gainLbs.map((g) => Math.max(1, Math.round(g * gainMult)));
+  if (effect.gainLbs) {
+    const scaled = effect.gainLbs.map((g) => Math.max(1, Math.round(g * gainMult)));
+    effect.gainLbs = scaleGainRangeForStudent(student, scaled);
   }
   const effectCtx = { week, sourceDeviceId: deviceDefId, rng, labState: opts.labState };
   const applied = applyDeviceEffect(student, effect, effectCtx);
@@ -128,9 +130,10 @@ export function runRouteDeviceSession(student, deviceDefId, week, routeResult, r
   const tier = routeResult?.performanceTier ?? 'good';
   const gainMult = routeResult?.gainMult ?? 1;
   const base = def?.useEffect?.gainLbs ?? [4, 8];
+  const scaled = base.map((g) => Math.max(1, Math.round(g * gainMult)));
   const effect = {
-    gainLbs: base.map((g) => Math.max(1, Math.round(g * gainMult))),
-    psychDelta: def?.useEffect?.psychDelta ?? { dependence: 2 },
+    gainLbs: scaleGainRangeForStudent(student, scaled),
+    psychDelta: depthPsychDelta(def?.useEffect?.psychDelta ?? { dependence: 2 }),
   };
   const effectCtx = { week, sourceDeviceId: deviceDefId, rng, labState: routeResult?.labState };
   const applied = applyDeviceEffect(student, effect, effectCtx);

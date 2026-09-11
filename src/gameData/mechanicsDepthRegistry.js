@@ -46,4 +46,9 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'performanceContract', file: 'performanceContract.js' },
   { id: 'pharmacistCampus', file: 'pharmacistCampus.js' },
   { id: 'immobilityArrival', file: 'immobilityArrival.js' },
+  { id: 'evolvedForms', file: 'evolvedForms.js' },
+  { id: 'deviceUsageEvents', file: 'deviceUsageEvents.js' },
+  { id: 'deviceEffects', file: 'deviceEffects.js' },
+  { id: 'campusDeviceEncounters', file: 'campusDeviceEncounters.js' },
+  { id: 'oppositionActs', file: 'oppositionActs.js' },
 ];

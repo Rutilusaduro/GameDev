@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -2326,7 +2326,7 @@ export default function HallPass(){
         const stageId=getStage(s.lbs).id;
         applyEchoCapture(s, prev=>captureEvolutionEcho(prev,studentId,week,stageId,formId));
       }
-      const meta=EVOLVED_ACTIVITY_META[formId];
+      const meta=getEvolvedActivityMeta(formId);
       push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
       setEvolutionModal(null);
       setStreamBrandPickState({studentId,required:true});
@@ -2337,7 +2337,7 @@ export default function HallPass(){
       const stageId=getStage(s.lbs).id;
       setV2State(prev=>captureEvolutionEcho(prev||createInitialV2State(),studentId,week,stageId,formId));
     }
-    const meta=EVOLVED_ACTIVITY_META[formId];
+    const meta=getEvolvedActivityMeta(formId);
     push(`✦ ${s?.name||"She"} has found her path: ${meta?.label||formId}.`);
     setEvolutionModal(null);
     if(formId==='chapter_hostess'){
@@ -2403,28 +2403,28 @@ export default function HallPass(){
       if(s.researchSubjectId==null){ openResearchSubjectPicker(s); return; }
     }
     if(s.evolvedForm==='homeroom_queen'){
-      const meta=EVOLVED_ACTIVITY_META['homeroom_queen']; if(!meta) return;
+      const meta=getEvolvedActivityMeta('homeroom_queen'); if(!meta) return;
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       setHomeroomSessionState({daisyStudentId:s.id,ap:3,log:[],daisyGain:0,relAccum:0,classGainAccum:0,momGainAccum:0,suspDeltaAccum:0,activeActivity:null});
       return;
     }
     if(s.evolvedForm==='wife_lessons'){
-      const meta=EVOLVED_ACTIVITY_META['wife_lessons']; if(!meta) return;
+      const meta=getEvolvedActivityMeta('wife_lessons'); if(!meta) return;
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       openWifeLessonsSession(s);
       return;
     }
     if(s.evolvedForm==='competitive_gainer'){
-      const meta=EVOLVED_ACTIVITY_META['competitive_gainer']; if(!meta) return;
+      const meta=getEvolvedActivityMeta('competitive_gainer'); if(!meta) return;
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       openCompetitiveGainerModal(s);
       return;
     }
     if(s.evolvedForm==='delivery_hive'){
-      const meta=EVOLVED_ACTIVITY_META['delivery_hive']; if(!meta) return;
+      const meta=getEvolvedActivityMeta('delivery_hive'); if(!meta) return;
       if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
       setAp(a=>a-meta.apCost);
       openMayaHive(s);
@@ -2436,7 +2436,7 @@ export default function HallPass(){
       return;
     }
     if(s.evolvedForm==='salon_appetit'){
-      const meta=EVOLVED_ACTIVITY_META['salon_appetit']; if(!meta) return;
+      const meta=getEvolvedActivityMeta('salon_appetit'); if(!meta) return;
       const stageIdx=getEvolvedActivityStageIdx(s);
       const evDef=EVOLVED_EVENTS[s.evolvedForm]?.[stageIdx];
       if(evDef){
@@ -2449,7 +2449,7 @@ export default function HallPass(){
       return;
     }
     if(s.evolvedForm==='artisan_gallery'){
-      const meta=EVOLVED_ACTIVITY_META['artisan_gallery']; if(!meta) return;
+      const meta=getEvolvedActivityMeta('artisan_gallery'); if(!meta) return;
       const stageIdx=getEvolvedActivityStageIdx(s);
       const evDef=EVOLVED_EVENTS[s.evolvedForm]?.[stageIdx];
       if(evDef){
@@ -2463,7 +2463,7 @@ export default function HallPass(){
       openGalleryHub(s.id);
       return;
     }
-    const meta=EVOLVED_ACTIVITY_META[s.evolvedForm]; if(!meta) return;
+    const meta=getEvolvedActivityMeta(s.evolvedForm); if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
     // Route to interactive event if one exists for this form+stage
@@ -5054,7 +5054,7 @@ export default function HallPass(){
 
   // ── LANE CAPTAIN handlers ─────────────────────────────
   const startCommunityResearcherPanelReview=(s)=>{
-    const meta=EVOLVED_ACTIVITY_META['community_researcher'];
+    const meta=getEvolvedActivityMeta('community_researcher');
     if(!meta) return;
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP for panel review.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(s);
@@ -6325,7 +6325,7 @@ export default function HallPass(){
     const ft=fairTrainingState;
     const mj=students.find(st=>st.id===ft.mjStudentId);
     if(!mj) return;
-    const meta=EVOLVED_ACTIVITY_META['state_fair_queen']||{apCost:1};
+    const meta=getEvolvedActivityMeta('state_fair_queen')||{apCost:1};
     if(ap<meta.apCost){push(`⚠️ Need ${meta.apCost} AP.`);return;}
     const stageIdx=getEvolvedActivityStageIdx(mj);
     const evDef=EVOLVED_EVENTS['state_fair_queen']?.[stageIdx];

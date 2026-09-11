@@ -5,6 +5,7 @@ import { ELARA_ID } from './relicHunter.js';
 import { getDevice, isCampusTool } from './devices.js';
 import { scrutinyDiscoveryMult } from './scrutinyConsequences.js';
 import { hasCircuitNode } from './inventionUpgrades.js';
+import { depthLbsGrant } from './mechanicsDepthLayer.js';
 import '../textEngine/scenes/campusDevice/index.js';
 import {
   renderCampusDeviceEncounter,
@@ -186,7 +187,7 @@ export function applyCampusDeviceEncounter({
   const mode = def.campusModes?.find(m => m.id === modeId) || def.campusModes?.[0];
   const effect = mode || def.useEffect || {};
   const [lo, hi] = effect.gainLbs || [3, 6];
-  npcGain = lo + Math.floor(rng() * (hi - lo + 1));
+  npcGain = depthLbsGrant(lo + Math.floor(rng() * (hi - lo + 1)));
   const prev = nextExploration.npcFed[encounter.target.npcId] || {
     lbs: encounter.target.lbs,
     times: 0,

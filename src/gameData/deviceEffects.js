@@ -8,6 +8,7 @@ import { renderSuddenGrowthLine } from '../textEngine/scenes/suddenGrowth/index.
 import { renderDeviceCampusUseLine } from '../textEngine/scenes/deviceCampusUse/index.js';
 import { getDevice, DEVICE_SLOTS } from './devices.js';
 import { canStudentAcceptDevice, deviceAcceptanceBlockReason, scalePsychDeltaForStudent, scaleGainRangeForStudent } from './deviceGating.js';
+import { depthLbsGrant } from './mechanicsDepthLayer.js';
 import { applyPsychDelta } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { foldModPatches, applyModificationToEntry } from './deviceMods.js';
@@ -286,7 +287,7 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
       : {};
     const allowPermanent = ctx.allowPermanentConvert || boardMods.permanentConvert;
     if (pc.gainLbs) {
-      const lbs = rollRange(pc.gainLbs, rng);
+      const lbs = depthLbsGrant(rollRange(pc.gainLbs, rng));
       next._pendingGainLbs = (next._pendingGainLbs || 0) + lbs;
       lines.push(`+${lbs} lbs banked${allowPermanent ? ' permanently' : ''}`);
     }

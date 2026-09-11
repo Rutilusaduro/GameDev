@@ -1,4 +1,4 @@
-import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, EVOLVED_ACTIVITY_META, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
+import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, getEvolvedActivityMeta, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
 import { FEEDER_JOURNAL_ARCHETYPES, NADIA_JOURNAL_ARCHETYPES } from '../textEngine/scenes/researchJournal/index.js';
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
@@ -393,7 +393,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                     ?!s.evolvedForm&&lilithUnlocked&&lilithKillCount>=1&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype]
                     :!s.evolvedForm&&st.id>=4&&s.relationship>=60&&!!EVOLUTION_OFFER[s.archetype];
                   const hasEvolved=!!s.evolvedForm;
-                  const meta=hasEvolved?EVOLVED_ACTIVITY_META[s.evolvedForm]:null;
+                  const meta=hasEvolved?getEvolvedActivityMeta(s.evolvedForm):null;
                   const tree=hasEvolved?EVOLVED_SKILL_TREES[s.evolvedForm]||[]:[];
                   const skills=s.evolvedSkills||[];
                   const totalGained=s.lbs-s.startLbs;
