@@ -162,6 +162,21 @@ registerPool('dinner.afterglow', [
 
 // Extra clothes/dining fragments so check-ins remix more
 registerModuleVariants('talk.checkIn.clothes', [
+  { when: { leftoverFed: true, weekMax: 1 }, weight: 3, text: [
+    'The top tugs on a middle the leftover sitting already started.',
+    'Foil-warmth in the waistband. She adjusts without naming it.',
+  ] },
+  { when: { leftoverFed: true, weekMin: 2, weekMax: 8 }, weight: 3, text: [
+    'Semester seams plus last night\'s sitting. The shirt reports both.',
+    'Fabric pulls where leftover heat sat down and stayed.',
+  ] },
+  { when: { leftoverFed: true, weekMin: 9 }, weight: 3, text: [
+    'Clothes from an earlier her, stretched by leftover and the term.',
+    'She takes more of the chair. Last night\'s tray is part of the fit.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The fit already knew about the kitchen sitting. She does not explain.',
+  ] },
   { when: { stageMin: 2, stageMax: 4 }, weight: 2, text: [
     'The waistband has opinions it did not have in August.',
     'She keeps smoothing a shirt that has started telling the truth.',
@@ -169,6 +184,54 @@ registerModuleVariants('talk.checkIn.clothes', [
   { when: { stageMin: 5, stageMax: 8 }, weight: 2, text: [
     'Fabric across her middle shines a little where it is working hardest.',
     'A button has learned a new hobby: holding on for the bit of conversation.',
+  ] },
+]);
+
+registerModuleVariants('talk.checkIn.dining', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Her thumb finds the waistband the kitchen already argued with.',
+    'She glances at snacks like the foil from last night started a tab.',
+    'Her eyes go to food first. Overnight dough is still in the room.',
+  ] },
+]);
+
+registerModuleVariants('talk.checkIn.diningLine', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `"The dining hall is finishing what the kitchen started," she admits.`,
+    `"I've been eating more," she says. "Last night didn't close the account."`,
+    `"Better portions," she murmurs. "Or leftover heat still doing overtime."`,
+  ] },
+]);
+
+registerModuleVariants('talk.checkIn.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The visit has a second course. Kitchen leftover is already seated.',
+    'She does not rush you out. Foil-warmth keeps the official part open.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'The chair learned leftover first. Check-in is catching up.',
+    'She settles heavier as you talk. Last night\'s sitting has a lap now.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You stay a minute past the script. Leftover heat lets you.',
+  ] },
+]);
+
+registerModuleVariants('talk.checkIn.earlyWeight', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    `At {subject.lbs} lbs she could still call it a phase. The leftover sitting does not.`,
+    `She's {subject.lbs} lbs. Last night's tray already voted.`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `At {subject.lbs} lbs she takes leftover space like it is hers now.`,
+    `She carries {subject.lbs} lbs and last night's heat in the same chair.`,
+  ] },
+]);
+
+registerModuleVariants('talk.checkIn.ownedTable', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Pastries wait next to foil from the galley. She treats both as current.',
+    'A bakery box open. Last night\'s sitting still in the room with it.',
   ] },
 ]);
 

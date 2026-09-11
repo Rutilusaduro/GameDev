@@ -4,6 +4,11 @@ import { registerPool } from '../engine.js';
 import './dorm/index.js';
 
 registerPool('talk.linger.open', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You stay. Leftover warmth is already on the bed like a third person.',
+    'The official reason ended. Kitchen heat did not.',
+    'You do not stand. Foil-warmth keeps the visit open past the script.',
+  ] },
   { when: {}, text: [
     'You do not stand. The visit stretches past the official reason for it.',
     'She makes space on the bed without calling it that.',

@@ -5785,7 +5785,11 @@ export default function HallPass(){
     const s=students.find(x=>x.id===st.studentId);
     const feed=SUMO_CORNER_FEED[st.stageIdx]||SUMO_CORNER_FEED[0];
     const bite=depthGainLbs(s,feed.lbs,week,{loaded:!!st.prepLoaded,skipNight:true});
-    setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,bite,0):x));
+    setStudents(prev=>prev.map(x=>{
+      if(x.id!==st.studentId) return x;
+      const grown=processStudentGain(x,bite,0);
+      return st.gainAccum===0?bumpOriginChain(grown):grown;
+    }));
     setSumoMatchState({...st,gainAccum:st.gainAccum+bite,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
   };
 
@@ -8098,10 +8102,12 @@ export default function HallPass(){
     push(`💬 ${encLine}`);
     setSessionLog(sl=>[...sl,`💬 ${encLine}`]);
     let fed=s;
+    const skipNight=(privateSession.foods||[]).length>0||privateSession.encouragementsUsed.length>0;
     if(lbsBonus>0){
-      const bonusCals=lbsBonus*GAIN_CONFIG.calsPerLb;
+      const applied=depthGainLbs(s,lbsBonus,week,{skipNight});
+      const bonusCals=applied*GAIN_CONFIG.calsPerLb;
       const bonusFed=feedStudentCalories(s,bonusCals,0,enc.relBonus,enc.label,capOpts);
-      if(bonusFed) fed=bonusFed;
+      if(bonusFed) fed=skipNight?bonusFed:bumpOriginChain(bonusFed);
     } else {
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+enc.relBonus)}));
     }

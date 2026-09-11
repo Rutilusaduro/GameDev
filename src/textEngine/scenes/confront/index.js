@@ -27,6 +27,17 @@ registerPool('confront.open', [
   ]},
 ]);
 
+registerModuleVariants('confront.open', [
+  { when: { leftoverFed: true, winBack: true }, priority: 1, weight: 4, text: [
+    `You find {subject.name} keeping distance. Leftover heat did not soften the line.`,
+    `She lets you speak. The leftover sitting stays in the room between you.`,
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} stops you. The leftover sitting is in how she stands.`,
+    `She blocks the path with a middle the kitchen already filled.`,
+  ]},
+]);
+
 // ── confront.grievance ────────────────────────────────────────
 registerPool('confront.grievance', [
   { when: {}, text: [
@@ -60,8 +71,31 @@ registerPool('confront', [
 
 // Persona flavor on the grievance line for a couple of distinct voices.
 registerModuleVariants('confront.grievance', [
+  { when: { leftoverFed: true, grievanceType: 'creeped' }, weight: 4, text: [
+    `"You comment on my body like it's yours," she says. "The leftover sitting made it worse to hear."`,
+    `"You keep looking," she says. "Last night's tray is still on me and you still look."`,
+  ]},
+  { when: { leftoverFed: true, grievanceType: 'betrayed' }, weight: 4, text: [
+    `"You pushed food when I said no," she says. "Then the kitchen sent more. I remember both."`,
+    `"You didn't listen," she says. "Leftover sitting is not consent. Stop treating it like it is."`,
+  ]},
+  { when: { leftoverFed: true, grievanceType: 'exposed' }, weight: 4, text: [
+    `"You keep putting me on display," she says. "Everyone can see last night's sitting too."`,
+    `"The hall watched me eat," she says. "The leftover heat made it public again this morning."`,
+  ]},
   { when: { studentId: 3, grievanceType: 'betrayed' }, weight: 5, text: [
     `"I told you I was full. You did it anyway," Serena says. "I don't get pushed around. Not by anyone."`,
+  ]},
+]);
+
+registerModuleVariants('confront.demand', [
+  { when: { leftoverFed: true, winBack: true }, priority: 1, weight: 4, text: [
+    `She waits. "Convince me. Last night's tray is not the argument."`,
+    `"I'm listening," she says. "Leftover heat does not count as making it right."`,
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `"Something changes," she says. "The leftover sitting does not get a vote."`,
+    `"Your call," she says. "Kitchen heat is not an apology."`,
   ]},
 ]);
 

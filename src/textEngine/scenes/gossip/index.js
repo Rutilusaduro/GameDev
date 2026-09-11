@@ -8,7 +8,7 @@
 // Selectors from pickHallMemory(): memName, memType, memWeeksAgo.
 // Reactor archetype/corruption drawn from subject via engine.
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass2.js';
@@ -30,6 +30,17 @@ registerPool('gossip.react.notice', [
     (ctx) => `${ctx.globals?.memName ?? 'She'} crossed a stage this week. It shows.`,
     (ctx) => `The way ${ctx.globals?.memName ?? 'she'}'s been filling out — it registered on the room before it registered on her.`,
     (ctx) => `${ctx.globals?.memName ?? 'She'} is bigger than she was. The hall has updated its read on her.`,
+  ]},
+]);
+
+registerModuleVariants('gossip.react.notice', [
+  { when: { leftoverFed: true, memType: 'scaleBreak' }, weight: 4, text: [
+    (ctx) => `${ctx.globals?.memName ?? 'She'} broke the scale. Leftover sitting was already in the number.`,
+    (ctx) => `The hall clocked ${ctx.globals?.memName ?? 'her'} after the scale. Kitchen heat made the fact travel faster.`,
+  ]},
+  { when: { leftoverFed: true, memType: 'stageUp' }, weight: 4, text: [
+    (ctx) => `${ctx.globals?.memName ?? 'She'} got bigger this week. Leftover heat made it show before anyone said it.`,
+    (ctx) => `The way ${ctx.globals?.memName ?? 'she'}'s filling out — last night's sitting is part of the update.`,
   ]},
 ]);
 
