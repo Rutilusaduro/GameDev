@@ -1,5 +1,5 @@
 // The Squad — Lead: A2 Psych | Support: A5 Editor
-import { registerPool } from '../../engine.js';
+import { registerPool, registerModuleVariants } from '../../engine.js';
 
 registerPool('shift.trigger', [
   { when: { corruption: [1] }, text: [
@@ -110,4 +110,48 @@ registerPool('shift.coda', [
     'The week closes on a new interior weather.',
     'Quiet follows — not empty, rearranged.',
   ] },
+]);
+
+registerModuleVariants('shift.trigger', [
+  { when: { leftoverFed: true, corruption: [1] }, weight: 4, text: [
+    'Extra help still in her when the warmth arrives where dread used to be.',
+    'Last sitting, then the softness. The old reflex does not fire.',
+  ]},
+  { when: { leftoverFed: true, corruption: [2] }, weight: 4, text: [
+    'Someone sees the extra help in her. The shame she expected does not arrive.',
+    'Witnessed with last sitting still rounding her. Something in her goes quiet.',
+  ]},
+]);
+
+registerModuleVariants('shift.interior', [
+  { when: { leftoverFed: true, corruption: [1] }, weight: 4, text: [
+    'She files leftover heat elsewhere. It does not stay filed.',
+    'The interior registers extra help as warmth and tries to call it something else.',
+  ]},
+  { when: { leftoverFed: true, corruption: [2] }, weight: 4, text: [
+    'The interior is quiet now. Extra help already won the argument.',
+    'Nothing left to argue. Last sitting made the silence a relief.',
+  ]},
+]);
+
+registerModuleVariants('shift.physical', [
+  { when: { leftoverFed: true, corruption: [1] }, weight: 4, text: [
+    'Her hand finds extra help in her middle. The touch is not anxious anymore.',
+    'She breathes around leftover fullness. The breath is not apology.',
+  ]},
+  { when: { leftoverFed: true, corruption: [2] }, weight: 4, text: [
+    'Physical ease arrives on a middle that already ate. Allowed.',
+    'She moves without bracing. Extra help settled first. Then the ease.',
+  ]},
+]);
+
+registerModuleVariants('shift.coda', [
+  { when: { leftoverFed: true, corruption: [1] }, weight: 4, text: [
+    'The week continues. Extra help and the shift share the same quiet.',
+    'Something has changed. Last sitting is part of how she carries it.',
+  ]},
+  { when: { leftoverFed: true, corruption: [2] }, weight: 4, text: [
+    'The surrender is complete. Extra help already signed the paper.',
+    'She is what she is now. Last sitting, then the scale, then appetite answered.',
+  ]},
 ]);

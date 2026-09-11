@@ -166,3 +166,106 @@ registerModuleVariants('weekly.teamWeighIn.verdict', [
     'She reports the overage. Last sitting made the scale less of a surprise.',
   ]},
 ]);
+
+registerModuleVariants('weekly.gamingSponsor.deal', [
+  { when: { leftoverFed: true, archetype: 'gamer' }, weight: 4, text: [
+    '{subject.name} has a snack sponsorship. Extra help already proved she can finish the boxes.',
+    'A snack brand signs {subject.name}. Last sitting made the sample size honest.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} lands a sponsorship that sends food. Extra help already started the testing.',
+    'Sponsorship boxes start showing up. Seconds from last night still in her when they arrive.',
+  ]},
+]);
+
+registerModuleVariants('weekly.interventionFails.setup', [
+  { when: { leftoverFed: true, archetype: 'sorority' }, weight: 4, text: [
+    '{subject.name}\'s sisters stage an intervention. Extra help already in her when they sit down.',
+    'The chapter plans a talk about appetite. Last sitting made the case before anyone spoke.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'An intervention about {subject.name}\'s eating is planned. Extra help already ate the opening argument.',
+    'Friends gather to confront {subject.name}. Seconds still showing. The mission is late.',
+  ]},
+]);
+
+registerModuleVariants('weekly.artExhibition.opening', [
+  { when: { leftoverFed: true, archetype: 'artsy' }, weight: 4, text: [
+    '{subject.name}\'s senior show opens on abundance. Extra help already in the artist standing beside it.',
+    'Her exhibition is all curves and bowls. Last sitting made the subject matter current.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name}\'s exhibition is all abundance — and so is she, extra help included.',
+    'The gallery fills with work about appetite. She arrives already fed.',
+  ]},
+]);
+
+registerModuleVariants('weekly.quietOpen.setup', [
+  { when: { leftoverFed: true, archetype: 'quiet' }, weight: 4, text: [
+    'After floor check-in, {subject.name} catches you packing up. Extra help still rounding her quiet.',
+    '{subject.name} waits until the room empties. Last sitting made the linger easier.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'After hall rounds, {subject.name} stays. Extra help still in the pause.',
+    'She finds a moment when the hallway is quiet. Seconds still showing.',
+  ]},
+]);
+
+registerModuleVariants('weekly.overachieverPivot.submit', [
+  { when: { leftoverFed: true, archetype: 'overachiever' }, weight: 4, text: [
+    '{subject.name} submits a revised season plan. Extra help already in the self-study.',
+    '{subject.name} sends a revised proposal. Last sitting made the abstract honest.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} reframes her season plan around eating. Extra help already started the data.',
+    'A new proposal arrives. Seconds still in her when she files it.',
+  ]},
+]);
+
+registerModuleVariants('weekly.transferSettled.call', [
+  { when: { leftoverFed: true, archetype: 'transfer' }, weight: 4, text: [
+    '{subject.name} gets a call about transferring home. Extra help already voted stay.',
+    'Her parents call about coming back. Last sitting made campus feel like the table.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} gets a call about leaving campus. Extra help still in her when she answers.',
+    'Home asks if she wants to come back. Seconds already chose the dining hall.',
+  ]},
+]);
+
+registerModuleVariants('weekly.thesisRewrite.submit', [
+  { when: { leftoverFed: true, archetype: 'bookworm' }, weight: 4, text: [
+    '{subject.name} slides a new outline across your desk. Extra help still in the wellness journal.',
+    'A revised season plan arrives. Last sitting made the footnotes heavier.',
+  ]},
+  { when: { leftoverFed: true, archetype: 'swimmer' }, weight: 4, text: [
+    '{subject.name} drops a revised season plan. Extra help still in the training block.',
+    'Split columns updated. Last sitting made the bulk protocol honest.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} submits a revised season plan outline. Extra help already in the argument.',
+    'Her revised outline shows up before desk hours. Seconds still rounding the author.',
+  ]},
+]);
+
+registerModuleVariants('weekly.immobilityPeace.scene', [
+  { when: { leftoverFed: true, endStageMin: 8 }, weight: 3, text: [
+    'You find {subject.name} settled into the reinforced couch. Extra help already on the plate riding her belly.',
+    '{subject.name} is sunk deep into reinforced furniture. Last sitting made the stillness easier.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} is settled deep into reinforced furniture, extra help still in her, eating comfortably.',
+    'She has made a nest of cushions and plates. Seconds from last night still rounding the nest.',
+  ]},
+]);
+
+registerModuleVariants('weekly.blobEnding.setup', [
+  { when: { leftoverFed: true, endStageMin: 10 }, weight: 3, text: [
+    '{subject.name} can no longer come to hall. You bring the floor to her. Extra help already holding court.',
+    'The hall now travels to {subject.name}. Last sitting made the room the meeting.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} holds court from her room now. Extra help already in the welcome.',
+    'Campus comes to her. Seconds still in her when the floor arrives.',
+  ]},
+]);

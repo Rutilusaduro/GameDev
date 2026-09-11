@@ -123,6 +123,7 @@ import './immobility/index.js';
 import './settling/index.js';
 import './settling/depth.js';
 import './psychShift/index.js';
+import './corruptionBeats.js';
 import './interior/index.js';
 import './npcReactions.js';
 import './earlyGain/index.js';

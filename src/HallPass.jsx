@@ -159,6 +159,7 @@ import './textEngine/scenes/eating/index.js';
 import { renderSlenderScene, renderSlenderEatBeat } from './textEngine/scenes/earlyGain/index.js';
 import './textEngine/scenes/earlyGain/index.js';
 import { renderPsychShift } from './textEngine/scenes/psychShift/index.js';
+import { renderCorruptionTierUp, renderCorruptionAuto } from './textEngine/scenes/corruptionBeats.js';
 import './textEngine/scenes/psychShift/index.js';
 import { renderClothScene } from './textEngine/scenes/clothing/index.js';
 import './textEngine/scenes/clothing/index.js';
@@ -1461,7 +1462,8 @@ export default function HallPass(){
     const after=getCorruptionTier(newC).id;
     if(after>before){
       if(CORRUPTION_TIER_UP_LINES[after]){
-        setTimeout(()=>push(`🕯️ ${CORRUPTION_TIER_UP_LINES[after]({...s,corruption:newC})}`),200);
+        const tierLine=renderCorruptionTierUp({...s,corruption:newC},week)||CORRUPTION_TIER_UP_LINES[after]({...s,corruption:newC});
+        setTimeout(()=>push(`🕯️ ${tierLine}`),200);
       }
       const shiftLine=renderPsychShift({...s,corruption:newC},week,{lastCorruptionShift:true,...textOpts});
       if(shiftLine) setTimeout(()=>push(`💫 ${shiftLine}`),320);
@@ -2115,7 +2117,7 @@ export default function HallPass(){
       if(hungerEff.willingVessel&&getCorruptionTier(corruption).id===2) selfStuffChance=Math.min(1,selfStuffChance*2);
       if(getCorruptionTier(corruption).id===2&&Math.random()<selfStuffChance){
         carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
-        const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
+        const autoLine=renderCorruptionAuto(ns,newWeek)||CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
         setTimeout(()=>push(`💭 ${autoLine}`),250);
       }
       if(d.lbsGained>0||stagedUp||d.stuffed){
