@@ -230,6 +230,13 @@ export function depthFairPrideGrant(base = 0) {
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.34)));
 }
 
+/** Homeroom wellness suspicion deltas — reward deflection, soften risky beats. */
+export function depthHomeroomSuspicionDelta(delta = 0) {
+  if (!delta) return 0;
+  if (delta < 0) return Math.round(delta * (1 + BONUS_FRAC * 0.22));
+  return Math.max(0, Math.round(delta * (1 - BONUS_FRAC * 0.18)));
+}
+
 /** Exploration ingredient grant counts — secondary loot depth. */
 export function depthExplorationIngredientGrant(grants = {}) {
   if (!grants || typeof grants !== 'object') return grants;

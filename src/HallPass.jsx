@@ -360,7 +360,7 @@ import { renderWifeLessonBeat, renderWifeLessonTalk, wlTalkPoolKey } from './tex
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction, renderCGPriyaPost, renderCGPriyaFollowup, renderCGResidentReply } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
-import { depthCgDriveGain, depthMetaProgressBonus, depthFairPrideGrant } from './gameData/mechanicsDepthLayer.js';
+import { depthCgDriveGain, depthMetaProgressBonus, depthFairPrideGrant, depthHomeroomSuspicionDelta } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -2578,7 +2578,7 @@ export default function HallPass(){
     if(evolvedEventState?.formId==='homeroom_queen'&&evolvedEventState.done){
       const {history,classGain=0,momGain=0}=evolvedEventState;
       // Calculate suspicion delta from flags in history
-      const suspDelta=Object.entries(HOMEROOM_SUSPICION_DELTAS).reduce((acc,[flag,delta])=>acc+(history.includes(flag)?delta:0),0);
+      const suspDelta=Object.entries(HOMEROOM_SUSPICION_DELTAS).reduce((acc,[flag,delta])=>acc+(history.includes(flag)?depthHomeroomSuspicionDelta(delta):0),0);
       setBatchBakerState(prev=>{
         const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDelta));
         const newClass=prev.classWeight+classGain;
@@ -3057,7 +3057,7 @@ export default function HallPass(){
       relAccum:prev.relAccum+scaleEvolvedEventRel(choice.rel||0),
       classGainAccum:prev.classGainAccum+depthMetaProgressBonus(choice.classGain||0),
       momGainAccum:prev.momGainAccum+depthMetaProgressBonus(choice.momGain||0),
-      suspDeltaAccum:prev.suspDeltaAccum+(choice.suspDelta||0),
+      suspDeltaAccum:prev.suspDeltaAccum+depthHomeroomSuspicionDelta(choice.suspDelta||0),
       activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText:renderedResult,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
     }));
   };
