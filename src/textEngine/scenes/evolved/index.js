@@ -5,6 +5,7 @@ import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import '../proseOverhaulPass4.js';
+import './salonGalleryBeats.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -31,6 +32,7 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
     globals: {
       featureId: opts.formId || student?.evolvedForm || 'evolved',
       stageIdx: opts.stageIdx ?? null,
+      phaseIdx: opts.phaseIdx ?? null,
       ...(opts.globals || {}),
     },
     ...opts,
@@ -42,6 +44,15 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   if (formPool && out?.trim() && Math.random() < chance * 0.85) {
     const extra = render(`{${formPool}}`, ctx)?.trim();
     if (extra) out = `${out}\n\n${extra}`;
+  }
+  const beatKey = formId === 'salon_appetit'
+    ? 'evolved.salon.beat'
+    : formId === 'artisan_gallery'
+      ? 'evolved.gallery.beat'
+      : null;
+  if (beatKey && out?.trim()) {
+    const beat = render(`{${beatKey}}`, ctx)?.trim();
+    if (beat) out = `${out}\n\n${beat}`;
   }
   const glowKey = EVOLVED_AFTERGLOW[formId];
   if (glowKey && opts.ending && out?.trim()) {

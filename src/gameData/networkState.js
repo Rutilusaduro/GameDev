@@ -93,7 +93,10 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random, ext
   const inDorms = areas.includes('dorms');
   const inGym = areas.includes('gym');
   const inLib = areas.includes('library');
-  const areaBonus = (inDining && extras.leftoverKitchen ? 2 : 0) + (inDorms && extras.nightRounds ? 3 : 0);
+  const areaBonus = (inDining && extras.leftoverKitchen ? 2 : 0)
+    + (inDorms && extras.nightRounds ? 3 : 0)
+    + (inGym && extras.leftoverKitchen ? 1 : 0)
+    + (inLib && extras.nightRounds ? 1 : 0);
   const automationTotal = nodes.reduce((a, n) => a + (n.automation ?? 0), 0)
     + nodes.reduce((a, n) => a + (n.slots || []).filter(Boolean).length * 4, 0)
     + meshBonus

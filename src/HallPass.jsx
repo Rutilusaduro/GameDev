@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -138,6 +138,15 @@ import {
   renderSumoCornerFeed,
   renderSumoNextBoutLine,
 } from './textEngine/scenes/sumoMatch/index.js';
+import {
+  renderFairTrainingScene,
+  renderFairTrainingPhoto,
+  renderFairBoost,
+  renderFairDayWeighInResult,
+  renderFairDayAfterpartyResult,
+} from './textEngine/scenes/fairTraining/index.js';
+import { renderEvolvedEventProse } from './textEngine/scenes/evolved/index.js';
+import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -388,7 +397,7 @@ import {
   sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
   habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
   tickOutfitWeek, digestStuffedExtras, leftoverNightGainBump, echoResonateMult,
-  contestBiteLbs,
+  contestBiteLbs, depthGainLbs, evolvedPrepFx, homeroomArcFx, wifeRepeatFx,
 } from './gameData/mechanicDepth.js';
 import { applyOutfitRefit, REFIT_OPTIONS } from './gameData/outfits.js';
 import './textEngine/scenes/proseOverhaul.js';
@@ -1118,8 +1127,9 @@ export default function HallPass(){
         const fed=feedStudentCalories(ns,choice.cals,choice.full>0?choice.full:0,0,'Night round');
         if(fed) ns=fed;
       }
-      if(choice.lbs) ns=processStudentGain(ns,choice.lbs,0);
       ns={...ns,lastNightVisitWeek:week,memories:appendMemory(ns.memories,'night',week,choice.id)};
+      if(choice.lbs) ns=processStudentGain(ns,depthGainLbs(ns,choice.lbs,week,{}),0);
+      ns=bumpOriginChain(ns);
       return ns;
     }));
     const remaining=(nightRoundVisitCap(ownedHallSkills||{})-((hallDorm.nightRounds?.lastWeek===week?hallDorm.nightRounds.visitsThisWeek||0:0)+1));
@@ -2604,7 +2614,7 @@ export default function HallPass(){
       if(off) text=`${off}\n\n${text}`;
     }
     const evolvedCtx=createContext({subject:s,week});
-    text=appendV2Depth(text,'evolved',evolvedCtx,0.35);
+    text=renderEvolvedEventProse(text,s,week,{formId:s.evolvedForm,stageIdx,ending:true,v2DepthChance:0.35})||appendV2Depth(text,'evolved',evolvedCtx,0.35);
     // Calculate bonuses from evolved skills
     const skills=(s.evolvedSkills||[]);
     const tree=EVOLVED_SKILL_TREES[s.evolvedForm]||[];
@@ -2612,10 +2622,13 @@ export default function HallPass(){
     const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
     const doubleCharge=tree.find(sk=>skills.includes(sk.id)&&sk.doubleActivityCharge);
     const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain+getSupernaturalActivityBonus(s).gainBonus;
-    const gain=doubleCharge?rawGain*2:rawGain;
+    let gain=depthGainLbs(s,rawGain,week,{});
+    if(doubleCharge) gain*=2;
+    const hab=habitatFx(s,dormState||createInitialDormState(),ownedHallSkills||{});
+    if(hab.evolvedLbs) gain+=hab.evolvedLbs;
     const relGain=meta.relBonus+bonusRel;
     setAp(a=>a-meta.apCost);
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+relGain)}));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:bumpOriginChain(processStudentGain(st,gain,relGain))));
     if(s.supernaturalForm){
       const pressureFx=applySupernaturalActivityPressure(opposition,s);
       setOpposition(pressureFx.opposition);
@@ -2634,14 +2647,15 @@ export default function HallPass(){
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
-    const newGain=gainAccum+(choice.lbs||0);
+    const choiceLbs=choice.lbs?depthGainLbs(s,choice.lbs,week,{skipNight:true}):0;
+    const newGain=gainAccum+choiceLbs;
     const newRel=relAccum+(choice.rel||0);
     // Handle feedOther — feed residents of matching archetype
     if(choice.feedOther){
       const{archetype:targetArch,lbs:otherLbs,text:foText}=choice.feedOther;
       setStudents(prev=>prev.map(st=>{
         if(st.archetype===targetArch&&st.id!==studentId){
-          return processStudentGain(st,otherLbs,2);
+          return processStudentGain(st,depthGainLbs(st,otherLbs,week,{}),2);
         }
         return st;
       }));
@@ -2655,7 +2669,8 @@ export default function HallPass(){
     if(nextPhase>=evDef.phases.length){
       // Find best matching ending
       const ending=evDef.endings.find(e=>e.condition(newHistory))||evDef.endings[evDef.endings.length-1];
-      const totalGain=newGain+(ending.gainBonus||0)+leftoverNightGainBump(s,week);
+      const hab=habitatFx(s,dormState||createInitialDormState(),ownedHallSkills||{});
+      const totalGain=newGain+(ending.gainBonus||0)+leftoverNightGainBump(s,week)+(hab.evolvedLbs||0);
       const totalRel=newRel+(ending.relBonus||0);
       // Apply pre-contest / pre-close gains to student
       setStudents(prev=>prev.map(st=>{
@@ -2664,7 +2679,8 @@ export default function HallPass(){
         const tree=EVOLVED_SKILL_TREES[formId]||[];
         const bonusRel=tree.filter(sk=>skList.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0);
         const next = processStudentGain(st,totalGain,totalRel+bonusRel);
-        return maybeGrantAscensionCatalyst(next, {
+        const flagged = bumpOriginChain({ ...next, lastEvolvedFlags: newHistory });
+        return maybeGrantAscensionCatalyst(flagged, {
           completedStageIdx: stageIdx,
           totalStages: EVOLVED_EVENTS[formId]?.length || 0,
         });
@@ -2686,10 +2702,12 @@ export default function HallPass(){
       const {history,classGain=0,momGain=0}=evolvedEventState;
       // Calculate suspicion delta from flags in history
       const suspDelta=Object.entries(HOMEROOM_SUSPICION_DELTAS).reduce((acc,[flag,delta])=>acc+(history.includes(flag)?delta:0),0);
+      const daisy=students.find(st=>st.id===evolvedEventState.studentId);
+      const arc=homeroomArcFx(daisy,week);
       setBatchBakerState(prev=>{
-        const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDelta));
-        const newClass=prev.classWeight+classGain;
-        const newMom=prev.momWeight+momGain;
+        const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDelta+arc.suspDelta));
+        const newClass=prev.classWeight+classGain+arc.classBump;
+        const newMom=prev.momWeight+momGain+arc.momBump;
         // Determine new arc stage from NPC weight thresholds
         const [ct1,ct2,ct3]=HOMEROOM_THRESHOLDS.class;
         const [mt1,mt2,mt3]=HOMEROOM_THRESHOLDS.mom;
@@ -3130,9 +3148,10 @@ export default function HallPass(){
   const openHomeroomConference=(studentKey)=>{
     if(!homeroomSessionState||homeroomSessionState.ap<1||homeroomSessionState.activeActivity) return;
     const daisy=students.find(st=>st.id===homeroomSessionState.daisyStudentId);
-    const evDef=HOMEROOM_CONFERENCE_EVENTS[studentKey];
+    if(!HOMEROOM_CONFERENCE_EVENTS[studentKey]) return;
     const phaseProse=daisy?renderHomeroomPool(homeroomConferencePoolKey(studentKey),daisy,week,{globals:{homeroomKey:studentKey}}):null;
-    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
+    const repeatConf=batchBakerState.lastConferenceKey===studentKey;
+    setHomeroomSessionState(prev=>({...prev,ap:prev.ap-1,classGainAccum:prev.classGainAccum+(repeatConf?2:0),lastConferenceKey:studentKey,activeActivity:{type:'conference',key:studentKey,phaseIdx:0,history:[],done:false,resultText:null,phaseProse,revealsWeights:false,revealsParentWeights:false}}));
   };
   const startHomeroomGroupActivity=(actKey)=>{
     if(!homeroomSessionState||homeroomSessionState.activeActivity) return;
@@ -3163,9 +3182,10 @@ export default function HallPass(){
       ?homeroomConferencePoolKey(key,choiceId)
       :homeroomActivityPoolKey(type,phaseIdx,choiceId);
     const renderedResult=daisy&&poolKey?renderHomeroomPool(poolKey,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):resultText;
+    const bite=choice.lbs?depthGainLbs(daisy,choice.lbs,week,{skipNight:true}):0;
     setHomeroomSessionState(prev=>({
       ...prev,
-      daisyGain:prev.daisyGain+(choice.lbs||0),
+      daisyGain:prev.daisyGain+bite,
       relAccum:prev.relAccum+(choice.rel||0),
       classGainAccum:prev.classGainAccum+(choice.classGain||0),
       momGainAccum:prev.momGainAccum+(choice.momGain||0),
@@ -3198,19 +3218,20 @@ export default function HallPass(){
     const{daisyStudentId,daisyGain,relAccum,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
     const daisy=students.find(st=>st.id===daisyStudentId);
     const bump=leftoverNightGainBump(daisy,week);
+    const arc=homeroomArcFx(daisy,week);
     const totalGain=daisyGain+bump;
     if(totalGain>0||relAccum>0){
       setStudents(prev=>prev.map(st=>{
         if(st.id!==daisyStudentId) return st;
-        return processStudentGain(st,totalGain,relAccum);
+        return bumpOriginChain(processStudentGain(st,totalGain,relAccum));
       }));
       if(totalGain>0) push(`✦ Daisy — Hall Kitchen Session: +${totalGain} lbs · +${relAccum} rel`);
     }
-    if(classGainAccum>0||momGainAccum>0||suspDeltaAccum!==0){
+    if(classGainAccum>0||momGainAccum>0||suspDeltaAccum!==0||arc.classBump||arc.momBump||arc.suspDelta){
       setBatchBakerState(prev=>{
-        const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDeltaAccum));
-        const newClass=prev.classWeight+classGainAccum;
-        const newMom=prev.momWeight+momGainAccum;
+        const newSusp=Math.max(0,Math.min(10,prev.suspicion+suspDeltaAccum+arc.suspDelta));
+        const newClass=prev.classWeight+classGainAccum+arc.classBump;
+        const newMom=prev.momWeight+momGainAccum+arc.momBump;
         const[ct1,ct2,ct3]=HOMEROOM_THRESHOLDS.class;
         const[mt1,mt2,mt3]=HOMEROOM_THRESHOLDS.mom;
         let newStage=0;
@@ -3219,8 +3240,10 @@ export default function HallPass(){
         if(newClass>=ct2)newStage=3;
         if(newMom>=mt2)newStage=4;
         if(newClass>=ct3&&newMom>=mt3)newStage=5;
-        return{classWeight:newClass,momWeight:newMom,suspicion:newSusp,stage:Math.max(prev.stage,newStage)};
+        return{classWeight:newClass,momWeight:newMom,suspicion:newSusp,stage:Math.max(prev.stage,newStage),lastConferenceKey:homeroomSessionState.lastConferenceKey||prev.lastConferenceKey};
       });
+    } else if(homeroomSessionState.lastConferenceKey){
+      setBatchBakerState(prev=>({...prev,lastConferenceKey:homeroomSessionState.lastConferenceKey}));
     }
     setHomeroomSessionState(null);
   };
@@ -3373,18 +3396,20 @@ export default function HallPass(){
       const mjStudent=students.find(st=>st.id===prev.mjStudentId);
       const bump=leftoverNightGainBump(mjStudent,week);
       const originLbs=originRegisterFx(mjStudent).wifeLbs;
+      const repeat=wifeRepeatFx(prev.lastLessonId,lesson.id);
       const lessonProse=mjStudent?renderWifeLessonBeat(stage,lesson,mjStudent,week):lesson.text;
+      const mjBite=mjStudent?depthGainLbs(mjStudent,lesson.mjLbs+repeat.mjExtra,week,{}):lesson.mjLbs+repeat.mjExtra;
       let newDaughters={...prev.daughters};
       Object.keys(newDaughters).forEach(k=>{
-        let gain=lesson.daughterLbs+bump+originLbs;
+        let gain=lesson.daughterLbs+bump+originLbs+repeat.daughterExtra;
         if(k==='Chloe'&&stage>=WL_CONFIG.chloeRivalFrom) gain=Math.round(gain*WL_CONFIG.chloeRivalMult);
         newDaughters[k]=newDaughters[k]+gain;
       });
       let newMoms={...prev.moms};
       Object.keys(newMoms).forEach(k=>{ newMoms[k]=newMoms[k]+lesson.momLbs+bump+originLbs; });
-      const logLine=`${lesson.label}: all daughters +${lesson.daughterLbs+bump+originLbs} lbs, all moms +${lesson.momLbs+bump+originLbs} lbs, you +${lesson.mjLbs+bump+originLbs} lbs`;
-      let next={...prev,daughters:newDaughters,moms:newMoms,
-        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,lessonProse,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs+bump+originLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
+      const logLine=`${lesson.label}: all daughters +${lesson.daughterLbs+bump+originLbs+repeat.daughterExtra} lbs, all moms +${lesson.momLbs+bump+originLbs} lbs, you +${mjBite} lbs`;
+      let next={...prev,lastLessonId:lesson.id,daughters:newDaughters,moms:newMoms,
+        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,lessonProse,mjGainAccum:prev.session.mjGainAccum+mjBite,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
@@ -3482,7 +3507,7 @@ export default function HallPass(){
       if(mjGainAccum>0||relAccum>0){
         setStudents(sp=>sp.map(st=>{
           if(st.id!==mjStudentId) return st;
-          return processStudentGain(st,mjGainAccum,relAccum);
+          return bumpOriginChain(processStudentGain(st,mjGainAccum,relAccum));
         }));
         push(`✦ Wife Lessons Session — Stage ${stage}: you +${mjGainAccum} lbs · +${relAccum} rel`);
       }
@@ -5329,7 +5354,8 @@ export default function HallPass(){
     const maxFullness=maxFullnessByStage[stageIdx]||100;
     const maxFocus=maxFocusByStage[stageIdx]||90;
     const raeStage=Math.min(5,stageIdx);
-    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[SESSION_NPC_LINES[raeStage].arrival+` ${SESSION_NPC_LINES[raeStage].extra||''}`],done:false,endReason:null,raeDelivered:raeStage<=1,lastFoodId:null});
+    const arrival=renderRankedNpcArrival(s,week,raeStage);
+    setRankedFeedeeState({studentId,stageIdx,focus:maxFocus,maxFocus,fullness:0,maxFullness,gain:0,turn:0,log:[arrival],done:false,endReason:null,raeDelivered:raeStage<=1,lastFoodId:null});
     setEvolvedEventState(null);
   };
 
@@ -5340,7 +5366,8 @@ export default function HallPass(){
     const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log,raeDelivered,lastFoodId}=rankedFeedeeState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const chain=lastFoodId===food.id?2:0;
-    const foodGain=Math.round(food.gain*originRegisterFx(s).calorieMult)+leftoverNightGainBump(s,week)+chain;
+    const prep=evolvedPrepFx(s);
+    const foodGain=depthGainLbs(s,food.gain,week,{chain,loaded:prep.loaded,skipNight:turn>0});
     // Decay focus first, then apply food
     const newFocus=Math.max(0,Math.min(maxFocus,focus-15+food.focusRestore));
     const newFullness=fullness+food.fullnessCost;
@@ -5353,8 +5380,7 @@ export default function HallPass(){
     let updatedLog=newLog;
     let newRaeDelivered=raeDelivered;
     if(!raeDelivered&&newTurn===3&&stageIdx>=2){
-      const raeNpc=SESSION_NPC_LINES[Math.min(5,stageIdx)];
-      updatedLog=[...newLog,`📦 RAE: ${raeNpc.extra||'She appears with extra supplies.'}`];
+      updatedLog=[...newLog,renderRankedNpcDrop(s,week,Math.min(5,stageIdx))];
       newRaeDelivered=true;
     }
     // Check end conditions
@@ -5657,8 +5683,12 @@ export default function HallPass(){
   const startSumoMatch=(studentId,stageIdx,history)=>{
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const oppLbs=SUMO_RIVAL_WEIGHTS[stageIdx]||340;
+    const prep=evolvedPrepFx(s,history);
     const {move,telegraph}=pickOppMove(0,100);
-    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:0,yourBalance:100,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:0,oppMove:move,telegraph,exchangeLine:renderSumoOpening(stageIdx,s,oppLbs,week),phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false});
+    if(prep.lbsBonus){
+      setStudents(prev=>prev.map(x=>x.id===studentId?processStudentGain(x,prep.lbsBonus+leftoverNightGainBump(s,week),0):x));
+    }
+    setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:prep.confident?8:0,yourBalance:100+prep.balanceBonus,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:prep.lbsBonus,oppMove:move,telegraph,exchangeLine:renderSumoOpening(stageIdx,s,oppLbs,week),phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false,prepLoaded:prep.loaded,prepPaced:prep.paced,prepConfident:prep.confident,wfBump:prep.wfBump});
     setEvolvedEventState(null);
   };
 
@@ -5675,7 +5705,7 @@ export default function HallPass(){
       setSumoMatchState({...st,ringPos:100,yourBouts,fillRingUsed:true,popupText:fillText,phaseAfterPopup:matchOver?'aftermath':'interbout'});
       return;
     }
-    const wf=Math.max(0.6,Math.min(2.0,s.lbs/st.oppLbs));
+    const wf=Math.max(0.6,Math.min(2.0,(s.lbs/st.oppLbs)+(st.wfBump||0)));
     let ringPos=st.ringPos, yourBalance=st.yourBalance, oppBalance=st.oppBalance;
     let tag,ringDelta=0;
     if(yourBalance<=0&&moveId!=='brace'){
@@ -5712,8 +5742,9 @@ export default function HallPass(){
     const st=sumoMatchState;
     const s=students.find(x=>x.id===st.studentId);
     const feed=SUMO_CORNER_FEED[st.stageIdx]||SUMO_CORNER_FEED[0];
-    setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,feed.lbs,0):x));
-    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
+    const bite=depthGainLbs(s,feed.lbs,week,{loaded:!!st.prepLoaded,skipNight:true});
+    setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,bite,0):x));
+    setSumoMatchState({...st,gainAccum:st.gainAccum+bite,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
   };
 
   const sumoStartNextBout=()=>{
@@ -6463,22 +6494,14 @@ export default function HallPass(){
     const collab=students.find(st=>st.evolvedForm===cfg.evolvedForm);
     if(!collab){push(`⚠️ No evolved ${collabKey} available.`);return;}
     setAp(a=>a-FAIR_TRAINING_CONFIG.apCost);
-    const mjStage=clampFairStage(mj.lbs);
     const cStage=clampFairStage(collab.lbs);
-    let sceneTag, photoTag, recruits=null;
+    let recruits=null;
     if(collabKey==='Lilith'){
       const [lo,hi]=ft.lilithRecruitRange;
       recruits=[0,1,2].map(()=>({
         bodyType:FAIR_TRAINING_CONFIG.recruitBodyTypes[rnd(0,FAIR_TRAINING_CONFIG.recruitBodyTypes.length-1)],
         stage:rnd(lo,hi),
       }));
-      const avg=recruits.reduce((a,r)=>a+r.stage,0)/3;
-      const group=avg<=2?'Early':avg<=4?'Mid':'Late';
-      sceneTag=FAIR_TRAINING_SCENES.Lilith[`MJ${mjStage}_L${cStage}_${group}`];
-      photoTag=FAIR_TRAINING_PHOTOS.Lilith[`MJ${mjStage}_L${cStage}`];
-    } else {
-      sceneTag=FAIR_TRAINING_SCENES[collabKey][`MJ${mjStage}_C${cStage}`];
-      photoTag=FAIR_TRAINING_PHOTOS[collabKey][`MJ${mjStage}_C${cStage}`];
     }
     // pride boost — halved if she keeps leaning on the same collaborator
     const boostCfg=FAIR_TRAINING_CONFIG.fairPrideBoosts[collabKey];
@@ -6489,9 +6512,14 @@ export default function HallPass(){
     // gains
     const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
     const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
-    const mjGain=rnd(mjLo,mjHi), cGain=rnd(cLo,cHi);
-    processStudentGain(mj,mjGain,3);
-    if(collab.id!==mj.id) processStudentGain(collab,cGain,2);
+    let mjGain=depthGainLbs(mj,rnd(mjLo,mjHi),week,{});
+    let cGain=depthGainLbs(collab,rnd(cLo,cHi),week,{});
+    if(ft.lastCollaborator===collabKey) mjGain+=1;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id===mj.id) return processStudentGain(st,mjGain,3);
+      if(collab.id!==mj.id&&st.id===collab.id) return processStudentGain(st,cGain,2);
+      return st;
+    }));
     push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
     setFairTrainingState(prev=>({...prev,
       sessionsThisCycle:prev.sessionsThisCycle+1,
@@ -6499,10 +6527,11 @@ export default function HallPass(){
       lastCollaborator:collabKey,
       recentCollaborators:[...prev.recentCollaborators,collabKey].slice(-6),
       influenceFlags:[...prev.influenceFlags,collabKey],
-      trophyPhotos:[...prev.trophyPhotos,{tag:photoTag,collab:collabKey,cycle:prev.cycleNum}],
+      trophyPhotos:[...prev.trophyPhotos,{tag:renderFairTrainingPhoto(mj,week,collabKey),collab:collabKey,cycle:prev.cycleNum}],
       pendingCollab:collabKey, pendingRecruits:recruits,
-      sessionSceneTag:sceneTag, sessionPhotoTag:photoTag,
-      sessionBoostSummary:FAIR_BOOST_SUMMARIES[collabKey][boostTier],
+      sessionSceneTag:renderFairTrainingScene(mj,week,collabKey,cStage),
+      sessionPhotoTag:renderFairTrainingPhoto(mj,week,collabKey),
+      sessionBoostSummary:renderFairBoost(mj,week,collabKey,boostTier),
       sessionLog:{mjGain,cGain,prideBoost,collabName:collab.name},
       view:'session',
     }));
@@ -6541,16 +6570,17 @@ export default function HallPass(){
   };
 
   const chooseFairWeighIn=(choice)=>{
+    const s=students.find(st=>st.id===fairDayState?.studentId);
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='weighin'||prev.weighInChoice) return prev;
       const sc=FAIR_DAY_SCENES.weighIn[`${prev.stageIdx}_${prev.influenceKey}`];
       const prideTier=getFairPrideTier(fairTrainingState.fairPride).label;
       const bonus=FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0;
-      const baseGain=choice===1?sc.gainA:sc.gainB;
-      const gain=Math.round(baseGain*(1+bonus));
-      const rel=choice===1?sc.relA:sc.relB;
+      const baseGain=choice===1?(sc?.gainA??8):(sc?.gainB??5);
+      const gain=s?depthGainLbs(s,Math.round(baseGain*(1+bonus)),week,{}):Math.round(baseGain*(1+bonus));
+      const rel=choice===1?(sc?.relA??5):(sc?.relB??9);
       return {...prev,weighInChoice:choice,
-        weighInResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
+        weighInResultText:s?renderFairDayWeighInResult(s,week,prev.influenceKey,choice):'',
         weighInGain:gain,weighInRel:rel,totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };
@@ -6565,13 +6595,14 @@ export default function HallPass(){
   };
 
   const chooseFairAfterparty=(choice)=>{
+    const s=students.find(st=>st.id===fairDayState?.studentId);
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
       const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
-      const gain=choice===1?sc.gainA:sc.gainB;
-      const rel=choice===1?sc.relA:sc.relB;
+      const gain=s?depthGainLbs(s,choice===1?(sc?.gainA??5):(sc?.gainB??3),week,{}):(choice===1?(sc?.gainA??5):(sc?.gainB??3));
+      const rel=choice===1?(sc?.relA??8):(sc?.relB??12);
       return {...prev,afterpartyChoice:choice,
-        afterpartyResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`,
+        afterpartyResultText:s?renderFairDayAfterpartyResult(s,week,prev.influenceKey,choice):'',
         totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };
@@ -6581,8 +6612,11 @@ export default function HallPass(){
     if(!fd) return;
     const s=students.find(st=>st.id===fd.studentId);
     if(s){
-      processStudentGain(s,fd.totalGain,fd.relBonus);
-      setStudents(ss=>ss.map(st=>st.id===fd.studentId?{...st,contestCompletions:(st.contestCompletions||0)+1}:st));
+      setStudents(ss=>ss.map(st=>{
+        if(st.id!==fd.studentId) return st;
+        const next=processStudentGain(st,fd.totalGain,fd.relBonus);
+        return {...next,contestCompletions:(next.contestCompletions||0)+1};
+      }));
       push(`🏆 Fair Day complete — ${s.name} +${Math.round(fd.totalGain)} lbs, +${fd.relBonus} rel`);
     }
     // new cycle: pride and sessions reset, recruit stage range drifts up every 2 fairs
@@ -9485,8 +9519,7 @@ export default function HallPass(){
         const STAGE_LABELS=["Bronze Session","Silver Grind","Gold Streak","Platinum Marathon","Diamond Run","Grandmaster Session"];
         const stageTitle=STAGE_LABELS[stageIdx]||"Ranked Session";
         const canQuit=stageIdx<2;
-        const payoffFn=SESSION_PAYOFF_TEXT[stageIdx];
-        const payoffText=done&&payoffFn?payoffFn(gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
+        const payoffText=done?renderRankedPayoff(s,week,stageIdx,gain,endReason):`Session closed with ${Math.round(gain)} lbs gained.`;
         const dismissRanked=()=>{
           playHallPassSound('click', soundEnabled);
           if (done) closeRankedSession();
@@ -9662,10 +9695,10 @@ export default function HallPass(){
       {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR TRAINING COLLABORATIONS HUB ── */}
-      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
+      {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} week={week} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
-      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled}/>}
+      {fairDayState&&<FairDayModal fd={fairDayState} students={students} week={week} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
       {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} soundEnabled={soundEnabled}/>}

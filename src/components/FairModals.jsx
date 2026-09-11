@@ -6,6 +6,12 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
+import {
+  renderFairDayWeighIn,
+  renderFairDayJudging,
+  renderFairDayAfterparty,
+  recruitSizeWord,
+} from '../textEngine/scenes/fairTraining/index.js';
 
 export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ft.open, ft.view, ft.cycleNum]);
@@ -68,7 +74,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
             <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{ft.sessionSceneTag}</div>
             {ft.pendingRecruits&&(
               <div style={{...C.infoBox("rgba(20,0,20,0.5)"),marginBottom:10,fontSize:10,color:"#b080b0"}}>
-                Lilith's recruits: {ft.pendingRecruits.map((r)=>`a stage-${r.stage} ${r.bodyType.replace('_',' ')} woman`).join(', ')}
+                Lilith's recruits: {ft.pendingRecruits.map((r)=>`a ${recruitSizeWord(r.stage)} ${r.bodyType.replace('_',' ')} woman`).join(', ')}
               </div>
             )}
             <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060",fontStyle:"italic"}}>{ft.sessionBoostSummary}</div>
@@ -104,7 +110,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   );
 }
 
-export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true }){
+export function FairDayModal({ fd, students, week = 1, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, fd.studentId, fd.phase, fd.weighInChoice, fd.afterpartyChoice]);
   const s=students.find(st=>st.id===fd.studentId);
   if(!s) return null;
@@ -124,14 +130,15 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
         </div>
 
         {fd.phase==='weighin'&&(()=>{
-          const sc=FAIR_DAY_SCENES.weighIn[key];
+          const sc=FAIR_DAY_SCENES.weighIn[key]||{};
+          const openText=renderFairDayWeighIn(s,week,fd.influenceKey)||sc.open;
           return(
             <>
               {!fd.weighInChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{openText}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
-                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1?.label||'Hold your ground'}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2?.label||'Play to the crowd'}</button>
                 </div>
               </>}
               {fd.weighInChoice&&<>
@@ -147,20 +154,21 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
 
         {fd.phase==='judging'&&(
           <>
-            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{FAIR_DAY_SCENES.judging[key]}</div>
+            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairDayJudging(s,week,fd.influenceKey)||FAIR_DAY_SCENES.judging[key]}</div>
             <button style={{...C.btn(fairOrange),width:"100%"}} onClick={advanceFairDayPhase}>To the Afterparty →</button>
           </>
         )}
 
         {fd.phase==='afterparty'&&(()=>{
-          const sc=FAIR_DAY_SCENES.afterparty[key];
+          const sc=FAIR_DAY_SCENES.afterparty[key]||{};
+          const openText=renderFairDayAfterparty(s,week,fd.influenceKey)||sc.open;
           return(
             <>
               {!fd.afterpartyChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{openText}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
-                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1?.label||'Celebrate with your collaborator'}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2?.label||'Go to the crowd'}</button>
                 </div>
               </>}
               {fd.afterpartyChoice&&<>

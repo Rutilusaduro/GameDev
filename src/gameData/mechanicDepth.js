@@ -162,15 +162,57 @@ export function leftoverNightGainBump(student, week = 0) {
   return n;
 }
 
-/** Contest bite lbs — origin calorie, leftover/night, food-chain, taunt, lastCompound. */
-export function contestBiteLbs(student, baseLbs, week = 0, extras = {}) {
+/** Feature bite lbs — origin calorie, leftover/night, food-chain, taunt, lastCompound. */
+export function depthGainLbs(student, baseLbs, week = 0, extras = {}) {
   if (!student) return Math.max(0, Math.round(baseLbs || 0));
   const origin = originRegisterFx(student).calorieMult || 1;
-  let lbs = Math.round((baseLbs || 0) * origin) + leftoverNightGainBump(student, week);
+  let lbs = Math.round((baseLbs || 0) * origin);
+  if (!extras.skipNight) lbs += leftoverNightGainBump(student, week);
   if (extras.chain) lbs += extras.chain;
   if (extras.taunted) lbs += 1;
+  if (extras.loaded) lbs += 1;
   if (student.lastCompound) lbs = Math.round(lbs * 1.05);
   return Math.max(1, lbs);
+}
+
+/** Hall-kitchen arc extras from leftover trays, night visits, and last compound. */
+export function homeroomArcFx(daisy, week = 0) {
+  const leftover = !!daisy?.leftoverFedThisWeek;
+  const night = !!(week && daisy?.lastNightVisitWeek === week);
+  const compound = !!daisy?.lastCompound;
+  return {
+    classBump: (leftover ? 2 : 0) + (compound ? 1 : 0),
+    momBump: night ? 2 : 0,
+    suspDelta: (leftover ? -1 : 0) + (night ? 1 : 0),
+  };
+}
+
+/** Repeat-lesson body memory — same recipe as last session. */
+export function wifeRepeatFx(lastLessonId, lessonId) {
+  if (!lastLessonId || lastLessonId !== lessonId) return { mjExtra: 0, daughterExtra: 0 };
+  return { mjExtra: 1, daughterExtra: 1 };
+}
+
+export function contestBiteLbs(student, baseLbs, week = 0, extras = {}) {
+  return depthGainLbs(student, baseLbs, week, extras);
+}
+
+/** Warm-up flags from the last evolved event (loaded / paced / confident). */
+export function evolvedPrepFx(student, history = null) {
+  const flags = Array.isArray(history) && history.length
+    ? history
+    : (student?.lastEvolvedFlags || []);
+  const loaded = flags.includes('loaded');
+  const paced = flags.includes('paced');
+  const confident = flags.includes('confident');
+  return {
+    loaded,
+    paced,
+    confident,
+    lbsBonus: loaded ? 2 : paced ? 1 : 0,
+    balanceBonus: paced ? 8 : 0,
+    wfBump: confident ? 0.08 : 0,
+  };
 }
 
 /** Echo resonate gain-multiplier after leftover trays or a night visit. */

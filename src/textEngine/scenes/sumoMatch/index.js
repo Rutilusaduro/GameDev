@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Sumo match — engine bridge for competitive_circuit evolved form.
-import { registerDimension, render } from '../../engine.js';
+import { registerDimension, registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
@@ -19,6 +19,22 @@ registerDimension('sumoStage', (ctx) => ctx.globals?.sumoStage ?? 0);
 registerDimension('oppLbs', (ctx) => ctx.globals?.oppLbs ?? 340);
 registerDimension('gainAccum', (ctx) => ctx.globals?.gainAccum ?? 0);
 registerDimension('matchWon', (ctx) => ctx.globals?.matchWon ?? false);
+
+registerPool('sumo.linger', [
+  { when: { matchWon: true }, weight: 3, text: [
+    'Dana resets. The belly does not. Only one of those is smaller.',
+    'Dohyo dust on her thighs. Mass still arriving after the bout called itself over.',
+  ] },
+  { when: { stageMin: 9 }, weight: 2, text: [
+    'Getting her off the clay is the rest of the match. She takes the minutes.',
+    'Mawashi holds. Barely. She enjoys the barely.',
+  ] },
+  { when: {}, text: [
+    'The ring keeps her outline after she leans back.',
+    'Crowd noise fades. Fullness does not.',
+    'She sits in leftover heat and lets the pounds finish arriving.',
+  ] },
+]);
 
 function stageText(arr, stageIdx) {
   const item = arr?.[stageIdx];
@@ -42,7 +58,12 @@ export function renderSumoLegacy(text, student, week, stageIdx = 0, opts = {}) {
   const line = typeof text === 'string' ? text.trim() : '';
   if (!line || !student) return line;
   const ctx = buildSumoCtx(student, week, stageIdx, opts);
-  return appendV2Depth(line, 'sumoMatch', ctx, opts.v2DepthChance ?? 0.28);
+  let out = appendV2Depth(line, 'sumoMatch', ctx, opts.v2DepthChance ?? 0.28);
+  if (out?.trim() && Math.random() < (opts.lingerChance ?? 0.42)) {
+    const linger = render('{sumo.linger}', ctx)?.trim();
+    if (linger) out = `${out}\n\n${linger}`;
+  }
+  return out;
 }
 
 export function renderSumoOpening(stageIdx, student, oppLbs, week) {

@@ -139,6 +139,8 @@ import './homeroom/index.js';
 import './homeroom/homeroomSceneDepth.js';
 import './homeroom/homeroomActivityDepth.js';
 import './evolved/index.js';
+import './fairTraining/index.js';
+import './rankedSession/index.js';
 import './customStudent/index.js';
 import './origin/index.js';
 import './polishDepthPass40.js';
