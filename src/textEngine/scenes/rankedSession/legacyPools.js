@@ -1,27 +1,37 @@
 // Ranked feedee session — Rae NPC + payoff (legacy evolvedForms → pools).
-import { registerPool } from '../../engine.js';
+import { registerPool, render } from '../../engine.js';
 import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/evolvedForms.js';
 import { registerDecomposedPool } from '../decomposePools.js';
+import { rankedSessionTailBeat } from '../evolved/proseTails.js';
 
-function registerFnPool(poolId, line) {
+function registerRaeLine(poolKey, line, seed) {
   const text = typeof line === 'string' ? line.trim() : '';
   if (!text) return;
-  registerPool(poolId, [
-    { when: {}, text: [(ctx) => text] },
-    { when: {}, text: [(ctx) => text] },
-    { when: {}, text: [(ctx) => `${text}`] },
+  const bodyKey = `${poolKey}.legacyBody`;
+  registerDecomposedPool(bodyKey, text);
+  const slot = (ctx) => {
+    const rendered = render(`{${bodyKey}}`, ctx)?.trim();
+    return rendered && !rendered.includes('{unresolved}') ? rendered : text;
+  };
+  registerPool(poolKey, [
+    {
+      when: {},
+      text: [
+        slot,
+        rankedSessionTailBeat(seed, 0),
+        rankedSessionTailBeat(seed, 1),
+        rankedSessionTailBeat(seed, 2),
+      ],
+    },
   ]);
 }
 
 for (let si = 0; si <= 5; si += 1) {
   const row = SESSION_NPC_LINES[si];
   if (!row) continue;
-  if (row.arrival) registerDecomposedPool(`session.rae.arrival.s${si}.legacyBody`, row.arrival);
-  if (row.exit) registerDecomposedPool(`session.rae.exit.s${si}.legacyBody`, row.exit);
-  if (row.extra) registerDecomposedPool(`session.rae.extra.s${si}.legacyBody`, row.extra);
-  registerFnPool(`session.rae.arrival.s${si}`, row.arrival);
-  registerFnPool(`session.rae.exit.s${si}`, row.exit);
-  if (row.extra) registerFnPool(`session.rae.extra.s${si}`, row.extra);
+  registerRaeLine(`session.rae.arrival.s${si}`, row.arrival, `arrival:${si}`);
+  registerRaeLine(`session.rae.exit.s${si}`, row.exit, `exit:${si}`);
+  if (row.extra) registerRaeLine(`session.rae.extra.s${si}`, row.extra, `extra:${si}`);
 }
 
 for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
@@ -32,8 +42,17 @@ for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
     ctx.globals?.sessionEndReason ?? 'focus_out',
   );
   registerPool(`session.payoff.legacy.s${si}`, [
-    { when: {}, text: [core] },
-    { when: {}, text: [(ctx) => `${core(ctx)}\n\nRae already texted about next time.`] },
-    { when: {}, text: [(ctx) => `Session log:\n\n${core(ctx)}`] },
+    {
+      when: {},
+      text: [
+        core,
+        (ctx) => {
+          const base = core(ctx);
+          return base ? `${base}\n\nRae already texted about next time.` : base;
+        },
+        rankedSessionTailBeat(`payoff:${si}`, 0),
+        rankedSessionTailBeat(`payoff:${si}`, 1),
+      ],
+    },
   ]);
 }

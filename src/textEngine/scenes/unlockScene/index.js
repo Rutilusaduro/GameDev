@@ -4,23 +4,29 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { UNLOCK_SCENES, getUnlockScene, unlockSceneModularDepthChance } from '../../../gameData/unlockScenes.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import { rosterUnlockTailBeat } from '../evolved/proseTails.js';
 
 for (const [studentId, prose] of Object.entries(UNLOCK_SCENES)) {
   if (!prose?.trim()) continue;
   const key = `roster.unlock.s${studentId}`;
+  const seed = `unlock:${studentId}`;
   registerDecomposedPool(`${key}.legacyBody`, prose);
-  const bodySlot = (ctx) => render(`{${key}.legacyBody}`, ctx)?.trim() || '';
+  const bodySlot = (ctx) => {
+    const line = render(`{${key}.legacyBody}`, ctx)?.trim();
+    return line && !line.includes('{unresolved}') ? line : prose.trim();
+  };
+  const variantRow = {
+    weight: 3,
+    text: [
+      bodySlot,
+      rosterUnlockTailBeat(seed, 0),
+      rosterUnlockTailBeat(seed, 1),
+      rosterUnlockTailBeat(seed, 2),
+    ],
+  };
   registerPool(key, [
-    {
-      when: { studentId: [Number(studentId)] },
-      priority: 2,
-      weight: 3,
-      text: [bodySlot, bodySlot, bodySlot],
-    },
-    {
-      when: {},
-      text: [bodySlot, bodySlot, bodySlot],
-    },
+    { when: { studentId: [Number(studentId)] }, priority: 2, ...variantRow },
+    { when: {}, ...variantRow },
   ]);
 }
 

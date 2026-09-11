@@ -246,3 +246,36 @@ export function evolvedReactionTailBeat(seed, slot = 0) {
 export function evolutionTailBeat(seed, slot = 0) {
   return pickTail(EVOLUTION_TAIL, seed, slot);
 }
+
+const ROSTER_UNLOCK_TAIL = [
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} crosses the trust line — roster unlock tastes like being let inside a secret.`;
+  },
+  'The floor exhales; another resident stops being background noise.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} — trust drip paid out in a scene you will reread.`;
+  },
+];
+
+const RANKED_SESSION_TAIL = [
+  'Rae’s delivery bag smells like ranked queue and second servings.',
+  (ctx) => {
+    const g = Math.round(ctx.globals?.sessionGain ?? 0);
+    return g > 0 ? `Session math: +${g} lbs logged before the cooldown.` : 'Session math: focus lost, appetite still wins.';
+  },
+  'Destiny’s setup hums — chat overlay, plates, competitive surrender.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} treats the private session like a bracket nobody else can see.`;
+  },
+];
+
+export function rosterUnlockTailBeat(seed, slot = 0) {
+  return pickTail(ROSTER_UNLOCK_TAIL, seed, slot);
+}
+
+export function rankedSessionTailBeat(seed, slot = 0) {
+  return pickTail(RANKED_SESSION_TAIL, seed, slot);
+}

@@ -23,6 +23,8 @@ const required = [
   'hallBlueprint/index.js',
   'researchJournal/index.js',
   'evolved/eventPools.js',
+  'wifeLessons/index.js',
+  'fairQueen/index.js',
 ];
 
 const missing = required.filter((rel) => !existsSync(join(scenes, rel)));
