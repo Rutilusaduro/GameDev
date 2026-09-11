@@ -30,6 +30,7 @@ const MODULAR_MARKERS = [
   /Someone whispers|Every bite lands|contagion dressed|growth as lifestyle/i,
   /Afterparty steam|appetite dressed as celebration|co-conspirator grease/i,
   /wellness framing ready|Every choice tonight will show up on the scale/i,
+  /Midway grease|Pageant lights|indulgence feels tender|Hall Ambiance thins|Training tent canvas|partnerHype|collabFrame/i,
 ];
 
 function isModular(line) {
@@ -88,6 +89,12 @@ const pulls = [
     week,
     seed,
     globals: { featureId: 'ranked_session', sessionStage: 2 },
+  })),
+  (seed) => render('{talk.suggest_indulgence.b11}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { featureId: 'floor_talk', talkBranch: 'suggest_indulgence' },
   })),
 ];
 

@@ -58,7 +58,7 @@ const raLine = render('{session.rae.arrival.s2}', buildTextContext({
 assert.ok(raLine.length > 24, 'session Rae arrival week 24');
 assert.match(
   raLine,
-  /cart squeaks|Rae arrives|Clipboard, timer|session clock starts|cart is heavier|voice stays clinical|Clipboard, timer/i,
+  /cart squeaks|Rae arrives|Clipboard, timer|session clock starts|cart is heavier|voice stays clinical|Late-semester trays|Hall Ambiance|Steam leaks|timed bites|Wellness framing/i,
   'session arrival modular @ week 24',
 );
 

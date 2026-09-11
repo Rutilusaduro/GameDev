@@ -17,6 +17,8 @@ registerPool('cg.scene.dataObsession', [
       'Ink and appetite share the same calendar on her wall.',
       'Late-semester numbers dominate the margins; nobody pretends this is casual.',
       'She color-codes threats in red — appetite as policy, competition as care.',
+      'Flour dust and warm sugar drift from downstairs; the corkboard still wins her attention.',
+      'Residents orbit the board before mail call — spreadsheet pride dressed as floor culture.',
     ],
   },
 ]);

@@ -88,6 +88,12 @@ execSync('node scripts/test-homeroom-conference-modular-late.mjs', { cwd: root, 
 
 execSync('node scripts/test-fair-day-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-fair-training-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-fair-boost-photo-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-talk-suggest-indulgence-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-homeroom-activity-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-fragment-prose-length.mjs', { cwd: root, stdio: 'inherit' });

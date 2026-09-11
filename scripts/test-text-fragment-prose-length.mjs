@@ -21,6 +21,12 @@ const POOLS = [
   'session.payoff.raeWrap',
   'session.payoff.scaleEcho',
   'cg.scene.dataObsession',
+  'fair.training.coachBeat',
+  'fair.training.collabVoice',
+  'fair.boost.midwayPush',
+  'fair.photo.pageantGlow',
+  'talk.suggest.indulgenceWarmth',
+  'hall.blueprint.construction',
 ];
 
 for (const key of POOLS) {

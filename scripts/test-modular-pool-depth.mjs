@@ -19,6 +19,11 @@ const POOLS = [
   'fair.day.judgingBeat',
   'homeroom.activity.communityWarmth',
   'wl.talk.warmOpen',
+  'fair.training.coachBeat',
+  'fair.training.collabVoice',
+  'fair.boost.partnerHype',
+  'fair.photo.collabFrame',
+  'talk.suggest.indulgenceInvite',
 ];
 
 for (const key of POOLS) {

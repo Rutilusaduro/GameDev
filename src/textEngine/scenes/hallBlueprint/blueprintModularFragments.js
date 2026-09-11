@@ -9,6 +9,8 @@ registerPool('hall.blueprint.construction', [
       'Dust and drywall; the wing grows on purpose, not by accident.',
       'Reinforced joists arrive with a wink — the building expects heavier traffic.',
       'Blueprint ink dries while residents already test the new square footage.',
+      'Late-semester upgrades hum through the wing — drywall dust, fuller chairs, louder kitchens.',
+      'Hall door propped for deliveries; wellness framing ready before anyone asks.',
     ],
   },
 ]);
@@ -21,6 +23,8 @@ registerPool('hall.blueprint.permission', [
       'Every upgrade whispers the same policy: stay, eat, spread out.',
       'The floor learns appetite as architecture — linger longer, carry more.',
       'Hall Ambiance climbs with the walls; habit follows the hammer.',
+      'Fullness climbs in the floor plan — linger longer, eat more, spread out on purpose.',
+      'Reinforced joists wink at heavier traffic; the building expects what residents become.',
     ],
   },
 ]);
