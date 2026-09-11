@@ -358,7 +358,7 @@ import {
 import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
-import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat } from './textEngine/scenes/competitiveGainer/index.js';
+import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
 import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
@@ -3434,7 +3434,10 @@ export default function HallPass(){
       const tier=getCGDriveTier(cgDrive(prev));
       const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
       const idx=(prev.corkboardVisitCount||0)%scenes.length;
-      const sceneText=scenes[idx];
+      const priyaForScene=students.find(st=>st.id===prev.priyaStudentId);
+      const sceneText=priyaForScene
+        ? renderCGCorkboardScene(priyaForScene,week,tier.label,idx)
+        : scenes[idx];
       // Drive gain: check if any visible student is within threat range
       const priya=students.find(st=>st.id===prev.priyaStudentId);
       let driveGain=depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
@@ -3524,7 +3527,8 @@ export default function HallPass(){
       const mult=CG_CONFIG.bingeDriveMults[Math.max(0,tierIdx)];
       const gain=scaleEvolvedEventLbs(Math.round(baseGain*mult*(0.85+Math.random()*0.30)));
       const stageKey=getCGStageKey(priya.lbs);
-      const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+      const sceneText=renderCGBingeScene(priya,week,stageKey,tier.label)
+        ||CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };

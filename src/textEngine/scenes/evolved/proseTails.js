@@ -65,3 +65,20 @@ export function choiceEchoBeat(formId, choiceId, slot = 0) {
 export function endingEchoBeat(formId, stageIdx, endingIdx, slot = 0) {
   return pickTail(ENDING_ECHO, `${formId}:s${stageIdx}:e${endingIdx}`, slot);
 }
+
+const CG_SCENE_TAIL = [
+  'Pins migrate. Numbers climb. The dorm pretends not to stare.',
+  (ctx) => {
+    const p = ctx.globals?.priyaName || 'Priya';
+    return `${p} exhales like the corkboard just agreed with her stomach.`;
+  },
+  'Tape and appetite share the same religion on this floor.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} — another line item on a leaderboard written in pounds.`;
+  },
+];
+
+export function cgSceneTailBeat(seed, slot = 0) {
+  return pickTail(CG_SCENE_TAIL, seed, slot);
+}

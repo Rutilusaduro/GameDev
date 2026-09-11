@@ -5,8 +5,13 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
 import { cgMeasureSession, cgTargetStageBucket } from './fragments.js';
 import './raReplyPools.js';
+import './cgScenePools.js';
 import { fillCgTemplate } from './raReplyPools.js';
-import { CG_RA_REPLY_TEXT } from '../../../gameData/competitiveGainerText.js';
+import {
+  CG_RA_REPLY_TEXT,
+  CG_FILLED_CORKBOARD_SCENES,
+  CG_FILLED_BINGE_SCENES,
+} from '../../../gameData/competitiveGainerText.js';
 
 registerDimension('targetStageBucket', (ctx) => ctx.globals?.targetStageBucket ?? 'mid');
 registerDimension('cgDriveTier', (ctx) => ctx.globals?.cgDriveTier ?? 'Invested');
@@ -57,6 +62,55 @@ export function buildCGMeasureCtx(target, priya, week, opts = {}) {
     },
     ...opts,
   });
+}
+
+function buildCGSceneCtx(priya, week, globals = {}, opts = {}) {
+  return buildTextContext({
+    subject: priya,
+    week,
+    globals: {
+      featureId: 'competitive_gainer',
+      priyaName: priya?.name || 'Priya',
+      cgDriveTier: globals.cgDriveTier || 'Invested',
+      ...globals,
+    },
+    ...opts,
+  });
+}
+
+export function renderCGCorkboardScene(priya, week, driveTierLabel = 'Invested', visitIdx = 0, opts = {}) {
+  if (!priya) return '';
+  const tier = driveTierLabel || 'Invested';
+  const arr = CG_FILLED_CORKBOARD_SCENES[tier] || CG_FILLED_CORKBOARD_SCENES.Invested || [];
+  const fallback = arr[visitIdx % arr.length] || '';
+  const ctx = buildCGSceneCtx(priya, week, { cgDriveTier: tier, cgSceneVisit: visitIdx }, opts);
+  try {
+    const line = render(`{cg.scene.corkboard.${tier}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) {
+      return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.26);
+    }
+  } catch {
+    /* fallback */
+  }
+  return renderCGSceneBeat(fallback, priya, week, tier, 'corkboard', opts);
+}
+
+export function renderCGBingeScene(priya, week, stageKey = 'Heavy', driveTierLabel = 'Invested', opts = {}) {
+  if (!priya) return '';
+  const tier = driveTierLabel || 'Invested';
+  const sk = stageKey || 'Heavy';
+  const fallback = CG_FILLED_BINGE_SCENES[sk]?.[tier] || CG_FILLED_BINGE_SCENES.Heavy?.Invested || '';
+  const ctx = buildCGSceneCtx(priya, week, { cgDriveTier: tier, cgStageKey: sk }, opts);
+  const poolKey = `cg.scene.binge.${sk}.${tier}`;
+  try {
+    const line = render(`{${poolKey}}`, ctx)?.trim();
+    if (line && !line.includes('{unresolved}')) {
+      return appendV2Depth(line, 'competitiveGainer', ctx, opts.v2DepthChance ?? 0.26);
+    }
+  } catch {
+    /* fallback */
+  }
+  return renderCGSceneBeat(fallback, priya, week, tier, 'binge', opts);
 }
 
 export function renderCGMeasurementScene(target, priya, week, driveTierLabel = 'Invested', opts = {}) {
