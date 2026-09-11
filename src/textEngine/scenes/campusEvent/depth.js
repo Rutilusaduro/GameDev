@@ -109,6 +109,42 @@ registerModuleVariants('campusEvent.choice.hall_extended.1', [{ when: {}, text: 
 registerModuleVariants('campusEvent.choice.hall_extended.2', [{ when: {}, text: ["Food does what food does best; color returns, shoulders drop, the room exhales.", "She eats without performance — steady, pleased, grateful in the unhurried way of being fed."] }]);
 registerModuleVariants('campusEvent.result', [{ when: {}, text: ['Small kindness, real effect — appetite acknowledged, warmth returned.'] }]);
 registerModuleVariants('campusEvent.beat', [{ when: {}, text: [
-  '{campusEvent.observation}\n\n{campusEvent.result}',
-  '{campusEvent.observation} {campusEvent.result}',
+  '{campusEvent.observation}\n\n{campusEvent.result} {campus.afterglow}',
+  '{campusEvent.observation} {campusEvent.result} {campus.afterglow}',
+  '{campusEvent.observation} {campus.afterglow}',
 ]}]);
+registerModuleVariants('campusEvent.scene.hall_night_noise', [{ when: {}, text: [
+  'The corridor is loud after lights-out — fridge doors, wrappers, someone claiming water.',
+  'Housing would call it a noise complaint. You call it a floor that has learned its hours.',
+  'After hours, appetite walks the wing in socks and does not bother to whisper.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_night_noise.0', [{ when: {}, text: [
+  'You put trays in the lounge and declare the kitchen open. Quiet returns as fullness.',
+  'Official leftover run. The hallway empties because everyone is eating.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_night_noise.1', [{ when: {}, text: [
+  'You knock three doors. Each one opens on a resident who was already eating.',
+  'A walk of the wing. Nobody pretends they were asleep.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_night_noise.2', [{ when: {}, text: [
+  'You write wellness programming in the log. The floor eats. The paperwork smiles.',
+  'The complaint becomes a program. Appetite files itself under community hours.',
+]}]);
+registerModuleVariants('campusEvent.scene.hall_new_chairs', [{ when: {}, text: [
+  'A delivery of wider chairs blocks the lounge door. Someone sits in one and does not get up.',
+  'Furniture arrives that does not argue. Residents gather to watch Housing struggle.',
+  'New chairs, old appetites. The lounge gets a new map made of sitting.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_new_chairs.0', [{ when: {}, text: [
+  'Pastries to test the seats. The test lasts an hour. The chairs pass.',
+  'Sit-and-eat christening. The lounge learns its new gravity.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_new_chairs.1', [{ when: {}, text: [
+  'Territory is established by sitting. Snack bags appear as flags.',
+  'They claim spots. The floor feels finished in a way the old plastic never did.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_new_chairs.2', [{ when: {}, text: [
+  'You sign the work order. They sit. Appetite files the rest.',
+  'Paperwork complete. The chairs do the recruiting.',
+]}]);
+

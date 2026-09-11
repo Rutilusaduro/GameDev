@@ -3,6 +3,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
 
 registerPool('campusEvent.observation', [
   { when: { mood: ['stressed'] }, weight: 2, text: [
@@ -52,7 +53,7 @@ registerPool('campusEvent.result', [
 ]);
 
 registerPool('campusEvent.beat', [
-  { when: {}, text: ['{campusEvent.observation} {campusEvent.result}'] },
+  { when: {}, text: ['{campusEvent.observation} {campusEvent.result} {campus.afterglow}'] },
 ]);
 
 import './floorCheckInIntegration.js';

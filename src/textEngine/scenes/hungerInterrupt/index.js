@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
 import './fragments.js';
 import '../hungerArchetypeBehavior.js';
 
@@ -203,7 +204,7 @@ registerPool('scene.hungerInterrupt.tone', [
 export const HUNGER_INTERRUPT_TEMPLATE =
   '{scene.hungerInterrupt.starter} You open the door and find {subject.name}. ' +
   '{scene.hungerInterrupt.personal|prefix: }{scene.hungerInterrupt.appearance|prefix: }{scene.hungerInterrupt.archetypeBehavior|prefix: }{scene.hungerInterrupt.behavior|prefix: }' +
-  '{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone}';
+  '{scene.hungerInterrupt.archetypeRequest|prefix: }{scene.hungerInterrupt.request} {scene.hungerInterrupt.tone} {hunger.afterglow}';
 
 // Pass a shared createFacts() Map (and optionally a sceneStems Set) as
 // opts.facts across the interrupt render and its outcome render so tone

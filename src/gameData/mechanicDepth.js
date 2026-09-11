@@ -4,7 +4,7 @@
 // / hunger / relationship without forking those files into new
 // systems. Habitat bonuses come from dormBlueprint.js.
 // ═══════════════════════════════════════════════════════════════
-import { habitatForStudent, neighborStudentIds } from './dormBlueprint.js';
+import { habitatForStudent, neighborStudentIds, roomCompletion, studentFits } from './dormBlueprint.js';
 import { getStage } from './stages.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { applyPsychDelta } from './psychState.js';
@@ -70,7 +70,49 @@ export function tickHabitatWeek(student, dormState, ownedHallSkills) {
   if (hab.shameEase) {
     ns = { ...ns, psych: applyPsychDelta(ns.psych || {}, { shame: -hab.shameEase }) };
   }
+  if (hab.discontentEase) {
+    ns = { ...ns, discontent: Math.max(0, (ns.discontent || 0) - hab.discontentEase) };
+  }
   return { student: ns, extraLbs, gainMult: hab.gainMult, deviceTickMult: hab.deviceTickMult };
+}
+
+/** Cross-system habitat readout — lounge rooms + per-door fit-outs + night rounds. */
+export function habitatFx(student, dormState, ownedHallSkills = {}) {
+  const hab = habitatForStudent(student, dormState, ownedHallSkills);
+  const fits = studentFits(dormState, student?.id);
+  const nr = dormState?.nightRounds || {};
+  const kitchen = roomCompletion('kitchen', ownedHallSkills);
+  const annex = roomCompletion('annex', ownedHallSkills);
+  const terrace = roomCompletion('terrace', ownedHallSkills);
+  const desk = roomCompletion('ra_desk', ownedHallSkills);
+  const lounge = roomCompletion('lounge', ownedHallSkills);
+  const dining = roomCompletion('dining', ownedHallSkills);
+  const habit = nr.habits?.[student?.id];
+  return {
+    ...hab,
+    scrutinyEase: annex.owned + (nr.floorIntimacy >= 50 ? 1 : 0) + (desk.owned >= 2 ? 1 : 0),
+    malfRiskMult: fits.outlets ? 0.72 : 1,
+    hungerInterruptEase:
+      (fits.fridge ? 0.22 : 0)
+      + (fits.snacks ? 0.12 : 0)
+      + (habit === 'midnight_snack' ? 0.18 : 0),
+    intimacyRel: fits.bed ? 2 : 0,
+    intimacyLbs: fits.bed ? 1 : 0,
+    streamLbs: fits.lighting ? 1 : 0,
+    campusFindBonus: terrace.owned >= 1 ? 1 : 0,
+    evolvedLbs: lounge.owned >= 2 && student?.evolvedForm ? 1 : 0,
+    plannerAp: desk.owned >= 2 ? 1 : 0,
+    pharmacistYield: kitchen.owned >= 2 ? 1 : 0,
+    diningConvBonus: dining.owned >= 2 ? 1 : 0,
+    mysteryNudge: Math.min(8, Math.floor((nr.floorIntimacy || 0) / 12) + annex.owned),
+  };
+}
+
+export function shouldSkipHungerInterrupt(student, dormState, weeklyArms = {}, rng = Math.random) {
+  if (!student) return false;
+  if (weeklyArms?.devouringStudentId === student.id && !weeklyArms?.devouringConsumed) return false;
+  const fx = habitatFx(student, dormState);
+  return fx.hungerInterruptEase > 0 && rng() < Math.min(0.55, fx.hungerInterruptEase);
 }
 
 export function neighborEcologyPatch(students, dormState) {

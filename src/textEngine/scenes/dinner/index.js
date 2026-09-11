@@ -18,6 +18,7 @@ import './dinnerConvDepth.js';
 import './dinnerReactionsDepth.js';
 import './dinnerEndingDepth.js';
 import { renderDinnerEnding } from './endingScene.js';
+import '../proseOverhaul.js';
 
 export { renderDinnerEnding } from './endingScene.js';
 export { renderDinnerOverfill } from './overfill.js';

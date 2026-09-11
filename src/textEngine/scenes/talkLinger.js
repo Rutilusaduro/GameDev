@@ -7,6 +7,7 @@ registerPool('talk.linger.open', [
   { when: {}, text: [
     'You do not stand. The visit stretches past the official reason for it.',
     'She makes space on the bed without calling it that.',
+    'The clock on her desk is ignored by both of you.',
   ] },
 ]);
 
@@ -25,6 +26,8 @@ registerPool('talk.linger.body', [
   ] },
   { when: {}, text: [
     'The extra minutes fill with warmth and the quiet decision not to leave yet.',
+    'She tucks a foot under herself and stays. So do you.',
+    'Conversation slows. Appetite does not.',
   ] },
 ]);
 
@@ -43,6 +46,8 @@ registerPool('talk.linger.line', [
   ] },
   { when: {}, text: [
     `"Don't go yet," {subject.name} says, and means the food and you both.`,
+    `{subject.name} pats the mattress. "Sit. I'm not done talking."`,
+    `"Stay for one more," {subject.name} says, and the 'one' is already lying.`,
   ] },
 ]);
 
@@ -50,6 +55,7 @@ registerPool('talk.linger', [
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.linger.open} {talk.linger.body}\n\n{talk.linger.line}',
     '{talk.moodOpener|suffix:\n\n}{talk.linger.line} {talk.linger.body}',
+    '{talk.linger.open}\n\n{talk.linger.line} {talk.linger.body}',
   ] },
 ]);
 
@@ -57,6 +63,7 @@ registerPool('talk.notice_room.open', [
   { when: {}, text: [
     'You look at the room the way an RA is supposed to, then the way you actually do.',
     'The upgrades have a smell — new wood, warm lamps, food that lives here now.',
+    'Her space has been arranged around appetite. You say so without the memo language.',
   ] },
 ]);
 
@@ -80,12 +87,16 @@ registerPool('talk.notice_room.body', [
   ] },
   { when: {}, text: [
     'The space fits her more than it used to. She notices. She likes noticing.',
+    'She tests a chair with her full weight. It holds. She looks almost grateful.',
+    'The room has learned her outline. She wears that knowledge easily.',
   ] },
 ]);
 
 registerPool('talk.notice_room', [
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.notice_room.open} {talk.notice_room.body}\n\n{talk.notice_room.line}',
+    '{talk.notice_room.open}\n\n{talk.notice_room.line} {talk.notice_room.body}',
+    '{talk.notice_room.body} {talk.notice_room.line}',
   ] },
 ]);
 
@@ -93,6 +104,7 @@ registerPool('talk.midnight_habit.open', [
   { when: {}, text: [
     'You mention last night without making it a report. She knows which night.',
     'The after-hours version of her is still sitting in the room, even at noon.',
+    'You knock on the memory instead of the door. She answers both.',
   ] },
 ]);
 
@@ -112,11 +124,15 @@ registerPool('talk.midnight_habit.line', [
   ] },
   { when: {}, text: [
     `{subject.name} looks at her hands. "You walk late. I eat late. That's the overlap."`,
+    `"You saw me," {subject.name} says, not quite sorry.`,
+    `{subject.name} shrugs, then smiles. "Midnight is when I'm honest."`,
   ] },
 ]);
 
 registerPool('talk.midnight_habit', [
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.midnight_habit.open}\n\n{talk.midnight_habit.line} {talk.linger.body}',
+    '{talk.midnight_habit.open} {talk.midnight_habit.line}',
+    '{talk.midnight_habit.line}\n\n{talk.linger.body}',
   ] },
 ]);

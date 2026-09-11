@@ -21,6 +21,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
 
 // ── week.recap.beat ───────────────────────────────────────────
 // Shape: FULL SENTENCE — present-tense, observational; reuses {word.*}.
@@ -139,7 +140,7 @@ registerPool('week.recap.line', [
 
 // ── week.recap — composed skeleton ────────────────────────────
 registerPool('week.recap', [
-  { when: {}, text: ['{week.recap.beat} {week.recap.line}'] },
+  { when: {}, text: ['{week.recap.beat} {week.recap.line} {week.recap.afterglow}'] },
 ]);
 
 /** Band a week's lbs gain into a gainBand selector. */

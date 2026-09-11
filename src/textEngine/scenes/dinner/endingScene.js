@@ -28,7 +28,7 @@ registerPool('dinner.endOpen', bandVariants(DINNER_END_OPEN));
 registerPool('dinner.endClose', bandVariants(DINNER_END_CLOSE));
 
 registerPool('dinner.ending', [
-  { when: {}, text: ['{dinner.endOpen} {dinner.endClose}'] },
+  { when: {}, text: ['{dinner.endOpen} {dinner.endClose} {dinner.afterglow}'] },
 ]);
 
 /** Render dinner closing narrative via text engine. */

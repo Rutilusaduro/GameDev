@@ -21,7 +21,7 @@ registerPool('talk.afterglow', [
   ] },
   { when: { stageMin: 9 }, weight: 2, text: [
     'She does not rise. The talk ends where she is, which is most of the furniture.',
-    'You leave the food where her hands can reach. That is the new politeness.',
+    'You leave the food where her hands can reach. New politeness: no one asks her to stand.',
   ] },
   { when: { corruption: [2] }, weight: 2, text: [
     'She looks at you like the conversation was a course, and she wants the next one.',
@@ -29,6 +29,7 @@ registerPool('talk.afterglow', [
   { when: {}, text: [
     'The pause after she stops talking is warm. Neither of you fills it with an excuse.',
     'You leave her with the feeling of being seen, which is also the feeling of being fed.',
+    'She watches you go without getting up. The chair has already won.',
   ] },
 ]);
 
@@ -51,6 +52,8 @@ registerPool('wi.afterglow', [
   ] },
   { when: {}, text: [
     'The readout hangs in the air between you, warmer than plastic has any right to be.',
+    'She steps off slower than she stepped on.',
+    'The number is already behind her; the body is not.',
   ] },
 ]);
 
@@ -67,6 +70,8 @@ registerPool('feed.afterglow', [
   ] },
   { when: {}, text: [
     'She is fuller than when you started. The room can tell. So can you.',
+    'A last swallow, then the quiet of someone who is done arguing with her plate.',
+    'She sits back. The meal keeps a hand on her.',
   ] },
 ]);
 
@@ -83,6 +88,8 @@ registerPool('session.afterglow', [
   ] },
   { when: {}, text: [
     'Private hours leave a dent in the afternoon and a rounder outline in the chair.',
+    'She stays seated after the last plate. Standing would be a different conversation.',
+    'The session ends in warmth, crumbs, and a shirt that has given up.',
   ] },
 ]);
 
@@ -91,6 +98,7 @@ registerPool('dinner.afterglow', [
   { when: {}, text: [
     'The walk back is slower. Her shoulder keeps brushing yours because there is more of her to brush.',
     'She talks less on the return. Fullness is occupying the part of her that makes small talk.',
+    'Outside, the night air makes her clothes feel tighter. She does not mind.',
   ] },
   { when: { stageMin: 6 }, weight: 2, text: [
     'A booth was a mistake she enjoyed. Standing up is the sequel, and it has a wobble.',
@@ -154,5 +162,111 @@ registerModuleVariants('room.visit.stage.room', [
 registerModuleVariants('week.recap.beat', [
   { when: {}, weight: 2, text: [
     'The floor smells like butter and lamp heat. Her clothes argue a little more than last Sunday.',
+    'A week of quiet feeding shows on her before anyone names it.',
+    'Sunday finds her warmer, rounder, slower to get up from wherever she sat.',
+  ] },
+]);
+
+// Extra composed afterglows — length via extra slots, not monoliths.
+registerPool('week.recap.afterglow', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She tugs a shirt that still mostly works and pretends the tug is nothing.',
+    'The number from midweek sits in her like a private joke she will not tell.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, weight: 2, text: [
+    'She sits heavier in the lounge recap than she did seven days ago. The couch agrees.',
+    'A hand finds her middle while she listens. Habit now. Warm.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'The recap happens around her. She is the furniture the week arranged itself on.',
+  ] },
+  { when: {}, text: [
+    'She leaves the recap fuller than the notes admit.',
+    'The week wrote itself on her waistband. Nobody needs the minutes.',
+    'You watch her go and the going takes more of the doorway than last time.',
+  ] },
+]);
+
+registerPool('hunger.afterglow', [
+  { when: { stageMax: 3 }, text: [
+    'She eats like the knock was the honest part. The rest is chewing.',
+    'Relief lands in her middle first. Her face catches up a bite later.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, text: [
+    'Fullness sits her down. The doorframe looks narrower on the way out, or she looks wider. Both.',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'She does not hurry back. Bodies this size make hunger into an appointment, and she kept it.',
+  ] },
+  { when: {}, text: [
+    'The hallway smells like whatever you gave her. She takes that smell with her.',
+    'She leaves slower than she arrived. Hunger made her fast. Food made her honest.',
+    'You close the door on a resident who is done pretending she was not hungry.',
+  ] },
+]);
+
+registerPool('campus.afterglow', [
+  { when: {}, text: [
+    'The hour keeps a taste of her in the room after she stands.',
+    'Campus noise returns. Her appetite does not clock out with the meeting.',
+    'Someone else notices how she fills the chair. She notices that they notice.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'Getting out of the seat is a small performance. The floor watches without calling it that.',
+  ] },
+]);
+
+registerPool('intimacy.afterglow', [
+  { when: { stageMax: 4 }, text: [
+    'She stays close. Heat and a new softness share the same inch of air.',
+    'The quiet after is the part she will replay. The body is already replaying it.',
+  ] },
+  { when: { stageMin: 5, stageMax: 8 }, weight: 2, text: [
+    'She lets you hold the weight of her. There is more of it than last time, and she knows.',
+  ] },
+  { when: { stageMin: 9 }, weight: 2, text: [
+    'Leaving the bed is not on the agenda. You come to her. The arrangement is the intimacy.',
+  ] },
+  { when: {}, text: [
+    'She breathes against you, warm, pleased, not finished being seen.',
+    'A hand stays on her middle like a bookmark. The page is this body.',
+    'The room holds the two of you and the extra of her that arrived while you were busy.',
+  ] },
+]);
+
+registerPool('opposition.afterglow', [
+  { when: {}, text: [
+    'Paperwork cannot see what the floor already decided.',
+    'The board wants a narrative. The residents want seconds.',
+    'You file the hour anyway. The body evidence will not fit the form.',
+  ] },
+]);
+
+registerPool('stream.afterglow', [
+  { when: {}, text: [
+    'Chat keeps typing after she stops. Her belly answers by staying.',
+    'The light goes off. She does not. Fullness is the encore.',
+    'She peels a headset off and the rest of her stays exactly as broadcast.',
+  ] },
+]);
+
+registerPool('device.afterglow', [
+  { when: {}, text: [
+    'The device ticks. She breathes around a change that has already started.',
+    'Hardware is patient. Softness arrives on the schedule it prefers.',
+    'She rests a palm where the work landed. Warm. Occupied.',
+  ] },
+]);
+
+registerModuleVariants('talk.check_in', [
+  { when: { habitId: 'midnight_snack' }, weight: 3, text: [
+    'You do not mention the wrappers. She mentions hunger first, which is the same confession.',
+  ] },
+]);
+
+registerModuleVariants('wi.bodyClause', [
+  { when: { stageMin: 3, stageMax: 6 }, weight: 2, text: [
+    'Softness occupies the platform like it paid rent.',
+    'The scale takes her in stages: heel, thigh, the warm arrival of belly.',
   ] },
 ]);

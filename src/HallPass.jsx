@@ -386,8 +386,9 @@ import {
 import {
   tickHabitatWeek, applyTalkHabitatBonus, pantryDropBonus, neighborEcologyPatch,
   sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
+  habitatFx, shouldSkipHungerInterrupt,
 } from './gameData/mechanicDepth.js';
-import './textEngine/scenes/dorm/index.js';
+import './textEngine/scenes/proseOverhaul.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -1102,6 +1103,10 @@ export default function HallPass(){
     if(grants.foodId){
       setInventory(prev=>({...prev,[grants.foodId]:Math.min(INVENTORY_CONFIG.maxStack,(prev[grants.foodId]||0)+1)}));
     }
+    if(habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{}).campusFindBonus){
+      const bonus=rollWeeklyItem();
+      setInventory(prev=>({...prev,[bonus.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[bonus.id]||0)+1)}));
+    }
     const ing={...grants};
     delete ing.foodId;
     if(!Object.keys(ing).length) return;
@@ -1356,7 +1361,7 @@ export default function HallPass(){
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
-    if(inter){
+    if(inter && !shouldSkipHungerInterrupt(inter, dormState||createInitialDormState(), weeklyArms)){
       if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
         setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
       }
@@ -1664,7 +1669,7 @@ export default function HallPass(){
     const hungerEff=aggregateSkillEffects(ownedSkills);
     if(!skipHungerCheckRef.current){
       const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
-      if(inter){
+      if(inter && !shouldSkipHungerInterrupt(inter, dormState||createInitialDormState(), weeklyArms)){
         if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
           setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
         }
@@ -1701,7 +1706,8 @@ export default function HallPass(){
     const scrutinyTier=getScrutinyTier(adminScrutiny);
     const prestigeScore=computePrestigeScore({ week:newWeek, labState, campusSaturation:campusState.saturation, globalStats });
     const loungeSkillFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
-    const weeklyApBase=5+skillApBonus+(loungeSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny);
+    const hallFx=habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{});
+    const weeklyApBase=5+skillApBonus+(loungeSkillFx.apBonus||0)+prestigeApBonus(prestigeScore)+scrutinyApModifier(adminScrutiny)+(hallFx.plannerAp||0);
     const newAp=Math.min(ap+weeklyApBase,20);
     setAp(newAp);
 
@@ -1725,7 +1731,8 @@ export default function HallPass(){
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{});
       let nsHab=habTick.student;
-      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0)+(habTick.extraLbs||0);
+      const hallHab=habitatFx(s,dormState||createInitialDormState(),ownedHallSkills||{});
+      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0)+(habTick.extraLbs||0)+(hallHab.evolvedLbs||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
       const habGain=1+(habTick.gainMult||0);
@@ -1767,9 +1774,10 @@ export default function HallPass(){
     // Final-form campus radiate: Comfort Queens soothe, The Adored warm.
     updated=applyFinalFormRadiate(updated);
     if(pharmacistState?.campusFattening){
+      const pharmYield=habitatFx(null,dormState||createInitialDormState(),ownedHallSkills||{}).pharmacistYield||0;
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
-        const extra=rollCampusPassiveLbs(pharmacistState,rnd);
+        const extra=rollCampusPassiveLbs(pharmacistState,rnd)+(pharmYield?1:0);
         return extra>0?processStudentGain(s,extra,0):s;
       });
     }
@@ -1830,7 +1838,11 @@ export default function HallPass(){
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
       const preLbs=ns.lbs;
-      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player, labState });
+      const tick=tickEquippedDevices(ns,newWeek,Math.random,{
+        player,
+        labState,
+        malfRiskMult: habitatFx(ns,dormState||createInitialDormState()).malfRiskMult,
+      });
       ns=tick.student;
       if(deviceTickHabitatMult(ns,dormState||createInitialDormState())>1){
         ns=processStudentGain(ns,1,0);
@@ -2314,6 +2326,7 @@ export default function HallPass(){
     if(skillScrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-skillScrutinyPassiveReduce));
     if(loungeSkillFx.scrutinyPassiveReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-loungeSkillFx.scrutinyPassiveReduce));
     if(evolvedScrutinyReduce>0) setAdminScrutiny(prev=>Math.max(0,prev-evolvedScrutinyReduce));
+    if(hallFx.scrutinyEase>0) setAdminScrutiny(prev=>Math.max(0,prev-hallFx.scrutinyEase));
     const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.${scrutinyTier.apPenalty?` (Scrutiny: −${scrutinyTier.apPenalty} AP)`:""}`);
@@ -6226,6 +6239,8 @@ export default function HallPass(){
         updated=processStudentGain(updated,Math.round(r.weightGain),0);
         if(r.corruptionGain) updated={...updated,corruption:addCorruption(updated,r.corruptionGain)};
       }
+      const streamHab=habitatFx(updated,dormState||createInitialDormState());
+      if(streamHab.streamLbs) updated=processStudentGain(updated,streamHab.streamLbs,0);
       const brandKey=prev.brand||'none';
       const newFavor={...(updated.sponsorFavor||{})};
       newFavor[brandKey]=Math.min(100,(newFavor[brandKey]||0)+r.favorGain);
@@ -6716,7 +6731,8 @@ export default function HallPass(){
     if(ap<cost){push(`⚠️ Need ${cost} AP.`);return;}
     if(cost>0) setAp(a=>a-cost);
     const tier=getTier(s.relationship).id;
-    setIntimacyEventState({studentId:s.id,sceneId,tier,week,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:0});
+    const bedHab=habitatFx(s,dormState||createInitialDormState());
+    setIntimacyEventState({studentId:s.id,sceneId,tier,week,phaseIdx:0,history:[],logLines:[],gainAccum:bedHab.intimacyLbs||0,relAccum:bedHab.intimacyRel||0,done:false,endingText:null,gainBonus:0,relBonus:0});
     setIntimacySceneSelector(null);
   };
 
@@ -8865,7 +8881,7 @@ export default function HallPass(){
         <div key={view} className="hall-pass-view-in" style={C.main}>
 
           {/* ── ROSTER VIEW ── */}
-          {view==="roster"&&<RosterView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} onVisitRoom={openRoomVisit} soundEnabled={soundEnabled}/>}
+          {view==="roster"&&<RosterView view={view} students={mobileStudents} lilithUnlocked={lilithUnlocked} elaraDiscovered={elaraDiscovered} reachLevel={reachLevel} avgLbs={avgLbs} setSelectedId={setSelectedId} setView={setView} week={week} unlockedDorms={unlockedDorms} startDormId={raProfile?.dormId||raProfile?.subject} pharmacistState={pharmacistState} onAmends={openAmends} onOpenStudent={openStudentDetail} onVisitRoom={openRoomVisit} soundEnabled={soundEnabled} dormState={dormState||createInitialDormState()}/>}
 
           {/* ── THE SETTLING (list) ── */}
           {view==="settling"&&<SettlingListView students={students} week={week} setSelectedId={setSelectedId} setView={setView}/>}

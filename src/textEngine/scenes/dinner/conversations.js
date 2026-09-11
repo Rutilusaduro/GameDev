@@ -35,6 +35,8 @@ registerPool('dinner.conv.suggest_second', [
 registerPool('dinner.conv.food_talk_dinner', [
   { when: {}, text: [
     `You and {subject.name} spend ten minutes discussing the dish in detail. She is an enthusiastic critic. She demonstrates her critique by eating more of it.`,
+    `{subject.name} rates the sauce, then the portion, then eats enough to make the rating irrelevant.`,
+    `Food talk turns into a second plate. {subject.name} calls it research. Her fork agrees.`,
   ] },
 ]);
 
@@ -225,6 +227,7 @@ registerPool('dinner.conv.dorm_gossip', [
   { when: {}, text: [
     `"The floor is eating like this too," you say. {subject.name} leans in, delighted. "I knew it wasn't just me." She orders another plate as proof.`,
     `{subject.name} wants names. You give her the shape of the hall without names. She eats like gossip is a condiment.`,
+    `You sketch the lounge after hours. {subject.name} nods, already chewing. "So I'm not the only one. Good."`,
   ] },
 ]);
 
@@ -232,6 +235,7 @@ registerPool('dinner.conv.night_round_hint', [
   { when: {}, text: [
     `"I walk the hall after hours," you say. {subject.name} goes still, then smiles. "I know. I leave the light on."`,
     `{subject.name} colors. "You heard me last night." She takes a bite anyway. "Good."`,
+    `"You knock late," {subject.name} says. It is not a complaint. She orders dessert while she says it.`,
   ] },
 ]);
 
@@ -239,5 +243,6 @@ registerPool('dinner.conv.room_upgrade_brag', [
   { when: {}, text: [
     `You mention a better chair for her room. {subject.name} looks at the restaurant seat, then at you. "Please." She means it.`,
     `"Your door deserves better furniture," you say. {subject.name} laughs and eats like the promise already landed.`,
+    `{subject.name} pats the booth. "If my room sat like this, I'd never leave." You file that as a work order.`,
   ] },
 ]);

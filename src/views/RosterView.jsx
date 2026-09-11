@@ -144,6 +144,7 @@ export function RosterView({
   onOpenStudent,
   onVisitRoom,
   soundEnabled = true,
+  dormState = null,
 }) {
   const isLocked = (s) => s.lockState === 'locked';
   const rosterVisible = (s) => (!s.hidden || (s.id === 15 && lilithUnlocked) || (s.id === 17 && elaraDiscovered)) && !isLocked(s);
@@ -161,8 +162,8 @@ export function RosterView({
   }, [view, hasNewResidents, soundEnabled, week]);
   const visibleResidents = students.filter(rosterVisible);
   const mysteryPulse = useMemo(
-    () => getMysteryTrustPulse(students, { unlockedDorms, reachLevel, week }),
-    [students, unlockedDorms, reachLevel, week],
+    () => getMysteryTrustPulse(students, { unlockedDorms, reachLevel, week, dormState }),
+    [students, unlockedDorms, reachLevel, week, dormState],
   );
   return (
     <>

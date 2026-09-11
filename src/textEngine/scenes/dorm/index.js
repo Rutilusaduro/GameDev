@@ -36,6 +36,8 @@ registerPool('night.room', [
   ] },
   { when: {}, text: [
     'Her room holds the week: warmth, crumbs, the particular gravity of her.',
+    'Lamp light, a half-eaten something, the air already warmer than the hall.',
+    'You smell sugar and sleep. The room has been eating without you.',
   ] },
 ]);
 
@@ -63,7 +65,7 @@ registerPool('night.kindBeat', [
   ] },
   { when: { nightKind: 'settled' }, weight: 4, text: [
     'She does not get up. She does not need to. The bed has become the room.',
-    'You come to her. That is the arrangement now, and it suits her.',
+    'You come to her. The arrangement fits, and it suits her.',
   ] },
   { when: { nightKind: 'secret' }, weight: 4, text: [
     'She startles, then laughs too fast. There is frosting on her thumb.',
@@ -75,6 +77,8 @@ registerPool('night.kindBeat', [
   ] },
   { when: {}, text: [
     '{subject.name} opens the door enough to let the hall in, then you.',
+    'The latch clicks. She was not quite asleep.',
+    'She fills the gap in the door and looks at you like she expected the knock.',
   ] },
 ]);
 
@@ -115,6 +119,7 @@ registerPool('night.line', [
   { when: {}, text: [
     `"Hey, {ra.name}," {subject.name} says, softer than daytime.`,
     `{subject.name} lets the door swing. "You walk late."`,
+    `"Come in," {subject.name} says, already stepping back.`,
   ] },
 ]);
 
@@ -134,20 +139,49 @@ registerPool('night.body', [
   ] },
   { when: {}, text: [
     'She is warm and close and unmistakably hers in this light.',
+    'Sleep clothes cling where daytime clothes would have argued.',
+    'You feel the heat of her before you fully step in.',
+  ] },
+]);
+
+registerPool('night.afterglow', [
+  { when: { nightKind: 'craving' }, weight: 3, text: [
+    'She swallows. The night has a plan now, and it includes you.',
+    'Hunger made the visit simple. She lets you see the simple part.',
+  ] },
+  { when: { nightKind: 'secret' }, weight: 3, text: [
+    'The wrappers stay. So does the understanding.',
+    'She does not hide the evidence. Hiding was the old arrangement.',
+  ] },
+  { when: { stageMax: 3 }, text: [
+    'She looks smaller in the lamp than she will look in daylight. The sleep shirt disagrees.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The bed takes her back with a slow roll of hip and belly. You do not rush the door.',
+  ] },
+  { when: {}, text: [
+    'You leave the light how she likes it. The hall is colder than her room on purpose.',
+    'The knock is over. The visit keeps happening in her for a while.',
+    'Master key back in the pocket. Her door clicks. The floor stays awake in the quiet way.',
   ] },
 ]);
 
 // Shape: skeleton
 registerPool('night.round', [
   { when: {}, text: [
-    '{night.knock} {night.room}\n\n{night.kindBeat} {night.line} {night.body}',
-    '{night.knock}\n\n{night.kindBeat} {night.line}\n\n{night.room} {night.body}',
+    '{night.knock} {night.room}\n\n{night.kindBeat} {night.line} {night.body}\n\n{night.afterglow}',
+    '{night.knock}\n\n{night.kindBeat} {night.line}\n\n{night.room} {night.body}\n\n{night.afterglow}',
+    '{night.room} {night.knock}\n\n{night.line} {night.kindBeat} {night.body}\n\n{night.afterglow}',
   ] },
 ]);
 
 // Shape: FULL SENTENCE. Fit-out afterglow for talk/visit.
 registerPool('talk.roomFitCoda', [
-  { when: {}, text: [''] },
+  { when: {}, text: [
+    'The room keeps a little of the visit after you leave.',
+    'Lamp heat and crumbs hold the conversation in place.',
+    'You leave her space slightly more hers than it was when you knocked.',
+  ] },
   { when: { habitId: 'midnight_snack' }, weight: 3, text: [
     'You both glance at the drawer. It will be empty again by morning.',
     'The stash is a known quantity now. She stops hiding the wrappers from you.',
@@ -184,5 +218,7 @@ registerPool('dorm.upgrade.install', [
   ] },
   { when: {}, text: [
     'The floor plan takes the work order and becomes slightly more itself.',
+    'A crate, a receipt, a room that will smell different by morning.',
+    'Housing will never quite understand what they signed for.',
   ] },
 ]);

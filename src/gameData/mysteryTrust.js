@@ -34,7 +34,7 @@ function pickHint(progress, week) {
  * Anonymous passive-trust readout — no locked resident names.
  * @returns {null | { progress: number, hint: string, hallFlavor: string|null, nearlyReady: boolean, slotsFull: boolean }}
  */
-export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachLevel = 1, week = 1 } = {}) {
+export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachLevel = 1, week = 1, dormState = null } = {}) {
   const slots = getRosterSlotCount(reachLevel);
   const openCount = countOpenPoolStudents(students);
   if (openCount >= slots) {
@@ -49,7 +49,8 @@ export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachL
   if (!lockedReachable.length) return null;
 
   const maxTrust = Math.max(...lockedReachable.map((s) => s.passiveTrust || 0));
-  const progress = Math.min(1, maxTrust / ROSTER_TRUST_GATE);
+  const floorNudge = Math.min(8, Math.floor((dormState?.nightRounds?.floorIntimacy || 0) / 12));
+  const progress = Math.min(1, (maxTrust + floorNudge) / ROSTER_TRUST_GATE);
   const nearlyReady = lockedReachable.some((s) => (s.passiveTrust || 0) >= ROSTER_TRUST_GATE);
 
   const homeIds = [...new Set(lockedReachable.map((s) => getStudentHomeDorm(s.id)).filter(Boolean))];

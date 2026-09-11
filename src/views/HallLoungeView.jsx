@@ -204,6 +204,7 @@ export function HallLoungeView({
 
       <div className="dorm-bp-layout">
         <div className="dorm-bp-sheet" data-night={nightMode ? 'true' : 'false'}>
+          <div className="dorm-bp-compass" aria-hidden="true">N</div>
           <div className="dorm-bp-sheet-title">Second floor</div>
           <div className="dorm-bp-grid" role="group" aria-label="Second floor rooms">
             {BLUEPRINT_ROOMS.filter((r) => r.floor === 2).map((r) => (
@@ -218,6 +219,7 @@ export function HallLoungeView({
               />
             ))}
           </div>
+          <div className="dorm-bp-stairs" aria-hidden="true">stairwell</div>
           <div className="dorm-bp-sheet-title">First floor</div>
           <div className="dorm-bp-grid" role="group" aria-label="First floor rooms">
             {BLUEPRINT_ROOMS.filter((r) => r.floor === 1).map((r) => (
@@ -234,11 +236,11 @@ export function HallLoungeView({
           </div>
         </div>
 
-        <aside className="dorm-bp-inspector" aria-live="polite">
+        <aside className="dorm-bp-inspector" aria-live="polite" aria-labelledby="dorm-bp-inspector-title">
           <div className="dorm-bp-inspector-kicker">
             {SKILL_CATEGORIES[room.category]?.label || 'Resident wing'}
           </div>
-          <h2 className="dorm-bp-inspector-title">{room.label}</h2>
+          <h2 id="dorm-bp-inspector-title" className="dorm-bp-inspector-title">{room.label}</h2>
           <p className="dorm-bp-inspector-blurb">{room.blurb}</p>
 
           {nightMode && room.id === 'corridor' && (

@@ -1970,6 +1970,7 @@
   align-items: start;
 }
 .dorm-bp-sheet {
+  position: relative;
   background:
     repeating-linear-gradient(0deg, transparent 0 19px, rgba(90, 140, 160, 0.07) 19px 20px),
     repeating-linear-gradient(90deg, transparent 0 19px, rgba(90, 140, 160, 0.07) 19px 20px),
@@ -1992,6 +1993,32 @@
   text-transform: uppercase;
   color: #7aa0a8;
   margin: 4px 0 8px;
+}
+.dorm-bp-compass {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #5a8088;
+  border-radius: 50%;
+  font-size: 9px;
+  letter-spacing: 0;
+  color: #9ec4c8;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+.dorm-bp-stairs {
+  margin: -6px 0 10px;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #6a8890;
+  border-top: 1px dashed #4a6a70;
+  border-bottom: 1px dashed #4a6a70;
+  padding: 4px 0;
 }
 .dorm-bp-grid {
   display: grid;
