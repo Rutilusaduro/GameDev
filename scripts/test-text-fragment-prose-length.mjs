@@ -43,6 +43,8 @@ const POOLS = [
   'opposition.scene.removalDocket',
   'opposition.scene.emergencyExposure',
   'stream.scene.roundStartPulse',
+  'opposition.scene.testifyWarmth',
+  'opposition.scene.counterMomentum',
 ];
 
 for (const key of POOLS) {

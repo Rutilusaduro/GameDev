@@ -5,6 +5,7 @@ import { render } from '../src/textEngine/engine.js';
 import { renderHearingChoiceResult, renderHearingPhase } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { buildHearingCtx } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
+import { counterSuccessLine } from '../src/gameData/oppositionText.js';
 import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
 
 const week = 24;
@@ -51,6 +52,25 @@ for (let s = 0; s < 8; s += 1) {
   if (EM_FP.test(p0) || EM_FP.test(p1)) emHit = true;
 }
 assert.ok(emHit, `expected modular emergency hearing phases @ week ${week}`);
+
+const TESTIFY_FP = /testifyWarmth|testifyDevotion|Growth as lifestyle spoken|devotion lands/i;
+let testifyHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderHearingChoiceResult('removal', 'testify', destiny, week, 1)?.trim() || '';
+  assert.ok(line.length > 80, 'short testify result');
+  if (TESTIFY_FP.test(line)) testifyHit = true;
+}
+assert.ok(testifyHit, `expected modular removal testify @ week ${week}`);
+
+const COUNTER_FP = /counterMomentum|counterAfterglow|institutional momentum|Counter afterglow/i;
+let counterHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = counterSuccessLine('feast_bribe', week)?.trim() || '';
+  assert.ok(line.length > 80, 'short counter.success');
+  assert.ok(!line.includes('{unresolved}'), 'unresolved counter');
+  if (COUNTER_FP.test(line)) counterHit = true;
+}
+assert.ok(counterHit, `expected modular counter.success @ week ${week}`);
 
 const SYN_FP = /endgameAbundance|synthesisEcho|Scarcity folds|Passive abundance/i;
 let synHit = false;

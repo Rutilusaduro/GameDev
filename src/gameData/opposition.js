@@ -397,6 +397,7 @@ export function getAdvocateScrutinyMod(advocate) {
 
 export function runAibCounter(opposition, counterId, memberId, options = {}) {
   counterId = normalizeCounterId(counterId);
+  const gameWeek = options.week ?? 1;
   const counter = AIB_COUNTERS.find((c) => c.id === counterId);
   if (!counter) return { opposition, message: null, scrutinyDelta: 0, apCost: 0 };
   let next = { ...opposition, aib: { ...opposition.aib, members: [...opposition.aib.members] } };
@@ -404,7 +405,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
   if (counterId === 'feast_bribe') {
     next.aib.truceWeeks = Math.max(next.aib.truceWeeks, 1);
     next.aib.members = next.aib.members.map((m) => ({ ...m, resolve: Math.max(0, m.resolve - counter.resolveHit) }));
-    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: counterSuccessLine(counterId) || '🍷 Feast bribe accepted. AIB pauses this week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
+    return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: counterSuccessLine(counterId, gameWeek) || '🍷 Feast bribe accepted. AIB pauses this week.', scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0 };
   }
   if (counterId === 'public_discredit') {
     const cardId = options.cardId;
@@ -424,7 +425,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
       opposition: { ...next, meta },
       message: archivistFree
         ? `📚 Archivist Skin — discredit lands unchallenged: ${label}.`
-        : (counterSuccessLine(counterId) || `📰 Discredited: ${label}. Card removed from deck.`),
+        : (counterSuccessLine(counterId, gameWeek) || `📰 Discredited: ${label}. Card removed from deck.`),
       scrutinyDelta: counter.scrutiny,
       apCost: archivistFree ? 0 : counter.ap,
       moneyDelta: 0,
@@ -436,7 +437,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
     }
     const misfired = next.aib.agendaQueue[0];
     next.aib.agendaQueue = next.aib.agendaQueue.slice(1);
-    const misfireMsg = counterSuccessLine(counterId)
+    const misfireMsg = counterSuccessLine(counterId, gameWeek)
       || (misfired?.cardId === 'removal_hearing'
         ? '👁 Floor pressure — removal hearing misfires into mandatory tasting.'
         : '👁 Floor pressure — agenda misfires into mandatory tasting.');
@@ -507,7 +508,7 @@ export function runAibCounter(opposition, counterId, memberId, options = {}) {
       if (m.id !== memberId) return m;
       return { ...m, stance: 'compromised', corruption: Math.min(100, m.corruption + 25) };
     });
-    const msg = counterSuccessLine(counterId) || '📎 Member compromised — they look away at hearings.';
+    const msg = counterSuccessLine(counterId, gameWeek) || '📎 Member compromised — they look away at hearings.';
     return { opposition: { ...next, meta: recordCounterType(next.meta, counterId) }, message: msg, scrutinyDelta: counter.scrutiny, apCost: counter.ap, moneyDelta: 0, boardCompromised: true };
   }
   if (counterId === 'lilith_hunt') {

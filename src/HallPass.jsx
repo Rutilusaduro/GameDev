@@ -2759,6 +2759,7 @@ export default function HallPass(){
     };
     const result=runAibCounter(opposition,counterId,memberId,{
       ...options,
+      week,
       evolvedOpMessage,
       archivistDiscreditFree:archivistFree,
       spendEchoedWill:counterId==='floor_pressure'?spendEchoedWill:undefined,

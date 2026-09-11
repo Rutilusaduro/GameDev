@@ -43,6 +43,10 @@ export function agendaResolveLine(cardId, week) {
   return renderOppositionLine(pool, { week, globals: { card: cardId } });
 }
 
-export function counterSuccessLine(counterId) {
-  return renderOppositionLine('opposition.counter.success', { counter: counterId, globals: { counter: counterId } });
+export function counterSuccessLine(counterId, week = 1) {
+  return renderOppositionLine('opposition.counter.success', {
+    week,
+    counter: counterId,
+    globals: { counter: counterId },
+  });
 }

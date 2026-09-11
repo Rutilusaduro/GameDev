@@ -39,6 +39,7 @@ const MODULAR_MARKERS = [
   /boardPressure|cateredVote|endgameAbundance|lateHush|lateTremor/i,
   /betweenRoundGlow|betweenRoundChat|removalDocket|restraintFarce/i,
   /emergencyExposure|emergencyStake|roundStartPulse|roundStartChat/i,
+  /testifyWarmth|counterMomentum|counterAfterglow/i,
 ];
 
 function isModular(line) {

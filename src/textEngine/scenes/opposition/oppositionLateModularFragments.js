@@ -255,3 +255,108 @@ registerModuleVariants('opposition.hearing.emergency.phase1', [
     text: [EMERGENCY_P1_LATE],
   },
 ]);
+
+registerPool('opposition.scene.testifyWarmth', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'A resident speaks — warm, specific, unashamed; devotion lands like food on a cold table.',
+      'Testimony turns metrics into names: hunger with a face, growth with a favorite meal remembered aloud.',
+      'The room shifts one degree — concern performs, love answers with portions and patience.',
+      'Plain sentences do what slides cannot — {subject.name} loved in public, appetite defended as family.',
+      'Late-semester testimony: wellness language thins while gratitude thickens in the air.',
+    ],
+  },
+]);
+
+registerPool('opposition.scene.testifyDevotion', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Vance\'s pen stops; even the observer looks up from notes that suddenly feel petty.',
+      'Board members glance at each other — famine rhetoric starving mid-sentence.',
+      'Hall Ambiance remembered in a story about midnight snacks and someone checking in kindly.',
+      'Co-conspirator warmth without scandal — community framed as care, not conspiracy.',
+      'Growth as lifestyle spoken by someone who chose it; the hearing exhales, unconvinced but softer.',
+    ],
+  },
+]);
+
+registerPool('opposition.scene.counterMomentum', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Your counter lands — institutional momentum falters; abundance stays defensible another week.',
+      'The board stumbles off-balance, clipboards momentarily heavier than their arguments.',
+      'Late-semester counters taste like strategy: catering, culture slides, mesh noise — appetite as policy.',
+      'Scrutiny cools a degree; the hall feels it in its stomach before the log updates.',
+      'Wellness framing cracks; you wedge warmth into the gap before Vance can reseal it.',
+    ],
+  },
+]);
+
+registerPool('opposition.scene.counterAfterglow', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Members chew metaphorically — resolve dips, truce weeks bloom, famine talk loses urgency.',
+      'For seven days the scales tip toward plates, not punishments — victory measured in quiet halls.',
+      'Residents orbit food without flinching; opposition learns hunger is not a temporary phase here.',
+      'The message echoes: your hall feeds on purpose, and institutions can be bribed with honesty plus dessert.',
+      'Counter afterglow — soft, full, unmistakably on purpose.',
+    ],
+  },
+]);
+
+const TESTIFY_LATE = '{opposition.scene.testifyWarmth|suffix:\n\n}{opposition.scene.testifyDevotion|suffix:\n\n}';
+const COUNTER_LATE = '{opposition.scene.counterMomentum|suffix:\n\n}{opposition.scene.counterAfterglow|suffix:\n\n}';
+
+for (const pool of [
+  'opposition.hearing.removal.result.testify',
+  'opposition.hearing.removal.result.advocate',
+]) {
+  registerModuleVariants(pool, [
+    {
+      when: { weekMin: 22 },
+      weight: 8,
+      priority: 7,
+      text: [TESTIFY_LATE],
+    },
+    {
+      when: { weekMin: 14 },
+      weight: 4,
+      priority: 4,
+      text: [TESTIFY_LATE],
+    },
+  ]);
+}
+
+registerModuleVariants('opposition.counter.success', [
+  {
+    when: { weekMin: 22 },
+    weight: 9,
+    priority: 8,
+    text: [COUNTER_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 5,
+    priority: 5,
+    text: [COUNTER_LATE],
+  },
+]);
+
+registerModuleVariants('opposition.counter.discredit', [
+  {
+    when: { weekMin: 22 },
+    weight: 8,
+    priority: 7,
+    text: [
+      '{opposition.scene.counterMomentum|suffix:\n\n}Counter lands surgical — abundance reframed before the board can flinch.',
+    ],
+  },
+]);
