@@ -6,7 +6,8 @@ const sceneImports = [
   './talkCheckIn.js', './talkEncourage.js', './talkCompliment.js', './talkSuggest.js',
   './weekRecap/index.js', './hungerInterrupt/index.js', './opposition/index.js',
   './hallBlueprint/index.js', './roomVisit/index.js', './raPivotMechanicsProseDepth.js',
-  './scrutiny/index.js', './rosterTell/index.js',
+  './scrutiny/index.js', './rosterTell/index.js', './dinner/index.js', './session/index.js',
+  './eating/index.js', './weighIn/index.js',
 ];
 for (const p of sceneImports) {
   await import(`../src/textEngine/scenes/${p}`);
@@ -16,7 +17,7 @@ import { _registryEntries, _moduleOpts } from '../src/textEngine/engine.js';
 
 const RA_PREFIXES = [
   'talk.', 'weekRecap.', 'hunger.', 'opposition.', 'ra.', 'hall.', 'room.visit.',
-  'scrutiny.', 'rosterTell.', 'dorm.', 'floor.',
+  'scrutiny.', 'rosterTell.', 'dorm.', 'floor.', 'dinner.', 'eating.', 'wi.', 'session.', 'weighIn.',
 ];
 
 const EXTRA = {
@@ -82,6 +83,6 @@ for (const [key, variants] of entries) {
   if (added >= 48) break;
 }
 
-const out = 'src/textEngine/scenes/raPivotProseDepthPass54.js';
+const out = 'src/textEngine/scenes/raPivotProseDepthPass55.js';
 writeFileSync(out, lines.join('\n'));
 console.log(`Wrote ${out} (${added} pool top-ups)`);

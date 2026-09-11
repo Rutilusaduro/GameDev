@@ -2,6 +2,7 @@
 // ROSTER UNLOCK — passive trust, seat slots, late-game catch-up
 // ═══════════════════════════════════════════════════════════════
 import { UNLOCK_POOL_IDS, getStudentHomeDorm } from './dorms.js';
+import { depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
 
 export const ROSTER_TRUST_GATE = 60;
 export const ROSTER_START_SLOTS = 5;
@@ -23,7 +24,7 @@ export function weeklyTrustDripAmount({ reachLevel = 1, week = 1, rng = Math.ran
   const base = 6 + Math.floor(rng() * 7); // 6–12
   const reachBonus = Math.max(0, reachLevel - 2) * 3;
   const weekBonus = Math.floor(week / 8);
-  return base + reachBonus + weekBonus;
+  return depthPassiveTrustDrip(base + reachBonus + weekBonus);
 }
 
 export function getStudentHomeHall(student) {

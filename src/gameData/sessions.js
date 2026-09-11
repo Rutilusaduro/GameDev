@@ -1,4 +1,25 @@
 import { getStage } from './stages.js';
+import { depthRelBonus, depthActivityGainBonus } from './mechanicsDepthLayer.js';
+
+export function scaleSessionRelBonus(amount = 0) {
+  return depthRelBonus(amount);
+}
+
+export function getGroupConversation(convId) {
+  const c = GROUP_CONVERSATIONS.find((x) => x.id === convId);
+  if (!c) return null;
+  return { ...c, relBonus: depthRelBonus(c.relBonus) };
+}
+
+export function getDinnerConversation(convId) {
+  const c = DINNER_CONVERSATION.find((x) => x.id === convId);
+  if (!c) return null;
+  const relBonus = c.relBonus > 0 ? depthRelBonus(c.relBonus) : c.relBonus;
+  const gainBonus = c.gainBonus?.length === 2
+    ? [depthActivityGainBonus(c.gainBonus[0]), depthActivityGainBonus(c.gainBonus[1])]
+    : c.gainBonus;
+  return { ...c, relBonus, gainBonus };
+}
 
 export const GROUP_CONVERSATIONS=[
   { id:"get_them_talking", label:"Get them talking", relBonus:4, fullnessEffect:-4 },

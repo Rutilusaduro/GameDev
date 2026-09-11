@@ -23,4 +23,10 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'growthEvents', file: 'growthEvents.js' },
   { id: 'competitiveGainer', file: 'competitiveGainerState.js' },
   { id: 'inventionUpgrades', file: 'inventionUpgrades.js' },
+  { id: 'sessions', file: 'sessions.js' },
+  { id: 'rosterUnlock', file: 'rosterUnlock.js' },
+  { id: 'raApproaches', file: 'raApproaches.js' },
+  { id: 'weekPlanner', file: 'weekPlanner.js' },
+  { id: 'supernaturalForms', file: 'supernaturalForms.js' },
+  { id: 'forceFeeder', file: 'forceFeederEvent.js' },
 ];

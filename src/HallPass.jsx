@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
-import { GROUP_CONVERSATIONS, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
+import { GROUP_CONVERSATIONS, getGroupConversation, getDinnerConversation, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
@@ -7360,6 +7360,7 @@ export default function HallPass(){
   };
 
   const useDinnerConversation=(conv)=>{
+    conv=getDinnerConversation(conv.id)||conv;
     if(dinnerEvent.conversationUsed.includes(conv.id)) return;
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
@@ -7586,6 +7587,7 @@ export default function HallPass(){
   };
 
   const useGroupConversation=(conv)=>{
+    conv=getGroupConversation(conv.id)||conv;
     if(groupDinnerEvent.conversationUsed.includes(conv.id)) return;
     const liveStudents=groupDinnerEvent.students.map(gs=>students.find(st=>st.id===gs.id)).filter(Boolean);
     const [s1,s2]=liveStudents;

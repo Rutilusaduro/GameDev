@@ -4,6 +4,9 @@
 // how this RA runs her hall.
 // ═══════════════════════════════════════════════════════════════
 
+import { getDorm } from './dorms.js';
+import { depthGainMult, depthSaturationBonus } from './mechanicsDepthLayer.js';
+
 export const FAVOR_MAX = 10;
 export const FAVOR_REBATE = 1;
 
@@ -109,13 +112,12 @@ export function favorFill(approachId, tag) {
   return RA_APPROACHES[approachId]?.favorActions?.[tag] || 0;
 }
 
-import { getDorm } from './dorms.js';
-
 export function profileGainMult(profile) {
   if (!profile) return 1;
   const dorm = getDorm(profile.dormId || profile.subject);
   const approach = RA_APPROACHES[getProfileApproachId(profile)];
-  return (dorm?.gainMult ?? 1) * (approach?.gainMult ?? 1);
+  const mult = (dorm?.gainMult ?? 1) * (approach?.gainMult ?? 1);
+  return depthGainMult(mult);
 }
 
 export function profileScrutinyMult(profile) {
@@ -126,7 +128,8 @@ export function profileScrutinyMult(profile) {
 }
 
 export function profilePassiveBonus(profile) {
-  return RA_APPROACHES[getProfileApproachId(profile)]?.passiveBonus || 0;
+  const base = RA_APPROACHES[getProfileApproachId(profile)]?.passiveBonus || 0;
+  return depthSaturationBonus(base);
 }
 
 export function profileCorruptionMult(profile) {

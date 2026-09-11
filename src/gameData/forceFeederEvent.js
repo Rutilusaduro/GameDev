@@ -9,6 +9,7 @@ import {
   timingWindowMs,
   getForceFeederBoardMods,
 } from './inventionUpgrades.js';
+import { depthActivityGainBonus } from './mechanicsDepthLayer.js';
 
 export const GULLET_BEAT_COUNT = 8;
 export const PERFORMANCE_TIERS = ['perfect', 'good', 'messy', 'failure'];
@@ -255,8 +256,9 @@ export function buildForceFeederEffect(target, performanceTier, labState, week, 
   }
 
   const bloatedBump = performanceTier === 'failure' ? 3 : performanceTier === 'messy' ? 2 : 1;
+  const hiPad = performanceTier === 'failure' ? 4 : 2;
   return {
-    gainLbs: [gainLbs, gainLbs + (performanceTier === 'failure' ? 4 : 2)],
+    gainLbs: [depthActivityGainBonus(gainLbs), depthActivityGainBonus(gainLbs + hiPad)],
     bodyOverride: {
       stateType: 'bloated',
       stageBump: bloatedBump,

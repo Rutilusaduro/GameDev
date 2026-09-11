@@ -3,6 +3,7 @@ import { getAddictionLevel, getHungerTier } from './hungerAddiction.js';
 import { PSYCH_TIERS } from './psychState.js';
 import { getStage } from './stages.js';
 import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
+import { depthMealCostEstimate } from './mechanicsDepthLayer.js';
 
 export const WEEK_PLAN_SLOT_COUNT = 5;
 
@@ -30,7 +31,7 @@ export function mealCostPreview(student, week = 1) {
   const base = 12 + hunger * 5 + addiction * 4;
   const stageId = getStage(student.lbs ?? 0).id;
   const creep = Math.max(0, stageId - 2);
-  const cost = base + creep * 2;
+  const cost = depthMealCostEstimate(base + creep * 2);
   return {
     cost,
     hunger,

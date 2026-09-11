@@ -171,3 +171,28 @@ export function depthBoardWeeklyGainMult(mult = 1) {
   if (mult <= 1) return mult;
   return 1 + (mult - 1) * (1 + BONUS_FRAC * 0.25);
 }
+
+export function depthRelBonus(base = 0) {
+  return depthTalkRelGrant(base);
+}
+
+export function depthPassiveTrustDrip(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.3)));
+}
+
+/** Profile / supernatural gain mults — deepen bonus above 1.0 only. */
+export function depthGainMult(mult = 1) {
+  if (mult <= 1) return mult;
+  return 1 + (mult - 1) * (1 + BONUS_FRAC * 0.22);
+}
+
+export function depthMealCostEstimate(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.12)));
+}
+
+export function depthActivityGainBonus(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.35)));
+}
