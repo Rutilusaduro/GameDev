@@ -2,6 +2,7 @@
 // BODY ECHO ARCHIVE — replay transformation moments
 // ═══════════════════════════════════════════════════════════════
 import { V2_CONFIG } from './state.js';
+import { depthGainMult } from '../mechanicsDepthLayer.js';
 
 export const ECHO_TYPES = {
   stage_up: { label: 'Stage Ascension', icon: '⬆' },
@@ -81,4 +82,11 @@ export function echoDepthTier(replayCount) {
   if (replayCount >= 3) return 3;
   if (replayCount >= 1) return 2;
   return 1;
+}
+
+/** Gain multiplier applied when resonating an echo (scales with replay depth). */
+export function echoResonateGainMultiplier(replayCount = 0) {
+  const tier = echoDepthTier(replayCount);
+  const base = 1 + tier * 0.025;
+  return depthGainMult(base);
 }

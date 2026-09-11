@@ -8,7 +8,7 @@ const sceneImports = [
   './hallBlueprint/index.js', './roomVisit/index.js', './raPivotMechanicsProseDepth.js',
   './scrutiny/index.js', './rosterTell/index.js', './dinner/index.js', './session/index.js',
   './eating/index.js', './weighIn/index.js', './growthEvent/index.js', './collabStream/index.js',
-  './campus/index.js',
+  './campus/index.js', './feedReaction/index.js', './intimacy/index.js',
 ];
 for (const p of sceneImports) {
   await import(`../src/textEngine/scenes/${p}`);
@@ -19,7 +19,7 @@ import { _registryEntries, _moduleOpts } from '../src/textEngine/engine.js';
 const RA_PREFIXES = [
   'talk.', 'weekRecap.', 'hunger.', 'opposition.', 'ra.', 'hall.', 'room.visit.',
   'scrutiny.', 'rosterTell.', 'dorm.', 'floor.', 'dinner.', 'eating.', 'wi.', 'session.', 'weighIn.',
-  'growthEvent.', 'collabStream.', 'campus.', 'room.visit.',
+  'growthEvent.', 'collabStream.', 'campus.', 'room.visit.', 'feedReaction.', 'intimacy.',
 ];
 
 const EXTRA = {
@@ -86,6 +86,6 @@ for (const [key, variants] of entries) {
   if (added >= 48) break;
 }
 
-const out = 'src/textEngine/scenes/raPivotProseDepthPass56.js';
+const out = 'src/textEngine/scenes/raPivotProseDepthPass57.js';
 writeFileSync(out, lines.join('\n'));
 console.log(`Wrote ${out} (${added} pool top-ups)`);

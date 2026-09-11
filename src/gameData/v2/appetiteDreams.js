@@ -2,7 +2,21 @@
 // APPETITE DREAMS — surreal subconscious feeding
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from '../stages.js';
+import {
+  depthCorruptionGrant,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from '../mechanicsDepthLayer.js';
 import { V2_CONFIG } from './state.js';
+
+export function scaleDreamChoiceEffect(choice) {
+  if (!choice) return { calories: 0, rel: 0, corruption: 0 };
+  return {
+    calories: depthResonancePassiveBonus(choice.calories || 0),
+    rel: depthRelBonus(choice.rel || 0),
+    corruption: depthCorruptionGrant(choice.corruption || 0),
+  };
+}
 
 export const DREAM_SCENARIOS = [
   { id: 'endless_buffet', label: 'Endless Buffet', minStage: 0, minCorruption: 0, archetypes: null },

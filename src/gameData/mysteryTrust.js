@@ -1,4 +1,5 @@
 import { UNLOCK_POOL_IDS, getStudentHomeDorm, getDorm } from './dorms.js';
+import { depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
 import {
   ROSTER_TRUST_GATE,
   countOpenPoolStudents,
@@ -49,7 +50,7 @@ export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachL
   if (!lockedReachable.length) return null;
 
   const maxTrust = Math.max(...lockedReachable.map((s) => s.passiveTrust || 0));
-  const progress = Math.min(1, maxTrust / ROSTER_TRUST_GATE);
+  const progress = Math.min(1, depthPassiveTrustDrip(maxTrust) / ROSTER_TRUST_GATE);
   const nearlyReady = lockedReachable.some((s) => (s.passiveTrust || 0) >= ROSTER_TRUST_GATE);
 
   const homeIds = [...new Set(lockedReachable.map((s) => getStudentHomeDorm(s.id)).filter(Boolean))];

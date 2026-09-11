@@ -59,7 +59,7 @@ import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, FAT_BAR_CAP, DIGEST_W
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult } from './textEngine/scenes/campusEvent/index.js';
-import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
+import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES, scaleCaseStudyGainRange } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
   pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
@@ -228,7 +228,7 @@ import {
   captureDinnerUnbuttonEcho, captureImmobilityEcho, captureCorruptionTierEcho,
   applyResonanceSurgeBonus,
 } from './gameData/v2/handlers.js';
-import { echoDepthTier } from './gameData/v2/bodyEcho.js';
+import { echoDepthTier, echoResonateGainMultiplier } from './gameData/v2/bodyEcho.js';
 import { renderEchoReplay, renderEchoCapture } from './textEngine/scenes/v2/echo/index.js';
 import { renderResonancePulse } from './textEngine/scenes/v2/resonance/index.js';
 import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
@@ -5096,7 +5096,7 @@ export default function HallPass(){
   const completeCaseStudy=(s)=>{
     const crs=communityResearcherState; if(!crs) return;
     const pair=CASE_STUDY_PAIRS.find(p=>p.id===crs.activePairId);
-    const [gMin,gMax]=pair?.gainRange||[3,8];
+    const [gMin,gMax]=scaleCaseStudyGainRange(pair?.gainRange||[3,8]);
     setAp(a=>a-1);
     const gain=rnd(gMin,gMax);
     setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,gain,10)}:st));
@@ -6640,7 +6640,8 @@ export default function HallPass(){
     setAp(a=>a-result.apCost);
     setV2State(result.v2State);
     const s=students.find(st=>st.id===result.moment?.studentId);
-    if(s) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,gainMultiplier:(st.gainMultiplier||1)*1.05}:st));
+    const mult=echoResonateGainMultiplier(result.moment?.replayCount||0);
+    if(s) setStudents(prev=>prev.map(st=>st.id===s.id?{...st,gainMultiplier:(st.gainMultiplier||1)*mult}:st));
     push(`📜 Echo resonated — ${s?.name||'her'} growth deepens.`);
     setEchoReplay(null);
   };

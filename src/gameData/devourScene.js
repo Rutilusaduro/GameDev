@@ -1,5 +1,10 @@
 // Command: Devour — long-form scene. She consumes a random stranger (not a roster student).
 import { getStage } from './stages.js';
+import {
+  depthCorruptionGrant,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from './mechanicsDepthLayer.js';
 import { pick } from '../textEngine/engine.js';
 import { getBodyDescRich } from '../utils/gameHelpers.js';
 
@@ -134,3 +139,13 @@ export const DEVOUR_EFFECT = {
   rel: 3,
   devourShift: true,
 };
+
+export function getDevourEffect() {
+  return {
+    cals: depthResonancePassiveBonus(DEVOUR_EFFECT.cals),
+    full: DEVOUR_EFFECT.full,
+    corruption: depthCorruptionGrant(DEVOUR_EFFECT.corruption),
+    rel: depthRelBonus(DEVOUR_EFFECT.rel),
+    devourShift: true,
+  };
+}

@@ -4,6 +4,13 @@
 // Each pair has a suspicion rating 1–7 (7 = most suspicious to the athletics panel).
 // gainRange gives Cassidy's lbs gain when the case study is completed.
 
+import { depthLbsGrant } from './mechanicsDepthLayer.js';
+
+/** Scale case-study lb range for mechanics depth layer. */
+export function scaleCaseStudyGainRange([min, max]) {
+  return [depthLbsGrant(min), depthLbsGrant(max)];
+}
+
 // ── WEIGHT TIER HELPER ────────────────────────────────────────────────────────
 // 0=slim(0-3), 1=heavy(4-6), 2=enormous(7-8), 3=blob(9+)
 export function getCassidyTier(stageId) {

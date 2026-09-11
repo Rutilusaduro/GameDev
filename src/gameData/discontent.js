@@ -10,7 +10,11 @@
 // future confrontation can throw the specifics back at you.
 // ═══════════════════════════════════════════════════════════════
 import { getCorruptionTier } from './corruption.js';
-import { depthDiscontentEase, depthDiscontentWeeklyDecay } from './mechanicsDepthLayer.js';
+import {
+  depthDiscontentEase,
+  depthDiscontentWeeklyDecay,
+  depthIntensityMult,
+} from './mechanicsDepthLayer.js';
 
 export const DISCONTENT_TIERS = [
   { id: 0, min: 0,  key: 'content',    label: 'content' },
@@ -48,7 +52,7 @@ export const DISLIKE_SENSITIVITY = {
 export function grievanceGain(student, type) {
   const base = DISCONTENT_GAIN[type] || 0;
   const mult = DISLIKE_SENSITIVITY[student?.archetype]?.[type] ?? 1;
-  return Math.round(base * mult);
+  return Math.round(base * mult * depthIntensityMult(1));
 }
 // How it mends.
 export const DISCONTENT_EASE_FEED = 2;     // attention, slowly

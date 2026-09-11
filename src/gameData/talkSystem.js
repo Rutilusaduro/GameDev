@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from './stages.js';
 import { enrichTalkEffect } from './mechanicsDepthLayer.js';
+import { getDevourEffect } from './devourScene.js';
 
 export const TALK_TOPICS = [
   // ── always available ───────────────────────────────────────
@@ -81,7 +82,10 @@ export const COMPLIMENT_BACKFIRE_REL = 4;    // relationship lost when it lands 
 export const COMPLIMENT_BACKFIRE_SCRUTINY = 2;
 
 export function resolveTalkTopicEffect(topic) {
-  return enrichTalkEffect(topic?.effect || {});
+  const base = topic?.id === 'command_devour'
+    ? { ...topic?.effect, ...getDevourEffect() }
+    : (topic?.effect || {});
+  return enrichTalkEffect(base);
 }
 
 export function isBodyComplimentUnwelcome(student) {

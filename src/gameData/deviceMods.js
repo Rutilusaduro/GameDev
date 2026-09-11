@@ -3,6 +3,8 @@
 // TODO: wire real Pharmacist/Relic acquisition sources
 // ═══════════════════════════════════════════════════════════════
 
+import { depthLbsGrant, depthPsychDelta } from './mechanicsDepthLayer.js';
+
 export const MOD_COMPONENTS = {
   paste_core: {
     id: 'paste_core',
@@ -98,12 +100,12 @@ export function foldModPatches(effectSpec, modIds = [], baseDef = null) {
     if (comp.effect?.gainLbsBonus && spec.gainLbs) {
       const [b0, b1] = comp.effect.gainLbsBonus;
       spec.gainLbs = [
-        (spec.gainLbs[0] || 0) + b0,
-        (spec.gainLbs[1] || 0) + b1,
+        (spec.gainLbs[0] || 0) + depthLbsGrant(b0),
+        (spec.gainLbs[1] || 0) + depthLbsGrant(b1),
       ];
     }
     if (comp.effect?.psychDeltaBonus) {
-      spec.psychDelta = { ...(spec.psychDelta || {}), ...comp.effect.psychDeltaBonus };
+      spec.psychDelta = depthPsychDelta({ ...(spec.psychDelta || {}), ...comp.effect.psychDeltaBonus });
     }
   }
 
