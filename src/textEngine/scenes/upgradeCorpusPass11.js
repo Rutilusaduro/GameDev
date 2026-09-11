@@ -4,7 +4,7 @@ import { registerModuleVariants } from '../engine.js';
 
 // ── hunger.voice (FULL SENTENCE) ──────────────────────────────
 registerModuleVariants('hunger.voice', [
-  { when: { studentId: 0, hungerTier: [3, 4] }, weight: 6, text: [
+  { when: { studentId: 0, hungerTier: [2, 3, 4] }, weight: 6, text: [
     'Brittany pulls the plate in like a heat she already entered. "Don\'t make me wait."',
     '{word.hungerPhrase|cap}. Captain appetite: she starts before you sit.',
   ] },
@@ -16,7 +16,7 @@ registerModuleVariants('hunger.voice', [
     'Kylie films one bite, then forgets the camera. Hunger is the only story.',
     '{word.hungerPhrase|cap}. She eats like the audience is you.',
   ] },
-  { when: { studentId: 3, hungerTier: [3, 4] }, weight: 6, text: [
+  { when: { studentId: 3, hungerTier: [2, 3, 4] }, weight: 6, text: [
     'Serena fuels without apology. "I\'ve been thinking about this since warm-up."',
   ] },
   { when: { studentId: 5 }, weight: 6, text: [
@@ -61,7 +61,7 @@ registerModuleVariants('hunger.voice', [
     '{subject.name} eats with easy pleasure, {word.hungerPhrase}.',
     'Good mood makes room. She savors, then accelerates.',
   ] },
-  { when: { hungerTier: [4], stageMin: 5 }, weight: 5, text: [
+  { when: { hungerTierMin: 2, stageMin: 5 }, weight: 5, text: [
     '{word.hungerPhrase|cap}. {subject.name} is already eating when you arrive.',
     'Starving and shameless: she pulls the dish in before you sit.',
   ] },
@@ -508,6 +508,89 @@ registerModuleVariants('stream.chat.rare', [
     'rare drop: she laughed with her mouth full',
   ] },
 ]);
+// Leftover archetypes (culinary, nursing, psych, …) never hit default.fN.
+// Route them onto those bands so per-girl fullness extras can surface.
+for (const arch of ['culinary', 'nursing', 'psych', 'eced', 'farm_girl', 'predator', 'pharmacy_grad', 'explorer', 'inventor']) {
+  for (const band of [0, 1, 2, 3, 4, 5]) {
+    registerModuleVariants('session.fullness', [
+      { when: { archetype: arch, fullnessStage: [band] }, weight: 4, text: [`{session.fullness.default.f${band}}`] },
+    ]);
+  }
+}
+
+// ── session aftermath leftovers ───────────────────────────────
+registerModuleVariants('session.aftermath.light._f1', [
+  { when: { studentId: 0 }, weight: 7, text: [
+    'Brittany is loose and fed, still sitting like the session was a heat she won.',
+  ] },
+  { when: { studentId: 8 }, weight: 7, text: [
+    'Maya is full and quiet. She stays. The last bites take their time.',
+  ] },
+  { when: { studentId: 5 }, weight: 7, text: [
+    'Destiny slumps, comfortable, one hand on the warm middle. "Good sit."',
+  ] },
+  { when: { studentId: 10 }, weight: 7, text: [
+    'Reneé is full and still tasting the air. She calls the session a successful service.',
+  ] },
+]);
+registerModuleVariants('session.aftermath.full._f1', [
+  { when: { studentId: 2 }, weight: 7, text: [
+    'Kylie leans back, camera down, both hands on the round middle. She does not get up.',
+  ] },
+  { when: { studentId: 9 }, weight: 7, text: [
+    'Chloé stays seated, packed, pleased. "I cannot move," she says, and does not try.',
+  ] },
+  { when: { studentId: 14 }, weight: 7, text: [
+    'Mary Jane leans back with both hands on the swell. "I\'m planted. Leave me."',
+  ] },
+]);
+registerModuleVariants('session.aftermath.full._f2', [
+  { when: { studentId: 8 }, weight: 7, text: [
+    '. You drape a blanket. Maya\'s eyes are already half-closed.',
+  ] },
+  { when: { studentId: 6 }, weight: 7, text: [
+    '. Tiffany accepts the blanket like hospitality she earned.',
+  ] },
+]);
+registerModuleVariants('session.aftermath.stuffed._f1', [
+  { when: { studentId: 7 }, weight: 7, text: [
+    'Priya has gone still, spectacularly full. She presses the taut curve like a finished exam.',
+  ] },
+  { when: { studentId: 1 }, weight: 7, text: [
+    'Madeline is packed and scholarly about it. Hands flat on the warm mass. Notes later.',
+  ] },
+  { when: { studentId: 18 }, weight: 7, text: [
+    'Talia is still, the prototype successful. She keeps both hands on the result.',
+  ] },
+]);
+registerModuleVariants('session.aftermath.stuffed._f2', [
+  { when: { studentId: 0 }, weight: 7, text: [
+    '. "I finished," Brittany says. She sounds like she posted a W.',
+  ] },
+  { when: { studentId: 15 }, weight: 7, text: [
+    '. Lilith: "Everything." She sounds glad. She sounds ready again.',
+  ] },
+]);
+registerModuleVariants('session.aftermath.packed._f1', [
+  { when: { studentId: 15 }, weight: 7, text: [
+    'Lilith is enormous with the meal, hands on the firm swell, unhurried as a larder.',
+  ] },
+  { when: { studentId: 8 }, weight: 7, text: [
+    'Maya is huge with food and silent about it. Her hands stay on the warmth.',
+  ] },
+  { when: { studentId: 5 }, weight: 7, text: [
+    'Destiny is a successful overload. Controller parked on the taut middle.',
+  ] },
+]);
+registerModuleVariants('session.aftermath.packed._f2', [
+  { when: { studentId: 10 }, weight: 7, text: [
+    '. "This is the dish," Reneé says eventually. She means the sitting.',
+  ] },
+  { when: { studentId: 11 }, weight: 7, text: [
+    '. Kaylee keeps her hands on the swell. "This is what I wanted."',
+  ] },
+]);
+
 registerModuleVariants('weekly.chairBreaks.playerAid', [
   { when: { studentId: 0 }, weight: 5, text: [
     'You catch Brittany before the wreck finishes. She still looks like she scored.',
