@@ -35,6 +35,10 @@ registerPool('word.garment.top', [
     'her arms crossed over the gaps her shirt keeps opening',
     'the strained fabric she keeps tugging down and pretending not to',
   ] },
+  { when: { fitTop: 'straining', corruption: [1] }, weight: 2, forbids: { 'garment.top': 'burst' }, text: [
+    'the strain across her chest she has stopped hiding with a cardigan',
+    'her top reporting every breath, and her no longer arguing with the report',
+  ] },
   { when: { fitTop: 'straining', corruption: [2] }, weight: 2, forbids: { 'garment.top': 'burst' }, text: [
     'the strain across her chest worn like jewelry',
     'her top stretched taut and left that way on purpose',
@@ -82,6 +86,14 @@ registerPool('word.garment.bottom', [
     'the jeans she still insists are her size',
     'denim she lay down to zip this morning',
   ] },
+  { when: { fitBottom: 'straining', corruption: [1] }, weight: 2, forbids: { 'garment.bottom': 'burst' }, text: [
+    'denim that has become a daily negotiation she no longer dramatizes',
+    'the jeans she sized up once already, already losing again',
+  ] },
+  { when: { fitBottom: 'straining', corruption: [2] }, weight: 2, forbids: { 'garment.bottom': 'burst' }, text: [
+    'jeans worn as proof — pale at the seams, honest about the spread',
+    'denim she keeps because the strain is the point',
+  ] },
   { when: { fitBottom: 'failing' }, forbids: { 'garment.bottom': 'burst' }, text: [
     'a back seam surrendering stitch by stitch',
     'her jeans open at the button and hidden under her top',
@@ -122,6 +134,10 @@ registerPool('word.garment.waist', [
   { when: { fitWaist: 'straining', shameTierMin: 2 }, weight: 2, forbids: { 'garment.waist': 'burst' }, text: [
     'the waistband she undoes only when no one is looking',
     'a hand resting where the button digs, casually, she hopes',
+  ] },
+  { when: { fitWaist: 'straining', corruption: [1] }, weight: 2, forbids: { 'garment.waist': 'burst' }, text: [
+    'the waistband bite she has made a habit of breathing around',
+    'a button doing overtime, and her treating that as ordinary now',
   ] },
   { when: { fitWaist: 'straining', corruption: [2] }, weight: 2, forbids: { 'garment.waist': 'burst' }, text: [
     'the waistband bite she has learned to savor',
