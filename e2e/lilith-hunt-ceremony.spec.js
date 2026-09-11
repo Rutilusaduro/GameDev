@@ -19,5 +19,5 @@ test('lilith hunt status and dorm open prefer composed pools', async ({ page }) 
   await expect(page.getByText(/Lilith's dark eyes gleamed/i)).toHaveCount(0);
   await expect(page.getByText(/You've been thinking about this one for a while/i)).toHaveCount(0);
   await expect(page.getByText('{unresolved}')).toHaveCount(0);
-  await page.getByText(/hunger can find what it needs|Room 312 behind you/i).first().screenshot({ path: '/opt/cursor/artifacts/screenshots/lilith_hunt_composed_open.png' });
+  await page.getByText(/HER DORM · ROOM 312/).screenshot({ path: '/opt/cursor/artifacts/screenshots/lilith_hunt_composed_open.png' });
 });
