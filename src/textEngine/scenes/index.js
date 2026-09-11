@@ -144,6 +144,8 @@ import './upgradeCorpusPass.js';
 import './upgradeCorpusPass2.js';
 import './upgradeCorpusPass3.js';
 import './upgradeCorpusPass4.js';
+import './upgradeCorpusPass5.js';
+import './diaryPhaseDUpgrade.js';
 import './researchJournal/upgrade.js';
 import './v2/index.js';
 import './salonGallerySceneDepth.js';
