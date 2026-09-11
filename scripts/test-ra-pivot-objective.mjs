@@ -161,6 +161,8 @@ execSync('node scripts/test-text-pass-bridge-suppression-late.mjs', { cwd: root,
 
 execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 
+execSync('node scripts/test-ra-pivot-completion-slice.mjs', { cwd: root, stdio: 'inherit' });
+
 const evoPath = join(root, 'src/gameData/evolvedForms.js');
 const evoLines = readFileSync(evoPath, 'utf8').split('\n').length;
 const debtThreshold = 4000;
