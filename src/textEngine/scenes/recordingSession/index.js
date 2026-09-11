@@ -14,6 +14,7 @@ import {
   RECORDING_PAYOFF_TEXT,
 } from '../../../gameData/miniGames.js';
 import './legacyPools.js';
+import './recordingSessionFragments.js';
 
 registerDimension('recordingStage', (ctx) => ctx.globals?.recordingStage ?? 0);
 registerDimension('takeQuality', (ctx) => ctx.globals?.takeQuality ?? 'okay');

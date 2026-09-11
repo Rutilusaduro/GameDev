@@ -1,5 +1,8 @@
 // Recording session — register legacy miniGames prose into stage-keyed pools.
 import { registerPool } from '../../engine.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
+
+const RECORDING_LINT = lintWildcardVariant('{recording.scene.ringLight|prefix:} {recording.scene.takeYield|prefix: }');
 import {
   RECORDING_OPENING_TEXT,
   RECORDING_TAKE_INTRO_TEXT,
@@ -16,9 +19,10 @@ function registerStageFnPool(poolId, fn) {
   if (typeof fn !== 'function') return;
   const core = (ctx) => fn(lbsFromCtx(ctx));
   registerPool(poolId, [
-    { when: {}, text: [core] },
-    { when: {}, text: [(ctx) => `${core(ctx)}\n\nThe ring light hums. The take keeps rolling.`] },
-    { when: {}, text: [(ctx) => `On camera:\n\n${core(ctx)}`] },
+    { when: legacyBridgeWhen(), text: [core] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `${core(ctx)}\n\nThe ring light hums. The take keeps rolling.`] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `On camera:\n\n${core(ctx)}`] },
+    RECORDING_LINT,
   ]);
 }
 

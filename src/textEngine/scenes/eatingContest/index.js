@@ -2,6 +2,7 @@
 // Eating contest — engine bridge for competitive_circuit evolved form.
 import { registerDimension, registerPool, render } from '../../engine.js';
 import './legacyPools.js';
+import './eatingContestFragments.js';
 import './payoffFragments.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';

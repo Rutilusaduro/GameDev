@@ -3,6 +3,9 @@ import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { FLOOR_SCENES } from '../../../gameData/floorEvents.js';
 import { INIT_STUDENTS } from '../../../gameData/students.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
+
+const CAMPUS_SCENE_LINT = lintWildcardVariant('{campusEvent.scene.hallTone|prefix:} {campusEvent.scene.choiceEcho|prefix: }');
 
 const sampleStudent = INIT_STUDENTS[0];
 
@@ -21,14 +24,16 @@ for (const scene of FLOOR_SCENES) {
   const sceneText = resolveLegacyText(scene.text, sampleStudent);
   if (sceneText) {
     registerPool(`campusEvent.scene.${scene.id}`, [
-      { when: {}, text: [sceneText] },
+      { when: legacyBridgeWhen(), text: [sceneText] },
+      CAMPUS_SCENE_LINT,
     ]);
   }
   scene.choices.forEach((choice, idx) => {
     const resultText = resolveLegacyText(choice.result, sampleStudent);
     if (resultText) {
       registerPool(`campusEvent.choice.${scene.id}.${idx}`, [
-        { when: {}, text: [resultText] },
+        { when: legacyBridgeWhen(), text: [resultText] },
+        CAMPUS_SCENE_LINT,
       ]);
     }
   });

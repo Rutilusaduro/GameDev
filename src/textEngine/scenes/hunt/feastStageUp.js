@@ -2,6 +2,7 @@
 // Lilith hunt feast narratives — one monolithic beat per stage crossing (prey → growth).
 // Registered verbatim; decomposition deferred (author-approved standardized vignettes).
 import { registerPool, render, createContext, hasModule } from '../../engine.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 import { getConsumeText } from '../../../gameData/lilith.js';
 
 const FEAST_BY_STAGE = {
@@ -120,14 +121,18 @@ You smile at her. The slow one.
 
 The hunger is immediate and enormous and specific. It has been building since the last time and the time before that and before you were large enough to stay in one place and call someone to you.`;
 
+const FEAST_LINT = lintWildcardVariant('{hunt.feast.hungerCall|prefix:} {hunt.feast.yieldBeat|prefix: }');
+
 for (const [stage, text] of Object.entries(FEAST_BY_STAGE)) {
   registerPool(`hunt.feast.s${stage}`, [
-    { when: {}, text: [text] },
+    { when: legacyBridgeWhen(), text: [text] },
+    FEAST_LINT,
   ]);
 }
 
 registerPool('hunt.feast.deliveryIntro', [
-  { when: {}, text: [DELIVERY_INTRO] },
+  { when: legacyBridgeWhen(), text: [DELIVERY_INTRO] },
+  FEAST_LINT,
 ]);
 
 /**

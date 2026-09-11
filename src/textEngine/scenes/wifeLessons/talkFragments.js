@@ -80,7 +80,13 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
     const prefix = `wifeLessons.talk.${person}.s${stage}`;
     registerModuleVariants(`${prefix}.greeting`, [
       {
-        when: { weekMin: [5] },
+        when: { weekMin: 20 },
+        weight: 5,
+        priority: 5,
+        text: [TALK_GREETING_SKELETON],
+      },
+      {
+        when: { weekMin: 5 },
         weight: 3,
         priority: 2,
         text: [TALK_GREETING_SKELETON],
@@ -88,7 +94,7 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
     ]);
     registerModuleVariants(`${prefix}.capped`, [
       {
-        when: { weekMin: [5] },
+        when: { weekMin: 5 },
         weight: 3,
         priority: 2,
         text: ['{wl.talk.scaleNote|prefix:} {wl.talk.raPresence|prefix: }'],
@@ -97,7 +103,7 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
     if (entry.overtookGreeting) {
       registerModuleVariants(`${prefix}.overtook`, [
         {
-          when: { weekMin: [5] },
+          when: { weekMin: 5 },
           weight: 2,
           priority: 2,
           text: ['{wl.talk.scaleNote|prefix:} {wl.talk.branchAnswer|prefix: }'],
@@ -107,7 +113,7 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
     entry.options?.forEach((opt, oi) => {
       registerModuleVariants(`${prefix}.opt${oi}`, [
         {
-          when: { weekMin: [6] },
+          when: { weekMin: 6 },
           weight: 2,
           priority: 2,
           text: [TALK_BRANCH_SKELETON],
@@ -116,7 +122,7 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
       opt.subs?.forEach((_, si) => {
         registerModuleVariants(`${prefix}.opt${oi}.sub${si}`, [
           {
-            when: { weekMin: [6] },
+            when: { weekMin: 6 },
             weight: 2,
             priority: 2,
             text: ['{wl.talk.branchAnswer|prefix:} {wl.talk.raPresence|prefix: }'],

@@ -2964,6 +2964,10 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/rankedSession/sessionPayoffFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/legacyPoolPolicy.js')));
   assert.ok(existsSync(join(root, 'scripts/test-text-legacy-suppression-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-migration-bridge-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusEvent/campusEventFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/dinner/dinnerDishFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/hunt/huntFeastFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionOfferFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/outfitFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionBlurbFragments.js')));

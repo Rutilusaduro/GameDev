@@ -1,5 +1,8 @@
 // Sumo match — legacy miniGames prose into stage-keyed pools.
 import { registerPool } from '../../engine.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
+
+const SUMO_LINT = lintWildcardVariant('{sumo.scene.dohyo|prefix:} {sumo.scene.boutHeat|prefix: }');
 import {
   SUMO_RIVAL_NAME,
   SUMO_EXCHANGE_LINES,
@@ -15,9 +18,10 @@ function registerLinePool(poolId, line) {
   const text = typeof line === 'string' ? line.trim() : '';
   if (!text) return;
   registerPool(poolId, [
-    { when: {}, text: [(ctx) => text] },
-    { when: {}, text: [(ctx) => `${text}\n\nThe dohyo holds your weight.`] },
-    { when: {}, text: [(ctx) => `Exchange:\n\n${text}`] },
+    { when: legacyBridgeWhen(), text: [(ctx) => text] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `${text}\n\nThe dohyo holds your weight.`] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `Exchange:\n\n${text}`] },
+    SUMO_LINT,
   ]);
 }
 
@@ -53,9 +57,10 @@ for (let si = 0; si < SUMO_MATCH_AFTERMATH.length; si += 1) {
     ctx.globals?.oppLbs ?? 340,
   );
   registerPool(`sumo.aftermath.s${si}`, [
-    { when: {}, text: [core] },
-    { when: {}, text: [(ctx) => `${core(ctx)}\n\nThe crowd exhales.`] },
-    { when: {}, text: [(ctx) => `Aftermath:\n\n${core(ctx)}`] },
+    { when: legacyBridgeWhen(), text: [core] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `${core(ctx)}\n\nThe crowd exhales.`] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `Aftermath:\n\n${core(ctx)}`] },
+    SUMO_LINT,
   ]);
 }
 
@@ -64,16 +69,18 @@ for (let si = 0; si < SUMO_PAYOFF_TEXT.length; si += 1) {
   if (typeof fn !== 'function') continue;
   const core = (ctx) => fn(ctx.globals?.gainAccum ?? 0);
   registerPool(`sumo.payoff.legacy.s${si}`, [
-    { when: {}, text: [core] },
-    { when: {}, text: [(ctx) => `${core(ctx)}\n\nMore.`] },
-    { when: {}, text: [(ctx) => `Match done.\n\n${core(ctx)}`] },
+    { when: legacyBridgeWhen(), text: [core] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `${core(ctx)}\n\nMore.`] },
+    { when: legacyBridgeWhen(), text: [(ctx) => `Match done.\n\n${core(ctx)}`] },
+    SUMO_LINT,
   ]);
 }
 
 registerPool('sumo.opening.compose', [
-  { when: {}, text: [
+  { when: legacyBridgeWhen(), text: [
     `The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — {oppLbs} pounds of veteran across the line. The crowd settles. Choose your opening.`,
     `Center ring. {oppLbs} pounds of ${SUMO_RIVAL_NAME} opposite you. Breath, belt, hunger — choose.`,
     `Tachi-ai. ${SUMO_RIVAL_NAME} at {oppLbs} lbs sets her feet. The dohyo waits for your move.`,
   ]},
+  SUMO_LINT,
 ]);

@@ -4,6 +4,7 @@ import { registerPool, render, createContext } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
 import './feastStageUp.js';
+import './huntFeastFragments.js';
 
 export { renderLilithFeast, renderLilithDeliveryIntro } from './feastStageUp.js';
 
