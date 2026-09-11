@@ -4,6 +4,7 @@ import { CG_FILLED_CHAT_TEMPLATES } from '../../../gameData/competitiveGainerTex
 import { CG_CHAT_TEMPLATES } from '../../../gameData/evolvedForms.js';
 import { cgChatTailBeat } from '../evolved/proseTails.js';
 import { CG_RESIDENT_REPLY_ALTS } from './cgChatResidentAlts.js';
+import { priyaFollowupAltLines, priyaPostAltLines } from './cgChatPriyaAlts.js';
 
 registerDimension('cgChatKind', (ctx) => ctx.globals?.cgChatKind ?? 'post');
 registerDimension('cgFollowupKey', (ctx) => ctx.globals?.cgFollowupKey ?? 'leading');
@@ -13,13 +14,14 @@ registerDimension('cgResidentName', (ctx) => ctx.globals?.cgResidentName ?? 'Bri
 for (const [stageKey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaPost || {})) {
   for (const [tier, prose] of Object.entries(tierMap)) {
     const poolKey = `cg.chat.priyaPost.${stageKey}.${tier}`;
+    const postCore = [prose, ...priyaPostAltLines(stageKey, tier)];
     registerPool(poolKey, [
       {
         when: { cgStageKey: [stageKey], cgDriveTier: [tier], cgChatKind: ['post'] },
         weight: 2,
-        text: [prose, cgChatTailBeat(`post:${stageKey}`, 0), cgChatTailBeat(`post:${stageKey}`, 1)],
+        text: [...postCore, cgChatTailBeat(`post:${stageKey}`, 0), cgChatTailBeat(`post:${stageKey}`, 1)],
       },
-      { when: {}, text: [prose, cgChatTailBeat(`post:${stageKey}`, 2)] },
+      { when: {}, text: [...postCore, cgChatTailBeat(`post:${stageKey}`, 2)] },
     ]);
   }
 }
@@ -27,13 +29,14 @@ for (const [stageKey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaP
 for (const [fkey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaFollowup || {})) {
   for (const [tier, prose] of Object.entries(tierMap)) {
     const poolKey = `cg.chat.priyaFollowup.${fkey}.${tier}`;
+    const fuCore = [prose, ...priyaFollowupAltLines(fkey, tier)];
     registerPool(poolKey, [
       {
         when: { cgFollowupKey: [fkey], cgDriveTier: [tier], cgChatKind: ['followup'] },
         weight: 2,
-        text: [prose, cgChatTailBeat(`fu:${fkey}`, 0), cgChatTailBeat(`fu:${fkey}`, 1)],
+        text: [...fuCore, cgChatTailBeat(`fu:${fkey}`, 0), cgChatTailBeat(`fu:${fkey}`, 1)],
       },
-      { when: {}, text: [prose] },
+      { when: {}, text: fuCore },
     ]);
   }
 }
