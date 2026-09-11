@@ -3385,7 +3385,7 @@ export default function HallPass(){
     const priyaM=getMeasurements(priya.lbs,priya.bodyType);
     // Priya's opening post
     const postBody=renderCGPriyaPost(priya,currentWeek,stageKey,tier.label)
-      ||renderCGSceneBeat(CG_CHAT_TEMPLATES.priyaPost[stageKey]?.[tier.label]||CG_CHAT_TEMPLATES.priyaPost.Heavy?.Invested,priya,currentWeek,tier.label,'chat_post');
+      ||'Weekly board check-in — numbers still moving.';
     msgs.push({text:`[Priya] ${postBody} (${Math.round(priya.lbs)} lbs | waist ${priyaM.waist}" | bust ${priyaM.bust}" | hips ${priyaM.hip}")`,isRa:false,wk:currentWeek});
     // Select 3-5 visible students weighted by measurement history and threat proximity.
     const visible=allStudents.filter(s=>s.id!==priya.id&&(!s.hidden||s.id===15));
@@ -3417,7 +3417,7 @@ export default function HallPass(){
     // Priya follow-up
     const followupKey=threatDetected?'threatened':'leading';
     const followup=renderCGPriyaFollowup(priya,currentWeek,followupKey,tier.label)
-      ||renderCGSceneBeat(CG_CHAT_TEMPLATES.priyaFollowup[followupKey]?.[tier.label]||"The board is updated.",priya,currentWeek,tier.label,'chat_followup');
+      ||'The board is updated.';
     msgs.push({text:`[Priya] ${followup}`,isRa:false,wk:currentWeek});
     return msgs;
   };

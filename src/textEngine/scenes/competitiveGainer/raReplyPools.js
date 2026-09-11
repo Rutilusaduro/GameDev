@@ -2,6 +2,7 @@
 import { registerDimension, registerPool } from '../../engine.js';
 import { CG_RA_REPLY_TEXT, CG_STAGE_KEYS } from '../../../gameData/competitiveGainerText.js';
 import { cgSceneTailBeat } from '../evolved/proseTails.js';
+import { CG_RA_REPLY_ALTS } from './cgRaReplyAlts.js';
 
 export function fillCgTemplate(str, g = {}) {
   if (!str) return '';
@@ -52,9 +53,10 @@ for (const [optId, def] of Object.entries(CG_RA_REPLY_TEXT)) {
       cgSceneTailBeat(`ra:${optId}:solo`, 1),
     ],
   });
+  const alts = CG_RA_REPLY_ALTS[optId] || [];
   entries.push({
     when: {},
-    text: [fb, cgSceneTailBeat(`ra:${optId}`, 0), cgSceneTailBeat(`ra:${optId}`, 1)],
+    text: [fb, ...alts, cgSceneTailBeat(`ra:${optId}`, 0), cgSceneTailBeat(`ra:${optId}`, 1)],
   });
   registerPool(`cg.raReply.${optId}`, entries);
 }
