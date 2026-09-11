@@ -2986,6 +2986,8 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'scripts/test-weekly-events-modular-late.mjs')));
   assert.ok(existsSync(join(root, 'scripts/test-social-scenes-modular-late.mjs')));
   assert.ok(existsSync(join(root, 'scripts/test-growth-event-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/deviceUse/deviceLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-device-modular-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
 });

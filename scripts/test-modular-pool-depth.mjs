@@ -39,6 +39,8 @@ const POOLS = [
   'session.fullness.pressure',
   'homeroom.npc.momHeat',
   'ge.scene.growthFrame',
+  'device.use.scene.labHum',
+  'device.campus.scene.meshAir',
 ];
 
 for (const key of POOLS) {

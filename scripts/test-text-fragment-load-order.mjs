@@ -54,6 +54,8 @@ const pairs = [
   ['weeklyEvent/index.js', 'weeklyEvent/weeklyEventLateModularFragments.js'],
   ['campusEvent/depth.js', 'campusEvent/campusEventLateModularFragments.js'],
   ['growthEvent/depth.js', 'growthEvent/growthEventLateModularFragments.js'],
+  ['deviceUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
+  ['deviceCampusUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {

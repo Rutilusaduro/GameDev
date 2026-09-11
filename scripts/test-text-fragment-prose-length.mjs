@@ -31,6 +31,8 @@ const POOLS = [
   'hall.blueprint.construction',
   'cultivator.scene.labAir',
   'session.tapOut.breath',
+  'device.use.scene.labHum',
+  'device.campus.scene.meshAir',
 ];
 
 for (const key of POOLS) {

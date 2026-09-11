@@ -43,6 +43,7 @@ const requiredFragments = [
   'weeklyEvent/weeklyEventLateModularFragments.js',
   'campusEvent/campusEventLateModularFragments.js',
   'growthEvent/growthEventLateModularFragments.js',
+  'deviceUse/deviceLateModularFragments.js',
   'fairQueen/trainingModularFragments.js',
   'fairQueen/photoBoostModularFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',

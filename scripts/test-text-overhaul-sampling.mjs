@@ -34,6 +34,7 @@ const MODULAR_MARKERS = [
   /growthAmbition|growthPraise|momentum|Scale numbers|You frame it as|permission dressed|moment stretches — hall-quiet|indulgenceInvite|Warmth pools in the room the way fullness/i,
   /choiceWarmth|oven heat still on her hands|kitchen politics/i,
   /dinner\.dish|venueMood|hallTone|choiceEcho|hungerCall|yieldBeat|crowdHeat|tableStakes/i,
+  /calibrated hunger|mesh flickers|deployEcho|Hall Ambiance muted|peer-reviewed ritual/i,
 ];
 
 function isModular(line) {
