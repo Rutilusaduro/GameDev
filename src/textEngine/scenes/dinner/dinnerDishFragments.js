@@ -10,6 +10,8 @@ registerPool('dinner.dish.savor', [
       'Steam and richness arrive together — the kind of main that invites a second helping.',
       'Portions meant to be taken seriously; she meets them with honest appetite.',
       'The plate looks expensive; the fullness will feel personal.',
+      'Late-semester dinners feel ceremonial — every course a quiet vote for more softness.',
+      'Hall Ambiance stays outside; inside, savoring is policy you wrote together over candlelight.',
     ],
   },
 ]);
@@ -22,6 +24,8 @@ registerPool('dinner.dish.venueMood', [
       'Candlelight flatters every curve; the room already expects her to finish.',
       'Wellness framing on the menu; indulgence in the portions.',
       'She reads the description like a promise and orders like a confession.',
+      'Fabric strains when she shifts; she does not hide it anymore, just breathes and keeps eating.',
+      'Every choice tonight will show on the scale and in how she looks at you afterward.',
     ],
   },
 ]);
@@ -40,6 +44,12 @@ function allDishes() {
 for (const dish of allDishes()) {
   if (!dish?.id) continue;
   registerModuleVariants(`dinner.dish.${dish.id}`, [
+    {
+      when: { weekMin: 22 },
+      weight: 6,
+      priority: 6,
+      text: [DISH_SKELETON],
+    },
     {
       when: { weekMin: 18 },
       weight: 4,
