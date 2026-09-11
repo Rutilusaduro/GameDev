@@ -56,7 +56,8 @@ export function renderImmobileRedirect(student, tier = 'blob', week = 1, opts = 
     }
   }
   if (!line || line.includes('{unresolved}')) {
-    line = entry?.[tier] || '';
+    if ((week ?? 1) >= 14) line = line || '';
+    else line = entry?.[tier] || '';
   }
   if (!line) {
     return `${student.name} can't go anywhere anymore. You'll have to bring the food to her.`;

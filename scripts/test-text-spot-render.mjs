@@ -22,7 +22,7 @@ const cases = [
   {
     label: 'hall blueprint',
     template: '{hall.blueprint.purchase}',
-    ctx: buildTextContext({ subject: null, week: 6, globals: { hallRoomId: 'kitchen_pantry' } }),
+    ctx: buildTextContext({ subject: null, week: 14, globals: { hallRoomId: 'kitchen_pantry' } }),
   },
   {
     label: 'roster unlock',

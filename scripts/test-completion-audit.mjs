@@ -2960,6 +2960,9 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionBlurbFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/tapOutFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/unlockScene/unlockFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/hallBlueprint/blueprintModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/blobIntroFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/batchBakerFragments.js')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
 });

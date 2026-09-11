@@ -61,6 +61,9 @@ export function renderBlobPrivateIntro(student, week = 1, opts = {}) {
     line = '';
   }
   if (!line || line.includes('{unresolved}')) {
+    if ((week ?? 1) >= 14) {
+      return line || '';
+    }
     const entry = BLOB_PRIVATE_INTRO[student.id] || BLOB_PRIVATE_INTRO.default;
     line = typeof entry === 'function' ? entry(student) : entry;
   }

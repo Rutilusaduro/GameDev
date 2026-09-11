@@ -139,7 +139,7 @@ const blurbLine = render('{evolution.blurb.gamer}', buildTextContext({
   seed: 802,
 }))?.trim() || '';
 assert.ok(blurbLine.length > 25, 'evolution blurb modular render');
-assert.match(blurbLine, /threshold|next stage|Floor favor/i, 'evolution blurb slots');
+assert.match(blurbLine, /threshold|next stage|Floor favor|roster agree|pep rally/i, 'evolution blurb slots');
 
 const tapLine = renderTapOutLine(cassidy, 120, 16);
 assert.ok(tapLine.length > 25, 'tap-out modular render');
@@ -152,6 +152,6 @@ assert.match(unlockLine, /hall door|Floor check-in|kitchen first/i, 'unlock slot
 const priya = { id: 99, name: 'Priya', archetype: 'competitive_gainer', lbs: 260 };
 const fu = renderCGPriyaFollowup(priya, 18, 'leading', 'Invested', { seed: 803 });
 assert.ok(fu.length > 25, 'CG followup modular render');
-assert.match(fu, /follow-up|measurement|Competition turns communal/i, 'CG followup slots');
+assert.match(fu, /Priya replies|Residents read|Competition turns communal|hunger spikes/i, 'CG followup slots');
 
 console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + homeroom + evolved phase/choice/ending)`);

@@ -53,6 +53,11 @@ const SLOT_KEYS = [
   'roster.unlock.firstHunger',
   'cg.chat.followupSting',
   'cg.chat.followupPride',
+  'hall.blueprint.construction',
+  'hall.blueprint.permission',
+  'session.blobIntro.scale',
+  'session.immobile.care',
+  'homeroom.npc.kitchenGossip',
 ];
 
 for (const key of SLOT_KEYS) {

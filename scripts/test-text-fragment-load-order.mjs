@@ -35,6 +35,10 @@ const pairs = [
   ['competitiveGainer/index.js', 'competitiveGainer/cgChatFragments.js'],
   ['session/index.js', 'session/tapOutFragments.js'],
   ['unlockScene/index.js', 'unlockScene/unlockFragments.js'],
+  ['hallBlueprint/index.js', 'hallBlueprint/blueprintModularFragments.js'],
+  ['session/index.js', 'session/blobIntroFragments.js'],
+  ['session/index.js', 'session/immobileRedirectFragments.js'],
+  ['homeroom/index.js', 'homeroom/batchBakerFragments.js'],
 ];
 
 for (const [bridge, fragment] of pairs) {
