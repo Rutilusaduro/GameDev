@@ -59,6 +59,22 @@ registerPool('fair.day.judgingBeat', [
 const DAY_SKELETON = '{fair.day.carnivalAir|prefix:} {fair.day.crowdBeat|prefix: } {fair.day.mjPride|prefix: }';
 const JUDGING_SKELETON = '{fair.day.judgingBeat|prefix:} {fair.day.crowdBeat|prefix: } {fair.day.mjPride|prefix: }';
 
+registerPool('fair.day.afterpartyBeat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Afterparty steam and fryer oil — winners eat like the fair never clocked out.',
+      'Mary Jane shares funnel cake with you; co-conspirator grease on both your fingers.',
+      'Crowd noise softens to gossip; pride sits on her hips while plates keep circulating.',
+      'Late-semester carnival air clings to her hair; she laughs like the scale was a suggestion.',
+      'Phones rise for one more photo; appetite dressed as celebration, growth as lifestyle.',
+    ],
+  },
+]);
+
+const AFTERPARTY_SKELETON = '{fair.day.afterpartyBeat|prefix:} {fair.day.carnivalAir|prefix: } {fair.day.mjPride|prefix: }';
+
 const DAY_POOLS = [
   'fair.day.weighIn.open',
   'fair.day.weighIn.choice1',
@@ -73,7 +89,9 @@ const DAY_POOLS = [
 ];
 
 for (const key of DAY_POOLS) {
-  const skeleton = key === 'fair.day.judging' ? JUDGING_SKELETON : DAY_SKELETON;
+  const skeleton = key === 'fair.day.judging'
+    ? JUDGING_SKELETON
+    : (key.startsWith('fair.day.afterparty') ? AFTERPARTY_SKELETON : DAY_SKELETON);
   registerModuleVariants(key, [
     {
       when: { weekMin: 20 },

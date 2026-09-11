@@ -10,7 +10,7 @@ const week = 24;
 assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
 
 const brittany = { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 200 };
-const MODULAR = /Brittany straightens|talk\.checkIn|planner down|snack stash|greetQuote|Ambient noise|Fabric strains/i;
+const MODULAR = /Brittany straightens|talk\.checkIn|planner down|snack stash|greetQuote|Ambient noise|Fabric strains|floorAir|Hunger hums|wellness framing ready/i;
 
 let hit = false;
 for (let seed = 0; seed < 24; seed += 1) {

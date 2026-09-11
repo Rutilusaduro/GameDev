@@ -48,6 +48,7 @@ import './streamPreStreamBrand.js';
 import './talkCodas.js';
 import './talkEncourage.js';
 import './talkCheckIn.js';
+import './talkCheckInModularFragments.js';
 import './talkCompliment.js';
 import './talkSuggest.js';
 import './talkSuggestDepth.js';

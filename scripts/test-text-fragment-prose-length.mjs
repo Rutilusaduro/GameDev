@@ -16,6 +16,11 @@ const POOLS = [
   'homeroom.activity.communityWarmth',
   'session.scene.deliveryAir',
   'journal.scene.fieldNotes',
+  'talk.checkIn.floorAir',
+  'fair.day.afterpartyBeat',
+  'session.payoff.raeWrap',
+  'session.payoff.scaleEcho',
+  'cg.scene.dataObsession',
 ];
 
 for (const key of POOLS) {

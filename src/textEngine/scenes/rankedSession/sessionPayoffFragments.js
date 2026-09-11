@@ -10,6 +10,8 @@ registerPool('session.payoff.raeWrap', [
       'Rae logs the gain without flinching — pride, policy, and a calendar invite for next week.',
       'Clipboard closed; the cart squeaks away. Hunger already schedules the sequel.',
       'She texts the numbers before you finish swallowing — competition dressed as care.',
+      'Late-semester payoff feels scripted — cart squeaks away, Hall Ambiance follows, hunger schedules the sequel.',
+      'Clipboard, timer, satisfied nod — session clock stops only when the scale agrees with her.',
     ],
   },
 ]);
@@ -22,6 +24,8 @@ registerPool('session.payoff.scaleEcho', [
       'The scale remembers what the session proved — appetite outran hesitation again.',
       'Every pound reads as compliance when wellness framing holds the pen.',
       'Floor favor ticks up in her notes; your middle ticks up on the dial.',
+      'Every pound a datapoint; every sigh consent dressed as fatigue — the hall log approves.',
+      'Wellness framing holds the pen; appetite holds your lap, warm and winning.',
     ],
   },
 ]);

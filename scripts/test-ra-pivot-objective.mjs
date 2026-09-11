@@ -70,6 +70,8 @@ execSync('node scripts/test-feeder-journal-stub-debt.mjs', { cwd: root, stdio: '
 
 execSync('node scripts/test-talk-checkin-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-session-payoff-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-wife-lessons-lesson-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-wife-lessons-dialogue-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
