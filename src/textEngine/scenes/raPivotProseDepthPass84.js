@@ -1,5 +1,6 @@
 // Homeroom conference + CG chat depth (Pass 84).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Kayla.tuesday', [
   {
@@ -46,7 +47,7 @@ registerModuleVariants('cg.chat.priyaFollowup.threatened.Frenzied', [
 
 registerModuleVariants('wifeLessons.talk.Darlene.s1.greeting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       '"We drove over hungry" — Darlene says it like confession and invitation in one breath.',

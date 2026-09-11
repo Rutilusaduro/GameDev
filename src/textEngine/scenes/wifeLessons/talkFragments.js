@@ -13,10 +13,10 @@ registerPool('wl.talk.warmOpen', [
     when: {},
     weight: 2,
     text: [
-      '"Good evening, RA. The kitchen already smells like butter before we sit down."',
-      '"Mary Jane\'s table feels like the warmest room on the floor tonight."',
-      '"We drove over hungry — that should tell you how the week went."',
-      '"The daughters asked Monday what we\'re making this week. I didn\'t have the heart to tease them."',
+      'Yeasty warmth hits before anyone sits — permission baked into the air.',
+      'Mary Jane\'s table feels like the warmest room on the floor tonight.',
+      'They drove over hungry; the week already wrote itself on their faces.',
+      'The daughters asked Monday what we\'re making this week — appetite as family calendar.',
     ],
   },
 ]);

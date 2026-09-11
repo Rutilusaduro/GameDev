@@ -11,7 +11,7 @@ import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolic
 const week = 24;
 const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
 
-const MODULAR_FP = /hallTone|choiceEcho|savor|venueMood|hungerCall|yieldBeat|crowdHeat|tableStakes|dohyo|boutHeat|ringLight|takeYield|fieldNotes|subjectFocus|lateObsession|Clipboard margins|policy and takeout|plate looks expensive|summons|Cheering turns hungry|oven heat|yeasty warmth|warmOpen|raPresence|Residents orbit|unofficial agenda|Floor check-in energy|Portions meant|appetite as sport|Center ring, heavy|On camera she eats|datapoint for the algorithm|moment passes warm|kitchen fills with yeasty/i;
+const MODULAR_FP = /hallTone|choiceEcho|savor|venueMood|hungerCall|yieldBeat|crowdHeat|tableStakes|dohyo|boutHeat|ringLight|takeYield|fieldNotes|subjectFocus|lateObsession|Clipboard margins|policy and takeout|plate looks expensive|summons|Cheering turns hungry|oven heat|yeasty warmth|warmOpen|raPresence|Residents orbit|unofficial agenda|Floor check-in energy|Portions meant|appetite as sport|Center ring, heavy|On camera she eats|datapoint for the algorithm|moment passes warm|kitchen fills with yeasty|Yeasty warmth hits|permission baked|appetite as family|ring light hums|Perfect take means/i;
 
 const pulls = [
   () => render('{journal.feeder.cheerleader.s2}', buildTextContext({ subject: mj, week, seed: 1 })),
