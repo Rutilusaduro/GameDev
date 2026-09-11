@@ -3,6 +3,7 @@ import { registerDimension, registerPool, render } from '../../engine.js';
 import { CG_FILLED_CHAT_TEMPLATES } from '../../../gameData/competitiveGainerText.js';
 import { CG_CHAT_TEMPLATES } from '../../../gameData/evolvedForms.js';
 import { cgChatTailBeat } from '../evolved/proseTails.js';
+import { CG_RESIDENT_REPLY_ALTS } from './cgChatResidentAlts.js';
 
 registerDimension('cgChatKind', (ctx) => ctx.globals?.cgChatKind ?? 'post');
 registerDimension('cgFollowupKey', (ctx) => ctx.globals?.cgFollowupKey ?? 'leading');
@@ -42,13 +43,15 @@ for (const [name, replies] of Object.entries(CG_CHAT_TEMPLATES.residents || {}))
   for (const [replyType, line] of Object.entries(replies)) {
     if (!line || typeof line !== 'string') continue;
     const poolKey = `cg.chat.resident.${safeName}.${replyType}`;
+    const alts = CG_RESIDENT_REPLY_ALTS[safeName]?.[replyType] || [];
+    const core = [line, ...alts];
     registerPool(poolKey, [
       {
         when: { cgResidentName: [safeName, name], cgResidentReply: [replyType] },
         weight: 2,
-        text: [line, cgChatTailBeat(`res:${safeName}:${replyType}`, 0)],
+        text: [...core, cgChatTailBeat(`res:${safeName}:${replyType}`, 0)],
       },
-      { when: {}, text: [line] },
+      { when: {}, text: core },
     ]);
   }
 }
