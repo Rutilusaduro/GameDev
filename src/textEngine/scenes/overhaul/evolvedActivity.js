@@ -1,7 +1,9 @@
 // The Squad — Lead: A5 Editor | Support: A6 Slender, A1 Mobile, A2 Psych
 // Modular evolved-activity beats. Replaces leftover EVOLVED_ACTIVITY_TEXT
 // monoliths with slot-composed, form-keyed, stage-banded pools.
-import { registerPool } from '../../engine.js';
+import { registerPool, registerDimension } from '../../engine.js';
+
+registerDimension('followupId', (ctx) => ctx.globals?.followupId ?? '');
 
 registerPool('evolved.activity.scene', [
   { when: {}, text: [
@@ -252,5 +254,35 @@ registerPool('evolved.activity.event', [
   ]},
   { when: { stageMin: 8 }, weight: 2, text: [
     'At this size the activity is also a procession. Soft mass arriving, staying, being seen.',
+  ]},
+]);
+
+registerPool('evolved.followup.scene', [
+  { when: {}, text: [
+    '{evolved.followup.setup} {evolved.followup.body}',
+    '{evolved.followup.body} {evolved.followup.setup}',
+    '{evolved.followup.setup}',
+  ]},
+]);
+
+registerPool('evolved.followup.setup', [
+  { when: {}, text: [
+    'The activity is not done. She follows the heat into the hall.',
+    'One more beat. She is already reaching. The floor was built for this.',
+    'She does not clock out. Softness still arriving. You let it.',
+  ]},
+  { when: { followupId: 'kitchen_seconds' }, weight: 4, text: [
+    'Hall kitchen seconds. She eats standing. The extra goes down warm.',
+  ]},
+  { when: { followupId: 'lounge_linger' }, weight: 4, text: [
+    'She takes the wide chair after. Softness spreads. The lounge keeps her heat.',
+  ]},
+]);
+
+registerPool('evolved.followup.body', [
+  { when: {}, text: [
+    '{word.size} of her checks the middle like a scoreboard. She likes the number.',
+    'Warmth, press, a leftover swallow. She wants you watching the finish.',
+    'The hall holds her a little longer than the activity required. She stays.',
   ]},
 ]);

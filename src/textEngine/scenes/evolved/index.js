@@ -61,17 +61,35 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
 /** Leftover evolved-activity path: slot-composed scene, form-keyed. */
 export function renderEvolvedActivity(student, week = 1, opts = {}) {
   if (!student) return '';
+  const { globals: extraGlobals, v2DepthChance, formId, stageIdx, ...rest } = opts;
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    ...rest,
+    globals: {
+      featureId: formId || student?.evolvedForm || 'evolved',
+      stageIdx: stageIdx ?? null,
+      evolvedForm: formId || student?.evolvedForm || 'evolved',
+      ...(extraGlobals || {}),
+    },
+  });
+  const scene = render('{evolved.activity.scene}', ctx)?.trim();
+  if (!scene || scene.includes('{unresolved}')) return '';
+  return appendV2Depth(scene, 'evolved', ctx, v2DepthChance ?? 0.35);
+}
+
+export function renderEvolvedFollowup(student, week = 1, followupId = '') {
+  if (!student) return '';
   const ctx = buildTextContext({
     subject: student,
     week,
     globals: {
-      featureId: opts.formId || student?.evolvedForm || 'evolved',
-      stageIdx: opts.stageIdx ?? null,
-      ...(opts.globals || {}),
+      featureId: student.evolvedForm || 'evolved',
+      evolvedForm: student.evolvedForm || 'evolved',
+      followupId,
     },
-    ...opts,
   });
-  const scene = render('{evolved.activity.scene}', ctx)?.trim();
+  const scene = render('{evolved.followup.scene}', ctx)?.trim();
   if (!scene || scene.includes('{unresolved}')) return '';
-  return appendV2Depth(scene, 'evolved', ctx, opts.v2DepthChance ?? 0.35);
+  return appendV2Depth(scene, 'evolved', ctx, 0.22);
 }

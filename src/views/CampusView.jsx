@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { C } from '../styles.js';
 import { CAMPUS_NODES } from '../gameData/campus.js';
+import { renderCampusArrive } from '../textEngine/scenes/overhaul/campusHunt.js';
 import { explorationSummary } from '../gameData/campusExploration.js';
 import { availableSecretsAtNode } from '../gameData/campusSecrets.js';
 import { availableElaraQuests } from '../gameData/relicHunter.js';
@@ -88,6 +89,7 @@ function logLineColor(line) {
 
 export function CampusView({
   campusState,
+  week = 1,
   moveToCampusNode,
   lookAround,
   searchCampus,
@@ -193,7 +195,7 @@ export function CampusView({
             }}>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:13,fontWeight:700,color:"#a0d080"}}>{node.emoji} {node.label}</div>
-                <div style={{fontSize:11,color:"#5a7a4a",marginTop:3,lineHeight:1.5}}>{node.desc}</div>
+                <div style={{fontSize:11,color:"#5a7a4a",marginTop:3,lineHeight:1.5}}>{renderCampusArrive(node.id, week) || node.desc}</div>
               </div>
               <button
                 type="button"

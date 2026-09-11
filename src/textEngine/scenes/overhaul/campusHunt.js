@@ -1,6 +1,6 @@
 // The Squad — Lead: A5 Editor | Support: A1 Mobile, A6 Slender
 // Campus look + hunt linger: modular overlays on hardcoded flavor.
-import { registerPool, registerModuleVariants, render, createContext } from '../../engine.js';
+import { registerPool, registerModuleVariants, registerDimension, render, createContext } from '../../engine.js';
 import { CAMPUS_NODES } from '../../../gameData/campus.js';
 import { HUNT_NODES } from '../../../gameData/lilith.js';
 
@@ -128,8 +128,57 @@ for (const id of Object.keys(HUNT_NODES)) {
 
 export function renderCampusLook(nodeId, week = 1) {
   const id = CAMPUS_NODES[nodeId] ? nodeId : 'office';
-  const ctx = createContext({ week });
+  const ctx = createContext({ week, globals: { campusNode: id } });
   const keyed = render(`{campus.look.${id}}`, ctx)?.trim() || '';
   const linger = render('{overhaul.linger.campus}', ctx)?.trim() || '';
   return [keyed, linger].filter(Boolean).join(' ');
+}
+
+registerDimension('campusNode', (ctx) => ctx.globals?.campusNode ?? '');
+
+registerPool('campus.arrive.scene', [
+  { when: {}, text: [
+    '{campus.arrive.setup} {campus.arrive.body}',
+    '{campus.arrive.body} {campus.arrive.setup}',
+    '{campus.arrive.setup}',
+  ]},
+]);
+
+registerPool('campus.arrive.setup', [
+  { when: {}, text: [
+    'You walk in. The floor already has a body in it, slower and softer than last week.',
+    'The node is the same. The sit is wider. Someone left food like a rumor.',
+    'Campus air, snack wrappers, a chair that remembers more weight than the map admits.',
+  ]},
+  { when: { campusNode: 'office' }, weight: 4, text: [
+    'RA desk. Open door. The couch keeps the shape of someone who sat heavy and stayed.',
+  ]},
+  { when: { campusNode: 'lecture_hall' }, weight: 4, text: [
+    'Common room. Big couches. The kitchenette runs hotter than the dining hall on game nights.',
+  ]},
+  { when: { campusNode: 'dining_hall' }, weight: 4, text: [
+    'Trays, steam, a second plate already implied. She treats the line like a promise.',
+  ]},
+  { when: { campusNode: 'dorms' }, weight: 4, text: [
+    'The elevator groans. Groceries, softness, a slower walk back from the kitchen.',
+  ]},
+  { when: { campusNode: 'quad' }, weight: 4, text: [
+    'A bench built for three is a one-woman throne. Takeout shares the seat and loses.',
+  ]},
+]);
+
+registerPool('campus.arrive.body', [
+  { when: {}, text: [
+    'Softness in a visitor chair. The snack trail is already a policy.',
+    'Someone walks past slower than last week, still smiling, still eating.',
+    'The map did not budget for this much heat. The floor did.',
+  ]},
+]);
+
+export function renderCampusArrive(nodeId, week = 1) {
+  const id = CAMPUS_NODES[nodeId] ? nodeId : 'office';
+  const ctx = createContext({ week, globals: { campusNode: id } });
+  const scene = render('{campus.arrive.scene}', ctx)?.trim() || '';
+  if (scene && !scene.includes('{unresolved}')) return scene;
+  return renderCampusLook(id, week);
 }

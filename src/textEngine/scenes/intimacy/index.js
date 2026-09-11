@@ -25,9 +25,10 @@ function renderIntimacyOverlay(ctx, opts = {}) {
 }
 
 export function buildIntimacyContext(student, history, relTier, week = 1, opts = {}) {
-  const globals = { relTier, ...(opts.globals || {}) };
+  const { globals: extraGlobals, ...rest } = opts;
+  const globals = { relTier, ...(extraGlobals || {}) };
   for (const flag of history || []) globals[flag] = true;
-  return buildTextContext({ subject: student, week, globals, ...opts });
+  return buildTextContext({ subject: student, week, ...rest, globals });
 }
 
 export function renderIntimacyPhase(sceneId, phaseIdx, student, history, relTier, week = 1, opts = {}) {
@@ -50,10 +51,20 @@ export function renderIntimacyDepth(student, week = 1, opts = {}) {
 
 export function renderIntimacyChoice(sceneId, choiceId, student, week = 1, opts = {}) {
   if (!student || !sceneId || !choiceId) return '';
-  const ctx = buildTextContext({ subject: student, week, ...opts });
+  const { globals: extraGlobals, v2DepthChance, ...rest } = opts;
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    ...rest,
+    globals: { intimacyScene: sceneId, intimacyChoice: choiceId, ...(extraGlobals || {}) },
+  });
+  const composed = render('{intimacy.choice.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  if (composed && !composed.includes('{unresolved}')) {
+    return appendV2Depth(composed, 'intimacy', ctx, v2DepthChance ?? 0.26);
+  }
   const main = render(`{intimacy.${sceneId}.ch.${choiceId}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  const composed = composeOverlay(main, renderIntimacyOverlay(ctx, opts));
-  return appendV2Depth(composed, 'intimacy', ctx, opts.v2DepthChance ?? 0.26);
+  const withOverlay = composeOverlay(main, renderIntimacyOverlay(ctx, opts));
+  return appendV2Depth(withOverlay, 'intimacy', ctx, v2DepthChance ?? 0.26);
 }
 
 /** The pin blackout — she pinned the player and he passed out; the week ends. */

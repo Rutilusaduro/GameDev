@@ -26,7 +26,7 @@ import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, REFUSAL_LINES, FORCE_SUCCESS_LINES, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
 import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLIMENT_BACKFIRE_SCRUTINY } from './gameData/talkSystem.js';
-import { INVENTORY_CONFIG, rollWeeklyItem, ITEM_USE_LINES, ITEMS, itemUseModesForOwned } from './gameData/items.js';
+import { INVENTORY_CONFIG, rollWeeklyItem, ITEMS, itemUseModesForOwned } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
 import { createInitialPlayer, updatePlayerField } from './gameData/player.js';
 import { RaSetupWizard } from './components/RaSetupWizard.jsx';
@@ -202,7 +202,7 @@ import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
 import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { EvolvedActivityModal } from './components/EvolvedActivityModal.jsx';
-import { renderEvolvedActivity } from './textEngine/scenes/evolved/index.js';
+import { renderEvolvedActivity, renderEvolvedFollowup } from './textEngine/scenes/evolved/index.js';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
@@ -412,7 +412,7 @@ import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
-import { renderCampusLook } from './textEngine/scenes/overhaul/campusHunt.js';
+import { renderCampusLook, renderCampusArrive } from './textEngine/scenes/overhaul/campusHunt.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from './textEngine/scenes/overhaul/cgFair.js';
 import { renderHiveVisit, renderHivePhoto, renderDestinySpend } from './textEngine/scenes/overhaul/leftoverDisplay.js';
 import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from './textEngine/scenes/overhaul/cgChat.js';
@@ -1272,7 +1272,8 @@ export default function HallPass(){
     if(!from.exits.includes(nodeId)) return;
     const node=CAMPUS_NODES[nodeId];
     const { lines:eventLines, exploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(nodeId,true);
-    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,node.desc,...eventLines];
+    const arrive=renderCampusArrive(nodeId,week)||node.desc;
+    const lines=[`→ You walk to ${node.emoji} ${node.label}.`,arrive,...eventLines];
     setCampusState(prev=>{
       let next=asceticGardenProtest?applyAsceticGardenProtest(prev):prev;
       if(mirrorFastWeek){
@@ -1292,7 +1293,7 @@ export default function HallPass(){
 
   const lookAround=()=>{
     const node=CAMPUS_NODES[campusState.at];
-    const flavor=renderCampusLook(campusState.at, week) || node.flavor[rnd(0,node.flavor.length-1)];
+    const flavor=renderCampusLook(campusState.at, week) || renderCampusArrive(campusState.at, week);
     const { lines:eventLines, exploration:eventExploration, deviceEncounter, asceticGardenProtest, mirrorFastWeek }=rollCampusEvent(campusState.at,false);
     const ctx=getCampusExplorationCtx();
     let exploration=eventExploration;
@@ -1394,7 +1395,7 @@ export default function HallPass(){
     const ctx=createContext({subject:target,week,globals:{itemLabel:item.label.toLowerCase()}});
     const pantryKey=modeId==='share'?'{pantry.use.share}':modeId==='binge'?'{pantry.use.binge}':'{pantry.use}';
     const pantryLine=render(pantryKey,ctx)?.trim();
-    const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:render('{pantry.use}',ctx)?.trim()||'She finishes what you brought.';
     setTimeout(()=>push(`🎒 ${line}${compoundLabel?` (${compoundLabel})`:''}`),80);
   };
 
@@ -2588,7 +2589,8 @@ export default function HallPass(){
     if(!extra) return;
     const s=modal.student; if(!s) return;
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:processStudentGain(st,extra.lbs||0,extra.rel||0)));
-    setEvolvedActivityModal(prev=>({...prev,followupUsed:id,text:`${prev.text}\n\n${extra.result}`}));
+    const composedFollow=renderEvolvedFollowup(s,week,extra.id);
+    setEvolvedActivityModal(prev=>({...prev,followupUsed:id,text:`${prev.text}\n\n${composedFollow||extra.result}`}));
     push(`✦ ${s.name} — ${extra.label}: +${extra.lbs||0} lbs · +${extra.rel||0} rel`);
   };
 
@@ -6888,7 +6890,9 @@ export default function HallPass(){
       return;
     }
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
-    const newLog=[...logLines, typeof choice.result==='function' ? choice.result(s) : (choice.result || renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum))];
+    const composedChoice=renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum);
+    const leftoverChoice=typeof choice.result==='function'?choice.result(s):choice.result;
+    const newLog=[...logLines, (composedChoice&&!composedChoice.includes('{unresolved}'))?composedChoice:(leftoverChoice||composedChoice)];
     let newGain=gainAccum+(choice.lbs||0);
     const newRel=relAccum+(choice.rel||0);
     if(choice.feed&&choice.gainRange){
@@ -7561,7 +7565,7 @@ export default function HallPass(){
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
     const ctx=createContext({subject:fed,week,globals:{itemLabel:item.label.toLowerCase()}});
     const pantryLine=render('{pantry.use}',ctx)?.trim();
-    const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
+    const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:render('{pantry.use}',ctx)?.trim()||'She finishes what you brought.';
     push(`🎒 ${item.label} shared at dinner.`);
     if(overfillEnd){
       setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${renderDinnerOverfill(fed, week)}`]);
@@ -9121,6 +9125,7 @@ export default function HallPass(){
           {/* ── CAMPUS EXPLORATION ── */}
           {view==="campus"&&<CampusView
             campusState={campusState}
+            week={week}
             moveToCampusNode={moveToCampusNode}
             lookAround={lookAround}
             searchCampus={searchCampus}

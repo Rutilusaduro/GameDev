@@ -41,17 +41,18 @@ import '../src/textEngine/scenes/overhaul/index.js';
 import { renderFloorSceneText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
-import { renderEvolvedActivity, renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
+import { renderEvolvedActivity, renderEvolvedEventProse, renderEvolvedFollowup } from '../src/textEngine/scenes/evolved/index.js';
 import { renderContestFoodPopup, renderContestActionPopup, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
 import { renderSumoOpening, renderSumoExchangeLine, renderSumoAftermath, renderSumoPayoff } from '../src/textEngine/scenes/sumoMatch/index.js';
 import { renderRecordingOpening, renderRecordingDirectionPopup, renderRecordingTakeResult, renderRecordingOneMoreTake, renderRecordingWrapEnding } from '../src/textEngine/scenes/recordingSession/index.js';
-import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
+import { renderCampusLook, renderCampusArrive } from '../src/textEngine/scenes/overhaul/campusHunt.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from '../src/textEngine/scenes/overhaul/cgFair.js';
 import { renderHiveVisit, renderHivePhoto, renderDestinySpend } from '../src/textEngine/scenes/overhaul/leftoverDisplay.js';
 import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from '../src/textEngine/scenes/overhaul/cgChat.js';
 import { renderSessionNpc, renderSessionPayoff } from '../src/textEngine/scenes/overhaul/sessionNpc.js';
 import { renderWifeLessonTalkLine, renderWifeLessonBeat } from '../src/textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey } from '../src/textEngine/scenes/homeroom/index.js';
+import { renderIntimacyChoice } from '../src/textEngine/scenes/intimacy/index.js';
 import { renderPharmacistAcquire } from '../src/textEngine/scenes/overhaul/pharmacist.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
@@ -291,6 +292,9 @@ assert.ok(eventText.length > 60, 'evolved event scene should be longer than a st
 
 const officeLook = renderCampusLook('office', 1);
 assert.ok(/couch remembers|snack wrapper|RA inbox/i.test(officeLook), `LOOK_HEAVY should be campus look primary, got: ${String(officeLook).slice(0, 180)}`);
+const officeArrive = renderCampusArrive('office', 1);
+assert.ok(officeArrive && !officeArrive.includes('{unresolved}'));
+assert.equal(/Master key on a lanyard/i.test(officeArrive), false, 'campus arrive should not dump leftover node.desc');
 
 const pantryCtx = createContext({ subject: students[0], week: 2, globals: { itemLabel: 'cookie dough' } });
 const pantryLine = render('{pantry.use}', pantryCtx);
@@ -469,6 +473,16 @@ const sophia = {
 const pharmLine = renderPharmacistAcquire('shift_stock', sophia, 3);
 assert.ok(pharmLine && !pharmLine.includes('{unresolved}'));
 assert.equal(/Sophia logs the minimum/i.test(pharmLine), false, 'pharmacist acquire should not dump leftover flavor');
+
+const intimacyLine = renderIntimacyChoice('her_weight', 'linens_nest', recStudent, 3, { v2DepthChance: 0 });
+assert.ok(intimacyLine && !intimacyLine.includes('{unresolved}'));
+assert.equal(/drags the big linens/i.test(intimacyLine), false, 'intimacy extras should prefer composed pools');
+
+const followupLine = renderEvolvedFollowup({
+  id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
+}, 3, 'kitchen_seconds');
+assert.ok(followupLine && !followupLine.includes('{unresolved}'));
+assert.equal(/She follows you to the floor kitchen and eats standing/i.test(followupLine), false);
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

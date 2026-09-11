@@ -248,7 +248,9 @@ export function MayaHiveModal({
               <div style={{fontSize:10,color:HIVE_TEXT,lineHeight:1.55,marginTop:8}}>
                 <strong style={{color:HIVE_ACC}}>{selected.bonus?.label}</strong><br/>{selected.bonus?.desc}
               </div>
-              {selected.lastTag&&<div style={{fontSize:8,letterSpacing:1,color:HIVE_ACC_2,marginTop:8}}>{selected.lastTag}</div>}
+              {selected.lastTag && !String(selected.lastTag).startsWith('[MayaHive_') && (
+                <div style={{fontSize:8,letterSpacing:1,color:HIVE_ACC_2,marginTop:8}}>{selected.lastTag}</div>
+              )}
             </div>
 
             <div style={{background:HIVE_PANEL,border:`1px solid ${HIVE_ACC}33`,borderRadius:12,padding:12}}>
