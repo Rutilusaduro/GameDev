@@ -158,6 +158,7 @@ import './upgradeCorpusPass8.js';
 import './upgradeCorpusPass9.js';
 import './upgradeCorpusPass10.js';
 import './upgradeCorpusPass11.js';
+import './upgradeCorpusPass12.js';
 import './session/fullnessUpgrade.js';
 import './intimacy/upgrade.js';
 import './intimacy/fragmentUpgrade.js';
