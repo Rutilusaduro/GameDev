@@ -22,6 +22,7 @@ import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import { RA_APPROACH_LIST, profileGainMult, profileScrutinyMult } from '../src/gameData/raApproaches.js';
+import { getSwimmerTier } from '../src/gameData/communityResearcher.js';
 import { weeklyDiscontentDecayAmount } from '../src/gameData/discontent.js';
 
 function sportyResidents() {
