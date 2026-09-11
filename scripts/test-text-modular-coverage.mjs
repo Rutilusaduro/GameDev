@@ -58,6 +58,10 @@ const SLOT_KEYS = [
   'session.blobIntro.scale',
   'session.immobile.care',
   'homeroom.npc.kitchenGossip',
+  'cg.scene.dataObsession',
+  'cg.scene.competitionHeat',
+  'cultivator.scene.labAir',
+  'cultivator.scene.testerYield',
 ];
 
 for (const key of SLOT_KEYS) {

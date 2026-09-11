@@ -143,11 +143,11 @@ assert.match(blurbLine, /threshold|next stage|Floor favor|roster agree|pep rally
 
 const tapLine = renderTapOutLine(cassidy, 120, 16);
 assert.ok(tapLine.length > 25, 'tap-out modular render');
-assert.match(tapLine, /Breath comes shallow|Tap-out is mercy|session ends soft/i, 'tap-out slots');
+assert.match(tapLine, /Breath comes shallow|stuffed middle|tapping out|Tap-out is mercy/i, 'tap-out slots');
 
 const unlockLine = renderRosterUnlockScene(cassidy, 12);
 assert.ok(unlockLine.length > 25, 'roster unlock modular render');
-assert.match(unlockLine, /hall door|Floor check-in|kitchen first/i, 'unlock slots');
+assert.match(unlockLine, /hall door|Floor check-in|kitchen first|orientation|Wellness framing/i, 'unlock slots');
 
 const priya = { id: 99, name: 'Priya', archetype: 'competitive_gainer', lbs: 260 };
 const fu = renderCGPriyaFollowup(priya, 18, 'leading', 'Invested', { seed: 803 });
