@@ -89,6 +89,15 @@ const cases = [
       globals: { featureId: 'cultivator' },
     }),
   },
+  {
+    label: 'evolved event phase',
+    template: '{evolved.event.eating_streamer.s0.p0}',
+    ctx: buildTextContext({
+      subject: { ...destiny, evolvedForm: 'eating_streamer', lbs: 200 },
+      week: 6,
+      globals: { formId: 'eating_streamer', stageIdx: 0, phaseIdx: 0, history: [], featureId: 'evolved_event' },
+    }),
+  },
 ];
 
 for (const { label, template, ctx } of cases) {

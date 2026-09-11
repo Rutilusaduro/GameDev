@@ -45,4 +45,10 @@ execSync('node scripts/test-text-spot-render.mjs', { cwd: root, stdio: 'inherit'
 
 execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 
+const evoPath = join(root, 'src/gameData/evolvedForms.js');
+const evoLines = readFileSync(evoPath, 'utf8').split('\n').length;
+if (evoLines > 4000) {
+  console.warn(`text-migration-debt: evolvedForms.js still ${evoLines} lines (full MIGRATION.md retire pending)`);
+}
+
 console.log('test-ra-pivot-objective: ok (mechanics, blueprint, ambiance registry, text bridges, text:lint)');

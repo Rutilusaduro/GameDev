@@ -25,6 +25,7 @@ const required = [
   'competitiveGainer/cgScenePools.js',
   'competitiveGainer/raReplyPools.js',
   'cultivator/index.js',
+  'cultivator/vignettes.js',
   'hallBlueprint/index.js',
   'researchJournal/index.js',
   'evolved/eventPools.js',
