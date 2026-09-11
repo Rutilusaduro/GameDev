@@ -12,32 +12,12 @@ registerModuleVariants('opposition.hearing.emergency.result.feast_bribe', [
   },
 ]);
 
-registerModuleVariants('weekly.thesis_rewrite', [
-  {
-    when: { archetype: ['overachiever'] },
-    weight: 1,
-    text: [
-      'Season spreadsheet yields — appetite columns wider than discipline rows.',
-    ],
-  },
-]);
-
 registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
   {
     when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Calloway arrives buttoned — jacket already losing the fight with her middle.',
-    ],
-  },
-]);
-
-registerModuleVariants('evolved.activity.sumo.s3', [
-  {
-    when: { evolvedFormId: ['sumo'], evolvedStageIdx: [3] },
-    weight: 1,
-    text: [
-      'National qualifier — press watches her belly argue with the sport’s weight classes.',
     ],
   },
 ]);

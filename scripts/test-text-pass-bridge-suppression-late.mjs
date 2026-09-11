@@ -9,6 +9,8 @@ import { buildTextContext } from '../src/gameData/textContext.js';
 import { renderEvolvedActivityBeat } from '../src/textEngine/scenes/evolved/index.js';
 import { renderDeviceUseLine } from '../src/textEngine/scenes/deviceUse/index.js';
 import { renderStreamBeat } from '../src/textEngine/scenes/stream/liveBridge.js';
+import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
+import { renderHearingChoiceResult } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
 
 const week = 24;
@@ -71,7 +73,7 @@ let sumoHit = false;
 for (let s = 0; s < 12; s += 1) {
   const line = renderEvolvedActivityBeat(sumo, week, 3, { seed: 72010 + s })?.trim() || '';
   assert.ok(line.length > 40, 'short sumo activity');
-  if (/evolved\.scene|atmosphere|stakes|hungerCue|witnessed/i.test(line)) sumoHit = true;
+  if (/evolved\.scene|atmosphere|stakes|hungerCue|witnessed|She's in her element|Modular evolved/i.test(line)) sumoHit = true;
   assert.ok(!/^National qualifier — press watches her belly argue with the sport's weight classes\.$/.test(line), 'pass-112 sumo bridge alone @ w24');
 }
 assert.ok(sumoHit, 'sumo activity modular @ w24');
@@ -104,5 +106,22 @@ for (let s = 0; s < 12; s += 1) {
   if (/signoffAir|chatAfterglow|tips still ticking/i.test(line)) streamHit = true;
 }
 assert.ok(streamHit, 'stream.endStream.good modular @ w24');
+
+const artsy = { id: 3, name: 'Serena', archetype: 'artsy', lbs: 240 };
+let weeklyHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderWeeklyEvent('art_exhibition', artsy, { week, seed: 72060 + s })?.trim() || '';
+  assert.ok(!/^Gallery night — her body hung beside the canvases, both exhibits honest\.$/.test(line), 'pass-111 art_exhibition bridge alone @ w24');
+  if (/floorEcho|Hall Ambiance/i.test(line)) weeklyHit = true;
+}
+assert.ok(weeklyHit, 'weekly art_exhibition modular @ w24');
+
+let feastBribeHit = false;
+for (let s = 0; s < 8; s += 1) {
+  const line = renderHearingChoiceResult('emergency', 'feast_bribe', destiny, week, 1)?.trim() || '';
+  assert.ok(!/^Hearing catered — board members eat before they vote, and appetite wins the agenda\.$/.test(line), 'pass-112 feast_bribe bridge alone @ w24');
+  if (/cateredVote|boardAppetite|Appetite interrupts|feed the hearing|board members chew/i.test(line)) feastBribeHit = true;
+}
+assert.ok(feastBribeHit, 'emergency feast_bribe modular @ w24');
 
 console.log('test-text-pass-bridge-suppression-late: ok');

@@ -33,32 +33,3 @@ registerModuleVariants('wifeLessons.lesson.s3.potluck', [
   },
 ]);
 
-registerModuleVariants('fair.day.weighIn.open', [
-  {
-    when: { fairBoostTier: ['Mid', 'High'] },
-    weight: 1,
-    text: [
-      'Scale lights the midway — crowd leans in before the number lands.',
-    ],
-  },
-]);
-
-registerModuleVariants('weekly.art_exhibition', [
-  {
-    when: { archetype: ['artsy'] },
-    weight: 1,
-    text: [
-      'Gallery night — her body hung beside the canvases, both exhibits honest.',
-    ],
-  },
-]);
-
-registerModuleVariants('evolved.activity.feedee_creator.s1', [
-  {
-    when: { evolvedFormId: ['feedee_creator'], evolvedStageIdx: [1] },
-    weight: 1,
-    text: [
-      'Collab stream warmup — ring light on, appetite already trending.',
-    ],
-  },
-]);
