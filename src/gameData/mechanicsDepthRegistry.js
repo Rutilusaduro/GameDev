@@ -97,4 +97,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'labParts', file: 'labParts.js' },
   { id: 'labTechTree', file: 'labTechTree.js' },
   { id: 'researchTree', file: 'researchTree.js' },
+  { id: 'pharmacistIngredients', file: 'pharmacistIngredients.js' },
+  { id: 'unlockScenes', file: 'unlockScenes.js' },
 ];

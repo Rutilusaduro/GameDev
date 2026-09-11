@@ -3,6 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 import { COMPOUNDS, compoundsForStage } from './pharmacist.js';
 import { cultSupplyToIngredients, applyBulkProductionDiscount } from './pharmacistCult.js';
+import { depthExplorationIngredientGrant } from './mechanicsDepthLayer.js';
+
+function scalePharmacistIngredientGrant(grants = {}) {
+  return depthExplorationIngredientGrant(grants);
+}
 
 export const INGREDIENTS = {
   precursors: { id: 'precursors', label: 'Lab Precursors', icon: '⚗️', desc: 'Corporate-grade chemical stock.' },
@@ -43,7 +48,7 @@ export function sessionIngredientBudget(stageId) {
     3: { precursors: 4, reagents: 4, extracts: 3, branding: 2, supply: 3 },
     4: { precursors: 6, reagents: 5, extracts: 4, branding: 3, supply: 4, catalyst: 2 },
   };
-  return { ...(base[stageId] || base[1]) };
+  return scalePharmacistIngredientGrant(base[stageId] || base[1]);
 }
 
 /** Campus narrative intensity (matches numeric campus tiers). */
@@ -272,7 +277,7 @@ export function applyAcquisitionChoice(session, actionId) {
   return {
     ...session,
     phase: 'craft',
-    pool: mergeIngredients(session.pool, action.grants),
+    pool: mergeIngredients(session.pool, scalePharmacistIngredientGrant(action.grants)),
     exposureGained: (session.exposureGained || 0) + (action.exposure || 0),
     acquisitionLog: [...(session.acquisitionLog || []), action.flavor],
     lastAcquisition: action,

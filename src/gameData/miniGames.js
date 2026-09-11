@@ -25,6 +25,13 @@ export function scaleSumoMatchLbsGain(lbs = 0) {
   return depthLbsGrant(lbs);
 }
 
+export function getContestFoodDef(foodId) {
+  const row = CONTEST_FOODS.find((f) => f.id === foodId);
+  if (!row) return null;
+  const lbs = scaleEatingContestLbsGain(row.lbs);
+  return { ...row, lbs };
+}
+
 export const CONTEST_FOODS = [
   { id:'hotdogs',  name:'Hot Dogs',   emoji:'🌭', fullness:8,  lbs:3 },
   { id:'wings',    name:'Wings',      emoji:'🍗', fullness:12, lbs:5 },

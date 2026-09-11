@@ -19,7 +19,7 @@ import { renderFairBoostSummary } from './textEngine/scenes/fairQueen/index.js';
 import { CG_FILLED_SELF_REVIEW, CG_RA_REPLY_TEXT } from './gameData/competitiveGainerText.js';
 import { renderSessionRaeArrival, renderSessionRaeExtra, renderSessionPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain, scaleEatingContestLbsGain, scaleSumoMatchLbsGain } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain, scaleEatingContestLbsGain, scaleSumoMatchLbsGain, getContestFoodDef } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
@@ -46,7 +46,7 @@ import {
   profileGainMult, profileScrutinyMult, profilePassiveBonus, profileCorruptionMult,
   getProfileApproachId, getApproachLabel, migrateRaProfile,
 } from './gameData/raApproaches.js';
-import { getUnlockScene } from './gameData/unlockScenes.js';
+import { renderRosterUnlockScene } from './textEngine/scenes/unlockScene/index.js';
 import {
   applyWeeklyTrustDrip, pickRipeUnlock, openRosterResident, ROSTER_TRUST_GATE, grantPassiveTrust,
 } from './gameData/rosterUnlock.js';
@@ -2192,7 +2192,8 @@ export default function HallPass(){
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));
-      const scene = getUnlockScene(ripe.id) || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
+      const scene = renderRosterUnlockScene(ripe, newWeek)
+        || `${ripe.name} finally trusts you enough to knock on your door. She's on your hall now.`;
       setTimeout(() => push(`🌒 ${scene}`), 160);
     }
 
@@ -5272,8 +5273,8 @@ export default function HallPass(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const stageFoods=CONTEST_STAGE_FOODS[stageIdx]||CONTEST_STAGE_FOODS[0];
     const mayaLbs=CONTEST_MAYA_WEIGHTS[stageIdx]||330;
-    const yourFoods=stageFoods.your.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,selected:false,key:i}));
-    const mayaFoods=stageFoods.maya.map((id,i)=>({...(CONTEST_FOODS.find(f=>f.id===id)||{}),consumed:false,selected:false,key:100+i}));
+    const yourFoods=stageFoods.your.map((id,i)=>({...(getContestFoodDef(id)||{}),consumed:false,selected:false,key:i}));
+    const mayaFoods=stageFoods.maya.map((id,i)=>({...(getContestFoodDef(id)||{}),consumed:false,selected:false,key:100+i}));
     const completions=s.contestCompletions||0;
     const multiplier=1+0.15*completions;
     const maxYF=Math.floor((80+Math.floor(s.lbs/8))*multiplier);

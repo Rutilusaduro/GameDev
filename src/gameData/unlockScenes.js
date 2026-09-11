@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // ROSTER UNLOCK SCENES — bespoke per-resident beats fired when a locked
+import { depthDossierReplayDepthChance } from './mechanicsDepthLayer.js';
 // student crosses into hall reach. One-shots, authored long;
 // stored off the registerPool system so the 200-char text linter
 // never scans them. Keyed by student id (unlock pool = ids 0-14).
@@ -42,4 +43,9 @@ export const UNLOCK_SCENES = {
 /** Bespoke unlock prose for a student, or null for the generic fallback. */
 export function getUnlockScene(studentId) {
   return UNLOCK_SCENES[studentId] || null;
+}
+
+/** V2 depth tail chance when unlock prose is rendered through the text engine. */
+export function unlockSceneModularDepthChance() {
+  return Math.min(0.46, depthDossierReplayDepthChance(1));
 }
