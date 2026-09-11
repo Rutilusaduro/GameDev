@@ -868,7 +868,8 @@ check('cg-chat-ra-framing', () => {
   assert.match(desk, /isRa:false/);
   assert.match(desk, /isRa:true/);
   assert.doesNotMatch(desk, /isProf:/);
-  assert.match(desk, /CG_CHAT_TEMPLATES\.residents/);
+  assert.match(desk, /renderCGResidentReply/);
+  assert.match(desk, /renderCGPriyaPost/);
   assert.doesNotMatch(desk, /CG_CHAT_TEMPLATES\.girls/);
   assert.match(read('src/gameData/competitiveGainerState.js'), /cgIsRaMessage/);
   const evolved = read('src/gameData/evolvedForms.js');
@@ -2886,6 +2887,40 @@ check('resident-framing-ui', () => {
   const content = read('src/gameData/content.js');
   assert.match(content, /published hall log, a defended season report chapter/);
   assert.doesNotMatch(content, /published field notes, a defended season report/i);
+});
+
+check('ra-dorm-pivot-mechanics-ambiance', () => {
+  const layer = read('src/gameData/mechanicsDepthLayer.js');
+  assert.match(layer, /MECHANICS_DEPTH_SCALE\s*=\s*1\.5/);
+  const reg = read('src/gameData/mechanicsDepthRegistry.js');
+  assert.match(reg, /id:\s*'hallBlueprint'/);
+  assert.match(reg, /id:\s*'hallAmbiance'/);
+  const hallPass = read('src/HallPass.jsx');
+  assert.match(hallPass, /rollWeeklyAmbiancePulse/);
+  assert.match(hallPass, /hall\.ambiance\.pulse\./);
+});
+
+check('ra-dorm-pivot-blueprint-hall', () => {
+  assert.ok(existsSync(join(root, 'src/components/HallBlueprint.jsx')));
+  assert.ok(existsSync(join(root, 'src/gameData/hallBlueprint.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/hallAmbiance.js')));
+  const lounge = read('src/views/HallLoungeView.jsx');
+  assert.match(lounge, /HallBlueprint/);
+  assert.match(lounge, /renderHallRoomBlurb/);
+});
+
+check('ra-dorm-pivot-text-engine-bridges', () => {
+  const bridgeScript = read('scripts/test-text-bridges.mjs');
+  assert.match(bridgeScript, /hallBlueprint\/index\.js/);
+  assert.match(bridgeScript, /evolved\/eventPools\.js/);
+  assert.match(bridgeScript, /competitiveGainer\/cgScenePools\.js/);
+  const sceneDir = join(root, 'src/textEngine/scenes');
+  const passes = readdirSync(sceneDir).filter((f) => /^raPivotProseDepthPass\d+\.js$/.test(f));
+  const passNums = passes.map((f) => Number(f.match(/Pass(\d+)/)[1]));
+  const maxPass = Math.max(...passNums, 0);
+  assert.ok(maxPass >= 120, `expected prose pass index >=120, max=${maxPass} (n=${passes.length} files)`);
+  assert.ok(existsSync(join(root, 'scripts/test-ra-pivot-objective.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-spot-render.mjs')));
 });
 
 // ── Report ─────────────────────────────────────────────────────

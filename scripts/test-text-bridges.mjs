@@ -21,6 +21,7 @@ const required = [
   'homeroom/batchBakerPools.js',
   'competitiveGainer/cgChatPools.js',
   'competitiveGainer/cgScenePools.js',
+  'competitiveGainer/raReplyPools.js',
   'cultivator/index.js',
   'hallBlueprint/index.js',
   'researchJournal/index.js',

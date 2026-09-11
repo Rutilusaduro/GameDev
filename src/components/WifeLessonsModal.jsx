@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { WL_CONFIG, WL_LESSONS } from '../gameData/evolvedForms.js';
+import { renderWifeLessonBeat } from '../textEngine/scenes/wifeLessons/index.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
@@ -18,8 +19,8 @@ function wlNextThresholdCap(stage, daughters) {
   return exitCap;
 }
 
-export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession, soundEnabled = true }){
-        const{stage,daughters,moms,session}=wifeLessonsState;
+export function WifeLessonsModal({ wifeLessonsState, students = [], week = 1, makeWifeLessonsConversationChoice, makeWifeLessonsSubChoice, dismissWifeLessonsConversation, chooseWifeLessonsLesson, startWifeLessonsConversation, closeWifeLessonsSession, soundEnabled = true }){
+        const{stage,daughters,moms,session,mjStudentId}=wifeLessonsState;
         const{lessonChosen,lessonId,lessonProse,mjGainAccum,relAccum,conversationState,log}=session;
         useEffect(() => {
           playHallPassSound('confirm', soundEnabled);
@@ -35,6 +36,12 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
         const isDaughterStage=stage>=WL_CONFIG.daughtersFrom;
         const lessons=WL_LESSONS[stage]||[];
         const chosenLesson=lessonId?lessons.find(l=>l.id===lessonId):null;
+        const mjStudent=students.find(st=>st.id===mjStudentId);
+        const lessonDisplayText=chosenLesson&&(
+          lessonProse
+          || (mjStudent?renderWifeLessonBeat(stage,chosenLesson,mjStudent,week):'')
+          || chosenLesson.text
+        );
         const endSession=()=>{ playHallPassSound('click', soundEnabled); closeWifeLessonsSession(); };
 
         // ── Conversation panel ──
@@ -137,7 +144,7 @@ export function WifeLessonsModal({ wifeLessonsState, makeWifeLessonsConversation
                   {chosenLesson?.text&&(
                     <FlaggedProse
                       section={`wifeLessons.lesson.${chosenLesson.id}`}
-                      text={lessonProse||chosenLesson.text}
+                      text={lessonDisplayText||''}
                       stateLine={`Stage ${stage} · ${chosenLesson.label}`}
                       style={{fontSize:12,color:WINE_TEXT,lineHeight:1.75,padding:"10px 12px",background:"rgba(139,34,82,0.06)",border:`1px solid ${WINE_DIM}30`,borderRadius:5}}
                     />
