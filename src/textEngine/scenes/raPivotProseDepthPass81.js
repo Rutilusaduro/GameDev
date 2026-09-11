@@ -14,12 +14,12 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
   },
 ]);
 
-registerModuleVariants('homeroom.activity.batch_bake_off.p0', [
+registerModuleVariants('homeroom.activity.parent_meeting.p0', [
   {
     when: {},
     weight: 1,
     text: [
-      'Oven heat fogs the common-room glass — Tuesday smells like victory before anyone bites.',
+      'Three mothers, one agenda, and a snack bowl that empties faster than the wellness notes.',
     ],
   },
 ]);
