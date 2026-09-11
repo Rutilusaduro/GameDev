@@ -3,7 +3,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
-import { renderEvolvedEventProse, renderEvolvedEventPhase } from '../textEngine/scenes/evolved/index.js';
+import { renderEvolvedEventPhase } from '../textEngine/scenes/evolved/index.js';
 
 export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true }){
         const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge,startsSalon,startsGallery}=evolvedEventState;

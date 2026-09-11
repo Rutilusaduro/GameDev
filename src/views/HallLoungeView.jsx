@@ -90,7 +90,7 @@ function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase, roomFilt
   );
 }
 
-export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLoungeSkill }) {
+export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLoungeSkill, week = 1 }) {
   const [selectedRoom, setSelectedRoom] = useState('common_lounge');
 
   return (
@@ -102,6 +102,7 @@ export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLounge
             ownedHallSkills={ownedHallSkills}
             selectedRoomId={selectedRoom}
             onSelectRoom={setSelectedRoom}
+            week={week}
           />
           <HallLoungeSkillsPanel
             students={students}

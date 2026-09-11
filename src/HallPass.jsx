@@ -2172,7 +2172,7 @@ export default function HallPass(){
       if(ambiancePulse.passiveDrip>0){
         updated=updated.map((s)=>{
           if(s.hidden||s.lockState==='locked') return s;
-          return processStudentGain(s,ambiancePulse.passiveDrip,0);
+          return processStudentGain(s,scaleEvolvedEventLbs(ambiancePulse.passiveDrip),0);
         });
       }
     }
@@ -8844,7 +8844,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} week={week}/>}
 
           {view==="influence"&&<InfluenceView
             students={students}

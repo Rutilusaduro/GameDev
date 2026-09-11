@@ -8,7 +8,8 @@ import {
   roomDevelopmentTier,
   listActiveSynergies,
 } from '../gameData/hallBlueprint.js';
-import { computeHallAmbianceMeters, ambianceSummaryLine } from '../gameData/hallAmbiance.js';
+import { computeHallAmbianceMeters } from '../gameData/hallAmbiance.js';
+import { renderHallAmbianceSummary, renderHallRoomBlurb } from '../textEngine/scenes/hallBlueprint/index.js';
 
 const GRID_LAYOUT = {
   common_lounge: { row: 1, col: 1, rowSpan: 2, colSpan: 2 },
@@ -76,7 +77,7 @@ function RoomCell({ room, owned, selected, highlighted, onSelect }) {
   );
 }
 
-export function HallBlueprint({ ownedHallSkills = {}, selectedRoomId, onSelectRoom }) {
+export function HallBlueprint({ ownedHallSkills = {}, selectedRoomId, onSelectRoom, week = 1 }) {
   const [internalRoom, setInternalRoom] = useState('common_lounge');
   const selected = selectedRoomId ?? internalRoom;
   const setSelected = onSelectRoom || setInternalRoom;
@@ -84,6 +85,7 @@ export function HallBlueprint({ ownedHallSkills = {}, selectedRoomId, onSelectRo
   const synergies = listActiveSynergies(owned);
   const meters = computeHallAmbianceMeters(owned);
   const neighbors = adjacencySet(selected);
+  const selectedBlurb = renderHallRoomBlurb(selected, week);
 
   return (
     <div style={{ ...C.card, borderColor: '#1a4060', marginBottom: 14, padding: '12px 14px', background: 'linear-gradient(180deg, rgba(6,18,32,0.9), rgba(4,10,20,0.95))' }}>
@@ -92,7 +94,7 @@ export function HallBlueprint({ ownedHallSkills = {}, selectedRoomId, onSelectRo
         <div style={{ fontSize: 9, color: '#5080a0' }}>Click a wing · install upgrades below</div>
       </div>
       <p style={{ fontSize: 10, color: '#90b0c8', lineHeight: 1.55, margin: '0 0 10px' }}>
-        {ambianceSummaryLine(owned)}
+        {renderHallAmbianceSummary(owned, week)}
       </p>
       <div
         style={{
@@ -139,17 +141,11 @@ export function HallBlueprint({ ownedHallSkills = {}, selectedRoomId, onSelectRo
           Resonant wings: {synergies.map((s) => `${s.a.short}↔${s.b.short}`).join(' · ')} (+{synergies.length * 2}% gains)
         </p>
       )}
-      {getHallRoomBlurb(selected)}
+      {selectedBlurb && (
+        <p style={{ fontSize: 10, color: '#a0c0d8', margin: '8px 0 0', fontStyle: 'italic', lineHeight: 1.5 }}>
+          {selectedBlurb}
+        </p>
+      )}
     </div>
-  );
-}
-
-function getHallRoomBlurb(roomId) {
-  const room = HALL_ROOMS.find((r) => r.id === roomId);
-  if (!room) return null;
-  return (
-    <p style={{ fontSize: 10, color: '#a0c0d8', margin: '8px 0 0', fontStyle: 'italic', lineHeight: 1.5 }}>
-      {room.label}: {room.blurb}
-    </p>
   );
 }
