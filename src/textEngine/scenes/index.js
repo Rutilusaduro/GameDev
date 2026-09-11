@@ -142,6 +142,7 @@ import './homeroom/index.js';
 import './homeroom/homeroomSceneDepth.js';
 import './homeroom/homeroomActivityDepth.js';
 import './evolved/index.js';
+import './community/index.js';
 import './fairTraining/index.js';
 import './rankedSession/index.js';
 import './customStudent/index.js';

@@ -146,7 +146,7 @@ import {
   renderFairDayAfterpartyResult,
 } from './textEngine/scenes/fairTraining/index.js';
 import { renderEvolvedEventProse, renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
-import { renderCgBingeScene } from './textEngine/scenes/evolved/cgBingeBeats.js';
+import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene } from './textEngine/scenes/evolved/cgBingeBeats.js';
 import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -3602,9 +3602,10 @@ export default function HallPass(){
       const tier=getCGDriveTier(cgDrive(prev));
       const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
       const idx=(prev.corkboardVisitCount||0)%scenes.length;
-      const sceneText=scenes[idx];
-      // Drive gain: check if any visible student is within threat range
       const priya=students.find(st=>st.id===prev.priyaStudentId);
+      const sceneText=priya
+        ? (renderCgCorkboardScene(priya,week,tier.label)||scenes[idx])
+        : scenes[idx];
       let driveGain=rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
       if(priya){
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
@@ -3635,7 +3636,8 @@ export default function HallPass(){
       const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
-      const sceneText=formatCGText(entry.text||entry,{measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
+      const inch=priyaM[focus]??Math.round(priya.lbs);
+      const sceneText=renderCgSelfScene(priya,week,tier.label,inch)||formatCGText(entry.text||entry,{measurement:inch, measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)});
       const driveGain=rnd(2,5);
       return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
@@ -3667,7 +3669,7 @@ export default function HallPass(){
       const driveGain=threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
         : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
-      const sceneText=`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
+      const sceneText=renderCgMeasureScene(priya,target,week,tier.label)||`Priya measures ${target.name} with the same tape she uses on herself.`;
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
@@ -3791,7 +3793,7 @@ export default function HallPass(){
       const hiveFx=hiveShiftFx(maya,week);
       const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
       const appliedGain=depthGainLbs(maya,mayaGain,week,{});
-      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,appliedGain,4):s));
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?bumpOriginChain(processStudentGain(s,appliedGain,4)):s));
       push(`🕸️ Maya — Delivery Hive Shift: +${appliedGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
       // Modular-text intake scene when the shift recruits new bodies
       let withScene=next;
@@ -3827,7 +3829,7 @@ export default function HallPass(){
       const hiveFx=hiveShiftFx(maya,week);
       const gain=depthGainLbs(maya,Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35),week,{});
       const biomass=Math.round(gain*0.8)+hiveFx.biomassBump;
-      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?bumpOriginChain(processStudentGain(s,gain,6)):s));
       push(`🕸️ Maya — Central Nest Visit: +${gain} lbs`);
       return {
         ...prev,
@@ -3869,7 +3871,7 @@ export default function HallPass(){
       const hiveFx=hiveShiftFx(maya,week);
       const gain=depthGainLbs(maya,Math.round(22+getStage(maya.lbs).id*4+rooms*1.5),week,{});
       const tag=makeHiveTag("LilithAbsorption",{mayaStage,vpId:"lilith",bmiTier,rooms,task:"absorb",roomId:prev.selectedRoomId});
-      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,3):s));
+      setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?bumpOriginChain(processStudentGain(s,gain,3)):s));
       push(`🌑 Maya's Hive absorbs a devotee: +${gain} lbs`);
       return {
         ...prev,
@@ -5304,7 +5306,7 @@ export default function HallPass(){
   };
   const completeThesisDefense=(s)=>{
     setAp(a=>a-1);
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,depthGainLbs(st,5,week,{}),8)}:st));
+    setStudents(prev=>prev.map(st=>st.id===s.id?bumpOriginChain({...processStudentGain(st,depthGainLbs(st,5,week,{}),8)}):st));
     setCommunityResearcherState(prev=>prev?{...prev,thesisComplete:true,modalPhase:null,boardPhase:0}:null);
     push(`📋 ${s.name} — season plan approved. Floor case studies unlocked.`);
   };
@@ -5326,7 +5328,7 @@ export default function HallPass(){
     const [gMin,gMax]=pair?.gainRange||[3,8];
     setAp(a=>a-1);
     const gain=depthGainLbs(s,rnd(gMin,gMax),week,{});
-    setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,gain,10)}:st));
+    setStudents(prev=>prev.map(st=>st.id===s.id?bumpOriginChain({...processStudentGain(st,gain,10)}):st));
     setCommunityResearcherState(prev=>prev?{
       ...prev,
       caseStudyStage:prev.caseStudyStage+1,
@@ -9755,7 +9757,7 @@ export default function HallPass(){
       {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} soundEnabled={soundEnabled}/>}
 
       {/* ── LANE CAPTAIN MODAL ── */}
-      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome} soundEnabled={soundEnabled}/>}
+      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── CULTIVATOR MODAL ── */}
       {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} week={week} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth} soundEnabled={soundEnabled}/>}

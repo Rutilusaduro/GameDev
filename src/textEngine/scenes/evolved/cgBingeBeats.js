@@ -114,3 +114,237 @@ export function renderCgBingeScene(priya, week, driveLabel) {
   });
   return render('{cg.binge.scene}', ctx)?.trim() || '';
 }
+
+registerPool('cg.inch', [
+  { when: {}, text: [
+    (ctx) => String(ctx.globals?.cgInch ?? ''),
+    (ctx) => String(ctx.globals?.cgInch ?? ''),
+    (ctx) => String(ctx.globals?.cgInch ?? ''),
+  ] },
+]);
+
+// ── Corkboard ─────────────────────────────────────────────────────────────
+registerPool('cg.cork.setup', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Priya leans the leftover heat into the corkboard. Pins, columns, a middle that already ate.',
+    'Galley foil still on her fingers while she adjusts a pin. The board is the second sitting.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw her after hours. Daylight corkboard uses the same appetite with better lighting.',
+  ] },
+  { when: { cgDrive: 'Ruthless', stageMin: 8 }, weight: 4, text: [
+    'She fills the space in front of the board. Columns wait. Her name already owns them.',
+  ] },
+  { when: { cgDrive: 'Frenzied' }, weight: 3, text: [
+    'First thing, already at the pins. Marker sharper than the last visit.',
+  ] },
+  { when: { stageMax: 4 }, weight: 3, text: [
+    'Early board, neat pins. She stands like the data might still be modest.',
+  ] },
+  { when: {}, text: [
+    'Priya stands before the corkboard with a marker and a plan.',
+    'Pins, photos, columns. She treats the wall like a ranking she intends to keep.',
+    'The board waits. She updates it the way she updates a lead.',
+  ] },
+]);
+
+registerPool('cg.cork.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover warmth presses the desk edge. The numbers look better for it.',
+    'Last night\'s tray plus this column. Softness does the math without asking.',
+  ] },
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'Belly takes the ledge. The chair reports her. She keeps marking.',
+  ] },
+  { when: { stageMax: 4 }, weight: 2, text: [
+    'A new softness answers the lean-in. She files it as posture and keeps writing.',
+  ] },
+  { when: {}, text: [
+    'The lean sends a slow shift through her middle. She notes a figure anyway.',
+    'Thighs take more of the chair while she surveys the standings.',
+    'The body arrives while she is busy with pins. Soft, warm, ahead of the column.',
+  ] },
+]);
+
+registerPool('cg.cork.line', [
+  { when: { leftoverFed: true, cgDrive: 'Ruthless' }, weight: 4, text: [
+    '"Leftovers count," she says, marker still moving. "The board will show both sittings."',
+  ] },
+  { when: { cgDrive: 'Invested' }, weight: 3, text: [
+    'She nods once. "Standings hold."',
+    '"Logged," Priya says, stepping back as much as the middle allows.',
+  ] },
+  { when: { cgDrive: 'Driven' }, weight: 3, text: [
+    '"Gap widening," she says, and means it as a schedule.',
+  ] },
+  { when: { cgDrive: 'Frenzied' }, weight: 3, text: [
+    'A red pin. "Threat. Fix it."',
+  ] },
+  { when: { cgDrive: 'Ruthless' }, weight: 3, text: [
+    'Marker down. "Mine. Every column."',
+  ] },
+  { when: {}, text: [
+    'She sets the marker down like a period.',
+    'The board is updated. So is she.',
+    'Priya looks from the pins to you. The looking is the rest of the log.',
+  ] },
+]);
+
+registerPool('cg.corkboard.scene', [
+  { when: {}, text: [
+    '{cg.cork.setup} {cg.cork.growth} {cg.cork.line}',
+    '{cg.cork.setup} {cg.cork.line} {cg.cork.growth}',
+    '{cg.cork.growth} {cg.cork.setup} {cg.cork.line}',
+  ] },
+]);
+
+// ── Self-review ───────────────────────────────────────────────────────────
+registerPool('cg.self.setup', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Tape out. Galley leftover still in the waist she is about to number.',
+    'Mirror, tape, last night\'s tray still warm under the numbers.',
+  ] },
+  { when: { stageMax: 4 }, weight: 3, text: [
+    'Priya wraps the tape with clinical calm. The middle is already arguing with modest.',
+  ] },
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'She measures what she can reach. The rest of her is the rest of the room.',
+  ] },
+  { when: {}, text: [
+    'Priya stands before the mirror with the tape and a plan.',
+    'Tape around a middle that has been working. She wants the inches in writing.',
+    'Self-review. Numbers first. Softness is the method.',
+  ] },
+]);
+
+registerPool('cg.self.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat yields under the tape. The inch arrives honest.',
+    'Last night plus this wrap. The tape sinks into work already done.',
+  ] },
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'Warm flesh takes the tape and keeps some. Rolls shift after she stops moving.',
+  ] },
+  { when: { stageMax: 4 }, weight: 2, text: [
+    'A new softness answers the wrap. She files it as early lead.',
+  ] },
+  { when: {}, text: [
+    'The tape finds give. She lets it.',
+    'Warmth, yield, a number that climbed since last review.',
+    'She checks twice. The body already knew.',
+  ] },
+]);
+
+registerPool('cg.self.line', [
+  { when: { cgDrive: 'Ruthless' }, weight: 4, text: [
+    'She murmurs "{cg.inch} inches of growing lead," palm still on the swell.',
+  ] },
+  { when: { cgDrive: 'Frenzied' }, weight: 3, text: [
+    '"{cg.inch}," she says, already hungry for the next sitting.',
+  ] },
+  { when: { cgDrive: 'Driven' }, weight: 3, text: [
+    'Waist at {cg.inch}. She nods like a schedule just confirmed.',
+  ] },
+  { when: { cgDrive: 'Invested' }, weight: 3, text: [
+    '"Logged. {cg.inch}." Quiet approval. Already imagining the climb.',
+  ] },
+  { when: {}, text: [
+    'The number sits between her hands. She keeps it.',
+    'Priya files {cg.inch} like a win she intends to feed.',
+    'Tape off. Softness stays. The board will hear about this.',
+  ] },
+]);
+
+registerPool('cg.self.scene', [
+  { when: {}, text: [
+    '{cg.self.setup} {cg.self.growth} {cg.self.line}',
+    '{cg.self.setup} {cg.self.line} {cg.self.growth}',
+    '{cg.self.growth} {cg.self.setup} {cg.self.line}',
+  ] },
+]);
+
+// ── Measuring another resident ────────────────────────────────────────────
+registerPool('cg.measure.setup', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Tape between them. Priya still warm from leftover. {ref.name} already knows the drill.',
+    'Galley heat in Priya\'s middle while she measures {ref.name}. Both numbers will move.',
+  ] },
+  { when: { stageMax: 4 }, weight: 3, text: [
+    'Priya takes {ref.name}\'s measure like a study session. Tape, notes, a lead she intends to keep.',
+  ] },
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'Priya sits. {ref.name} stands or sits as the tape requires. The comparison is the point.',
+  ] },
+  { when: {}, text: [
+    'Priya measures {ref.name} with the same tape she uses on herself.',
+    'Tape, columns, {ref.name} in the doorway. Priya wants every category honest.',
+    'A session. Inches. The board will eat whatever they find.',
+  ] },
+]);
+
+registerPool('cg.measure.growth', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover still in Priya. She reads {ref.name}\'s curve like a threat or a snack.',
+  ] },
+  { when: {}, text: [
+    'The tape reports {ref.name}. Priya\'s middle answers by sitting heavier.',
+    'Softness on both sides of the number. Priya keeps the pencil moving.',
+    'A yield under the tape. Priya files it. Then she files herself against it.',
+  ] },
+]);
+
+registerPool('cg.measure.line', [
+  { when: { leftoverFed: true, cgDrive: 'Ruthless' }, weight: 4, text: [
+    '"Yours counts. Mine counts more," Priya says, already hungry for the next column.',
+  ] },
+  { when: { cgDrive: 'Invested' }, weight: 3, text: [
+    '"Logged," Priya says. "{ref.name} is in the set now."',
+  ] },
+  { when: { cgDrive: 'Driven' }, weight: 3, text: [
+    '"Close or not, I want it on the board," Priya says.',
+  ] },
+  { when: {}, text: [
+    'Priya looks from the tape to {ref.name}. The looking is the rest of the session.',
+    '"Hold still," Priya says, which is also "I am winning this inch."',
+    'The comparison is warm. So is Priya. She writes both.',
+  ] },
+]);
+
+registerPool('cg.measure.scene', [
+  { when: {}, text: [
+    '{cg.measure.setup} {cg.measure.growth} {cg.measure.line}',
+    '{cg.measure.setup} {cg.measure.line} {cg.measure.growth}',
+    '{cg.measure.growth} {cg.measure.setup} {cg.measure.line}',
+  ] },
+]);
+
+export function renderCgCorkboardScene(priya, week, driveLabel) {
+  if (!priya) return '';
+  const ctx = buildTextContext({
+    subject: priya,
+    week,
+    globals: { cgDrive: driveLabel || 'Invested' },
+  });
+  return render('{cg.corkboard.scene}', ctx)?.trim() || '';
+}
+
+export function renderCgSelfScene(priya, week, driveLabel, inch) {
+  if (!priya) return '';
+  const ctx = buildTextContext({
+    subject: priya,
+    week,
+    globals: { cgDrive: driveLabel || 'Invested', cgInch: inch ?? '' },
+  });
+  return render('{cg.self.scene}', ctx)?.trim() || '';
+}
+
+export function renderCgMeasureScene(priya, target, week, driveLabel) {
+  if (!priya || !target) return '';
+  const ctx = buildTextContext({
+    subject: priya,
+    ref: target,
+    week,
+    globals: { cgDrive: driveLabel || 'Invested' },
+  });
+  return render('{cg.measure.scene}', ctx)?.trim() || '';
+}

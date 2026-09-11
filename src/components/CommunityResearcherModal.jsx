@@ -7,8 +7,9 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, H
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { renderCommunityWrap } from '../textEngine/scenes/community/index.js';
 
-export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true }){
+export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true, week = 1 }){
         const crs=communityResearcherState;
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, crs?.modalPhase]);
         const blue="#4a6fa5"; const lblue="#8fa8e0";
@@ -29,7 +30,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>🏊 LANE CAPTAIN</div>
           <div style={{fontSize:13,fontWeight:700,color:lblue,marginBottom:10}}>Season Plan Review</div>
           <div style={{fontSize:12,color:"#a0b8d0",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-            {THESIS_BOARD.phases[crs.boardPhase]?.(mName)||''}
+            {[THESIS_BOARD.phases[crs.boardPhase]?.(mName)||'', cassidy?renderCommunityWrap(cassidy, week, { thesisPhase: crs.boardPhase }):''].filter(Boolean).join('\n\n')}
           </div>
           {crs.boardPhase<2?(
             <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); advanceThesisBoard(); }}>Continue →</button>
@@ -102,7 +103,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 CASE STUDY {crs.caseStudyStage+1} OF 4</div>
           <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>{CASE_STUDY_PAIRS.find(p=>p.id===crs.activePairId)?.label||''}</div>
           <div style={{fontSize:12,color:"#a0b8cc",lineHeight:1.9,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-            {crs.eventText||''}
+            {[crs.eventText||'', cassidy?renderCommunityWrap(cassidy, week, {}):''].filter(Boolean).join('\n\n')}
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('confirm', soundEnabled); if(cassidy)completeCaseStudy(cassidy); }}>
             Record Findings ✓ (1 AP)
@@ -146,6 +147,8 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx];
           const phase=scene?.phases[crs.chatPhaseIdx];
           const phaseText=typeof phase?.text==='function'?phase.text(crs.chatHistory):phase?.text;
+          const memberKey=(scene?.member||'').toLowerCase().includes('ward')?'ward':(scene?.member||'').toLowerCase().includes('harmon')?'harmon':(scene?.member||'').toLowerCase().includes('rivera')?'rivera':'';
+          const chatWrap=cassidy?renderCommunityWrap(cassidy, week, { chatMember: memberKey }):'';
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 OFF THE RECORD</div>
             <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:8}}>{scene?.member||''}</div>
@@ -160,7 +163,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
               ))}
             </div>
             <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-              {phaseText||''}
+              {[phaseText||'', chatWrap].filter(Boolean).join('\n\n')}
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {(phase?.choices||[]).map(ch=>(
