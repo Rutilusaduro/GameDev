@@ -92,6 +92,8 @@ execSync('node scripts/test-fair-training-modular-late.mjs', { cwd: root, stdio:
 
 execSync('node scripts/test-fair-boost-photo-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-fair-tag-resolve-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-talk-suggest-indulgence-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-talk-suggest-growth-modular-late.mjs', { cwd: root, stdio: 'inherit' });
@@ -105,6 +107,8 @@ execSync('node scripts/test-modular-pool-depth.mjs', { cwd: root, stdio: 'inheri
 execSync('node scripts/test-cg-text-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-cg-corkboard-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-cultivator-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-evolved-events-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 

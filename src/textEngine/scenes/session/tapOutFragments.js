@@ -7,9 +7,11 @@ registerPool('session.tapOut.breath', [
     when: {},
     weight: 2,
     text: [
-      'Breath comes shallow; fullness owns the room before words do.',
+      'Breath comes shallow between bites; fullness owns the room before polite conversation returns.',
       'She exhales around a stuffed middle — polite, dizzy, still hungry.',
-      'Air feels optional when the session hits this deep.',
+      'Air feels optional when the session hits this deep — fullness owns the room before words return.',
+      'Late-semester sessions end here — timer stops, appetite keeps humming anyway.',
+      'Hall Ambiance outside; inside, only breath and the warm weight in her lap.',
     ],
   },
 ]);
@@ -22,6 +24,8 @@ registerPool('session.tapOut.surrender', [
       '"I can\'t—" she starts, then laughs because she absolutely can, just not move yet.',
       'Tap-out is mercy dressed as consent; she takes it with both hands on her belly.',
       'The session ends soft — pride, not panic, in how full she is.',
+      'Rae notes the number anyway — wellness framing, competitive appetite, no shame.',
+      'Every choice tonight will show on the scale; she taps out grinning, already planning seconds.',
     ],
   },
 ]);

@@ -29,6 +29,8 @@ const POOLS = [
   'talk.suggest.indulgenceWarmth',
   'talk.suggest.growthAmbition',
   'hall.blueprint.construction',
+  'cultivator.scene.labAir',
+  'session.tapOut.breath',
 ];
 
 for (const key of POOLS) {

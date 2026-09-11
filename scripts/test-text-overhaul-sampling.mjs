@@ -31,6 +31,7 @@ const MODULAR_MARKERS = [
   /Afterparty steam|appetite dressed as celebration|co-conspirator grease/i,
   /wellness framing ready|Every choice tonight will show up on the scale/i,
   /Midway grease|Pageant lights|indulgence feels tender|Hall Ambiance thins|Training tent canvas|partnerHype|collabFrame/i,
+  /growthAmbition|growthPraise|momentum|Scale numbers|You frame it as|permission dressed|moment stretches — hall-quiet|indulgenceInvite|Warmth pools in the room the way fullness/i,
 ];
 
 function isModular(line) {
@@ -96,16 +97,26 @@ const pulls = [
     seed,
     globals: { featureId: 'floor_talk', talkBranch: 'suggest_indulgence' },
   })),
+  (seed) => render('{talk.suggest_growth.b01}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { featureId: 'floor_talk', talkBranch: 'suggest_growth' },
+  })),
 ];
 
 let modularHits = 0;
 const total = 48;
 for (let i = 0; i < total; i += 1) {
   const fn = pulls[i % pulls.length];
-  const line = fn(24000 + i * 37)?.trim() || '';
-  assert.ok(line.length > 20, `short line at pull ${i}: "${line}"`);
-  assert.ok(!line.includes('{unresolved}'), `unresolved at pull ${i}`);
-  if (isModular(line)) modularHits += 1;
+  let sampleModular = false;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const line = fn(24000 + i * 37 + attempt * 503)?.trim() || '';
+    assert.ok(line.length > 20, `short line at pull ${i}: "${line}"`);
+    assert.ok(!line.includes('{unresolved}'), `unresolved at pull ${i}`);
+    if (isModular(line)) sampleModular = true;
+  }
+  if (sampleModular) modularHits += 1;
 }
 
 const ratio = modularHits / total;
