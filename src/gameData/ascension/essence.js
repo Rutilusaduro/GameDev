@@ -3,6 +3,7 @@
 
 import { getFormGainRule } from './gainRules.js';
 import { isAscended } from './state.js';
+import { scaleDepthBonus } from '../mechanicsDepthLayer.js';
 
 function roundEssence(amount) {
   return Math.max(0, Math.round(amount * 10) / 10);
@@ -13,7 +14,8 @@ export function essenceFromGain(student, lbsGained = 0, { stagedUp = false } = {
   const rule = getFormGainRule(student.ascension.formId);
   const perLb = rule.essencePerLb ?? 0.5;
   const rung = stagedUp ? (rule.rungEssenceBonus ?? 2) : 0;
-  return roundEssence(lbsGained * perLb + rung);
+  const base = lbsGained * perLb + rung;
+  return roundEssence(scaleDepthBonus(base, 1.25));
 }
 
 export function addEssence(student, amount) {

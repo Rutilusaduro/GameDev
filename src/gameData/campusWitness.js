@@ -2,6 +2,7 @@
 // CAMPUS WITNESS LOG — persistent scrutiny memory (DEPTH_PLAN §4)
 // ═══════════════════════════════════════════════════════════════
 import { scrutinyDiscoveryMult } from './scrutinyConsequences.js';
+import { depthScrutinyDiscoveryMult } from './mechanicsDepthLayer.js';
 
 const LOG_LIMIT = 24;
 
@@ -12,7 +13,10 @@ export function appendWitnessLog(campusState, entry) {
 }
 
 export function scaleDiscoveryRisk(baseRisk, adminScrutiny = 0, boardMult = 1) {
-  const scrutinyMult = scrutinyDiscoveryMult(adminScrutiny);
+  const scrutinyMult = depthScrutinyDiscoveryMult(
+    scrutinyDiscoveryMult(adminScrutiny),
+    adminScrutiny,
+  );
   return Math.min(0.95, Math.max(0.05, baseRisk * boardMult * scrutinyMult));
 }
 
