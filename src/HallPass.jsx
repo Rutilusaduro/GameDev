@@ -14,7 +14,7 @@ import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
@@ -5613,8 +5613,8 @@ export default function HallPass(){
     const tierFoods=(COLLAB_STREAM_FOODS[stageIdx]||COLLAB_STREAM_FOODS[0]).map((f,i)=>({...f,consumed:false,key:i,tierUnlocked:i===0}));
     const partnerStageAtStart=getStage(partner.lbs).id;
     const initQual=history&&history.includes("both_loaded")?65:50;
-    const initKylieGain=history&&history.includes("both_loaded")?8:0;
-    const initPartnerGain=history&&history.includes("both_loaded")?6:0;
+    const initKylieGain=history&&history.includes("both_loaded")?scaleCollabStreamLbsGain(8):0;
+    const initPartnerGain=history&&history.includes("both_loaded")?scaleCollabStreamLbsGain(6):0;
     if(initKylieGain>0) setStudents(prev=>prev.map(st=>st.id===kylieId?processStudentGain(st,initKylieGain,0):st));
     if(initPartnerGain>0) setStudents(prev=>prev.map(st=>st.id===partnerId?processStudentGain(st,initPartnerGain,0):st));
     const initChat=[pickCollabWrenLine(stageIdx,kylie,partner,week)].filter(Boolean);
@@ -5652,8 +5652,8 @@ export default function HallPass(){
     if(action==='feed_kylie'){
       const food=foodQueue[foodIdx];
       if(!food||food.consumed||!food.tierUnlocked){push("⚠️ Food not available.");return;}
-      kylieGainThisAction=food.lbsKylie;
-      newQual=Math.min(100,newQual+food.qualBoost);
+      kylieGainThisAction=scaleCollabStreamLbsGain(food.lbsKylie);
+      newQual=Math.min(100,newQual+scaleCollabQualBoost(food.qualBoost));
       newFoodQueue=foodQueue.map((f,i)=>i===foodIdx?{...f,consumed:true}:f);
       newKylieGain+=kylieGainThisAction;
       addWren();
@@ -5661,8 +5661,8 @@ export default function HallPass(){
     } else if(action==='feed_partner'){
       const food=foodQueue[foodIdx];
       if(!food||food.consumed||!food.tierUnlocked){push("⚠️ Food not available.");return;}
-      partnerGainThisAction=food.lbsPartner;
-      newQual=Math.min(100,newQual+food.qualBoost);
+      partnerGainThisAction=scaleCollabStreamLbsGain(food.lbsPartner);
+      newQual=Math.min(100,newQual+scaleCollabQualBoost(food.qualBoost));
       newFoodQueue=foodQueue.map((f,i)=>i===foodIdx?{...f,consumed:true}:f);
       newPartnerGain+=partnerGainThisAction;
       addWren();
@@ -5695,8 +5695,8 @@ export default function HallPass(){
       if(actions.pushUsed){push("⚠️ Already pushed harder this stream.");return;}
       const goodPush=Math.random()<0.6;
       if(goodPush){
-        kylieGainThisAction=Math.floor(8+stageIdx*2);
-        partnerGainThisAction=Math.floor(6+stageIdx*2);
+        kylieGainThisAction=scaleCollabStreamLbsGain(Math.floor(8+stageIdx*2));
+        partnerGainThisAction=scaleCollabStreamLbsGain(Math.floor(6+stageIdx*2));
         newQual=Math.min(100,newQual+15);
         popupText=renderCollabStreamBeat('collab.stream.push.good',kylie,partner,week,stageIdx);
       } else {

@@ -3,24 +3,25 @@
 // ═══════════════════════════════════════════════════════════════
 import { getEquippedDeviceIds } from './deviceEffects.js';
 import { canStudentUseDevice } from './deviceGating.js';
-import { depthLbsGrant, depthPsychDelta } from './mechanicsDepthLayer.js';
+import { depthPsychDelta } from './mechanicsDepthLayer.js';
 
-/** Inline device-session effects (HallPass sleep-feed paths). */
+const INLINE_ACTION_EFFECTS = {
+  sleep_feed_gentle: { gainLbs: [2, 4], psychDelta: { dependence: 2 } },
+  sleep_feed_aggressive: {
+    gainLbs: [5, 9],
+    bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
+    psychDelta: { dependence: 4 },
+  },
+};
+
+/** Inline device-session effects (HallPass sleep-feed paths). Lbs scaled in applyDeviceEffect. */
 export function buildDeviceActionEffect(actionId) {
-  if (actionId === 'sleep_feed_gentle') {
-    return {
-      gainLbs: [depthLbsGrant(2), depthLbsGrant(4)],
-      psychDelta: depthPsychDelta({ dependence: 2 }),
-    };
-  }
-  if (actionId === 'sleep_feed_aggressive') {
-    return {
-      gainLbs: [depthLbsGrant(5), depthLbsGrant(9)],
-      bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
-      psychDelta: depthPsychDelta({ dependence: 4 }),
-    };
-  }
-  return null;
+  const raw = INLINE_ACTION_EFFECTS[actionId];
+  if (!raw) return null;
+  return {
+    ...raw,
+    psychDelta: raw.psychDelta ? depthPsychDelta(raw.psychDelta) : undefined,
+  };
 }
 
 export const DEVICE_ACTIONS = [

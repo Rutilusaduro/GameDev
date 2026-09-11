@@ -11,6 +11,7 @@ import {
   getAscensionFormById,
   getAscensionFormForStudent,
 } from './forms.js';
+import { depthMetaProgressBonus } from '../mechanicsDepthLayer.js';
 
 export const ASCENSION_REQUIRED_STAGE_ID = 11;
 export const ASCENSION_REQUIRED_CORRUPTION_TIER = 2;
@@ -114,6 +115,15 @@ export function isAscensionEligible(student, opts = {}) {
   }
 
   return { eligible: true, reason: 'eligible', form };
+}
+
+/** 0–1 UI readout for ascension gate progress (stage-weighted). */
+export function ascensionEligibilityProgress(student, opts = {}) {
+  const check = isAscensionEligible(student, opts);
+  if (check.eligible) return 1;
+  const stageId = getStage(student?.lbs ?? 0).id;
+  const raw = Math.min(0.95, stageId / ASCENSION_REQUIRED_STAGE_ID);
+  return Math.min(1, depthMetaProgressBonus(Math.round(raw * 100)) / 100);
 }
 
 export function applyAscensionRebirth(student, { week = 1, formId = null } = {}) {

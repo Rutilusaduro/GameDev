@@ -7,6 +7,7 @@ registerPool('collab.reveal.open', [
     'You announce {subject.name}\'s weight on camera — clearly, into the mic.',
     'The number goes live: {subject.name}, {subject.lbs} pounds, no filter.',
     'You read the scale into the mic. {subject.lbs}. The chat holds its breath one beat.',
+    'You say the number like a gift. The mic catches the warmth in your voice when you do.',
   ]},
 ]);
 
@@ -139,6 +140,7 @@ registerPool('collab.push.good.chat', [
     'The chat is unanimous: more. More. The viewer count spikes. This is the right call.',
     'Donations jump. Comments demand another course. You deliver.',
     'Caps lock encouragement. Tips roll in. You keep feeding the moment.',
+    'Someone tips enough to buy the next tray before you ask. The room answers hunger with hunger.',
   ]},
 ]);
 
