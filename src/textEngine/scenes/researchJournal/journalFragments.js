@@ -13,6 +13,8 @@ registerPool('journal.scene.fieldNotes', [
       'Observation beats intervention tonight — you log what the body admits before the mind does.',
       'IRB paperwork can wait; the resident\'s appetite cannot — you note both without irony.',
       'Pen scratches keep time with chewing; the hall hums approval through the wall.',
+      'Late-semester entries stack thick — every subject trending heavier, every margin honest.',
+      'The journal stops pretending neutrality when she asks for seconds and means it.',
     ],
   },
 ]);

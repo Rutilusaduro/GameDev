@@ -10,6 +10,8 @@ registerPool('session.scene.deliveryAir', [
       'The cart squeaks down the hall — covered trays, measured portions, unspoken permission.',
       'Rae arrives like a deadline: warm food, tighter waistbands, no lecture.',
       'Steam leaks from the lids; the session clock starts when she sets the first plate down.',
+      'Late-semester trays arrive heavier — lids bow, portions honest, shame locked outside the door.',
+      'Hall Ambiance follows the cart; residents peek out like the hallway itself is hungry.',
     ],
   },
 ]);
@@ -22,6 +24,8 @@ registerPool('session.scene.raePresence', [
       'Clipboard, timer, scale — she watches the numbers more than your face, affection and competition in one glance.',
       'Her voice stays clinical until the numbers climb; Rae arrives tender when the session clock wins.',
       'Clipboard, timer, second helping — she runs the room like a coach who wants you bigger.',
+      'She times bites like intervals; affection shows when the scale finally agrees with her.',
+      'Wellness framing stays on the clipboard; appetite stays in your lap, warm and winning.',
     ],
   },
 ]);

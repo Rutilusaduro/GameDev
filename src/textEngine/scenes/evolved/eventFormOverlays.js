@@ -1,4 +1,4 @@
-// Per-form evolved event overlays (batch) — complements streamer/sumo/salon/gallery files.
+// Per-form evolved event overlays — all main EVOLVED_EVENTS forms (except dedicated fragment files).
 import { registerPool, registerModuleVariants } from '../../engine.js';
 import { EVOLVED_EVENTS } from '../../../gameData/evolvedEvents.js';
 
@@ -53,23 +53,61 @@ const FORM_LINES = {
     'Hay-scent memory meets kitchen heat; she feeds like the land taught her.',
     'Late-semester visitors leave heavier, happier, unsurprised.',
   ],
+  community_researcher: [
+    'Lane-captain log open beside an empty plate — case study and appetite share one notebook.',
+    'Pool-deck steam fades; she documents floor meals with the same focus as interval splits.',
+    'Clipboard margins fill with intake curves; she signs herself as witness and variable.',
+    'Late-semester immersion means eating with the team — hunger as data, data as hunger.',
+  ],
+  home_nest: [
+    'Delivery bags stack at the door like a nest wall — warmth, lavender, optional outside world.',
+    'She arranges pillows and portions; the room learns her shape before the hallway does.',
+    'Softness becomes architecture — every order another brick in a cozy, edible fortress.',
+    'Late-semester nights: door closed, appetite honest, the building optional.',
+  ],
+  campus_legend: [
+    'Booth steam and gossip braid — everyone claims they knew her before the myth.',
+    'She feeds the line like a ritual; freshmen learn appetite from a woman who became folklore.',
+    'Photos spread faster than menus; her belly leads the story the campus tells itself.',
+    'Late-semester legend status means seconds are expected, refusals are remembered.',
+  ],
+  psych_researcher: [
+    'Hall log columns align with snack trays — clinical tone, hungry variables.',
+    'She watches residents eat like a trial; her own appetite enters the dataset without apology.',
+    'Clipboard, lanyard, second helping — wellness framing ready for IRB and appetite alike.',
+    'Late-semester notes blur observer and subject; every page wants more weight on the graph.',
+  ],
+  machine_goddess: [
+    'Solder scent and warm paste — workshop hums while harness prototypes learn her curves.',
+    'LED status pins blink along sleeves; she feeds the builds the way builds feed her.',
+    'Blueprints treat flesh as tunable; appetite is just another input with delicious output.',
+    'Late-semester lab nights: machines chew, belts cinch, inventor grows with invention.',
+  ],
 };
 
 function poolKeyFor(formId) {
   return `evolved.scene.form.${formId}`;
 }
 
+const CHOICE_SKELETON = '{evolved.choice.chatReact|prefix:} {evolved.choice.bodyResult|prefix: }';
 const ENDING_SKELETON = '{evolved.ending.streamCoda|prefix:} {evolved.ending.relGain|prefix: }';
 
-for (const [formId, lines] of Object.entries(FORM_LINES)) {
-  const pk = poolKeyFor(formId);
-  registerPool(pk, [{ when: {}, weight: 2, text: lines }]);
-  const skeleton = `{${pk}|prefix:} {evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }`;
+function defaultLines(formId) {
+  return [
+    `${formId} path — appetite public, body proud, hall already complicit.`,
+    'Fabric strains; chairs apologize; she keeps eating like the ending is hers.',
+    'Late-semester evolved beats feel tender and absolute — growth on purpose.',
+    'Every choice tonight shows on the scale and in the retelling she wants.',
+  ];
+}
+
+function wireForm(formId, skeleton) {
   const stages = EVOLVED_EVENTS[formId];
-  if (!Array.isArray(stages)) continue;
+  if (!Array.isArray(stages)) return;
   stages.forEach((evDef, stageIdx) => {
     (evDef.phases || []).forEach((_, phaseIdx) => {
-      registerModuleVariants(`evolved.event.${formId}.s${stageIdx}.p${phaseIdx}`, [
+      const phaseKey = `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}`;
+      registerModuleVariants(phaseKey, [
         {
           when: { evolvedFormId: [formId], weekMin: 20 },
           weight: 5,
@@ -77,6 +115,37 @@ for (const [formId, lines] of Object.entries(FORM_LINES)) {
           text: [skeleton],
         },
       ]);
+      const phase = evDef.phases[phaseIdx];
+      for (const ch of phase?.choices || []) {
+        if (!ch?.id) continue;
+        registerModuleVariants(`${phaseKey}.${ch.id}`, [
+          {
+            when: { evolvedFormId: [formId], weekMin: 18 },
+            weight: 4,
+            priority: 4,
+            text: [CHOICE_SKELETON],
+          },
+        ]);
+      }
+    });
+    (evDef.endings || []).forEach((_, endingIdx) => {
+      registerModuleVariants(`evolved.event.${formId}.s${stageIdx}.end${endingIdx}`, [
+        {
+          when: { evolvedFormId: [formId], weekMin: 18 },
+          weight: 4,
+          priority: 4,
+          text: [ENDING_SKELETON],
+        },
+      ]);
     });
   });
+}
+
+for (const formId of Object.keys(EVOLVED_EVENTS)) {
+  if (SKIP.has(formId)) continue;
+  const lines = FORM_LINES[formId] ?? defaultLines(formId);
+  const pk = poolKeyFor(formId);
+  registerPool(pk, [{ when: {}, weight: 2, text: lines }]);
+  const skeleton = `{${pk}|prefix:} {evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }`;
+  wireForm(formId, skeleton);
 }

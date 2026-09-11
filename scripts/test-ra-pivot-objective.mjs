@@ -110,6 +110,8 @@ execSync('node scripts/test-salon-gallery-evolved-stub-debt.mjs', { cwd: root, s
 
 execSync('node scripts/test-salon-event-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-evolved-all-forms-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });
