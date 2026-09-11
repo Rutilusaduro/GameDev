@@ -360,6 +360,27 @@ registerPool("wi.bodyClause", [
     "her top half dominating the silhouette",
     "balancing an enormous chest with practiced care",
   ]},
+  // Psych / hunger / relationship overlays — same participle shape
+  { when: { corruption: [0], stageMin: 3, stageMax: 6 }, weight: 2, text: [
+    "tugging her shirt down in a way that only makes the new width plainer",
+    "one hand hovering near the place the gain has been loudest",
+  ]},
+  { when: { corruption: [1], stageMin: 3 }, weight: 2, text: [
+    "no longer performing a smaller walk than she has",
+    "letting the extra of her arrive without the old apology",
+  ]},
+  { when: { corruption: [2], stageMin: 4 }, weight: 2, text: [
+    "presenting the new mass like a status she intends to keep",
+    "a pleased settling of flesh after each step, as if the body were applauding itself",
+  ]},
+  { when: { hungerTierMin: 3 }, weight: 2, text: [
+    "already angled toward wherever the snacks usually live",
+    "appetite riding in ahead of her, the body only the vehicle",
+  ]},
+  { when: { relationship: [2, 3], stageMin: 3 }, weight: 2, text: [
+    "the extra of her turning toward you as if you were the reason it arrived",
+    "softness arranged in your direction without her having to decide",
+  ]},
 ]);
 
 // ── wi.faceClause ─────────────────────────────────────────────
@@ -402,6 +423,22 @@ registerPool("wi.faceClause", [
   { when: { corruption: [2] }, text: [
     "her eyes finding the scale before they find you",
     "open appetite in the way she scans the room",
+  ]},
+  { when: { corruption: [0], stageMin: 2, stageMax: 5 }, text: [
+    "a look that wants the number and dreads it in the same breath",
+    "cheeks already deciding how to feel before the dial does",
+  ]},
+  { when: { corruption: [1] }, text: [
+    "a settled, unreadable calm aimed at the platform",
+    "the expression of someone who already knows the direction",
+  ]},
+  { when: { relationship: [2, 3] }, text: [
+    "her attention finding you first, the scale second",
+    "a private look that has nothing to do with the clipboard",
+  ]},
+  { when: { gainStance: "secret", corruption: [0] }, weight: 2, text: [
+    "a flicker of pleasure she will later blame on the heating",
+    "mouth soft, eyes too interested in the number",
   ]},
 ]);
 

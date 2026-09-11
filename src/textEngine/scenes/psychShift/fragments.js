@@ -98,16 +98,23 @@ registerPool('shift.coda', [
     'The week continues. She is different in ways she will not discuss.',
     'Something has changed. She carries it quietly.',
     'The old story thins. She does not mourn it aloud.',
+    'She files the new feeling under later. Later keeps arriving early.',
   ] },
   { when: { corruption: [2] }, text: [
     'The surrender is complete and gentle. She does not mourn the old self.',
     'She is what she is now. The scale will confirm it Thursday.',
     'The week closes on appetite answered and resistance retired.',
+    'She walks out heavier in more than one sense, and pleased about both.',
+  ] },
+  { when: { lastCorruptionShift: true }, weight: 2, text: [
+    'This week will be the one she dates the change from, later.',
+    'The hinge of the semester: after this, the old no does not fit.',
   ] },
   { when: {}, text: [
     'The shift settles in like warmth.',
     'Something has changed. She carries it forward.',
     'The week closes on a new interior weather.',
     'Quiet follows — not empty, rearranged.',
+    'She takes the new interior with her into the hallway.',
   ] },
 ]);

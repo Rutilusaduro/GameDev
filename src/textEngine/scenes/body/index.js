@@ -6,6 +6,7 @@ import { createContext } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import './portraits.js';
 import './portraitDepth.js';
+import './portraitUpgrade.js';
 import './depth.js';
 
 function renderRichFallback(student, week) {

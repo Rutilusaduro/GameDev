@@ -140,6 +140,7 @@ import './evolved/index.js';
 import './customStudent/index.js';
 import './origin/index.js';
 import './polishDepthPass40.js';
+import './upgradeCorpusPass.js';
 import './v2/index.js';
 import './salonGallerySceneDepth.js';
 import './monolithFragmentDepth.js';

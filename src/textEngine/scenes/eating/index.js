@@ -14,10 +14,20 @@ export const EAT_SCENE = '{eat.scene}';
 
 registerPool('eat.scene', [
   { when: {}, text: [
-    '{eat.settleIn} {eat.firstBite} {eat.midMeal|prefix: }{eat.pacing|prefix: }{eat.finish} {eat.aftermath}',
-    '{eat.settleIn} {eat.hungerClause|prefix: }{eat.firstBite} {eat.bodyResponse|prefix:, }{eat.finish}',
-    '{eat.firstBite} {eat.portionObs|prefix:, }{eat.finish} {eat.aftermath}',
-    '{eat.hungerClause|prefix: }{eat.firstBite} {eat.midMeal|prefix: }{eat.finish} {eat.aftermath}',
+    '{eat.settleIn} {eat.firstBite} {eat.midMeal|prefix: } {eat.pacing|prefix: } {eat.finish} {eat.aftermath}',
+    '{eat.settleIn} {eat.hungerClause|prefix: } {eat.firstBite} {eat.midMeal|prefix: } {eat.finish}',
+    '{eat.firstBite} {eat.portionObs|prefix:, } {eat.finish} {eat.aftermath}',
+    '{eat.hungerClause|prefix: } {eat.firstBite} {eat.midMeal|prefix: } {eat.finish} {eat.aftermath}',
+    '{eat.settleIn} {eat.firstBite} {eat.pacing|prefix: } {eat.finish} {eat.aftermath}',
+    '{eat.hungerClause|prefix: } {eat.settleIn} {eat.firstBite} {eat.midMeal|prefix: } {eat.aftermath}',
+  ] },
+  { when: { mealContext: 'binge' }, weight: 2, text: [
+    '{eat.settleIn} {eat.firstBite} {eat.midMeal} {eat.portionObs|prefix:, } {eat.finish} {eat.aftermath}',
+    '{eat.hungerClause} {eat.firstBite} {eat.midMeal|prefix: } {eat.pacing|prefix: } {eat.finish}',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    '{eat.settleIn} {eat.firstBite} {eat.midMeal|prefix: } {eat.finish} {eat.aftermath}',
+    '{eat.settleIn} {eat.hungerClause|prefix: } {eat.firstBite} {eat.midMeal|prefix: } {eat.aftermath}',
   ] },
 ]);
 
