@@ -16,6 +16,7 @@ registerPool('room.visit.stage.room', [
   { when: {}, text: [
     'The room holds the usual student clutter — lived in, personal, hers.',
     'Posters, bedding, the small rituals of someone making a space home.',
+    'A faint scent of laundry and something sweet — the private world behind her nameplate.',
   ] },
   { when: { stageMax: 2 }, text: [
     'Posters, a narrow desk, clothes that still mostly fit the hangers.',

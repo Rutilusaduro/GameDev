@@ -5,7 +5,7 @@
 import { getCorruptionTier, CORRUPTION_CONFIG } from './corruption.js';
 import { getAddictionLevel } from './hungerAddiction.js';
 import { getDependenceRefusalBonus } from './deviceDependence.js';
-import { depthIntensityMult } from './mechanicsDepthLayer.js';
+import { depthIntensityMult, depthLbsGrant, depthPsychDelta } from './mechanicsDepthLayer.js';
 
 /**
  * Minimum corruption tier (0–2) before a student accepts equipping or running a device.
@@ -90,11 +90,14 @@ export function scalePsychDeltaForStudent(student, psychDelta) {
   for (const [k, v] of Object.entries(psychDelta)) {
     scaled[k] = typeof v === 'number' ? Math.round(v * mult) : v;
   }
-  return scaled;
+  return depthPsychDelta(scaled);
 }
 
 export function scaleGainRangeForStudent(student, range) {
   if (!Array.isArray(range) || range.length < 2) return range;
   const mult = getDeviceIntensityMult(student);
-  return [Math.round(range[0] * mult), Math.round(range[1] * mult)];
+  return [
+    depthLbsGrant(Math.round(range[0] * mult)),
+    depthLbsGrant(Math.round(range[1] * mult)),
+  ];
 }

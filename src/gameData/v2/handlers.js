@@ -29,6 +29,11 @@ import {
   appendEmbodimentWalkLog,
 } from './embodiedCampus.js';
 import { V2_CONFIG } from './state.js';
+import {
+  depthCorruptionGrant,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from '../mechanicsDepthLayer.js';
 
 export function resetV2Weekly(v2State) {
   return {
@@ -222,9 +227,9 @@ export function handleRitual(ritualId, studentIds, ctx) {
   const ritual = check.ritual;
   const effects = studentIds.map((id) => ({
     studentId: id,
-    calories: ritual.caloriesEach,
-    rel: ritual.relEach,
-    corruption: ritual.corruptionEach,
+    calories: depthResonancePassiveBonus(ritual.caloriesEach),
+    rel: depthRelBonus(ritual.relEach),
+    corruption: depthCorruptionGrant(ritual.corruptionEach),
   }));
   const prevCompleted = ctx.v2State.rituals.completed[ritual.id]
     || (ritual.id === 'hall_banquet' ? ctx.v2State.rituals.completed.class_banquet : 0)
@@ -250,9 +255,9 @@ export function handleDreamChoice(scenario, choice, student, v2State, week) {
   const dreams = recordDream(v2State.dreams, student.id, week, scenario.id);
   return {
     ok: true,
-    calories: choice.calories || 0,
-    rel: choice.rel || 0,
-    corruption: choice.corruption || 0,
+    calories: depthResonancePassiveBonus(choice.calories || 0),
+    rel: depthRelBonus(choice.rel || 0),
+    corruption: depthCorruptionGrant(choice.corruption || 0),
     v2State: { ...v2State, dreams },
   };
 }

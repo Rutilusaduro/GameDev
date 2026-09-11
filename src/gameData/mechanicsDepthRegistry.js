@@ -36,4 +36,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'scarcityTools', file: 'scarcityTools.js' },
   { id: 'ascensionGain', file: 'ascension/gainRules.js' },
   { id: 'chloeSalon', file: 'chloeSalon.js' },
+  { id: 'roomVisit', file: 'roomVisit.js' },
+  { id: 'v2Handlers', file: 'v2/handlers.js' },
+  { id: 'mayaHive', file: 'mayaHive.js' },
 ];

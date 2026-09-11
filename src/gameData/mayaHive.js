@@ -1,3 +1,5 @@
+import { depthMetaProgressBonus, depthResonancePassiveBonus } from './mechanicsDepthLayer.js';
+
 export const HIVE_GRID_WIDTH = 6;
 export const HIVE_GRID_HEIGHT = 4;
 export const HIVE_ROOM_COUNT = HIVE_GRID_WIDTH * HIVE_GRID_HEIGHT;
@@ -215,9 +217,9 @@ export function executeHiveShift(state,{mayaStageId=5}={}){
   const quietBonus=state.rooms.some(r=>r.status==="conquered"&&r.bonus?.id==="quiet_pull") ? 1.1 : 1;
   const laundryBonus=state.rooms.some(r=>r.status==="conquered"&&r.bonus?.id==="laundry_warmth") ? 1.1 : 1;
 
-  const biomassGain=Math.round((5+foodEff*8+roomsControlled*0.75)*deliveryBonus*(vp.biomassMult||1));
+  const biomassGain=depthMetaProgressBonus(Math.round((5+foodEff*8+roomsControlled*0.75)*deliveryBonus*(vp.biomassMult||1)));
   const comfortGain=Math.round(2+supplyEff*7);
-  const resonanceGain=Math.round(2+roomsControlled*0.35+(vp.resonancePerShift||0));
+  const resonanceGain=depthResonancePassiveBonus(Math.round(2+roomsControlled*0.35+(vp.resonancePerShift||0)));
   const avgBmiGain=Math.max(0.2,Math.round((0.25+foodEff*0.18+recruitEff*0.05)*10)/10);
   const maintenanceGain=Math.round((maintenanceEff*8+(vp.stabilityBonus||0))*laundryBonus);
   const stabilityLoss=Math.max(0,Math.round(3+roomsControlled*0.3+assignments.food*0.5-maintenanceEff*1.8-(vp.stabilityBonus||0)/3));
