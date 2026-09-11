@@ -95,6 +95,12 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
       {
         when: { weekMin: 5 },
         weight: 3,
+        priority: 3,
+        text: [TALK_GREETING_SKELETON],
+      },
+      {
+        when: { weekMin: 1 },
+        weight: 2,
         priority: 2,
         text: [TALK_GREETING_SKELETON],
       },
@@ -103,6 +109,12 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
       {
         when: { weekMin: 5 },
         weight: 3,
+        priority: 3,
+        text: ['{wl.talk.scaleNote|prefix:} {wl.talk.raPresence|prefix: }'],
+      },
+      {
+        when: { weekMin: 1 },
+        weight: 2,
         priority: 2,
         text: ['{wl.talk.scaleNote|prefix:} {wl.talk.raPresence|prefix: }'],
       },
@@ -121,6 +133,12 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
       registerModuleVariants(`${prefix}.opt${oi}`, [
         {
           when: { weekMin: 6 },
+          weight: 3,
+          priority: 3,
+          text: [TALK_BRANCH_SKELETON],
+        },
+        {
+          when: { weekMin: 1 },
           weight: 2,
           priority: 2,
           text: [TALK_BRANCH_SKELETON],
@@ -130,6 +148,12 @@ for (const [person, stages] of Object.entries(WL_DIALOGUES)) {
         registerModuleVariants(`${prefix}.opt${oi}.sub${si}`, [
           {
             when: { weekMin: 6 },
+            weight: 3,
+            priority: 3,
+            text: ['{wl.talk.branchAnswer|prefix:} {wl.talk.raPresence|prefix: }'],
+          },
+          {
+            when: { weekMin: 1 },
             weight: 2,
             priority: 2,
             text: ['{wl.talk.branchAnswer|prefix:} {wl.talk.raPresence|prefix: }'],

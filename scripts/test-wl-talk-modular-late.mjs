@@ -29,4 +29,16 @@ for (const key of keys) {
   assert.ok(hit, `expected modular WL talk @ week ${week} for ${key}`);
 }
 
+let midHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{wifeLessons.talk.Darlene.s1.greeting}', buildTextContext({
+    subject: mj,
+    week: 12,
+    seed: 31100 + s,
+  }))?.trim() || '';
+  assert.ok(!/^"We drove over hungry\. That should tell you how the week went\."$/.test(line), 'talkDepth quote alone @ w12');
+  if (FP.test(line)) midHit = true;
+}
+assert.ok(midHit, 'expected modular WL talk @ week 12');
+
 console.log('test-wl-talk-modular-late: ok');

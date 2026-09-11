@@ -78,6 +78,8 @@ execSync('node scripts/test-wife-lessons-dialogue-stub-debt.mjs', { cwd: root, s
 
 execSync('node scripts/test-wl-talk-modular-late.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-wl-talk-depth-retired.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-wl-mom-depth-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-nadia-journal-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
