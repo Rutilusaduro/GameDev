@@ -4,22 +4,22 @@ import { registerModuleVariants } from '../engine.js';
 const W = 3;
 const EARLY = { corruption: [0], stageMax: 3 };
 
-registerModuleVariants('homeroom.conference.batch_bake.intro', [
+registerModuleVariants('homeroom.conference.Bri.brought_something', [
   {
     when: { hallAmbiancePeakMin: [30] },
     weight: 1,
     text: [
-      'The kitchen runs hot — your upgraded hall keeps ovens honest and residents hungry.',
+      'Daisy opens the drawer — your hall’s warmth follows the container out like a second serving.',
     ],
   },
 ]);
 
-registerModuleVariants('hall.lounge.skill.purchase', [
+registerModuleVariants('hall.lounge.skill.unlock', [
   {
     when: { hallRoomId: ['kitchen'] },
     weight: 1,
     text: [
-      'The kitchen upgrade hums — every labeled room on the blueprint feels closer to the stove.',
+      'The kitchen unlock hums — blueprint labels and stove heat finally agree.',
     ],
   },
 ]);
@@ -51,12 +51,12 @@ registerModuleVariants('eat.firstBite', [
   },
 ]);
 
-registerModuleVariants('opposition.proxy.line', [
+registerModuleVariants('opposition.proxy.wellness_coalition', [
   {
     when: { weekMin: [10] },
     weight: 1,
     text: [
-      'The proxy smiles through policy — your hall’s abundance is the exhibit they fear.',
+      'The coalition smiles through policy — your hall’s abundance is the exhibit they fear.',
     ],
   },
 ]);

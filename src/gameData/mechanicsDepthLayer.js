@@ -338,3 +338,13 @@ export function depthNavWeekThreshold(baseWeek = 1) {
 export function depthOutfitFitEaseMult() {
   return 1 + BONUS_FRAC * 0.1;
 }
+
+/** Opposition / weekly narrative — more V2 append tails at depth. */
+export function depthNarrativeAppendChance(base = 0.3) {
+  return Math.min(0.58, base + BONUS_FRAC * 0.11);
+}
+
+/** V2 embodiment echo digest multiplier. */
+export function depthV2EchoDigestMult(base = 1.2) {
+  return Math.min(1.48, base + BONUS_FRAC * 0.14);
+}

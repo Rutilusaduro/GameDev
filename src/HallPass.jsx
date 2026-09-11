@@ -243,7 +243,7 @@ import { renderEchoReplay, renderEchoCapture } from './textEngine/scenes/v2/echo
 import { renderResonancePulse } from './textEngine/scenes/v2/resonance/index.js';
 import { renderResonanceLink } from './textEngine/scenes/v2/resonance/index.js';
 import { appendV2Depth } from './textEngine/scenes/v2/depthRenderer.js';
-import { createInitialV2State, normalizeV2State, V2_CONFIG } from './gameData/v2/state.js';
+import { createInitialV2State, normalizeV2State, V2_CONFIG, embodimentEchoDigestMult } from './gameData/v2/state.js';
 import { appendEmbodimentWalkLog } from './gameData/v2/embodiedCampus.js';
 import { canTriggerDream } from './gameData/v2/appetiteDreams.js';
 import './textEngine/scenes/v2/index.js';
@@ -1920,7 +1920,7 @@ export default function HallPass(){
       const textOpts=digestTextSession;
       const d=digestStudent(
         s.embodimentEchoWeek===newWeek
-          ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, V2_CONFIG.embodimentEchoDigestMult) }
+          ? { ...s, weeklyDigestMult: Math.max(s.weeklyDigestMult || 1, embodimentEchoDigestMult()) }
           : s,
       );
       const oldStageId=getStage(s.lbs).id;

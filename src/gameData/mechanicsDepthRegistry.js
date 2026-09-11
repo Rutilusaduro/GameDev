@@ -106,4 +106,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'customStudent', file: 'customStudent/index.js' },
   { id: 'navUnlock', file: 'navUnlock.js' },
   { id: 'outfits', file: 'outfits.js' },
+  { id: 'oppositionText', file: 'oppositionText.js' },
+  { id: 'player', file: 'player.js' },
+  { id: 'v2State', file: 'v2/state.js' },
 ];

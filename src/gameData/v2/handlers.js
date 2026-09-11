@@ -29,7 +29,7 @@ import {
   embodiedActionsAtNode,
   appendEmbodimentWalkLog,
 } from './embodiedCampus.js';
-import { V2_CONFIG } from './state.js';
+import { V2_CONFIG, embodimentEchoDigestMult } from './state.js';
 import {
   depthCorruptionGrant,
   depthRelBonus,
@@ -171,7 +171,7 @@ export function handleEmbodimentRelease(v2State, week = 1) {
     v2State: endEmbodiment(v2State),
     echoStudentId: studentId,
     echoDigestWeek: week + 1,
-    echoDigestMult: V2_CONFIG.embodimentEchoDigestMult,
+    echoDigestMult: embodimentEchoDigestMult(),
   };
 }
 
