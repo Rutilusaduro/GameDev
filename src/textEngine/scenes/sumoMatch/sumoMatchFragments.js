@@ -68,4 +68,11 @@ registerModuleVariants('sumo.opening.compose', [
     priority: 2,
     text: [SUMO_SKELETON],
   },
+  {
+    when: { sumoStage: [4, 5] },
+    weight: 2,
+    text: [
+      'The dohyo feels smaller every year. {oppLbs} pounds of Dana waits — you answer with mass.',
+    ],
+  },
 ]);

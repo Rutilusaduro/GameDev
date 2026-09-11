@@ -378,6 +378,16 @@ registerModuleVariants('opposition.counter.discredit', [
   },
 ]);
 
+registerModuleVariants('opposition.hearing.removal.result.testify', [
+  {
+    when: { endStageMin: [5] },
+    weight: 1,
+    text: [
+      'Her testimony lands soft and certain — the Board hears devotion before policy.',
+    ],
+  },
+]);
+
 registerModuleVariants('opposition.proxy.wellness_coalition', [
   {
     when: { weekMin: [10] },

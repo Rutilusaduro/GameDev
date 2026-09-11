@@ -1,5 +1,5 @@
 // Eating contest — modular payoff compose (gain + body + tag).
-import { registerPool } from '../../engine.js';
+import { registerPool, registerModuleVariants } from '../../engine.js';
 
 registerPool('contest.payoff.gain', [
   { when: {}, text: [
@@ -57,3 +57,24 @@ for (let si = 0; si < 6; si += 1) {
     { when: {}, text: SKELETONS },
   ]);
 }
+
+registerModuleVariants('contest.payoff.body', [
+  {
+    when: { studentId: 1, contestStage: [2, 3, 4, 5] },
+    weight: 3,
+    text: [
+      'Cassidy rolls her shoulders — competition discipline, belly honest anyway.',
+      'She logs the fullness like data. The scale will agree later.',
+    ],
+  },
+]);
+
+registerModuleVariants('contest.payoff.tag', [
+  {
+    when: { studentId: 8 },
+    weight: 3,
+    text: [
+      'Maya exhales slow. Quiet pride. Quiet hunger for rematch.',
+    ],
+  },
+]);

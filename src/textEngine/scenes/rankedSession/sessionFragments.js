@@ -100,6 +100,55 @@ registerModuleVariants('session.payoff.legacy.s4', [
   },
 ]);
 
+registerModuleVariants('session.rae.arrival.s2', [
+  {
+    when: { studentId: 5 },
+    weight: 4,
+    text: [
+      () => 'Rae had the order pre-staged. Destiny did not act surprised.',
+    ],
+  },
+]);
+
+registerModuleVariants('session.rae.arrival.s4', [
+  {
+    when: { mjStageBucket: ['heavy', 'veryFat'] },
+    weight: 1,
+    text: [
+      'Rae rolls in with industrial portions — her grin says this delivery was always inevitable.',
+    ],
+  },
+]);
+
+registerModuleVariants('session.payoff.legacy.s3', [
+  {
+    when: { studentId: 5, sessionStage: [3, 4, 5] },
+    weight: 3,
+    text: [
+      (ctx) => {
+        const g = Math.round(ctx.globals?.sessionGain ?? 0);
+        const reason = ctx.globals?.sessionEndReason;
+        const tail = reason === 'food_coma' ? 'Food coma. Rank climbed anyway.' : 'Focus out. Kept eating anyway.';
+        return `Session log: ${g} lbs. ${tail} Rae already asked about next delivery.`;
+      },
+    ],
+  },
+]);
+
+registerModuleVariants('session.payoff.legacy.s5', [
+  {
+    when: { sessionStage: [5] },
+    weight: 2,
+    text: [
+      (ctx) => {
+        const g = Math.round(ctx.globals?.sessionGain ?? 0);
+        if (g < 12) return '';
+        return 'The tally lands heavy — Rae whistles approval and schedules the encore before you ask.';
+      },
+    ],
+  },
+]);
+
 registerModuleVariants('session.rae.exit.s2', [
   {
     when: { sessionStage: [2] },

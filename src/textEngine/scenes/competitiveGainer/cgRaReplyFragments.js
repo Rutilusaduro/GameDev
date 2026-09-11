@@ -28,6 +28,33 @@ registerPool('cg.raReply.boardNudge', [
 
 const RA_SKELETON = '{cg.raReply.wellnessFrame|prefix:} {cg.raReply.boardNudge|prefix: }';
 
+registerModuleVariants('cg.raReply.taunt', [
+  {
+    when: { cgRaStage: ['VeryFat', 'Enormous'], cgRaHasComparison: ['yes'] },
+    weight: 3,
+    text: [
+      (ctx) => {
+        const r = ctx.globals?.residentName || 'Someone';
+        const b = ctx.globals?.bodypart || 'measurements';
+        return `${r}'s ${b} is cute. Your lead is not. Eat like you mean to keep the board.`;
+      },
+    ],
+  },
+]);
+
+registerModuleVariants('cg.raReply.challenge', [
+  {
+    when: { cgRaHasComparison: ['yes'] },
+    weight: 2,
+    text: [
+      (ctx) => {
+        const b = ctx.globals?.bodypart || 'that category';
+        return `Close the ${b} gap tonight. I want the next update to embarrass the room.`;
+      },
+    ],
+  },
+]);
+
 for (const optId of Object.keys(CG_RA_REPLY_TEXT)) {
   registerModuleVariants(`cg.raReply.${optId}`, [
     {

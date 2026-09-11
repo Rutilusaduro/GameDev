@@ -103,8 +103,8 @@ for (const f of passFiles) {
   }
 }
 
-assert.ok(hollow >= 49, `expected >=49 hollow pass files, got ${hollow}`);
-assert.ok(withVariants <= 58, `pass files with variants should shrink over time, got ${withVariants}`);
+assert.ok(hollow >= 106, `expected all ${passFiles.length} pass files hollow, got ${hollow}`);
+assert.ok(withVariants === 0, `expected 0 pass files with registerModuleVariants, got ${withVariants}`);
 assert.ok(legacyBridgeBlocks === 0, `expected 0 legacyBridgeWhen in pass files, got ${legacyBridgeBlocks}`);
 
 console.log(`test-pass-retire-inventory: ok (${hollow} hollow, ${withVariants} with variants, ${legacyBridgeBlocks} legacyBridgeWhen refs in passes)`);

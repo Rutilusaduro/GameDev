@@ -145,4 +145,18 @@ registerModuleVariants('hall.blueprint.upgrade.confirm', [
       'Upgrade confirms — labeled rooms pull warmth through the whole wing like shared breath.',
     ],
   },
+  {
+    when: { hallRoomId: ['kitchen_pantry'] },
+    weight: 1,
+    text: [
+      'Kitchen upgrade seals — steam and spice claim the whole wing by morning.',
+    ],
+  },
+  {
+    when: { hallRoomId: ['common_lounge'] },
+    weight: 1,
+    text: [
+      'Lounge deepens — cushions swallow noise; residents linger past curfew without guilt.',
+    ],
+  },
 ]);

@@ -90,3 +90,60 @@ for (const { key, skeleton } of OVERLAYS) {
     },
   ]);
 }
+
+registerModuleVariants('weekly.intervention_fails', [
+  {
+    when: { endStageMin: [5] },
+    weight: 1,
+    text: [
+      'Intervention night collapses into potluck — concern surrenders to casseroles.',
+    ],
+  },
+]);
+
+registerModuleVariants('weekly.gaming_sponsor', [
+  {
+    when: { archetype: ['gamer'] },
+    weight: 1,
+    text: [
+      'Sponsor wants “authentic appetite” — chat donations spike when she stops pretending.',
+    ],
+  },
+]);
+
+registerModuleVariants('weekly.quiet_opens_up', [
+  {
+    when: { archetype: ['quiet'] },
+    weight: 1,
+    text: [
+      'She speaks once, softly — the room leans in like volume was never the point.',
+    ],
+  },
+]);
+
+registerModuleVariants('weekly.thesis_rewrite', [
+  {
+    when: { archetype: ['bookworm'] },
+    weight: 1,
+    text: [
+      'Hall log pivots — footnotes swell with appetite and nobody marks it down.',
+    ],
+  },
+  {
+    when: { archetype: ['swimmer'] },
+    weight: 1,
+    text: [
+      'Season plan rewrites around recovery meals — laps yield to longer tables.',
+    ],
+  },
+]);
+
+registerModuleVariants('weekly.team_weigh_in', [
+  {
+    when: { archetype: ['athlete'] },
+    weight: 1,
+    text: [
+      'Weigh-in becomes spectacle — teammates cheer numbers that would have scared them last year.',
+    ],
+  },
+]);
