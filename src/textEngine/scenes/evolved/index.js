@@ -14,9 +14,13 @@ import './evolutionOfferPools.js';
 import './evolutionBlurbPools.js';
 
 function legacyBodyChanceFromCtx(ctx, fallback = 0.12) {
+  const week = ctx.week ?? 1;
+  if (week >= 22) return 0;
+  if (week >= 16) return Math.min(fallback, 0.03);
+  if (week >= 10) return Math.min(fallback, 0.07);
   const peak = ctx.globals?.hallAmbiancePeak ?? 0;
-  if (peak >= 50) return Math.min(0.3, fallback + 0.12);
-  if (peak >= 30) return Math.min(0.22, fallback + 0.06);
+  if (peak >= 50) return Math.min(0.28, fallback + 0.1);
+  if (peak >= 30) return Math.min(0.2, fallback + 0.05);
   return fallback;
 }
 

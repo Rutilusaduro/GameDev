@@ -99,4 +99,25 @@ const homeroomLine = render('{homeroom.conference.Kayla.intro}', buildTextContex
 assert.ok(homeroomLine.length > 15, 'homeroom conference modular intro');
 assert.ok(!homeroomLine.includes('{unresolved}'), 'homeroom intro unresolved');
 
+let wlLateModular = false;
+for (let i = 0; i < 12; i += 1) {
+  const late = render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
+    subject: mj,
+    week: 22,
+    seed: 600 + i,
+  }))?.trim() || '';
+  assert.ok(!late.includes('{unresolved}'), 'WL late lesson unresolved');
+  if (/yeasty warmth|Fat is what makes a home|circleEat|lateFeast/i.test(late)) wlLateModular = true;
+}
+assert.ok(wlLateModular, 'WL lesson should compose modular slots at week 22');
+
+const reactLine = render('{evolved.reaction.eating_streamer.s0}', buildTextContext({
+  subject: destiny,
+  week: 14,
+  seed: 701,
+}))?.trim() || '';
+assert.ok(reactLine.length > 30, 'evolved reaction modular render');
+assert.ok(!reactLine.includes('{unresolved}'), 'evolved reaction unresolved');
+assert.match(reactLine, /Residents notice|hall reads|eats without apology/i, 'evolved reaction slots');
+
 console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + homeroom + evolved phase/choice/ending)`);

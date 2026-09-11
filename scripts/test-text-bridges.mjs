@@ -36,6 +36,8 @@ const required = [
   'researchJournal/index.js',
   'evolved/eventPools.js',
   'evolved/eventPhaseFragments.js',
+  'evolved/reactionFragments.js',
+  'evolved/activityModularFragments.js',
   'wifeLessons/index.js',
   'wifeLessons/lessonFragments.js',
   'wifeLessons/talkFragments.js',

@@ -39,6 +39,8 @@ const SLOT_KEYS = [
   'session.scene.deliveryAir',
   'session.scene.raePresence',
   'journal.scene.lateObsession',
+  'evolved.reaction.witness',
+  'evolved.reaction.appetite',
 ];
 
 for (const key of SLOT_KEYS) {
