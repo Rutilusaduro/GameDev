@@ -13,7 +13,6 @@ export function maybeGrantAscensionCatalyst(student, { completedStageIdx = 0, to
   const form = getAscensionFormForStudent(student);
   if (!student || !form?.catalystFlag || totalStages <= 0) return student;
   if (completedStageIdx < totalStages - 1) return student;
-  scaledCatalystCompletionScore(completedStageIdx);
   return {
     ...student,
     ascensionCatalysts: {
