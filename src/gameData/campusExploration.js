@@ -5,6 +5,7 @@ import { getStage } from './stages.js';
 import { getCampusNarrativeTier } from './pharmacistIngredients.js';
 import { CAMPUS_SOFT_FLAVOR } from './pharmacistCampus.js';
 import { saturationSoftFlavorChance, saturationTravelEventBonus } from './campusSaturation.js';
+import { depthExplorationMods } from './mechanicsDepth.js';
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
@@ -138,8 +139,10 @@ export function buildExplorationContext({
   asceticCircle = false,
   opposition = null,
   saturationTier = 0,
+  ownedHallSkills = null,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
+  const explorationMods = depthExplorationMods(ownedHallSkills || {}, saturationTier);
   const avgLbs = students.length
     ? students.filter(s => !s.hidden).reduce((a, s) => a + s.lbs, 0) / students.filter(s => !s.hidden).length
     : 130;
@@ -159,6 +162,7 @@ export function buildExplorationContext({
     deviceInventory,
     asceticCircle,
     opposition,
+    explorationMods,
   };
 }
 
@@ -181,6 +185,7 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   }
 
   const satTier = ctx.saturationTier ?? 0;
+  const mods = ctx.explorationMods;
   if (satTier > 0 && rng() < saturationSoftFlavorChance(satTier)) {
     lines.push(`🌐 ${pick(rng, CAMPUS_SOFT_FLAVOR)}`);
   }
@@ -230,7 +235,8 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (locLine) lines.push(locLine);
   }
 
-  const travelChance = EXPLORATION_CONFIG.travelEventChance + saturationTravelEventBonus(satTier);
+  const travelChance = EXPLORATION_CONFIG.travelEventChance + saturationTravelEventBonus(satTier)
+    + (mods?.travelEventBonus || 0);
   if (rng() < travelChance) {
     const travelLine = renderCampusTravelLine(travelCtx, nodeId, 'travel');
     if (travelLine) {
@@ -241,10 +247,15 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   if (rng() < EXPLORATION_CONFIG.studentSightingChance) {
     const { lines: sightingLines, trustGrants } = pickStudentSighting(ctx.students, travelCtx, rng);
     if (sightingLines.length) lines.push(...sightingLines);
-    if (trustGrants.length) effects.trustGrants = trustGrants;
+    if (trustGrants.length) {
+      effects.trustGrants = trustGrants.map((t) => ({
+        ...t,
+        amount: t.amount + (mods?.trustGrantBonus || 0),
+      }));
+    }
   }
 
-  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04) {
+  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04 + (mods?.ingredientFindBonus || 0)) {
     const findId = pickExplorationFind(travelFindPool(nodeId, Math.max(ctx.campusTier, satTier >= 2 ? 2 : 0)), rng);
     const find = getExplorationFind(findId);
     if (find) {
@@ -298,7 +309,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
         return { lines, effects, exploration: nextExploration };
       }
     }
-    if (secret.solve === 'search' && rng() < EXPLORATION_CONFIG.searchSecretChance) {
+    if (secret.solve === 'search' && rng() < EXPLORATION_CONFIG.searchSecretChance + (ctx.explorationMods?.searchSecretBonus || 0)) {
       effects.solvedSecret = secret.id;
       lines.push(resolveSecretDiscoverLine(secret, ctx, nodeId, rng));
       if (secret.reward?.findId) {
@@ -319,7 +330,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
   if (available.length) {
     const hint = available[0];
     lines.push(`…nothing yet. ${hint.hint}`);
-  } else if (rng() < EXPLORATION_CONFIG.ingredientFindChance * 1.4) {
+  } else if (rng() < (EXPLORATION_CONFIG.ingredientFindChance * 1.4) + (ctx.explorationMods?.ingredientFindBonus || 0)) {
     const findId = pickExplorationFind(travelFindPool(nodeId, ctx.campusTier), rng);
     const find = getExplorationFind(findId);
     if (find) {

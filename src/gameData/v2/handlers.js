@@ -17,7 +17,7 @@ import {
 } from './appetiteDreams.js';
 import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index.js';
 import { createContext } from '../../textEngine/engine.js';
-import { depthResonanceHallMods, depthRitualCalMult } from '../mechanicsDepth.js';
+import { depthResonanceHallMods, depthRitualCalMult, depthExplorationMods } from '../mechanicsDepth.js';
 import {
   canEmbodiedMove,
   isEmbodiedImmobile,
@@ -172,14 +172,15 @@ export function handleEmbodimentRelease(v2State, week = 1) {
   };
 }
 
-export function handleEmbodiedMove(student, fromId, toId, v2State, week, { students = [], rng = Math.random } = {}) {
+export function handleEmbodiedMove(student, fromId, toId, v2State, week, { students = [], rng = Math.random, ownedHallSkills = {} } = {}) {
   if (!canEmbodiedMove(fromId, toId, student)) {
     const reason = isEmbodiedImmobile(student)
       ? 'She cannot leave — too vast to move'
       : 'Cannot reach that location';
     return { ok: false, reason };
   }
-  const event = rollEmbodiedArrivalEvent(student, toId, v2State.embodiment, { students, rng });
+  const hallMods = depthExplorationMods(ownedHallSkills || {}, 0);
+  const event = rollEmbodiedArrivalEvent(student, toId, v2State.embodiment, { students, rng, hallMods });
   let nextState = moveEmbodiment(v2State, toId);
   return { ok: true, v2State: nextState, event, fromId, toId, week, students };
 }

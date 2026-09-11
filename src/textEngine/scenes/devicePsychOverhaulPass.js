@@ -4,7 +4,7 @@ import { registerModuleVariants } from '../engine.js';
 const devices = [
   'feeding_mask', 'auto_feeder_arm', 'obedience_belt', 'auto_bloating_belt',
   'living_furniture_rig', 'growth_accelerator_chamber', 'growth_serum_injector',
-  'endless_hunger_engine', 'paste_printer', 'force_feeder_mask',
+  'endless_hunger_engine', 'reinforced_legs',
 ];
 
 devices.forEach((id) => {
@@ -21,14 +21,11 @@ devices.forEach((id) => {
   ]);
 });
 
-registerModuleVariants('device.catalog.paste_printer', [
-  { when: { stageMin: 6 }, weight: 3, text: [
-    'Dense paste extrudes on schedule — calories engineered for storage, belly accepting the contract.',
+registerModuleVariants('device.catalog.reinforced_legs', [
+  { when: { stageMin: 8 }, weight: 3, text: [
+    'Braced supports bear furniture-weight loads — stability while soft mass keeps arriving.',
   ]},
-]);
-
-registerModuleVariants('device.catalog.living_furniture_rig', [
-  { when: { stageMin: 7 }, weight: 3, text: [
-    'Furniture-comfort harness — immobility as feature, belly presented, fed to stay cushioned.',
+  { when: {}, text: [
+    'Stabilizers creak kindly under added mass; leverage where softness needs support.',
   ]},
 ]);

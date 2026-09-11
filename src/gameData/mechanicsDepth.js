@@ -141,3 +141,16 @@ export function depthCampusPharmacistMods(ownedHallSkills = {}, saturationTier =
     passiveExtra: parlorOwned >= 2 ? 1 : parlorOwned >= 1 ? 0.5 : 0,
   };
 }
+
+/** Campus travel / search / embodied event bonuses from hall investment. */
+export function depthExplorationMods(ownedHallSkills = {}, saturationTier = 0) {
+  const syn = getActiveBlueprintSynergies(ownedHallSkills).length;
+  const raOffice = skillsForRoom('ra_office').filter((sk) => ownedHallSkills[sk.id]).length;
+  return {
+    ingredientFindBonus: syn * 0.012 + (saturationTier >= 2 ? 0.025 : 0),
+    travelEventBonus: syn >= 2 ? 0.04 : 0,
+    trustGrantBonus: syn >= 1 ? 1 : 0,
+    embodiedEventBonus: Math.min(0.08, syn * 0.015 + raOffice * 0.02),
+    searchSecretBonus: raOffice >= 2 ? 0.06 : raOffice >= 1 ? 0.03 : 0,
+  };
+}

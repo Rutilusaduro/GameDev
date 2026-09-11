@@ -275,7 +275,7 @@ export function rollEmbodiedArrivalEvent(
   student,
   nodeId,
   embodimentState = {},
-  { students = [], rng = Math.random } = {},
+  { students = [], rng = Math.random, hallMods = null } = {},
 ) {
   const lastEventStep = embodimentState.lastEventStep ?? 0;
   const steps = embodimentState.steps || 0;
@@ -287,7 +287,8 @@ export function rollEmbodiedArrivalEvent(
   );
   if (!candidates.length) return null;
 
-  const chance = movesSinceEvent >= EMBODIED_EVENT_DRY_SPELL ? 0.85 : EMBODIED_EVENT_BASE_CHANCE;
+  let chance = movesSinceEvent >= EMBODIED_EVENT_DRY_SPELL ? 0.85 : EMBODIED_EVENT_BASE_CHANCE;
+  chance = Math.min(0.92, chance + (hallMods?.embodiedEventBonus || 0));
   if (rng() > chance) return null;
 
   const pick = weightedPick(candidates, (d) => d.weight || 8, rng);

@@ -1026,6 +1026,7 @@ export default function HallPass(){
     asceticCircle:!!opposition?.proxies?.asceticCircle,
     opposition,
     saturationTier:campusState.saturation?.tier??0,
+    ownedHallSkills:ownedHallSkills||{},
   });
 
   const huntPortionSaint=()=>{
@@ -6574,7 +6575,7 @@ export default function HallPass(){
     const s=students.find(st=>st.id===activeId);
     if(!s) return null;
     const fromId=v2.embodiment?.at||'dorms';
-    const moveResult=handleEmbodiedMove(s,fromId,toId,v2,week,{students,rng:Math.random});
+    const moveResult=handleEmbodiedMove(s,fromId,toId,v2,week,{students,rng:Math.random,ownedHallSkills:ownedHallSkills||{}});
     if(!moveResult.ok) return { error: moveResult.reason };
     setV2State(moveResult.v2State);
     const arriveText=renderEmbodiedArrive(s,toId,week);
