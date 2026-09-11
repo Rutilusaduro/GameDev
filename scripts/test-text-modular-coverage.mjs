@@ -29,6 +29,11 @@ const SLOT_KEYS = [
   'evolved.choice.chatReact',
   'evolved.ending.streamCoda',
   'homeroom.scene.floorTone',
+  'fair.day.carnivalAir',
+  'fair.day.mjPride',
+  'homeroom.activity.kitchenHeat',
+  'cg.chat.boardTone',
+  'cg.chat.residentReply',
 ];
 
 for (const key of SLOT_KEYS) {
