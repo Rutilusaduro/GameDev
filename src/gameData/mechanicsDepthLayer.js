@@ -229,3 +229,25 @@ export function depthFairPrideGrant(base = 0) {
   if (base <= 0) return base;
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.34)));
 }
+
+/** Scale hall ambiance perk bundle (talk rel deepened again in hallLoungeSkills aggregate). */
+export function depthAmbiancePerkScalars(perks = {}) {
+  const p = { ...perks };
+  if (p.gainMult > 0) p.gainMult = depthGainMult(1 + p.gainMult) - 1;
+  if (p.passiveBonus > 0) {
+    p.passiveBonus = Math.max(p.passiveBonus, Math.round(scaleDepthBonus(p.passiveBonus)));
+  }
+  if (p.sessionCapBonus > 0) {
+    p.sessionCapBonus = Math.max(
+      p.sessionCapBonus,
+      Math.round(p.sessionCapBonus * (1 + BONUS_FRAC * 0.22)),
+    );
+  }
+  if (p.scrutinyPassiveReduce > 0) {
+    p.scrutinyPassiveReduce = Math.min(
+      0.55,
+      Math.round(p.scrutinyPassiveReduce * (1 + BONUS_FRAC * 0.2) * 1000) / 1000,
+    );
+  }
+  return p;
+}

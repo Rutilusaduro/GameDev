@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { HALL_ROOMS, countOwnedInRoom, roomDevelopmentTier } from './hallBlueprint.js';
 import { SKILL_TREE } from './skills.js';
-import { scaleDepthBonus } from './mechanicsDepthLayer.js';
+import { depthAmbiancePerkScalars, scaleDepthBonus } from './mechanicsDepthLayer.js';
 
 export function depthAmbianceMeterCap(raw) {
   return Math.min(100, Math.round(raw * (1 + (scaleDepthBonus(1, 1.5) - 1) * 0.15)));
@@ -68,7 +68,7 @@ export function computeHallAmbiancePerks(owned = {}) {
   if (m.intimacy >= 60) perks.sessionCapBonus += 8;
   if (m.prestige >= 45) perks.gainMult += 0.03;
   if (m.comfort >= 80 && m.appetite >= 80) perks.gainMult += 0.03;
-  return perks;
+  return depthAmbiancePerkScalars(perks);
 }
 
 export function createInitialHallAmbianceState() {
