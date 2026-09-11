@@ -69,3 +69,48 @@ for (const key of MODULAR_EVENT_PHASES) {
     },
   ]);
 }
+
+registerPool('evolved.choice.chatReact', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Chat erupts — donations, clips, the supportive chaos of people who came to watch her eat.',
+      'The viewer count ticks up before she finishes the sentence; someone types *finally* in all caps.',
+      'She reads the spam aloud, amused, and keeps chewing like the camera is an old friend.',
+    ],
+  },
+]);
+
+registerPool('evolved.choice.bodyResult', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Sauce on her fingers, a soft sound she does not edit out — appetite made honest on stream.',
+      'Her belly shifts under the ring light; the mic catches every satisfied exhale.',
+      'She leans into the bite and the room feels warmer, heavier, more real.',
+    ],
+  },
+]);
+
+const MODULAR_EVENT_CHOICES = [
+  'evolved.event.eating_streamer.s0.p0.hype_chat',
+  'evolved.event.eating_streamer.s0.p0.load_pre',
+  'evolved.event.eating_streamer.s0.p1.own_nerves',
+  'evolved.event.feedee_creator.s0.p0.warmup_both',
+  'evolved.event.feedee_creator.s0.p0.talk_dynamic',
+];
+
+const CHOICE_SKELETON = '{evolved.choice.chatReact|prefix:} {evolved.choice.bodyResult|prefix: }';
+
+for (const key of MODULAR_EVENT_CHOICES) {
+  registerModuleVariants(key, [
+    {
+      when: { weekMin: [6] },
+      weight: 3,
+      priority: 2,
+      text: [CHOICE_SKELETON],
+    },
+  ]);
+}

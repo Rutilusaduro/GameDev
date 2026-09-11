@@ -32,6 +32,7 @@ const required = [
   'evolved/eventPhaseFragments.js',
   'wifeLessons/index.js',
   'wifeLessons/lessonFragments.js',
+  'wifeLessons/talkFragments.js',
   'fairQueen/index.js',
 ];
 

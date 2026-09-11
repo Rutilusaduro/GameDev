@@ -9,6 +9,7 @@ import { wifeLessonsV2DepthChance } from '../../../gameData/sessionTextDepth.js'
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/wifeLessonsData.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
 import './lessonFragments.js';
+import './talkFragments.js';
 
 const DAUGHTERS = new Set(['Emma', 'Chloe', 'Kezia', 'Lila']);
 

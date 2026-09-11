@@ -59,4 +59,20 @@ for (let i = 0; i < 6; i += 1) {
 }
 assert.ok(evSamples.size >= 2, 'evolved modular phase should vary');
 
-console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + evolved phase)`);
+const talkLine = render('{wifeLessons.talk.Darlene.s1.greeting}', buildTextContext({
+  subject: mj,
+  week: 8,
+  seed: 301,
+}))?.trim() || '';
+assert.ok(talkLine.length > 20, 'WL talk greeting modular render');
+assert.ok(!talkLine.includes('{unresolved}'), 'WL talk greeting unresolved');
+
+const choiceLine = render('{evolved.event.eating_streamer.s0.p0.hype_chat}', {
+  ...evCtx,
+  week: 10,
+  seed: 302,
+})?.trim() || '';
+assert.ok(choiceLine.length > 20, 'evolved choice modular render');
+assert.ok(!choiceLine.includes('{unresolved}'), 'evolved choice unresolved');
+
+console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + evolved phase/choice)`);
