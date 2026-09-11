@@ -43,26 +43,6 @@ registerModuleVariants('fair.day.weighIn.open', [
   },
 ]);
 
-registerModuleVariants('device.use.beat', [
-  {
-    when: { endStageMin: [5] },
-    weight: 1,
-    text: [
-      'Harness whirs — she settles deeper, already anticipating the next cycle.',
-    ],
-  },
-]);
-
-registerModuleVariants('talk.encourage', [
-  {
-    when: { corruption: [2, 3] },
-    weight: 1,
-    text: [
-      'You tell her to indulge — she hears permission dressed as command.',
-    ],
-  },
-]);
-
 registerModuleVariants('weekly.art_exhibition', [
   {
     when: { archetype: ['artsy'] },

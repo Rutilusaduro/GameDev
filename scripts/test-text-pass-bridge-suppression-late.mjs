@@ -7,6 +7,8 @@ import '../src/textEngine/scenes/index.js';
 import { render } from '../src/textEngine/engine.js';
 import { buildTextContext } from '../src/gameData/textContext.js';
 import { renderEvolvedActivityBeat } from '../src/textEngine/scenes/evolved/index.js';
+import { renderDeviceUseLine } from '../src/textEngine/scenes/deviceUse/index.js';
+import { renderStreamBeat } from '../src/textEngine/scenes/stream/liveBridge.js';
 import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
 
 const week = 24;
@@ -73,5 +75,34 @@ for (let s = 0; s < 12; s += 1) {
   assert.ok(!/^National qualifier — press watches her belly argue with the sport's weight classes\.$/.test(line), 'pass-112 sumo bridge alone @ w24');
 }
 assert.ok(sumoHit, 'sumo activity modular @ w24');
+
+const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 280 };
+let deviceHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderDeviceUseLine({
+    student: destiny,
+    deviceId: 'auto_feeder_arm',
+    deviceLabel: 'Feeder Arm',
+    actionId: 'burst_feed',
+    week,
+  })?.trim() || '';
+  assert.ok(!/^Harness whirs — she settles deeper/.test(line), 'pass-111 device.use bridge alone @ w24');
+  if (/labHum|calibrated hunger|Hall Ambiance muted/i.test(line)) deviceHit = true;
+}
+assert.ok(deviceHit, 'device.use modular @ w24');
+
+let streamHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const ctx = buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72050 + s,
+    globals: { featureId: 'destiny_stream' },
+  });
+  const line = renderStreamBeat('{stream.endStream.good}', ctx, { v2DepthChance: 0 })?.trim() || '';
+  assert.ok(!/^Sign-off lands — chat still hungry, tips still ticking after the camera dies\.$/.test(line), 'pass-112 stream.good bridge alone @ w24');
+  if (/signoffAir|chatAfterglow|tips still ticking/i.test(line)) streamHit = true;
+}
+assert.ok(streamHit, 'stream.endStream.good modular @ w24');
 
 console.log('test-text-pass-bridge-suppression-late: ok');

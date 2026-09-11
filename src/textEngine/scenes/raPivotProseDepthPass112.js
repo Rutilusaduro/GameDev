@@ -2,32 +2,12 @@
 import { registerModuleVariants } from '../engine.js';
 import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
-registerModuleVariants('device.campus.beat', [
-  {
-    when: { endStageMin: [4] },
-    weight: 1,
-    text: [
-      'Campus rig whirs — a remote pulse of appetite finds her between hall rounds.',
-    ],
-  },
-]);
-
 registerModuleVariants('opposition.hearing.emergency.result.feast_bribe', [
   {
     when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Hearing catered — board members eat before they vote, and appetite wins the agenda.',
-    ],
-  },
-]);
-
-registerModuleVariants('stream.endStream.good', [
-  {
-    when: { endStageMin: [5] },
-    weight: 1,
-    text: [
-      'Sign-off lands — chat still hungry, tips still ticking after the camera dies.',
     ],
   },
 ]);
