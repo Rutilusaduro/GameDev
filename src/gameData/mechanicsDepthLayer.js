@@ -196,3 +196,24 @@ export function depthActivityGainBonus(base = 0) {
   if (base <= 0) return base;
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.35)));
 }
+
+/** Event / feast / minigame lb grants — secondary loop depth. */
+export function depthLbsGrant(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.28)));
+}
+
+export function depthMetaProgressBonus(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.3)));
+}
+
+export function depthScarcityRelief(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.25)));
+}
+
+export function depthStreamReward(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.32)));
+}

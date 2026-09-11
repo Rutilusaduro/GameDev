@@ -1,6 +1,8 @@
 // The Squad — Lead: A4 Architect | Support: A2 Psych
 // Form gain rules are data consumed by existing gain paths. No second ladder.
 
+import { depthGainMult } from '../mechanicsDepthLayer.js';
+
 export const DEFAULT_FORM_GAIN_RULE = {
   weeklyMult: 1,
   essencePerLb: 0.5,
@@ -111,5 +113,6 @@ export function getFormGainRule(formId) {
 
 export function formPassiveGainMultiplier(student) {
   if (!student?.ascension?.formId) return 1;
-  return getFormGainRule(student.ascension.formId).weeklyMult ?? 1;
+  const mult = getFormGainRule(student.ascension.formId).weeklyMult ?? 1;
+  return depthGainMult(mult);
 }

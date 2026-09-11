@@ -29,4 +29,11 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'weekPlanner', file: 'weekPlanner.js' },
   { id: 'supernaturalForms', file: 'supernaturalForms.js' },
   { id: 'forceFeeder', file: 'forceFeederEvent.js' },
+  { id: 'evolvedMinigames', file: 'evolvedMinigames.js' },
+  { id: 'chapterHostess', file: 'chapterHostess.js' },
+  { id: 'streaming', file: 'streaming.js' },
+  { id: 'prestigeLite', file: 'prestigeLite.js' },
+  { id: 'scarcityTools', file: 'scarcityTools.js' },
+  { id: 'ascensionGain', file: 'ascension/gainRules.js' },
+  { id: 'chloeSalon', file: 'chloeSalon.js' },
 ];

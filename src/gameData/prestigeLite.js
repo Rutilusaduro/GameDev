@@ -2,6 +2,8 @@
 // PRESTIGE-LITE — meta progression without hard reset
 // ═══════════════════════════════════════════════════════════════
 
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
+
 export function computePrestigeScore({ week = 1, labState, campusSaturation, globalStats } = {}) {
   let score = 0;
   score += Math.floor((week - 1) / 10);
@@ -12,11 +14,11 @@ export function computePrestigeScore({ week = 1, labState, campusSaturation, glo
 }
 
 export function prestigeApBonus(score) {
-  return Math.min(2, Math.floor(score / 5));
+  return depthMetaProgressBonus(Math.min(2, Math.floor(score / 5)));
 }
 
 export function prestigeBreakthroughBonus(score) {
-  return Math.min(3, Math.floor(score / 8));
+  return depthMetaProgressBonus(Math.min(3, Math.floor(score / 8)));
 }
 
 export function prestigeSummary(score) {

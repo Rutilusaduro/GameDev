@@ -3,6 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 import { CORRUPTION_CONFIG } from './corruption.js';
 import { getStage } from './stages.js';
+import {
+  depthCorruptionGrant,
+  depthGainMult,
+  depthLbsGrant,
+  depthStreamReward,
+} from './mechanicsDepthLayer.js';
 
 export const STREAM_AP_COST = 2;
 
@@ -261,7 +267,8 @@ export function computeRoundLbs({
     * (challenge?.gainMult || 1)
     * stageGainMult(weightStageId)
     * (staminaPenalty ?? staminaPenaltyFor(stamina));
-  return Math.max(0, Math.round(lbs * 10) / 10);
+  const raw = Math.max(0, Math.round(lbs * 10) / 10);
+  return depthLbsGrant(raw);
 }
 
 export function aggregateOverallTier(tierHistory = []) {
@@ -322,7 +329,12 @@ export function mergePreStreamMultipliers(choices = {}) {
     audienceMult *= fx.audienceMult;
     resistanceDelta += fx.resistanceDelta;
   }
-  return { capacityMult, gainMult, audienceMult, resistanceDelta };
+  return {
+    capacityMult,
+    gainMult: depthGainMult(gainMult),
+    audienceMult,
+    resistanceDelta,
+  };
 }
 
 export function computeRewards({
@@ -370,12 +382,12 @@ export function computeRewards({
 
   return {
     overallTier,
-    weightGain: sessionGain,
-    audienceGain,
-    favorGain,
+    weightGain: depthLbsGrant(sessionGain),
+    audienceGain: depthStreamReward(audienceGain),
+    favorGain: depthStreamReward(favorGain),
     moneyGenerated,
     playerShare,
-    corruptionGain,
+    corruptionGain: depthCorruptionGrant(corruptionGain),
     tapOutPenalty,
   };
 }

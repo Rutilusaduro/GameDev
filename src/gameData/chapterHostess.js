@@ -1,5 +1,7 @@
 // Chapter Hostess evolved form — feast prep system
 
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
+
 export const SISTER_INITIAL_STATE = [
   { name:"Courtney", bodyType:"pear",       lbs:145 },
   { name:"Madison",  bodyType:"voluptuous",  lbs:162 },
@@ -403,7 +405,15 @@ export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, 
     sisterGainMap[sis.name] = sisterFeastGain(mTier, gTier, sis.bodyType);
   });
   const camilleGain = camilleFeastGain(stageIdx, mTier);
-  const relGain = 8 + gTier * 2 + aTier;
+  const relGain = depthRelBonus(8 + gTier * 2 + aTier);
 
-  return { log, tiffanyGain, sisterGainMap, camilleGain, relGain };
+  return {
+    log,
+    tiffanyGain: depthLbsGrant(tiffanyGain),
+    sisterGainMap: Object.fromEntries(
+      Object.entries(sisterGainMap).map(([name, lbs]) => [name, depthLbsGrant(lbs)]),
+    ),
+    camilleGain: depthLbsGrant(camilleGain),
+    relGain,
+  };
 }

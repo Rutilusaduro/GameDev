@@ -2,6 +2,8 @@
 // CHLOÉ — Salon de l'Appétit
 // ═══════════════════════════════════════════════════════════════
 
+import { depthLbsGrant, depthMetaProgressBonus } from './mechanicsDepthLayer.js';
+
 export const SALON_GUESTS = [
   { id: 'brittany', name: 'Brittany', unlockPrestige: 0, studentId: 0 },
   { id: 'cassidy', name: 'Cassidy', unlockPrestige: 0, studentId: 1 },
@@ -126,11 +128,12 @@ export function salonServiceChoice(state, choiceId) {
 export function salonFinishDigestif(state) {
   const session = state.session;
   if (!session || session.phase !== 'digestif') return { state, done: false };
-  const surge = 8 + Math.floor(session.indulgenceGain / 10);
-  const finalGain = session.chloeGain + surge;
+  const surge = depthLbsGrant(8 + Math.floor(session.indulgenceGain / 10));
+  const finalGain = depthLbsGrant(session.chloeGain + surge);
+  const prestigeBump = depthMetaProgressBonus(session.prestigeGain + 5);
   const next = {
     ...state,
-    prestige: Math.min(100, state.prestige + session.prestigeGain + 5),
+    prestige: Math.min(100, state.prestige + prestigeBump),
     indulgence: Math.min(100, state.indulgence + session.indulgenceGain),
     eveningsHosted: state.eveningsHosted + 1,
     guestBook: [...new Set([...state.guestBook, ...session.guests])],
@@ -140,7 +143,7 @@ export function salonFinishDigestif(state) {
     state: next,
     done: true,
     chloeLbs: finalGain,
-    prestige: session.prestigeGain,
+    prestige: prestigeBump,
     scrutiny: session.scrutinyHit,
     log: `La soirée closes. Chloé gained ${finalGain} lbs. Prestige +${session.prestigeGain + 5}.`,
   };
