@@ -110,8 +110,8 @@ All core objective gates green. Optional: human playtest for subjective feel tun
 |-------------|--------|
 | Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
 | New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
-| Mechanics depth layer (~50% wired) | 🟡 `test:mechanics-depth` — **65** systems; coverage **65/124** layer-import (~59 unwired) |
-| Full text overhaul | 🟡 Pass 53–**57** bulk top-ups; skeleton scenes not fully migrated per `MIGRATION.md` |
+| Mechanics depth layer (~50% wired) | 🟡 `test:mechanics-depth` — **73** systems; coverage **73/124** layer-import (~51 unwired) |
+| Full text overhaul | 🟡 Pass 53–**58** (bulk + curated dorm/feed/hall); `MIGRATION.md` skeleton migration open |
 | Full depth on every mechanical file | 🔴 device equip/query, weekly narrative text, arrival capstones, campus secrets data-only, etc. |
 
 Verify: `npm run test:hall-blueprint`, `npm run text:lint`, `npm run test:smoke` (full).

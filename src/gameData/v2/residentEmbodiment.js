@@ -3,8 +3,21 @@
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from '../stages.js';
 import { getSkillRank, hasOwnedSkill } from '../skillTrees.js';
+import {
+  depthCorruptionGrant,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from '../mechanicsDepthLayer.js';
 import { V2_CONFIG } from './state.js';
 import { EMBODIED_START_NODE } from './embodiedCampus.js';
+
+export function scaleEmbodimentActionEffect(action = {}) {
+  return {
+    calories: depthResonancePassiveBonus(action.calories || 0),
+    rel: depthRelBonus(action.rel || 0),
+    corruption: depthCorruptionGrant(action.corruption || 0),
+  };
+}
 
 export const EMBODIMENT_ACTIONS = [
   {

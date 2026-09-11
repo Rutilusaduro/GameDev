@@ -1,4 +1,8 @@
 import { getStage } from './stages.js';
+import {
+  depthResonancePassiveBonus,
+  depthTalkRelGrant,
+} from './mechanicsDepthLayer.js';
 
 // ═══════════════════════════════════════════════════════════════
 // SKILL TREES — Influence · Gluttony · Corruption
@@ -331,6 +335,8 @@ export function aggregateSkillEffects(owned = {}) {
       }
     }
   }
+  if (out.passiveLbs > 0) out.passiveLbs = depthResonancePassiveBonus(out.passiveLbs);
+  if (out.relationship > 0) out.relationship = depthTalkRelGrant(out.relationship);
   return out;
 }
 

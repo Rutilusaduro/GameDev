@@ -4,6 +4,7 @@
 import {
   canEmbody, startEmbodiment, endEmbodiment, applyEmbodimentAction,
   EMBODIMENT_ACTIONS,
+  scaleEmbodimentActionEffect,
 } from './residentEmbodiment.js';
 import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
@@ -153,13 +154,12 @@ export function handleEmbodimentStart(student, ctx) {
 export function handleEmbodimentAction(action, student, v2State) {
   const act = EMBODIMENT_ACTIONS.find((a) => a.id === action.id) || action;
   const v2 = applyEmbodimentAction(v2State, act.id);
+  const scaled = scaleEmbodimentActionEffect(act);
   return {
     ok: true,
     v2State: v2,
-    calories: depthResonancePassiveBonus(act.calories || 0),
+    ...scaled,
     fullness: act.fullness || 0,
-    rel: depthRelBonus(act.rel || 0),
-    corruption: depthCorruptionGrant(act.corruption || 0),
     scrutiny: act.scrutiny || 0,
   };
 }

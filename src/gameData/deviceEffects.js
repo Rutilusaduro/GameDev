@@ -12,7 +12,7 @@ import { depthLbsGrant } from './mechanicsDepthLayer.js';
 import { applyPsychDelta } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { foldModPatches, applyModificationToEntry } from './deviceMods.js';
-import { findUniqueInteraction } from './deviceInteractions.js';
+import { deviceSynergyGainMult, findUniqueInteraction } from './deviceInteractions.js';
 import { renderDeviceUniqueInteraction } from '../textEngine/scenes/deviceUniqueInteraction/index.js';
 import { getDeviceBoardMods, applyBoardModsToWeeklyEffect } from './inventionUpgrades.js';
 import { scaleDiscoveryRisk } from './campusWitness.js';
@@ -263,6 +263,13 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
 
   if (effectSpec?.gainLbs) {
     let gainRange = scaleGainRangeForStudent(next, effectSpec.gainLbs);
+    const synMult = deviceSynergyGainMult(next);
+    if (synMult > 1) {
+      gainRange = [
+        Math.round((gainRange[0] || 0) * synMult),
+        Math.round((gainRange[1] || 0) * synMult),
+      ];
+    }
     const swell = next.deviceState?.residualSwell;
     if (swell?.active && swell.amplify) {
       gainRange = [

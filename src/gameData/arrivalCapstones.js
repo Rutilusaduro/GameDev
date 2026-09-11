@@ -2,6 +2,18 @@
 // ARRIVAL CAPSTONES — per-evolved-form repeatable endgame activities
 // ═══════════════════════════════════════════════════════════════
 import { getEvolvedActivityStageIdx } from '../utils/gameHelpers.js';
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
+
+export const ARRIVAL_CAPSTONE_GAIN_RANGE = [8, 14];
+
+export function scaleArrivalCapstoneGainRange(range = ARRIVAL_CAPSTONE_GAIN_RANGE) {
+  if (!Array.isArray(range) || range.length < 2) return range;
+  return [depthLbsGrant(range[0]), depthLbsGrant(range[1])];
+}
+
+export function scaleArrivalCapstoneRel(base = 6) {
+  return depthRelBonus(base);
+}
 
 export const ARRIVAL_CAPSTONES = {
   sumo: {

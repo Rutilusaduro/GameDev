@@ -33,6 +33,13 @@ const EXTRA = {
     `Encouragement lands softer when {ra.name} says it — like policy from someone who cares.`,
     `{subject.name} exhales like a knot loosening. "Okay," she whispers. "Okay."`,
   ],
+  'talk.suggest.indulgence': [
+    `You phrase it like care, not command. She hears both and chooses the part she wants.`,
+    `"You could," you say — and the sentence finishes itself in her appetite.`,
+  ],
+  'dorm.upgrade.confirm': [
+    `You approve the work order and the hall exhales — warmer lights, wider doorways.`,
+  ],
   'hunger.interrupt.arrival': [
     `The knock comes hungry — not angry, just certain.`,
     `She finds you because the floor trained her to.`,

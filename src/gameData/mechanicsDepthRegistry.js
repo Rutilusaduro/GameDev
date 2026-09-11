@@ -65,4 +65,11 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'bodyEcho', file: 'v2/bodyEcho.js' },
   { id: 'deviceMods', file: 'deviceMods.js' },
   { id: 'ascensionCatalysts', file: 'ascension/catalysts.js' },
+  { id: 'arrivalCapstones', file: 'arrivalCapstones.js' },
+  { id: 'intimacyEffects', file: 'intimacyEffects.js' },
+  { id: 'residentEmbodiment', file: 'v2/residentEmbodiment.js' },
+  { id: 'skillTrees', file: 'skillTrees.js' },
+  { id: 'deviceInteractions', file: 'deviceInteractions.js' },
+  { id: 'deviceEquip', file: 'deviceEquip.js' },
+  { id: 'gatewayMoments', file: 'gatewayMoments.js' },
 ];

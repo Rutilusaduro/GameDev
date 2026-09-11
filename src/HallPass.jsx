@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition } from './gameData/intimacy.js';
+import { INTIMACY_SCENES, INTIMACY_CONTEXTUAL, evalIntimacyEndingCondition, scaleIntimacyChoiceRewards, scaleIntimacyEndingBonuses } from './gameData/intimacy.js';
 import { GROUP_CONVERSATIONS, getGroupConversation, getDinnerConversation, getTier, TIER_SCENES, PRIVATE_FOODS, getFullnessStage, DINNER_VENUES, DINNER_CONVERSATION, ACHIEVEMENT_LIST } from './gameData/sessions.js';
 import { STAGE_DROP_REACTIONS, RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.js';
 import { narrativeEventText } from './gameData/weeklyEventText.js';
@@ -306,7 +306,7 @@ import {
 } from './gameData/scrutinyConsequences.js';
 import { appendWitnessLog } from './gameData/campusWitness.js';
 import { normalizePerformanceTier, performanceResultLine, performanceRelMult } from './gameData/performanceContract.js';
-import { getArrivalCapstone, markArrivalUnlocked, getArrivalBoardUnlock } from './gameData/arrivalCapstones.js';
+import { getArrivalCapstone, markArrivalUnlocked, getArrivalBoardUnlock, scaleArrivalCapstoneGainRange, scaleArrivalCapstoneRel, ARRIVAL_CAPSTONE_GAIN_RANGE } from './gameData/arrivalCapstones.js';
 import {
   tuningGainMult,
   scoreRouteSession,
@@ -4221,9 +4221,11 @@ export default function HallPass(){
     if(!capstone) return;
     if(ap<capstone.apCost){ push(`⚠️ Need ${capstone.apCost} AP.`); return; }
     setAp(a=>a-capstone.apCost);
-    const gain=Math.max(1,Math.round(rnd(8,14)*getSupernaturalGainMult(s)));
+    const [gLo,gHi]=scaleArrivalCapstoneGainRange(ARRIVAL_CAPSTONE_GAIN_RANGE);
+    const gain=Math.max(1,Math.round(rnd(gLo,gHi)*getSupernaturalGainMult(s)));
+    const relGain=scaleArrivalCapstoneRel(6);
     const firstUnlock=capstone.firstUnlock;
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:markArrivalUnlocked(processStudentGain(st,gain,6))));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:markArrivalUnlocked(processStudentGain(st,gain,relGain))));
     if(firstUnlock&&labState){
       const unlock=getArrivalBoardUnlock(s);
       if(unlock){
@@ -6676,11 +6678,12 @@ export default function HallPass(){
     const def=INTIMACY_SCENES.find(sc=>sc.id===sceneId)||INTIMACY_CONTEXTUAL[sceneId]; if(!def) return;
     const phase=def.phases[phaseIdx]; if(!phase) return;
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
+    const scaledChoice=scaleIntimacyChoiceRewards(choice);
     // Pin blackout — at settled size, letting her mass come over you is a gamble.
     // On a hit she pins you, you black out, and the week ends where you lie.
     if(choiceCanPin(sceneId,choiceId,s) && Math.random()<pinBlackoutChance(s)){
-      const passGain=choice.lbs||0;
-      const passRel=(choice.rel||0)+PIN_PASSOUT_REL_BONUS;
+      const passGain=scaledChoice.lbs||0;
+      const passRel=(scaledChoice.rel||0)+PIN_PASSOUT_REL_BONUS;
       setStudents(prev=>prev.map(st=>st.id!==studentId?st:processStudentGain(st,passGain,passRel)));
       push(`🕳️ ${s.name} pins you under her — the room goes dark. The week ends where you lie.`);
       setIntimacyEventState(prev=>({...prev,done:true,blackout:true,endingText:renderIntimacyPassout(s,sceneWeekNum),logLines:[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)]}));
@@ -6688,10 +6691,10 @@ export default function HallPass(){
     }
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const newLog=[...logLines,renderIntimacyChoice(sceneId,choiceId,s,sceneWeekNum)];
-    let newGain=gainAccum+(choice.lbs||0);
-    const newRel=relAccum+(choice.rel||0);
-    if(choice.feed&&choice.gainRange){
-      const feedGain=rnd(choice.gainRange[0],choice.gainRange[1]);
+    let newGain=gainAccum+(scaledChoice.lbs||0);
+    const newRel=relAccum+(scaledChoice.rel||0);
+    if(choice.feed&&scaledChoice.gainRange){
+      const feedGain=rnd(scaledChoice.gainRange[0],scaledChoice.gainRange[1]);
       newGain=gainAccum+feedGain;
       setStudents(prev=>prev.map(st=>st.id!==studentId?st:processStudentGain(st,feedGain,0)));
       push(`🍖 ${s.name} grows warmer and heavier against you. +${feedGain} lbs`);
@@ -6701,15 +6704,16 @@ export default function HallPass(){
       let endingIdx=def.endings.findIndex(e=>evalIntimacyEndingCondition(e.conditionSrc,newHistory));
       if(endingIdx<0) endingIdx=def.endings.length-1;
       const ending=def.endings[endingIdx];
-      const totalGain=newGain+ending.gainBonus;
-      const totalRel=newRel+ending.relBonus;
+      const scaledEnding=scaleIntimacyEndingBonuses(ending);
+      const totalGain=newGain+scaledEnding.gainBonus;
+      const totalRel=newRel+scaledEnding.relBonus;
       setStudents(prev=>prev.map(st=>{
         if(st.id!==studentId) return st;
         return processStudentGain(st,totalGain>0?totalGain:0,totalRel);
       }));
       if(totalGain>0) push(`💜 ${s.name} — intimacy: +${totalGain} lbs · +${totalRel} rel`);
       else push(`💜 ${s.name} — intimacy: +${totalRel} rel`);
-      setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:renderIntimacyEnding(sceneId,endingIdx,s,sceneWeekNum),gainBonus:ending.gainBonus,relBonus:ending.relBonus}));
+      setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel,done:true,endingText:renderIntimacyEnding(sceneId,endingIdx,s,sceneWeekNum),gainBonus:scaledEnding.gainBonus,relBonus:scaledEnding.relBonus}));
     } else {
       setIntimacyEventState(prev=>({...prev,phaseIdx:nextPhase,history:newHistory,logLines:newLog,gainAccum:newGain,relAccum:newRel}));
     }

@@ -2,6 +2,7 @@
 // DEVICE EQUIP HELPERS — engine-free, no text-engine imports
 // ═══════════════════════════════════════════════════════════════
 import { DEVICE_SLOTS } from './devices.js';
+import { depthIntensityMult } from './mechanicsDepthLayer.js';
 
 export function getEquippedDeviceIds(student) {
   const ids = [];
@@ -16,6 +17,12 @@ export function getEquippedDeviceIds(student) {
     }
   }
   return ids;
+}
+
+/** More equipped devices → slightly deeper intensity reads (capped). */
+export function equippedDeviceDepthMult(student) {
+  const count = Math.min(6, getEquippedDeviceIds(student).length);
+  return depthIntensityMult(1 + count * 0.015);
 }
 
 export function hasPredatorCapture(student) {
