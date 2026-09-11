@@ -305,4 +305,51 @@ for (let s = 0; s < 12; s += 1) {
 }
 assert.ok(extractHit, 'campus.find.saturated_extract modular @ w24');
 
+let mintHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{campus.find.wild_mint}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72210 + s,
+    globals: { featureId: 'campus_exploration' },
+  }))?.trim() || '';
+  assert.ok(!/^Wild mint bruises sweet on your palm — the quad smells like dessert before dinner\.$/.test(line), 'pass-100 wild_mint bridge alone @ w24');
+  if (/lateFrame|hallTone|campus paths|mint/i.test(line)) mintHit = true;
+}
+assert.ok(mintHit, 'campus.find.wild_mint modular @ w24');
+
+let refreshHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{homeroom.activity.parent_meeting.p0.refreshments_first}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72220 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Refreshments before agenda — Mrs\. Calloway eats three pieces before item one\.$/.test(line), 'pass-105 refreshments bridge alone @ w24');
+  if (/kitchenHeat|communityWarmth|Oven heat|refreshments/i.test(line)) refreshHit = true;
+}
+assert.ok(refreshHit, 'refreshments_first modular @ w24');
+
+let chairHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderWeeklyEvent('chair_breaks', artsy, { week, seed: 72230 + s })?.trim() || '';
+  assert.ok(!/^The chair gives — the room laughs before pity can arrive\.$/.test(line), 'pass-105 chair_breaks bridge alone @ w24');
+  if (/chairBreaks|floorEcho|Hall Ambiance/i.test(line)) chairHit = true;
+}
+assert.ok(chairHit, 'weekly.chair_breaks modular @ w24');
+
+let bri105Hit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{homeroom.conference.Bri.brought_something}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72240 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Bri opens the drawer like ritual — container always there, appetite always practical\.$/.test(line), 'pass-105 Bri bridge alone @ w24');
+  if (/Counters disappear|choiceWarmth|oven heat|wellness framing/i.test(line)) bri105Hit = true;
+}
+assert.ok(bri105Hit, 'Bri brought_something modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

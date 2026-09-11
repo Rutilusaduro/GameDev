@@ -3015,6 +3015,10 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   const pass101 = read('src/textEngine/scenes/raPivotProseDepthPass101.js');
   assert.ok(!pass94.includes('registerModuleVariants'), 'pass94 should be retired to fragments');
   assert.ok(!pass101.includes('registerModuleVariants'), 'pass101 should be retired to fragments');
+  const pass100 = read('src/textEngine/scenes/raPivotProseDepthPass100.js');
+  assert.ok(!pass100.includes('registerModuleVariants'), 'pass100 should be retired to fragments');
+  const pass105 = read('src/textEngine/scenes/raPivotProseDepthPass105.js');
+  assert.match(pass105, /fair\.photo\.Brittany/, 'pass105 keeps optional fair photo stage vignette');
   assert.ok(existsSync(join(root, 'scripts/test-text-pass-bridge-suppression-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');

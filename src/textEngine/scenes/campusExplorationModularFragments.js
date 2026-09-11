@@ -51,3 +51,29 @@ registerModuleVariants('campus.sighting', [
     text: [SIGHTING_LATE],
   },
 ]);
+
+const TRAVEL_LATE = '{campus.explore.lateFrame|prefix:} {campusEvent.scene.hallTone|prefix: }';
+
+registerModuleVariants('campus.travel', [
+  {
+    when: { weekMin: 20 },
+    weight: 5,
+    priority: 5,
+    text: [TRAVEL_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 3,
+    priority: 3,
+    text: [TRAVEL_LATE],
+  },
+  {
+    when: { campusFattening: true, weekMin: 10 },
+    weight: 2,
+    priority: 4,
+    text: [
+      'Campus softening — paths smell like dessert and nobody pretends otherwise.',
+      '{campus.explore.lateFrame|prefix:} Fried sugar rides every breeze; the quad feels complicit.',
+    ],
+  },
+]);
