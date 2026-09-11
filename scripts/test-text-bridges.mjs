@@ -26,6 +26,7 @@ const required = [
   'rankedSession/sessionPayoffFragments.js',
   'legacyPoolPolicy.js',
   'campusEvent/campusEventFragments.js',
+  'campusExplorationModularFragments.js',
   'dinner/dinnerDishFragments.js',
   'hunt/huntFeastFragments.js',
   'eatingContest/eatingContestFragments.js',

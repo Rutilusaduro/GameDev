@@ -2976,6 +2976,7 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/hallBlueprint/blueprintModularFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/hallBlueprint/hallAmbianceModularFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgMeasurementModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusExplorationModularFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/blobIntroFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/batchBakerFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/trainingModularFragments.js')));
@@ -3010,6 +3011,10 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(!pass112.includes('registerModuleVariants'), 'pass112 should be retired to fragments');
   const pass95 = read('src/textEngine/scenes/raPivotProseDepthPass95.js');
   assert.ok(!pass95.includes('registerModuleVariants'), 'pass95 should be retired to fragments');
+  const pass94 = read('src/textEngine/scenes/raPivotProseDepthPass94.js');
+  const pass101 = read('src/textEngine/scenes/raPivotProseDepthPass101.js');
+  assert.ok(!pass94.includes('registerModuleVariants'), 'pass94 should be retired to fragments');
+  assert.ok(!pass101.includes('registerModuleVariants'), 'pass101 should be retired to fragments');
   assert.ok(existsSync(join(root, 'scripts/test-text-pass-bridge-suppression-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');

@@ -31,6 +31,7 @@ const POOLS = [
   'talk.suggest.growthAmbition',
   'hall.blueprint.construction',
   'hall.ambiance.modularFrame',
+  'campus.explore.lateFrame',
   'cultivator.scene.labAir',
   'session.tapOut.breath',
   'device.use.scene.labHum',

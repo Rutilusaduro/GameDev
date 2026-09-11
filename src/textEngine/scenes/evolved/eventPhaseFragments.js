@@ -129,6 +129,20 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
           text: ['{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: }'],
         },
       ]);
+      registerModuleVariants(`${phaseKey}.legacyBody`, [
+        {
+          when: { weekMin: 20, evolvedFormId: [formId] },
+          weight: 6,
+          priority: 6,
+          text: [EVENT_SKELETON],
+        },
+        {
+          when: { weekMin: 14, evolvedFormId: [formId] },
+          weight: 4,
+          priority: 4,
+          text: [EVENT_SKELETON],
+        },
+      ]);
       for (const ch of phase.choices || []) {
         if (!ch?.id) continue;
         const choiceKey = `${phaseKey}.${ch.id}`;
@@ -144,6 +158,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
             when: { weekMin: 6 },
             weight: 3,
             priority: 2,
+            text: [CHOICE_SKELETON],
+          },
+        ]);
+        registerModuleVariants(`${choiceKey}.legacyBody`, [
+          {
+            when: { weekMin: 20, evolvedFormId: [formId] },
+            weight: 6,
+            priority: 6,
             text: [CHOICE_SKELETON],
           },
         ]);
@@ -163,6 +185,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
           when: { weekMin: 7 },
           weight: 3,
           priority: 2,
+          text: [ENDING_SKELETON],
+        },
+      ]);
+      registerModuleVariants(`${endKey}.legacyBody`, [
+        {
+          when: { weekMin: 20, evolvedFormId: [formId] },
+          weight: 6,
+          priority: 6,
           text: [ENDING_SKELETON],
         },
       ]);

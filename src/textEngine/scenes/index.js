@@ -242,6 +242,7 @@ import './campusEvent/index.js';
 import './campusEvent/campusEventFragments.js';
 import './campusEvent/depth.js';
 import './campusEvent/campusEventLateModularFragments.js';
+import './campusExplorationModularFragments.js';
 import './deviceFlavor.js';
 import './opposition/endgameBeat.js';
 import './opposition/index.js';

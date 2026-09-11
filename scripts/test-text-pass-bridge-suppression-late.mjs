@@ -233,4 +233,76 @@ for (let s = 0; s < 12; s += 1) {
 }
 assert.ok(tauntHit, 'cg.raReply.taunt modular @ w24');
 
+let photoHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{fair.photo.Kylie}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72150 + s,
+    globals: { featureId: 'state_fair_queen', fairCollab: 'Kylie' },
+  }))?.trim() || '';
+  assert.ok(!/^Fryer glow on Kylie’s grin — another greasy saint for the trophy wall\.$/.test(line), 'pass-94 fair.photo.Kylie bridge alone @ w24');
+  if (/pageantGlow|collabFrame|carnivalAir|Hay-scent|Pageant lights|ring light/i.test(line)) photoHit = true;
+}
+assert.ok(photoHit, 'fair.photo.Kylie modular @ w24');
+
+let kaylaHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{homeroom.conference.Kayla.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72160 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Kayla drops into the chair like Tuesday already started — hall standing is not what she came for\.$/.test(line), 'pass-101 Kayla bridge alone @ w24');
+  if (/floorTone|butter and suspicion|recipe cards/i.test(line)) kaylaHit = true;
+}
+assert.ok(kaylaHit, 'Kayla intro modular @ w24');
+
+let recipesHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{homeroom.activity.parent_meeting.p0.recipes}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72170 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^The recipe book hits the table — cardamom and peach upside-down rewrite the parent meeting\.$/.test(line), 'pass-101 recipes bridge alone @ w24');
+  if (/kitchenHeat|communityWarmth|Oven heat|recipe book opens/i.test(line)) recipesHit = true;
+}
+assert.ok(recipesHit, 'parent_meeting recipes modular @ w24');
+
+let viralHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderWeeklyEvent('viral_post', artsy, { week, seed: 72180 + s })?.trim() || '';
+  assert.ok(!/^The post blows up — comments hungry, algorithm complicit, her belly the thumbnail\.$/.test(line), 'pass-101 viral_post bridge alone @ w24');
+  if (/viralPost|floorEcho|Hall Ambiance|algorithm/i.test(line)) viralHit = true;
+}
+assert.ok(viralHit, 'weekly.viral_post modular @ w24');
+
+let prestigeHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{hall.ambiance.pulse.prestige}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72190 + s,
+  }))?.trim() || '';
+  assert.ok(!/^Marble echoes prestige — residents loosen belts in unison without a word\.$/.test(line), 'pass-94 prestige bridge alone @ w24');
+  if (/Hall Ambiance|modularFrame|atrium gleams|Tour groups/i.test(line)) prestigeHit = true;
+}
+assert.ok(prestigeHit, 'hall.ambiance.pulse.prestige modular @ w24');
+
+let extractHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = render('{campus.find.saturated_extract}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72200 + s,
+    globals: { featureId: 'campus_exploration' },
+  }))?.trim() || '';
+  assert.ok(!/^Saturated runoff bottles sweet — the gathering site left you a trophy of appetite\.$/.test(line), 'pass-101 saturated_extract bridge alone @ w24');
+  if (/lateFrame|hallTone|campus paths|Hall Ambiance/i.test(line)) extractHit = true;
+}
+assert.ok(extractHit, 'campus.find.saturated_extract modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

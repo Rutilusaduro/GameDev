@@ -55,6 +55,7 @@ const pairs = [
   ['homeroom/index.js', 'homeroom/batchBakerFragments.js'],
   ['weeklyEvent/index.js', 'weeklyEvent/weeklyEventLateModularFragments.js'],
   ['campusEvent/depth.js', 'campusEvent/campusEventLateModularFragments.js'],
+  ['campusEvent/campusEventFragments.js', 'campusExplorationModularFragments.js'],
   ['growthEvent/depth.js', 'growthEvent/growthEventLateModularFragments.js'],
   ['deviceUse/index.js', 'deviceUse/deviceLateModularFragments.js'],
   ['deviceCampusUse/index.js', 'deviceUse/deviceLateModularFragments.js'],

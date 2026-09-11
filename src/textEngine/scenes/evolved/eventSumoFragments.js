@@ -16,6 +16,7 @@ registerPool('evolved.scene.sumoDohyo', [
 ]);
 
 const SUMO_SKELETON = '{evolved.scene.sumoDohyo|prefix:} {evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }';
+const SUMO_ENDING = '{evolved.ending.streamCoda|prefix:} {evolved.ending.relGain|prefix: } {evolved.scene.sumoDohyo|prefix: }';
 const SUMO_CHOICE = '{evolved.choice.chatReact|prefix:} {evolved.choice.bodyResult|prefix: } {evolved.scene.sumoDohyo|prefix: }';
 
 const stages = EVOLVED_EVENTS.sumo;
@@ -24,6 +25,14 @@ if (Array.isArray(stages)) {
     (evDef.phases || []).forEach((phase, phaseIdx) => {
       const phaseKey = `evolved.event.sumo.s${stageIdx}.p${phaseIdx}`;
       registerModuleVariants(phaseKey, [
+        {
+          when: { evolvedFormId: ['sumo'], weekMin: 20 },
+          weight: 6,
+          priority: 6,
+          text: [SUMO_SKELETON],
+        },
+      ]);
+      registerModuleVariants(`${phaseKey}.legacyBody`, [
         {
           when: { evolvedFormId: ['sumo'], weekMin: 20 },
           weight: 6,
@@ -42,6 +51,25 @@ if (Array.isArray(stages)) {
           },
         ]);
       }
+    });
+    (evDef.endings || []).forEach((_, endingIdx) => {
+      const endKey = `evolved.event.sumo.s${stageIdx}.end${endingIdx}`;
+      registerModuleVariants(endKey, [
+        {
+          when: { evolvedFormId: ['sumo'], weekMin: 20 },
+          weight: 6,
+          priority: 6,
+          text: [SUMO_ENDING],
+        },
+      ]);
+      registerModuleVariants(`${endKey}.legacyBody`, [
+        {
+          when: { evolvedFormId: ['sumo'], weekMin: 20 },
+          weight: 6,
+          priority: 6,
+          text: [SUMO_ENDING],
+        },
+      ]);
     });
   });
 }

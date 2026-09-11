@@ -45,28 +45,36 @@ registerPool('homeroom.activity.communityWarmth', [
 
 const ACTIVITY_SKELETON = '{homeroom.activity.kitchenHeat|prefix:} {homeroom.activity.communityWarmth|prefix: } {homeroom.activity.suspicion|prefix: }';
 
+const activityLateVariants = () => [
+  {
+    when: { weekMin: 20 },
+    weight: 6,
+    priority: 5,
+    text: [ACTIVITY_SKELETON],
+  },
+  {
+    when: { weekMin: 16 },
+    weight: 4,
+    priority: 3,
+    text: [ACTIVITY_SKELETON],
+  },
+  {
+    when: { weekMin: 7 },
+    weight: 2,
+    priority: 2,
+    text: [ACTIVITY_SKELETON],
+  },
+];
+
 for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
   const phases = act.phases || [{ text: act.text, choices: act.choices || [] }];
-  phases.forEach((_, pi) => {
-    registerModuleVariants(`homeroom.activity.${actKey}.p${pi}`, [
-      {
-        when: { weekMin: 20 },
-        weight: 6,
-        priority: 5,
-        text: [ACTIVITY_SKELETON],
-      },
-      {
-        when: { weekMin: 16 },
-        weight: 4,
-        priority: 3,
-        text: [ACTIVITY_SKELETON],
-      },
-      {
-        when: { weekMin: 7 },
-        weight: 2,
-        priority: 2,
-        text: [ACTIVITY_SKELETON],
-      },
-    ]);
+  phases.forEach((phase, pi) => {
+    const phaseKey = `homeroom.activity.${actKey}.p${pi}`;
+    registerModuleVariants(phaseKey, activityLateVariants());
+    const choices = phase?.choices || act.choices || [];
+    for (const ch of choices) {
+      if (!ch?.id) continue;
+      registerModuleVariants(`${phaseKey}.${ch.id}`, activityLateVariants());
+    }
   });
 }
