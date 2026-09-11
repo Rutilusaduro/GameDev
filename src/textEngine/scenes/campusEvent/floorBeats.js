@@ -95,7 +95,7 @@ registerPool('floor.scene', [
 registerPool('floor.choice.setup', [
   { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
     'She sits like the kitchen already asked a follow-up.',
-    'Foil still under a nail. Check-in pretends that is weather.',
+    'Foil still under a nail. Check-in pretends the foil is weather.',
   ] },
   { when: { leftoverFed: true }, weight: 3, text: [
     'Crumbs from the midnight sitting. The choice lands on them.',
