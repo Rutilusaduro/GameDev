@@ -54,6 +54,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'campusDeviceEncounters', file: 'campusDeviceEncounters.js' },
   { id: 'oppositionActs', file: 'oppositionActs.js' },
   { id: 'dorms', file: 'dorms.js' },
+  { id: 'faculty', file: 'faculty.js' },
   { id: 'ascensionEssence', file: 'ascension/essence.js' },
   { id: 'ascensionAbilities', file: 'ascension/abilities.js' },
   { id: 'campusWitness', file: 'campusWitness.js' },

@@ -3,7 +3,7 @@
 // Dialogue trees gated by affinity; persisted per teacher.
 // ═══════════════════════════════════════════════════════════════
 import { useState } from 'react';
-import { FACULTY, FACULTY_CONFIG, FACULTY_AFFINITY_TIERS, getFacultyTier } from '../gameData/faculty.js';
+import { FACULTY, FACULTY_CONFIG, FACULTY_AFFINITY_TIERS, getFacultyTier, scaleFacultyAffinityGain } from '../gameData/faculty.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { C } from '../styles.js';
@@ -206,7 +206,7 @@ export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity }){
   const handleAffinityGain = (teacherId, amount) => {
     setFacultyAffinity(prev => ({
       ...prev,
-      [teacherId]: Math.min(FACULTY_CONFIG.maxAffinity, (prev[teacherId] || 0) + amount),
+      [teacherId]: Math.min(FACULTY_CONFIG.maxAffinity, (prev[teacherId] || 0) + scaleFacultyAffinityGain(amount)),
     }));
   };
 

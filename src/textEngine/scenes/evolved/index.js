@@ -104,7 +104,15 @@ export function renderEvolvedEventChoiceResult(formId, stageIdx, phaseIdx, choic
     line = '';
   }
   if (!line || line.includes('{unresolved}')) {
-    line = typeof choice.result === 'function' ? String(choice.result(student)).trim() : (choice.result || '').trim();
+    if (typeof choice.result === 'function') {
+      try {
+        line = String(choice.result(student, history)).trim();
+      } catch {
+        line = String(choice.result(student)).trim();
+      }
+    } else {
+      line = (choice.result || '').trim();
+    }
   }
   line = tryAppendLegacyBody(
     line,
