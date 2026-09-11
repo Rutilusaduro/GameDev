@@ -114,6 +114,58 @@ registerPool('overhaul.linger.evolved', [
   ]},
 ]);
 
+registerPool('overhaul.linger.cg', [
+  { when: {}, text: [
+    'Priya treats the number like a rival she can out-eat. She wants it higher.',
+    'She checks the board again. Hunger is the strategy. Softness is the score.',
+    'The extra of her is the argument. She keeps making it.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'She fills more of the frame than last week. The corkboard already knows.',
+  ]},
+]);
+
+registerPool('overhaul.cg.kitchen', [
+  { when: {}, text: [
+    'Priya takes the hall kitchen first. Hot pans, extra portions, no audience but you.',
+    'Floor kitchen first. She eats standing so the mass can settle on the walk back.',
+    'The kitchen light finds her mid-bite. She does not stop for it.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The kitchen already knows her appetite. She gives it more to work with.',
+  ]},
+]);
+
+registerPool('overhaul.linger.hive', [
+  { when: {}, text: [
+    'Lavender warmth holds after the tribute. Maya records it without writing anything down.',
+    'The Nest keeps the heat. Soft mass at the center, quiet and fed.',
+    'She accepts the offering the way a queen accepts weather: as hers.',
+  ]},
+  { when: { stageMin: 7 }, weight: 2, text: [
+    'The room rearranges around her. Recruits will feel this in the walls later.',
+  ]},
+]);
+
+registerPool('overhaul.linger.fair', [
+  { when: {}, text: [
+    'Ribbon still on, belly still working. The fair was only the first course.',
+    'She keeps the number like a souvenir and the fullness like a prize.',
+    'Judges already left. She is still eating. The ranking that matters is still in her.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The scale is done. She is not. Soft mass keeps arriving in the afterglow.',
+  ]},
+]);
+
+registerPool('overhaul.linger.device', [
+  { when: {}, text: [
+    'The machine goes quiet. Her body keeps the instruction.',
+    'Warmth stays in the padding after the cycle. She stays with it.',
+    'She breathes around the extra. The workshop smells like cream and metal.',
+  ]},
+]);
+
 registerPool('overhaul.linger.body', [
   { when: {}, text: [
     'You take her in again before she covers. Soft mass, heat, the extra that was not here last week.',

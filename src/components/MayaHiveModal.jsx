@@ -14,6 +14,7 @@ import {
   getFrontierRooms,
   getHiveFloorResonance,
 } from '../gameData/mayaHive.js';
+import { extraHiveActions } from '../gameData/mechanicDepth.js';
 
 const HIVE_BG = "#07040d";
 const HIVE_PANEL = "rgba(78, 36, 96, 0.28)";
@@ -109,6 +110,7 @@ export function MayaHiveModal({
   setMayaHiveState,
   closeMayaHive,
   soundEnabled = true,
+  owned = {},
 }){
   const hs=hiveState;
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, hs?.view, hs?.mayaStudentId]);
@@ -252,7 +254,10 @@ export function MayaHiveModal({
 
             <div style={{background:HIVE_PANEL,border:`1px solid ${HIVE_ACC}33`,borderRadius:12,padding:12}}>
               <div style={{fontSize:9,letterSpacing:3,color:HIVE_ACC,marginBottom:8}}>RA ACTIONS</div>
-              <button style={{...C.btn(HIVE_ACC_2),width:"100%",textAlign:"left",marginBottom:8}} onClick={doMayaHiveVisit}>🍽️ Visit Central Nest</button>
+              <button style={{...C.btn(HIVE_ACC_2),width:"100%",textAlign:"left",marginBottom:8}} onClick={()=>doMayaHiveVisit()}>🍽️ Visit Central Nest</button>
+              {extraHiveActions(owned).map((act)=>(
+                <button key={act.id} style={{...C.btn(HIVE_ACC),width:"100%",textAlign:"left",marginBottom:8}} onClick={()=>doMayaHiveVisit(act.id)}>🍳 {act.label}</button>
+              ))}
               <button style={{...C.btn("#3d224c"),width:"100%",textAlign:"left",marginBottom:8,border:`1px solid ${HIVE_ACC}33`}} onClick={doMayaHivePhoto}>📷 Observe Hive State</button>
               <button
                 disabled={!vp?.effects?.absorb||hs.members<=1}

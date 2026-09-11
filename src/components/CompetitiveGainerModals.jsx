@@ -8,6 +8,7 @@ import { cgDrive, cgDriveDelta, cgIsRaMessage, cgSubstateGain } from '../gameDat
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { extraCgActions } from '../gameData/mechanicDepth.js';
 
 const CG_BG = '#0a0306';
 const CG_ACC = '#e8294a';
@@ -58,7 +59,7 @@ export function CompetitiveGainerChatModal({ competitiveGainerState, students, g
         );
 }
 
-export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGDriveTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true }){
+export function CompetitiveGainerMainModal({ competitiveGainerState, students, getCGDriveTier, getMeasurements, lilithUnlocked, doCGMeasurement, setCompetitiveGainerState, applyAndCloseCGBinge, doCGCorkboard, openCGMeasurementPicker, doCGSelfReview, ap, setAp, doCGBinge, closeCGModal, soundEnabled = true, owned = {} }){
         const cgS=competitiveGainerState;
         const priya=students.find(s=>s.id===cgS.priyaStudentId);
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, cgS?.view, cgS?.priyaStudentId]);
@@ -253,6 +254,28 @@ export function CompetitiveGainerMainModal({ competitiveGainerState, students, g
                   <span style={{fontWeight:700}}>🔴 Push Priya's Gains</span>
                   <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{CG_CONFIG.bingeApCost} AP · {tier.label} intensity</span>
                 </button>
+                {extraCgActions(owned).map((act)=> act.id==='kitchen' ? (
+                  <button
+                    key={act.id}
+                    type="button"
+                    className="competitive-gainer-choice-row"
+                    style={{...C.btn(ap>=CG_CONFIG.bingeApCost?CG_ACC:CG_DIM),textAlign:"left",padding:"10px 14px",opacity:ap>=CG_CONFIG.bingeApCost?1:0.45}}
+                    disabled={ap<CG_CONFIG.bingeApCost}
+                    onClick={()=>{setAp(a=>a-CG_CONFIG.bingeApCost);doCGBinge('kitchen');}}>
+                    <span style={{fontWeight:700}}>🍳 {act.label}</span>
+                    <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{CG_CONFIG.bingeApCost} AP · {act.hint}</span>
+                  </button>
+                ) : (
+                  <button
+                    key={act.id}
+                    type="button"
+                    className="competitive-gainer-choice-row"
+                    style={{...C.btn(CG_DIM),textAlign:"left",padding:"10px 14px"}}
+                    onClick={()=>doCGCorkboard('lounge')}>
+                    <span style={{fontWeight:700}}>🛋 {act.label}</span>
+                    <span style={{fontSize:9,color:CG_SUBTLE,marginLeft:8}}>{act.hint}</span>
+                  </button>
+                ))}
               </div>
               <button type="button" className="competitive-gainer-choice-row" style={{...C.btn(CG_BG),width:"100%",marginTop:12,border:`1px solid ${CG_DIM}30`}} onClick={closeCG}>Close</button>
             </div>,

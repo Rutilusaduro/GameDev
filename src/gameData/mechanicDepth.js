@@ -15,7 +15,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'weighIn', before: 1, after: 2, hook: 'weighInRelBonus' },
   { id: 'roomVisit', before: 1, after: 2, hook: 'roomVisitRelBonus' },
   { id: 'intimacy', before: 1, after: 3, hook: 'intimacyRelBonus+extraChoice' },
-  { id: 'devices', before: 1, after: 3, hook: 'deviceTickBonus+extraUseLbs' },
+  { id: 'devices', before: 1, after: 4, hook: 'deviceTickBonus+extraUseLbs+forceFeederKitchen' },
   { id: 'pantry', before: 1, after: 3, hook: 'pantryBonus+itemCalBonus+useModes' },
   { id: 'campus', before: 1, after: 2, hook: 'campusYieldBonus' },
   { id: 'opposition', before: 1, after: 3, hook: 'oppositionCover+extraHearingChoice' },
@@ -28,7 +28,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'hunt', before: 1, after: 2, hook: 'kitchenHuntBonus' },
   { id: 'trust', before: 1, after: 2, hook: 'socialTrustDrip' },
   { id: 'discontent', before: 1, after: 2, hook: 'comfortFramingDecay' },
-  { id: 'evolved', before: 1, after: 3, hook: 'minigameExtras+floorBonus' },
+  { id: 'evolved', before: 1, after: 4, hook: 'minigameExtras+floorBonus+extraEventChoice' },
   { id: 'influence', before: 1, after: 2, hook: 'pairGainFromSocial' },
   { id: 'narrativeEvents', before: 1, after: 2, hook: 'echoRelBonus' },
   { id: 'salon', before: 1, after: 3, hook: 'salonFloorLbs+extraService' },
@@ -39,6 +39,9 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'homeroom', before: 1, after: 2, hook: 'extraHomeroomChoice' },
   { id: 'wifeLessons', before: 1, after: 2, hook: 'extraLesson' },
   { id: 'cult', before: 1, after: 2, hook: 'extraCultRoute' },
+  { id: 'cg', before: 1, after: 2, hook: 'extraCgBingeLbs+kitchenPush' },
+  { id: 'hive', before: 1, after: 2, hook: 'extraHiveVisitLbs+shiftLbs' },
+  { id: 'fairDay', before: 1, after: 2, hook: 'extraFairAfterparty' },
 ];
 
 export function kitchenHuntBonus(baseGain, owned = {}) {
@@ -97,6 +100,60 @@ export function evolvedFloorBonus(owned = {}) {
 export function extraDeviceUseLbs(owned = {}) {
   if (!owned.device_bay) return 0;
   return 1 + Math.floor(completedRoomCount(owned) / 6);
+}
+
+export function extraCgBingeLbs(owned = {}) {
+  let n = 0;
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) n += 4;
+  if (owned.dinner_basic || owned.legendary_host) n += 3;
+  return n;
+}
+
+export function extraCgCorkboardDrive(owned = {}) {
+  if (owned.comfy_chairs || owned.media_nook || owned.reinforced_seating) return 4;
+  return 0;
+}
+
+export function extraCgActions(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({ id: 'kitchen', label: "Hall kitchen push", hint: 'Floor kitchen lbs on top of the binge' });
+  }
+  if (owned.comfy_chairs || owned.media_nook || owned.reinforced_seating) {
+    extras.push({ id: 'lounge', label: 'Lounge corkboard', hint: 'Drive from the wide chairs' });
+  }
+  return extras;
+}
+
+export function extraHiveVisitLbs(owned = {}) {
+  let n = 0;
+  if (owned.snack_station || owned.artisan_bakery) n += 3;
+  if (owned.comfy_chairs || owned.dedicated_suite) n += 2;
+  return n;
+}
+
+export function extraHiveShiftLbs(owned = {}) {
+  let n = 0;
+  if (owned.snack_station) n += 2;
+  if (owned.luxury_pantry) n += 1;
+  return n;
+}
+
+export function extraHiveActions(owned = {}) {
+  if (!(owned.snack_station || owned.artisan_bakery || owned.luxury_pantry)) return [];
+  return [{ id: 'kitchen', label: 'Kitchen tribute to the Nest' }];
+}
+
+export function extraForceFeederKitchenLbs(owned = {}) {
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) return 3;
+  return 0;
+}
+
+export function extraActivityKitchenLbs(owned = {}) {
+  let n = 0;
+  if (owned.snack_station || owned.artisan_bakery) n += 3;
+  if (owned.comfy_chairs) n += 1;
+  return n;
 }
 
 export function assertMechanicDepthCoverage() {

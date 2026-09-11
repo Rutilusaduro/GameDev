@@ -72,6 +72,7 @@ const LINGER_KIND = {
   stream: 'media', streamPre: 'media', collabStream: 'media', recordingSession: 'media',
   evolved: 'social', wifeLessons: 'social', wifeLessonsTalk: 'social', homeroom: 'social',
   cultivator: 'food', sumoMatch: 'food',
+  device: 'device',
 };
 
 /** Append a V2 depth beat when pool resolves and chance hits, then a linger coda. */

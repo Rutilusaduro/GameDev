@@ -1,5 +1,5 @@
-// Floor-skill extras for hall kitchen (Daisy) and wife lessons (MJ).
-import { WL_LESSONS } from './evolvedForms.js';
+// Floor-skill extras for hall kitchen (Daisy), wife lessons (MJ), evolved events, fair day.
+import { EVOLVED_EVENTS, WL_LESSONS } from './evolvedForms.js';
 
 export function extraHomeroomChoices(actKey, phaseIdx = 0, owned = {}) {
   const extras = [];
@@ -64,4 +64,58 @@ export function extraWifeLessons(stage = 1, owned = {}) {
 
 export function wifeLessonsForOwned(stage, owned = {}) {
   return [...(WL_LESSONS[stage] || []), ...extraWifeLessons(stage, owned)];
+}
+
+export function extraEvolvedChoices(formId, stageIdx, phaseIdx, owned = {}) {
+  if (phaseIdx !== 0) return [];
+  if (!EVOLVED_EVENTS[formId]?.[stageIdx]?.phases?.[0]) return [];
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({
+      id: 'floor_kitchen_fuel',
+      label: 'Hall kitchen fuel first',
+      result: `The hall kitchen is already warm. She eats standing at the counter like this extra belongs to the ritual. Belly fills. She goes back heavier on purpose.`,
+      lbs: 9,
+      rel: 4,
+    });
+  }
+  if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
+    extras.push({
+      id: 'lounge_settle',
+      label: 'Settle in the lounge first',
+      result: `She takes the wide chair like it was built for this body. The lounge keeps her a minute longer. Softness spreads. She leaves warmer and closer.`,
+      lbs: 4,
+      rel: 8,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function evolvedChoicesForPhase(formId, stageIdx, phaseIdx, owned = {}) {
+  const phase = EVOLVED_EVENTS[formId]?.[stageIdx]?.phases?.[phaseIdx];
+  if (!phase) return [];
+  return [...(phase.choices || []), ...extraEvolvedChoices(formId, stageIdx, phaseIdx, owned)];
+}
+
+export function extraFairAfterparty(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.legendary_host) {
+    extras.push({
+      id: 'kitchen_spread',
+      label: 'Hall kitchen victory spread',
+      result: `She skips the fair concessions and hits the floor kitchen. The spread is already warm. She eats standing, still in the ribbon, belly filling like the prize was a second course.`,
+      gain: 8,
+      rel: 5,
+    });
+  }
+  if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
+    extras.push({
+      id: 'lounge_after',
+      label: 'Lounge afterglow',
+      result: `She takes the wide chair still wearing the number. The lounge keeps her. Soft mass settles. The afterparty comes to her.`,
+      gain: 4,
+      rel: 7,
+    });
+  }
+  return extras.slice(0, 2);
 }

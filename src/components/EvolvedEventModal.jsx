@@ -3,9 +3,10 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
+import { evolvedChoicesForPhase } from '../gameData/evolvedFloorExtras.js';
 import { renderEvolvedEventProse } from '../textEngine/scenes/evolved/index.js';
 
-export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true }){
+export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true, owned = {} }){
         const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge,startsSalon,startsGallery}=evolvedEventState;
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, studentId, formId, stageIdx, phaseIdx]);
         const s=students.find(st=>st.id===studentId);
@@ -72,7 +73,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
               {/* Choices or close button */}
               {!done&&phase&&(
                 <div style={{display:"flex",flexDirection:"column",gap:7}}>
-                  {phase.choices.map(ch=>{
+                  {evolvedChoicesForPhase(formId,stageIdx,phaseIdx,owned).map(ch=>{
                     const locked=ch.requires&&!history.includes(ch.requires);
                     const excluded=ch.requiresNot&&history.includes(ch.requiresNot);
                     if(excluded) return null;

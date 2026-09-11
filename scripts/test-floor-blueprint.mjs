@@ -20,14 +20,14 @@ import { aggregateHallLoungeSkillEffects, buyHallLoungeSkill } from '../src/game
 import { createInitialPlayer } from '../src/gameData/player.js';
 import { clothingStateForStage } from '../src/gameData/textContext.js';
 import { pickHearingEnding, REMOVAL_HEARING, extraHearingChoices, hearingChoicesForPhase } from '../src/gameData/oppositionHearings.js';
-import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs } from '../src/gameData/mechanicDepth.js';
+import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraCgActions, extraHiveActions } from '../src/gameData/mechanicDepth.js';
 import { extraSalonServiceChoices, salonChoicesForOwned, startSalonSession, salonPickMenu, salonServiceChoice } from '../src/gameData/chloeSalon.js';
 import { extraStudioActions, extraFieldLocations, studioActionsForOwned, fieldLocationsForOwned } from '../src/gameData/fionaGallery.js';
 import { extraMinigameChoices, minigameChoicesForPhase, computeMinigameOutcome } from '../src/gameData/evolvedMinigames.js';
 import { extraAcquisitionChoices, acquisitionChoicesForOwned, startChemSession } from '../src/gameData/pharmacistIngredients.js';
 import { extraCultRoutes, cultRoutesForOwned, applyCultDistribution } from '../src/gameData/pharmacistCult.js';
 import { extraContestActions, extraSumoCornerFeeds, contestActionsForOwned, sumoCornerFeedsForOwned } from '../src/gameData/miniGames.js';
-import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned } from '../src/gameData/evolvedFloorExtras.js';
+import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned, extraEvolvedChoices, evolvedChoicesForPhase, extraFairAfterparty } from '../src/gameData/evolvedFloorExtras.js';
 import { extraItemUseModes, itemUseModesForOwned } from '../src/gameData/items.js';
 import { HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/evolvedForms.js';
 import { extraIntimacyChoices, intimacyChoicesForPhase } from '../src/gameData/intimacy.js';
@@ -120,7 +120,7 @@ const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
 const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
 assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
-assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 33, 'depth inventory covers live systems');
+assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 36, 'depth inventory covers live systems');
 for (const row of MECHANIC_DEPTH_INVENTORY) {
   assert.ok(row.after > row.before, `${row.id} after (${row.after}) must beat before (${row.before})`);
   assert.ok(row.hook, `${row.id} missing hook`);
@@ -195,6 +195,20 @@ assert.ok(cultOut.outcome, 'cult extra route is playable');
 assert.ok(extraItemUseModes({ snack_station: true, luxury_pantry: true }).length >= 2);
 assert.ok(itemUseModesForOwned({ dinner_basic: true }).some((m) => m.id === 'share'));
 assert.ok(itemUseModesForOwned({}).length === 1, 'bare pantry stays one mode');
+
+assert.ok(extraEvolvedChoices('sumo', 0, 0, { snack_station: true }).some((c) => c.id === 'floor_kitchen_fuel'));
+assert.ok(evolvedChoicesForPhase('sumo', 0, 0, { snack_station: true }).length > 2, 'evolved extras append on phase 0');
+assert.equal(extraEvolvedChoices('sumo', 0, 1, { snack_station: true }).length, 0, 'evolved extras stay on phase 0');
+assert.ok(extraFairAfterparty({ snack_station: true }).some((e) => e.id === 'kitchen_spread'));
+assert.ok(extraCgBingeLbs({ snack_station: true }) >= 4);
+assert.equal(extraCgBingeLbs({}), 0);
+assert.ok(extraCgActions({ snack_station: true, comfy_chairs: true }).length >= 2);
+assert.ok(extraCgCorkboardDrive({ media_nook: true }) >= 4);
+assert.ok(extraHiveVisitLbs({ snack_station: true }) >= 3);
+assert.ok(extraHiveShiftLbs({ luxury_pantry: true }) >= 1);
+assert.ok(extraHiveActions({ artisan_bakery: true }).some((a) => a.id === 'kitchen'));
+assert.ok(extraForceFeederKitchenLbs({ artisan_bakery: true }) >= 3);
+assert.ok(extraActivityKitchenLbs({ snack_station: true }) >= 3);
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

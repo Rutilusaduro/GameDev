@@ -6,6 +6,7 @@ import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
+import { extraFairAfterparty } from '../gameData/evolvedFloorExtras.js';
 
 export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ft.open, ft.view, ft.cycleNum]);
@@ -104,7 +105,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   );
 }
 
-export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true }){
+export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true, owned = {} }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, fd.studentId, fd.phase, fd.weighInChoice, fd.afterpartyChoice]);
   const s=students.find(st=>st.id===fd.studentId);
   if(!s) return null;
@@ -161,6 +162,9 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
                   <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>
+                  {extraFairAfterparty(owned).map((ex)=>(
+                    <button key={ex.id} type="button" className="fair-choice-row" style={{...C.btn("#4a3010"),width:"100%"}} onClick={()=>chooseFairAfterparty(ex.id)}>🍳 {ex.label}</button>
+                  ))}
                 </div>
               </>}
               {fd.afterpartyChoice&&<>

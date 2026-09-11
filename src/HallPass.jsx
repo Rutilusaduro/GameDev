@@ -14,7 +14,7 @@ import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { homeroomChoicesForPhase, wifeLessonsForOwned } from './gameData/evolvedFloorExtras.js';
+import { homeroomChoicesForPhase, wifeLessonsForOwned, extraEvolvedChoices, extraFairAfterparty } from './gameData/evolvedFloorExtras.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, extraContestActions, extraSumoCornerFeeds, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
@@ -101,7 +101,7 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
 import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan } from './gameData/weekPlanner.js';
-import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs } from './gameData/mechanicDepth.js';
+import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs } from './gameData/mechanicDepth.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -2560,7 +2560,7 @@ export default function HallPass(){
     const bonusRel=tree.filter(sk=>skills.includes(sk.id)&&sk.activityRelBonus).reduce((a,b)=>a+(b.activityRelBonus||0),0)
       +((s.evolvedForm==='eating_streamer'||s.evolvedForm==='feedee_creator')?(loungeAct.streamRelBonus||0):0);
     const doubleCharge=tree.find(sk=>skills.includes(sk.id)&&sk.doubleActivityCharge);
-    const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain+getSupernaturalActivityBonus(s).gainBonus;
+    const rawGain=rnd(meta.gainRange[0],meta.gainRange[1])+bonusGain+getSupernaturalActivityBonus(s).gainBonus+extraActivityKitchenLbs(ownedHallSkills||{});
     const gain=doubleCharge?rawGain*2:rawGain;
     const relGain=meta.relBonus+bonusRel;
     setAp(a=>a-meta.apCost);
@@ -2580,7 +2580,8 @@ export default function HallPass(){
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const evDef=EVOLVED_EVENTS[formId]?.[stageIdx]; if(!evDef) return;
     const phase=evDef.phases[phaseIdx]; if(!phase) return;
-    const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
+    const extraList=extraEvolvedChoices(formId,stageIdx,phaseIdx,ownedHallSkills||{});
+    const choice=extraList.find(c=>c.id===choiceId)||phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
     const newGain=gainAccum+(choice.lbs||0);
@@ -3484,15 +3485,19 @@ export default function HallPass(){
     setCompetitiveGainerState(prev=>prev?{...prev,open:false,view:null,subState:null}:prev);
   };
 
-  const doCGCorkboard=()=>{
+  const doCGCorkboard=(mode)=>{
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
       const tier=getCGDriveTier(cgDrive(prev));
       const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
       const idx=(prev.corkboardVisitCount||0)%scenes.length;
-      const sceneText=scenes[idx];
-      // Drive gain: check if any visible student is within threat range
+      let sceneText=scenes[idx];
       const priya=students.find(st=>st.id===prev.priyaStudentId);
+      if(priya){
+        const linger=render('{overhaul.linger.cg}',createContext({subject:priya,week}))?.trim();
+        if(linger) sceneText=`${sceneText} ${linger}`;
+      }
+      // Drive gain: check if any visible student is within threat range
       let driveGain=rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
       if(priya){
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
@@ -3506,7 +3511,8 @@ export default function HallPass(){
           });
         });
       }
-      const nextDrive=cgDrive(prev)+driveGain;
+      const extraDrive=extraCgCorkboardDrive(ownedHallSkills||{})+(mode==='lounge'?4:0);
+      const nextDrive=cgDrive(prev)+driveGain+extraDrive;
       const priyaNow=students.find(st=>st.id===prev.priyaStudentId);
       const chatMsgs=priyaNow?generateCGChatMessages(priyaNow,students,{...prev,drive:nextDrive},week):[];
       return{...prev,drive:nextDrive,corkboardVisitCount:(prev.corkboardVisitCount||0)+1,chatLog:[...prev.chatLog,...chatMsgs],lastChatWeek:week,view:'corkboard',subState:{sceneText,driveGain}};
@@ -3566,7 +3572,7 @@ export default function HallPass(){
     });
   };
 
-  const doCGBinge=()=>{
+  const doCGBinge=(mode)=>{
     // 1 AP cost already deducted from the modal's "Push Priya's Gains" button
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
@@ -3577,9 +3583,17 @@ export default function HallPass(){
       const stageId=Math.min(7,getStage(priya.lbs).id);
       const baseGain=CG_CONFIG.minBinge+(CG_CONFIG.maxBinge-CG_CONFIG.minBinge)*Math.min(1,(stageId-1)/6);
       const mult=CG_CONFIG.bingeDriveMults[Math.max(0,tierIdx)];
-      const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30));
+      const extraLbs=extraCgBingeLbs(ownedHallSkills||{})+(mode==='kitchen'?4:0);
+      const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30))+extraLbs;
       const stageKey=getCGStageKey(priya.lbs);
-      const sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+      let sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+      const ctx=createContext({subject:priya,week});
+      if(mode==='kitchen'){
+        const kit=render('{overhaul.cg.kitchen}',ctx)?.trim();
+        if(kit) sceneText=`${kit} ${sceneText}`;
+      }
+      const linger=render('{overhaul.linger.cg}',ctx)?.trim();
+      if(linger) sceneText=`${sceneText} ${linger}`;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -3674,7 +3688,7 @@ export default function HallPass(){
       const assigned=Object.values(prev.assignments).reduce((a,b)=>a+b,0);
       if(assigned>prev.members){push("⚠️ Too many Hive members assigned.");return prev;}
       const next=executeHiveShift(prev,{mayaStageId:getStage(maya.lbs).id});
-      const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2));
+      const mayaGain=Math.max(2,Math.round((next.lastShift?.biomassGain||0)*0.32+getHiveControl(next.rooms)*0.2))+extraHiveShiftLbs(ownedHallSkills||{});
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,mayaGain,4):s));
       push(`🕸️ Maya — Delivery Hive Shift: +${mayaGain} lbs · Dorm Control ${Math.round((getHiveControl(next.rooms)/24)*100)}%`);
       // Modular-text intake scene when the shift recruits new bodies
@@ -3699,7 +3713,7 @@ export default function HallPass(){
     });
   };
 
-  const doMayaHiveVisit=()=>{
+  const doMayaHiveVisit=(mode)=>{
     setMayaHiveState(prev=>{
       if(!prev) return prev;
       const maya=students.find(s=>s.id===prev.mayaStudentId);
@@ -3708,16 +3722,20 @@ export default function HallPass(){
       const bmiTier=getHiveBmiTier(prev.avgBmi);
       const rooms=getHiveControl(prev.rooms);
       const tag=makeHiveTag("CentralNestVisit",{mayaStage,vpId:prev.vpId||"none",bmiTier,rooms,task:"ra",roomId:prev.selectedRoomId});
-      const gain=Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35);
+      const extra=extraHiveVisitLbs(ownedHallSkills||{})+(mode==='kitchen'?4:0);
+      const gain=Math.round(8+getStage(maya.lbs).id*1.5+prev.hiveBiomass/35)+extra;
       const biomass=Math.round(gain*0.8);
       setStudents(sp=>sp.map(s=>s.id===prev.mayaStudentId?processStudentGain(s,gain,6):s));
       push(`🕸️ Maya — Central Nest Visit: +${gain} lbs`);
+      let visitText=`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`;
+      const linger=render('{overhaul.linger.hive}',createContext({subject:maya,week}))?.trim();
+      if(linger) visitText=`${visitText} ${linger}`;
       return {
         ...prev,
         hiveBiomass:prev.hiveBiomass+biomass,
         floorResonance:getHiveFloorResonance(prev)+3,
         view:"visit",
-        subState:{tag,gain,biomass,text:`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
+        subState:{tag,gain,biomass,text:visitText},
         log:[{tag,text:"RA-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
       };
     });
@@ -4720,7 +4738,7 @@ export default function HallPass(){
           chokedOut: next.resultParams.chokedOut,
         });
         const applied=applyDeviceEffect(target,{
-          gainLbs: built.gainLbs,
+          gainLbs: built.gainLbs+extraForceFeederKitchenLbs(ownedHallSkills||{}),
           bodyOverride: built.bodyOverride,
           psychDelta: built.psychDelta,
         },{ week, sourceDeviceId:'feeding_mask', rng:Math.random });
@@ -6483,11 +6501,20 @@ export default function HallPass(){
   const chooseFairAfterparty=(choice)=>{
     setFairDayState(prev=>{
       if(!prev||prev.phase!=='afterparty'||prev.afterpartyChoice) return prev;
+      const s=students.find(st=>st.id===prev.studentId);
+      const extra=extraFairAfterparty(ownedHallSkills||{}).find(e=>e.id===choice);
+      const linger=s?render('{overhaul.linger.fair}',createContext({subject:s,week}))?.trim():'';
+      if(extra){
+        return {...prev,afterpartyChoice:extra.id,
+          afterpartyResultText:linger?`${extra.result} ${linger}`:extra.result,
+          totalGain:prev.totalGain+extra.gain,relBonus:prev.relBonus+extra.rel};
+      }
       const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
       const gain=choice===1?sc.gainA:sc.gainB;
       const rel=choice===1?sc.relA:sc.relB;
+      const resultText=`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`;
       return {...prev,afterpartyChoice:choice,
-        afterpartyResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`,
+        afterpartyResultText:linger?`${resultText} ${linger}`:resultText,
         totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };
@@ -9292,7 +9319,7 @@ export default function HallPass(){
       {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal} soundEnabled={soundEnabled}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled}/>}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} owned={ownedHallSkills||{}} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
 
@@ -9333,10 +9360,10 @@ export default function HallPass(){
       {cgChatOpen&&<CompetitiveGainerChatModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} cgRaReply={cgRaReply} setCgChatOpen={setCgChatOpen} soundEnabled={soundEnabled}/>}
 
       {/* ── COMPETITIVE GAINER — MAIN EVOLVED MODAL ── */}
-      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled}/>}
+      {competitiveGainerState?.open&&<CompetitiveGainerMainModal competitiveGainerState={competitiveGainerState} students={students} getCGDriveTier={getCGDriveTier} getMeasurements={getMeasurements} lilithUnlocked={lilithUnlocked} doCGMeasurement={doCGMeasurement} setCompetitiveGainerState={setCompetitiveGainerState} applyAndCloseCGBinge={applyAndCloseCGBinge} doCGCorkboard={doCGCorkboard} openCGMeasurementPicker={openCGMeasurementPicker} doCGSelfReview={doCGSelfReview} ap={ap} setAp={setAp} doCGBinge={doCGBinge} closeCGModal={closeCGModal} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── MAYA DELIVERY HIVE — TERRITORY MANAGEMENT MODAL ── */}
-      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled}/>}
+      {mayaHiveState?.open&&<MayaHiveModal hiveState={mayaHiveState} students={students} lilithUnlocked={lilithUnlocked} chooseHiveVP={chooseHiveVP} adjustHiveAssignment={adjustHiveAssignment} executeMayaHiveShift={executeMayaHiveShift} doMayaHiveVisit={doMayaHiveVisit} doMayaHivePhoto={doMayaHivePhoto} doMayaHiveAbsorb={doMayaHiveAbsorb} setMayaHiveState={setMayaHiveState} closeMayaHive={closeMayaHive} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── EATING CONTEST MINI-GAME MODAL ── */}
       {eatingContestState&&<EatingContestModal eatingContestState={eatingContestState} students={students} week={week} toggleFoodSelection={toggleFoodSelection} eatContestFood={eatContestFood} doContestAction={doContestAction} doDevour={doDevour} setEatingContestState={setEatingContestState} closeEatingContest={closeEatingContest} dismissContestPopup={dismissContestPopup} owned={ownedHallSkills||{}} soundEnabled={soundEnabled}/>}
@@ -9552,7 +9579,7 @@ export default function HallPass(){
       {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
-      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled}/>}
+      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
       {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} soundEnabled={soundEnabled}/>}
