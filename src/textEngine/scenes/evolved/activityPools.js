@@ -12,6 +12,33 @@ function beatFn(entry) {
   };
 }
 
+const ACTIVITY_ATMOSPHERE = [
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    const lbs = Math.round(ctx.subject?.lbs ?? 0);
+    return lbs > 0
+      ? `${n} leaves ${lbs} pounds of presence in the hallway when she goes.`
+      : `${n} leaves appetite in the hallway when she goes.`;
+  },
+  'The floor remembers the session long after the plates are empty.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} stacks habit on habit — nobody pretends this is accidental anymore.`;
+  },
+  'Someone down the hall smells what happened and starts thinking about seconds.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'She';
+    return `${n} moves slower afterward, satisfied in a way the building rewards.`;
+  },
+  'Radiators hum. Bellies settle. The RA log can wait.',
+];
+
+function atmosphereBeat(formId, stageIdx, slot = 0) {
+  const i = (formId.length * 7 + stageIdx * 3 + slot) % ACTIVITY_ATMOSPHERE.length;
+  const fn = ACTIVITY_ATMOSPHERE[i];
+  return typeof fn === 'function' ? fn : () => fn;
+}
+
 for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
   if (!Array.isArray(arr)) continue;
   const entries = [];
@@ -24,11 +51,8 @@ for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
       weight: 2,
       text: [
         core,
-        core,
-        (ctx) => {
-          const line = core(ctx);
-          return line ? `${line}\n\nThe hall remembers the number after she leaves.` : line;
-        },
+        atmosphereBeat(formId, si, 0),
+        atmosphereBeat(formId, si, 1),
       ],
     });
   }
@@ -40,7 +64,7 @@ for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
         const e = arr[si];
         return e ? beatFn(e)(ctx) : "She's in her element.";
       },
-      (ctx) => beatFn(arr[Math.min(arr.length - 1, ctx.globals?.evolvedStageIdx ?? 0)])(ctx),
+      atmosphereBeat(formId, arr.length - 1, 0),
       (ctx) => "She's in her element — heavier, surer, already thinking about the next meal.",
     ],
   });
@@ -48,7 +72,7 @@ for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
     when: {},
     text: [
       (ctx) => beatFn(arr[0])(ctx),
-      (ctx) => "She's in her element.",
+      atmosphereBeat(formId, 0, 2),
       (ctx) => beatFn(arr[Math.min(arr.length - 1, 0)])(ctx),
     ],
   });

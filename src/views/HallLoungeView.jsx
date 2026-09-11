@@ -12,10 +12,11 @@ import {
 } from '../gameData/hallLoungeSkills.js';
 import { skillsForHallRoom, getHallRoom } from '../gameData/hallBlueprint.js';
 import { HallBlueprint } from '../components/HallBlueprint.jsx';
+import { renderHallRoomBlurb } from '../textEngine/scenes/hallBlueprint/index.js';
 
 const TIER_LABELS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
-function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase, roomFilterId = null }) {
+function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase, roomFilterId = null, week = 1 }) {
   const owned = ownedHallSkills || {};
   const total = computeHallLoungeSkillTotal(students);
   const spent = computeHallLoungeSkillSpent(owned);
@@ -35,7 +36,7 @@ function HallLoungeSkillsPanel({ students, ownedHallSkills, onPurchase, roomFilt
       </div>
       <div style={{ fontSize: 10, color: '#806070', marginBottom: 10, lineHeight: 1.5 }}>
         {room
-          ? room.blurb
+          ? renderHallRoomBlurb(roomFilterId, week)
           : 'Spend cumulative hall weight gain on permanent lounge upgrades. Institutional Cover unlocks AIB counter paths.'}
       </div>
       {tiers.map((tier) => {
@@ -109,6 +110,7 @@ export function HallLoungeView({ students, ownedHallSkills, onPurchaseHallLounge
             ownedHallSkills={ownedHallSkills}
             onPurchase={onPurchaseHallLoungeSkill}
             roomFilterId={selectedRoom}
+            week={week}
           />
         </>
       ) : (

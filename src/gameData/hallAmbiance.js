@@ -85,7 +85,7 @@ export function rollWeeklyAmbiancePulse(owned = {}, week = 1, state = {}) {
   if (peak < 40) return null;
   const axis = dominantAmbianceAxis(meters);
   const axisMeta = AMBIANCE_AXES.find((a) => a.id === axis);
-  const passiveDrip = peak >= 70 ? 1 : 0;
+  const passiveDrip = peak >= 70 ? Math.max(1, Math.round(scaleDepthBonus(1))) : 0;
   return {
     week,
     axis,
