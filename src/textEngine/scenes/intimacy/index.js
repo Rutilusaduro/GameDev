@@ -10,7 +10,7 @@ import './depth.js';
 import './selectors.js';
 import './personas.js';
 import './immobileOverrides.js';
-import './intimacySceneDepth.js';
+import { renderIntimacyPhasePool, renderIntimacyEndingPool } from '../overhaul/intimacy.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
@@ -33,13 +33,20 @@ export function buildIntimacyContext(student, history, relTier, week = 1, opts =
 
 export function renderIntimacyPhase(sceneId, phaseIdx, student, history, relTier, week = 1, opts = {}) {
   if (!student || !sceneId) return '';
-  const ctx = buildIntimacyContext(student, history, relTier, week, opts);
+  const ctx = buildIntimacyContext(student, history, relTier, week, {
+    ...opts,
+    globals: { intimacyScene: sceneId, intimacyPhase: phaseIdx ?? 0, ...(opts.globals || {}) },
+  });
+  const composed = renderIntimacyPhasePool(sceneId, phaseIdx, student, week, {
+    globals: { intimacyScene: sceneId, intimacyPhase: phaseIdx ?? 0, ...(opts.globals || {}) },
+  });
+  if (composed) return appendV2Depth(composed, 'intimacy', ctx, opts.v2DepthChance ?? 0.28);
   const depth = phaseIdx === 0 ? render('{intimacy.depth}', ctx, { trace: opts.trace || null })?.trim() : '';
   const main = render(`{intimacy.${sceneId}.p${phaseIdx}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   const overlay = renderIntimacyOverlay(ctx, opts);
   const body = [depth, main].filter(Boolean).join(' ');
-  const composed = composeOverlay(body, overlay);
-  return appendV2Depth(composed, 'intimacy', ctx, opts.v2DepthChance ?? 0.28);
+  const stacked = composeOverlay(body, overlay);
+  return appendV2Depth(stacked, 'intimacy', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Depth overlay only — approach/bodyFeel/resistance/psychVoice/climax. */
@@ -78,7 +85,9 @@ export function renderIntimacyPassout(student, week = 1, opts = {}) {
 export function renderIntimacyEnding(sceneId, endingIdx, student, week = 1, opts = {}) {
   if (!student || !sceneId) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
+  const composed = renderIntimacyEndingPool(sceneId, student, week, opts);
+  if (composed) return appendV2Depth(composed, 'intimacy', ctx, opts.v2DepthChance ?? 0.3);
   const main = render(`{intimacy.${sceneId}.end${endingIdx}}`, ctx, { trace: opts.trace || null })?.trim() || '';
-  const composed = composeOverlay(main, renderIntimacyOverlay(ctx, opts));
-  return appendV2Depth(composed, 'intimacy', ctx, opts.v2DepthChance ?? 0.3);
+  const stacked = composeOverlay(main, renderIntimacyOverlay(ctx, opts));
+  return appendV2Depth(stacked, 'intimacy', ctx, opts.v2DepthChance ?? 0.3);
 }

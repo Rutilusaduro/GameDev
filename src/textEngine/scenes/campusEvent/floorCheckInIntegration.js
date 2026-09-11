@@ -52,15 +52,15 @@ export function renderFloorSceneText(scene, student, week = 1, opts = {}) {
     ...opts,
     globals: { floorSceneId: scene.id, ...(opts.globals || {}) },
   });
-  const beat = render('{campusEvent.beat}', ctx, { trace: opts.trace || null })?.trim() || '';
   const open = render('{floor.checkin.open}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = renderFloorCheckinScene(scene.id, student, week, opts);
   const modular = render(`{campusEvent.scene.${scene.id}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   const legacy = resolveLegacyText(scene.text, student);
-  const heat = render('{floor.checkin.heat}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{overhaul.linger.social}', ctx, { trace: opts.trace || null })?.trim();
   const body = composed || modular || legacy;
-  return joinBeats([beat, open, body, heat, linger]);
+  if (composed) return joinBeats([open, body, linger]);
+  const heat = render('{floor.checkin.heat}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return joinBeats([open, body, heat, linger]);
 }
 
 export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opts = {}) {
@@ -76,10 +76,11 @@ export function renderFloorChoiceResult(scene, choiceIdx, student, week = 1, opt
   });
   const composed = renderFloorCheckinResult(scene.id, foodish ? 'feed' : 'talk', student, week, opts);
   const modular = render(`{campusEvent.choice.${scene.id}.${choiceIdx}}`, ctx, { trace: opts.trace || null })?.trim();
-  const body = composed || modular || resolveLegacyText(choice.result, student);
-  const resultBeat = render(foodish ? '{floor.checkin.result.feed}' : '{floor.checkin.result.talk}', ctx, { trace: opts.trace || null })?.trim();
   const linger = render(foodish ? '{overhaul.linger.food}' : '{overhaul.linger.social}', ctx, { trace: opts.trace || null })?.trim()
     || render('{overhaul.linger}', ctx, { trace: opts.trace || null })?.trim();
+  if (composed) return joinBeats([composed, linger]);
+  const body = modular || resolveLegacyText(choice.result, student);
+  const resultBeat = render(foodish ? '{floor.checkin.result.feed}' : '{floor.checkin.result.talk}', ctx, { trace: opts.trace || null })?.trim();
   return joinBeats([body, resultBeat, linger]);
 }
 

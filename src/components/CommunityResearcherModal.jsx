@@ -7,12 +7,13 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, H
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { renderResearcherChat, renderResearcherThesis, renderResearcherReview } from '../textEngine/scenes/overhaul/researcherChat.js';
 
-export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true, owned = {} }){
+export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true, owned = {}, week = 1 }){
         const crs=communityResearcherState;
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, crs?.modalPhase]);
         const blue="#4a6fa5"; const lblue="#8fa8e0";
-        const cassidy=students.find(s=>s.id===1);
+        const cassidy=students.find(s=>s.id===1) || { id: 1, name: 'Cassidy', lbs: 150, startLbs: 125 };
         const mName=cassidy?.name||"Cassidy";
         const canDismiss=crs.modalPhase==='case_study_grid';
         const dismissCR=()=>{ playHallPassSound('click', soundEnabled); setCommunityResearcherState(prev=>({...prev,modalPhase:null})); };
@@ -133,7 +134,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 FINAL REVIEW</div>
           <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:10}}>Final Panel Hearing</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-            {crs.finalReviewText||''}
+            {renderResearcherReview(crs.pairsUsed, crs.totalSuspicion||0, cassidy, week) || crs.finalReviewText || ''}
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); proceedFromFinalReview(); }}>
             {(getSuspicionBracket(crs.totalSuspicion||0)==='green'||getSuspicionBracket(crs.totalSuspicion||0)==='yellow')
@@ -145,7 +146,8 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         if(crs.modalPhase==='have_a_chat'){
           const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx];
           const phase=scene?.phases[crs.chatPhaseIdx];
-          const phaseText=typeof phase?.text==='function'?phase.text(crs.chatHistory):phase?.text;
+          const leftoverChat=typeof phase?.text==='function'?phase.text(crs.chatHistory):phase?.text;
+          const phaseText=renderResearcherChat(crs.chatMemberIdx, crs.chatPhaseIdx, crs.chatHistory, cassidy, week) || leftoverChat;
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 OFF THE RECORD</div>
             <div style={{fontSize:12,fontWeight:700,color:lblue,marginBottom:8}}>{scene?.member||''}</div>
@@ -176,11 +178,12 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
         // ── THESIS APPROVED ──
         if(crs.modalPhase==='thesis_approved'){
           const bracket=getSuspicionBracket(crs.totalSuspicion||0);
-          const outcomeText=bracket==='green'
+          const leftoverApproved=bracket==='green'
             ?`The panel approves without reservation. Cassidy walks out of the athletics building into the afternoon light and does not look back.`
             :bracket==='yellow'
             ?`Conditional approval. The consent appendix will need to be written. Cassidy has a great deal to say in it.`
-            :`The private meetings were — productive. The season plan is approved. Whatever was said in those rooms stays in those rooms.`;
+            :`The private meetings were productive. The season plan is approved. Whatever was said in those rooms stays in those rooms.`;
+          const outcomeText=renderResearcherThesis(true, bracket, cassidy, week) || leftoverApproved;
           return wrap(<>
             <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
             <div style={{fontSize:13,fontWeight:700,color:"#6aaa80",marginBottom:12}}>Approved</div>
@@ -194,7 +197,8 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
           <div style={{fontSize:9,letterSpacing:4,color:blue,marginBottom:4}}>📋 SEASON PLAN</div>
           <div style={{fontSize:13,fontWeight:700,color:"#a05060",marginBottom:12}}>Not Approved</div>
           <div style={{fontSize:11,color:"#a0b8cc",lineHeight:1.85,marginBottom:16,fontStyle:"italic"}}>
-            The panel was not convinced. The file is closed. Cassidy keeps the training log — all of it, the edited pages and the raw ones both — and begins, in the margins of the last entry, something that isn't a season plan and isn't a captain's journal. Whatever it is, she'll finish it on her own terms.
+            {renderResearcherThesis(false, getSuspicionBracket(crs.totalSuspicion||0), cassidy, week)
+              || `The panel was not convinced. The file is closed. Cassidy keeps the training log, edited pages and raw ones both, and begins something in the margins that she will finish on her own terms.`}
           </div>
           <button style={{...C.btn(blue),width:"100%"}} onClick={()=>{ playHallPassSound('click', soundEnabled); closeThesisOutcome(false); }}>Close</button>
         </>);

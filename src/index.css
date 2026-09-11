@@ -574,8 +574,14 @@
 }
 
 .floor-checkin-modal {
-  background: linear-gradient(165deg, rgba(12, 6, 22, 0.98), rgba(24, 10, 42, 0.96), rgba(8, 4, 16, 0.98)) !important;
+  background: linear-gradient(165deg, #0c0616, #180a2a, #080410) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(128, 64, 200, 0.16);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hall-pass-overlay-in:has(.floor-checkin-modal) {
+  background: rgba(2, 0, 6, 0.97) !important;
 }
 
 .embodiment-modal {

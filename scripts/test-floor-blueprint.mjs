@@ -44,6 +44,7 @@ import { renderHuntArrive, renderHuntTravel, renderHuntDormOpen } from '../src/t
 import { renderHuntNode, renderHuntTarget } from '../src/textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
+import { renderResearcherChat, renderResearcherThesis, renderResearcherReview } from '../src/textEngine/scenes/overhaul/researcherChat.js';
 import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
 import { renderEvolvedActivity, renderEvolvedEventProse, renderEvolvedFollowup } from '../src/textEngine/scenes/evolved/index.js';
 import { renderContestFoodPopup, renderContestActionPopup, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
@@ -56,7 +57,8 @@ import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, rend
 import { renderSessionNpc, renderSessionPayoff } from '../src/textEngine/scenes/overhaul/sessionNpc.js';
 import { renderWifeLessonTalkLine, renderWifeLessonBeat } from '../src/textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey } from '../src/textEngine/scenes/homeroom/index.js';
-import { renderIntimacyChoice } from '../src/textEngine/scenes/intimacy/index.js';
+import { renderIntimacyChoice, renderIntimacyPhase, renderIntimacyEnding } from '../src/textEngine/scenes/intimacy/index.js';
+import { renderCampusEventBeat } from '../src/textEngine/scenes/campusEvent/index.js';
 import { renderCollabPayoff } from '../src/textEngine/scenes/collabStream/index.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
@@ -480,6 +482,31 @@ assert.equal(/Sophia logs the minimum/i.test(pharmLine), false, 'pharmacist acqu
 const intimacyLine = renderIntimacyChoice('her_weight', 'linens_nest', recStudent, 3, { v2DepthChance: 0 });
 assert.ok(intimacyLine && !intimacyLine.includes('{unresolved}'));
 assert.equal(/drags the big linens/i.test(intimacyLine), false, 'intimacy extras should prefer composed pools');
+for (let i = 0; i < 16; i++) {
+  const intimacyPhase = renderIntimacyPhase('her_weight', 0, recStudent, [], 2, 3, { v2DepthChance: 0 });
+  assert.ok(intimacyPhase && !intimacyPhase.includes('{unresolved}'));
+  assert.equal(/distributing mass until you feel all of her/i.test(intimacyPhase), false, 'intimacy phase should not dump leftover skeleton fragments');
+  assert.equal(/The descent is unhurried/i.test(intimacyPhase), false);
+}
+const intimacyEnd = renderIntimacyEnding('her_weight', 0, recStudent, 3, { v2DepthChance: 0 });
+assert.ok(intimacyEnd && !intimacyEnd.includes('{unresolved}'));
+
+const cassidyCap = { id: 1, name: 'Cassidy', lbs: 168, startLbs: 125, relationship: 20, corruption: 0 };
+const wardChat = renderResearcherChat(0, 0, [], cassidyCap, 4);
+assert.ok(wardChat && !wardChat.includes('{unresolved}'));
+assert.equal(/I've been following your floor sessions closely/i.test(wardChat), false, 'lane-captain chat should prefer composed pools');
+const wardAck = renderResearcherChat(0, 1, ['acknowledge'], cassidyCap, 4);
+assert.ok(wardAck && !wardAck.includes('{unresolved}'));
+assert.equal(/I've been following your floor sessions closely/i.test(wardAck), false);
+const thesisOk = renderResearcherThesis(true, 'green', cassidyCap, 4);
+assert.ok(thesisOk && !thesisOk.includes('{unresolved}'));
+assert.equal(/approves without reservation/i.test(thesisOk), false);
+const thesisNo = renderResearcherThesis(false, 'red', cassidyCap, 4);
+assert.ok(thesisNo && !thesisNo.includes('{unresolved}'));
+assert.equal(/isn't a season plan and isn't a captain's journal/i.test(thesisNo), false);
+const reviewLine = renderResearcherReview(['vore', 'metrics'], 12, cassidyCap, 4);
+assert.ok(reviewLine && !reviewLine.includes('{unresolved}'));
+assert.equal(/what you found — and what we found/i.test(reviewLine), false, 'final review should prefer composed pools');
 
 const followupLine = renderEvolvedFollowup({
   id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
@@ -503,6 +530,11 @@ const mayaText = renderFloorSceneText(stressed, students[1], 2);
 assert.ok(mayaText.includes('Maya'), `floor scene should name Maya, got: ${mayaText.slice(0, 180)}`);
 assert.equal(mayaText.includes('Brittany'), false, 'floor scene must not bake Brittany into every resident');
 assert.equal(/energy drink sweats on the table/i.test(mayaText), false, 'floor scene should not dump leftover mood_stressed body');
+assert.equal(/Ordinary campus hour/i.test(mayaText), false, 'floor scene should not dump leftover campusEvent.beat');
+const campusBeat = renderCampusEventBeat(students[1], 2, { v2DepthChance: 0 });
+assert.ok(campusBeat && !campusBeat.includes('{unresolved}'));
+assert.equal(/Ordinary campus hour/i.test(campusBeat), false, 'campusEvent.beat should prefer composed observation');
+assert.equal(/except nothing about her appetite/i.test(campusBeat), false);
 const stressedFeed = renderFloorChoiceResult(stressed, 0, students[1], 2);
 assert.ok(stressedFeed && !stressedFeed.includes('{unresolved}'));
 assert.equal(/You set cookies on her knee/i.test(stressedFeed), false, 'floor choice should prefer composed result');
