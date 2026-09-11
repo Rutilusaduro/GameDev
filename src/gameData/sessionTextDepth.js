@@ -8,3 +8,7 @@ export function rankedSessionV2DepthChance(base = 0.28) {
 export function privateSessionV2DepthChance(base = 0.3) {
   return depthNarrativeAppendChance(base);
 }
+
+export function wifeLessonsV2DepthChance(base = 0.3) {
+  return depthNarrativeAppendChance(base);
+}

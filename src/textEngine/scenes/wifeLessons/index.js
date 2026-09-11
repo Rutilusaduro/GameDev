@@ -5,6 +5,7 @@ import { registerDecomposedPool } from '../decomposePools.js';
 import { wlTalkTailBeat } from '../evolved/proseTails.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import { wifeLessonsV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
 
@@ -99,7 +100,7 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
   });
   const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
   const base = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
-  return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
+  return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? wifeLessonsV2DepthChance(0.32));
 }
 
 /** Engine pool key for a talk beat (wlStage = game stage 1–8). */
@@ -134,7 +135,7 @@ export function renderWifeLessonTalk(poolKey, legacyLine, person, wlStage, mjStu
     }
   }
   if (!base) return '';
-  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.28);
+  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? wifeLessonsV2DepthChance(0.28));
 }
 
 /** @deprecated prefer renderWifeLessonTalk with wlTalkPoolKey */

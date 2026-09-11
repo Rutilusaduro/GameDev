@@ -33,7 +33,35 @@ const unwired = mechanical.filter((rel) => {
   return !/mechanicsDepthLayer/.test(src);
 });
 
-console.log(`mechanics-depth-coverage: registry=${registryFiles.size} mechanical=${mechanical.length} layer-import=${wiredInFile.length} unwired=${unwired.length}`);
-if (unwired.length) {
-  console.log('unwired sample:', unwired.slice(0, 12).join(', '), unwired.length > 12 ? '…' : '');
+/** Static data / UI helpers — no payout math to deepen. */
+const DATA_ONLY = new Set([
+  'bugReport.js',
+  'circuitBoardDefs.js',
+  'deviceCategories.js',
+  'gameSave.js',
+  'hallPassAudio.js',
+  'hallPassEvents.js',
+  'intimacyData.js',
+  'items.js',
+  'mechanicsDepthLayer.js',
+  'playerPrefs.js',
+  'profileSprites.js',
+  'raDisplay.js',
+  'stages.js',
+  'studentSprites.js',
+  'students.js',
+  'textFlagStore.js',
+  'textLintMeta.js',
+  'wlMomDialogueDepth.js',
+]);
+
+const unwiredPayout = unwired.filter((rel) => !DATA_ONLY.has(rel));
+
+console.log(
+  `mechanics-depth-coverage: registry=${registryFiles.size} mechanical=${mechanical.length} layer-import=${wiredInFile.length} unwired=${unwired.length} unwired-payout=${unwiredPayout.length}`,
+);
+if (unwiredPayout.length) {
+  console.log('unwired payout paths:', unwiredPayout.join(', '));
+} else if (unwired.length) {
+  console.log('unwired data-only:', unwired.length, 'files (expected)');
 }

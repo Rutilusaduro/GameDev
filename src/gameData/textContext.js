@@ -19,6 +19,7 @@ import { getEquippedDeviceIds } from './deviceEquip.js';
 import { garmentFitState, outfitFor, worstFitState } from './outfits.js';
 import { auraTier as deriveAuraTier, essenceTier as deriveEssenceTier, isAscended } from './ascension/state.js';
 import { getRaDisplayName } from './raDisplay.js';
+import { depthOutfitFitEaseMult } from './mechanicsDepthLayer.js';
 
 // ── RA Sim setting pack (WORD_GRANULAR_ENGINE_PLAN §8 / Phase 7) ──
 // The engine core is game-free; everything the engine needs to know about
@@ -103,7 +104,8 @@ registerDimension('worstFit', (ctx) => worstFitState(ctx.subject));
 /** Infer clothing strain from stage when no explicit state is stored. */
 export function deriveClothingState(student) {
   if (student?.clothingState) return student.clothingState;
-  const stage = getStage(student?.lbs ?? 0).id;
+  const lbs = (student?.lbs ?? 0) / depthOutfitFitEaseMult();
+  const stage = getStage(lbs).id;
   if (stage >= 10) return 'waistband_surrender';
   if (stage >= 7) return 'seam_split';
   if (stage >= 5) return 'zipper_fail';
