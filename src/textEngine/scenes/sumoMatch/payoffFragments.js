@@ -22,6 +22,7 @@ registerPool('sumo.payoff.feel', [
   { when: {}, text: [
     'You can feel it in the room before the scale agrees.',
     'More. Always more — the dohyo taught that again.',
+    'Locker-room steam, belt loose, belly honest.',
   ]},
 ]);
 
