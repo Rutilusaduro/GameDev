@@ -356,7 +356,7 @@ import {
   getOppositionGainMult, tickSupernaturalWeek, getAvailableCounters,
 } from './gameData/opposition.js';
 import { supernaturalActLine } from './gameData/oppositionText.js';
-import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
+import { renderWifeLessonBeat, renderWifeLessonTalk, wlTalkPoolKey } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction, renderCGPriyaPost, renderCGPriyaFollowup, renderCGResidentReply } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
@@ -3273,9 +3273,9 @@ export default function HallPass(){
     });
   };
 
-  const _wlTalkLine=(line,person,stage,mjStudentId)=>{
+  const _wlTalkLine=(legacy,person,stage,mjStudentId,poolKey)=>{
     const mj=students.find(st=>st.id===mjStudentId);
-    return mj?renderWifeLessonTalkLine(line,person,stage,mj,week):line;
+    return mj?renderWifeLessonTalk(poolKey,legacy,person,stage,mj,week):legacy;
   };
 
   const startWifeLessonsConversation=(personKey)=>{
@@ -3293,8 +3293,10 @@ export default function HallPass(){
       if(depth) entry=mergeWlDialogueEntry(entry,depth);
       const isCapped=isDaughter&&prev.daughters[personKey]>=WL_CONFIG.stageCaps[stage];
       const overtook=personKey==='Emma'||personKey==='Darlene'?prev.daughters.Chloe>prev.daughters.Emma:false;
-      const greetingText=isCapped&&entry.cappedGreeting?entry.cappedGreeting:(overtook&&entry.overtookGreeting?entry.overtookGreeting:entry.greeting);
-      const greetingProse=_wlTalkLine(greetingText,personKey,stage,prev.mjStudentId);
+      const greetingKind=isCapped&&entry.cappedGreeting?'capped':(overtook&&entry.overtookGreeting?'overtook':'greeting');
+      const greetingText=greetingKind==='capped'?entry.cappedGreeting:(greetingKind==='overtook'?entry.overtookGreeting:entry.greeting);
+      const greetingKey=wlTalkPoolKey(personKey,stage,{ greetingKind });
+      const greetingProse=_wlTalkLine(greetingText,personKey,stage,prev.mjStudentId,greetingKey);
       return{...prev,session:{...prev.session,conversationState:{person:personKey,stageEntry:entry,optionIdx:null,subIdx:null,done:false,atGreeting:true,history:[greetingProse]}}};
     });
   };
@@ -3310,7 +3312,8 @@ export default function HallPass(){
       const opt=entry.options[optionIdx];
       if(!opt) return prev;
       if(opt.subs&&opt.subs.length>0){
-        const optProse=_wlTalkLine(opt.text,cs.person,prev.stage,prev.mjStudentId);
+        const optKey=wlTalkPoolKey(cs.person,prev.stage,{ optionIdx });
+        const optProse=_wlTalkLine(opt.text,cs.person,prev.stage,prev.mjStudentId,optKey);
         return{...prev,session:{...prev.session,conversationState:{...cs,optionIdx,subIdx:null,history:[...(cs.history||[]),optProse]}}};
       }
       return prev;
@@ -3338,7 +3341,8 @@ export default function HallPass(){
       }
       const mjGain=outcome.mjLbs||0;
       const relGain=outcome.rel||0;
-      const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId);
+      const subKey=wlTalkPoolKey(cs.person,prev.stage,{ optionIdx:cs.optionIdx, subIdx });
+      const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId,subKey);
       let next={...prev,daughters:newDaughters,moms:newMoms,
         session:{...prev.session,mjGainAccum:prev.session.mjGainAccum+mjGain,relAccum:prev.session.relAccum+relGain,
           log:[...prev.session.log,logLine],

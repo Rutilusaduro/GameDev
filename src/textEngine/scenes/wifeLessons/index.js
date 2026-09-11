@@ -81,17 +81,45 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
   return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
 }
 
-/** 1-on-1 talk line — V2 depth on merged legacy/depth prose. */
-export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 1, opts = {}) {
-  if (!line?.trim()) return '';
+/** Engine pool key for a talk beat (wlStage = game stage 1–8). */
+export function wlTalkPoolKey(person, wlStage, { greetingKind = 'greeting', optionIdx, subIdx } = {}) {
+  const isDaughter = DAUGHTERS.has(person);
+  const arrIdx = isDaughter ? wlStage - WL_CONFIG.daughtersFrom : wlStage - 1;
+  const s = wlStageNum(person, Math.max(0, arrIdx));
+  const prefix = `wifeLessons.talk.${person}.s${s}`;
+  if (subIdx != null && optionIdx != null) return `${prefix}.opt${optionIdx}.sub${subIdx}`;
+  if (optionIdx != null) return `${prefix}.opt${optionIdx}`;
+  if (greetingKind === 'capped') return `${prefix}.capped`;
+  if (greetingKind === 'overtook') return `${prefix}.overtook`;
+  return `${prefix}.greeting`;
+}
+
+/** Talk line from pool + legacy fallback + V2 depth. */
+export function renderWifeLessonTalk(poolKey, legacyLine, person, wlStage, mjStudent, week = 1, opts = {}) {
+  if (!poolKey && !legacyLine?.trim()) return '';
   const ctx = buildTextContext({
     subject: mjStudent,
     week,
-    globals: { wlStage: stage, wlPerson: person, ...(opts.globals || {}) },
+    globals: { wlStage, wlPerson: person, wlTalkPool: poolKey, ...(opts.globals || {}) },
     ...opts,
   });
-  const base = line.trim();
-  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
+  let base = (legacyLine || '').trim();
+  if (poolKey) {
+    try {
+      const rendered = render(`{${poolKey}}`, ctx)?.trim();
+      if (rendered && !rendered.includes('{unresolved}')) base = rendered;
+    } catch {
+      /* legacy */
+    }
+  }
+  if (!base) return '';
+  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.28);
+}
+
+/** @deprecated prefer renderWifeLessonTalk with wlTalkPoolKey */
+export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 1, opts = {}) {
+  const poolKey = opts.poolKey || null;
+  return renderWifeLessonTalk(poolKey, line, person, stage, mjStudent, week, opts);
 }
 
 export const WIFE_LESSONS_MIGRATION = {
