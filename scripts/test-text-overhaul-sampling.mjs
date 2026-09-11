@@ -23,8 +23,11 @@ const MODULAR_MARKERS = [
   /cart squeaks|Rae arrives|Clipboard, timer|session clock starts/i,
   /butter and suspicion|wellness framing|Floor check-in energy/i,
   /corkboard like scripture|treats the corkboard|Flour dust and warm sugar|labAir/i,
-  /Dust and drywall|hall log neutral|Fullness climbs/i,
+  /Late-semester numbers dominate|Every measurement is a dare|Ink and appetite|Residents orbit the board|threatens a binge tonight/i,
+  /peer-reviewed result|eating on schedule|controlled appetite|Timers, trays/i,
+  /Dust and drywall|hall log neutral|Fullness climbs|Late-semester upgrades|Reinforced joists|Hall Ambiance climbs/i,
   /hall door|Wellness framing ready|Blueprint ink/i,
+  /Someone whispers|Every bite lands|contagion dressed|growth as lifestyle/i,
 ];
 
 function isModular(line) {
@@ -32,56 +35,56 @@ function isModular(line) {
 }
 
 const pulls = [
-  () => render('{evolved.event.eating_streamer.s0.p0}', buildTextContext({
+  (seed) => render('{evolved.event.eating_streamer.s0.p0}', buildTextContext({
     subject: destiny,
     week,
-    seed: 24001,
+    seed,
     globals: { formId: 'eating_streamer', stageIdx: 0, phaseIdx: 0, history: [], featureId: 'evolved_event' },
   })),
-  () => render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
+  (seed) => render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
     subject: mj,
     week,
-    seed: 24002,
+    seed,
   })),
-  () => render('{homeroom.conference.Kayla.intro}', buildTextContext({
+  (seed) => render('{homeroom.conference.Kayla.intro}', buildTextContext({
     subject: mj,
     week,
-    seed: 24003,
+    seed,
     globals: { featureId: 'homeroom_queen' },
   })),
-  () => render('{fair.day.weighIn.choice1}', buildTextContext({
+  (seed) => render('{fair.day.weighIn.choice1}', buildTextContext({
     subject: mj,
     week,
-    seed: 24004,
+    seed,
     globals: { featureId: 'state_fair_queen', fairStageIdx: 2, fairInfluence: 'Brittany' },
   })),
-  () => render('{journal.feeder.cheerleader.s8}', buildTextContext({
+  (seed) => render('{journal.feeder.cheerleader.s8}', buildTextContext({
     subject: brittany,
     week,
-    seed: 24005,
+    seed,
   })),
-  () => render('{cg.scene.corkboard.Invested}', buildTextContext({
+  (seed) => render('{cg.scene.corkboard.Invested}', buildTextContext({
     subject: destiny,
     week,
-    seed: 24006,
+    seed,
     globals: { featureId: 'competitive_gainer', cgDriveTier: 'Invested', cgSceneVisit: 0 },
   })),
-  () => render('{cultivator.beat}', buildTextContext({
+  (seed) => render('{cultivator.beat}', buildTextContext({
     subject: { id: 0, name: 'Tester', archetype: 'swimmer' },
     week,
-    seed: 24007,
+    seed,
     globals: { featureId: 'cultivator' },
   })),
-  () => render('{hall.blueprint.purchase}', buildTextContext({
+  (seed) => render('{hall.blueprint.purchase}', buildTextContext({
     subject: null,
     week,
-    seed: 24008,
+    seed,
     globals: { featureId: 'hall_blueprint', hallRoomId: 'kitchen_pantry' },
   })),
-  () => render('{session.rae.exit.s2}', buildTextContext({
+  (seed) => render('{session.rae.exit.s2}', buildTextContext({
     subject: destiny,
     week,
-    seed: 24009,
+    seed,
     globals: { featureId: 'ranked_session', sessionStage: 2 },
   })),
 ];
@@ -90,7 +93,7 @@ let modularHits = 0;
 const total = 48;
 for (let i = 0; i < total; i += 1) {
   const fn = pulls[i % pulls.length];
-  const line = fn()?.trim() || '';
+  const line = fn(24000 + i * 37)?.trim() || '';
   assert.ok(line.length > 20, `short line at pull ${i}: "${line}"`);
   assert.ok(!line.includes('{unresolved}'), `unresolved at pull ${i}`);
   if (isModular(line)) modularHits += 1;

@@ -33,6 +33,7 @@ const required = [
   'competitiveGainer/cgSceneFragments.js',
   'competitiveGainer/cgRaReplyFragments.js',
   'session/fullnessFragments.js',
+  'session/aftermathFragments.js',
   'cultivator/cultivatorFragments.js',
   'competitiveGainer/cgScenePools.js',
   'competitiveGainer/raReplyPools.js',
