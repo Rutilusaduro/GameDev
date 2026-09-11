@@ -224,6 +224,12 @@ export function depthStreamReward(base = 0) {
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.32)));
 }
 
+/** Fair Day weigh-in pride multiplier bump. */
+export function depthFairWeighInBonus(base = 0) {
+  if (base <= 0) return base;
+  return Math.min(0.55, Math.round(base * (1 + BONUS_FRAC * 0.22) * 1000) / 1000);
+}
+
 /** Fair training pride ticks — secondary loop on evolved fair queen arc. */
 export function depthFairPrideGrant(base = 0) {
   if (base <= 0) return base;

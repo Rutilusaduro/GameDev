@@ -361,7 +361,7 @@ import { renderWifeLessonBeat, renderWifeLessonTalk, wlTalkPoolKey } from './tex
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction, renderCGPriyaPost, renderCGPriyaFollowup, renderCGResidentReply } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
-import { depthCgDriveGain, depthMetaProgressBonus, depthFairPrideGrant, depthHomeroomSuspicionDelta } from './gameData/mechanicsDepthLayer.js';
+import { depthCgDriveGain, depthMetaProgressBonus, depthFairPrideGrant, depthFairWeighInBonus, depthHomeroomSuspicionDelta } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -6390,7 +6390,7 @@ export default function HallPass(){
       if(!prev||prev.phase!=='weighin'||prev.weighInChoice) return prev;
       const sc=FAIR_DAY_SCENES.weighIn[`${prev.stageIdx}_${prev.influenceKey}`];
       const prideTier=getFairPrideTier(fairTrainingState.fairPride).label;
-      const bonus=FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0;
+      const bonus=depthFairWeighInBonus(FAIR_TRAINING_CONFIG.weighInBonus[prideTier]||0);
       const baseGain=choice===1?sc.gainA:sc.gainB;
       const gain=scaleEvolvedEventLbs(Math.round(baseGain*(1+bonus)));
       const rel=scaleEvolvedEventRel(choice===1?sc.relA:sc.relB);
