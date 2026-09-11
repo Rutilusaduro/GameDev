@@ -110,13 +110,19 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
       phasePools += 1;
       registerModuleVariants(phaseKey, [
         {
-          when: { weekMin: [10] },
+          when: { weekMin: 18 },
+          weight: 5,
+          priority: 4,
+          text: [EVENT_SKELETON],
+        },
+        {
+          when: { weekMin: 10 },
           weight: 3,
           priority: 2,
           text: [EVENT_SKELETON],
         },
         {
-          when: { weekMin: [5] },
+          when: { weekMin: 5 },
           weight: 2,
           priority: 1,
           text: ['{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: }'],
@@ -128,7 +134,13 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
         choicePools += 1;
         registerModuleVariants(choiceKey, [
           {
-            when: { weekMin: [6] },
+            when: { weekMin: 16 },
+            weight: 4,
+            priority: 3,
+            text: [CHOICE_SKELETON],
+          },
+          {
+            when: { weekMin: 6 },
             weight: 3,
             priority: 2,
             text: [CHOICE_SKELETON],
@@ -141,7 +153,13 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
       endingPools += 1;
       registerModuleVariants(endKey, [
         {
-          when: { weekMin: [7] },
+          when: { weekMin: 16 },
+          weight: 4,
+          priority: 3,
+          text: [ENDING_SKELETON],
+        },
+        {
+          when: { weekMin: 7 },
           weight: 3,
           priority: 2,
           text: [ENDING_SKELETON],

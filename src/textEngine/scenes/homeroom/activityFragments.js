@@ -17,22 +17,33 @@ registerPool('homeroom.activity.kitchenHeat', [
 registerPool('homeroom.activity.suspicion', [
   {
     when: {},
+    weight: 2,
     text: [
       'Mrs. Calloway watches from the window; you keep the wellness framing gentle and exact.',
       'Someone asks if this is still a floor program; you answer with seconds on the plate.',
+      'A clipboard appears at the door; you smile and offer her a warm roll anyway.',
     ],
   },
 ]);
 
 const ACTIVITY_SKELETON = '{homeroom.activity.kitchenHeat|prefix:} {homeroom.activity.suspicion|prefix: }';
 
-for (const actKey of Object.keys(HOMEROOM_GROUP_ACTIVITIES)) {
-  registerModuleVariants(`homeroom.activity.${actKey}.p0`, [
-    {
-      when: { weekMin: [7] },
-      weight: 2,
-      priority: 2,
-      text: [ACTIVITY_SKELETON],
-    },
-  ]);
+for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
+  const phases = act.phases || [{ text: act.text, choices: act.choices || [] }];
+  phases.forEach((_, pi) => {
+    registerModuleVariants(`homeroom.activity.${actKey}.p${pi}`, [
+      {
+        when: { weekMin: 16 },
+        weight: 4,
+        priority: 3,
+        text: [ACTIVITY_SKELETON],
+      },
+      {
+        when: { weekMin: 7 },
+        weight: 2,
+        priority: 2,
+        text: [ACTIVITY_SKELETON],
+      },
+    ]);
+  });
 }

@@ -1,0 +1,97 @@
+#!/usr/bin/env node
+/**
+ * Late-game text overhaul sampling — modular slot prose should dominate week 24 renders.
+ * Does not prove full legacy retirement; proves composable paths fire across namespaces.
+ */
+import assert from 'node:assert/strict';
+import '../src/textEngine/scenes/index.js';
+import { render } from '../src/textEngine/engine.js';
+import { buildTextContext } from '../src/gameData/textContext.js';
+import { HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/homeroomEvents.js';
+
+const week = 24;
+const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 260, evolvedForm: 'eating_streamer' };
+const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
+const brittany = { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 240 };
+
+const MODULAR_MARKERS = [
+  /smells like food|Ambient noise|Fabric strains|Every choice tonight|Hunger hums/i,
+  /yeasty warmth|Fat is what makes a home|Steam and sweetness|Table groans under every favorite/i,
+  /Oven heat|Calloway|wide tables groan|clipboard stays closed/i,
+  /Cotton candy|Mary Jane stands taller|Pride sits on her hips|Crowd noise swells/i,
+  /Clipboard margins|Late-semester entries|datapoint|journal stops pretending/i,
+  /cart squeaks|Rae arrives|Clipboard, timer|session clock starts/i,
+  /butter and suspicion|wellness framing|Floor check-in energy/i,
+];
+
+function isModular(line) {
+  return MODULAR_MARKERS.some((re) => re.test(line));
+}
+
+const pulls = [
+  () => render('{evolved.event.eating_streamer.s0.p0}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: Math.random() * 1e6,
+    globals: { formId: 'eating_streamer', stageIdx: 0, phaseIdx: 0, history: [], featureId: 'evolved_event' },
+  })),
+  () => render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
+    subject: mj,
+    week,
+    seed: Math.random() * 1e6,
+  })),
+  () => render('{homeroom.conference.Kayla.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: Math.random() * 1e6,
+    globals: { featureId: 'homeroom_queen' },
+  })),
+  () => render('{fair.day.weighIn.choice1}', buildTextContext({
+    subject: mj,
+    week,
+    seed: Math.random() * 1e6,
+    globals: { featureId: 'state_fair_queen', fairStageIdx: 2, fairInfluence: 'Brittany' },
+  })),
+  () => render('{journal.feeder.cheerleader.s8}', buildTextContext({
+    subject: brittany,
+    week,
+    seed: Math.random() * 1e6,
+  })),
+  () => render('{session.rae.exit.s2}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: Math.random() * 1e6,
+    globals: { featureId: 'ranked_session', sessionStage: 2 },
+  })),
+];
+
+let modularHits = 0;
+const total = 48;
+for (let i = 0; i < total; i += 1) {
+  const fn = pulls[i % pulls.length];
+  const line = fn()?.trim() || '';
+  assert.ok(line.length > 20, `short line at pull ${i}: "${line}"`);
+  assert.ok(!line.includes('{unresolved}'), `unresolved at pull ${i}`);
+  if (isModular(line)) modularHits += 1;
+}
+
+const ratio = modularHits / total;
+assert.ok(ratio >= 0.5, `expected >=50% modular slot hits at week ${week}, got ${(ratio * 100).toFixed(0)}% (${modularHits}/${total})`);
+
+const actKey = Object.keys(HOMEROOM_GROUP_ACTIVITIES).find(
+  (k) => (HOMEROOM_GROUP_ACTIVITIES[k].phases || []).length > 0,
+) || 'health_unit';
+const actPhases = (HOMEROOM_GROUP_ACTIVITIES[actKey].phases || []).length;
+assert.ok(actPhases >= 1, 'homeroom activity phases');
+let actHit = false;
+for (let i = 0; i < 16; i += 1) {
+  const line = render(`{homeroom.activity.${actKey}.p${actPhases - 1}}`, buildTextContext({
+    subject: mj,
+    week,
+    seed: 5000 + i,
+  }))?.trim() || '';
+  if (/Oven heat|Calloway|wide tables groan|Counters disappear under flour/i.test(line)) actHit = true;
+}
+assert.ok(actHit, `homeroom activity late phase should modularize (${actKey})`);
+
+console.log(`test-text-overhaul-sampling: ok (${modularHits}/${total} modular @ week ${week})`);

@@ -27,26 +27,80 @@ registerPool('journal.scene.subjectFocus', [
   },
 ]);
 
-const FEEDER_SKELETON = '{journal.scene.fieldNotes|prefix:} {journal.scene.subjectFocus|prefix: }';
+registerPool('journal.scene.lateObsession', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Late-semester entries blur — appetite, attachment, and the scale read as one story.',
+      'She begs for more between bites; you log it as progress and mean it.',
+      'The journal stops pretending neutrality; every page wants her heavier.',
+    ],
+  },
+]);
 
-for (const archetype of Object.keys(FEEDER_SUBJECT_JOURNALS)) {
-  registerModuleVariants(`journal.feeder.${archetype}.s0`, [
-    {
-      when: { weekMin: 5 },
-      weight: 3,
-      priority: 2,
-      text: [FEEDER_SKELETON],
-    },
-  ]);
+const FEEDER_SKELETON = '{journal.scene.fieldNotes|prefix:} {journal.scene.subjectFocus|prefix: }';
+const LATE_FEEDER_SKELETON = '{journal.scene.lateObsession|prefix:} {journal.scene.subjectFocus|prefix: }';
+
+for (const [archetype, entries] of Object.entries(FEEDER_SUBJECT_JOURNALS)) {
+  if (!Array.isArray(entries)) continue;
+  entries.forEach((_, page) => {
+    const skeleton = page >= 6 ? LATE_FEEDER_SKELETON : FEEDER_SKELETON;
+    registerModuleVariants(`journal.feeder.${archetype}.s${page}`, [
+      {
+        when: { weekMin: 18 },
+        weight: 4,
+        priority: 3,
+        text: [LATE_FEEDER_SKELETON],
+      },
+      {
+        when: { weekMin: 5 },
+        weight: 3,
+        priority: 2,
+        text: [skeleton],
+      },
+    ]);
+  });
 }
 
-for (const archetype of Object.keys(NADIA_SUBJECT_JOURNALS)) {
-  registerModuleVariants(`journal.nadia.${archetype}.intro.l0`, [
-    {
-      when: { weekMin: 6 },
-      weight: 2,
-      priority: 2,
-      text: [FEEDER_SKELETON],
-    },
-  ]);
+for (const [archetype, journal] of Object.entries(NADIA_SUBJECT_JOURNALS)) {
+  if (!journal) continue;
+  const intros = Array.isArray(journal.intro) ? journal.intro : [journal.intro];
+  intros.forEach((_, level) => {
+    registerModuleVariants(`journal.nadia.${archetype}.intro.l${level}`, [
+      {
+        when: { weekMin: 16 },
+        weight: 3,
+        priority: 3,
+        text: [LATE_FEEDER_SKELETON],
+      },
+      {
+        when: { weekMin: 6 },
+        weight: 2,
+        priority: 2,
+        text: [FEEDER_SKELETON],
+      },
+    ]);
+  });
+  (journal.entries || []).forEach((row, page) => {
+    if (!row) return;
+    [0, 1, 2].forEach((level) => {
+      if (!row[level]) return;
+      const skeleton = page >= 4 ? LATE_FEEDER_SKELETON : FEEDER_SKELETON;
+      registerModuleVariants(`journal.nadia.${archetype}.s${page}.l${level}`, [
+        {
+          when: { weekMin: 14 },
+          weight: 3,
+          priority: 3,
+          text: [LATE_FEEDER_SKELETON],
+        },
+        {
+          when: { weekMin: 8 },
+          weight: 2,
+          priority: 2,
+          text: [skeleton],
+        },
+      ]);
+    });
+  });
 }

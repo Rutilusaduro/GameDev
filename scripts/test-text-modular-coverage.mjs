@@ -38,6 +38,7 @@ const SLOT_KEYS = [
   'journal.scene.subjectFocus',
   'session.scene.deliveryAir',
   'session.scene.raePresence',
+  'journal.scene.lateObsession',
 ];
 
 for (const key of SLOT_KEYS) {

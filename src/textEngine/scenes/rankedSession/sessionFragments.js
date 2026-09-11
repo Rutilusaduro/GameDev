@@ -1,5 +1,6 @@
 // Ranked feedee session — composable Rae delivery beats.
 import { registerPool, registerModuleVariants } from '../../engine.js';
+import { SESSION_PAYOFF_TEXT } from '../../../gameData/rankedSessionData.js';
 
 registerPool('session.scene.deliveryAir', [
   {
@@ -28,9 +29,28 @@ registerPool('session.scene.raePresence', [
 const SESSION_SKELETON = '{session.scene.deliveryAir|prefix:} {session.scene.raePresence|prefix: }';
 
 for (let si = 0; si <= 5; si += 1) {
-  registerModuleVariants(`session.rae.arrival.s${si}`, [
+  for (const beat of ['arrival', 'exit', 'extra']) {
+    registerModuleVariants(`session.rae.${beat}.s${si}`, [
+      {
+        when: { weekMin: 16 },
+        weight: 4,
+        priority: 3,
+        text: [SESSION_SKELETON],
+      },
+      {
+        when: { weekMin: 5 },
+        weight: 3,
+        priority: 2,
+        text: [SESSION_SKELETON],
+      },
+    ]);
+  }
+}
+
+for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
+  registerModuleVariants(`session.payoff.legacy.s${si}`, [
     {
-      when: { weekMin: 5 },
+      when: { weekMin: 12 },
       weight: 3,
       priority: 2,
       text: [SESSION_SKELETON],

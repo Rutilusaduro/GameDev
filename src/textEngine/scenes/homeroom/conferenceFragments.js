@@ -20,19 +20,43 @@ registerPool('homeroom.scene.raStance', [
     text: [
       'You keep your voice neutral; the wellness framing does the real work.',
       'Your clipboard stays closed — this conversation is appetite first, paperwork later.',
+      'You nod along to hunger — the hall program runs on seconds, not slogans.',
     ],
   },
 ]);
 
 const INTRO_SKELETON = '{homeroom.scene.floorTone|prefix:} {homeroom.scene.raStance|prefix: }';
 
-for (const key of Object.keys(HOMEROOM_CONFERENCE_EVENTS)) {
+for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   registerModuleVariants(`homeroom.conference.${key}.intro`, [
     {
-      when: { weekMin: [6] },
+      when: { weekMin: 16 },
+      weight: 3,
+      priority: 3,
+      text: [INTRO_SKELETON],
+    },
+    {
+      when: { weekMin: 6 },
       weight: 2,
       priority: 2,
       text: [INTRO_SKELETON],
     },
   ]);
+  for (const ch of ev.choices || []) {
+    if (!ch?.id) continue;
+    registerModuleVariants(`homeroom.conference.${key}.${ch.id}`, [
+      {
+        when: { weekMin: 14 },
+        weight: 3,
+        priority: 3,
+        text: [INTRO_SKELETON],
+      },
+      {
+        when: { weekMin: 7 },
+        weight: 2,
+        priority: 2,
+        text: [INTRO_SKELETON],
+      },
+    ]);
+  }
 }
