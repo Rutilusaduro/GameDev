@@ -7,7 +7,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      workbox: { maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 },
+      // Bundle can exceed Workbox's 2 MiB default; throw on overflow is on unless this is true.
+      showMaximumFileSizeToCacheInBytesWarning: true,
+      workbox: { maximumFileSizeToCacheInBytes: 8 * 1024 * 1024 },
       includeAssets: ["favicon.ico", "icon.svg", "apple-touch-icon-180x180.png"],
       manifest: {
         name: "Hall Pass",
