@@ -103,6 +103,7 @@ import './raPivotProseDepthPass68.js';
 import './fairQueen/index.js';
 import './competitiveGainer/index.js';
 import './raPivotProseDepthPass69.js';
+import './raPivotProseDepthPass70.js';
 import './memory/index.js';
 import './memory/depth.js';
 import './gossip/index.js';

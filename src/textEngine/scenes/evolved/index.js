@@ -14,6 +14,7 @@ const EVOLVED_FORM_POOLS = {
   pharmacist: 'evolved.pharmacist.v2.depth',
   competitive_gainer: 'evolved.gainer.v2.depth',
   homeroom_queen: 'evolved.homeroomQueen.v2.depth',
+  state_fair_queen: 'evolved.fairQueen.v2.depth',
 };
 
 /** Evolved event prose beat — V2 depth on legacy phase/choice/ending text. */

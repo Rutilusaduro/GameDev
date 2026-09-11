@@ -19,6 +19,7 @@ import {
   afterpartyCrowd,
   afterpartyEnd,
 } from './dayFragments.js';
+import { fairPhotoCaption } from './photoFragments.js';
 
 const INF_FROM_TAG = {
   None: 'None',
@@ -113,6 +114,23 @@ registerPool('fair.day.afterparty.choice1', [triple(afterpartyCollab)]);
 registerPool('fair.day.afterparty.choice2', [triple(afterpartyCrowd)]);
 registerPool('fair.day.afterparty.ending', [triple(afterpartyEnd)]);
 
+for (const c of collabs) {
+  const photoEntries = buckets.map((b) => ({
+    when: { fairCollab: [c], mjStageBucket: [b] },
+    weight: 2,
+    text: [fairPhotoCaption],
+  }));
+  photoEntries.push({
+    when: {},
+    text: [
+      fairPhotoCaption,
+      fairPhotoCaption,
+      (ctx) => `${fairPhotoCaption(ctx)} Pinned to the Trophy Wall with a bent gold tack.`,
+    ],
+  });
+  registerPool(`fair.photo.${c}`, photoEntries);
+}
+
 export function buildFairCtx(mjStudent, week, globals = {}) {
   return buildTextContext({
     subject: mjStudent,
@@ -158,6 +176,15 @@ export function parseFairTag(tag) {
   }
   m = raw.match(/^FBS_(\w+)_(Low|Mid|High)$/);
   if (m) return { kind: 'boost', collab: m[1], tier: m[2] };
+
+  m = raw.match(/^FTP_Lil_MJ(\d+)_L(\d+)$/);
+  if (m) {
+    return { kind: 'photo', collab: 'Lilith', mjStage: Number(m[1]), cStage: Number(m[2]) };
+  }
+  m = raw.match(/^FTP_(\w+)_MJ(\d+)_C(\d+)$/);
+  if (m) {
+    return { kind: 'photo', collab: m[1], mjStage: Number(m[2]), cStage: Number(m[3]) };
+  }
 
   m = raw.match(/^FD_WI_(\d+)_(\w+)_(Open|C1|C2|EndA|EndB)$/);
   if (m) {
@@ -240,6 +267,18 @@ export function resolveFairPlaceholder(tagOrText, mjStudent, week = 1, extraGlob
       ...extraGlobals,
     });
     const line = renderPoolKey(`fair.boost.${parsed.collab}`, ctx, 0.22);
+    return line || s;
+  }
+  if (parsed.kind === 'photo') {
+    const ctx = buildFairCtx(mjStudent, week, {
+      fairCollab: parsed.collab,
+      mjStage: parsed.mjStage,
+      cStage: parsed.cStage,
+      mjStageBucket: fairStageBucket(parsed.mjStage),
+      partnerName: extraGlobals.partnerName || parsed.collab,
+      ...extraGlobals,
+    });
+    const line = renderPoolKey(`fair.photo.${parsed.collab}`, ctx, 0.18);
     return line || s;
   }
   const ctx = buildFairCtx(mjStudent, week, {

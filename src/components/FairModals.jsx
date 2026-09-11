@@ -16,6 +16,7 @@ export function FairTrainingHub({ ft, students, ap, week = 1, getFairPrideTier, 
   const fairExtra={ partnerName: partner?.name, fairCollab: ft.pendingCollab };
   const sessionProse=resolveFairPlaceholder(ft.sessionSceneTag,mj,week,fairExtra);
   const boostProse=resolveFairPlaceholder(ft.sessionBoostSummary,mj,week,fairExtra);
+  const photoProse=resolveFairPlaceholder(ft.sessionPhotoTag,mj,week,fairExtra);
   const fairOrange='#C8860A';
   const tier=getFairPrideTier(ft.fairPride);
   const fairReady=ft.sessionsThisCycle>=FAIR_TRAINING_CONFIG.maxSessionsPerCycle;
@@ -78,7 +79,7 @@ export function FairTrainingHub({ ft, students, ap, week = 1, getFairPrideTier, 
             )}
             <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060",fontStyle:"italic"}}>{boostProse}</div>
             <div style={{...C.infoBox("rgba(10,8,0,0.6)"),marginBottom:10,fontSize:10,color:"#907050"}}>
-              📸 Vignette pinned to the Trophy Wall: <span style={{fontStyle:"italic",color:"#c0a070"}}>{ft.sessionPhotoTag}</span>
+              📸 Vignette pinned to the Trophy Wall: <span style={{fontStyle:"italic",color:"#c0a070"}}>{photoProse}</span>
             </div>
             {ft.sessionLog&&(
               <div style={{display:"flex",gap:10,marginBottom:10,fontSize:12,color:"#d0b080",textAlign:"center"}}>
@@ -97,7 +98,7 @@ export function FairTrainingHub({ ft, students, ap, week = 1, getFairPrideTier, 
             <div style={{maxHeight:300,overflowY:"auto",marginBottom:10}}>
               {ft.trophyPhotos.map((p,i)=>(
                 <div key={i} style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:6,fontSize:10,color:"#c0a070"}}>
-                  <span style={{color:"#907050"}}>Cycle {p.cycle+1} — {p.collab}:</span> <span style={{fontStyle:"italic"}}>{p.tag}</span>
+                  <span style={{color:"#907050"}}>Cycle {p.cycle+1} — {p.collab}:</span> <span style={{fontStyle:"italic"}}>{resolveFairPlaceholder(p.tag,mj,week,{fairCollab:p.collab,partnerName:p.collab})}</span>
                 </div>
               ))}
             </div>
