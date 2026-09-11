@@ -15,6 +15,16 @@ export function scaleRecordingSessionLbsGain(lbs = 0) {
   return depthLbsGrant(lbs);
 }
 
+export function scaleEatingContestLbsGain(lbs = 0) {
+  if (lbs <= 0) return 0;
+  return depthLbsGrant(lbs);
+}
+
+export function scaleSumoMatchLbsGain(lbs = 0) {
+  if (lbs <= 0) return 0;
+  return depthLbsGrant(lbs);
+}
+
 export const CONTEST_FOODS = [
   { id:'hotdogs',  name:'Hot Dogs',   emoji:'🌭', fullness:8,  lbs:3 },
   { id:'wings',    name:'Wings',      emoji:'🍗', fullness:12, lbs:5 },

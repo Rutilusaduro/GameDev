@@ -14,7 +14,7 @@ import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain } from './gameData/miniGames.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain, scaleEatingContestLbsGain, scaleSumoMatchLbsGain } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
@@ -5252,8 +5252,9 @@ export default function HallPass(){
     // Consume food, apply real lbs gain
     const newYF=yourFoods.map((f,i)=>i===idx?{...f,consumed:true,selected:false}:f);
     const newYourFull=yourFullness+food.fullness;
-    const newYourGain=yourGain+food.lbs;
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.lbs,0):st));
+    const scaledLbs=scaleEatingContestLbsGain(food.lbs);
+    const newYourGain=yourGain+scaledLbs;
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,scaledLbs,0):st));
     // Maya eats one random unconsumed item
     let newMF=[...mayaFoods];
     let newMayaFull=mayaFullness;
@@ -5307,7 +5308,8 @@ export default function HallPass(){
     const toEat=[...selectedYour,...selectedMaya];
     if(!toEat.length) return;
     const totalFullness=toEat.reduce((a,f)=>a+(f.fullness||0),0);
-    const totalLbs=toEat.reduce((a,f)=>a+(f.lbs||0),0);
+    const rawTotalLbs=toEat.reduce((a,f)=>a+(f.lbs||0),0);
+    const totalLbs=scaleEatingContestLbsGain(rawTotalLbs);
     const newYourFull=yourFullness+totalFullness;
     const newYourGain=yourGain+totalLbs;
     setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,totalLbs,0):st));
@@ -5537,8 +5539,9 @@ export default function HallPass(){
     const st=sumoMatchState;
     const s=students.find(x=>x.id===st.studentId);
     const feed=SUMO_CORNER_FEED[st.stageIdx]||SUMO_CORNER_FEED[0];
-    setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,feed.lbs,0):x));
-    setSumoMatchState({...st,gainAccum:st.gainAccum+feed.lbs,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
+    const scaledLbs=scaleSumoMatchLbsGain(feed.lbs);
+    setStudents(prev=>prev.map(x=>x.id===st.studentId?processStudentGain(x,scaledLbs,0):x));
+    setSumoMatchState({...st,gainAccum:st.gainAccum+scaledLbs,popupText:s?renderSumoCornerFeed(st.stageIdx,s,week):feed.text,phaseAfterPopup:'nextbout'});
   };
 
   const sumoStartNextBout=()=>{

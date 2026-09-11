@@ -1,6 +1,8 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Eating contest — engine bridge for competitive_circuit evolved form.
-import { registerDimension } from '../../engine.js';
+import { registerDimension, registerPool, render } from '../../engine.js';
+import './legacyPools.js';
+import './payoffFragments.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import {
@@ -15,6 +17,17 @@ registerDimension('contestStage', (ctx) => ctx.globals?.contestStage ?? 0);
 registerDimension('yourGain', (ctx) => ctx.globals?.yourGain ?? 0);
 registerDimension('mayaGain', (ctx) => ctx.globals?.mayaGain ?? 0);
 registerDimension('mayaLbs', (ctx) => ctx.globals?.mayaLbs ?? 330);
+
+registerPool('yourGain', [
+  { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.yourGain ?? 0))] },
+  { when: {}, text: [(ctx) => `${Math.round(ctx.globals?.yourGain ?? 0)}`] },
+  { when: {}, text: [(ctx) => String(Math.round(ctx.d?.yourGain ?? ctx.globals?.yourGain ?? 0))] },
+]);
+registerPool('mayaGain', [
+  { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.mayaGain ?? 0))] },
+  { when: {}, text: [(ctx) => `${Math.round(ctx.globals?.mayaGain ?? 0)}`] },
+  { when: {}, text: [(ctx) => String(Math.round(ctx.d?.mayaGain ?? ctx.globals?.mayaGain ?? 0))] },
+]);
 
 function stageText(arr, stageIdx) {
   const item = arr?.[stageIdx];
@@ -42,34 +55,46 @@ export function renderContestLegacy(text, student, week, stageIdx = 0, opts = {}
 }
 
 export function renderContestFoodPopup(foodId, stageIdx, student, week) {
-  const raw = stageText(CONTEST_FOOD_POPUPS[foodId], stageIdx);
-  return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
+  const ctx = buildContestCtx(student, week, stageIdx);
+  const si = Math.min(Math.max(0, stageIdx), (CONTEST_FOOD_POPUPS[foodId]?.length || 1) - 1);
+  const raw = render(`{contest.food.${foodId}.s${si}}`, ctx)?.trim()
+    || stageText(CONTEST_FOOD_POPUPS[foodId], stageIdx);
+  return appendV2Depth(raw, 'eatingContest', ctx, 0.26);
 }
 
 export function renderContestActionPopup(actionKey, stageIdx, student, week) {
-  const raw = stageText(CONTEST_ACTION_POPUPS[actionKey], stageIdx);
-  return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.24 });
+  const ctx = buildContestCtx(student, week, stageIdx);
+  const si = Math.min(Math.max(0, stageIdx), (CONTEST_ACTION_POPUPS[actionKey]?.length || 1) - 1);
+  const raw = render(`{contest.action.${actionKey}.s${si}}`, ctx)?.trim()
+    || stageText(CONTEST_ACTION_POPUPS[actionKey], stageIdx);
+  return appendV2Depth(raw, 'eatingContest', ctx, 0.24);
 }
 
 export function renderContestDevourPopup(stageIdx, student, week) {
-  const raw = stageText(CONTEST_DEVOUR_POPUPS, stageIdx);
-  return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
+  const ctx = buildContestCtx(student, week, stageIdx);
+  const si = Math.min(Math.max(0, stageIdx), CONTEST_DEVOUR_POPUPS.length - 1);
+  const raw = render(`{contest.devour.s${si}}`, ctx)?.trim()
+    || stageText(CONTEST_DEVOUR_POPUPS, stageIdx);
+  return appendV2Depth(raw, 'eatingContest', ctx, 0.3);
 }
 
 export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, mayaLbs, week) {
-  const fn = CONTEST_WEIGH_IN_2_TEXT[stageIdx];
-  const raw = fn ? fn(student, yourGain, mayaGain, mayaLbs) : '';
-  return renderContestLegacy(raw, student, week, stageIdx, {
+  const ctx = buildContestCtx(student, week, stageIdx, {
     globals: { yourGain, mayaGain, mayaLbs },
-    v2DepthChance: 0.32,
   });
+  const si = Math.min(Math.max(0, stageIdx), CONTEST_WEIGH_IN_2_TEXT.length - 1);
+  const fn = CONTEST_WEIGH_IN_2_TEXT[stageIdx];
+  const raw = render(`{contest.weighIn.s${si}}`, ctx)?.trim()
+    || (fn ? fn(student, yourGain, mayaGain, mayaLbs) : '');
+  return appendV2Depth(raw, 'eatingContest', ctx, 0.32);
 }
 
 export function renderContestPayoff(stageIdx, student, yourGain, week) {
+  const ctx = buildContestCtx(student, week, stageIdx, { globals: { yourGain } });
+  const si = Math.min(Math.max(0, stageIdx), 5);
   const fn = CONTEST_PAYOFF_TEXT[stageIdx];
-  const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
-  return renderContestLegacy(raw, student, week, stageIdx, {
-    globals: { yourGain },
-    v2DepthChance: 0.3,
-  });
+  const raw = render(`{contest.payoff.compose.s${si}}`, ctx)?.trim()
+    || render(`{contest.payoff.legacy.s${si}}`, ctx)?.trim()
+    || (fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`);
+  return appendV2Depth(raw, 'eatingContest', ctx, 0.3);
 }
