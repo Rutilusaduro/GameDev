@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, scaleWlLessonLbs, scaleWlLessonRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { CG_FILLED_SELF_REVIEW, CG_RA_REPLY_TEXT } from './gameData/competitiveGainerText.js';
 import { renderSessionRaeArrival, renderSessionRaeExtra, renderSessionPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
@@ -3258,17 +3258,21 @@ export default function HallPass(){
       if(!lesson) return prev;
       const mjStudent=students.find(st=>st.id===prev.mjStudentId);
       const lessonProse=mjStudent?renderWifeLessonBeat(stage,lesson,mjStudent,week):lesson.text;
+      const scaledDaughterLbs=scaleWlLessonLbs(lesson.daughterLbs);
+      const scaledMomLbs=scaleWlLessonLbs(lesson.momLbs);
+      const scaledMjLbs=scaleWlLessonLbs(lesson.mjLbs);
+      const scaledLessonRel=scaleWlLessonRel(lesson.rel||0);
       let newDaughters={...prev.daughters};
       Object.keys(newDaughters).forEach(k=>{
-        let gain=lesson.daughterLbs;
+        let gain=scaledDaughterLbs;
         if(k==='Chloe'&&stage>=WL_CONFIG.chloeRivalFrom) gain=Math.round(gain*WL_CONFIG.chloeRivalMult);
         newDaughters[k]=newDaughters[k]+gain;
       });
       let newMoms={...prev.moms};
-      Object.keys(newMoms).forEach(k=>{ newMoms[k]=newMoms[k]+lesson.momLbs; });
-      const logLine=`${lesson.label}: all daughters +${lesson.daughterLbs} lbs, all moms +${lesson.momLbs} lbs, you +${lesson.mjLbs} lbs`;
+      Object.keys(newMoms).forEach(k=>{ newMoms[k]=newMoms[k]+scaledMomLbs; });
+      const logLine=`${lesson.label}: all daughters +${scaledDaughterLbs} lbs, all moms +${scaledMomLbs} lbs, you +${scaledMjLbs} lbs`;
       let next={...prev,daughters:newDaughters,moms:newMoms,
-        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,lessonProse,mjGainAccum:prev.session.mjGainAccum+lesson.mjLbs,relAccum:prev.session.relAccum+(lesson.rel||0),log:[...prev.session.log,logLine]}};
+        session:{...prev.session,lessonChosen:true,lessonId:lesson.id,lessonProse,mjGainAccum:prev.session.mjGainAccum+scaledMjLbs,relAccum:prev.session.relAccum+scaledLessonRel,log:[...prev.session.log,logLine]}};
       next=_wlCheckStageAdvance(next);
       return next;
     });
@@ -3334,14 +3338,16 @@ export default function HallPass(){
       let newMoms={...prev.moms};
       let logLine='';
       if(outcome.daughterKey&&outcome.daughterLbs){
-        newDaughters[outcome.daughterKey]=(newDaughters[outcome.daughterKey]||0)+outcome.daughterLbs;
-        logLine=`${cs.person}: +${outcome.daughterLbs} lbs, you +${outcome.mjLbs} lbs`;
+        const dLbs=scaleWlLessonLbs(outcome.daughterLbs);
+        newDaughters[outcome.daughterKey]=(newDaughters[outcome.daughterKey]||0)+dLbs;
+        logLine=`${cs.person}: +${dLbs} lbs, you +${scaleWlLessonLbs(outcome.mjLbs||0)} lbs`;
       } else if(outcome.momKey&&outcome.momLbs){
-        newMoms[outcome.momKey]=(newMoms[outcome.momKey]||0)+outcome.momLbs;
-        logLine=`${cs.person}: +${outcome.momLbs} lbs, you +${outcome.mjLbs} lbs`;
+        const mLbs=scaleWlLessonLbs(outcome.momLbs);
+        newMoms[outcome.momKey]=(newMoms[outcome.momKey]||0)+mLbs;
+        logLine=`${cs.person}: +${mLbs} lbs, you +${scaleWlLessonLbs(outcome.mjLbs||0)} lbs`;
       }
-      const mjGain=outcome.mjLbs||0;
-      const relGain=outcome.rel||0;
+      const mjGain=scaleWlLessonLbs(outcome.mjLbs||0);
+      const relGain=scaleWlLessonRel(outcome.rel||0);
       const subKey=wlTalkPoolKey(cs.person,prev.stage,{ optionIdx:cs.optionIdx, subIdx });
       const subProse=_wlTalkLine(sub.text,cs.person,prev.stage,prev.mjStudentId,subKey);
       let next={...prev,daughters:newDaughters,moms:newMoms,

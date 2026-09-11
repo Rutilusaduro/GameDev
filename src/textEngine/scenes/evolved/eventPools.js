@@ -1,7 +1,46 @@
 // Branching evolved events — EVOLVED_EVENTS phase + choice pools.
 import { registerPool } from '../../engine.js';
 import { EVOLVED_EVENTS } from '../../../gameData/evolvedForms.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat, choiceEchoBeat, endingEchoBeat } from './proseTails.js';
+
+const SAMPLE_EVOLVED_SUBJECT = { id: 'mj', name: 'MJ', lbs: 240, archetype: 'cheerleader' };
+
+function samplePhaseProse(phase, history = []) {
+  if (typeof phase.text === 'string') return (phase.text || '').trim();
+  if (typeof phase.text === 'function') {
+    try {
+      return String(phase.text(history, SAMPLE_EVOLVED_SUBJECT)).trim();
+    } catch {
+      return '';
+    }
+  }
+  return '';
+}
+
+function sampleChoiceProse(choice) {
+  if (typeof choice.result === 'string') return (choice.result || '').trim();
+  if (typeof choice.result === 'function') {
+    try {
+      return String(choice.result(SAMPLE_EVOLVED_SUBJECT)).trim();
+    } catch {
+      return '';
+    }
+  }
+  return '';
+}
+
+function sampleEndingProse(ending, history = [], totalGain = 0) {
+  if (typeof ending.text === 'string') return (ending.text || '').trim();
+  if (typeof ending.text === 'function') {
+    try {
+      return String(ending.text(history, SAMPLE_EVOLVED_SUBJECT, totalGain)).trim();
+    } catch {
+      return '';
+    }
+  }
+  return '';
+}
 
 function resolvePhaseText(phase, ctx) {
   const h = ctx.globals?.history || [];
@@ -31,7 +70,10 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
     if (!evDef?.phases) return;
     evDef.phases.forEach((phase, phaseIdx) => {
       const intro = (ctx) => resolvePhaseText(phase, ctx);
-      registerPool(`evolved.event.${formId}.s${stageIdx}.p${phaseIdx}`, [
+      const poolKey = `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}`;
+      const legacyBody = samplePhaseProse(phase);
+      if (legacyBody) registerDecomposedPool(`${poolKey}.legacyBody`, legacyBody);
+      registerPool(poolKey, [
         {
           when: {},
           text: [
@@ -44,7 +86,10 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
       for (const ch of phase.choices || []) {
         if (!ch?.id) continue;
         const res = (ctx) => resolveChoiceResult(ch, ctx);
-        registerPool(`evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.${ch.id}`, [
+        const choiceKey = `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.${ch.id}`;
+        const choiceBody = sampleChoiceProse(ch);
+        if (choiceBody) registerDecomposedPool(`${choiceKey}.legacyBody`, choiceBody);
+        registerPool(choiceKey, [
           {
             when: {},
             text: [
@@ -64,7 +109,10 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
         if (typeof ending.text === 'function') return String(ending.text(h, subj, g)).trim();
         return (ending.text || '').trim();
       };
-      registerPool(`evolved.event.${formId}.s${stageIdx}.end${endingIdx}`, [
+      const endKey = `evolved.event.${formId}.s${stageIdx}.end${endingIdx}`;
+      const endBody = sampleEndingProse(ending);
+      if (endBody) registerDecomposedPool(`${endKey}.legacyBody`, endBody);
+      registerPool(endKey, [
         {
           when: {},
           text: [

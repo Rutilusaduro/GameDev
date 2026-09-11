@@ -244,6 +244,12 @@ export function depthHomeroomSuspicionDelta(delta = 0) {
 }
 
 /** Exploration ingredient grant counts — secondary loot depth. */
+/** Slightly higher ingredient/food find odds on travel + search. */
+export function depthExplorationFindChance(base = 0) {
+  if (!base || base <= 0) return base;
+  return Math.min(0.92, base * (1 + BONUS_FRAC * 0.22));
+}
+
 export function depthExplorationIngredientGrant(grants = {}) {
   if (!grants || typeof grants !== 'object') return grants;
   const out = { ...grants };

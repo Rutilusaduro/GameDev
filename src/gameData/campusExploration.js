@@ -13,7 +13,11 @@ import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverE
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
 import { campusNodeToLocale } from './textContext.js';
-import { depthExplorationIngredientGrant, depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
+import {
+  depthExplorationFindChance,
+  depthExplorationIngredientGrant,
+  depthPassiveTrustDrip,
+} from './mechanicsDepthLayer.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 import { formatSecretDiscoverLine } from '../textEngine/scenes/campus/secrets.js';
 
@@ -177,7 +181,11 @@ function applyFindToEffects(find, effects) {
 }
 
 function explorationFindProse(find, travelCtx) {
-  const flavor = renderCampusFindFlavor(travelCtx)?.trim();
+  const flavor = renderCampusFindFlavor({
+    ...travelCtx,
+    findTier: find?.tier || null,
+    findId: find?.id || null,
+  })?.trim();
   return flavor || find?.text || '';
 }
 
@@ -254,7 +262,8 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (trustGrants.length) effects.trustGrants = trustGrants;
   }
 
-  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04) {
+  const findChance = depthExplorationFindChance(EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04);
+  if (rng() < findChance) {
     const findId = pickExplorationFind(travelFindPool(nodeId, Math.max(ctx.campusTier, satTier >= 2 ? 2 : 0)), rng);
     const find = getExplorationFind(findId);
     if (find) {
@@ -333,7 +342,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
   if (available.length) {
     const hint = available[0];
     lines.push(`…nothing yet. ${hint.hint}`);
-  } else if (rng() < EXPLORATION_CONFIG.ingredientFindChance * 1.4) {
+  } else if (rng() < depthExplorationFindChance(EXPLORATION_CONFIG.ingredientFindChance * 1.4)) {
     const findId = pickExplorationFind(travelFindPool(nodeId, ctx.campusTier), rng);
     const find = getExplorationFind(findId);
     if (find) {

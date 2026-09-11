@@ -795,6 +795,15 @@ export function scaleEvolvedEventRel(rel = 0) {
   return depthRelBonus(rel);
 }
 
+/** Wife Lessons session payouts — same depth curve as evolved branching events. */
+export function scaleWlLessonLbs(lbs = 0) {
+  return scaleEvolvedEventLbs(lbs);
+}
+
+export function scaleWlLessonRel(rel = 0) {
+  return scaleEvolvedEventRel(rel);
+}
+
 export const EVOLVED_EVENTS = {
   sumo:[
     // stage 5 — ~258 lbs — Regional Qualifier

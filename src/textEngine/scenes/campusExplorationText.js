@@ -348,6 +348,8 @@ export function renderCampusFindFlavor(explorationCtx) {
     globals: {
       campusTier: explorationCtx.campusTier ?? 0,
       campusFattening: explorationCtx.campusFattening,
+      explorationFindTier: explorationCtx.findTier || null,
+      explorationFindId: explorationCtx.findId || null,
     },
   });
   const base = render('{campus.find}', ctx)?.trim() || '';
