@@ -10,6 +10,7 @@ test('floor blueprint: click room, see upgrades, pin circuit', async ({ page }) 
   await page.locator('[data-room-id="kitchen"]').click();
   await expect(page.getByRole('heading', { name: 'Floor Kitchen' })).toBeVisible();
   await expect(page.getByText(/Snack Station/i).first()).toBeVisible();
+  await page.locator('[data-panel="HallLoungeSkillsPanel"]').screenshot({ path: '/opt/cursor/artifacts/screenshots/blueprint_kitchen_selected.png' });
 
   await page.locator('[data-room-id="lounge"]').click();
   await expect(page.getByRole('heading', { name: 'Hall Lounge' })).toBeVisible();

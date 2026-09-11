@@ -14,6 +14,9 @@ test('intimacy modal runs resident scene with RA framing', async ({ page }) => {
   const scene = page.locator('.picker-modal').filter({ hasText: 'HER WEIGHT ON YOU' });
   await expect(scene.getByText('Cassidy', { exact: true })).toBeVisible();
   await expect(scene.locator('.intimacy-choice-row').first()).toBeVisible();
+  await expect(scene).not.toContainText('{unresolved}');
+  await expect(scene).not.toContainText('distributing mass until you feel all of her');
+  await scene.screenshot({ path: '/opt/cursor/artifacts/screenshots/intimacy_phase_composed.png' });
 
   await scene.getByRole('button', { name: /Wrap your arms around her/ }).click();
   await scene.getByRole('button', { name: /Rock her gently/ }).click();

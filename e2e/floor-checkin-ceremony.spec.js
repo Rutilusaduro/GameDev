@@ -11,6 +11,8 @@ test('floor check-in modal shows weekly hall scene with RA framing', async ({ pa
   await expect(modal.getByText('How do you respond?')).toBeVisible();
   await expect(modal).not.toContainText('{unresolved}');
   await expect(modal).not.toContainText('found a split discrepancy Thursday');
+  await expect(modal).not.toContainText('Ordinary campus hour');
+  await modal.screenshot({ path: '/opt/cursor/artifacts/screenshots/floor_checkin_composed_body.png' });
 
   await modal.locator('.floor-checkin-choice').first().click({ force: true });
   await modal.getByRole('button', { name: /Continue →|View Summary →/ }).click({ force: true });
