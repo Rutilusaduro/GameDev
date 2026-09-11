@@ -7,6 +7,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { FAIR_TRAINING_CONFIG, FAIR_DAY_SCENES } from '../gameData/evolvedForms.js';
 import { extraFairAfterparty } from '../gameData/evolvedFloorExtras.js';
+import { renderFairBeat } from '../textEngine/scenes/overhaul/cgFair.js';
 
 export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairTrainingSession, launchFairDayEvent, closeFairTraining, setFairTrainingState, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, ft.open, ft.view, ft.cycleNum]);
@@ -105,7 +106,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
   );
 }
 
-export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true, owned = {} }){
+export function FairDayModal({ fd, students, fairPride, getFairPrideTier, chooseFairWeighIn, advanceFairDayPhase, chooseFairAfterparty, closeFairDay, soundEnabled = true, owned = {}, week = 1 }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, fd.studentId, fd.phase, fd.weighInChoice, fd.afterpartyChoice]);
   const s=students.find(st=>st.id===fd.studentId);
   if(!s) return null;
@@ -129,7 +130,7 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
           return(
             <>
               {!fd.weighInChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairBeat('weighin.open',s,week,{influenceKey:fd.influenceKey,stageIdx:fd.stageIdx})||sc.open}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
                   <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
@@ -148,7 +149,7 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
 
         {fd.phase==='judging'&&(
           <>
-            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{FAIR_DAY_SCENES.judging[key]}</div>
+            <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairBeat('judging',s,week,{influenceKey:fd.influenceKey,stageIdx:fd.stageIdx})||FAIR_DAY_SCENES.judging[key]}</div>
             <button style={{...C.btn(fairOrange),width:"100%"}} onClick={advanceFairDayPhase}>To the Afterparty →</button>
           </>
         )}
@@ -158,7 +159,7 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
           return(
             <>
               {!fd.afterpartyChoice&&<>
-                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{sc.open}</div>
+                <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairBeat('afterparty.open',s,week,{influenceKey:fd.influenceKey,stageIdx:fd.stageIdx})||sc.open}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
                   <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairAfterparty(1)}>🥂 {sc.choice1.label}</button>
                   <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairAfterparty(2)}>🎡 {sc.choice2.label}</button>

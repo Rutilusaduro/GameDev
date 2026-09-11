@@ -46,6 +46,7 @@ import { renderContestFoodPopup, renderContestActionPopup } from '../src/textEng
 import { renderSumoOpening, renderSumoExchangeLine } from '../src/textEngine/scenes/sumoMatch/index.js';
 import { renderRecordingOpening, renderRecordingDirectionPopup } from '../src/textEngine/scenes/recordingSession/index.js';
 import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
+import { renderCgBinge, renderCgCorkboard, renderFairBeat } from '../src/textEngine/scenes/overhaul/cgFair.js';
 import { render, createContext } from '../src/textEngine/engine.js';
 
 const missing = assertSkillRoomCoverage();
@@ -299,6 +300,22 @@ assert.equal(/I'm so ready for this/i.test(recOpen), false, 'recording open shou
 const recDir = renderRecordingDirectionPopup('food_kitchen', 0, recStudent, 3);
 assert.ok(recDir && !recDir.includes('{unresolved}'));
 assert.equal(/You bring the hall kitchen leftovers/i.test(recDir), false, 'recording direction should not be leftover food_kitchen copy');
+
+const cgPriya = {
+  id: 5, name: 'Priya', lbs: 260, startLbs: 125, evolvedForm: 'competitive_gainer',
+  relationship: 30, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const binge = renderCgBinge(cgPriya, 3, { kitchen: true });
+assert.ok(binge && !binge.includes('{unresolved}'), `cg binge should resolve, got: ${String(binge).slice(0, 160)}`);
+const cork = renderCgCorkboard(cgPriya, 3);
+assert.ok(cork && !cork.includes('{unresolved}'));
+const mj = {
+  id: 4, name: 'Mary Jane', lbs: 220, startLbs: 130, evolvedForm: 'state_fair_queen',
+  relationship: 25, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const fairOpen = renderFairBeat('weighin.open', mj, 4, { influenceKey: 'None', stageIdx: 0 });
+assert.ok(fairOpen && !fairOpen.includes('{unresolved}'), `fair open should resolve, got: ${String(fairOpen).slice(0, 160)}`);
+assert.ok(/Fairgrounds|tank|scale|mass|pinned/i.test(fairOpen));
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

@@ -8,6 +8,7 @@ import './evolvedActivity.js';
 import './contestSumo.js';
 import './evolvedEvent.js';
 import './recording.js';
+import './cgFair.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

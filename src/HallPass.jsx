@@ -413,6 +413,7 @@ import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
 import { renderCampusLook } from './textEngine/scenes/overhaul/campusHunt.js';
+import { renderCgBinge, renderCgCorkboard, renderFairBeat } from './textEngine/scenes/overhaul/cgFair.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -3505,11 +3506,14 @@ export default function HallPass(){
       const tier=getCGDriveTier(cgDrive(prev));
       const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
       const idx=(prev.corkboardVisitCount||0)%scenes.length;
-      let sceneText=scenes[idx];
       const priya=students.find(st=>st.id===prev.priyaStudentId);
-      if(priya){
-        const linger=render('{overhaul.linger.cg}',createContext({subject:priya,week}))?.trim();
-        if(linger) sceneText=`${sceneText} ${linger}`;
+      let sceneText=priya?renderCgCorkboard(priya,week):'';
+      if(!sceneText||sceneText.includes('{unresolved}')){
+        sceneText=scenes[idx];
+        if(priya){
+          const linger=render('{overhaul.linger.cg}',createContext({subject:priya,week}))?.trim();
+          if(linger) sceneText=`${sceneText} ${linger}`;
+        }
       }
       // Drive gain: check if any visible student is within threat range
       let driveGain=rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
@@ -3600,14 +3604,17 @@ export default function HallPass(){
       const extraLbs=extraCgBingeLbs(ownedHallSkills||{})+(mode==='kitchen'?4:0);
       const gain=Math.round(baseGain*mult*(0.85+Math.random()*0.30))+extraLbs;
       const stageKey=getCGStageKey(priya.lbs);
-      let sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
-      const ctx=createContext({subject:priya,week});
-      if(mode==='kitchen'){
-        const kit=render('{overhaul.cg.kitchen}',ctx)?.trim();
-        if(kit) sceneText=`${kit} ${sceneText}`;
+      let sceneText=renderCgBinge(priya,week,{kitchen:mode==='kitchen'});
+      if(!sceneText||sceneText.includes('{unresolved}')){
+        sceneText=CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+        const ctx=createContext({subject:priya,week});
+        if(mode==='kitchen'){
+          const kit=render('{overhaul.cg.kitchen}',ctx)?.trim();
+          if(kit) sceneText=`${kit} ${sceneText}`;
+        }
+        const linger=render('{overhaul.linger.cg}',ctx)?.trim();
+        if(linger) sceneText=`${sceneText} ${linger}`;
       }
-      const linger=render('{overhaul.linger.cg}',ctx)?.trim();
-      if(linger) sceneText=`${sceneText} ${linger}`;
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -6510,8 +6517,10 @@ export default function HallPass(){
       const baseGain=choice===1?sc.gainA:sc.gainB;
       const gain=Math.round(baseGain*(1+bonus));
       const rel=choice===1?sc.relA:sc.relB;
+      const mj=students.find(st=>st.id===prev.studentId);
+      const composed=mj?renderFairBeat('weighin.result',mj,week,{influenceKey:prev.influenceKey,stageIdx:prev.stageIdx}):'';
       return {...prev,weighInChoice:choice,
-        weighInResultText:`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
+        weighInResultText:composed||`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${choice===1?sc.endingA:sc.endingB}`,
         weighInGain:gain,weighInRel:rel,totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };
@@ -6533,15 +6542,16 @@ export default function HallPass(){
       const linger=s?render('{overhaul.linger.fair}',createContext({subject:s,week}))?.trim():'';
       if(extra){
         return {...prev,afterpartyChoice:extra.id,
-          afterpartyResultText:linger?`${extra.result} ${linger}`:extra.result,
+          afterpartyResultText:renderFairBeat('afterparty.result',s,week,{influenceKey:prev.influenceKey,stageIdx:prev.stageIdx})||(linger?`${extra.result} ${linger}`:extra.result),
           totalGain:prev.totalGain+extra.gain,relBonus:prev.relBonus+extra.rel};
       }
       const sc=FAIR_DAY_SCENES.afterparty[`${prev.stageIdx}_${prev.influenceKey}`];
       const gain=choice===1?sc.gainA:sc.gainB;
       const rel=choice===1?sc.relA:sc.relB;
-      const resultText=`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`;
+      const composed=s?renderFairBeat('afterparty.result',s,week,{influenceKey:prev.influenceKey,stageIdx:prev.stageIdx}):'';
+      const resultText=composed||`${choice===1?sc.choice1.result:sc.choice2.result}\n\n${sc.ending}`;
       return {...prev,afterpartyChoice:choice,
-        afterpartyResultText:linger?`${resultText} ${linger}`:resultText,
+        afterpartyResultText:resultText,
         totalGain:prev.totalGain+gain,relBonus:prev.relBonus+rel};
     });
   };
@@ -9608,7 +9618,7 @@ export default function HallPass(){
       {fairTrainingState.open&&<FairTrainingHub ft={fairTrainingState} students={students} ap={ap} getFairPrideTier={getFairPrideTier} startFairTrainingSession={startFairTrainingSession} launchFairDayEvent={launchFairDayEvent} closeFairTraining={closeFairTraining} setFairTrainingState={setFairTrainingState} soundEnabled={soundEnabled}/>}
 
       {/* ── FAIR DAY MODAL (Weigh-In → Judging → Afterparty) ── */}
-      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
+      {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled} owned={ownedHallSkills||{}} week={week}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
       {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} onFollowup={applyActivityFollowup} owned={ownedHallSkills||{}} soundEnabled={soundEnabled}/>}
