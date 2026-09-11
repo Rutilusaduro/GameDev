@@ -8,6 +8,7 @@ import './activityPools.js';
 import './eventPools.js';
 import './reactionPools.js';
 import './outfitPools.js';
+import './evolutionOfferPools.js';
 
 function legacyBodyChanceFromCtx(ctx, fallback = 0.12) {
   const peak = ctx.globals?.hallAmbiancePeak ?? 0;
