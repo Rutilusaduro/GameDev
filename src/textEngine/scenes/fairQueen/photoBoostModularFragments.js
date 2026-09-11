@@ -130,6 +130,36 @@ registerModuleVariants('fair.boost.Renee', [
       BOOST_SKELETON,
     ],
   },
+  {
+    when: { fairBoostTier: ['Low'] },
+    weight: 1,
+    text: [
+      'Renee starts shy at the corn-dog line and ends loud — fair pride grows wherever she finally lets herself eat.',
+      BOOST_SKELETON,
+    ],
+  },
+]);
+
+registerModuleVariants('fair.boost.Daisy', [
+  {
+    when: { fairBoostTier: ['Mid'] },
+    weight: 1,
+    text: [
+      'Daisy maps the food map like homework — MJ follows the highlighter straight into another trophy photo.',
+      BOOST_SKELETON,
+    ],
+  },
+]);
+
+registerModuleVariants('fair.boost.Lilith', [
+  {
+    when: { fairBoostTier: ['High'] },
+    weight: 2,
+    text: [
+      'Lilith’s recruits chant while MJ swallows — pride spikes like kettle corn popping in the dark.',
+      BOOST_SKELETON,
+    ],
+  },
 ]);
 
 registerModuleVariants('fair.boost.Serena', [

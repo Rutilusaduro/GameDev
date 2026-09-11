@@ -131,7 +131,30 @@ for (const key of DAY_POOLS) {
   ]);
 }
 
+registerPool('evolved.fairQueen.v2.depth', [
+  {
+    when: {},
+    text: [
+      (ctx) => {
+        const n = ctx.subject?.name || 'She';
+        return `Sawdust, sugar, crowd noise — ${n} carries the fair in her hips now.`;
+      },
+      () => 'The scale is livestock-grade. The pride is not.',
+      () => 'Darcy can train six months. Mary Jane can grow six months faster.',
+    ],
+  },
+]);
+
 const FAIR_V2_LATE = '{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: } {fair.day.judgingBeat|prefix: }';
+
+registerModuleVariants('fair.day.judging', [
+  {
+    when: { fairInfluence: ['Brittany'], weekMin: 16 },
+    weight: 4,
+    priority: 5,
+    text: [JUDGING_SKELETON],
+  },
+]);
 
 registerModuleVariants('evolved.fairQueen.v2.depth', [
   {

@@ -41,6 +41,16 @@ registerModuleVariants('hall.blueprint.synergy', [
       BLUEPRINT_SKELETON,
     ],
   },
+  {
+    when: { stageMin: [4], weekMin: 10 },
+    weight: 3,
+    priority: 4,
+    text: [
+      'Synergy clicks — lounge appetite and dorm logistics feeding each other.',
+      'Two upgrades rhyme; the floor feels engineered, not accidental.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
 ]);
 
 for (const key of [
@@ -72,6 +82,18 @@ registerModuleVariants('hall.blueprint.purchase', [
     priority: 5,
     text: [
       'Room upgrade seals — the wing exhales warmth through every labeled doorway.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+]);
+
+registerModuleVariants('hall.room.blurb', [
+  {
+    when: { hallRoomId: ['ra_office'], weekMin: 12 },
+    weight: 3,
+    priority: 4,
+    text: [
+      'Paperwork thins; the office learns to bless appetite instead of auditing it.',
       BLUEPRINT_SKELETON,
     ],
   },

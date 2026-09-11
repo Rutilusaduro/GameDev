@@ -61,3 +61,21 @@ for (const c of COLLABS) {
     },
   ]);
 }
+
+registerModuleVariants('fair.training.Brittany', [
+  {
+    when: { mjStageBucket: ['heavy'], weekMin: 14 },
+    weight: 4,
+    priority: 5,
+    text: [TRAINING_SKELETON],
+  },
+]);
+
+registerModuleVariants('fair.training.Renee', [
+  {
+    when: { cStageBucket: ['heavy'], weekMin: 14 },
+    weight: 4,
+    priority: 5,
+    text: [TRAINING_SKELETON],
+  },
+]);
