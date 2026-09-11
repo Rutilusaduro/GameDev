@@ -9,6 +9,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'resonance', file: 'v2/cravingResonance.js' },
   { id: 'scrutiny', file: 'scrutinyConsequences.js' },
   { id: 'psych', file: 'psychState.js' },
+  { id: 'corruption', file: 'corruption.js' },
   { id: 'devices', file: 'deviceGating.js' },
   { id: 'deviceDependence', file: 'deviceDependence.js' },
   { id: 'hallLounge', file: 'hallLoungeSkills.js' },

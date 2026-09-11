@@ -24,7 +24,8 @@ import { IMMOBILE_REDIRECT, TAP_OUT_DIALOGUE, TAP_OUT_250, BLOB_PRIVATE_INTRO, I
 import { WEIGHT_STAGES, getStage } from './gameData/stages.js';
 import { GAIN_CONFIG, initGainStats, calsToLbs, forceFeedChance, digestStudent, applyCapacityGrowth } from './gameData/gainSystem.js';
 import { renderFeedRefusal, renderForceFeedSuccess } from './textEngine/scenes/feedForce/index.js';
-import { CORRUPTION_CONFIG, getCorruptionTier, CORRUPTION_AUTO_LINES, CORRUPTION_TIER_UP_LINES } from './gameData/corruption.js';
+import { CORRUPTION_CONFIG, getCorruptionTier, corruptionAutoLbsBonus } from './gameData/corruption.js';
+import { renderCorruptionTierUp, renderCorruptionAutoStuff } from './textEngine/scenes/corruptionTierUp/index.js';
 import { TALK_CONFIG, isBodyComplimentUnwelcome, COMPLIMENT_BACKFIRE_REL, COMPLIMENT_BACKFIRE_SCRUTINY } from './gameData/talkSystem.js';
 import { INVENTORY_CONFIG, rollWeeklyItem, ITEMS } from './gameData/items.js';
 import { WALLET_CONFIG, formatMoney, trySpend, addFunds } from './gameData/wallet.js';
@@ -1356,8 +1357,9 @@ export default function HallPass(){
     const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+scaled);
     const after=getCorruptionTier(newC).id;
     if(after>before){
-      if(CORRUPTION_TIER_UP_LINES[after]){
-        setTimeout(()=>push(`🕯️ ${CORRUPTION_TIER_UP_LINES[after]({...s,corruption:newC})}`),200);
+      if(after>=1&&after<=2){
+        const tierLine=renderCorruptionTierUp({...s,corruption:newC},after,week);
+        if(tierLine) setTimeout(()=>push(`🕯️ ${tierLine}`),200);
       }
       const shiftLine=renderPsychShift({...s,corruption:newC},week,{lastCorruptionShift:true,...textOpts});
       if(shiftLine) setTimeout(()=>push(`💫 ${shiftLine}`),320);
@@ -1683,8 +1685,7 @@ export default function HallPass(){
       if(opposition?.supernatural?.synthesisAlly) gain=Math.max(0,Math.round(gain*1.1));
       // Corruption-driven autonomous eating (willingness made flesh)
       const cTier=getCorruptionTier(s.corruption||0).id;
-      if(cTier===1) gain+=rnd(CORRUPTION_CONFIG.tier2AutoLbs[0],CORRUPTION_CONFIG.tier2AutoLbs[1]);
-      if(cTier===2) gain+=rnd(CORRUPTION_CONFIG.tier3AutoLbs[0],CORRUPTION_CONFIG.tier3AutoLbs[1]);
+      gain+=corruptionAutoLbsBonus(cTier,()=>Math.random());
       // Immobility "settling" — once she has Arrived, sustained care keeps her
       // gently growing without active feeding (the set-and-forget endgame).
       gain+=immobilitySettleGain(s,Math.random);
@@ -1973,8 +1974,8 @@ export default function HallPass(){
       if(hungerEff.willingVessel&&getCorruptionTier(corruption).id===2) selfStuffChance=Math.min(1,selfStuffChance*2);
       if(getCorruptionTier(corruption).id===2&&Math.random()<selfStuffChance){
         carriedFullness=Math.round((growth.stomachCapacity+d.capacityGained)*1.15);
-        const autoLine=CORRUPTION_AUTO_LINES[rnd(0,CORRUPTION_AUTO_LINES.length-1)](ns);
-        setTimeout(()=>push(`💭 ${autoLine}`),250);
+        const autoLine=renderCorruptionAutoStuff(ns,newWeek);
+        if(autoLine) setTimeout(()=>push(`💭 ${autoLine}`),250);
       }
       if(d.lbsGained>0||stagedUp||d.stuffed){
         const prose=renderWeekRecap(ns,newWeek,{
