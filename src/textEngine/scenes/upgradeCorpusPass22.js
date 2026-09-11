@@ -4,8 +4,6 @@
 // bodyType stub stages, leftover hunger.desc.
 import { registerModuleVariants } from '../engine.js';
 
-const HI = { hungerTierMin: 2 };
-
 function face(key, studentId, text) {
   registerModuleVariants(key, [
     { when: { studentId }, weight: 8, text: [text] },
@@ -88,23 +86,23 @@ registerModuleVariants('word.jealousyReaction', [
 
 // ── leftover word.hungerPhrase (tier 3/4 never fire alone) ────
 registerModuleVariants('word.hungerPhrase', [
-  { when: { studentId: 8, ...HI }, weight: 6, text: [
+  { when: { studentId: 8 }, weight: 6, text: [
     'hunger she will not narrate',
     'appetite sitting in the quiet like a second person',
   ] },
-  { when: { studentId: 10, ...HI }, weight: 6, text: [
+  { when: { studentId: 10 }, weight: 6, text: [
     'hunger with a cook\'s vocabulary and a girl\'s urgency',
     'appetite already plating itself',
   ] },
-  { when: { studentId: 16, ...HI }, weight: 6, text: [
+  { when: { studentId: 16 }, weight: 6, text: [
     'craving logged as a side effect she intends to keep',
     'appetite that outran the protocol',
   ] },
-  { when: { studentId: 5, ...HI }, weight: 6, text: [
+  { when: { studentId: 5 }, weight: 6, text: [
     'hunger queued and not leaving',
     'appetite treating the afternoon like a tray already claimed',
   ] },
-  { when: { studentId: 15, ...HI }, weight: 6, text: [
+  { when: { studentId: 15 }, weight: 6, text: [
     'hunger as tribute already owed',
     'appetite that does not ask',
   ] },
@@ -147,16 +145,16 @@ registerModuleVariants('word.adv.manner', [
 
 // ── leftover hunger.desc ──────────────────────────────────────
 registerModuleVariants('hunger.desc', [
-  { when: { studentId: 8, ...HI }, weight: 6, text: [
+  { when: { studentId: 8 }, weight: 6, text: [
     'Hunger sits in Maya like a held note. She will not name it. She will eat it.',
   ] },
-  { when: { studentId: 10, ...HI }, weight: 6, text: [
+  { when: { studentId: 10 }, weight: 6, text: [
     'Reneé is hungry the way a kitchen is hungry — already reaching for a spoon.',
   ] },
-  { when: { studentId: 16, ...HI }, weight: 6, text: [
+  { when: { studentId: 16 }, weight: 6, text: [
     'Sophia\'s appetite exceeded the label. She keeps the label anyway.',
   ] },
-  { when: { studentId: 0, ...HI }, weight: 6, text: [
+  { when: { studentId: 0 }, weight: 6, text: [
     'Brittany skipped lunch for practice and the skip is now the whole hour.',
   ] },
 ]);
