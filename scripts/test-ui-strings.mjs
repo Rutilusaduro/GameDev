@@ -107,7 +107,9 @@ assertClean(deviceInv, 'DeviceInventoryView.jsx');
 
 const lounge = readFileSync('src/views/HallLoungeView.jsx', 'utf8');
 assert(lounge.includes('HALL LOUNGE'), 'HallLoungeView must say HALL LOUNGE');
-assert(lounge.includes('FLOOR BLUEPRINT'), 'HallLoungeView must expose blueprint UI');
+assert(lounge.includes('HallBlueprint'), 'HallLoungeView must wire blueprint UI');
+const blueprint = readFileSync('src/components/HallBlueprint.jsx', 'utf8');
+assert(blueprint.includes('FLOOR BLUEPRINT'), 'HallBlueprint component must label blueprint UI');
 assert.match(lounge, /export function HallLoungeView/);
 assertClean(lounge, 'HallLoungeView.jsx');
 
