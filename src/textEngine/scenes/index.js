@@ -44,6 +44,7 @@ import './talkEncourage.js';
 import './talkEncourageOverhaul.js';
 import './talkCheckIn.js';
 import './talkCompliment.js';
+import './talkComplimentOverhaulPass.js';
 import './talkSuggest.js';
 import './talkSuggestDepth.js';
 import './talkSuggestOverhaul.js';

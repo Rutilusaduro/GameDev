@@ -10,6 +10,7 @@ export function HallLoungeView({
   onPurchaseHallLoungeSkill,
   atmosphereWeave,
   raProfile,
+  week = 1,
 }) {
   const dorm = getDorm(raProfile?.dormId || raProfile?.subject);
   const hallAccent = dorm?.color || '#4a8aa8';
@@ -21,6 +22,8 @@ export function HallLoungeView({
       onPurchaseHallLoungeSkill={onPurchaseHallLoungeSkill}
       atmosphereWeave={atmosphereWeave}
       hallAccent={hallAccent}
+      week={week}
+      raProfile={raProfile}
     />
   );
 }

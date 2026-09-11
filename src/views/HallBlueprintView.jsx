@@ -3,6 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useMemo, useState } from 'react';
 import { C } from '../styles.js';
+import { render } from '../textEngine/engine.js';
+import { buildTextContext } from '../gameData/textContext.js';
 import { SKILL_TREE } from '../gameData/skills.js';
 import {
   HALL_BLUEPRINT_ROOMS,
@@ -67,8 +69,22 @@ function WeaveMeter({ charge = 0 }) {
   );
 }
 
-function RoomUpgradePanel({ roomId, students, ownedHallSkills, onPurchase, onClose, hallColor }) {
+function RoomUpgradePanel({ roomId, students, ownedHallSkills, onPurchase, onClose, hallColor, week, raProfile }) {
   const meta = getRoomDisplayMeta(roomId, ownedHallSkills);
+  const ownedLen = meta?.owned?.length ?? 0;
+
+  const roomProse = useMemo(() => {
+    if (!meta) return '';
+    const visible = (students || []).filter((s) => !s.hidden);
+    const subject = visible.length
+      ? visible.reduce((a, b) => ((a.lbs || 0) >= (b.lbs || 0) ? a : b))
+      : null;
+    if (!subject) return '';
+    const ctx = buildTextContext({ subject, week, raProfile });
+    const key = ownedLen ? '{hallBlueprint.roomActive}' : '{hallBlueprint.roomEmpty}';
+    return render(key, ctx)?.trim() || '';
+  }, [meta, students, week, raProfile, ownedLen]);
+
   if (!meta) return null;
   const { room, owned, purchasable } = meta;
   const currency = computeHallLoungeSkillCurrency(students, ownedHallSkills);
@@ -99,6 +115,11 @@ function RoomUpgradePanel({ roomId, students, ownedHallSkills, onPurchase, onClo
             {room.emoji} {room.label}
           </div>
           <div style={{ fontSize: 10, color: '#608898', marginTop: 4, lineHeight: 1.5, maxWidth: 420 }}>{room.blurb}</div>
+          {roomProse ? (
+            <div style={{ fontSize: 10, color: '#88a8b8', marginTop: 8, lineHeight: 1.55, fontStyle: 'italic', maxWidth: 440 }}>
+              {roomProse}
+            </div>
+          ) : null}
         </div>
         <button type="button" style={{ ...C.smBtn, flexShrink: 0 }} onClick={onClose}>Close</button>
       </div>
@@ -149,6 +170,8 @@ export function HallBlueprintView({
   onPurchaseHallLoungeSkill,
   atmosphereWeave,
   hallAccent = '#4a8aa8',
+  week = 1,
+  raProfile,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const synergies = getActiveBlueprintSynergies(ownedHallSkills || {});
@@ -249,6 +272,8 @@ export function HallBlueprintView({
           onPurchase={onPurchaseHallLoungeSkill}
           onClose={() => setSelectedRoom(null)}
           hallColor={hallAccent}
+          week={week}
+          raProfile={raProfile}
         />
       )}
       {!onPurchaseHallLoungeSkill && (

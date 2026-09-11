@@ -8892,7 +8892,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} atmosphereWeave={atmosphereWeave} raProfile={raProfile}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} atmosphereWeave={atmosphereWeave} raProfile={raProfile} week={week}/>}
 
           {view==="influence"&&<InfluenceView
             students={students}
