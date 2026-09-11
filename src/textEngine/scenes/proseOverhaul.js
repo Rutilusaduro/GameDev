@@ -277,6 +277,27 @@ registerModuleVariants('wi.reply', [
 ]);
 
 registerModuleVariants('comp.bodyNote', [
+  { when: { leftoverFed: true, stageMax: 1 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover heat is the new curve. The compliment finds it first.',
+    'Kitchen sitting already started the softness you just named.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 2, stageMax: 3 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover sitting shows: hips rounder, a belly the tray opened.',
+    'The {subject.lbs} lbs include last night. She keeps finding it with one hand.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 5 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover heat is plump in the chair. Naming it makes her sit heavier.',
+    'The compliment finds waistband and foil-warmth in the same place.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6, stageMax: 7 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover and the praise share a lap. She takes up the space you named.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'At {subject.lbs} lbs leftover parked her. The compliment is geography, not a guess.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The extra of her in the chair includes last night\'s tray. She lets you see it.',
+  ] },
   { when: { stageMin: 3, stageMax: 6 }, weight: 2, text: [
     'The compliment finds the place her waistband is losing. She does not pull her shirt down this time.',
     'You can see the extra of her in the chair. Naming it makes her sit heavier, not smaller.',

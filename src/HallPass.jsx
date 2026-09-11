@@ -1424,12 +1424,13 @@ export default function HallPass(){
     const target=students.find(st=>st.id===studentId);
     if(!target) return;
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
-    const fed=feedStudentCalories(target,item.cal,item.full,1,
+    const extraCals=leftoverNightGainBump(target,week)*GAIN_CONFIG.calsPerLb;
+    const fed=feedStudentCalories(target,item.cal+extraCals,item.full,1,
       `${item.emoji} ${item.label}${compoundLabel?` + ${compoundLabel}`:''}`,
       compoundId?{compoundId}:{});
     if(!fed) return;
     setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
-    setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
+    setStudents(prev=>prev.map(st=>st.id===studentId?bumpOriginChain(fed):st));
     const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
     setTimeout(()=>push(`🎒 ${line}${compoundLabel?` (${compoundLabel})`:''}`),80);
   };
@@ -7678,7 +7679,9 @@ export default function HallPass(){
     if(dinnerEvent.conversationUsed.includes(conv.id)) return;
     const s=students.find(st=>st.id===dinnerEvent.student.id)||dinnerEvent.student;
     const gainBonus=rnd(conv.gainBonus[0],conv.gainBonus[1]);
-    const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
+    const skipNight=(dinnerEvent.dishes||[]).length>0||dinnerEvent.conversationUsed.length>0;
+    const applied=gainBonus>0?depthGainLbs(s,gainBonus,week,{skipNight}):0;
+    const scaledBonus=Math.round(applied*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=renderDinnerConversation(conv.id, s, week);
     const fullnessChange=conv.fullnessEffect||0;
     const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner',week});
@@ -7689,7 +7692,7 @@ export default function HallPass(){
         fullnessMult:feedMods.fullnessMult,
       });
       if(bonusFed){
-        fed=bonusFed;
+        fed=skipNight?bonusFed:bumpOriginChain(bonusFed);
         setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
       }
     } else if(conv.relBonus){

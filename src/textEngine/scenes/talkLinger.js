@@ -409,6 +409,36 @@ registerPool('talk.command_finish.linger', [
   ] },
 ]);
 
+registerPool('talk.suggest.wrap', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The suggestion lands on leftover heat. She treats hunger like weather she already packed for.',
+    'Kitchen sitting already voted. The planted idea is just catching up.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'She does not argue the suggestion. Last night\'s tray already made the case.',
+    'Leftover warmth plus the idea. She is already reaching.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The seed finds soil the galley opened. She will eat like it was her thought.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. Daylight suggestion uses the same open door.',
+  ] },
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She blinks at the idea like it overheard her. Then she wants a snack anyway.',
+    'The suggestion sits in the room after you stop talking. So does her appetite.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'She does not pretend the idea was hers. She still follows it to food.',
+    'The planted hunger has a lap now. She lets it.',
+  ] },
+  { when: {}, text: [
+    'The idea keeps working after she stands. Standing is already toward the kitchen.',
+    'She leaves with a plan that looks like appetite. It is.',
+    'You planted it. She will call it her own hunger by evening.',
+  ] },
+]);
+
 // Shape: FULL SENTENCE. Setup for asking how she landed on the floor.
 registerPool('talk.origin_echo.open', [
   { when: {}, text: [
@@ -564,6 +594,13 @@ registerPool('talk.origin_echo', [
 ]);
 
 registerPool('talk.origin_echo.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The story stays. Leftover heat stays with it. Origin and tray share the chair.',
+    'She looks at you like the origin is still happening. Last night\'s sitting agrees.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Whatever she admitted keeps working. Kitchen leftover is the proof in her lap.',
+  ] },
   { when: { stageMax: 3 }, text: [
     'The story stays in the room after she stops talking. So does her appetite.',
     'She looks at you like the origin is still happening.',
