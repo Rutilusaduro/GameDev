@@ -1,5 +1,6 @@
 // Wife Lessons — composable lesson beat slots (MIGRATION.md Step 2 pilot).
 import { registerPool, registerModuleVariants } from '../../engine.js';
+import { WL_LESSONS } from '../../../gameData/wifeLessonsData.js';
 
 registerPool('wl.lesson.aroma', [
   {
@@ -59,19 +60,39 @@ registerPool('wl.lesson.raWitness', [
   },
 ]);
 
-const MODULAR_LESSON_KEYS = [
-  'wifeLessons.lesson.s1.honey_butter',
-  'wifeLessons.lesson.s1.cream_biscuits',
-  'wifeLessons.lesson.s1.cinnamon_pull',
-  'wifeLessons.lesson.s2.butter_cake',
-  'wifeLessons.lesson.s2.cream_rolls',
-  'wifeLessons.lesson.s2.pot_pie',
-];
+registerPool('wl.lesson.lateFeast', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'The table groans under every favorite dish — a living archive of every lesson so far.',
+      'Daughters serve mothers now; the circle inverts without losing its warmth.',
+      'Oven heat and satisfied groans braid together until midnight feels like afternoon.',
+    ],
+  },
+]);
+
+const MODULAR_LESSON_KEYS = [];
+for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
+  if (!Array.isArray(lessons)) continue;
+  for (const lesson of lessons) {
+    if (lesson?.id) MODULAR_LESSON_KEYS.push(`wifeLessons.lesson.s${stage}.${lesson.id}`);
+  }
+}
 
 const SKELETON = '{wl.lesson.aroma|prefix:} {wl.lesson.mjDoctrine|prefix: } {wl.lesson.circleEat|prefix: } {wl.lesson.raWitness|prefix: }';
 
+const LATE_SKELETON = '{wl.lesson.lateFeast|prefix:} {wl.lesson.mjDoctrine|prefix: } {wl.lesson.circleEat|prefix: } {wl.lesson.raWitness|prefix: }';
+
 for (const key of MODULAR_LESSON_KEYS) {
+  const stageNum = Number(key.match(/\.s(\d+)\./)?.[1] || 0);
   registerModuleVariants(key, [
+    {
+      when: { weekMin: [6] },
+      weight: 3,
+      priority: 3,
+      text: [stageNum >= 6 ? LATE_SKELETON : SKELETON],
+    },
     {
       when: { weekMin: [3] },
       weight: 3,

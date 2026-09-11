@@ -29,6 +29,7 @@ const required = [
   'hallBlueprint/index.js',
   'researchJournal/index.js',
   'evolved/eventPools.js',
+  'evolved/eventPhaseFragments.js',
   'wifeLessons/index.js',
   'wifeLessons/lessonFragments.js',
   'fairQueen/index.js',

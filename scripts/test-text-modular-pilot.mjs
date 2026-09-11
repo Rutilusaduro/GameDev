@@ -29,4 +29,34 @@ for (let i = 0; i < 8; i += 1) {
 }
 assert.ok(samples.size >= 2, 'modular lesson pool should vary across seeds');
 
-console.log('test-text-modular-pilot: ok');
+let lessonKeys = 0;
+for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
+  if (!Array.isArray(lessons)) continue;
+  for (const lesson of lessons) {
+    if (!lesson?.id) continue;
+    lessonKeys += 1;
+    const key = `{wifeLessons.lesson.s${stage}.${lesson.id}}`;
+    const line = render(key, buildTextContext({ subject: mj, week: 10, seed: 42 + lessonKeys }))?.trim() || '';
+    assert.ok(line.length > 12, `short render for ${key}: "${line}"`);
+    assert.ok(!line.includes('{unresolved}'), `unresolved in ${key}`);
+  }
+}
+assert.ok(lessonKeys >= 24, `expected >=24 WL lessons, got ${lessonKeys}`);
+
+const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 210, evolvedForm: 'eating_streamer' };
+const evCtx = buildTextContext({
+  subject: destiny,
+  week: 12,
+  globals: { formId: 'eating_streamer', stageIdx: 0, phaseIdx: 0, history: [], featureId: 'evolved_event' },
+});
+const evLine = render('{evolved.event.eating_streamer.s0.p0}', { ...evCtx, seed: 77 })?.trim() || '';
+assert.ok(evLine.length > 30, 'evolved modular phase should render');
+assert.ok(!evLine.includes('{unresolved}'), 'evolved modular phase unresolved');
+
+const evSamples = new Set();
+for (let i = 0; i < 6; i += 1) {
+  evSamples.add(render('{evolved.event.eating_streamer.s0.p0}', { ...evCtx, seed: 200 + i })?.trim() || '');
+}
+assert.ok(evSamples.size >= 2, 'evolved modular phase should vary');
+
+console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + evolved phase)`);
