@@ -20,6 +20,7 @@ export const NETWORK_EXPERIMENTS = [
   { id: 'craving_amp', label: 'Craving Amp', desc: '+4 automation when slotted.' },
   { id: 'stealth_coat', label: 'Stealth Coat', desc: '−2 detection risk while slotted.' },
   { id: 'surge_route', label: 'Surge Route', desc: '+6 automation, +1 scrutiny risk.' },
+  { id: 'leftover_vent', label: 'Leftover Vent', desc: '+3 automation when galley leftovers are on the floor.' },
 ];
 
 export function automationThreshold(network) {
@@ -60,7 +61,7 @@ export function syncSubjectInfluence(labState, students) {
   };
 }
 
-export function tickNetworkWeek(labState, students, week, rng = Math.random) {
+export function tickNetworkWeek(labState, students, week, rng = Math.random, extras = {}) {
   const next = ensureNetwork(labState);
   const network = next.network;
   if (!network || (next.stage ?? 1) < 2) {
@@ -84,22 +85,33 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random) {
 
   const nodes = network.nodes || [];
   const meshBonus = (getCircuitBoard(next, 'endless_hunger_engine').unlockedNodes || []).includes('ehe_mesh_arrival') ? 10 : 0;
+  const leftoverVent = nodes.some((n) => (n.slots || []).includes('leftover_vent'));
+  const leftoverVentBonus = extras.leftoverKitchen && leftoverVent ? 3 : 0;
   const automationTotal = nodes.reduce((a, n) => a + (n.automation ?? 0), 0)
     + nodes.reduce((a, n) => a + (n.slots || []).filter(Boolean).length * 4, 0)
-    + meshBonus;
+    + meshBonus
+    + leftoverVentBonus;
   const deployed = (network.deploymentAreas || []).length;
   const visible = (students || []).filter((s) => !s.hidden && s.id !== 18);
   const threshold = automationThreshold(network);
 
   if (automationTotal >= threshold && visible.length && rng() < 0.55) {
     const target = visible[Math.floor(rng() * visible.length)];
-    const gainLbs = Math.max(1, Math.floor(automationTotal / 35) + rndBand(rng, 1, 2));
+    let gainLbs = Math.max(1, Math.floor(automationTotal / 35) + rndBand(rng, 1, 2));
+    if (extras.leftoverKitchen) gainLbs += 1;
     studentDeltas.push({ studentId: target.id, gainLbs, psychDelta: { dependence: 1 } });
-    lines.push(`🌐 Mesh drip — ${target.name} absorbs ${gainLbs} lbs from automated routing.`);
+    lines.push(`🌐 Mesh drip — ${target.name} absorbs ${gainLbs} lbs from automated routing${extras.leftoverKitchen ? ' (galley surplus on the line)' : ''}.`);
+  }
+
+  if (extras.leftoverKitchen && visible.length && rng() < 0.35) {
+    const leftoverTarget = visible[Math.floor(rng() * visible.length)];
+    studentDeltas.push({ studentId: leftoverTarget.id, gainLbs: 1, psychDelta: { dependence: 1 } });
+    lines.push(`🌐 Leftover routing — ${leftoverTarget.name} takes a tray the mesh refused to waste.`);
   }
 
   if (deployed > 0) scrutinyDelta += Math.max(0, Math.floor(deployed / 2));
-  const detectionRisk = network.detectionRisk ?? 0;
+  let detectionRisk = network.detectionRisk ?? 0;
+  if (extras.nightRounds) detectionRisk = Math.max(0, detectionRisk - 2);
   if (detectionRisk > 15 && rng() < 0.28) {
     scrutinyDelta += 2;
     lines.push('🌐 Campus sensors logged an unusual thermal signature near your network nodes.');

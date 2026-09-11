@@ -1,4 +1,4 @@
-import { initPsychState } from '../psychState.js';
+import { initPsychState, applyPsychDelta } from '../psychState.js';
 
 export const ORIGIN_DEFAULT = 'default';
 
@@ -97,17 +97,27 @@ export function needsOriginPick(student) {
   return getOriginDeck(student).length > 1;
 }
 
-export function applyOriginPick(student, originId, week = 1) {
+export function applyOriginPick(student, originId, week = 1, extras = {}) {
   const card = getOriginCard(student, originId);
   if (!student || !card || !needsOriginPick(student)) return student;
+  const leftover = extras.leftover ?? !!student.leftoverFedThisWeek;
+  const night = extras.night ?? !!(week && student.lastNightVisitWeek === week);
+  let psych = { ...initPsychState(), ...card.psych };
+  if (leftover) psych = applyPsychDelta(psych, { fixation: 4, shame: -4 });
+  if (night) psych = applyPsychDelta(psych, { dependence: 4, obsession: 2 });
   return {
     ...student,
     origin: card.id,
     originChosenWeek: week,
     originRegister: card.register,
     gainStance: card.gainStance,
-    psych: { ...initPsychState(), ...card.psych },
-    originFlags: { register: card.register, chainBeat: 1 },
+    psych,
+    originFlags: {
+      register: card.register,
+      chainBeat: 1,
+      galleySeeded: leftover,
+      nightSeeded: night,
+    },
     triggeredEvents: [...(student.triggeredEvents || []), `origin_${card.id}`].filter((v, i, a) => a.indexOf(v) === i),
   };
 }

@@ -281,8 +281,14 @@ export function applyCompoundToFeed(student, compoundId, feedResult = {}, pharma
   s.lastCompound = compoundId;
   s.weeksWithoutPlayerFeed = 0;
   const fr = { ...feedResult };
-  fr.calMult = (fr.calMult ?? 1) * (compound.calMult ?? 1);
-  fr.fullMult = (fr.fullMult ?? 1) * (compound.fullMult ?? 1);
+  let calMult = compound.calMult ?? 1;
+  let fullMult = compound.fullMult ?? 1;
+  if (student?.leftoverFedThisWeek) {
+    calMult *= 1.06;
+    fullMult *= 1.04;
+  }
+  fr.calMult = (fr.calMult ?? 1) * calMult;
+  fr.fullMult = (fr.fullMult ?? 1) * fullMult;
   fr.corruptionGain = (fr.corruptionGain ?? 0) + (compound.corruptionGain ?? 0);
   fr.relGain = (fr.relGain ?? 0) + (compound.relGain ?? 0) + cultLoyaltyRelBonus(pharmacistState, compoundId);
   fr.digestMult = (fr.digestMult ?? 1) * (compound.digestMult ?? 1);
@@ -366,8 +372,12 @@ export function completePharmacistChemSession(state, stageId, chemSession) {
     next.cult = initCultOnUnlock(next.cult);
   }
   const inv = { ...next.compoundInventory };
-  const granted = chemSession.granted || [];
+  const granted = [...(chemSession.granted || [])];
   granted.forEach(id => { inv[id] = (inv[id] || 0) + 1; });
+  if (chemSession.leftoverBonus) {
+    inv.appetite_stimulant = (inv.appetite_stimulant || 0) + 1;
+    granted.push('appetite_stimulant');
+  }
   next.compoundInventory = inv;
   next.lastSynthesisGrant = granted;
   next.ingredients = chemSession.poolAfter || next.ingredients;

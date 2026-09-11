@@ -65,7 +65,8 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
   const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
   const base = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
   const glow = render('{wife.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth([base, glow].filter(Boolean).join('\n\n'), 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
+  const linger = render('{wife.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);
 }
 
 /** 1-on-1 talk line — V2 depth on merged legacy/depth prose. */

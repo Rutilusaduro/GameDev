@@ -30,11 +30,17 @@ oncePool('hunger.linger', [
 oncePool('campus.linger', [
   { when: { stageMax: 3 }, weight: 2, text: [
     'She hurries a little, then forgets why, then buys something anyway.',
+    'Quad wind finds the new tightness at her waist. She keeps walking.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'Paths make room. She takes the slow lane like it was built for her.',
+    'A bench remembers her outline after she stands. Campus keeps the heat.',
   ] },
   { when: {}, text: [
     'Campus keeps moving. She keeps eating like the path is a table.',
     'You lose her in a cluster of trays and find her again by the laugh.',
     'The walk back smells like whatever she just finished.',
+    'She stops once more at a kiosk. The kiosk is ready for her.',
   ] },
 ]);
 
@@ -110,6 +116,16 @@ oncePool('pharmacist.linger', [
     'Samples migrate. So do waistbands. Sophia files both as yield.',
     'The union table is empty by noon. The effects are not.',
     'She calls it wellness. The floor calls it seconds.',
+    'Foil from the galley still scents the beaker. She recaps it anyway.',
+    'She logs the batch as chemistry. The hall will log it as appetite.',
+  ] },
+]);
+
+oncePool('stream.linger', [
+  { when: {}, text: [
+    'Chat keeps scrolling. She keeps a hand on the new weight like a subscriber perk.',
+    'The overlay goes dark. Her belly does not. She sits in the leftover glow.',
+    'She thanks chat and does not stand up yet. Standing can wait.',
   ] },
 ]);
 

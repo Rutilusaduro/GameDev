@@ -209,11 +209,13 @@ export function neighborEcologyPatch(students, dormState) {
   return patches;
 }
 
-export function campusStayHome(student, dormState, rng = Math.random) {
+export function campusStayHome(student, dormState, rng = Math.random, week = 0) {
   const fits = Object.values(dormState?.roomFits?.[student?.id] || {}).filter(Boolean).length;
   if (fits < 2) return false;
   const stage = getStage(student.lbs || 0).id;
-  const chance = 0.12 + fits * 0.06 + (stage >= 7 ? 0.15 : 0);
+  let chance = 0.12 + fits * 0.06 + (stage >= 7 ? 0.15 : 0);
+  if (student?.leftoverFedThisWeek) chance += 0.1;
+  if (week && student?.lastNightVisitWeek === week) chance += 0.08;
   return rng() < Math.min(0.55, chance);
 }
 

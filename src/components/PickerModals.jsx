@@ -197,7 +197,7 @@ export function CollabPartnerPicker({ collabPartnerPicker, setCollabPartnerId, s
         );
 }
 
-function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true }) {
+function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processStudentGain, setStudents, push, onClose, soundEnabled = true, week = 1 }) {
   const def = EVOLVED_MINIGAMES[gameId];
   const s = students.find((st) => st.id === studentId);
   const [phaseIdx, setPhaseIdx] = useState(0);
@@ -217,7 +217,10 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
     const nextHistory = [...history, choice];
     const nextPhase = phaseIdx + 1;
     if (nextPhase >= def.phases.length) {
-      const result = computeMinigameOutcome(gameId, nextHistory, stageIdx);
+      const result = computeMinigameOutcome(gameId, nextHistory, stageIdx, {
+        leftoverFed: !!s.leftoverFedThisWeek,
+        nightVisit: s.lastNightVisitWeek === week,
+      });
       setStudents((ss) => ss.map((st) => (st.id === studentId ? processStudentGain(st, result.gain, result.rel) : st)));
       const labels = {
         campus_challenge: 'Campus Challenge',
@@ -266,7 +269,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
   );
 }
 
-export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true }) {
+export function CampusChallengeModal({ challengeState, processStudentGain, push, setChallengeState, setStudents, students, soundEnabled = true, week = 1 }) {
   if (!challengeState) return null;
   return (
     <EvolvedMinigameModal
@@ -279,11 +282,12 @@ export function CampusChallengeModal({ challengeState, processStudentGain, push,
       push={push}
       onClose={() => setChallengeState(null)}
       soundEnabled={soundEnabled}
+      week={week}
     />
   );
 }
 
-export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true }) {
+export function DeliveryOrderModal({ deliveryState, processStudentGain, push, setDeliveryState, setStudents, students, soundEnabled = true, week = 1 }) {
   if (!deliveryState) return null;
   return (
     <EvolvedMinigameModal
@@ -296,11 +300,12 @@ export function DeliveryOrderModal({ deliveryState, processStudentGain, push, se
       push={push}
       onClose={() => setDeliveryState(null)}
       soundEnabled={soundEnabled}
+      week={week}
     />
   );
 }
 
-export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true }) {
+export function PresentationDefenseModal({ presentationState, processStudentGain, push, setPresentationState, setStudents, students, soundEnabled = true, week = 1 }) {
   if (!presentationState) return null;
   return (
     <EvolvedMinigameModal
@@ -313,6 +318,7 @@ export function PresentationDefenseModal({ presentationState, processStudentGain
       push={push}
       onClose={() => setPresentationState(null)}
       soundEnabled={soundEnabled}
+      week={week}
     />
   );
 }

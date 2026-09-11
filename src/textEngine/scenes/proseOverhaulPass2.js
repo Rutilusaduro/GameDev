@@ -81,9 +81,14 @@ oncePool('hunt.afterglow', [
 ]);
 
 oncePool('origin.afterglow', [
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'The old story still fits in her mouth. The new softness is the revision.',
+    'She says where she came from, then reaches for here.',
+  ] },
   { when: {}, text: [
     'The old story still fits in her mouth. The new body is the revision.',
     'She names where she came from, then takes another bite of here.',
     'Origin is a caption. Tonight is the picture.',
+    'A backstory shows in the way she holds the fork.',
   ] },
 ]);

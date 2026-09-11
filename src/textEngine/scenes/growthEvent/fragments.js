@@ -19,6 +19,8 @@ registerPool('ge.onset', [
     '{ge.causeAction}{ge.causeAnchor} — {ge.firstSensation}.',
     'The change begins{ge.causeAnchor}: {ge.firstSensation}.',
     'It starts slow{ge.causeAnchor}. {ge.firstSensation}.',
+    'Warmth arrives first{ge.causeAnchor}. {ge.firstSensation}.',
+    'She feels it take{ge.causeAnchor}: {ge.firstSensation}.',
   ] },
 ]);
 
@@ -249,6 +251,8 @@ registerPool('ge.surge', [
     '{grow.sudden}{join:ge.surgeDetail|prefix: — }.',
     'Pounds land fast: {grow.sudden}.',
     'The swell keeps arriving{ge.causeAnchor}: {ge.surgeDetail}.',
+    'More of her shows up in a hurry: {ge.surgeDetail}.',
+    '{grow.sudden} She has to make room with both hands.',
   ] },
 ]);
 
@@ -427,6 +431,8 @@ registerPool('ge.strain', [
     '{ge.garment} pulls tighter across her changing body.',
     '{ge.garment} {ge.clothingStrain}.',
     'Cloth loses another argument with her.',
+    '{ge.garment} finds a new tight place and stays there.',
+    'Seams report in. {ge.garment} {ge.clothingStrain}.',
   ] },
 ]);
 

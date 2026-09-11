@@ -24,6 +24,7 @@ export const EVOLVED_MINIGAMES = {
           { id: 'coach', label: 'Let you coach her pace from the sideline', score: 2, log: 'Your voice steadies her; she trusts the rhythm.' },
           { id: 'tap', label: 'Tap out with grace — still leaves them impressed', score: 0, log: 'She stops just shy of bursting, chin high.' },
           { id: 'seconds', label: "Ask for the kitchen's secret round", score: 3, log: 'Staff bring a tray that was not on the menu.' },
+          { id: 'leftover_side', label: 'Claim the leftover tray they were going to dump', score: 2, log: 'Kitchen leftovers become the real round two.' },
         ],
       },
     ],
@@ -49,6 +50,7 @@ export const EVOLVED_MINIGAMES = {
           { id: 'solo', label: 'Let her eat solo while you watch', score: 2, log: 'She performs for an audience of one.' },
           { id: 'pause', label: 'Pause after this round — save room', score: 0, log: 'She pats her belly but the apps stay open.' },
           { id: 'couch', label: 'Move the plates to her lap and keep going', score: 3, log: 'The couch becomes the table. She becomes the event.' },
+          { id: 'leftovers', label: 'Finish leftover trays first, then order', score: 2, log: 'Foil, then apps. Appetite does both.' },
         ],
       },
     ],
@@ -80,16 +82,18 @@ export const EVOLVED_MINIGAMES = {
   },
 };
 
-export function computeMinigameOutcome(gameId, history, stageIdx = 0) {
+export function computeMinigameOutcome(gameId, history, stageIdx = 0, extras = {}) {
   const def = EVOLVED_MINIGAMES[gameId];
   if (!def) return { gain: 8, rel: 8, tier: 'good' };
   const score = (history || []).reduce((sum, h) => sum + (h.score || 0), 0);
   const stageBonus = Math.floor(stageIdx / 2);
+  const leftoverBonus = extras.leftoverFed ? 2 : 0;
+  const nightRel = extras.nightVisit ? 1 : 0;
   const baseGain = gameId === 'campus_challenge' ? [8, 20] : gameId === 'delivery_order' ? [7, 17] : [6, 14];
   const baseRel = gameId === 'campus_challenge' ? 9 : gameId === 'delivery_order' ? 7 : 8;
   const gainSpan = baseGain[1] - baseGain[0];
-  const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus);
-  const rel = baseRel + Math.floor(score / 3);
+  const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus + leftoverBonus);
+  const rel = baseRel + Math.floor(score / 3) + nightRel;
   const tier = score >= 5 ? 'perfect' : score >= 3 ? 'good' : score >= 1 ? 'messy' : 'soft';
   return { gain, rel, tier, score };
 }

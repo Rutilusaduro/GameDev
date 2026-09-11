@@ -15,6 +15,8 @@ import {
   spendRecipe,
   toggleBrewInPlan,
 } from '../gameData/pharmacistIngredients.js';
+import { render, createContext } from '../textEngine/engine.js';
+import '../textEngine/scenes/proseOverhaulPass4.js';
 
 const STAGE_CHROME = {
   1: { accent: '#3d5a80', label: 'CORPORATE LAB', sub: 'Shift synthesis — acquire stock, brew quietly.' },
@@ -214,7 +216,19 @@ export function PharmacistChemModal({
           )}
         </div>
         <div style={{ fontSize: 9, color: '#406858', marginBottom: 4 }}>Leftover ingredients (saved):</div>
-        <div style={{ marginBottom: 14 }}><IngredientRow bag={chemSession.poolAfter || {}} /></div>
+        <div style={{ marginBottom: 10 }}><IngredientRow bag={chemSession.poolAfter || {}} /></div>
+        {(chemSession.leftoverBonus || chemSession.nightBonus) && (
+          <div style={{ fontSize: 10, color: '#8ad4b0', marginBottom: 8 }}>
+            {chemSession.leftoverBonus ? 'Galley surplus entered the batch. ' : ''}
+            {chemSession.nightBonus ? 'Night-round reagents still warm. ' : ''}
+          </div>
+        )}
+        {(() => {
+          const linger = render('{pharmacist.linger}', createContext({ subject: student, week: 1 }))?.trim();
+          return linger ? (
+            <div style={{ fontSize: 11, color: '#709888', fontStyle: 'italic', lineHeight: 1.65, marginBottom: 12 }}>{linger}</div>
+          ) : null;
+        })()}
         <button type="button" style={{ ...C.btn(chrome.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onConfirm(); }}>Close lab & apply results ✓</button>
       </>,
     );

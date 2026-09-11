@@ -87,10 +87,140 @@ registerPool('origin.stirring.line', [
     'Appetite in her family was never private. She eats like the table is still full.',
     'Seconds are not a confession here. They are how you say you are home.',
   ]},
+  { when: { studentId: 1, origin: 'madd_subject_zero', stageMax: 3 }, weight: W, text: [
+    'She notes the bite like data, then takes another because the protocol asked.',
+    'Methodology was supposed to stay on the page. It is in her mouth now.',
+  ]},
+  { when: { studentId: 1, origin: 'madd_hidden_binge', stageMax: 3 }, weight: W, text: [
+    'Wrappers used to be private. Tonight she leaves the foil where you can see it.',
+    'The hidden stash taught her speed. Sitting with you teaches her to linger.',
+  ]},
+  { when: { studentId: 2, origin: 'kylie_brand_body', stageMax: 3 }, weight: W, text: [
+    'The camera had a size. She eats past it and keeps the ring light on anyway.',
+    'Brand notes said clean lines. The fork is writing a different caption.',
+  ]},
+  { when: { studentId: 2, origin: 'kylie_alt_account', stageMax: 3 }, weight: W, text: [
+    'Off-camera she always ate more. Tonight the main account gets that appetite.',
+    'She films nothing. She finishes everything. The alt was practice.',
+  ]},
+  { when: { studentId: 3, origin: 'serena_missed_nationals', stageMax: 3 }, weight: W, text: [
+    'Fuel used to be a split-time tool. Tonight it is the point of the evening.',
+    'She used to stop at the number coach liked. She does not stop.',
+  ]},
+  { when: { studentId: 3, origin: 'serena_bored_undefeated', stageMax: 3 }, weight: W, text: [
+    'Winning got dull. Eating is a new event she intends to dominate.',
+    'She treats the plate like a heat she can still win.',
+  ]},
+  { when: { studentId: 4, origin: 'fiona_model_sidegig', stageMax: 3 }, weight: W, text: [
+    'Hold still was the job. The belly has started moving first.',
+    'She used to pose empty. Fullness photographs better and she knows it.',
+  ]},
+  { when: { studentId: 4, origin: 'fiona_self_portrait', stageMax: 3 }, weight: W, text: [
+    'The subject keeps changing between sittings. She is the sitting.',
+    'She sketches the new curve from memory while still chewing.',
+  ]},
+  { when: { studentId: 5, origin: 'destiny_ranked_grind', stageMax: 3 }, weight: W, text: [
+    'Hunger was a debuff she played around. Now she stacks it on purpose.',
+    'Patch notes never covered dessert. She is writing them with her mouth.',
+  ]},
+  { when: { studentId: 5, origin: 'destiny_offline_lobby', stageMax: 3 }, weight: W, text: [
+    'No spectators used to mean more snacks. She kept the snacks when people arrived.',
+    'Bot lobby taught her to eat without performing. She still eats like that.',
+  ]},
+  { when: { studentId: 6, origin: 'tiffany_legacy_thin', stageMax: 3 }, weight: W, text: [
+    'Chapter photos wanted a certain face. Brunch is revising the archive.',
+    'She smiles through a bite that would have been skipped last year.',
+  ]},
+  { when: { studentId: 6, origin: 'tiffany_feast_founder', stageMax: 3 }, weight: W, text: [
+    'Wednesday was always extra. She has started keeping Thursday too.',
+    'Hostess means first plate and last plate. She takes both without a speech.',
+  ]},
+  { when: { studentId: 7, origin: 'priya_parental_track', stageMax: 3 }, weight: W, text: [
+    'Deviation was supposed to get remediated. She orders dessert instead.',
+    'The KPI sheet never had a column for seconds. She is inventing one.',
+  ]},
+  { when: { studentId: 7, origin: 'priya_reward_system', stageMax: 3 }, weight: W, text: [
+    'Milestone reached. Bonus approved. The bonus is always edible.',
+    'She treats fullness like a grade she earned in private.',
+  ]},
+  { when: { studentId: 9, origin: 'chloe_scandal_abroad', stageMax: 3 }, weight: W, text: [
+    'Armor used to be silk and portions. The portions have gone soft on her.',
+    'She hosts like someone who already survived worse than a second helping.',
+  ]},
+  { when: { studentId: 9, origin: 'chloe_first_to_leave', stageMax: 3 }, weight: W, text: [
+    'She had to host herself first. The table is finally big enough for company.',
+    'Leaving home meant feeding herself. She got generous about it.',
+  ]},
+  { when: { studentId: 10, origin: 'renee_line_cook', stageMax: 3 }, weight: W, text: [
+    'Staff meal was still a meal. She has stopped pretending it was small.',
+    'Hierarchy used to keep her tasting, not finishing. She finishes.',
+  ]},
+  { when: { studentId: 10, origin: 'renee_grandmothers_spoon', stageMax: 3 }, weight: W, text: [
+    'Taste everything was the rule. She has expanded everything.',
+    'The heirloom spoon looks smaller in a fuller hand. She smiles at that.',
+  ]},
+  { when: { studentId: 11, origin: 'kaylee_perfect_rotation', stageMax: 3 }, weight: W, text: [
+    'Care plans do not skip lunch. Hers have started including dessert in the margin.',
+    'She used to chart other people. Tonight she charts her own second plate.',
+  ]},
+  { when: { studentId: 11, origin: 'kaylee_self_care', stageMax: 3 }, weight: W, text: [
+    'Orders for her too. The order tonight is another helping, written clearly.',
+    'Aggressive rest used to mean sleep. It means eating until the room goes quiet.',
+  ]},
+  { when: { studentId: 12, origin: 'nadia_thesis_others', stageMax: 3 }, weight: W, text: [
+    'Observation was supposed to stay clean. The observer is chewing.',
+    'She writes one line about appetite and then demonstrates it.',
+  ]},
+  { when: { studentId: 12, origin: 'nadia_dream_journal', stageMax: 3 }, weight: W, text: [
+    'She woke hungry before the journal caught up. Breakfast is the footnote.',
+    'Dream appetite used to vanish at daylight. It stayed for lunch.',
+  ]},
+  { when: { studentId: 13, origin: 'daisy_potluck_virtue', stageMax: 3 }, weight: W, text: [
+    'Bring enough for everyone included a plate she used to skip. She does not skip.',
+    'Blessing used to mean serving first. She has learned to sit down with them.',
+  ]},
+  { when: { studentId: 13, origin: 'daisy_snack_mom', stageMax: 3 }, weight: W, text: [
+    'She packed extra. She always does. Tonight the extra has her name on it.',
+    'Snack mom meant other people. The foil tray on her lap disagrees.',
+  ]},
+  { when: { studentId: 14, origin: 'mj_fair_thin_prize', stageMax: 3 }, weight: W, text: [
+    'Ribbon winners smiled first and ate later. She has reversed the order.',
+    'The fair taught her to pose empty. The kitchen is retraining her.',
+  ]},
+  { when: { studentId: 14, origin: 'mj_homestead_abundance', stageMax: 3 }, weight: W, text: [
+    'No sense being shy around a table. She proves the proverb with both hands.',
+    'Harvest was always plenty. She has started keeping plenty on her.',
+  ]},
+  { when: { studentId: 15, origin: 'lilith_always_watching', stageMax: 3 }, weight: W, text: [
+    'Soon began before anyone noticed. She eats like the noticing is the treat.',
+    'She watches you watch her take seconds. The watching is part of the meal.',
+  ]},
+  { when: { studentId: 15, origin: 'lilith_garden_before', stageMax: 3 }, weight: W, text: [
+    'Courts need seats. She is arranging her own with every bite.',
+    'The garden was practice. Campus is the table she meant to grow into.',
+  ]},
+  { when: { studentId: 16, origin: 'sophia_dissertation_stress', stageMax: 3 }, weight: W, text: [
+    'Baseline check. She is the baseline, and the baseline just asked for more.',
+    'Stress used to skip meals. The new protocol is finishing them.',
+  ]},
+  { when: { studentId: 16, origin: 'sophia_sample_closet', stageMax: 3 }, weight: W, text: [
+    'Statistically significant, she says, and reaches for another sample.',
+    'The closet was for other people. She has started keeping a dose for herself.',
+  ]},
+  { when: { studentId: 17, origin: 'indy_trust_fund_expedition', stageMax: 3 }, weight: W, text: [
+    'Field rations can be decadent. She packed like she meant to prove it.',
+    'Expedition money used to buy gear. Tonight it buys dessert and she logs both.',
+  ]},
+  { when: { studentId: 17, origin: 'indy_map_vault', stageMax: 3 }, weight: W, text: [
+    'Treasure is stored value. Calories count, and she is cataloguing them.',
+    'The vault map had empty rooms. Her plate does not.',
+  ]},
   { when: { stageMax: 3 }, text: [
     'Something old in her meets something new on the plate.',
     'The week feels ordinary. She does not, quite.',
     'A backstory shows itself in the way she reaches for food.',
+    'She eats like the past is watching and has decided to stay.',
+    'The first extra bite feels like a private vote.',
   ]},
   { when: {}, text: [
     'The origin sits quietly under the moment.',

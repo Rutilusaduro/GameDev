@@ -1,6 +1,6 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Hall kitchen queen — engine bridge from HOMEROOM_* legacy prose.
-import { render } from '../../engine.js';
+import { render, registerModuleVariants } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
@@ -46,7 +46,8 @@ export function renderHomeroomPool(poolKey, daisyStudent, week = 1, opts = {}) {
     if (!line || line.includes('{unresolved}')) return '';
     const intro = /\.intro$/.test(poolKey) || /^homeroom\.activity\.[^.]+\.p\d+$/.test(poolKey);
     const glow = intro ? (render('{homeroom.afterglow}', ctx)?.trim() || '') : '';
-    return appendV2Depth([line, glow].filter(Boolean).join('\n\n'), 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
+    const linger = render('{homeroom.linger}', ctx)?.trim() || '';
+    return appendV2Depth([line, glow, linger].filter(Boolean).join('\n\n'), 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
   } catch {
     return '';
   }
@@ -75,3 +76,38 @@ export function homeroomActivityPoolKey(actKey, phaseIdx = 0, choiceId = null) {
     ? `homeroom.activity.${actKey}.p${phaseIdx}.${choiceId}`
     : `homeroom.activity.${actKey}.p${phaseIdx}`;
 }
+
+registerModuleVariants('homeroom.activity.parent_meeting.p0.leftover_trays', [
+  { when: {}, text: [
+    `Foil from last night hits the table. Mrs. Monroe is eating before plates exist. Mrs. Calloway asks if Daisy packed extra. Daisy packed extra.`,
+    `The tasting is leftovers with better lighting. Mrs. Reyes takes seconds standing up. The agenda stays in the folder.`,
+  ]},
+]);
+
+registerModuleVariants('homeroom.activity.leftover_tuesday.p0', [
+  { when: {}, text: [
+    `Warm trays, no syllabus. Daisy sets the lounge like a second dinner and lets the floor find it.`,
+    `Last night's galley still smells like butter. Residents sit without being asked. Forks already know the job.`,
+  ]},
+]);
+
+registerModuleVariants('homeroom.activity.leftover_tuesday.p0.open_table', [
+  { when: {}, text: [
+    `Nobody waits for serving spoons. Daisy watches belts lose an argument they already knew they would lose.`,
+    `The foil comes off in a hurry. Conversation drops to chewing. Daisy keeps the empty trays coming.`,
+  ]},
+]);
+
+registerModuleVariants('homeroom.activity.leftover_tuesday.p0.seconds_first', [
+  { when: {}, text: [
+    `She plates the next round while mouths are still full. Someone protests and then holds out a dish.`,
+    `Firsts never finish. Daisy planned that. The second tray is heavier than the first.`,
+  ]},
+]);
+
+registerModuleVariants('homeroom.activity.leftover_tuesday.p0.send_home', [
+  { when: {}, text: [
+    `Lids snap. Bags leave heavy. Daisy keeps one tray for whoever wanders back after dark.`,
+    `Moms take containers like they paid tuition for them. Tuesday continues in other kitchens.`,
+  ]},
+]);

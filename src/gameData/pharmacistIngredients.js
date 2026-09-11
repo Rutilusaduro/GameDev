@@ -97,6 +97,14 @@ export const ACQUISITION_BY_STAGE = {
       grants: { precursors: 4, reagents: 4 },
       flavor: 'A diabetes trial won\'t miss a few vials. Probably. Sophia tells herself that twice while badge-scanning into the wrong cold room.',
     },
+    {
+      id: 'leftover_galley',
+      label: 'Render galley leftovers into extracts',
+      desc: '+2 extracts · +1 precursors · low exposure — food is the carrier.',
+      exposure: 3,
+      grants: { extracts: 2, precursors: 1 },
+      flavor: 'Foil trays from the hall kitchen. Sophia reduces them to carrier oils. The batch smells like dinner and works like chemistry.',
+    },
   ],
   2: [
     {
@@ -249,15 +257,20 @@ export function compoundsCraftableNow(pool, stageId, pharmacistState = null) {
   return poolIds.filter(id => canAffordRecipe(pool, id, pharmacistState));
 }
 
-export function startChemSession(pharmacistState) {
+export function startChemSession(pharmacistState, extras = {}) {
   const stageId = pharmacistState?.stage ?? 1;
   const cultReservoir = pharmacistState?.cult?.supplyReservoir ?? 0;
   const cultBonus = pharmacistState?.cultActive ? cultSupplyToIngredients(pharmacistState) : {};
+  let pool = mergeIngredients(sessionIngredientBudget(stageId), pharmacistState?.ingredients, cultBonus);
+  if (extras.leftover) pool = mergeIngredients(pool, { extracts: 1, precursors: 1 });
+  if (extras.night) pool = mergeIngredients(pool, { reagents: 1 });
   return {
     stageId,
     phase: 'acquire',
     cultSupplyMerged: cultReservoir,
-    pool: mergeIngredients(sessionIngredientBudget(stageId), pharmacistState?.ingredients, cultBonus),
+    pool,
+    leftoverBonus: !!extras.leftover,
+    nightBonus: !!extras.night,
     exposureGained: 0,
     acquisitionLog: [],
     brewPlan: [],

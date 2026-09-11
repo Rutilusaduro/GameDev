@@ -120,7 +120,11 @@ registerPool('weekly.viralPost.line', [
 ]);
 
 registerPool('weekly.viral_post', [
-  { when: {}, text: ['{weekly.viralPost.hook} {weekly.viralPost.reaction} {weekly.viralPost.line}'] },
+  { when: {}, text: [
+    '{weekly.viralPost.hook} {weekly.viralPost.reaction} {weekly.viralPost.line}',
+    '{weekly.viralPost.hook}\n\n{weekly.viralPost.reaction}\n\n{weekly.viralPost.line}',
+    '{weekly.viralPost.reaction} {weekly.viralPost.hook} {weekly.viralPost.line}',
+  ] },
 ]);
 
 // ── season plan rewrite ────────────────────────────────────────────
@@ -183,7 +187,11 @@ registerPool('weekly.thesisRewrite.verdict', [
 ]);
 
 registerPool('weekly.thesis_rewrite', [
-  { when: {}, text: ['{weekly.thesisRewrite.submit} {weekly.thesisRewrite.title} {weekly.thesisRewrite.verdict}'] },
+  { when: {}, text: [
+    '{weekly.thesisRewrite.submit} {weekly.thesisRewrite.title} {weekly.thesisRewrite.verdict}',
+    '{weekly.thesisRewrite.submit}\n\n{weekly.thesisRewrite.title}\n\n{weekly.thesisRewrite.verdict}',
+    '{weekly.thesisRewrite.title} {weekly.thesisRewrite.submit} {weekly.thesisRewrite.verdict}',
+  ] },
 ]);
 
 // ── gaming sponsor ────────────────────────────────────────────
@@ -229,7 +237,11 @@ registerPool('weekly.gamingSponsor.tag', [
 ]);
 
 registerPool('weekly.gaming_sponsor', [
-  { when: {}, text: ['{weekly.gamingSponsor.deal} {weekly.gamingSponsor.line} {weekly.gamingSponsor.tag}'] },
+  { when: {}, text: [
+    '{weekly.gamingSponsor.deal} {weekly.gamingSponsor.line} {weekly.gamingSponsor.tag}',
+    '{weekly.gamingSponsor.deal}\n\n{weekly.gamingSponsor.line}\n\n{weekly.gamingSponsor.tag}',
+    '{weekly.gamingSponsor.line} {weekly.gamingSponsor.deal} {weekly.gamingSponsor.tag}',
+  ] },
 ]);
 
 // ── intervention fails ────────────────────────────────────────
@@ -277,7 +289,11 @@ registerPool('weekly.interventionFails.payoff', [
 ]);
 
 registerPool('weekly.intervention_fails', [
-  { when: {}, text: ['{weekly.interventionFails.setup} {weekly.interventionFails.turn} {weekly.interventionFails.payoff}'] },
+  { when: {}, text: [
+    '{weekly.interventionFails.setup} {weekly.interventionFails.turn} {weekly.interventionFails.payoff}',
+    '{weekly.interventionFails.setup}\n\n{weekly.interventionFails.turn}\n\n{weekly.interventionFails.payoff}',
+    '{weekly.interventionFails.turn} {weekly.interventionFails.setup} {weekly.interventionFails.payoff}',
+  ] },
 ]);
 
 // ── art exhibition ────────────────────────────────────────────
@@ -323,7 +339,11 @@ registerPool('weekly.artExhibition.line', [
 ]);
 
 registerPool('weekly.art_exhibition', [
-  { when: {}, text: ['{weekly.artExhibition.opening} {weekly.artExhibition.press} {weekly.artExhibition.line}'] },
+  { when: {}, text: [
+    '{weekly.artExhibition.opening} {weekly.artExhibition.press} {weekly.artExhibition.line}',
+    '{weekly.artExhibition.opening}\n\n{weekly.artExhibition.press}\n\n{weekly.artExhibition.line}',
+    '{weekly.artExhibition.press} {weekly.artExhibition.opening} {weekly.artExhibition.line}',
+  ] },
 ]);
 
 // ── quiet opens up ────────────────────────────────────────────
@@ -369,7 +389,11 @@ registerPool('weekly.quietOpen.close', [
 ]);
 
 registerPool('weekly.quiet_opens_up', [
-  { when: {}, text: ['{weekly.quietOpen.setup} {weekly.quietOpen.confession} {weekly.quietOpen.close}'] },
+  { when: {}, text: [
+    '{weekly.quietOpen.setup} {weekly.quietOpen.confession} {weekly.quietOpen.close}',
+    '{weekly.quietOpen.setup}\n\n{weekly.quietOpen.confession}\n\n{weekly.quietOpen.close}',
+    '{weekly.quietOpen.confession} {weekly.quietOpen.setup} {weekly.quietOpen.close}',
+  ] },
 ]);
 
 // ── overachiever pivot ────────────────────────────────────────
@@ -403,7 +427,11 @@ registerPool('weekly.overachieverPivot.verdict', [
 ]);
 
 registerPool('weekly.overachiever_pivot', [
-  { when: {}, text: ['{weekly.overachieverPivot.submit} {weekly.overachieverPivot.verdict}'] },
+  { when: {}, text: [
+    '{weekly.overachieverPivot.submit} {weekly.overachieverPivot.verdict}',
+    '{weekly.overachieverPivot.submit}\n\n{weekly.overachieverPivot.verdict}',
+    '{weekly.overachieverPivot.verdict} {weekly.overachieverPivot.submit}',
+  ] },
 ]);
 
 // ── transfer settled ──────────────────────────────────────────
@@ -457,7 +485,11 @@ registerPool('weekly.transferSettled.after', [
 ]);
 
 registerPool('weekly.transfer_settled', [
-  { when: {}, text: ['{weekly.transferSettled.call} {weekly.transferSettled.answer} {weekly.transferSettled.after}'] },
+  { when: {}, text: [
+    '{weekly.transferSettled.call} {weekly.transferSettled.answer} {weekly.transferSettled.after}',
+    '{weekly.transferSettled.call}\n\n{weekly.transferSettled.answer}\n\n{weekly.transferSettled.after}',
+    '{weekly.transferSettled.answer} {weekly.transferSettled.call} {weekly.transferSettled.after}',
+  ] },
 ]);
 
 // ── custom clothing ───────────────────────────────────────────
@@ -505,7 +537,11 @@ registerPool('weekly.customClothing.line', [
 ]);
 
 registerPool('weekly.custom_clothing', [
-  { when: {}, text: ['{weekly.customClothing.announce} {weekly.customClothing.tone} {weekly.customClothing.line}'] },
+  { when: {}, text: [
+    '{weekly.customClothing.announce} {weekly.customClothing.tone} {weekly.customClothing.line}',
+    '{weekly.customClothing.announce}\n\n{weekly.customClothing.tone}\n\n{weekly.customClothing.line}',
+    '{weekly.customClothing.tone} {weekly.customClothing.announce} {weekly.customClothing.line}',
+  ] },
 ]);
 
 // ── immobility peace ──────────────────────────────────────────
@@ -551,7 +587,11 @@ registerPool('weekly.immobilityPeace.tag', [
 ]);
 
 registerPool('weekly.immobility_peace', [
-  { when: {}, text: ['{weekly.immobilityPeace.scene} {weekly.immobilityPeace.line} {weekly.immobilityPeace.tag}'] },
+  { when: {}, text: [
+    '{weekly.immobilityPeace.scene} {weekly.immobilityPeace.line} {weekly.immobilityPeace.tag}',
+    '{weekly.immobilityPeace.scene}\n\n{weekly.immobilityPeace.line}\n\n{weekly.immobilityPeace.tag}',
+    '{weekly.immobilityPeace.line} {weekly.immobilityPeace.scene} {weekly.immobilityPeace.tag}',
+  ] },
 ]);
 
 // ── blob ending ───────────────────────────────────────────────
@@ -598,5 +638,9 @@ registerPool('weekly.blobEnding.line', [
 ]);
 
 registerPool('weekly.blob_ending', [
-  { when: {}, text: ['{weekly.blobEnding.setup} {weekly.blobEnding.court} {weekly.blobEnding.line}'] },
+  { when: {}, text: [
+    '{weekly.blobEnding.setup} {weekly.blobEnding.court} {weekly.blobEnding.line}',
+    '{weekly.blobEnding.setup}\n\n{weekly.blobEnding.court}\n\n{weekly.blobEnding.line}',
+    '{weekly.blobEnding.court} {weekly.blobEnding.setup} {weekly.blobEnding.line}',
+  ] },
 ]);

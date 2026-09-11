@@ -92,11 +92,31 @@ oncePool('wife.afterglow', [
   ] },
 ]);
 
+oncePool('wife.linger', [
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'She checks her shirt in the microwave door and files the new curve as steam.',
+    'The kitchen light finds a softness she did not schedule. She lets it stay.',
+  ] },
+  { when: {}, text: [
+    'Wine glasses sit dirty. Softness sits honest. Nobody hurries the doorway.',
+    'She takes one more taste from the pan like the lesson asked a question.',
+    'The hallway smells like butter after they go. She keeps a hand on her middle.',
+  ] },
+]);
+
 oncePool('homeroom.afterglow', [
   { when: {}, text: [
     'The hall lounge smells like butter after they go. Daisy writes one line.',
     'Tuesday keeps happening in their clothes. The clothes are already losing.',
     'She packs the pan and does not pack the appetite. Next week is implied.',
+  ] },
+]);
+
+oncePool('homeroom.linger', [
+  { when: {}, text: [
+    'Daisy wipes the table and leaves one tray where hands will find it.',
+    'The lounge keeps the heat of whoever just ate. Forks wait for next Tuesday.',
+    'She logs the session as hospitality. The floor logs it as inches.',
   ] },
 ]);
 
