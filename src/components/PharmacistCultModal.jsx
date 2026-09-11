@@ -46,6 +46,7 @@ export function PharmacistCultModal({
         <div style={{ fontSize: 10, color: '#8060a0', marginBottom: 10, lineHeight: 1.6 }}>
           Circle: {cult.circleSize ?? 0} devotees · Devotion {cult.devotion ?? 0}% · Supply stock {cult.supplyReservoir ?? 0}
           {cult.bulkProductionUnlocked ? ' · Bulk production unlocked' : ''}
+          {cult.lastRouteId ? ` · Last drop: ${CULT_DISTRIBUTION_ROUTES.find(r => r.id === cult.lastRouteId)?.label || cult.lastRouteId}` : ''}
         </div>
         <div style={{ fontSize: 11, color: '#a080c0', marginBottom: 12, fontStyle: 'italic' }}>
           Route this week's wellness supply. The area gets fatter when distribution runs.
@@ -67,7 +68,9 @@ export function PharmacistCultModal({
             onClick={() => onSelectRoute(route.id)}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 3 }}>
-              <span style={{ color: LILAC, fontWeight: 700, fontSize: 12 }}>{route.label}</span>
+              <span style={{ color: LILAC, fontWeight: 700, fontSize: 12 }}>
+                {route.label}{cult.lastRouteId === route.id ? ' · regulars' : ''}
+              </span>
               <span style={{ fontSize: 9, color: '#8060a0' }}>{route.apCost} AP</span>
             </div>
             <div style={{ fontSize: 10, color: '#9070b0', lineHeight: 1.45, marginBottom: 4 }}>{route.desc}</div>
@@ -98,6 +101,12 @@ export function PharmacistCultModal({
               {o.classGainApplied > 0 && `Hall-wide softening +${o.classGainApplied} lbs each. `}
               {o.addictedGainApplied > 0 && `Addicted residents +${o.addictedGainApplied} lbs.`}
             </div>
+          )}
+          {o.repeatRoute && (
+            <div style={{ color: '#d0b090', marginTop: 6 }}>Repeat drop. The circle arrived already hungry.</div>
+          )}
+          {o.switchRoute && (
+            <div style={{ color: '#90b0d0', marginTop: 6 }}>New route. Mouths test it first.</div>
           )}
         </div>
         <button type="button" style={{ ...C.btn(PURPLE), width: '100%' }} onClick={onConfirm}>Done ✓</button>

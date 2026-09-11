@@ -144,3 +144,87 @@ oncePool('floor.linger', [
     'The floor learns the incident by dinner. Dinner is the incident.',
   ] },
 ]);
+
+oncePool('evolved.linger', [
+  { when: { featureId: 'salon_appetit' }, weight: 3, text: [
+    'Wine rims keep a fingerprint. Chloé keeps the rest of the evening in her lap.',
+    'Guests find the stairs slower. She finds another bite without standing.',
+    '*À bientôt* means the next course, not goodbye.',
+  ] },
+  { when: { featureId: 'artisan_gallery' }, weight: 3, text: [
+    'The print is dry. The model is not. Fiona pins both.',
+    'Patrons talk framing. She talks appetite with her mouth full.',
+    'The wall of proof gains a warm shadow where she stood too long.',
+  ] },
+  { when: { featureId: 'wife_lessons' }, weight: 3, text: [
+    'Daughters take extra home in Tupperware. Mary Jane takes extra in her middle.',
+    'The recipe card is flour-soft. So are the students.',
+    'Kitchen clock lies. Fullness is the hour that counts.',
+  ] },
+  { when: { featureId: 'eating_competitor' }, weight: 3, text: [
+    'Bib off. Belly still competing. Maya already knows the next number.',
+    'The table is wreckage. She is the event sitting in it.',
+    'Officials pack. She keeps a hand on the new weight like a medal.',
+  ] },
+  { when: { featureId: 'sumo' }, weight: 3, text: [
+    'Dohyo dust on her thighs. Mass still arriving after the bout called itself over.',
+    'Dana resets. The belly does not. Only one of those is smaller.',
+    'Mawashi holds. Barely. She enjoys the barely.',
+  ] },
+  { when: { featureId: 'cultivator' }, weight: 3, text: [
+    'Reneé plates the leftover heat and eats it like harvest notes.',
+    'The kitchen clock is a liar. The belly is the almanac.',
+    'She tastes again. Grading her own middle. Passing.',
+  ] },
+  { when: { featureId: 'homeroom_queen' }, weight: 3, text: [
+    'Corkboard photos curl at the edges. Daisy does not. She sits like policy.',
+    'The hall learns the lesson by lunch. Lunch is the lesson.',
+    'She files the incident under abundance and takes another bite.',
+  ] },
+  { when: { featureId: 'feedee_creator' }, weight: 3, text: [
+    'Ring light off. Chat still climbing. She keeps a hand on the new weight like a perk.',
+    'The collab partner is still chewing. Kylie is still filming the chew.',
+    'Wren would replay this. She is already living the replay.',
+  ] },
+  { when: { featureId: 'pharmacist' }, weight: 3, text: [
+    'Sophia logs the batch as wellness. The hall logs it as appetite.',
+    'The circle leaves heavier. Labels stay polite.',
+    'A tub lid clicks. Somewhere a waistband loses.',
+  ] },
+  { when: { stageMax: 4, corruption: [0] }, weight: 2, text: [
+    'She tugs cloth that almost still works and files the warmth as weather.',
+    'The vocation is new. The softness is newer. She pretends they are unrelated.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'Getting her turned toward the door is the rest of the scene. She takes the minutes.',
+    'Form as furniture. Appetite as rent. She pays in pounds and likes the receipt.',
+  ] },
+  { when: {}, text: [
+    'The vocation keeps working after the scene names itself over.',
+    'She looks down, then at you. The looking is the rest of the arc.',
+    'Whatever she became already arrived. She is the result walking around.',
+    'Heat fades. Softness stays. She breathes around it like a title.',
+  ] },
+]);
+
+oncePool('contest.linger', [
+  { when: { contestStage: [0, 1] }, weight: 2, text: [
+    'The bib still fits if she does not breathe too honestly. She breathes anyway.',
+    'Maya has not looked over. The belly has. It wants the next plate.',
+  ] },
+  { when: { contestStage: [3, 4, 5] }, weight: 2, text: [
+    'The chair files a complaint. She files another bite.',
+    'Crowd noise thins around her middle. She is the loudest thing at the table.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'Getting her sat was the opening ceremony. Standing can wait until the scoreboard.',
+    'The table edge learns her. She lets it take notes in dents.',
+  ] },
+  { when: {}, text: [
+    'Sauce on her wrist. She licks it like it counts. It does.',
+    'She shifts, and the shift is a whole extra person arriving.',
+    'Maya writes a number. She writes a swallow.',
+    'Fullness climbs. She treats it like a ranking she intends to keep.',
+  ] },
+]);
+

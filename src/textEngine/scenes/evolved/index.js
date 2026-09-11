@@ -4,6 +4,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
+import '../proseOverhaulPass4.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -46,6 +47,11 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   if (glowKey && opts.ending && out?.trim()) {
     const glow = render(`{${glowKey}}`, ctx)?.trim();
     if (glow) out = `${out}\n\n${glow}`;
+  }
+  const lingerChance = opts.ending ? 1 : 0.72;
+  if (out?.trim() && Math.random() < lingerChance) {
+    const linger = render('{evolved.linger}', ctx)?.trim();
+    if (linger) out = `${out}\n\n${linger}`;
   }
   return out;
 }

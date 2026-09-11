@@ -162,6 +162,17 @@ export function leftoverNightGainBump(student, week = 0) {
   return n;
 }
 
+/** Contest bite lbs — origin calorie, leftover/night, food-chain, taunt, lastCompound. */
+export function contestBiteLbs(student, baseLbs, week = 0, extras = {}) {
+  if (!student) return Math.max(0, Math.round(baseLbs || 0));
+  const origin = originRegisterFx(student).calorieMult || 1;
+  let lbs = Math.round((baseLbs || 0) * origin) + leftoverNightGainBump(student, week);
+  if (extras.chain) lbs += extras.chain;
+  if (extras.taunted) lbs += 1;
+  if (student.lastCompound) lbs = Math.round(lbs * 1.05);
+  return Math.max(1, lbs);
+}
+
 /** Echo resonate gain-multiplier after leftover trays or a night visit. */
 export function echoResonateMult(student, week = 0) {
   let m = 1.05;

@@ -14,7 +14,7 @@ export const CULT_DISTRIBUTION_ROUTES = [
     devotionGain: [4, 8],
     classGain: [0, 0],
     addictedGain: [1, 2],
-    flavor: () => `They arrive in twos and threes — heavier, softer, grateful. Sophia labels tubs with wellness stickers and pretends not to notice how they lean on each other leaving.`,
+    flavor: () => `They arrive in twos and threes, already softer than last week, already grateful. Sophia labels tubs with wellness stickers and watches how they lean on each other leaving, hips finding the doorframe.`,
   },
   {
     id: 'dorm_captains',
@@ -27,7 +27,7 @@ export const CULT_DISTRIBUTION_ROUTES = [
     devotionGain: [6, 10],
     classGain: [1, 3],
     addictedGain: [0, 1],
-    flavor: () => `Sophia meets three residents who "just love the product" in a stairwell. They leave with crates. By evening, half your floor looks well-fed and vague about why.`,
+    flavor: () => `Sophia meets three residents who "just love the product" in a stairwell. Crates go down. By evening, half your floor looks well-fed and vague about why the waistbands lost.`,
   },
   {
     id: 'union_bulk',
@@ -41,7 +41,7 @@ export const CULT_DISTRIBUTION_ROUTES = [
     devotionGain: [8, 14],
     classGain: [2, 5],
     addictedGain: [1, 3],
-    flavor: () => `A rolling cart. Unmarked tubs. A sign: WELLNESS SAMPLES. Twenty minutes later it's gone and the union smells like vanilla and compliance.`,
+    flavor: () => `A rolling cart. Unmarked tubs. A sign: WELLNESS SAMPLES. Twenty minutes later the cart is empty and the union smells like vanilla, sugar, and people who sat down heavier than they stood.`,
   },
   {
     id: 'loyalty_tithe',
@@ -54,8 +54,16 @@ export const CULT_DISTRIBUTION_ROUTES = [
     devotionGain: [10, 16],
     classGain: [0, 1],
     addictedGain: [2, 4],
-    flavor: () => `They bring cash, chemicals, Tupperwares of dinner they couldn't finish. Sophia accepts all of it and writes thank-you notes she doesn't mean.`,
+    flavor: () => `They bring cash, chemicals, Tupperwares of dinner that outgrew them. Sophia accepts all of it. The thank-you notes are short. The bellies are not.`
   },
+];
+
+const CULT_COMPOUND_IDS = [
+  'intentional_addiction',
+  'loyalty_enhancer',
+  'rapid_expansion',
+  'cult_appetite',
+  'cult_pleasure',
 ];
 
 export function defaultCultState() {
@@ -65,6 +73,7 @@ export function defaultCultState() {
     distributionsRun: 0,
     supplyReservoir: 0,
     bulkProductionUnlocked: false,
+    lastRouteId: null,
   };
 }
 
@@ -85,21 +94,40 @@ export function applyCultDistribution(state, routeId, rndFn) {
     const [lo, hi] = range;
     return rndFn(lo, hi);
   };
+  const repeat = cult.lastRouteId === routeId;
+  const switching = !!(cult.lastRouteId && !repeat);
   const outcome = {
     routeId,
     circleDelta: roll(route.circleGrowth),
     supplyDelta: roll(route.supplyGain),
     devotionDelta: roll(route.devotionGain),
-    classGainRange: route.classGain,
-    addictedGainRange: route.addictedGain,
+    classGainRange: [...route.classGain],
+    addictedGainRange: [...route.addictedGain],
     exposure: route.exposure,
     scrutiny: route.scrutiny || 0,
     flavor: route.flavor(),
+    repeatRoute: repeat,
+    switchRoute: switching,
   };
+  if (repeat) {
+    if ((cult.devotion ?? 0) >= 40) outcome.circleDelta += 1;
+    outcome.supplyDelta += 1;
+    outcome.devotionDelta = Math.round(outcome.devotionDelta * 1.12);
+    outcome.addictedGainRange[1] += 1;
+    if (routeId === 'dorm_captains' || routeId === 'union_bulk') {
+      outcome.classGainRange[1] += 1;
+    }
+    outcome.flavor = `${outcome.flavor} Regulars know the drop. They arrive already warm.`;
+  } else if (switching) {
+    outcome.exposure = Math.max(0, outcome.exposure - 1);
+    outcome.devotionDelta += 2;
+    outcome.flavor = `${outcome.flavor} New route. The circle tests it with their mouths first.`;
+  }
   cult.circleSize = Math.min(40, cult.circleSize + outcome.circleDelta);
   cult.devotion = Math.min(100, cult.devotion + outcome.devotionDelta);
   cult.supplyReservoir = cult.supplyReservoir + outcome.supplyDelta;
   cult.distributionsRun = (cult.distributionsRun || 0) + 1;
+  cult.lastRouteId = routeId;
   if (cult.distributionsRun >= 5) cult.bulkProductionUnlocked = true;
   let next = {
     ...state,
@@ -124,13 +152,15 @@ export function tickCultWeek(state, students, rndFn) {
   }
   const addictedCount = students.filter(s => !s.hidden && (s.addictionLevel ?? 0) >= 1).length;
   const areaBonus = Math.floor(cult.circleSize / 8);
+  const devotionBoost = (cult.devotion ?? 0) >= 70 ? 1 : 0;
+  const routeBoost = cult.lastRouteId === 'loyalty_tithe' || cult.lastRouteId === 'circle_pickup' ? 1 : 0;
   return {
     ...state,
     cult,
     _cultWeekly: {
       areaBonus,
       addictedCount,
-      passiveAddictedGain: addictedCount > 0 ? rndFn(0, 1 + areaBonus) : 0,
+      passiveAddictedGain: addictedCount > 0 ? rndFn(0, 1 + areaBonus + devotionBoost + routeBoost) : 0,
     },
   };
 }
@@ -181,7 +211,11 @@ export function pickInterruptCompound(stockedIds, student) {
 }
 
 export function cultLoyaltyRelBonus(state, compoundId) {
-  if (!state?.cultActive || compoundId !== 'loyalty_enhancer') return 0;
+  if (!state?.cultActive || !CULT_COMPOUND_IDS.includes(compoundId)) return 0;
   const devotion = state.cult?.devotion ?? 0;
-  return Math.floor(devotion / 15);
+  const circle = state.cult?.circleSize ?? 0;
+  const devotionPart = compoundId === 'loyalty_enhancer'
+    ? Math.floor(devotion / 15)
+    : Math.floor(devotion / 25);
+  return devotionPart + Math.floor(circle / 12);
 }

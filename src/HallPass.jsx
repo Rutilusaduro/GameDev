@@ -388,6 +388,7 @@ import {
   sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
   habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
   tickOutfitWeek, digestStuffedExtras, leftoverNightGainBump, echoResonateMult,
+  contestBiteLbs,
 } from './gameData/mechanicDepth.js';
 import { applyOutfitRefit, REFIT_OPTIONS } from './gameData/outfits.js';
 import './textEngine/scenes/proseOverhaul.js';
@@ -5392,7 +5393,7 @@ export default function HallPass(){
     const maxYF=Math.floor((80+Math.floor(s.lbs/8))*multiplier);
     const maxMF=80+Math.floor(mayaLbs/8);
     const initFull=(history||[]).includes('loaded')?25:15;
-    setEatingContestState({studentId,stageIdx,yourFoods,mayaFoods,yourFullness:initFull,mayaFullness:0,maxYourFullness:maxYF,maxMayaFullness:maxMF,yourGain:0,mayaGain:0,popupText:null,phaseAfterPopup:null,phase:'eating',pantsFactor:0,actions:{unbuttoned:false,rubUses:0,taunted:false}});
+    setEatingContestState({studentId,stageIdx,yourFoods,mayaFoods,yourFullness:initFull,mayaFullness:0,maxYourFullness:maxYF,maxMayaFullness:maxMF,yourGain:0,mayaGain:0,popupText:null,phaseAfterPopup:null,phase:'eating',pantsFactor:0,actions:{unbuttoned:false,rubUses:0,taunted:false},lastFoodId:null});
     setEvolvedEventState(null);
   };
 
@@ -5406,17 +5407,19 @@ export default function HallPass(){
 
   const eatContestFood=(idx)=>{
     if(!eatingContestState) return;
-    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor,actions}=eatingContestState;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxYourFullness,maxMayaFullness,yourGain,mayaGain,pantsFactor,actions,lastFoodId}=eatingContestState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const food=yourFoods[idx]; if(!food||food.consumed) return;
     const effectiveMax=maxYourFullness-pantsFactor;
     // When devour is NOT available (stageIdx < 3), enforce too-full gate
     if(stageIdx<3 && yourFullness+food.fullness>effectiveMax) return;
     // Consume food, apply real lbs gain
+    const chain=lastFoodId===food.id?2:0;
+    const bite=contestBiteLbs(s,food.lbs,week,{chain,taunted:!!actions.taunted});
     const newYF=yourFoods.map((f,i)=>i===idx?{...f,consumed:true,selected:false}:f);
     const newYourFull=yourFullness+food.fullness;
-    const newYourGain=yourGain+food.lbs;
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,food.lbs,0):st));
+    const newYourGain=yourGain+bite;
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,bite,0):st));
     // Maya eats one random unconsumed item
     let newMF=[...mayaFoods];
     let newMayaFull=mayaFullness;
@@ -5426,7 +5429,7 @@ export default function HallPass(){
       if(avail.length>0){
         const pick=avail[Math.floor(Math.random()*avail.length)];
         newMF=newMF.map(f=>f===pick?{...f,consumed:true}:f);
-        newMayaFull=mayaFullness+pick.fullness;
+        newMayaFull=mayaFullness+pick.fullness+(actions.taunted?3:0);
         newMayaGain=mayaGain+pick.lbs;
       }
     }
@@ -5435,7 +5438,7 @@ export default function HallPass(){
     const tableCleared=newYF.every(f=>f.consumed)&&newMF.every(f=>f.consumed);
     if(tableCleared){
       const tcp=renderContestActionPopup('table_cleared',stageIdx,s,week)||popup;
-      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
+      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2',lastFoodId:food.id}));
       return;
     }
     // Too-full end condition only applies when devour is NOT available
@@ -5444,11 +5447,11 @@ export default function HallPass(){
       const tooFull=newYourFull>=newEffMax&&actions.unbuttoned&&actions.rubUses>=3;
       if(tooFull){
         const tfp=renderContestActionPopup('too_full',stageIdx,s,week)||popup;
-        setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2'}));
+        setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tfp,phaseAfterPopup:'weigh_in_2',lastFoodId:food.id}));
         return;
       }
     }
-    setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup}));
+    setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:newMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup,lastFoodId:food.id}));
   };
 
   const toggleFoodSelection=(side,key)=>{
@@ -5463,7 +5466,7 @@ export default function HallPass(){
 
   const doDevour=()=>{
     if(!eatingContestState) return;
-    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxMayaFullness,yourGain,mayaGain}=eatingContestState;
+    const{studentId,stageIdx,yourFoods,mayaFoods,yourFullness,mayaFullness,maxMayaFullness,yourGain,mayaGain,actions,lastFoodId}=eatingContestState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     const selectedYour=yourFoods.filter(f=>f.selected&&!f.consumed);
     const selectedMaya=mayaFoods.filter(f=>f.selected&&!f.consumed);
@@ -5471,9 +5474,11 @@ export default function HallPass(){
     if(!toEat.length) return;
     const totalFullness=toEat.reduce((a,f)=>a+(f.fullness||0),0);
     const totalLbs=toEat.reduce((a,f)=>a+(f.lbs||0),0);
+    const chain=toEat.every(f=>f.id===lastFoodId)?2:0;
+    const bite=contestBiteLbs(s,totalLbs,week,{chain,taunted:!!actions.taunted});
     const newYourFull=yourFullness+totalFullness;
-    const newYourGain=yourGain+totalLbs;
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,totalLbs,0):st));
+    const newYourGain=yourGain+bite;
+    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,bite,0):st));
     const selectedYourKeys=new Set(selectedYour.map(f=>f.key));
     const selectedMayaKeys=new Set(selectedMaya.map(f=>f.key));
     const newYF=yourFoods.map(f=>selectedYourKeys.has(f.key)?{...f,consumed:true,selected:false}:f);
@@ -5487,18 +5492,19 @@ export default function HallPass(){
       if(avail.length>0){
         const pick=avail[Math.floor(Math.random()*avail.length)];
         finalMF=finalMF.map(f=>f===pick?{...f,consumed:true}:f);
-        newMayaFull=mayaFullness+pick.fullness;
+        newMayaFull=mayaFullness+pick.fullness+(actions.taunted?3:0);
         newMayaGain=mayaGain+pick.lbs;
       }
     }
     const popup=renderContestDevourPopup(stageIdx,s,week);
     const tableCleared=newYF.every(f=>f.consumed)&&finalMF.every(f=>f.consumed);
+    const devourLast=toEat[toEat.length-1]?.id||lastFoodId;
     if(tableCleared){
       const tcp=renderContestActionPopup('table_cleared',stageIdx,s,week)||popup;
-      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2'}));
+      setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:tcp,phaseAfterPopup:'weigh_in_2',lastFoodId:devourLast}));
       return;
     }
-    setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup}));
+    setEatingContestState(prev=>({...prev,yourFoods:newYF,mayaFoods:finalMF,yourFullness:newYourFull,mayaFullness:newMayaFull,yourGain:newYourGain,mayaGain:newMayaGain,popupText:popup,lastFoodId:devourLast}));
   };
 
   const doContestAction=(action)=>{
@@ -5532,7 +5538,7 @@ export default function HallPass(){
       if(avail.length>0){
         const pick=avail[Math.floor(Math.random()*avail.length)];
         newMF=newMF.map(f=>f===pick?{...f,consumed:true}:f);
-        newMayaFull=mayaFullness+pick.fullness;
+        newMayaFull=mayaFullness+pick.fullness+(action==='taunt'||actions.taunted?3:0);
         newMayaGain=mayaGain+pick.lbs;
       }
     }

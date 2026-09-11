@@ -1,9 +1,10 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Eating contest — engine bridge for competitive_circuit evolved form.
-import { registerDimension, render } from '../../engine.js';
+import { registerDimension, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
+import '../proseOverhaulPass4.js';
 import {
   CONTEST_FOOD_POPUPS,
   CONTEST_ACTION_POPUPS,
@@ -39,7 +40,9 @@ export function renderContestLegacy(text, student, week, stageIdx = 0, opts = {}
   const line = typeof text === 'string' ? text.trim() : '';
   if (!line || !student) return line;
   const ctx = buildContestCtx(student, week, stageIdx, opts);
-  return appendV2Depth(line, 'eatingContest', ctx, opts.v2DepthChance ?? 0.28);
+  const linger = render('{contest.linger}', ctx)?.trim() || '';
+  const composed = linger ? `${line}\n\n${linger}` : line;
+  return appendV2Depth(composed, 'eatingContest', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderContestFoodPopup(foodId, stageIdx, student, week) {
@@ -71,6 +74,24 @@ export function renderContestPayoff(stageIdx, student, yourGain, week) {
   const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
   const ctx = buildContestCtx(student, week, stageIdx, { globals: { yourGain } });
   const glow = render('{contest.afterglow}', ctx)?.trim() || '';
-  const composed = [raw, glow].filter(Boolean).join('\n\n');
+  const linger = render('{contest.linger}', ctx)?.trim() || '';
+  const composed = [raw, glow, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(composed, 'eatingContest', ctx, 0.3);
 }
+
+registerModuleVariants('contest.afterglow', [
+  { when: { contestStage: [0, 1] }, weight: 2, text: [
+    'The bib is a wreck. She keeps a palm on the new weight like a trophy Maya can see.',
+    'First-circuit heat still in her. The table is bones and sauce. She is the rest of the scoreboard.',
+  ] },
+  { when: { contestStage: [4, 5] }, weight: 2, text: [
+    'The chair reports her. So does the floor. Maya writes a number and does not look away.',
+    'Crowd noise thins. Fullness does not. She sits in the leftover heat like it is a ranking.',
+  ] },
+  { when: {}, text: [
+    'She breathes around the last plate and lets the belly finish arriving.',
+    'Maya\'s side is emptier than it looks. Hers is honest.',
+    'Someone in the cheap seats says her name like a record. She eats the sound.',
+  ] },
+]);
+
