@@ -3,6 +3,8 @@
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
+import './activityPools.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -16,6 +18,41 @@ const EVOLVED_FORM_POOLS = {
   homeroom_queen: 'evolved.homeroomQueen.v2.depth',
   state_fair_queen: 'evolved.fairQueen.v2.depth',
 };
+
+/** Passive evolved activity beat (no EVOLVED_EVENTS modal for this stage). */
+export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts = {}) {
+  const formId = student?.evolvedForm;
+  if (!formId) return "She's in her element.";
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: {
+      featureId: formId,
+      formId,
+      stageIdx,
+      evolvedFormId: formId,
+      evolvedStageIdx: stageIdx,
+      ...(opts.globals || {}),
+    },
+    ...opts,
+  });
+  let line = '';
+  try {
+    line = render(`{evolved.activity.${formId}}`, ctx)?.trim();
+  } catch {
+    line = '';
+  }
+  if (!line || line.includes('{unresolved}')) {
+    const arr = EVOLVED_ACTIVITY_TEXT[formId];
+    const raw = arr?.[stageIdx];
+    line = raw ? (typeof raw === 'function' ? raw(student) : raw) : "She's in her element.";
+  }
+  return renderEvolvedEventProse(line, student, week, {
+    formId,
+    stageIdx,
+    v2DepthChance: opts.v2DepthChance ?? 0.35,
+  });
+}
 
 /** Evolved event prose beat — V2 depth on legacy phase/choice/ending text. */
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
