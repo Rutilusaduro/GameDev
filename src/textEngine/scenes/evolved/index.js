@@ -7,6 +7,7 @@ import { EVOLVED_ACTIVITY_TEXT, EVOLVED_EVENTS } from '../../../gameData/evolved
 import './activityPools.js';
 import './eventPools.js';
 import './reactionPools.js';
+import './outfitPools.js';
 
 function legacyBodyChanceFromCtx(ctx, fallback = 0.12) {
   const peak = ctx.globals?.hallAmbiancePeak ?? 0;

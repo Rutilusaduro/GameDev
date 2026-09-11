@@ -4,8 +4,8 @@
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
 import { OUTFITS } from '../gameData/content.js';
-import { EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
 import { renderEvolvedReaction } from '../textEngine/scenes/evolved/reactionPools.js';
+import { renderEvolvedOutfit } from '../textEngine/scenes/evolved/outfitPools.js';
 import { getStage } from '../gameData/stages.js';
 import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
@@ -33,9 +33,10 @@ export function getBodyDescRich(s,week){
   const ctx=createContext({subject:s,week});
   return render("{word.body|cap}, {word.clothingFit}.",ctx);
 }
-export function getOutfit(s){
-  if(s.evolvedForm && getStage(s.lbs).id>=5){
-    const arr=EVOLVED_OUTFITS[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
+export function getOutfit(s, week = 1, opts = {}){
+  if (s.evolvedForm && getStage(s.lbs).id >= 5) {
+    const evolved = renderEvolvedOutfit(s, week, opts);
+    if (evolved) return evolved;
   }
   const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
