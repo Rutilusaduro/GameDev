@@ -10,6 +10,7 @@ const required = [
   'evolved/reactionPools.js',
   'evolved/outfitPools.js',
   'evolved/evolutionOfferPools.js',
+  'evolved/evolutionBlurbPools.js',
   'session/tapOutPools.js',
   'session/blobIntroPools.js',
   'session/immobileRedirectPools.js',

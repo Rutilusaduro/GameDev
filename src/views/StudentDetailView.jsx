@@ -1,4 +1,5 @@
-import { EVOLUTION_BUTTON_BLURB, EVOLUTION_OFFER, getEvolvedActivityMeta, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
+import { EVOLUTION_OFFER, getEvolvedActivityMeta, EVOLVED_FORM_META } from '../gameData/evolvedForms.js';
+import { renderEvolutionButtonBlurb } from '../textEngine/scenes/evolved/evolutionBlurbPools.js';
 import { FEEDER_JOURNAL_ARCHETYPES, NADIA_JOURNAL_ARCHETYPES } from '../textEngine/scenes/researchJournal/index.js';
 import { ATMOSPHERE_TIERS, GUEST_TIERS, MENU_TIERS } from '../gameData/chapterHostess.js';
 import { C } from '../styles.js';
@@ -403,12 +404,12 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                   return(
                     <div style={{marginBottom:14}}>
                       {canOffer&&!hasEvolved&&(()=>{
-                        const blurb=EVOLUTION_BUTTON_BLURB[s.archetype];
+                        const blurb=renderEvolutionButtonBlurb(s,week);
                         return(
                           <div style={{background:"rgba(40,10,80,0.5)",border:"1px solid #7030c0",borderRadius:10,padding:12,marginBottom:10}}>
                             <div style={{fontSize:9,letterSpacing:3,color:"#9040e0",marginBottom:5}}>✦ EVOLUTION AVAILABLE</div>
                             <div style={{fontSize:12,color:"#c0a0e0",lineHeight:1.75,marginBottom:8,fontStyle:"italic"}}>
-                              {blurb?blurb(s):`${s.name} has grown into something the original path can't contain. A new direction is possible.`}
+                              {blurb||`${s.name} has grown into something the original path can't contain. A new direction is possible.`}
                             </div>
                             <button style={{...C.btn("#5a18b0"),width:"100%"}} onClick={()=>openEvolutionModal(s)}>
                               ✦ Propose a New Direction
