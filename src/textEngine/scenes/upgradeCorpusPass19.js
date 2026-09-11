@@ -17,13 +17,13 @@ registerModuleVariants('ff.setup', [
 ]);
 registerModuleVariants('ff.harness', [
   { when: { studentId: 18 }, weight: 6, text: [
-    'she buckles herself in with lab-hand certainty, already flushed',
+    'She buckles herself in with lab-hand certainty, already flushed',
   ] },
   { when: { studentId: 8 }, weight: 6, text: [
-    'she leans back and lets the straps finish the sentence',
+    'She leans back and lets the straps finish the sentence',
   ] },
   { when: { studentId: 0 }, weight: 6, text: [
-    'she sits like a starter in new gear, straps clicking home',
+    'She sits like a starter in new gear, straps clicking home',
   ] },
 ]);
 registerModuleVariants('ff.openDialogue', [
@@ -93,61 +93,6 @@ registerModuleVariants('ff.closeDialogue', [
   ] },
   { when: { studentId: 5 }, weight: 6, text: [
     `"Buff applied. I'm logging this chair as home spawn."`,
-  ] },
-]);
-
-// ── leftover weigh-in greetings / settle ──────────────────────
-registerModuleVariants('wi.greeting', [
-  { when: { studentId: 8 }, weight: 6, text: [
-    `"Hey."`,
-  ] },
-  { when: { studentId: 0 }, weight: 6, text: [
-    `"Let's get the number."`,
-  ] },
-  { when: { studentId: 1 }, weight: 6, text: [
-    `"I brought the notes."`,
-  ] },
-  { when: { studentId: 5 }, weight: 6, text: [
-    `"Booting the scale. I already know it's patched up."`,
-  ] },
-  { when: { studentId: 16, stageMax: 4 }, weight: 6, text: [
-    `"Hi. Just the usual check."`,
-  ] },
-  { when: { studentId: 9 }, weight: 6, text: [
-    `"Right, so. The number."`,
-  ] },
-]);
-registerModuleVariants('wi.settleAction', [
-  { when: { studentId: 8 }, weight: 6, text: [
-    'She sets nothing down she does not need. She is already here.',
-  ] },
-  { when: { studentId: 7 }, weight: 6, text: [
-    'She aligns the bag with the desk edge, then faces the number.',
-  ] },
-  { when: { studentId: 10 }, weight: 6, text: [
-    'She parks a snack on the desk like the weigh-in includes a tasting.',
-  ] },
-]);
-registerModuleVariants('wi.scaleAttitude', [
-  { when: { studentId: 8, stageMax: 4 }, weight: 6, text: [
-    'She looks at you until the scale is the only thing left to do.',
-  ] },
-  { when: { studentId: 0 }, weight: 6, text: [
-    'She treats the platform like a starting block.',
-  ] },
-  { when: { studentId: 15 }, weight: 6, text: [
-    'She regards the scale like prey that already lost.',
-  ] },
-]);
-registerModuleVariants('wi.numberSettle', [
-  { when: { studentId: 8 }, weight: 6, text: [
-    'The dial holds at {subject.lbs}. She nods once.',
-  ] },
-  { when: { studentId: 2 }, weight: 6, text: [
-    'The dial holds at {subject.lbs}. She does not crop the number.',
-  ] },
-  { when: { studentId: 3 }, weight: 6, text: [
-    'The dial holds at {subject.lbs}. She files it like a split.',
   ] },
 ]);
 
