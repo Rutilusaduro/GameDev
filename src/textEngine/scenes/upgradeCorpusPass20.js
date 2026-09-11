@@ -9,31 +9,37 @@ import { registerModuleVariants } from '../engine.js';
 registerModuleVariants('cultivator.choice.milkshake.std_base', [
   { when: {}, weight: 8, text: [
     'She drinks the whole-milk shake like a normal tasting. Glass empty. Softness already starting.',
+    'Standard blend, three scoops. She finishes it like a polite guest and sits softer.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.milkshake.cream_base', [
   { when: {}, weight: 8, text: [
     'Heavy cream coats her tongue. She calls it richer and keeps the straw working until it scrapes air.',
+    'Cream base, same look as milk. She names the density and still drains the glass.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.milkshake.malt_base', [
   { when: {}, weight: 8, text: [
     'Malt sweetness she cannot name. She finishes the glass anyway, licking the rim once.',
+    'Old-school malt. She hunts the flavor, fails, and drinks the rest as research.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.milkshake.one_glass', [
   { when: {}, weight: 8, text: [
     'One measured glass. She thanks the kitchen and sits a little rounder in the stool.',
+    'A single pour, professional. She returns the empty glass with a softer middle.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.milkshake.large_cup', [
   { when: {}, weight: 8, text: [
     'She takes the oversized cup as leftover batch. Twice the glass. Gone before the ice settles.',
+    '"I made extra," and she believes it. The large cup leaves a visible swell.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.milkshake.full_blender', [
   { when: {}, weight: 8, text: [
     'She tilts the blender pitcher like that is a serving. It is not. She empties it.',
+    'Finish-the-blender framing works. She drinks standing, then needs the stool.',
   ] },
 ]);
 
@@ -41,46 +47,55 @@ registerModuleVariants('cultivator.choice.milkshake.full_blender', [
 registerModuleVariants('cultivator.choice.cookies.std_dough', [
   { when: {}, weight: 8, text: [
     'Butter-and-sugar cookies, nothing fancy. She eats them like homework she likes.',
+    'Reliable dough. She takes two, then the rest, like the recipe asked nicely.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.sweet_chips', [
   { when: {}, weight: 8, text: [
     'Extra chips, extra sugar. She asks what changed and then reaches for another.',
+    'Sweeter batch. She will request these next visit. She is already on number four.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.stuffed_dough', [
   { when: {}, weight: 8, text: [
     'Cream hides in the middle. She finds it late and does not stop the plate.',
+    'Filled centers. She notices the calories after the last bite, not before.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.twelve', [
   { when: {}, weight: 8, text: [
     'A dozen, still warm. She treats twelve like a polite number and finishes the last one warm.',
+    'Standard dozen. She counts once, then eats past counting.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.double_batch', [
   { when: {}, weight: 8, text: [
     'She bags the extras for later. Later is the walk home. Most do not survive the bag.',
+    'Overbake excuse. She takes the second tray home and arrives heavier.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.underbaked', [
   { when: {}, weight: 8, text: [
     'Soft centers. She says just one more while reaching. The tray loses.',
+    'Warm and underdone. Stopping at two was never going to happen.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.three_plated', [
   { when: {}, weight: 8, text: [
     'Three cookies, plated clean. She eats three and looks at the tray like manners won.',
+    'Professional plate of three. She finishes them and does not ask. She wants to.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.finish_batch', [
   { when: {}, weight: 8, text: [
     'Helping finish the batch turns into a second lunch. She accepts the favor with both hands.',
+    'Favor framing. She clears the cooling rack and thanks the kitchen with a fuller middle.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cookies.add_milk', [
   { when: {}, weight: 8, text: [
     'Warm milk with the cookies. Volume stacks in her middle. She thanks you with a milky smile.',
+    'Cookies plus a mug. She drinks after she is already full and calls it pairing.',
   ] },
 ]);
 
@@ -88,61 +103,73 @@ registerModuleVariants('cultivator.choice.cookies.add_milk', [
 registerModuleVariants('cultivator.choice.cake.std_batter', [
   { when: {}, weight: 8, text: [
     'Ordinary cake. She takes a bite like anyone would. The crumb is honest. So is the second fork.',
+    'Reliable batter. She treats it like bakery-standard and still goes back for crumbs.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.extra_butter', [
   { when: {}, weight: 8, text: [
     'She tastes the extra butter and calls it quality. The slice disappears faster for it.',
+    'Richer today. She blames good ingredients and licks the fork clean.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.lard_sub', [
   { when: {}, weight: 8, text: [
     'Denser crumb, heavier sit. She cannot name the trick. She takes another forkful.',
+    'Bakery method. She feels the weight of the crumb and keeps eating through it.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.light_glaze', [
   { when: {}, weight: 8, text: [
     'Thin glaze, polite look. She eats around it first, then the rest of the slice.',
+    'Minimal shine. She trusts the restraint and finishes the slice anyway.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.buttercream', [
   { when: {}, weight: 8, text: [
     'Thick frosting. She scrapes the plate clean and pretends that is normal cake behavior.',
+    'Generous coat. The fork noise at the end is the only comment she makes.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.ganache', [
   { when: {}, weight: 8, text: [
     'Glossy pour, no restraint. She accepts it as decoration and then eats the decoration.',
+    'Heavy ganache. She calls it pretty, then eats the pretty.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.one_slice', [
   { when: {}, weight: 8, text: [
     'One slice, standard. She finishes it looking satisfied and a little softer in the chair.',
+    'Normal portion. She is satisfied, and also looking at the remaining cake.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.generous', [
   { when: {}, weight: 8, text: [
     'The stale excuse works. She takes the wide slice without arguing the math.',
+    'It will go stale. She believes that long enough to finish the wide piece.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.whole_cake', [
   { when: {}, weight: 8, text: [
     'She takes the rest home. The container does not come back. Her middle does the explaining.',
+    'Take-the-rest. She can. She does. The tin stays wherever she emptied it.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.as_is', [
   { when: {}, weight: 8, text: [
     'Cake as-is. No garnish speech. She finishes the plate like a clean close.',
+    'No extras. She still leaves the plate clean and the chair a little tighter.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.cream_sauce', [
   { when: {}, weight: 8, text: [
     'Drizzle sold as a finish. It doubles the slice. She does not ask what it is.',
+    'Finishing touch. She eats the cream and the cake like they were always one thing.',
   ] },
 ]);
 registerModuleVariants('cultivator.choice.cake.ice_cream', [
   { when: {}, weight: 8, text: [
     'Ice cream beside cake she is already full from. She eats both. She always does.',
+    'It pairs well. She is past full and still finishes the scoop.',
   ] },
 ]);
 
