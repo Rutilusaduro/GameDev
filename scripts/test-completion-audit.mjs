@@ -2976,6 +2976,16 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/hallBlueprint/blueprintModularFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/blobIntroFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/batchBakerFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/trainingModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/photoBoostModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkSuggestIndulgenceModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkSuggestGrowthModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/weeklyEvent/weeklyEventLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusEvent/campusEventLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/growthEvent/growthEventLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-weekly-events-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-social-scenes-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-growth-event-modular-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
 });

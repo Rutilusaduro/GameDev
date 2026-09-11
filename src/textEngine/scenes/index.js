@@ -242,6 +242,7 @@ import './dinner/index.js';
 import './dinner/dinnerDishFragments.js';
 import './growthEvent/index.js';
 import './growthEvent/depth.js';
+import './growthEvent/growthEventLateModularFragments.js';
 import './weeklyEvent/index.js';
 import './weeklyEvent/depth.js';
 import './weeklyEvent/weeklyEventSceneDepth.js';

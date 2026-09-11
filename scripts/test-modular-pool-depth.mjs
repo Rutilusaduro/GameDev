@@ -38,6 +38,7 @@ const POOLS = [
   'roster.unlock.hallArrival',
   'session.fullness.pressure',
   'homeroom.npc.momHeat',
+  'ge.scene.growthFrame',
 ];
 
 for (const key of POOLS) {
