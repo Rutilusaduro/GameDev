@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ENCOURAGEMENT_ACTIONS, PRIVATE_FOODS, PRIVATE_VENUES, getFullnessStage, getTier } from '../gameData/sessions.js';
+import { renderSessionFullness } from '../textEngine/scenes/session/index.js';
 import { renderDinnerDishDesc } from '../textEngine/scenes/dinner/index.js';
 import { renderPrivateVenueDesc } from '../textEngine/scenes/overhaul/leftoverCatalog.js';
 import { MJ_RECIPES } from '../gameData/miniGames.js';
@@ -17,7 +18,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
     const effectiveMax=getSessionCapacityCap(s,capOpts);
     const fPct=getFullnessPercent(s,capOpts);
     const fsStage=getFullnessStage(fPct);
-    const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
+    const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), week):null;
     const courseOrder=["opener","main","more","dessert","extra"];
     const tier=getTier(s.relationship);
     const appetiteNote=getFeedingAppetiteNote(s);
