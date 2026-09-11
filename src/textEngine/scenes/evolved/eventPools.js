@@ -18,13 +18,23 @@ function samplePhaseProse(phase, history = []) {
   return '';
 }
 
-function sampleChoiceProse(choice) {
+function sampleChoiceProse(choice, history = []) {
   if (typeof choice.result === 'string') return (choice.result || '').trim();
   if (typeof choice.result === 'function') {
-    try {
-      return String(choice.result(SAMPLE_EVOLVED_SUBJECT)).trim();
-    } catch {
-      return '';
+    const attempts = [
+      () => choice.result(SAMPLE_EVOLVED_SUBJECT, history),
+      () => choice.result(history, SAMPLE_EVOLVED_SUBJECT),
+      () => choice.result(SAMPLE_EVOLVED_SUBJECT),
+      () => choice.result(history),
+      () => choice.result(),
+    ];
+    for (const fn of attempts) {
+      try {
+        const out = fn();
+        if (out) return String(out).trim();
+      } catch {
+        /* try next signature */
+      }
     }
   }
   return '';
