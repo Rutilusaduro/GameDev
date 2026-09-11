@@ -6477,7 +6477,7 @@ export default function HallPass(){
         const{label,emoji}=getStreamMilestoneLabel(key);
         setTimeout(()=>push(`📡 ${emoji} Milestone: ${label}`),80+i*120);
       });
-      push(`📡 Stream wrapped — ${r.overallTier}. +${Math.round(r.weightGain)+streamBump} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned, Destiny +${formatMoney(destinyShare)}.`);
+      push(`📡 Stream wrapped — ${r.overallTier}. +${streamApplied} lbs, +${r.audienceGain} audience, ${formatMoney(r.playerShare)} earned, Destiny +${formatMoney(destinyShare)}.`);
       return {
         ...prev,phase:'done',endingText,destinyMoneyFlavor:flavor,
         milestoneFired:fired,specialOutcomes:prev.specialOutcomes||[],
