@@ -34,7 +34,13 @@ for (const stageKey of stageKeys) {
   for (const tier of Object.keys(tierMap)) {
     registerModuleVariants(`cg.chat.priyaPost.${stageKey}.${tier}`, [
       {
-        when: { weekMin: [6] },
+        when: { weekMin: 16 },
+        weight: 4,
+        priority: 3,
+        text: [CHAT_SKELETON],
+      },
+      {
+        when: { weekMin: 6 },
         weight: 2,
         priority: 2,
         text: [CHAT_SKELETON],

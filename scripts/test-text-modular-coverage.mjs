@@ -41,6 +41,8 @@ const SLOT_KEYS = [
   'journal.scene.lateObsession',
   'evolved.reaction.witness',
   'evolved.reaction.appetite',
+  'evolution.offer.hallTone',
+  'evolution.offer.transformation',
 ];
 
 for (const key of SLOT_KEYS) {

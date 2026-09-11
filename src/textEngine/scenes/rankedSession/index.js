@@ -27,18 +27,33 @@ function buildSessionCtx(student, week, stageIdx, opts = {}) {
   });
 }
 
+function renderSessionLine(ctx, poolKey, legacyKey, rawFallback) {
+  const week = ctx.week ?? 1;
+  const primary = render(`{${poolKey}}`, ctx)?.trim();
+  if (primary && !primary.includes('{unresolved}')) return primary;
+  if (week >= 14) return primary || rawFallback || '';
+  const legacy = legacyKey ? render(`{${legacyKey}}`, ctx)?.trim() : '';
+  if (legacy && !legacy.includes('{unresolved}')) return legacy;
+  return rawFallback || '';
+}
+
 export function renderSessionRaeArrival(stageIdx, student, week) {
   const si = Math.min(Math.max(0, stageIdx), 5);
   const ctx = buildSessionCtx(student, week, si);
   const row = SESSION_NPC_LINES?.[si];
-  const raw = render(`{session.rae.arrival.s${si}}`, ctx)?.trim()
-    || render(`{session.rae.arrival.s${si}.legacyBody}`, ctx)?.trim()
-    || row?.arrival
-    || 'Delivery.';
+  const raw = renderSessionLine(
+    ctx,
+    `session.rae.arrival.s${si}`,
+    `session.rae.arrival.s${si}.legacyBody`,
+    row?.arrival || 'Delivery.',
+  );
   const extra = row?.extra
-    ? (render(`{session.rae.extra.s${si}}`, ctx)?.trim()
-      || render(`{session.rae.extra.s${si}.legacyBody}`, ctx)?.trim()
-      || row.extra)
+    ? renderSessionLine(
+      ctx,
+      `session.rae.extra.s${si}`,
+      `session.rae.extra.s${si}.legacyBody`,
+      row.extra,
+    )
     : '';
   const combined = [raw, extra].filter(Boolean).join(' ');
   return appendV2Depth(combined, 'rankedSession', ctx, rankedSessionV2DepthChance(0.24));
@@ -48,10 +63,12 @@ export function renderSessionRaeExtra(stageIdx, student, week) {
   const si = Math.min(Math.max(0, stageIdx), 5);
   const ctx = buildSessionCtx(student, week, si);
   const row = SESSION_NPC_LINES?.[si];
-  const raw = render(`{session.rae.extra.s${si}}`, ctx)?.trim()
-    || render(`{session.rae.extra.s${si}.legacyBody}`, ctx)?.trim()
-    || row?.extra
-    || 'She appears with extra supplies.';
+  const raw = renderSessionLine(
+    ctx,
+    `session.rae.extra.s${si}`,
+    `session.rae.extra.s${si}.legacyBody`,
+    row?.extra || 'She appears with extra supplies.',
+  );
   return appendV2Depth(raw, 'rankedSession', ctx, rankedSessionV2DepthChance(0.26));
 }
 

@@ -38,6 +38,7 @@ const required = [
   'evolved/eventPhaseFragments.js',
   'evolved/reactionFragments.js',
   'evolved/activityModularFragments.js',
+  'evolved/evolutionOfferFragments.js',
   'wifeLessons/index.js',
   'wifeLessons/lessonFragments.js',
   'wifeLessons/talkFragments.js',

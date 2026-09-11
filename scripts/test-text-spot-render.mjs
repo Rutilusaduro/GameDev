@@ -78,7 +78,7 @@ const cases = [
   {
     label: 'evolution offer',
     template: '{evolution.offer.swimmer.intro}',
-    ctx: buildTextContext({ subject: cassidy, week: 7 }),
+    ctx: buildTextContext({ subject: cassidy, week: 12 }),
   },
   {
     label: 'evolved activity',

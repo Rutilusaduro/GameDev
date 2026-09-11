@@ -7,7 +7,6 @@ import { cgMeasureSession, cgTargetStageBucket } from './fragments.js';
 import './raReplyPools.js';
 import './cgScenePools.js';
 import './cgChatPools.js';
-import './cgChatFragments.js';
 import { fillCgTemplate } from './raReplyPools.js';
 import {
   CG_RA_REPLY_TEXT,
