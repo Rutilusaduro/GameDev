@@ -142,6 +142,7 @@ import './origin/index.js';
 import './polishDepthPass40.js';
 import './upgradeCorpusPass.js';
 import './upgradeCorpusPass2.js';
+import './upgradeCorpusPass3.js';
 import './v2/index.js';
 import './salonGallerySceneDepth.js';
 import './monolithFragmentDepth.js';
