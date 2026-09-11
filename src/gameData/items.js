@@ -60,4 +60,6 @@ export const ITEM_USE_LINES = [
   (s, item) => `You produce the ${item.label.toLowerCase()}. ${s.name}'s attention arrives before her objections do.`,
   (s, item) => `"Is that for me?" ${s.name} asks, already reaching. The ${item.label.toLowerCase()} does not survive the hour.`,
   (s, item) => `You leave the ${item.label.toLowerCase()} where ${s.name} will find it. She finds it.`,
+  (s, item) => `${s.name} takes the ${item.label.toLowerCase()} with both hands. The wrapper lasts longer than her resolve.`,
+  (s, item) => `The ${item.label.toLowerCase()} is gone before ${s.name} finishes pretending she would share.`,
 ];

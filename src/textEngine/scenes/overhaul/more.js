@@ -173,3 +173,101 @@ registerModuleVariants('feed.react', [
     '{feed.react.beat} {feed.react.body} {feed.react.line} {overhaul.linger.food}',
   ]},
 ]);
+
+// Shape: FULL SENTENCE. Pantry item landing.
+registerPool('pantry.use', [
+  { when: {}, text: [
+    'You produce the offering. Her attention arrives before any objection does.',
+    'She asks if it is for her, already reaching. It does not survive the hour.',
+    'You leave it where she will find it. She finds it. She finishes it.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'The wrap is already open. Her belly takes the rest as if the pantry were a course on the hall menu.',
+  ]},
+  { when: { corruption: [2] }, weight: 2, text: [
+    'She does not pretend this was accidental. She eats it in front of you and waits to be watched.',
+  ]},
+]);
+
+// Shape: FULL SENTENCE. Locked week-plan payoff.
+registerPool('planner.beat', [
+  { when: {}, text: [
+    'The slot you locked last week comes due. She shows up fed and a little closer.',
+    'Attention, scheduled. She still eats like it was her idea.',
+    'The plan holds. So does she. Warmer, rounder, expected.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'The venue you picked still fits her, barely. She treats that as a compliment.',
+  ]},
+  { when: { corruption: [2] }, weight: 2, text: [
+    'She kept the appointment like a date with her own appetite. You both knew.',
+  ]},
+]);
+
+// Shape: FULL SENTENCE. Floor check-in atmosphere before the scene body.
+registerPool('floor.checkin.open', [
+  { when: {}, text: [
+    'The lounge holds the check-in the way a warm room holds a body. Close. Unhurried.',
+    'Snack wrappers tick in the trash. She stays seated like leaving would be work.',
+    'A fridge kicks on down the hall. She notices. She does not get up.',
+  ]},
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She sits in the chair like she is borrowing it. The waistband is only a little honest tonight.',
+  ]},
+  { when: { stageMin: 4, stageMax: 6 }, weight: 2, text: [
+    'When she shifts, the chair answers. Soft mass settling, a slow sway after she stills.',
+  ]},
+  { when: { stageMin: 7 }, weight: 2, text: [
+    'She fills the seat in every direction that matters. The lounge was built for this and is still catching up.',
+  ]},
+]);
+
+registerPool('floor.checkin.heat', [
+  { when: {}, text: [
+    'You take her in before the question does. Heat, extra, the week sitting on her.',
+    'Her middle keeps a share of the conversation. She rests a hand there without performing it.',
+    'The check-in is paperwork. The body in the chair is the actual agenda.',
+  ]},
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'A softer line at the waist. A shirt that meets her like a rumor she has not admitted yet.',
+  ]},
+  { when: { stageMin: 5, stageMax: 7 }, weight: 2, text: [
+    'Belly first. A warm curve her waistband is negotiating with in public.',
+  ]},
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'There is a lot of her to look at. She knows. She does not hurry the looking.',
+  ]},
+]);
+
+registerPool('floor.checkin.result.feed', [
+  { when: {}, text: [
+    'The swallow finishes traveling. She breathes around it, pleased with the work.',
+    'She checks her middle the way some people check a watch. Right on time.',
+    'Another bite would be greedy. She takes it anyway, unhurried.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'There is so much of her that fullness is weather. You can watch it move.',
+  ]},
+]);
+
+registerPool('floor.checkin.result.talk', [
+  { when: {}, text: [
+    'The conversation ends. The closeness does not. She stays seated.',
+    'She says your name once more, like a bookmark, then reaches for whatever is left.',
+    'Rapport sits in the chair with her. Warm. A little sticky. Not leaving yet.',
+  ]},
+  { when: { corruption: [2] }, weight: 2, text: [
+    `"Don't go yet," she says. "I'm not done being looked at."`,
+  ]},
+]);
+
+registerPool('floor.checkin.hall', [
+  { when: {}, text: [
+    'The whole floor leans toward the food like it was the point of the meeting.',
+    'Chairs scrape closer. Someone laughs with her mouth full. Nobody apologizes.',
+    'The lounge smells like a decision you already made for them.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'The heavier residents claim the reinforced seats first. The food still reaches the back row.',
+  ]},
+]);

@@ -6,6 +6,7 @@ import {
   PLANNER_VENUES,
   WEEK_PLAN_SLOT_COUNT,
   emptyWeekPlan,
+  resizeWeekPlan,
   mealCostPreview,
   planConflicts,
   previewPlannedSlot,
@@ -14,19 +15,27 @@ import {
 import { getStage } from '../gameData/stages.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
-export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true }) {
+export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true, slotCount }) {
   useEffect(() => { playHallPassSound('week', soundEnabled); }, [soundEnabled, week]);
+  const n = slotCount || WEEK_PLAN_SLOT_COUNT;
   const visible = useMemo(
     () => (students || []).filter((s) => !s.hidden && s.lockState !== 'locked'),
     [students],
   );
-  const [plan, setPlan] = useState(() => initialPlan || emptyWeekPlan());
+  const [plan, setPlan] = useState(() => resizeWeekPlan(initialPlan || emptyWeekPlan(n), n));
   const [pickStudent, setPickStudent] = useState(null);
   const conflicts = useMemo(() => planConflicts(plan, students), [plan, students]);
+  useEffect(() => { setPlan((p) => resizeWeekPlan(p, n)); }, [n]);
 
   const assignSlot = (slotIndex, studentId) => {
     setPlan((prev) => {
       const slots = prev.slots.map((s, i) => (i === slotIndex ? { ...s, studentId } : s));
+      return { ...prev, slots };
+    });
+  };
+  const assignVenue = (slotIndex, venueId) => {
+    setPlan((prev) => {
+      const slots = prev.slots.map((s, i) => (i === slotIndex ? { ...s, venueId } : s));
       return { ...prev, slots };
     });
   };
@@ -37,7 +46,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>WEEK PLANNER</div>
         <div style={{ fontSize: 15, fontWeight: 700, color: '#c090e8', marginBottom: 4 }}>Week {week} — place your attention</div>
         <div style={{ fontSize: 11, color: '#5a3888', marginBottom: 12 }}>
-          Each slot previews cost and interrupt risk. Unfilled slots show what you skip.
+          Pick a resident and a venue per slot. Locked plans pay off when the week turns. Unfilled slots skip.
         </div>
 
         {conflicts.length > 0 && (
@@ -69,12 +78,33 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
                       {student.name} · {getStage(student.lbs).label}
                     </div>
                     <div style={{ fontSize: 11, color: '#9080b0' }}>{preview.cost?.label}</div>
+                    {preview.venueHint && <div style={{ fontSize: 10, color: '#80a0c0', marginTop: 4 }}>{preview.venueHint}</div>}
                     {preview.interrupt && <div style={{ fontSize: 10, color: '#c08060', marginTop: 4 }}>{preview.interrupt}</div>}
                     {preview.hint && <div style={{ fontSize: 10, color: '#80a0c0', marginTop: 4, fontStyle: 'italic' }}>{preview.hint}</div>}
                   </>
                 ) : (
                   <div style={{ fontSize: 11, color: '#706090', fontStyle: 'italic' }}>{defaultSlotLabel(i)}</div>
                 )}
+                <div className="week-planner-venues" style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 8 }}>
+                  {PLANNER_VENUES.map((v) => (
+                    <button
+                      key={v.id}
+                      type="button"
+                      className="week-planner-venue-chip"
+                      aria-pressed={slot.venueId === v.id}
+                      onClick={() => assignVenue(i, v.id)}
+                      style={{
+                        ...C.smBtn,
+                        margin: 0,
+                        fontSize: 9,
+                        background: slot.venueId === v.id ? 'rgba(120,60,200,0.45)' : undefined,
+                        borderColor: slot.venueId === v.id ? '#a060e0' : undefined,
+                      }}
+                    >
+                      {v.glyph} {v.label}
+                    </button>
+                  ))}
+                </div>
                 <button
                   type="button"
                   style={{ ...C.smBtn, marginTop: 6, width: '100%' }}

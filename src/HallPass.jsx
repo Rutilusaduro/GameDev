@@ -58,7 +58,7 @@ import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLin
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
-import { renderFloorSceneText, renderFloorChoiceResult } from './textEngine/scenes/campusEvent/index.js';
+import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
@@ -99,7 +99,8 @@ import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './te
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
-import { buildWeekReviewExtras, emptyWeekPlan } from './gameData/weekPlanner.js';
+import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan } from './gameData/weekPlanner.js';
+import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness } from './gameData/mechanicDepth.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -991,7 +992,7 @@ export default function HallPass(){
     INFLUENCE_PAIRS.forEach(([a,b])=>{
       if((s.id===a||s.id===b)){
         const other=students.find(st=>st.id===(s.id===a?b:a));
-        if(other && getStage(other.lbs).id>=3) bonusInfluence+=Math.floor(gain*0.15);
+        if(other && getStage(other.lbs).id>=3) bonusInfluence+=Math.floor(gain*(0.15+(ownedHallSkills?.group_dynamics?0.08:0)));
       }
     });
     return { newLbs:newLbs+bonusInfluence, oldStageId:oldSt, newStageId:newSt, narrativeEvents:triggered };
@@ -1021,6 +1022,7 @@ export default function HallPass(){
     asceticCircle:!!opposition?.proxies?.asceticCircle,
     opposition,
     saturationTier:campusState.saturation?.tier??0,
+    floorYield:aggregateHallLoungeSkillEffects(ownedHallSkills||{}).campusYieldBonus||0,
   });
 
   const huntPortionSaint=()=>{
@@ -1374,13 +1376,16 @@ export default function HallPass(){
     const target=students.find(st=>st.id===studentId);
     if(!target) return;
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
-    const fed=feedStudentCalories(target,item.cal,item.full,1,
+    const extraCals=itemCalorieBonus(item.label,ownedHallSkills||{});
+    const fed=feedStudentCalories(target,item.cal+extraCals,item.full,1,
       `${item.emoji} ${item.label}${compoundLabel?` + ${compoundLabel}`:''}`,
       compoundId?{compoundId}:{});
     if(!fed) return;
     setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
     setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    const ctx=createContext({subject:target,week});
+    const pantryLine=render('{pantry.use}',ctx)?.trim();
+    const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
     setTimeout(()=>push(`🎒 ${line}${compoundLabel?` (${compoundLabel})`:''}`),80);
   };
 
@@ -1754,6 +1759,13 @@ export default function HallPass(){
     });
     // Final-form campus radiate: Comfort Queens soothe, The Adored warm.
     updated=applyFinalFormRadiate(updated);
+    const planPay=resolveWeekPlan({plan:weekPlan,students:updated,owned:ownedHallSkills||{},week});
+    if(planPay.studentPatches.length){
+      updated=applyFloorStudentPatches(planPay.studentPatches,updated);
+    }
+    if(planPay.moneyDelta) setMoney((m)=>Math.max(0,m+planPay.moneyDelta));
+    planPay.logLines.forEach((line,i)=>setTimeout(()=>push(line),70+i*40));
+    setWeekPlan(emptyWeekPlan(plannerSlotCount(ownedHallSkills||{})));
     if(pharmacistState?.campusFattening){
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
@@ -2073,7 +2085,7 @@ export default function HallPass(){
     // stings visible residents who aren't yet comfortable being seen.
     let exposedCount=0;
     updated=updated.map(s=>{
-      let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY);
+      let disc=Math.max(0,(s.discontent||0)-DISCONTENT_WEEKLY_DECAY-comfortFramingDecay(ownedHallSkills||{}));
       let mems=s.memories,mood=s.mood;
       const exposed=scrutinyTier?.id>=2&&!s.hidden&&getStage(s.lbs).id>=5&&getCorruptionTier(s.corruption||0).id===0;
       if(exposed&&Math.random()<0.5){
@@ -2214,7 +2226,7 @@ export default function HallPass(){
     if(newlyTriggered&&!nextOpposition.supernatural.ascensionOffered) setSupernaturalModalOpen(true);
 
     // ── ROSTER UNLOCK ─ hall reach (slots) + passive trust (queue) ──
-    updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random });
+    updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random, extraDrip: socialTrustDrip(ownedHallSkills||{}) });
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));
@@ -3970,18 +3982,20 @@ export default function HallPass(){
     const stageId=getStage(lilith.lbs).id;
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):20;
-    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    const extraHunt=kitchenHuntBonus(gain,ownedHallSkills||{});
+    const totalGain=gain+extraHunt;
+    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+totalGain}:s));
     setLilithKillCount(k=>k+1);
     if(isAib){
       setOpposition(prev=>removeConsumedAibMember(prev,aibTarget.aibMemberId));
       addScrutiny(-15);
-      push(`🩸 Lilith devours ${aibTarget.name} — board member removed (+${gain} lbs, −15 scrutiny)`);
+      push(`🩸 Lilith devours ${aibTarget.name} — board member removed (+${totalGain} lbs, −15 scrutiny)`);
       const consumeText=renderLilithFeast(lilith, stageId, week);
       setLilithHuntState(prev=>({
         ...prev,
         aibTarget:null,
         encounter:{...prev.encounter,consumed:true},
-        textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs · ${aibTarget.name} consumed`,type:'system'}],
+        textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${totalGain} lbs · ${aibTarget.name} consumed`,type:'system'}],
       }));
       setOpposition(prev=>({
         ...prev,
@@ -3989,20 +4003,22 @@ export default function HallPass(){
       }));
       return;
     }
-    push(`🌑 Lilith — hunt complete: +${gain} lbs`);
+    push(`🌑 Lilith — hunt complete: +${totalGain} lbs`);
     const consumeText=renderLilithFeast(lilith, stageId, week);
-    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${gain} lbs`,type:'system'}]}));
+    setLilithHuntState(prev=>({...prev,encounter:{...prev.encounter,consumed:true},textLog:[...prev.textLog,{text:consumeText,type:'narrative'},{text:`✦ +${totalGain} lbs`,type:'system'}]}));
   };
   const deliveryScene=()=>{
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
     const stageId=getStage(lilith.lbs).id;
     const nextStage=WEIGHT_STAGES[Math.min(10,stageId+1)];
     const gain=nextStage&&nextStage.id>stageId?Math.max(1,nextStage.min-Math.round(lilith.lbs)+5):25;
-    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+gain}:s));
+    const extraHunt=kitchenHuntBonus(gain,ownedHallSkills||{});
+    const totalGain=gain+extraHunt;
+    setStudents(prev=>prev.map(s=>s.id===LILITH_ID?{...s,lbs:s.lbs+totalGain}:s));
     setLilithKillCount(k=>k+1);
-    push(`🌑 Lilith — delivery: +${gain} lbs`);
+    push(`🌑 Lilith — delivery: +${totalGain} lbs`);
     const feastText=renderLilithFeast(lilith, stageId, week);
-    setLilithHuntState(prev=>({...prev,deliveryDone:true,textLog:[...prev.textLog,{text:feastText,type:'narrative'},{text:`✦ +${gain} lbs`,type:'system'}]}));
+    setLilithHuntState(prev=>({...prev,deliveryDone:true,textLog:[...prev.textLog,{text:feastText,type:'narrative'},{text:`✦ +${totalGain} lbs`,type:'system'}]}));
   };
   const closeHunt=()=>setLilithHuntState(null);
   const investigateClue=()=>{
@@ -6718,7 +6734,7 @@ export default function HallPass(){
     if(cost>0) setAp(a=>a-cost);
     const tier=getTier(s.relationship).id;
     const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
-    setIntimacyEventState({studentId:s.id,sceneId,tier,week,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:0,relBonus:loungeFx.intimacyRelBonus||0});
+    setIntimacyEventState({studentId:s.id,sceneId,tier,week,phaseIdx:0,history:[],logLines:[],gainAccum:0,relAccum:0,done:false,endingText:null,gainBonus:ownedHallSkills?.oversized_linens?1:0,relBonus:loungeFx.intimacyRelBonus||0});
     setIntimacySceneSelector(null);
   };
 
@@ -6755,8 +6771,10 @@ export default function HallPass(){
       let endingIdx=def.endings.findIndex(e=>evalIntimacyEndingCondition(e.conditionSrc,newHistory));
       if(endingIdx<0) endingIdx=def.endings.length-1;
       const ending=def.endings[endingIdx];
-      const totalGain=newGain+ending.gainBonus;
-      const totalRel=newRel+ending.relBonus;
+      const loungeRel=intimacyEventState.relBonus||0;
+      const loungeGain=intimacyEventState.gainBonus||0;
+      const totalGain=newGain+(ending.gainBonus||0)+loungeGain;
+      const totalRel=newRel+(ending.relBonus||0)+loungeRel;
       setStudents(prev=>prev.map(st=>{
         if(st.id!==studentId) return st;
         return processStudentGain(st,totalGain>0?totalGain:0,totalRel);
@@ -6791,7 +6809,7 @@ export default function HallPass(){
 
   const startFloorCheckIn=()=>{
     playHallPassSound('click', soundEnabled);
-    const scenes=generateFloorCheckIn(students.filter(studentReceivesPassiveGain),week);
+    const scenes=generateFloorCheckIn(students.filter(studentReceivesPassiveGain),week,ownedHallSkills||{});
     if(!scenes.length){advanceWeek();return;}
     setFloorCheckIn({scenes,sceneIdx:0,outcomes:[],pendingResult:null});
   };
@@ -6808,17 +6826,18 @@ export default function HallPass(){
     if(type==="student"&&student){
       const s=newStudents.find(st=>st.id===student.id);
       if(s){
-        gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
+        gainAmt=Math.round(rnd(choice.effect.gain[0],choice.effect.gain[1])*floorCheckInGainMult(ownedHallSkills||{}));
         const ns=processStudentGain(s,gainAmt,0);
+        const extraRel=aggregateHallLoungeSkillEffects(ownedHallSkills||{}).roomVisitRelBonus||0;
         newStudents=newStudents.map(st=>st.id===s.id?{
           ...ns,
           ...(choice.effect.mood?{mood:choice.effect.mood}:{}),
-          relationship:Math.min(100,ns.relationship+(choice.effect.rel||0)),
+          relationship:Math.min(100,ns.relationship+(choice.effect.rel||0)+extraRel),
         }:st);
         targetName=s.name;
       }
     }else if(type==="hall"){
-      gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
+      gainAmt=Math.round(rnd(choice.effect.gain[0],choice.effect.gain[1])*floorCheckInGainMult(ownedHallSkills||{}));
       newStudents=newStudents.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,gainAmt,0):s);
       targetName="the hall";
     }
@@ -6897,11 +6916,13 @@ export default function HallPass(){
     }
     let refusals=0,fedCount=0,totalCals=0;
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
+    const extraFill=hallKitchenFillCalories(ownedHallSkills||{});
+    const extraFull=hallDiningFillFullness(ownedHallSkills||{});
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
-      const cals=rnd(action.cal[0],action.cal[1]);
-      const fed=feedStudentCalories(s,cals,action.full,1,'',compoundId?{compoundId}:{});
+      const cals=rnd(action.cal[0],action.cal[1])+extraFill;
+      const fed=feedStudentCalories(s,cals,action.full+extraFull,1,action.label,compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
       fedCount++;totalCals+=cals;
       return fed;
@@ -7707,8 +7728,9 @@ export default function HallPass(){
   const resolveNarrative=(ev,s,accept)=>{
     if(accept&&ev.gain[1]>0){
       const gain=rnd(ev.gain[0],ev.gain[1]);
-      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+ev.rel)}));
-      push(`📖 ${ev.title} resolved. ${s.name} +${gain} lbs, +${ev.rel} relationship.`);
+      const extraRel=aggregateHallLoungeSkillEffects(ownedHallSkills||{}).weighInRelBonus||0;
+      setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,lbs:st.lbs+gain,relationship:Math.min(100,st.relationship+ev.rel+extraRel)}));
+      push(`📖 ${ev.title} resolved. ${s.name} +${gain} lbs, +${ev.rel+extraRel} relationship.`);
     } else {
       setStudents(prev=>prev.map(st=>st.id!==s.id?st:{...st,relationship:Math.min(100,st.relationship+Math.floor(ev.rel/2))}));
       push(`📖 ${ev.title} — noted.`);
@@ -8138,7 +8160,7 @@ export default function HallPass(){
                       section={`floorCheckIn.scene.${scene.title}`}
                       text={student
                         ? renderFloorSceneText(scene, student, week, pharmacistTextOpts(pharmacistState, week))
-                        : (typeof scene.text==="function"?scene.text(student):scene.text)}
+                        : renderFloorHallText(scene, week, pharmacistTextOpts(pharmacistState, week))}
                       student={student}
                       week={week}
                       style={{...C.infoBox("rgba(20,8,40,0.8)"),fontSize:13,lineHeight:1.75,color:"#c8a8e8",marginBottom:14}}
@@ -9179,6 +9201,7 @@ export default function HallPass(){
           students={students}
           week={week}
           initialPlan={weekPlan}
+          slotCount={plannerSlotCount(ownedHallSkills||{})}
           soundEnabled={soundEnabled}
           onCommit={(plan)=>{ setWeekPlan(plan); setWeekPlannerOpen(false); push('📋 Week plan locked — your slots are set.'); }}
           onClose={()=>setWeekPlannerOpen(false)}

@@ -138,6 +138,7 @@ export function buildExplorationContext({
   asceticCircle = false,
   opposition = null,
   saturationTier = 0,
+  floorYield = 0,
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const avgLbs = students.length
@@ -159,6 +160,7 @@ export function buildExplorationContext({
     deviceInventory,
     asceticCircle,
     opposition,
+    floorYield,
   };
 }
 
@@ -230,7 +232,9 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (locLine) lines.push(locLine);
   }
 
-  const travelChance = EXPLORATION_CONFIG.travelEventChance + saturationTravelEventBonus(satTier);
+  const yieldBonus = ctx.floorYield || 0;
+
+  const travelChance = EXPLORATION_CONFIG.travelEventChance + saturationTravelEventBonus(satTier) + yieldBonus * 0.06;
   if (rng() < travelChance) {
     const travelLine = renderCampusTravelLine(travelCtx, nodeId, 'travel');
     if (travelLine) {
@@ -238,13 +242,13 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     }
   }
 
-  if (rng() < EXPLORATION_CONFIG.studentSightingChance) {
+  if (rng() < EXPLORATION_CONFIG.studentSightingChance + yieldBonus * 0.08) {
     const { lines: sightingLines, trustGrants } = pickStudentSighting(ctx.students, travelCtx, rng);
     if (sightingLines.length) lines.push(...sightingLines);
     if (trustGrants.length) effects.trustGrants = trustGrants;
   }
 
-  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04) {
+  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04 + yieldBonus * 0.06) {
     const findId = pickExplorationFind(travelFindPool(nodeId, Math.max(ctx.campusTier, satTier >= 2 ? 2 : 0)), rng);
     const find = getExplorationFind(findId);
     if (find) {
@@ -286,6 +290,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
     totalSearches: (exploration.totalSearches || 0) + 1,
     observeCounts: { ...exploration.observeCounts },
   };
+  const yieldBonus = ctx.floorYield || 0;
 
   const available = availableSecretsAtNode(nodeId, exploration, ctx);
   for (const secret of available) {
@@ -298,7 +303,7 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
         return { lines, effects, exploration: nextExploration };
       }
     }
-    if (secret.solve === 'search' && rng() < EXPLORATION_CONFIG.searchSecretChance) {
+    if (secret.solve === 'search' && rng() < EXPLORATION_CONFIG.searchSecretChance + yieldBonus * 0.08) {
       effects.solvedSecret = secret.id;
       lines.push(resolveSecretDiscoverLine(secret, ctx, nodeId, rng));
       if (secret.reward?.findId) {

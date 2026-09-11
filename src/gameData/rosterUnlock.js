@@ -45,12 +45,12 @@ export function grantPassiveTrust(student, amount, unlockedDorms = null) {
   return { ...student, passiveTrust: next };
 }
 
-export function applyWeeklyTrustDrip(students, { reachLevel = 1, week = 1, unlockedDorms = [], rng = Math.random } = {}) {
+export function applyWeeklyTrustDrip(students, { reachLevel = 1, week = 1, unlockedDorms = [], rng = Math.random, extraDrip = 0 } = {}) {
   const hasLocked = students.some((s) => s.lockState === 'locked' && isHallReachable(s, unlockedDorms));
   if (!hasLocked) return students;
   return students.map((s) => {
     if (s.lockState !== 'locked' || !isHallReachable(s, unlockedDorms)) return s;
-    const drip = weeklyTrustDripAmount({ reachLevel, week, rng });
+    const drip = weeklyTrustDripAmount({ reachLevel, week, rng }) + Math.max(0, extraDrip || 0);
     return grantPassiveTrust(s, drip);
   });
 }

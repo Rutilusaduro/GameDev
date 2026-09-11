@@ -3,6 +3,7 @@ import { getAddictionLevel, getHungerTier } from './hungerAddiction.js';
 import { PSYCH_TIERS } from './psychState.js';
 import { getStage } from './stages.js';
 import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
+import { completedRoomCount, extraFeedCalories, roomFill } from './floorBlueprint.js';
 
 export const WEEK_PLAN_SLOT_COUNT = 5;
 
@@ -14,12 +15,96 @@ export const PLANNER_VENUES = [
   { id: 'private', label: 'Private table', glyph: '🥂' },
 ];
 
-export function emptyWeekPlan() {
+export function plannerSlotCount(owned = {}) {
+  return WEEK_PLAN_SLOT_COUNT + Math.min(2, Math.floor(completedRoomCount(owned) / 4));
+}
+
+export function emptyWeekPlan(slotCount = WEEK_PLAN_SLOT_COUNT) {
+  const n = Math.max(WEEK_PLAN_SLOT_COUNT, slotCount);
   return {
-    slots: Array.from({ length: WEEK_PLAN_SLOT_COUNT }, (_, i) => ({
+    slots: Array.from({ length: n }, (_, i) => ({
       studentId: null,
       venueId: PLANNER_VENUES[i % PLANNER_VENUES.length].id,
     })),
+  };
+}
+
+export function resizeWeekPlan(plan, slotCount = WEEK_PLAN_SLOT_COUNT) {
+  const n = Math.max(WEEK_PLAN_SLOT_COUNT, slotCount);
+  const slots = [...(plan?.slots || [])];
+  while (slots.length < n) {
+    slots.push({
+      studentId: null,
+      venueId: PLANNER_VENUES[slots.length % PLANNER_VENUES.length].id,
+    });
+  }
+  return { ...plan, slots: slots.slice(0, n) };
+}
+
+const VENUE_PAYOFF = {
+  campus: { cal: 0, full: 0, rel: 3, hunger: -1 },
+  dining: { cal: 2200, full: 10, rel: 1, hunger: 0 },
+  dorm: { cal: 800, full: 4, rel: 4, hunger: 0 },
+  lab: { cal: 2800, full: 12, rel: 1, hunger: 0 },
+  private: { cal: 1600, full: 8, rel: 5, hunger: 0 },
+};
+
+/**
+ * Locked week plans used to preview only. Now they pay off at week advance:
+ * venue-specific calories/rel, dining/kitchen fill scales food, completed rooms add slots.
+ */
+export function resolveWeekPlan({
+  plan,
+  students = [],
+  owned = {},
+  week = 1,
+} = {}) {
+  const patches = new Map();
+  const beats = [];
+  let moneyDelta = 0;
+  const bump = (id, fields) => {
+    const cur = patches.get(id) || { id, cal: 0, full: 0, rel: 0, hunger: 0 };
+    patches.set(id, {
+      ...cur,
+      cal: cur.cal + (fields.cal || 0),
+      full: cur.full + (fields.full || 0),
+      rel: cur.rel + (fields.rel || 0),
+      hunger: cur.hunger + (fields.hunger || 0),
+    });
+  };
+  const kitFill = roomFill('kitchen', owned);
+  const dinFill = roomFill('dining', owned);
+  const loungeFill = roomFill('lounge', owned);
+
+  for (const slot of plan?.slots || []) {
+    if (slot.studentId == null) continue;
+    const student = students.find((s) => s.id === slot.studentId);
+    if (!student || student.hidden || student.lockState === 'locked') continue;
+    const venue = PLANNER_VENUES.find((v) => v.id === slot.venueId) || PLANNER_VENUES[0];
+    const base = VENUE_PAYOFF[venue.id] || VENUE_PAYOFF.campus;
+    const foodScale = 1 + kitFill * 0.35 + dinFill * 0.2;
+    const relScale = 1 + loungeFill * 0.2;
+    const cal = Math.round((base.cal + extraFeedCalories(venue.label, owned)) * foodScale);
+    const full = Math.round(base.full * foodScale);
+    const rel = Math.max(1, Math.round(base.rel * relScale));
+    bump(student.id, { cal, full, rel, hunger: base.hunger });
+    const cost = mealCostPreview(student, week).cost;
+    moneyDelta -= cost;
+    beats.push({
+      studentId: student.id,
+      venueId: venue.id,
+      cal,
+      rel,
+      note: `${student.name} kept the ${venue.label.toLowerCase()} slot.${cal ? ` Leftovers: ${cal} cal.` : ''} Rapport +${rel}.`,
+    });
+  }
+
+  return {
+    studentPatches: [...patches.values()],
+    moneyDelta,
+    beats,
+    logLines: beats.map((b) => `📋 ${b.note}`),
+    filled: beats.length,
   };
 }
 
@@ -85,19 +170,30 @@ export function planConflicts(plan, students = []) {
   return issues;
 }
 
+export function venuePayoffHint(venueId) {
+  const venue = PLANNER_VENUES.find((v) => v.id === venueId) || PLANNER_VENUES[0];
+  const base = VENUE_PAYOFF[venue.id] || VENUE_PAYOFF.campus;
+  const bits = [];
+  if (base.cal) bits.push(`+${base.cal} cal`);
+  if (base.rel) bits.push(`+${base.rel} rapport`);
+  if (base.hunger) bits.push('hunger eases');
+  return `${venue.glyph} ${venue.label} · ${bits.join(' · ') || 'attention'}`;
+}
+
 export function previewPlannedSlot(student, slot, week) {
+  const venueHint = venuePayoffHint(slot?.venueId);
   if (!student) {
-    return { cost: null, interrupt: null, hint: defaultSlotLabel(slot?.slotIndex ?? 0) };
+    return { cost: null, interrupt: null, hint: defaultSlotLabel(slot?.slotIndex ?? 0), venueHint };
   }
   const cost = mealCostPreview(student, week);
   const interrupt = interruptLikelihood(student);
   let hint = null;
   if (student.rosterEcology?.favoritism === 'neglected') {
-    hint = 'She has felt sidelined — planning her now reads as deliberate.';
+    hint = 'She has felt sidelined. Planning her now reads as deliberate.';
   } else if (student.rosterEcology?.favoritism === 'favored') {
-    hint = 'Your priority this week — others may notice.';
+    hint = 'Your priority this week. Others may notice.';
   }
-  return { cost, interrupt, hint };
+  return { cost, interrupt, hint, venueHint };
 }
 
 const PSYCH_KEYS = ['fixation', 'obsession', 'dependence', 'shame'];

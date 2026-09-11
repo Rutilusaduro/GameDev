@@ -20,6 +20,13 @@ import { aggregateHallLoungeSkillEffects, buyHallLoungeSkill } from '../src/game
 import { createInitialPlayer } from '../src/gameData/player.js';
 import { clothingStateForStage } from '../src/gameData/textContext.js';
 import { pickHearingEnding, REMOVAL_HEARING } from '../src/gameData/oppositionHearings.js';
+import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness } from '../src/gameData/mechanicDepth.js';
+import { resolveWeekPlan, plannerSlotCount, venuePayoffHint } from '../src/gameData/weekPlanner.js';
+import { extraFloorChoices, generateFloorCheckIn } from '../src/utils/gameHelpers.js';
+import { FLOOR_SCENES } from '../src/gameData/floorEvents.js';
+import '../src/textEngine/modules.js';
+import '../src/textEngine/scenes/overhaul/index.js';
+import { renderFloorSceneText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 
 const missing = assertSkillRoomCoverage();
 assert.equal(missing.length, 0, `unmapped skills: ${missing.join(', ')}`);
@@ -50,8 +57,8 @@ assert.ok(roomsAreAdjacent('kitchen', 'lounge') || roomsAreAdjacent('lounge', 'k
 assert.equal(canWalkCircuit(owned, circuit, 0, 1).ok, true, 'late_night makes rounds free');
 
 const students = [
-  { id: 0, name: 'Brittany', lbs: 140, startLbs: 118, relationship: 20, corruption: 0, hidden: false, fullness: 0, stomachCapacity: 100, hungerTier: 2 },
-  { id: 8, name: 'Maya', lbs: 210, startLbs: 130, relationship: 12, corruption: 0, hidden: false, fullness: 10, stomachCapacity: 100 },
+  { id: 0, name: 'Brittany', lbs: 140, startLbs: 118, relationship: 20, corruption: 0, hidden: false, fullness: 0, stomachCapacity: 100, hungerTier: 2, mood: 'stressed', archetype: 'cheerleader' },
+  { id: 8, name: 'Maya', lbs: 210, startLbs: 130, relationship: 12, corruption: 0, hidden: false, fullness: 10, stomachCapacity: 100, mood: 'content', archetype: 'quiet' },
 ];
 const walk = walkAfterHours({ owned, students, circuit, week: 1, ap: 5, rng: () => 0.2 });
 assert.equal(walk.ok, true);
@@ -102,10 +109,61 @@ const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
 const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
 assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
+assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 24, 'depth inventory covers live systems');
+for (const row of MECHANIC_DEPTH_INVENTORY) {
+  assert.ok(row.after > row.before, `${row.id} after (${row.after}) must beat before (${row.before})`);
+  assert.ok(row.hook, `${row.id} missing hook`);
+}
+assert.ok(kitchenHuntBonus(20, allOwned) > 2, 'hunt bonus scales with floor');
+assert.ok(socialTrustDrip(allOwned) > 0, 'trust drip from completed rooms');
+assert.equal(comfortFramingDecay({ comfort_framing: true }), 3);
+assert.ok(floorCheckInGainMult(allOwned) > 1);
+assert.ok(itemCalorieBonus('Pizza Party', owned) >= 400, 'item calories ride snack station');
+assert.ok(hallKitchenFillCalories(allOwned) > 0, 'kitchen fill feeds hall feasts');
+assert.ok(hallDiningFillFullness(allOwned) > 0, 'dining fill adds fullness');
+assert.ok(venuePayoffHint('dining').includes('cal'), 'venue hint shows calories');
+
+const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
+assert.equal(extras.length, 2, 'extra check-in choices cap at 2');
+assert.ok(extras.some((c) => /kitchen/i.test(c.label)), 'kitchen walk is a live extra');
+
+const checkIn = generateFloorCheckIn(students, 1, { snack_station: true });
+const studentScene = checkIn.find((s) => s.type === 'student');
+assert.ok(studentScene, 'check-in finds a resident scene');
+assert.ok(studentScene.scene.choices.length >= 4, 'owned kitchen adds a fourth choice');
+const src = FLOOR_SCENES.find((s) => s.id === studentScene.scene.id);
+assert.equal(src.choices.length, 3, 'extra choices clone, they do not mutate FLOOR_SCENES');
+
+const stressed = FLOOR_SCENES.find((s) => s.id === 'mood_stressed');
+const mayaText = renderFloorSceneText(stressed, students[1], 2);
+assert.ok(mayaText.includes('Maya'), `floor scene should name Maya, got: ${mayaText.slice(0, 180)}`);
+assert.equal(mayaText.includes('Brittany'), false, 'floor scene must not bake Brittany into every resident');
+
+const planned = {
+  slots: [
+    { studentId: 0, venueId: 'dining' },
+    { studentId: 8, venueId: 'dorm' },
+  ],
+};
+const planPay = resolveWeekPlan({ plan: planned, students, owned, week: 2 });
+assert.ok(planPay.filled >= 2, 'week plan pays off filled slots');
+assert.ok(planPay.studentPatches.some((p) => p.cal > 0), 'dining slot feeds');
+assert.ok(planPay.studentPatches.some((p) => p.rel > 0), 'dorm slot rapport');
+assert.ok(planPay.moneyDelta < 0, 'planned meals cost money');
+assert.equal(plannerSlotCount({}), 5);
+assert.ok(plannerSlotCount(allOwned) > 5, 'completed rooms add planner slots');
+
+const pantryOwned = { luxury_pantry: true, supply_cage: true };
+assert.ok(aggregateFloorDepth(pantryOwned).pantryBonus >= 2, 'luxury pantry + supply cage stack pantry drops');
+const hostOwned = { legendary_host: true };
+assert.ok(aggregateFloorDepth(hostOwned).dinnerCalBonus >= 2000, 'legendary host dinner cals live');
+assert.ok(extraFeedCalories('Floor Pizza Night', { catering_contact: true }) >= 800, 'catering contact feast cals live');
+
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,
   skills: SKILL_TREE.length,
   talkRel: depth.talkRelBonus,
   walkBeats: walk.beats.length,
   completeRooms: full.completedRooms,
+  inventory: MECHANIC_DEPTH_INVENTORY.length,
 });

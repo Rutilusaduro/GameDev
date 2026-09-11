@@ -68,6 +68,7 @@ export function renderCampusEventBeat(student, week = 1, opts = {}) {
 export {
   renderFloorSceneText,
   renderFloorChoiceResult,
+  renderFloorHallText,
   renderClassSceneText,
   renderClassChoiceResult,
 } from './floorCheckInIntegration.js';
