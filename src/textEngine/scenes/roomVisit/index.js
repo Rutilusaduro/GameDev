@@ -15,6 +15,25 @@ registerPool('room.visit.intro.lead', [
 ]);
 
 registerPool('room.visit.stage.room', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    'Snack shelf plus foil from the galley. Move-in week already eating overtime.',
+    'The room still reads new. Last night\'s sitting is the part that does not.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    'The chair creaks on leftover heat. Wrappers and a tray share the bin.',
+    'Her mirror angled away. Kitchen leftover still in the clothes on the chair.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6, stageMax: 8 }, weight: 3, text: [
+    'Furniture migrated. Floor path from bed to fridge still warm from last night.',
+    'The room rearranged around leftover sitting. Sturdier chair. Reachable food.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 9 }, weight: 3, text: [
+    'Doorway tighter. Inside, leftover heat made the nest. Reachable food, blankets, her.',
+    'You stop in the threshold. Last night\'s tray is part of the architecture now.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'A desk, a bed, leftover foil she did not hide. The room smells like seconds.',
+  ] },
   { when: {}, text: [
     'The room holds the usual student clutter — lived in, personal, hers.',
     'Posters, bedding, the small rituals of someone making a space home.',
@@ -69,6 +88,17 @@ registerPool('room.visit.ambient', [
 ]);
 
 registerPool('room.visit.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She stands at the door. Leftover foil still on the shelf she half-hid.',
+    'She covers the snack shelf, then leaves a corner of last night showing.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 7 }, weight: 3, text: [
+    'The threshold keeps leftover heat after you step back into the hall.',
+    'She does not get up. Kitchen sitting plus this visit. The room is built around staying.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The hall smells like leftover and whatever she just finished.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She stands a little too long at the door after you turn to go, like the room got quieter.',
     'She covers the snack shelf with a textbook, then leaves a corner showing.',

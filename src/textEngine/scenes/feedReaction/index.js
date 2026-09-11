@@ -16,7 +16,7 @@
 //   foodKind ∈ sweet | hearty | drink | spread
 //   feedRoom ∈ eager | filling | tight | past   (post-feed fullness)
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaul.js';
@@ -73,6 +73,41 @@ registerPool('feed.react.beat', [
   ]},
   { when: { stageMin: 8 }, weight: 2, text: [
     `Eating is a whole-body affair at her size now — {word.body}, her breath working, the chair taking all of her as she settles in to finish.`,
+  ]},
+]);
+
+registerModuleVariants('feed.react.beat', [
+  { when: { leftoverFed: true, foodKind: 'sweet' }, weight: 4, text: [
+    'Sugar on leftover heat. She lets each forkful sit like the kitchen already voted.',
+    'Sweet and dense on a middle last night opened. She does not hurry the melt.',
+  ]},
+  { when: { leftoverFed: true, foodKind: 'hearty' }, weight: 4, text: [
+    'Savory on leftover sitting. She loads the next fork before the last one lands.',
+    'Heavy food, leftover warmth. She leans in like the tray started this meal.',
+  ]},
+  { when: { leftoverFed: true, foodKind: 'drink' }, weight: 4, text: [
+    'It goes down easy on leftover heat. Cream she barely clocks, gone anyway.',
+    'She tips it back. Last night\'s sitting made the swallow quieter.',
+  ]},
+  { when: { leftoverFed: true, foodKind: 'spread' }, weight: 4, text: [
+    'She grazes leftover then the spread without a pause. One rich thing into the next.',
+    'Too much to be polite. Kitchen leftover taught her. She keeps reaching.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'eager' }, weight: 4, text: [
+    'Plenty of room and leftover still hungry. She eats like the meal is a sequel.',
+    'Appetite ahead of stomach. Last night did not close the tab.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'filling' }, weight: 4, text: [
+    'Pleasant heaviness on leftover heat. She sinks deeper as this plate catches up.',
+    'You can watch leftover and this bite share the same warm middle.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'tight' }, weight: 4, text: [
+    `She slows. Waistband and leftover sitting press the same place. {word.fullness}.`,
+    'Last bites take effort. Kitchen heat plus this. Belly snug against everything.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'past' }, weight: 4, text: [
+    `She takes it past comfortable on leftover heat and keeps going. {word.fullness}.`,
+    'More than room. Leftover opened her. She finishes anyway, heavy and warm.',
   ]},
 ]);
 
@@ -232,6 +267,42 @@ export function renderFeedReaction(student, week = 1, opts = {}) {
   const after = render('{feed.afterglow|prefix:\n\n}', ctx, { trace: opts.trace || null })?.trim() || '';
   return appendV2Depth(after ? `${raw}\n\n${after}` : raw, 'feed', ctx, opts.v2DepthChance ?? 0.38);
 }
+
+export function renderItemUseLine(student, item, week = 1, opts = {}) {
+  if (!student || !item) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { itemLabel: item.label || 'snack' },
+    ...opts,
+  });
+  const fromPool = render('{item.use.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+  if (fromPool) return fromPool;
+  const label = String(item.label || 'snack').toLowerCase();
+  return `${student.name} takes the ${label}.`;
+}
+
+const itemLabelText = (ctx) => String(ctx.globals?.itemLabel ?? 'snack').toLowerCase();
+registerPool('itemLabel', [
+  { when: {}, text: [itemLabelText, itemLabelText, itemLabelText] },
+]);
+
+registerPool('item.use.line', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `You produce the {itemLabel}. {subject.name}'s attention arrives. Last night's sitting already voted.`,
+    `"Is that for me?" {subject.name} asks, already reaching. Leftover heat plus the {itemLabel}.`,
+    `You leave the {itemLabel} where {subject.name} will find it. Kitchen leftover taught her to look.`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `You produce the {itemLabel}. Night-round knock still in the wood. She reaches anyway.`,
+    `"Is that for me?" {subject.name} asks. You saw her after hours. The {itemLabel} is the daylight version.`,
+  ] },
+  { when: {}, text: [
+    `You produce the {itemLabel}. {subject.name}'s attention arrives before her objections do.`,
+    `"Is that for me?" {subject.name} asks, already reaching. The {itemLabel} does not survive the hour.`,
+    `You leave the {itemLabel} where {subject.name} will find it. She finds it.`,
+  ] },
+]);
 
 /** Categorize any feed into a foodKind from its label + cal/fullness profile.
  *  Word boundaries (\b) matter: "platter" contains "latte", so naive

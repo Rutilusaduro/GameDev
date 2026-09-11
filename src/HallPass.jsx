@@ -95,7 +95,7 @@ import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
-import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
+import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness, renderItemUseLine } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
@@ -1431,7 +1431,7 @@ export default function HallPass(){
     if(!fed) return;
     setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
     setStudents(prev=>prev.map(st=>st.id===studentId?bumpOriginChain(fed):st));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
+    const line=renderItemUseLine(target,item,week) || ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
     setTimeout(()=>push(`🎒 ${line}${compoundLabel?` (${compoundLabel})`:''}`),80);
   };
 
@@ -5220,8 +5220,9 @@ export default function HallPass(){
         setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'feed',week)} — you'll feed her properly at dinner.`),100);
       }else{
         const portion=getInterruptFeedPortion(ns);
-        const fed=feedStudentCalories(ns,portion.calories,portion.fullness,portion.relGain,'Emergency feeding');
-        if(fed) ns=fed;
+        const extra=leftoverNightGainBump(ns,week)*GAIN_CONFIG.calsPerLb;
+        const fed=feedStudentCalories(ns,portion.calories+extra,portion.fullness,portion.relGain,'Emergency feeding');
+        if(fed) ns=bumpOriginChain(fed);
         const eatLine=isSlenderEligible(fed||ns)
           ?renderSlenderEatBeat(fed||ns,week,{mealType:'binge'})
           :renderEatScene(fed||ns,week,{mealType:'binge'});
@@ -5231,8 +5232,9 @@ export default function HallPass(){
     }else if(action==='compound'){
       const cid=compoundId||pharmacistState?.unlockedCompounds?.[0]||'appetite_stimulant';
       const portion=getInterruptCompoundPortion(ns);
-      const fed=feedStudentCalories(ns,portion.calories,portion.fullness,portion.relGain,`Compound-laced meal (${COMPOUNDS[cid]?.label||cid})`,{compoundId:cid});
-      if(fed) ns=fed;
+      const extra=leftoverNightGainBump(ns,week)*GAIN_CONFIG.calsPerLb;
+      const fed=feedStudentCalories(ns,portion.calories+extra,portion.fullness,portion.relGain,`Compound-laced meal (${COMPOUNDS[cid]?.label||cid})`,{compoundId:cid});
+      if(fed) ns=bumpOriginChain(fed);
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'compound',week)}`),100);
     }else if(action==='deny'){
       ns=applyDenialConsequences(ns);
@@ -7117,7 +7119,7 @@ export default function HallPass(){
           const tap=depthGainLbs(ns,1,week,{skipNight:true});
           return {...processStudentGain(ns,tap,0),willpowerTaps:(ns.willpowerTaps||0)+1};
         }
-        const cals=rnd(action.cal[0],action.cal[1]);
+        const cals=rnd(action.cal[0],action.cal[1])+leftoverNightGainBump(ns,week)*GAIN_CONFIG.calsPerLb;
         const fed=feedStudentCalories(ns,cals,action.full,2,'Refeast',{});
         if(!fed){refused++;return ns;}
         fedCount++;
@@ -7143,7 +7145,7 @@ export default function HallPass(){
         const tap=depthGainLbs(s,1,week,{skipNight:true});
         return {...processStudentGain(s,tap,0),willpowerTaps:(s.willpowerTaps||0)+1};
       }
-      const cals=rnd(action.cal[0],action.cal[1]);
+      const cals=rnd(action.cal[0],action.cal[1])+(action.id==='leftover_run'?0:leftoverNightGainBump(s,week)*GAIN_CONFIG.calsPerLb);
       const fed=feedStudentCalories(s,cals,feedFull,1,'',compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
       fedCount++;totalCals+=cals;
@@ -7648,7 +7650,7 @@ export default function HallPass(){
     setInventory(prev=>({...prev,[itemId]:Math.max(0,(prev[itemId]||0)-1)}));
     const { fed, cap, newFullness, sessionCals, prevFullness, overfillEnd }=result;
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:(!(dinnerEvent.dishes||[]).length?bumpOriginChain(fed):fed)));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
+    const line=renderItemUseLine(fed,item,week) || ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
     push(`🎒 ${item.label} shared at dinner.`);
     if(overfillEnd){
       setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${renderDinnerOverfill(fed, week)}`]);

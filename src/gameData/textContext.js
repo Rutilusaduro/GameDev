@@ -83,6 +83,7 @@ registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
 registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
 registerDimension('origin', (ctx) => ctx.subject?.origin ?? 'default');
 registerDimension('leftoverFed', (ctx) => !!(ctx.subject?.leftoverFedThisWeek || ctx.globals?.leftoverFed));
+registerDimension('itemLabel', (ctx) => String(ctx.globals?.itemLabel ?? 'snack').toLowerCase());
 registerDimension('nightVisit', (ctx) => {
   const w = ctx.week;
   return !!(w && ctx.subject?.lastNightVisitWeek === w) || !!ctx.globals?.nightVisit;
