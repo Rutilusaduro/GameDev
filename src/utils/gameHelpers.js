@@ -3,8 +3,7 @@
 // Pure functions + balance constants used across the app.
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
-import { OUTFITS } from '../gameData/content.js';
-import { EVOLVED_REACTIONS, EVOLVED_OUTFITS } from '../gameData/evolvedForms.js';
+import { EVOLVED_REACTIONS } from '../gameData/evolvedForms.js';
 import { getStage } from '../gameData/stages.js';
 import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
@@ -14,6 +13,7 @@ import '../textEngine/scenes/talia/index.js';
 import { renderDiary } from '../textEngine/scenes/diary.js';
 import { renderAttitude } from '../textEngine/scenes/attitude.js';
 import { renderBodyPortrait } from '../textEngine/scenes/body/index.js';
+import { renderOverhaulPortrait, renderOverhaulRich, renderOutfit, renderEvolvedAttitude } from '../textEngine/scenes/overhaul/bodyPortrait.js';
 import { appendCampusDiary, appendCampusAttitude } from '../textEngine/scenes/campusSoftening.js';
 import { getCampusNarrativeTier } from '../gameData/pharmacistIngredients.js';
 
@@ -25,18 +25,14 @@ export function pharmacistTextOpts(pharmacistState, week = 1) {
 export const ALL_SKILLS = [];
 
 export function getBodyDesc(s, week = 1) {
-  return renderBodyPortrait(s, week);
+  return renderOverhaulPortrait(s, week) || renderBodyPortrait(s, week);
 }
 // Season-aware body flavor line via the modular text engine.
-export function getBodyDescRich(s,week){
-  const ctx=createContext({subject:s,week});
-  return render("{word.body|cap}, {word.clothingFit}.",ctx);
+export function getBodyDescRich(s,week = 1){
+  return renderOverhaulRich(s, week) || render("{word.body|cap}, {word.clothingFit}.", createContext({subject:s,week}));
 }
-export function getOutfit(s){
-  if(s.evolvedForm && getStage(s.lbs).id>=5){
-    const arr=EVOLVED_OUTFITS[s.evolvedForm]; if(arr){ return arr[Math.min(getStage(s.lbs).id-5,arr.length-1)]; }
-  }
-  const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
+export function getOutfit(s, week = 1){
+  return renderOutfit(s, week);
 }
 export function getDiary(s, week = 1, opts = {}){
   const modular = renderDiary(s, week);
@@ -50,6 +46,8 @@ export function getEvolvedReaction(s){
   return arr[Math.min(idx,arr.length-1)];
 }
 export function getAttitude(s, week = 1, opts = {}){
+  const composed=renderEvolvedAttitude(s, week);
+  if(composed) return appendCampusAttitude(composed, s, { ...opts, week });
   const evR=getEvolvedReaction(s);
   if(evR) return appendCampusAttitude(evR, s, { ...opts, week });
   return renderAttitude(s, week, opts);

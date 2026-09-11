@@ -87,7 +87,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                   </div>
                   <div style={C.infoBox("rgba(20,0,30,0.6)")}>
                     <div style={{fontSize:9,color:"#500050",letterSpacing:2,marginBottom:4}}>CURRENT APPEARANCE</div>
-                    <div style={{fontSize:13,color:"#e0c0e0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s)}</div>
+                    <div style={{fontSize:13,color:"#e0c0e0",lineHeight:1.8,fontStyle:"italic"}}>{getBodyDesc(s, week)}</div>
                   </div>
                   <div style={{background:"rgba(15,0,25,0.7)",border:`1px solid ${accent}40`,borderRadius:10,padding:14,marginBottom:10}}>
                     <div style={{fontSize:9,letterSpacing:3,color:accent,marginBottom:6}}>🌑 FEASTING BEAUTY</div>

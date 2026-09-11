@@ -11,6 +11,58 @@ registerDimension('chatPhase', (ctx) => ctx.globals?.chatPhase ?? 0);
 registerDimension('chatBranch', (ctx) => ctx.globals?.chatBranch ?? '');
 registerDimension('chatBracket', (ctx) => ctx.globals?.chatBracket ?? '');
 registerDimension('thesisOk', (ctx) => !!ctx.globals?.thesisOk);
+registerDimension('boardPair', (ctx) => ctx.globals?.boardPair ?? '');
+
+registerPool('researcher.board.scene', [
+  { when: {}, text: [
+    '{researcher.board.setup} {researcher.board.body}',
+    '{researcher.board.body} {researcher.board.setup}',
+    '{researcher.board.setup}',
+  ]},
+]);
+
+registerPool('researcher.board.setup', [
+  { when: {}, text: [
+    'Panel notes land in Cassidy\'s inbox while the extra of her is still settling.',
+    'Three voices. One folder. The floor already collected the rest.',
+    'Athletics letterhead. Soft heat in the chair Cassidy used to take notes.',
+  ]},
+  { when: { boardPair: 'social_pressure' }, weight: 4, text: [
+    'Harmon calls it natural floor embedding. Rivera likes the meal logs.',
+  ]},
+  { when: { boardPair: 'competitive' }, weight: 4, text: [
+    'Two sessions. Same residents. Harmon wants the consent written down this time.',
+  ]},
+  { when: { boardPair: 'night_in' }, weight: 4, text: [
+    'Rivera cannot tell embedded case work from a social visit. Harmon is kinder.',
+  ]},
+  { when: { boardPair: 'culture_shock' }, weight: 4, text: [
+    'Harmon\'s longest note. Cross-cultural hospitality. She wants it in the season report.',
+  ]},
+  { when: { boardPair: 'metrics' }, weight: 4, text: [
+    'Rivera cannot find the session plan in the log. Three paragraphs of asking.',
+  ]},
+  { when: { boardPair: 'manipulation' }, weight: 4, text: [
+    'Rivera\'s email is three lines. Was Nadia disclosed. Harmon follows in the morning.',
+  ]},
+  { when: { boardPair: 'vore' }, weight: 4, text: [
+    'Rivera does not email. She requests a meeting. The Hunt section has a name now.',
+  ]},
+]);
+
+registerPool('researcher.board.body', [
+  { when: {}, text: [
+    'Ward writes thorough in the margin. The training log is still warm.',
+    'Cassidy reads it in the lounge. The training log is still warm in her lap.',
+    'The panel wants language. The floor already has pounds.',
+  ]},
+  { when: { boardPair: 'vore' }, weight: 4, text: [
+    'Harmon: consent for Morgan, Theo, Francesca. Ward, late: come explain The Hunt in person.',
+  ]},
+  { when: { boardPair: 'manipulation' }, weight: 4, text: [
+    'Ward last: two captains feeding her at once. We need to discuss this.',
+  ]},
+]);
 
 registerPool('researcher.chat.scene', [
   { when: {}, text: [
@@ -268,3 +320,9 @@ export function renderResearcherReview(pairsUsed, totalSuspicion, student, week 
   parts.push(prefer('researcher.review.close', ctx));
   return joinBeats(parts);
 }
+
+export function renderBoardReaction(pairId, student, week = 1) {
+  if (!student || !pairId) return '';
+  return prefer('researcher.board.scene', researcherCtx(student, week, { boardPair: pairId }));
+}
+

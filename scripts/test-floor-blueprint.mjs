@@ -47,8 +47,10 @@ import { INTIMACY_SCENES } from '../src/gameData/intimacy.js';
 import { renderHuntNode, renderHuntTarget } from '../src/textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
-import { renderResearcherChat, renderResearcherThesis, renderResearcherReview } from '../src/textEngine/scenes/overhaul/researcherChat.js';
+import { renderResearcherChat, renderResearcherThesis, renderResearcherReview, renderBoardReaction } from '../src/textEngine/scenes/overhaul/researcherChat.js';
 import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
+import { getBodyDesc, getBodyDescRich, getOutfit, getAttitude } from '../src/utils/gameHelpers.js';
+import { renderHearingPhase } from '../src/textEngine/scenes/opposition/hearingBridge.js';
 import { renderEvolvedActivity, renderEvolvedEventProse, renderEvolvedFollowup } from '../src/textEngine/scenes/evolved/index.js';
 import { renderContestFoodPopup, renderContestActionPopup, renderContestWeighIn2 } from '../src/textEngine/scenes/eatingContest/index.js';
 import { renderSumoOpening, renderSumoExchangeLine, renderSumoAftermath, renderSumoPayoff } from '../src/textEngine/scenes/sumoMatch/index.js';
@@ -608,6 +610,36 @@ const huntStatus = renderLilithHuntStatus(lilith, 3);
 assert.ok(huntStatus && !huntStatus.includes('{unresolved}'));
 assert.equal(/That's her favorite part/i.test(huntStatus), false, 'hunt status should not dump leftover panel copy');
 assert.equal(/She doesn't go anywhere anymore/i.test(huntStatus), false);
+const portrait = getBodyDesc(lilith, 3);
+assert.ok(portrait && !portrait.includes('{unresolved}'));
+assert.equal(/She looks at you the way she looks at food/i.test(portrait), false, 'appearance should not dump leftover body.face');
+assert.equal(/the extra that was not here last week/i.test(portrait), false);
+const richLine = getBodyDescRich(lilith, 3);
+assert.ok(richLine && richLine.length > 20 && !richLine.includes('{unresolved}'));
+assert.equal(/She looks at you the way she looks at food/i.test(richLine), false);
+const outfitLine = getOutfit(lilith, 3);
+assert.ok(outfitLine && !outfitLine.includes('{unresolved}'));
+assert.equal(/Squad jacket hangs off her angular shoulders/i.test(outfitLine), false);
+const boardNote = renderBoardReaction('vore', { id: 1, name: 'Cassidy', lbs: 210, startLbs: 138, archetype: 'swimmer' }, 6);
+assert.ok(boardNote && !boardNote.includes('{unresolved}'));
+assert.equal(/She requests a meeting through the athletics coordinator/i.test(boardNote), false, 'board reaction should not dump leftover BOARD_REACTIONS');
+const homestead = {
+  id: 6, name: 'Mary Jane', lbs: 280, startLbs: 140, evolvedForm: 'homestead_queen',
+  relationship: 40, corruption: 1, fullness: 10, stomachCapacity: 140,
+};
+const homesteadAtt = getAttitude(homestead, 4);
+assert.ok(homesteadAtt);
+assert.equal(/flour on one arm, her enormous chest testing the bib/i.test(homesteadAtt), false);
+const britAtt = getAttitude(brit, 3);
+assert.ok(britAtt && britAtt !== '—');
+assert.equal(/I keep seeing her face when I close my eyes/i.test(britAtt), false, 'attitude should not dump leftover devour trauma');
+assert.equal(/Something in me broke the night it happened/i.test(britAtt), false);
+const hearingOpen = renderHearingPhase('removal', 0, brit, 3);
+assert.ok(hearingOpen && !hearingOpen.includes('{unresolved}'));
+assert.equal(/abundance framed as concern/i.test(hearingOpen), false, 'hearing phase should not dump leftover aibHearing em-dash body');
+const hearingEmerg = renderHearingPhase('emergency', 0, brit, 3);
+assert.ok(hearingEmerg && !hearingEmerg.includes('{unresolved}'));
+assert.equal(/no notice, no mercy/i.test(hearingEmerg), false);
 
 const challengeStudent = {
   id: 9, name: 'Talia', lbs: 210, startLbs: 135, evolvedForm: 'campus_legend',

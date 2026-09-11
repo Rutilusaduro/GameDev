@@ -7,7 +7,7 @@ import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, H
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { renderResearcherChat, renderResearcherThesis, renderResearcherReview } from '../textEngine/scenes/overhaul/researcherChat.js';
+import { renderResearcherChat, renderResearcherThesis, renderResearcherReview, renderBoardReaction } from '../textEngine/scenes/overhaul/researcherChat.js';
 
 export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true, owned = {}, week = 1 }){
         const crs=communityResearcherState;
@@ -119,7 +119,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
               {reactionPair?.icon||'📋'} {reactionPair?.label||''}
             </div>
             <div style={{fontSize:11,color:"#8090b0",lineHeight:1.8,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-wrap"}}>
-              {BOARD_REACTIONS[crs.boardReactionPairId]||''}
+              {renderBoardReaction(crs.boardReactionPairId, cassidy, week) || BOARD_REACTIONS[crs.boardReactionPairId]||''}
             </div>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
               <div style={{fontSize:9,color:"#405070"}}>Suspicion total: <span style={{color:crs.totalSuspicion>17?"#c08060":crs.totalSuspicion>13?"#a09050":"#6080a0"}}>{crs.totalSuspicion||0}</span></div>

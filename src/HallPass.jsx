@@ -59,6 +59,7 @@ import { LILITH_ID, HUNT_NODES, HUNT_MEN, physicalMovesForOwned, drawReplies, ge
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, extraCultivatorReneeLbs, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderHuntTravel, renderHuntDormOpen, renderHuntClueFeast } from './textEngine/scenes/hunt/index.js';
+import { renderResearcherReview } from './textEngine/scenes/overhaul/researcherChat.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES, extraHaveAChatChoices } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
@@ -5285,7 +5286,7 @@ export default function HallPass(){
   const openFinalReview=(s)=>{
     const crs=communityResearcherState; if(!crs) return;
     if(ap<1){push("⚠️ Need 1 AP for final review.");return;}
-    const text=getFinalReviewText(crs.pairsUsed,crs.totalSuspicion||0);
+    const text=renderResearcherReview(crs.pairsUsed,crs.totalSuspicion||0,s,week)||getFinalReviewText(crs.pairsUsed,crs.totalSuspicion||0);
     setAp(a=>a-1);
     setCommunityResearcherState(prev=>prev?{...prev,finalReviewText:text,modalPhase:'final_review'}:null);
   };

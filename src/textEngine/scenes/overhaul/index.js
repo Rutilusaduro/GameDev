@@ -23,6 +23,8 @@ import './campusEventBeat.js';
 import './researcherChat.js';
 import './journals.js';
 import './huntFeast.js';
+import './bodyPortrait.js';
+import './hearing.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [
