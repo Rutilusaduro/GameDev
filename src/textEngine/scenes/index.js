@@ -244,6 +244,7 @@ import './growthEvent/depth.js';
 import './weeklyEvent/index.js';
 import './weeklyEvent/depth.js';
 import './weeklyEvent/weeklyEventSceneDepth.js';
+import './weeklyEvent/weeklyEventLateModularFragments.js';
 import './weighIn/index.js';
 import './weighIn/depth.js';
 import './deviceBody.js';

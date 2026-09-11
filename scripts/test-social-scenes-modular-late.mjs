@@ -40,6 +40,27 @@ const cases = [
     fp: /crowdHeat|tableStakes|Late-semester contests|growth as lifestyle/i,
     globals: { featureId: 'eating_contest' },
   },
+  {
+    label: 'sumo.payoff.legacy.s1',
+    key: '{sumo.payoff.legacy.s1}',
+    subject: destiny,
+    fp: /dohyo|boutHeat|Late-semester bouts|Tachi-ai/i,
+    globals: { featureId: 'sumo_match' },
+  },
+  {
+    label: 'recording.opening.s0',
+    key: '{recording.opening.s0}',
+    subject: destiny,
+    fp: /ringLight|takeYield|Late-semester streams|ring light/i,
+    globals: { featureId: 'recording_session' },
+  },
+  {
+    label: 'weekly.uniform_split',
+    key: '{weekly.uniform_split}',
+    subject: { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 240 },
+    fp: /floorEcho|uniformSplit|Hall Ambiance|audible pop/i,
+    globals: { featureId: 'weekly_event', eventId: 'uniform_split', endStage: 7 },
+  },
 ];
 
 for (const c of cases) {

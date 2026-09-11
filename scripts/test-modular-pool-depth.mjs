@@ -31,6 +31,9 @@ const POOLS = [
   'talk.suggest.indulgenceInvite',
   'fair.day.weighInBeat',
   'talk.suggest.growthPraise',
+  'sumo.scene.dohyo',
+  'recording.scene.ringLight',
+  'weekly.scene.floorEcho',
 ];
 
 for (const key of POOLS) {
