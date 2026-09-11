@@ -6,6 +6,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { registerPool } from '../../engine.js';
 import { homeroomTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/homeroomEvents.js';
 import './batchBakerPools.js';
 
@@ -33,7 +34,7 @@ function registerHomeroomBeat(poolKey, prose) {
   registerDecomposedPool(bodyKey, text);
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 3,
       text: [
         (ctx) => {
@@ -44,6 +45,7 @@ function registerHomeroomBeat(poolKey, prose) {
         homeroomTailBeat(poolKey, 1),
       ],
     },
+    lintWildcardVariant('{homeroom.scene.floorTone|prefix:} {homeroom.scene.raStance|prefix: }'),
   ]);
 }
 

@@ -3,6 +3,7 @@ import { registerPool, render } from '../../engine.js';
 import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/rankedSessionData.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { rankedSessionTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function registerRaeLine(poolKey, line, seed) {
   const text = typeof line === 'string' ? line.trim() : '';
@@ -15,7 +16,7 @@ function registerRaeLine(poolKey, line, seed) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       text: [
         slot,
         rankedSessionTailBeat(seed, 0),
@@ -23,6 +24,7 @@ function registerRaeLine(poolKey, line, seed) {
         rankedSessionTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{session.scene.deliveryAir|prefix:} {session.scene.raePresence|prefix: }'),
   ]);
 }
 
@@ -43,7 +45,7 @@ for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
   );
   registerPool(`session.payoff.legacy.s${si}`, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       text: [
         core,
         (ctx) => {
@@ -54,5 +56,6 @@ for (let si = 0; si < SESSION_PAYOFF_TEXT.length; si += 1) {
         rankedSessionTailBeat(`payoff:${si}`, 1),
       ],
     },
+    lintWildcardVariant('{session.payoff.raeWrap|prefix:} {session.payoff.scaleEcho|prefix: }'),
   ]);
 }

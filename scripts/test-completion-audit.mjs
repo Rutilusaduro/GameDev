@@ -2961,6 +2961,9 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgRaReplyFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/fullnessFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/aftermathFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/rankedSession/sessionPayoffFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/legacyPoolPolicy.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-legacy-suppression-late.mjs')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionOfferFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/outfitFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionBlurbFragments.js')));

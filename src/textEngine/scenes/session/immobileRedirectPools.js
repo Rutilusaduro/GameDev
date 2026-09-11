@@ -6,6 +6,7 @@ import { IMMOBILE_REDIRECT } from '../../../gameData/students.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import { immobileRedirectTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function registerRedirect(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
@@ -18,7 +19,7 @@ function registerRedirect(poolKey, prose, seed = poolKey) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 3,
       text: [
         slot,
@@ -27,6 +28,7 @@ function registerRedirect(poolKey, prose, seed = poolKey) {
         immobileRedirectTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{session.immobile.care|prefix:} {session.immobile.redirect|prefix: }'),
   ]);
 }
 

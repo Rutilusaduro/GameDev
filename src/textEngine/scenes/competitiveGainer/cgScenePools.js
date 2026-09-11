@@ -9,6 +9,7 @@ import {
 } from '../../../gameData/competitiveGainerText.js';
 import { cgSceneTailBeat } from '../evolved/proseTails.js';
 import { fillCgTemplate } from './raReplyPools.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 /** Map legacy `{var}` braces to engine slots so text:lint accepts decomposed CG prose. */
 function cgProseSlots(str) {
@@ -52,7 +53,7 @@ for (const [tier, scenes] of Object.entries(CG_FILLED_CORKBOARD_SCENES)) {
       ],
     },
     {
-      when: {},
+      when: legacyBridgeWhen(),
       text: [
         (ctx) => {
           const vi = Number(ctx.globals?.cgSceneVisit ?? 0);
@@ -62,6 +63,7 @@ for (const [tier, scenes] of Object.entries(CG_FILLED_CORKBOARD_SCENES)) {
         cgSceneTailBeat(`cork:${tier}`, 2),
       ],
     },
+    lintWildcardVariant('{cg.scene.dataObsession|prefix:} {cg.scene.competitionHeat|prefix: }'),
   ]);
 }
 
@@ -84,12 +86,13 @@ for (const [stageKey, tierMap] of Object.entries(CG_FILLED_BINGE_SCENES)) {
         ],
       },
       {
-        when: {},
+        when: legacyBridgeWhen(),
         text: [
           (ctx) => prose,
           cgSceneTailBeat(`binge:${stageKey}:${tier}`, 2),
         ],
       },
+      lintWildcardVariant('{cg.scene.dataObsession|prefix:} {cg.scene.competitionHeat|prefix: }'),
     ]);
   }
 }
@@ -115,12 +118,13 @@ for (const [stageKey, tierMap] of Object.entries(CG_FILLED_SELF_REVIEW)) {
         ],
       },
       {
-        when: {},
+        when: legacyBridgeWhen(),
         text: [
           (ctx) => fillCgTemplate(prose, ctx.globals),
           cgSceneTailBeat(`self:${stageKey}:${tier}`, 2),
         ],
       },
+      lintWildcardVariant('{cg.scene.dataObsession|prefix:} {cg.scene.competitionHeat|prefix: }'),
     ]);
   }
 }
@@ -146,12 +150,13 @@ for (const [rel, tierMap] of Object.entries(CG_FILLED_MEASUREMENT_REACTIONS)) {
           ],
         },
         {
-          when: {},
+          when: legacyBridgeWhen(),
           text: [
             (ctx) => fillCgTemplate(prose, ctx.globals),
             cgSceneTailBeat(`rx:${rel}:${cat}`, 2),
           ],
         },
+        lintWildcardVariant('{cg.scene.dataObsession|prefix:} {cg.scene.competitionHeat|prefix: }'),
       ]);
     }
   }

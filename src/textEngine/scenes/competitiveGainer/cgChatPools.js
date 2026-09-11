@@ -6,6 +6,7 @@ import { CG_CHAT_TEMPLATES } from '../../../gameData/evolvedForms.js';
 import { cgChatTailBeat } from '../evolved/proseTails.js';
 import { CG_RESIDENT_REPLY_ALTS } from './cgChatResidentAlts.js';
 import { priyaFollowupAltLines, priyaPostAltLines } from './cgChatPriyaAlts.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function legacySlot(bodyKey, fallback) {
   return (ctx) => {
@@ -22,7 +23,8 @@ function registerCgProsePool(poolKey, prose, extras = [], whenRows = []) {
   const core = [legacySlot(bodyKey, text), ...extras];
   const rows = whenRows.length
     ? whenRows
-    : [{ when: {}, text: core }];
+    : [{ when: legacyBridgeWhen(), text: core }];
+  rows.push(lintWildcardVariant('{cg.chat.boardTone|prefix:} {cg.chat.residentReply|prefix: }'));
   registerPool(poolKey, rows);
 }
 
@@ -37,7 +39,7 @@ for (const [stageKey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaP
     const alts = priyaPostAltLines(stageKey, tier);
     registerCgProsePool(poolKey, prose, alts, [
       {
-        when: { cgStageKey: [stageKey], cgDriveTier: [tier], cgChatKind: ['post'] },
+        when: legacyBridgeWhen({ cgStageKey: [stageKey], cgDriveTier: [tier], cgChatKind: ['post'] }),
         weight: 2,
         text: [
           legacySlot(`${poolKey}.legacyBody`, prose.trim()),
@@ -47,7 +49,7 @@ for (const [stageKey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaP
         ],
       },
       {
-        when: {},
+        when: legacyBridgeWhen(),
         text: [
           legacySlot(`${poolKey}.legacyBody`, prose.trim()),
           ...alts,
@@ -64,7 +66,7 @@ for (const [fkey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaFollo
     const alts = priyaFollowupAltLines(fkey, tier);
     registerCgProsePool(poolKey, prose, alts, [
       {
-        when: { cgFollowupKey: [fkey], cgDriveTier: [tier], cgChatKind: ['followup'] },
+        when: legacyBridgeWhen({ cgFollowupKey: [fkey], cgDriveTier: [tier], cgChatKind: ['followup'] }),
         weight: 2,
         text: [
           legacySlot(`${poolKey}.legacyBody`, prose.trim()),
@@ -73,7 +75,7 @@ for (const [fkey, tierMap] of Object.entries(CG_FILLED_CHAT_TEMPLATES.priyaFollo
           cgChatTailBeat(`fu:${fkey}`, 1),
         ],
       },
-      { when: {}, text: [legacySlot(`${poolKey}.legacyBody`, prose.trim()), ...alts] },
+      { when: legacyBridgeWhen(), text: [legacySlot(`${poolKey}.legacyBody`, prose.trim()), ...alts] },
     ]);
   }
 }
@@ -86,7 +88,7 @@ for (const [name, replies] of Object.entries(CG_CHAT_TEMPLATES.residents || {}))
     const alts = CG_RESIDENT_REPLY_ALTS[safeName]?.[replyType] || [];
     registerCgProsePool(poolKey, line, alts, [
       {
-        when: { cgResidentName: [safeName, name], cgResidentReply: [replyType] },
+        when: legacyBridgeWhen({ cgResidentName: [safeName, name], cgResidentReply: [replyType] }),
         weight: 2,
         text: [
           legacySlot(`${poolKey}.legacyBody`, line.trim()),
@@ -94,7 +96,7 @@ for (const [name, replies] of Object.entries(CG_CHAT_TEMPLATES.residents || {}))
           cgChatTailBeat(`res:${safeName}:${replyType}`, 0),
         ],
       },
-      { when: {}, text: [legacySlot(`${poolKey}.legacyBody`, line.trim()), ...alts] },
+      { when: legacyBridgeWhen(), text: [legacySlot(`${poolKey}.legacyBody`, line.trim()), ...alts] },
     ]);
   }
 }

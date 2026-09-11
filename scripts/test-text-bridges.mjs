@@ -23,6 +23,8 @@ const required = [
   'unlockScene/index.js',
   'rankedSession/legacyPools.js',
   'rankedSession/sessionFragments.js',
+  'rankedSession/sessionPayoffFragments.js',
+  'legacyPoolPolicy.js',
   'researchJournal/journalFragments.js',
   'homeroom/batchBakerPools.js',
   'homeroom/conferenceFragments.js',

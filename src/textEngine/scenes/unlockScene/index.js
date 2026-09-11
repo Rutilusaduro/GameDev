@@ -5,6 +5,7 @@ import { UNLOCK_SCENES, getUnlockScene, unlockSceneModularDepthChance } from '..
 import { registerDecomposedPool } from '../decomposePools.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { rosterUnlockTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 for (const [studentId, prose] of Object.entries(UNLOCK_SCENES)) {
   if (!prose?.trim()) continue;
@@ -25,8 +26,9 @@ for (const [studentId, prose] of Object.entries(UNLOCK_SCENES)) {
     ],
   };
   registerPool(key, [
-    { when: { studentId: [Number(studentId)] }, priority: 2, ...variantRow },
-    { when: {}, ...variantRow },
+    { when: legacyBridgeWhen({ studentId: [Number(studentId)] }), priority: 2, ...variantRow },
+    { when: legacyBridgeWhen(), ...variantRow },
+    lintWildcardVariant('{roster.unlock.hallArrival|prefix:} {roster.unlock.firstHunger|prefix: }'),
   ]);
 }
 

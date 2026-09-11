@@ -6,6 +6,7 @@ import { BLOB_PRIVATE_INTRO, INIT_STUDENTS } from '../../../gameData/students.js
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import { blobIntroTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function sampleStudent(studentId) {
   const id = Number(studentId);
@@ -24,7 +25,7 @@ function registerBlobIntro(poolKey, prose, seed = poolKey) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 3,
       text: [
         slot,
@@ -33,6 +34,7 @@ function registerBlobIntro(poolKey, prose, seed = poolKey) {
         blobIntroTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{session.blobIntro.scale|prefix:} {session.blobIntro.mass|prefix: }'),
   ]);
 }
 

@@ -7,6 +7,7 @@ import { EVOLVED_OUTFITS } from '../../../gameData/evolvedReactionsOutfits.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
 import { outfitTailBeat } from './proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function registerOutfitBeat(poolKey, prose, seed) {
   const text = (prose || '').trim();
@@ -19,7 +20,7 @@ function registerOutfitBeat(poolKey, prose, seed) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 3,
       text: [
         slot,
@@ -28,6 +29,7 @@ function registerOutfitBeat(poolKey, prose, seed) {
         outfitTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{evolved.outfit.fabricStrain|prefix:} {evolved.outfit.pride|prefix: }'),
   ]);
 }
 

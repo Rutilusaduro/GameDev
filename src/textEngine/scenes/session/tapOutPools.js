@@ -6,6 +6,7 @@ import { TAP_OUT_DIALOGUE, TAP_OUT_250, INIT_STUDENTS } from '../../../gameData/
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import { sessionTapTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function sampleStudent(studentId) {
   const id = Number(studentId);
@@ -24,7 +25,7 @@ function registerTapOutBeat(poolKey, prose, seed = poolKey) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 3,
       text: [
         slot,
@@ -33,6 +34,7 @@ function registerTapOutBeat(poolKey, prose, seed = poolKey) {
         sessionTapTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{session.tapOut.breath|prefix:} {session.tapOut.surrender|prefix: }'),
   ]);
 }
 

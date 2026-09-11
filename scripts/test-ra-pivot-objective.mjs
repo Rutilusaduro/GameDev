@@ -62,6 +62,8 @@ execSync('node scripts/test-text-modular-late-game.mjs', { cwd: root, stdio: 'in
 
 execSync('node scripts/test-text-overhaul-sampling.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-text-legacy-suppression-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });

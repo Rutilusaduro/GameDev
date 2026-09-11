@@ -3,6 +3,7 @@ import { registerDimension, registerPool } from '../../engine.js';
 import { CG_RA_REPLY_TEXT, CG_STAGE_KEYS } from '../../../gameData/competitiveGainerText.js';
 import { cgSceneTailBeat } from '../evolved/proseTails.js';
 import { CG_RA_REPLY_ALTS } from './cgRaReplyAlts.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 export function fillCgTemplate(str, g = {}) {
   if (!str) return '';
@@ -28,7 +29,7 @@ for (const [optId, def] of Object.entries(CG_RA_REPLY_TEXT)) {
     if (!prose) continue;
     const fn = (ctx) => fillCgTemplate(prose, ctx.globals);
     entries.push({
-      when: { cgRaStage: [stage], cgRaHasComparison: ['yes'] },
+      when: legacyBridgeWhen({ cgRaStage: [stage], cgRaHasComparison: ['yes'] }),
       weight: 2,
       text: [
         fn,
@@ -43,7 +44,7 @@ for (const [optId, def] of Object.entries(CG_RA_REPLY_TEXT)) {
   const fallback = def.fallback || '';
   const fb = (ctx) => fillCgTemplate(fallback, ctx.globals);
   entries.push({
-    when: { cgRaHasComparison: ['no'] },
+    when: legacyBridgeWhen({ cgRaHasComparison: ['no'] }),
     text: [
       fb,
       (ctx) => {
@@ -55,8 +56,9 @@ for (const [optId, def] of Object.entries(CG_RA_REPLY_TEXT)) {
   });
   const alts = CG_RA_REPLY_ALTS[optId] || [];
   entries.push({
-    when: {},
+    when: legacyBridgeWhen(),
     text: [fb, ...alts, cgSceneTailBeat(`ra:${optId}`, 0), cgSceneTailBeat(`ra:${optId}`, 1)],
   });
+  entries.push(lintWildcardVariant('{cg.raReply.wellnessFrame|prefix:} {cg.raReply.boardNudge|prefix: }'));
   registerPool(`cg.raReply.${optId}`, entries);
 }

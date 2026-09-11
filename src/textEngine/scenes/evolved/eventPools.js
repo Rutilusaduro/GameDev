@@ -3,6 +3,7 @@ import { registerPool } from '../../engine.js';
 import { EVOLVED_EVENTS } from '../../../gameData/evolvedEvents.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat, choiceEchoBeat, endingEchoBeat } from './proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 const SAMPLE_EVOLVED_SUBJECT = { id: 'mj', name: 'MJ', lbs: 240, archetype: 'cheerleader' };
 
@@ -111,13 +112,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
       if (legacyBody) registerDecomposedPool(`${poolKey}.legacyBody`, legacyBody);
       registerPool(poolKey, [
         {
-          when: {},
+          when: legacyBridgeWhen(),
           text: [
             intro,
             atmosphereBeat(formId, phaseIdx, 0),
             atmosphereBeat(formId, phaseIdx, 1),
           ],
         },
+        lintWildcardVariant('{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }'),
       ]);
       for (const ch of phase.choices || []) {
         if (!ch?.id) continue;
@@ -127,13 +129,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
         if (choiceBody) registerDecomposedPool(`${choiceKey}.legacyBody`, choiceBody);
         registerPool(choiceKey, [
           {
-            when: {},
+            when: legacyBridgeWhen(),
             text: [
               res,
               choiceEchoBeat(formId, ch.id, 0),
               choiceEchoBeat(formId, ch.id, 1),
             ],
           },
+          lintWildcardVariant('{evolved.choice.chatReact|prefix:} {evolved.choice.bodyResult|prefix: }'),
         ]);
       }
     });
@@ -150,13 +153,14 @@ for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
       if (endBody) registerDecomposedPool(`${endKey}.legacyBody`, endBody);
       registerPool(endKey, [
         {
-          when: {},
+          when: legacyBridgeWhen(),
           text: [
             endFn,
             endingEchoBeat(formId, stageIdx, endingIdx, 0),
             endingEchoBeat(formId, stageIdx, endingIdx, 1),
           ],
         },
+        lintWildcardVariant('{evolved.ending.streamCoda|prefix:} {evolved.ending.relGain|prefix: }'),
       ]);
     });
   });

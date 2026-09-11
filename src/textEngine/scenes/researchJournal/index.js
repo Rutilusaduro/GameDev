@@ -7,6 +7,7 @@ import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLaye
 import { FEEDER_SUBJECT_JOURNALS } from '../../../gameData/feederSubjectJournals.js';
 import { NADIA_SUBJECT_JOURNALS } from '../../../gameData/nadiaSubjectJournals.js';
 import { journalTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function registerJournalPage(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
@@ -19,7 +20,7 @@ function registerJournalPage(poolKey, prose, seed = poolKey) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 2,
       text: [
         slot,
@@ -28,6 +29,7 @@ function registerJournalPage(poolKey, prose, seed = poolKey) {
         journalTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{journal.scene.fieldNotes|prefix:} {journal.scene.subjectFocus|prefix: }'),
   ]);
 }
 

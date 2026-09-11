@@ -3,6 +3,7 @@ import { registerDimension, registerPool } from '../../engine.js';
 import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedActivityData.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat } from './proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 const SAMPLE_ACTIVITY_SUBJECT = { id: 'mj', name: 'MJ', lbs: 220, archetype: 'cheerleader' };
 
@@ -58,12 +59,13 @@ for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
     ],
   });
   entries.push({
-    when: {},
+    when: legacyBridgeWhen(),
     text: [
       (ctx) => beatFn(arr[0])(ctx),
       atmosphereBeat(formId, 0, 2),
       (ctx) => beatFn(arr[Math.min(arr.length - 1, 0)])(ctx),
     ],
   });
+  entries.push(lintWildcardVariant('{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }'));
   registerPool(`evolved.activity.${formId}`, entries);
 }

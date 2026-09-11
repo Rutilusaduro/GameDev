@@ -7,6 +7,7 @@ import { EVOLVED_REACTIONS } from '../../../gameData/evolvedReactionsOutfits.js'
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
 import { evolvedReactionTailBeat } from './proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function registerReactionBeat(poolKey, prose, seed = poolKey) {
   const text = (prose || '').trim();
@@ -19,7 +20,7 @@ function registerReactionBeat(poolKey, prose, seed = poolKey) {
   };
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 3,
       text: [
         slot,
@@ -28,6 +29,7 @@ function registerReactionBeat(poolKey, prose, seed = poolKey) {
         evolvedReactionTailBeat(seed, 2),
       ],
     },
+    lintWildcardVariant('{evolved.reaction.witness|prefix:} {evolved.reaction.appetite|prefix: }'),
   ]);
 }
 

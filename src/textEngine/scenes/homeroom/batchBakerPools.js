@@ -3,6 +3,7 @@ import { registerDimension, registerPool, render } from '../../engine.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { BATCH_BAKER_NPCS } from '../../../gameData/homeroomEvents.js';
 import { homeroomTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 registerDimension('npcStage', (ctx) => ctx.globals?.npcStage ?? 0);
 registerDimension('npcKey', (ctx) => ctx.globals?.npcKey ?? 'Kayla');
@@ -26,9 +27,10 @@ function registerNpcStage(poolKey, npcKey, stageIdx, prose) {
       text: [slot, snippet, homeroomTailBeat(seed, 0)],
     },
     {
-      when: {},
+      when: legacyBridgeWhen(),
       text: [slot, snippet, homeroomTailBeat(seed, 1), homeroomTailBeat(seed, 2)],
     },
+    lintWildcardVariant('{homeroom.npc.kitchenGossip|prefix:} {homeroom.npc.momHeat|prefix: }'),
   ]);
 }
 

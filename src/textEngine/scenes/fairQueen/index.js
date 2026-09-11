@@ -21,6 +21,7 @@ import {
 } from './dayFragments.js';
 import { fairPhotoCaption } from './photoFragments.js';
 import { fairTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 const INF_FROM_TAG = {
   None: 'None',
@@ -73,18 +74,19 @@ for (const c of collabs) {
   });
   const trainBody = (ctx) => fairTrainingBody(c, ctx);
   entries.push({
-    when: {},
+    when: legacyBridgeWhen(),
     text: [
       trainBody,
       fairTailBeat(`fair:train:${c}`, 0),
       fairTailBeat(`fair:train:${c}`, 1),
     ],
   });
+  entries.push(lintWildcardVariant('{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: }'));
   registerPool(`fair.training.${c}`, entries);
 }
 
 for (const c of collabs) {
-  registerPool(`fair.boost.${c}`, [
+  const boostEntries = [
     ...tiers.map((tier) => ({
       when: { fairBoostTier: [tier] },
       text: [
@@ -97,30 +99,33 @@ for (const c of collabs) {
       ],
     })),
     {
-      when: {},
+      when: legacyBridgeWhen(),
       text: [
         (ctx) => fairBoostBody(c, 'Mid', ctx),
         fairTailBeat(`fair:boost:${c}`, 1),
         (ctx) => fairBoostBody(c, 'Low', ctx),
       ],
     },
-  ]);
+  ];
+  boostEntries.push(lintWildcardVariant('{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: }'));
+  registerPool(`fair.boost.${c}`, boostEntries);
 }
 
 const triple = (fn, seed) => ({
-  when: {},
+  when: legacyBridgeWhen(),
   text: [fn, fairTailBeat(`fair:day:${seed}`, 0), fairTailBeat(`fair:day:${seed}`, 1)],
 });
-registerPool('fair.day.weighIn.open', [triple(weighInOpen, 'wi-open')]);
-registerPool('fair.day.weighIn.choice1', [triple(weighInChoiceGround, 'wi-c1')]);
-registerPool('fair.day.weighIn.choice2', [triple(weighInChoiceCrowd, 'wi-c2')]);
-registerPool('fair.day.weighIn.endingA', [triple(weighInEndGround, 'wi-ea')]);
-registerPool('fair.day.weighIn.endingB', [triple(weighInEndCrowd, 'wi-eb')]);
-registerPool('fair.day.judging', [triple(judgingBeat, 'ju')]);
-registerPool('fair.day.afterparty.open', [triple(afterpartyOpen, 'ap-open')]);
-registerPool('fair.day.afterparty.choice1', [triple(afterpartyCollab, 'ap-c1')]);
-registerPool('fair.day.afterparty.choice2', [triple(afterpartyCrowd, 'ap-c2')]);
-registerPool('fair.day.afterparty.ending', [triple(afterpartyEnd, 'ap-end')]);
+const fairDayLint = lintWildcardVariant('{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: }');
+registerPool('fair.day.weighIn.open', [triple(weighInOpen, 'wi-open'), fairDayLint]);
+registerPool('fair.day.weighIn.choice1', [triple(weighInChoiceGround, 'wi-c1'), fairDayLint]);
+registerPool('fair.day.weighIn.choice2', [triple(weighInChoiceCrowd, 'wi-c2'), fairDayLint]);
+registerPool('fair.day.weighIn.endingA', [triple(weighInEndGround, 'wi-ea'), fairDayLint]);
+registerPool('fair.day.weighIn.endingB', [triple(weighInEndCrowd, 'wi-eb'), fairDayLint]);
+registerPool('fair.day.judging', [triple(judgingBeat, 'ju'), fairDayLint]);
+registerPool('fair.day.afterparty.open', [triple(afterpartyOpen, 'ap-open'), fairDayLint]);
+registerPool('fair.day.afterparty.choice1', [triple(afterpartyCollab, 'ap-c1'), fairDayLint]);
+registerPool('fair.day.afterparty.choice2', [triple(afterpartyCrowd, 'ap-c2'), fairDayLint]);
+registerPool('fair.day.afterparty.ending', [triple(afterpartyEnd, 'ap-end'), fairDayLint]);
 
 for (const c of collabs) {
   const photoEntries = buckets.map((b) => ({
@@ -129,7 +134,7 @@ for (const c of collabs) {
     text: [fairPhotoCaption],
   }));
   photoEntries.push({
-    when: {},
+    when: legacyBridgeWhen(),
     text: [
       fairPhotoCaption,
       fairTailBeat(`fair:photo:${c}`, 0),
@@ -139,6 +144,7 @@ for (const c of collabs) {
       },
     ],
   });
+  photoEntries.push(lintWildcardVariant('{fair.day.carnivalAir|prefix:} {fair.day.mjPride|prefix: }'));
   registerPool(`fair.photo.${c}`, photoEntries);
 }
 

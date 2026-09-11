@@ -7,6 +7,7 @@ import { INIT_STUDENTS } from '../../../gameData/students.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { depthNarrativeAppendChance } from '../../../gameData/mechanicsDepthLayer.js';
 import { evolutionTailBeat } from './proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function sampleForArchetype(archetype) {
   const row = INIT_STUDENTS.find((s) => s.archetype === archetype);
@@ -26,15 +27,16 @@ function registerBlurb(archetype, prose) {
   const seed = `blurb:${archetype}`;
   registerPool(poolKey, [
     {
-      when: { archetype: [archetype] },
+      when: legacyBridgeWhen({ archetype: [archetype] }),
       weight: 2,
       priority: 2,
       text: [slot, evolutionTailBeat(seed, 0), evolutionTailBeat(seed, 1)],
     },
     {
-      when: {},
+      when: legacyBridgeWhen(),
       text: [slot, evolutionTailBeat(seed, 0), evolutionTailBeat(seed, 1), evolutionTailBeat(seed, 2)],
     },
+    lintWildcardVariant('{evolution.blurb.threshold|prefix:} {evolution.blurb.raStakes|prefix: }'),
   ]);
 }
 

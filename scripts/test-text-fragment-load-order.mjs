@@ -24,6 +24,7 @@ const pairs = [
   ['homeroom/index.js', 'homeroom/activityFragments.js'],
   ['researchJournal/index.js', 'researchJournal/journalFragments.js'],
   ['rankedSession/index.js', 'rankedSession/sessionFragments.js'],
+  ['rankedSession/index.js', 'rankedSession/sessionPayoffFragments.js'],
   ['wifeLessons/index.js', 'wifeLessons/lessonFragments.js'],
   ['wifeLessons/index.js', 'wifeLessons/talkFragments.js'],
   ['evolved/index.js', 'evolved/eventPhaseFragments.js'],

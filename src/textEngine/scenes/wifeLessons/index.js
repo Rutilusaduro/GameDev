@@ -8,6 +8,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { wifeLessonsV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/wifeLessonsData.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 const DAUGHTERS = new Set(['Emma', 'Chloe', 'Kezia', 'Lila']);
 
@@ -22,7 +23,7 @@ function registerTalkLine(poolKey, line) {
   registerDecomposedPool(bodyKey, prose);
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 2,
       text: [
         (ctx) => {
@@ -33,6 +34,7 @@ function registerTalkLine(poolKey, line) {
         wlTalkTailBeat(poolKey, 1),
       ],
     },
+    lintWildcardVariant('{wl.lesson.aroma|prefix:} {wl.lesson.circleEat|prefix: }'),
   ]);
 }
 
@@ -57,7 +59,7 @@ function registerLessonBeat(poolKey, prose) {
   registerDecomposedPool(bodyKey, text);
   registerPool(poolKey, [
     {
-      when: {},
+      when: legacyBridgeWhen(),
       weight: 2,
       text: [
         (ctx) => {
@@ -68,6 +70,7 @@ function registerLessonBeat(poolKey, prose) {
         wlTalkTailBeat(poolKey, 1),
       ],
     },
+    lintWildcardVariant('{wl.talk.warmOpen|prefix:} {wl.talk.raPresence|prefix: }'),
   ]);
 }
 

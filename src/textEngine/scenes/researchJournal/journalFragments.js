@@ -48,6 +48,12 @@ for (const [archetype, entries] of Object.entries(FEEDER_SUBJECT_JOURNALS)) {
     const skeleton = page >= 6 ? LATE_FEEDER_SKELETON : FEEDER_SKELETON;
     registerModuleVariants(`journal.feeder.${archetype}.s${page}`, [
       {
+        when: { weekMin: 20 },
+        weight: 6,
+        priority: 5,
+        text: [page >= 6 ? LATE_FEEDER_SKELETON : FEEDER_SKELETON],
+      },
+      {
         when: { weekMin: 18 },
         weight: 4,
         priority: 3,
