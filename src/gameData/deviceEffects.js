@@ -15,6 +15,7 @@ import { findUniqueInteraction } from './deviceInteractions.js';
 import { renderDeviceUniqueInteraction } from '../textEngine/scenes/deviceUniqueInteraction/index.js';
 import { getDeviceBoardMods, applyBoardModsToWeeklyEffect } from './inventionUpgrades.js';
 import { scaleDiscoveryRisk } from './campusWitness.js';
+import { scaleDeviceGainRange } from './mechanicsDepth.js';
 import {
   bumpWeeklyDeviceDependence,
   bumpEquipDeviceDependence,
@@ -262,6 +263,9 @@ export function applyDeviceEffect(student, effectSpec, ctx = {}) {
 
   if (effectSpec?.gainLbs) {
     let gainRange = scaleGainRangeForStudent(next, effectSpec.gainLbs);
+    if (ctx.depthGainMult && ctx.depthGainMult !== 1) {
+      gainRange = scaleDeviceGainRange(gainRange, ctx.depthGainMult);
+    }
     const swell = next.deviceState?.residualSwell;
     if (swell?.active && swell.amplify) {
       gainRange = [

@@ -3,7 +3,7 @@
 // group dinner, and private sessions (DEPTH_PLAN §8)
 // ═══════════════════════════════════════════════════════════════
 import { GAIN_CONFIG } from './gainSystem.js';
-import { EXTENDED_SESSION_PACES } from './mechanicsDepth.js';
+import { EXTENDED_SESSION_PACES, depthSkillFeedModifiers } from './mechanicsDepth.js';
 import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 import { getForceFeedComplianceBonus } from './deviceGating.js';
@@ -78,6 +78,7 @@ export function getFeedingModifiers(student, {
   generousTrait = false,
   context = 'meal',
   hallSynergyCount = 0,
+  skillFx = null,
 } = {}) {
   const hunger = getHungerTier(student);
   const addiction = getAddictionLevel(student);
@@ -97,6 +98,12 @@ export function getFeedingModifiers(student, {
   else if (hunger >= 2) calorieMult = 1.05;
   if (hallSynergyCount >= 2) calorieMult *= 1.04;
   if (hallSynergyCount >= 4) refusalBonus += 0.03;
+
+  if (skillFx) {
+    const sk = depthSkillFeedModifiers(skillFx);
+    refusalBonus += sk.refusalBonus;
+    calorieMult *= sk.calorieMult;
+  }
 
   return { refusalBonus, fullnessMult, calorieMult, hunger, corruption: cor };
 }
@@ -198,6 +205,7 @@ export function runVenueFeedAttempt({
     generousTrait,
     context,
     hallSynergyCount: gameCtx.hallSynergyCount ?? 0,
+    skillFx: gameCtx.skillFx ?? null,
   });
   const pace = getSessionPaceModifiers(sessionPace);
   const pushBonus = forcePush ? 0.12 : 0;

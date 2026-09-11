@@ -381,7 +381,8 @@ import {
 import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave, summarizeHallEnvironment, getActiveBlueprintSynergies } from './gameData/hallBlueprint.js';
 import {
   hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
-  oppositionScrutinyEaseFromHall, oppositionCounterRelBonus,
+  oppositionScrutinyEaseFromHall, oppositionCounterRelBonus, depthDeviceGainMult, depthSaturationPassiveBonus,
+  depthTalkRelBonus,
 } from './gameData/mechanicsDepth.js';
 import {
   hallLabNetworkModifiers, depthLabSessionBreakthroughBonus, depthLabSessionInstability, depthNetworkTickAdjust,
@@ -1765,7 +1766,10 @@ export default function HallPass(){
       const tierMeta=getSaturationTier(nextSaturation.score);
       setTimeout(()=>push(`🌐 Campus saturation — ${tierMeta.label}: ${tierMeta.desc}`),130);
     }
-    const satPassive=saturationWeeklyPassiveBonus(nextSaturation.tier);
+    const satPassive=Math.round(depthSaturationPassiveBonus(
+      saturationWeeklyPassiveBonus(nextSaturation.tier),
+      ownedHallSkills||{},
+    ));
     if(satPassive>0){
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
@@ -1791,11 +1795,16 @@ export default function HallPass(){
     }
     setWeeklyFeedCounts({});
 
+    const deviceDepthMult=depthDeviceGainMult({
+      labStage:labState?.stage,
+      hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
+      skillFx:aggregateSkillEffects(ownedSkills||{}),
+    });
     const deviceTickEvents=[];
     updated=updated.map(s=>{
       let ns=clearExpiredOverrides(s,newWeek);
       const preLbs=ns.lbs;
-      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player, labState });
+      const tick=tickEquippedDevices(ns,newWeek,Math.random,{ player, labState, depthGainMult:deviceDepthMult });
       ns=tick.student;
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
@@ -7013,6 +7022,8 @@ export default function HallPass(){
   const applyTalkEffect=(effect,meta={})=>{
     if(!talkStudentId) return;
     gainFavor('talk');
+    const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
+    const hallTalkRel=depthTalkRelBonus(0,{ relTalkBonus:loungeFx.relTalkBonus||0 });
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     if(applySuggest){
       setStudents(prev=>prev.map(x=>x.id===talkStudentId?{...x,suggestDebuffWeek:week}:x));
@@ -7038,7 +7049,7 @@ export default function HallPass(){
       setStudents(prev=>{
         const st=prev.find(x=>x.id===talkStudentId);
         if(!st) return prev;
-        const fed=feedStudentCalories(st,effect.cals,effect.full||0,effect.rel||0,effect.devourShift?"Devour":"Talk");
+        const fed=feedStudentCalories(st,effect.cals,effect.full||0,(effect.rel||0)+hallTalkRel,effect.devourShift?"Devour":"Talk");
         if(!fed) return prev;
         let ns=fed;
         if(effect.devourShift){
@@ -7060,7 +7071,7 @@ export default function HallPass(){
           ns={...ns,corruption:addCorruption(ns,effect.corruption)};
         }
         if(effect.rel && !effect.devourShift){
-          ns={...ns,relationship:Math.min(100,ns.relationship+(effect.rel||0))};
+          ns={...ns,relationship:Math.min(100,ns.relationship+(effect.rel||0)+hallTalkRel)};
         }
         return prev.map(x=>x.id===ns.id?ns:x);
       });
@@ -7069,7 +7080,7 @@ export default function HallPass(){
     setStudents(prev=>prev.map(x=>{
       if(x.id!==talkStudentId) return x;
       let ns={...x};
-      if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0));
+      if(effect.rel) ns.relationship=Math.min(100,ns.relationship+(effect.rel||0)+hallTalkRel);
       if(effect.corruption) ns={...ns,corruption:addCorruption(ns,effect.corruption)};
       // Talking to her is attention — it cools discontent.
       if((ns.discontent||0)>0) ns.discontent=Math.max(0,ns.discontent-DISCONTENT_EASE_TALK);
@@ -7303,6 +7314,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'dinner',
         hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
+        skillFx: aggregateSkillEffects(ownedSkills||{}),
         forcePush:!!opts.forcePush,
         gainLbs:rnd(dish.gain[0],dish.gain[1]),
       },
@@ -7372,6 +7384,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'dinner',
         hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
+        skillFx: aggregateSkillEffects(ownedSkills||{}),
         extraRel:2,
       },
     });
@@ -7415,7 +7428,7 @@ export default function HallPass(){
     const scaledBonus=Math.round(gainBonus*GAIN_CONFIG.calsPerLb*skillGainMult*(s.gainMultiplier||1));
     const convText=renderDinnerConversation(conv.id, s, week);
     const fullnessChange=conv.fullnessEffect||0;
-    const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner',hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount});
+    const feedMods=getFeedingModifiers(s,{generousTrait:hasTrait('generous'),context:'dinner',hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,skillFx:aggregateSkillEffects(ownedSkills||{})});
     let fed=s;
     if(scaledBonus>0||fullnessChange!==0){
       const bonusFed=feedStudentCalories(s,scaledBonus,Math.max(0,fullnessChange),conv.relBonus||0,conv.label,{
@@ -7497,6 +7510,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
         hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
+        skillFx: aggregateSkillEffects(ownedSkills||{}),
         forcePush:!!opts.forcePush,
         gainLbs:rnd(dish.gain[0],dish.gain[1]),
       },
@@ -7610,6 +7624,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
         hallSynergyCount: summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,
+        skillFx: aggregateSkillEffects(ownedSkills||{}),
         extraRel:2,
       },
     });
@@ -7648,7 +7663,7 @@ export default function HallPass(){
     push(`💬 Group conversation: ${conv.label}`);
     if(fullE>0){
       liveStudents.forEach(ls=>{
-        const mods=getFeedingModifiers(ls,{generousTrait:hasTrait('generous'),context:'group_dinner',hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount});
+        const mods=getFeedingModifiers(ls,{generousTrait:hasTrait('generous'),context:'group_dinner',hallSynergyCount:summarizeHallEnvironment(ownedHallSkills||{}).synergyCount,skillFx:aggregateSkillEffects(ownedSkills||{})});
         const fed=feedStudentCalories(ls,0,fullE,0,'',{
           refusalBonus:mods.refusalBonus,
           fullnessMult:mods.fullnessMult,

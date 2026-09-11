@@ -57,8 +57,8 @@ export function depthFloorChoiceGainMult({ loungeGainMult = 0, relBonus = 0 } = 
 }
 
 /** Talk relationship bonus from blueprint synergies. */
-export function depthTalkRelBonus(baseRel, { relTalkBonus = 0 } = {}) {
-  return baseRel + (relTalkBonus || 0);
+export function depthTalkRelBonus(baseRel, { relTalkBonus = 0, skillRelBonus = 0 } = {}) {
+  return baseRel + (relTalkBonus || 0) + (skillRelBonus || 0);
 }
 
 /** Opposition / scrutiny ease from blueprint institutional pressure. */
@@ -73,4 +73,40 @@ export function oppositionCounterRelBonus(ownedHallSkills = {}) {
   const syn = getActiveBlueprintSynergies(ownedHallSkills);
   const hasLegend = syn.some((s) => s.id === 'legendary_flow');
   return hasLegend ? 2 : syn.length >= 2 ? 1 : 0;
+}
+
+/** RA skill tree → feed session modifiers (reach / conversion path). */
+export function depthSkillFeedModifiers(skillFx = {}) {
+  const refusalBonus = (skillFx.forceFeedBonus || 0)
+    + ((skillFx.extremeBonus || 0) * 0.45)
+    + (skillFx.breakResistance ? 0.04 : 0);
+  const calorieMult = 1
+    + (skillFx.calorieBonus || 0)
+    + (skillFx.conversionBonus || 0)
+    + (skillFx.extremeBonus || 0) * 0.04;
+  return { refusalBonus, calorieMult };
+}
+
+/** Device weekly gain scaling from lab stage + hall weave investment. */
+export function depthDeviceGainMult({ labStage = 1, hallSynergyCount = 0, skillFx = {} } = {}) {
+  let mult = 1;
+  if ((labStage ?? 1) >= 2) mult += 0.05;
+  if ((labStage ?? 1) >= 3) mult += 0.05;
+  mult += Math.min(0.12, (hallSynergyCount || 0) * 0.025);
+  if (skillFx.gluttonsInstinct) mult += 0.04;
+  return mult;
+}
+
+export function scaleDeviceGainRange(gainRange, mult = 1) {
+  if (!gainRange || mult === 1) return gainRange;
+  return [
+    Math.max(0, Math.round((gainRange[0] || 0) * mult)),
+    Math.max(0, Math.round((gainRange[1] || 0) * mult)),
+  ];
+}
+
+/** Campus saturation passive lbs bonus from hall prestige synergies. */
+export function depthSaturationPassiveBonus(tierPassive, ownedHallSkills = {}) {
+  const synCount = getActiveBlueprintSynergies(ownedHallSkills).length;
+  return (tierPassive || 0) + (synCount >= 3 ? 1 : synCount >= 1 ? 0.5 : 0);
 }
