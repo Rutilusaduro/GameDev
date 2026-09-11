@@ -9,6 +9,7 @@ import { getForceFeedComplianceBonus } from './deviceGating.js';
 import { ITEMS } from './items.js';
 import { getStage } from './stages.js';
 import { depthFeedPaceBonus } from './mechanicsDepthLayer.js';
+import { scalePantryItemCalories } from './itemEffects.js';
 
 /**
  * Venue/private dish ids linked to pantry ITEMS[] for a shared cal/full model.
@@ -114,7 +115,7 @@ export function resolveFeedPayload(source, student, {
     const item = ITEMS.find((i) => i.id === itemId);
     if (item) {
       return {
-        calories: Math.round(item.cal * gainMult),
+        calories: Math.round(scalePantryItemCalories(item.cal) * gainMult),
         fullness: item.full,
         label: source.label || item.label,
         itemId,

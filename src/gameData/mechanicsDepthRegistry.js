@@ -86,4 +86,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'ascensionState', file: 'ascension/state.js' },
   { id: 'dossier', file: 'dossier.js' },
   { id: 'weeklyNarrative', file: 'weeklyEventDefs.js' },
+  { id: 'itemEffects', file: 'itemEffects.js' },
+  { id: 'campusSecrets', file: 'campusSecrets.js' },
 ];

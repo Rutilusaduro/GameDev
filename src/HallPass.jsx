@@ -58,7 +58,9 @@ import {
   searchCampusLocation, applySecretSolve, resolveSecretDiscoverLine,
 } from './gameData/campusExploration.js';
 import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNode, takePendingQuestReward } from './gameData/relicHunter.js';
-import { getExplorationFind } from './gameData/campusIngredients.js';
+import { getExplorationFind, scaleExplorationFindGrants } from './gameData/campusIngredients.js';
+import { resolveSecretFindReward } from './gameData/campusSecrets.js';
+import { scaleItemForFeed, scalePantryItemRelGrant } from './gameData/itemEffects.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
@@ -1060,18 +1062,19 @@ export default function HallPass(){
   };
 
   const grantExplorationReward=(grants)=>{
-    if(!grants||!Object.keys(grants).length) return;
-    if(grants.foodId){
-      setInventory(prev=>({...prev,[grants.foodId]:Math.min(INVENTORY_CONFIG.maxStack,(prev[grants.foodId]||0)+1)}));
+    const scaled=scaleExplorationFindGrants(grants||{});
+    if(!scaled||!Object.keys(scaled).length) return;
+    if(scaled.foodId){
+      setInventory(prev=>({...prev,[scaled.foodId]:Math.min(INVENTORY_CONFIG.maxStack,(prev[scaled.foodId]||0)+1)}));
     }
-    const ing={...grants};
+    const ing={...scaled};
     delete ing.foodId;
     if(!Object.keys(ing).length) return;
     if(pharmacistState){
       setPharmacistState(prev=>prev?{...prev,ingredients:mergeIngredients(prev.ingredients,ing)}:prev);
       return;
     }
-    if(!grants.foodId){
+    if(!scaled.foodId){
       const item=rollWeeklyItem();
       setInventory(prev=>({...prev,[item.id]:Math.min(INVENTORY_CONFIG.maxStack,(prev[item.id]||0)+1)}));
     }
@@ -1258,10 +1261,10 @@ export default function HallPass(){
         exploration=applySecretSolve(exploration,secret.id);
         lines.push(resolveSecretDiscoverLine(secret, ctx, campusState.at));
         if(secret.reward?.findId){
-          const find=getExplorationFind(secret.reward.findId);
-          if(find){
-            grantExplorationReward(find.grants);
-            lines.push(`   + ${find.label}`);
+          const packed=resolveSecretFindReward(secret);
+          if(packed){
+            grantExplorationReward(packed.grants);
+            lines.push(`   + ${packed.find.label}`);
           }
         }
       } else {
@@ -1334,8 +1337,9 @@ export default function HallPass(){
   const executeItemFeed=(item,studentId,compoundId)=>{
     const target=students.find(st=>st.id===studentId);
     if(!target) return;
+    const scaledItem=scaleItemForFeed(item);
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
-    const fed=feedStudentCalories(target,item.cal,item.full,1,
+    const fed=feedStudentCalories(target,scaledItem.cal,scaledItem.full,scalePantryItemRelGrant(1),
       `${item.emoji} ${item.label}${compoundLabel?` + ${compoundLabel}`:''}`,
       compoundId?{compoundId}:{});
     if(!fed) return;

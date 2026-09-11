@@ -127,6 +127,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                           <div style={{display:"flex",flexDirection:"column",gap:2}}>
                             {items.map(food=>{
                               const ordered=ps.foods.includes(food.id);
+                              const gain=scalePrivateFoodGain(food);
                               return(
                                 <div key={food.id}
                                   style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",borderRadius:5,
@@ -134,7 +135,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
                                     cursor:ordered?"default":"pointer",opacity:ordered?0.45:1}}
                                   onClick={()=>!ordered&&feedInSession(food)}>
                                   <span style={{flex:1,fontSize:12,color:ordered?"#5a3888":"#c8a8f0"}}>{ordered?"✓ ":""}{food.label}</span>
-                                  <span style={{fontSize:10,color:"#8060a0"}}>+{(() => { const g = scalePrivateFoodGain(food); return `${g[0]}–${g[1]}`; })()} lbs</span>
+                                  <span style={{fontSize:10,color:"#8060a0"}}>+{gain[0]}–{gain[1]} lbs</span>
                                   {!ordered&&<div style={{fontSize:9,color:"#6a4880",maxWidth:140,textAlign:"right"}}>{food.desc.slice(0,45)}…</div>}
                                 </div>
                               );

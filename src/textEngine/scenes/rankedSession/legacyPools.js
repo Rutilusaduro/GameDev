@@ -1,6 +1,7 @@
 // Ranked feedee session — Rae NPC + payoff (legacy evolvedForms → pools).
 import { registerPool } from '../../engine.js';
 import { SESSION_NPC_LINES, SESSION_PAYOFF_TEXT } from '../../../gameData/evolvedForms.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 
 function registerFnPool(poolId, line) {
   const text = typeof line === 'string' ? line.trim() : '';
@@ -15,6 +16,9 @@ function registerFnPool(poolId, line) {
 for (let si = 0; si <= 5; si += 1) {
   const row = SESSION_NPC_LINES[si];
   if (!row) continue;
+  if (row.arrival) registerDecomposedPool(`session.rae.arrival.s${si}.legacyBody`, row.arrival);
+  if (row.exit) registerDecomposedPool(`session.rae.exit.s${si}.legacyBody`, row.exit);
+  if (row.extra) registerDecomposedPool(`session.rae.extra.s${si}.legacyBody`, row.extra);
   registerFnPool(`session.rae.arrival.s${si}`, row.arrival);
   registerFnPool(`session.rae.exit.s${si}`, row.exit);
   if (row.extra) registerFnPool(`session.rae.extra.s${si}`, row.extra);
