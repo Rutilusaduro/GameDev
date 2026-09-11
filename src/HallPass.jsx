@@ -256,7 +256,7 @@ import { NetworkView } from './views/NetworkView.jsx';
 import { DeviceInventoryView } from './views/DeviceInventoryView.jsx';
 import { SpriteTestView } from './views/SpriteTestView.jsx';
 import {
-  defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES,
+  defaultLabState, defaultDeviceInventory, INVENTOR_ACTIVITIES, INVENTOR_PATH_STAGES, scaleTaliaGainRange,
   completeLabSession, tickLabWeek, TALIA_STUDENT_ID, maybeAdvanceInventorStage, LAB_SESSION_ACTIVITY,
   researchBlueprint,
 } from './gameData/talia.js';
@@ -4464,7 +4464,8 @@ export default function HallPass(){
     const act=INVENTOR_ACTIVITIES[labState.stage]||INVENTOR_ACTIVITIES[2];
     if(ap<(act.apCost||0)){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setAp(a=>a-(act.apCost||0));
-    const gain=rnd(...(act.taliaGain||[2,4]));
+    const tg=scaleTaliaGainRange(act.taliaGain||[2,4]);
+    const gain=rnd(tg[0],tg[1]);
     setStudents(prev=>prev.map(st=>st.id===s.id?processStudentGain(st,gain,0):st));
     setLabState(prev=>{
       const synced=syncSubjectInfluence(ensureNetwork(normalizeLabTechState(prev)),students);
@@ -4556,7 +4557,8 @@ export default function HallPass(){
     const act=LAB_SESSION_ACTIVITY;
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setAp(a=>a-act.apCost);
-    const gain=rnd(...act.taliaGain);
+    const tg=scaleTaliaGainRange(act.taliaGain);
+    const gain=rnd(tg[0],tg[1]);
     const ns=processStudentGain(s,gain,8);
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
     const prevStage=labState.stage??1;

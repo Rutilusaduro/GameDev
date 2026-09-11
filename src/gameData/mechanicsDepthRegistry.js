@@ -93,4 +93,6 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'weeklyEventText', file: 'weeklyEventText.js' },
   { id: 'oppositionEndgame', file: 'oppositionEndgame.js' },
   { id: 'memory', file: 'memory.js' },
+  { id: 'talia', file: 'talia.js' },
+  { id: 'labParts', file: 'labParts.js' },
 ];

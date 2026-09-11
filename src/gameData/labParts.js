@@ -2,6 +2,11 @@
 // LAB PARTS & BLUEPRINT RECIPES — Talia's workshop economy
 // ═══════════════════════════════════════════════════════════════
 import { techPrereqsMet } from './labTechTree.js';
+import { depthExplorationIngredientGrant } from './mechanicsDepthLayer.js';
+
+function scaleLabPartGrant(grant = {}) {
+  return depthExplorationIngredientGrant(grant);
+}
 
 const BUILD_WEIGHT_COST_BY_TIER = { 1: 3, 2: 6, 3: 10 };
 const MONEY_COST_BY_TIER = { 1: 50, 2: 120, 3: 250 };
@@ -102,7 +107,7 @@ export function partsAcquisitionByStage(stageId) {
     base.reagents = 1;
     base.exotics = 1;
   }
-  return base;
+  return scaleLabPartGrant(base);
 }
 
 export function mergeParts(a, b) {
@@ -198,7 +203,7 @@ export function applyLabAcquisition(session, choiceId, labState) {
     reagent_run: { reagents: 2, exotics: 1 },
     skip: {},
   };
-  const grant = grants[choiceId] || grants.skip;
+  const grant = scaleLabPartGrant(grants[choiceId] || grants.skip);
   return {
     ...session,
     phase: 'build',

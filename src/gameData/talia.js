@@ -8,6 +8,7 @@ import {
   applyStageTechUnlocks,
   rollSessionBreakthroughs,
 } from './labTechTree.js';
+import { depthActivityGainBonus, depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 export const TALIA_STUDENT_ID = 18;
 
@@ -81,6 +82,19 @@ export const LAB_SESSION_ACTIVITY = {
   instability: 5,
 };
 
+export function scaleTaliaGainRange(range = [0, 0]) {
+  const lo = range[0] ?? 0;
+  const hi = range[1] ?? lo;
+  return [depthActivityGainBonus(lo), depthActivityGainBonus(Math.max(lo, hi))];
+}
+
+/** Session breakthrough rolls — slightly richer at higher inventor stage. */
+export function scaleLabBreakthroughBonus(base = 0, stage = 1) {
+  if (!base || base <= 0) return base;
+  const stageBump = stage >= 3 ? 2 : stage >= 2 ? 1 : 0;
+  return depthMetaProgressBonus(base + stageBump);
+}
+
 const STAGE_SESSION_THRESHOLDS = [0, 8, 18];
 
 export function defaultLabState() {
@@ -144,7 +158,8 @@ export function completeLabSession(state, session, builtDeviceId = null, rng = M
   next.sessionsRun = (next.sessionsRun ?? 0) + 1;
   next.parts = session.poolAfter || session.pool || next.parts;
   next.instability = Math.min(100, (next.instability ?? 0) + (session.instabilityGained ?? 5));
-  const btGain = session.breakthroughsGained ?? rollSessionBreakthroughs(rng);
+  const rawBt = session.breakthroughsGained ?? rollSessionBreakthroughs(rng);
+  const btGain = scaleLabBreakthroughBonus(rawBt, next.stage ?? 1);
   next.breakthroughs = (next.breakthroughs ?? 0) + btGain;
   if (builtDeviceId) {
     next.builtThisSession = [...(next.builtThisSession || []), builtDeviceId];
