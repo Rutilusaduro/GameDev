@@ -25,6 +25,7 @@ registerPool('evolved.scene.stakes', [
       'The next bite is not casual — it is a direction.',
       'Winning here means growing into something the old self could not hold.',
       'Whatever she picks, the RA log will remember the appetite behind it.',
+      'Late-semester evolved beats feel tender and absolute — growth on purpose, appetite public, nobody pretending restraint is policy.',
     ],
   },
 ]);

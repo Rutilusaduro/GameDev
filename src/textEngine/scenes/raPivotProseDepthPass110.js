@@ -1,26 +1,5 @@
-// Homeroom activities + fair + CG + transfer weekly (Pass 110).
+// Fair / CG / weekly / memory vignettes (Pass 110) — homeroom bridges retired.
 import { registerModuleVariants } from '../engine.js';
-import { legacyBridgeWhen } from './legacyPoolPolicy.js';
-
-registerModuleVariants('homeroom.activity.parent_meeting.p0.refreshments_first', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Refreshments land before minutes — mothers eat through the agenda cover sheet.',
-    ],
-  },
-]);
-
-registerModuleVariants('homeroom.activity.health_unit.p0.official', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Wellness file numbers climb — Daisy reads each aloud like a proud inventory.',
-    ],
-  },
-]);
 
 registerModuleVariants('fair.photo.Brittany', [
   {

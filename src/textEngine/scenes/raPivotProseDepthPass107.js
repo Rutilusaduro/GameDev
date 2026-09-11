@@ -1,6 +1,5 @@
-// Session Rae + weekly fragments + blueprint room labels (Pass 107).
+// Session / weekly / blueprint / intimacy vignettes (Pass 107) — legacy bridges retired.
 import { registerModuleVariants } from '../engine.js';
-import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('session.rae.arrival.s4', [
   {
@@ -8,16 +7,6 @@ registerModuleVariants('session.rae.arrival.s4', [
     weight: 1,
     text: [
       'Rae rolls in with industrial portions — her grin says this delivery was always inevitable.',
-    ],
-  },
-]);
-
-registerModuleVariants('session.rae.extra.s5', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Backup crates appear like she predicted the first course would lose.',
     ],
   },
 ]);

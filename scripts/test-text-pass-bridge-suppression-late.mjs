@@ -586,4 +586,43 @@ for (let s = 0; s < ATTEMPTS; s += 1) {
 }
 assert.ok(cork102Hit, 'cg.scene.corkboard.Driven modular @ w24');
 
+let refresh110Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.activity.parent_meeting.p0.refreshments_first}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72430 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Refreshments land before minutes — mothers eat through the agenda cover sheet\.$/.test(line), 'pass-110 refreshments bridge alone @ w24');
+  if (line.length > 65) refresh110Hit = true;
+}
+assert.ok(refresh110Hit, 'pass-110 refreshments_first modular @ w24');
+
+let raeExtraHit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{session.rae.extra.s5}', buildTextContext({
+    subject: destiny,
+    week,
+    seed: 72440 + s,
+    globals: { featureId: 'ranked_session' },
+  }))?.trim() || '';
+  assert.ok(!/^Backup crates appear like she predicted the first course would lose\.$/.test(line), 'pass-107 rae.extra bridge alone @ w24');
+  if (line.length > 55) raeExtraHit = true;
+}
+assert.ok(raeExtraHit, 'session.rae.extra.s5 modular @ w24');
+
+let sofia109Hit = false;
+for (let s = 0; s < ATTEMPTS; s += 1) {
+  const line = render('{homeroom.conference.Sofia.portfolio}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72450 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(!/^Sofia spreads sketches — every figure thicker, every line more honest than the last portfolio\.$/.test(line), 'pass-109 Sofia portfolio bridge alone @ w24');
+  if (line.length > 65) sofia109Hit = true;
+}
+assert.ok(sofia109Hit, 'Sofia.portfolio modular @ w24');
+
 console.log('test-text-pass-bridge-suppression-late: ok');

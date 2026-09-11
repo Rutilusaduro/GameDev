@@ -52,6 +52,19 @@ const POOLS = [
   'opposition.scene.agendaInstitutional',
   'opposition.scene.endingRelief',
   'talk.refusal.command_devour.lateBrink',
+  'evolved.scene.atmosphere',
+  'evolved.scene.stakes',
+  'homeroom.scene.floorTone',
+  'homeroom.scene.choiceWarmth',
+  'homeroom.npc.kitchenGossip',
+  'cg.chat.boardTone',
+  'cg.chat.residentReply',
+  'weekly.scene.floorEcho',
+  'ge.scene.growthFrame',
+  'fair.boost.partnerHype',
+  'fair.photo.collabFrame',
+  'hall.blueprint.permission',
+  'opposition.scene.testifyWarmth',
 ];
 
 for (const key of POOLS) {

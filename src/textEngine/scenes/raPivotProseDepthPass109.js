@@ -1,6 +1,5 @@
-// Weekly + opposition + evolved activity tails (Pass 109).
+// Weekly / opposition / memory vignettes (Pass 109) — homeroom/evolved bridges retired.
 import { registerModuleVariants } from '../engine.js';
-import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('weekly.thesis_rewrite', [
   {
@@ -35,26 +34,6 @@ registerModuleVariants('opposition.hearing.removal.result.testify', [
     weight: 1,
     text: [
       'Her testimony lands soft and certain — the Board hears devotion before policy.',
-    ],
-  },
-]);
-
-registerModuleVariants('homeroom.conference.Sofia.portfolio', [
-  {
-    when: legacyBridgeWhen(),
-    weight: 1,
-    text: [
-      'Sofia spreads sketches — every figure thicker, every line more honest than the last portfolio.',
-    ],
-  },
-]);
-
-registerModuleVariants('evolved.activity.eating_competitor.s2', [
-  {
-    when: { evolvedFormId: ['eating_competitor'], evolvedStageIdx: [2] },
-    weight: 1,
-    text: [
-      'Regional record plate — she eats like the clock owes her another minute of appetite.',
     ],
   },
 ]);

@@ -23,6 +23,16 @@ for (const formId of Object.keys(EVOLVED_ACTIVITY_TEXT)) {
       },
     ]);
   });
+  stages.forEach((_, si) => {
+    registerModuleVariants(`evolved.activity.${formId}.s${si}`, [
+      {
+        when: { weekMin: 18, evolvedFormId: [formId], evolvedStageIdx: [si] },
+        weight: 6,
+        priority: 5,
+        text: [ACTIVITY_SKELETON],
+      },
+    ]);
+  });
   registerModuleVariants(`evolved.activity.${formId}`, [
     {
       when: { weekMin: 18 },

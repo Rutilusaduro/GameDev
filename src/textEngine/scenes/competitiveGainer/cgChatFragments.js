@@ -23,6 +23,8 @@ registerPool('cg.chat.residentReply', [
       'Replies stack up — envy, pride, hunger mirrored in equal measure.',
       'Someone threatens to book a measurement session; someone else already did.',
       'The thread turns competitive fast — every emoji is a dare.',
+      'Late-semester corkboard drama — numbers, photos, and hunger braided into one public dare.',
+      'Someone schedules a measurement session in the replies; envy and admiration share the same breath.',
     ],
   },
 ]);
