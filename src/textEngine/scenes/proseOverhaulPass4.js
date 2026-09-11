@@ -92,6 +92,13 @@ oncePool('confront.linger', [
 ]);
 
 oncePool('session.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover was already in her. The session lands on warm dough.',
+    'Last night\'s tray plus this plate. The chair reports both.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. She eats like the door never closed.',
+  ] },
   { when: { stageMax: 3 }, weight: 2, text: [
     'She sits a minute longer than the meal required, surprised she wants to.',
   ] },
@@ -137,6 +144,13 @@ oncePool('stream.linger', [
 ]);
 
 oncePool('faculty.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still on your floor. Staff can smell the second course from here.',
+    'Someone mentions your kitchen like weather. The pastry plate is already gone.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'They heard the after-hours knocks. Nobody writes it down. Everybody eats more.',
+  ] },
   { when: {}, text: [
     'Staff lounge pastry plate, emptied again. You feel like a craftsman.',
     'She goes back to her notes. The notes have crumbs on them now.',
@@ -215,6 +229,13 @@ oncePool('evolved.linger', [
 ]);
 
 oncePool('contest.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her. The heat plate sits easier for it.',
+    'Kitchen tray from earlier. Contest food on top. Both count.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round heat still in the middle. The table uses it.',
+  ] },
   { when: { contestStage: [0, 1] }, weight: 2, text: [
     'The bib still fits if she does not breathe too honestly. She breathes anyway.',
     'Maya has not looked over. The belly has. It wants the next plate.',

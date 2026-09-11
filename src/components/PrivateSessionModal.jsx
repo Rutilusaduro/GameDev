@@ -8,7 +8,7 @@ import { getStage } from '../gameData/stages.js';
 import { getFullnessPercent, getSessionCapacityCap, SESSION_PACE_ACTIONS, getFeedingAppetiteNote } from '../gameData/feedingSession.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
-export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent, soundEnabled = true }){
+export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, feedInSession, getMoreFood, privateSession, sessionLog, setAp, setPrivateSession, skillTapOutResistance, startIntimacyScene, useSessionEncouragement, liveStudent, week = 1, soundEnabled = true }){
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, privateSession?.student?.id]);
         const ps=privateSession;
     const s=liveStudent||ps.student;
@@ -16,7 +16,7 @@ export function PrivateSessionModal({ chooseSessionVenue, endPrivateSession, fee
     const effectiveMax=getSessionCapacityCap(s,capOpts);
     const fPct=getFullnessPercent(s,capOpts);
     const fsStage=getFullnessStage(fPct);
-    const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), 1):null;
+    const currentDesc=fPct>0?renderSessionFullness(s, Math.min(fsStage.id, 5), week):null;
     const courseOrder=["opener","main","more","dessert","extra"];
     const tier=getTier(s.relationship);
     const appetiteNote=getFeedingAppetiteNote(s);

@@ -3,6 +3,7 @@
 import { registerPool, render, createContext } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
+import './feastBeats.js';
 import './feastStageUp.js';
 import '../proseOverhaulPass2.js';
 import '../proseOverhaulPass3.js';

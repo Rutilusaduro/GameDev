@@ -6,6 +6,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
+import './beat.js';
 
 registerModuleVariants('wife.linger', [
   { when: { stageMin: 6 }, weight: 3, text: [
@@ -75,7 +76,9 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
     ...opts,
   });
   const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
-  const base = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
+  const scene = render('{wifeLessons.beat.scene}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const legacyPool = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim() || legacy;
+  const base = scene || legacyPool;
   const glow = render('{wife.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
   const linger = render('{wife.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
   return appendV2Depth([base, glow, linger].filter(Boolean).join('\n\n'), 'wifeLessons', ctx, opts.v2DepthChance ?? 0.32);

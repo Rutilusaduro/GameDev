@@ -126,3 +126,81 @@ registerPool('evolved.wife.beat', [
     'The kitchen clock is ignored. Fullness is the remaining class period.',
   ] },
 ]);
+
+// Shape: FULL SENTENCE. Remaining evolved-event families.
+registerPool('evolved.captain.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her. The squad treats it like a new drill.',
+  ] },
+  { when: {}, text: [
+    'Practice jacket open. She tells them the weigh-in board is gone and dinner is the new split.',
+    'Eighteen of them watching. She is the largest and the one pouring.',
+    'Captain voice, captain middle. Both are policy now.',
+  ] },
+]);
+
+registerPool('evolved.feedee.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen leftover still working. Chat thinks the next plate is the first.',
+  ] },
+  { when: {}, text: [
+    'Ring light on. Partner across the table. She waits for go-live like a starting gun.',
+    'Two plates. Studio heat. She is the subject and the meal.',
+    'Wren would replay this. She is already living the replay.',
+  ] },
+]);
+
+registerPool('evolved.hostess.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Last night\'s galley still in her. The Wednesday table is continuation.',
+  ] },
+  { when: {}, text: [
+    'Kitchen four hours in. She has cooked more dishes than the feast required.',
+    'Sisters already softer. She circulates, pressing seconds before plates empty.',
+    'Camille would recognize this table. Tiffany built it anyway.',
+  ] },
+]);
+
+registerPool('evolved.legend.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat still in her. The booth already knows the order.',
+  ] },
+  { when: {}, text: [
+    'Corner booth ready before she sits. Staff already knows. First-years watch.',
+    'Someone says her name like a landmark. She makes room in the booth.',
+    'Dining hall as habitat. She is {subject.lbs} lbs and the list is still going.',
+  ] },
+]);
+
+registerPool('evolved.machine.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still in her. The bench treats it like another input.',
+  ] },
+  { when: {}, text: [
+    'Lab hum. She treats the bench like another body that wants feeding.',
+    'Parts, heat, a readout that climbs. She climbs with it.',
+    'Invention and appetite use the same hands.',
+  ] },
+]);
+
+registerPool('evolved.ranked.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover tray still in her. The queue pop is a second course.',
+  ] },
+  { when: {}, text: [
+    'Headset on. Bag that was never on the ticket. Rae already in the doorway.',
+    'Focus bar, fullness bar. She is winning both.',
+    'Queue pop. She is {subject.lbs} lbs and the match is edible.',
+  ] },
+]);
+
+registerPool('evolved.nest.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Last night\'s leftover still nested with her. The next bag is continuation.',
+  ] },
+  { when: {}, text: [
+    'Delivery stacked. The couch is the whole campus.',
+    'Order-in as vocation. The door barely needs to open.',
+    'She nested at {subject.lbs} lbs and treats knock as a course.',
+  ] },
+]);

@@ -27,14 +27,14 @@ function AffinityBar({ value, color }){
 
 // ── dialogue modal ────────────────────────────────────────────
 
-function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnabled = true }){
+function DialogueModal({ teacher, affinity, onClose, onAffinityGain, leftoverKitchen = false, nightRound = false, soundEnabled = true }){
   const [nodeId, setNodeId] = useState("hub");
   const node = teacher.tree[nodeId];
   if(!node) return null;
 
   const text = typeof node.text === "function" ? node.text(teacher, affinity) : node.text;
-  const glow = (nodeId === 'nights' || nodeId === 'nights2')
-    ? (render('{faculty.afterglow}', createContext({ week: 1 }))?.trim() || '')
+  const glow = (nodeId === 'nights' || nodeId === 'nights2' || leftoverKitchen || nightRound)
+    ? (render('{faculty.afterglow}', createContext({ week: 1, globals: { leftoverFed: leftoverKitchen, nightVisit: nightRound } }))?.trim() || '')
     : '';
   const availableOptions = node.options.filter(opt => {
     if(opt.minAffinity && affinity < opt.minAffinity) return false;
@@ -205,14 +205,15 @@ function FacultyCard({ teacher, affinity, onClick }){
 
 // ── main view ─────────────────────────────────────────────────
 
-export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity }){
+export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity, leftoverKitchen = false, nightRound = false }){
   const [openTeacher, setOpenTeacher] = useState(null);
   const affinity = facultyAffinity || {};
 
   const handleAffinityGain = (teacherId, amount) => {
+    const extra = (leftoverKitchen ? 1 : 0) + (nightRound ? 1 : 0);
     setFacultyAffinity(prev => ({
       ...prev,
-      [teacherId]: Math.min(FACULTY_CONFIG.maxAffinity, (prev[teacherId] || 0) + amount),
+      [teacherId]: Math.min(FACULTY_CONFIG.maxAffinity, (prev[teacherId] || 0) + amount + extra),
     }));
   };
 
@@ -251,6 +252,8 @@ export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity }){
           affinity={affinity[activeTeacher.id] || 0}
           onClose={()=>setOpenTeacher(null)}
           onAffinityGain={(amt)=>handleAffinityGain(activeTeacher.id, amt)}
+          leftoverKitchen={leftoverKitchen}
+          nightRound={nightRound}
         />
       )}
     </div>

@@ -162,12 +162,16 @@ registerPool('hunt.feast.afterglow', [
 export function renderLilithFeast(student, stageId, week = 1, opts = {}) {
   if (!student) return '';
   const sid = Math.min(9, Math.max(0, stageId ?? 0));
-  const key = `hunt.feast.s${sid}`;
-  if (!hasModule(key)) return getConsumeText(stageId);
   const ctx = createContext({ subject: student, week, globals: { feastStage: sid }, ...opts });
-  const line = render(`{${key}}`, ctx, { trace: opts.trace || null })?.trim();
+  const scene = hasModule('hunt.feast.scene')
+    ? render('{hunt.feast.scene}', ctx, { trace: opts.trace || null })?.trim()
+    : '';
+  const legacyKey = `hunt.feast.s${sid}`;
+  const legacy = (!scene && hasModule(legacyKey))
+    ? render(`{${legacyKey}}`, ctx, { trace: opts.trace || null })?.trim()
+    : '';
   const glow = render('{hunt.feast.afterglow}', ctx, { trace: opts.trace || null })?.trim();
-  const out = [line, glow].filter(Boolean).join('\n\n');
+  const out = [scene || legacy, glow].filter(Boolean).join('\n\n');
   return out || getConsumeText(stageId);
 }
 

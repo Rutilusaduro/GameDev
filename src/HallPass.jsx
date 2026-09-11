@@ -6472,6 +6472,9 @@ export default function HallPass(){
       const{ok,student,reason,item}=tryDestinyPurchase(ensureStreamFields(st),itemId);
       if(ok){
         push(`📡 Destiny bought ${item.emoji} ${item.label}.`);
+        if(item.id==='chat_feast'||item.id==='delivery_stash'){
+          return processStudentGain(student,depthGainLbs(student,item.id==='chat_feast'?2:1,week,{}),0);
+        }
         return student;
       }
       if(reason==='funds') push('⚠️ Destiny cannot afford that.');
@@ -7516,7 +7519,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'dinner',
         forcePush:!!opts.forcePush,
-        gainLbs:rnd(dish.gain[0],dish.gain[1]),
+        gainLbs:depthGainLbs(s,rnd(dish.gain[0],dish.gain[1]),week,{skipNight:(dinnerEvent.dishes||[]).length>0}),
       },
     });
     if(!result.ok){
@@ -7714,7 +7717,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'group_dinner',
         forcePush:!!opts.forcePush,
-        gainLbs:rnd(dish.gain[0],dish.gain[1]),
+        gainLbs:depthGainLbs(live,rnd(dish.gain[0],dish.gain[1]),week,{skipNight:(evtStudent.dishes||[]).length>0}),
       },
     });
     if(!result.ok){
@@ -7970,7 +7973,7 @@ export default function HallPass(){
         generousTrait:hasTrait('generous'),
         context:'private_session',
         forcePush:!!opts.forcePush,
-        gainLbs:rnd(food.gain[0],food.gain[1]),
+        gainLbs:depthGainLbs(s,rnd(food.gain[0],food.gain[1]),week,{skipNight:(privateSession.foods||[]).length>0}),
       },
     });
     if(!result.ok){
@@ -9186,6 +9189,8 @@ export default function HallPass(){
             dismissCampusEncounter={dismissCampusEncounter}
             facultyAffinity={facultyAffinity}
             setFacultyAffinity={setFacultyAffinity}
+            leftoverKitchen={students.some(st=>st.leftoverFedThisWeek)}
+            nightRound={students.some(st=>st.lastNightVisitWeek===week)}
             portionSaintAvailable={lilithUnlocked&&!!opposition?.supernatural?.actTriggered&&!opposition?.supernatural?.portionSaintConsumed&&campusState.at==='dining_hall'&&(opposition?.supernatural?.scarcityPressure||0)>=35}
             onHuntPortionSaint={huntPortionSaint}
             ap={ap}
@@ -9330,7 +9335,7 @@ export default function HallPass(){
       {/* ── SOCIAL EVENT RESULT ── */}
 
       {/* ── PRIVATE SESSION MODAL ── */}
-      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement} liveStudent={students.find(st=>st.id===privateSession.student.id)||privateSession.student} soundEnabled={soundEnabled}/>}
+      {privateSession&&<PrivateSessionModal chooseSessionVenue={chooseSessionVenue} endPrivateSession={endPrivateSession} feedInSession={feedInSession} getMoreFood={getMoreFood} privateSession={privateSession} sessionLog={sessionLog} setAp={setAp} setPrivateSession={setPrivateSession} skillTapOutResistance={skillTapOutResistance} startIntimacyScene={startIntimacyScene} useSessionEncouragement={useSessionEncouragement} liveStudent={students.find(st=>st.id===privateSession.student.id)||privateSession.student} week={week} soundEnabled={soundEnabled}/>}
 
       {/* ── EP5: INTIMACY SCENE SELECTOR ── */}
       {intimacySceneSelector&&<IntimacySceneSelector ap={ap} intimacySceneSelector={intimacySceneSelector} setIntimacySceneSelector={setIntimacySceneSelector} startIntimacyScene={startIntimacyScene} soundEnabled={soundEnabled}/>}

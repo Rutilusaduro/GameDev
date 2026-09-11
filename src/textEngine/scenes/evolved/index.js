@@ -8,6 +8,7 @@ import '../proseOverhaulPass4.js';
 import './salonGalleryBeats.js';
 import './activityBeats.js';
 import './formBeats.js';
+import './extraFormBeats.js';
 
 /** Evolved form → optional second depth pool appended after evolved.v2.depth */
 const EVOLVED_FORM_POOLS = {
@@ -35,6 +36,32 @@ const EVOLVED_BEATS = {
   eating_streamer: 'evolved.streamer.beat',
   homeroom_queen: 'evolved.homeroom.beat',
   wife_lessons: 'evolved.wife.beat',
+  eating_captain: 'evolved.captain.beat',
+  big_squad_captain: 'evolved.captain.beat',
+  feedee_creator: 'evolved.feedee.beat',
+  chapter_hostess: 'evolved.hostess.beat',
+  campus_legend: 'evolved.legend.beat',
+  machine_goddess: 'evolved.machine.beat',
+  ranked_feedee: 'evolved.ranked.beat',
+  home_nest: 'evolved.nest.beat',
+  sumo: 'evolved.sumo.beat',
+  speed_eater: 'evolved.speed.beat',
+  asmr_creator: 'evolved.asmr.beat',
+  eating_diarist: 'evolved.diarist.beat',
+  food_photographer: 'evolved.photo.beat',
+  body_positive_creator: 'evolved.bodypos.beat',
+  food_researcher: 'evolved.research.beat',
+  food_tourist: 'evolved.tourist.beat',
+  homestead_queen: 'evolved.homestead.beat',
+  state_fair_queen: 'evolved.fair.beat',
+  ff_author: 'evolved.author.beat',
+  psych_researcher: 'evolved.psych.beat',
+  community_researcher: 'evolved.community.beat',
+  body_positive_greek: 'evolved.greek.beat',
+  installation_artist: 'evolved.install.beat',
+  anonymous_blogger: 'evolved.blogger.beat',
+  delivery_hive: 'evolved.hive.beat',
+  competitive_gainer: 'evolved.gainer.beat',
 };
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   const line = typeof text === 'string' ? text.trim() : '';

@@ -5,6 +5,7 @@ import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
 import '../proseOverhaulPass4.js';
+import './biteBeats.js';
 import {
   CONTEST_FOOD_POPUPS,
   CONTEST_ACTION_POPUPS,
@@ -46,6 +47,14 @@ export function renderContestLegacy(text, student, week, stageIdx = 0, opts = {}
 }
 
 export function renderContestFoodPopup(foodId, stageIdx, student, week) {
+  const ctx = buildContestCtx(student, week, stageIdx, { globals: { contestFood: foodId } });
+  const scene = render('{contest.bite.scene}', ctx)?.trim();
+  if (scene) {
+    return renderContestLegacy(scene, student, week, stageIdx, {
+      v2DepthChance: 0.26,
+      globals: { contestFood: foodId },
+    });
+  }
   const raw = stageText(CONTEST_FOOD_POPUPS[foodId], stageIdx);
   return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
 }
