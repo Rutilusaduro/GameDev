@@ -387,7 +387,8 @@ import {
   computeHallLoungeSkillCurrency, buyHallLoungeSkill, aggregateHallLoungeSkillEffects, listPurchasableHallLoungeSkills,
   hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
-import { listActiveSynergies } from './gameData/hallBlueprint.js';
+import { hallRoomForSkillCategory, listActiveSynergies } from './gameData/hallBlueprint.js';
+import { computeHallAmbianceMeters } from './gameData/hallAmbiance.js';
 import { rollWeeklyAmbiancePulse } from './gameData/hallAmbiance.js';
 import { depthTalkRelGrant, depthCorruptionGrant, enrichTalkEffect } from './gameData/mechanicsDepthLayer.js';
 import {
@@ -1043,8 +1044,12 @@ export default function HallPass(){
     const result=buyHallLoungeSkill(skillId,ownedHallSkills||{},students);
     if(!result.ok){push(`⚠️ ${result.reason}`);return;}
     setOwnedHallSkills(result.owned);
-    const prose=render('{hall.blueprint.purchase}',{week});
-    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).${prose?` ${prose}`:''}`);
+    const roomId=hallRoomForSkillCategory(result.skill.category);
+    const ambPeak=computeHallAmbianceMeters(result.owned).peak ?? 0;
+    const confirm=render('{hall.blueprint.upgrade.confirm}',{week,globals:{hallRoomId:roomId,hallAmbiancePeak:ambPeak}});
+    const prose=render('{hall.blueprint.purchase}',{week,globals:{hallRoomId:roomId}});
+    const blurb=[confirm,prose].filter(Boolean).join(' ');
+    push(`🏛️ Hall upgrade: ${result.skill.label} (${result.spent} lbs prestige).${blurb?` ${blurb}`:''}`);
     if(listActiveSynergies(result.owned).length>priorSynergy){
       const syn=render('{hall.blueprint.synergy}',{week});
       if(syn) setTimeout(()=>push(`🔗 Wing resonance: ${syn}`),120);
@@ -6341,8 +6346,8 @@ export default function HallPass(){
     const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
     const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
     const mjGain=scaleEvolvedEventLbs(rnd(mjLo,mjHi)), cGain=scaleEvolvedEventLbs(rnd(cLo,cHi));
-    processStudentGain(mj,mjGain,3);
-    if(collab.id!==mj.id) processStudentGain(collab,cGain,2);
+    processStudentGain(mj,mjGain,scaleEvolvedEventRel(3));
+    if(collab.id!==mj.id) processStudentGain(collab,cGain,scaleEvolvedEventRel(2));
     push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
     setFairTrainingState(prev=>({...prev,
       sessionsThisCycle:prev.sessionsThisCycle+1,

@@ -381,6 +381,11 @@ function evalWhen(when, ctx) {
       case "campusFattening": ok = !!ctx.globals?.campusFattening === !!v; break;
       case "campusTierMin": ok = (ctx.globals?.campusTier ?? 0) >= v; break;
       case "campusTierMax": ok = (ctx.globals?.campusTier ?? 0) <= v; break;
+      case "hallAmbiancePeakMin": {
+        const peak = ctx.globals?.hallAmbiancePeak ?? ctx.globals?.hallAmbiancePeakMin ?? 0;
+        ok = Array.isArray(v) ? v.some((min) => peak >= min) : peak >= v;
+        break;
+      }
       case "weightBand": ok = ctx.globals?.weightBand === v; break;
       case "nodeId": ok = ctx.globals?.nodeId === v; break;
       case "targetType": ok = ctx.globals?.targetType === v; break;

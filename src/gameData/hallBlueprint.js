@@ -83,6 +83,12 @@ export function skillsForHallRoom(roomId) {
   return SKILL_TREE.filter((sk) => cats.has(sk.category));
 }
 
+/** First wing that owns a skill category (for blueprint purchase prose). */
+export function hallRoomForSkillCategory(category) {
+  const room = HALL_ROOMS.find((r) => r.categories.includes(category));
+  return room?.id || 'common_lounge';
+}
+
 export function countOwnedInRoom(owned = {}, roomId) {
   const ids = new Set(skillsForHallRoom(roomId).map((s) => s.id));
   return Object.keys(owned).filter((id) => owned[id] && ids.has(id)).length;

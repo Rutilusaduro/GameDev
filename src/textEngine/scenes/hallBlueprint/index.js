@@ -171,6 +171,19 @@ registerPool('hall.blueprint.purchase', [
   ] },
 ]);
 
+registerPool('hall.blueprint.upgrade.confirm', [
+  { when: {}, text: [
+    (ctx) => {
+      const r = getHallRoom(ctx.globals?.hallRoomId || 'common_lounge');
+      return r
+        ? `${r.emoji} ${r.short} wing locks in — ${r.blurb}`
+        : 'The blueprint updates; the floor learns a new appetite.';
+    },
+    'Residents trace the new line on the map with their eyes before their hands find the kitchen.',
+    'Another upgrade pinned — habit thickens where policy used to thin out.',
+  ] },
+]);
+
 registerPool('hall.blueprint.synergy', [
   { when: {}, text: [
     'Two wings hum together now — lounge warmth bleeding into kitchen steam until nobody remembers hunger as an accident.',
