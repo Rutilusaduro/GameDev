@@ -33,9 +33,9 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, leftoverKit
   if(!node) return null;
 
   const text = typeof node.text === "function" ? node.text(teacher, affinity) : node.text;
-  const glow = (nodeId === 'nights' || nodeId === 'nights2' || leftoverKitchen || nightRound)
-    ? (render('{faculty.afterglow}', createContext({ week: 1, globals: { leftoverFed: leftoverKitchen, nightVisit: nightRound } }))?.trim() || '')
-    : '';
+  const facCtx = createContext({ week: 1, globals: { leftoverFed: leftoverKitchen, nightVisit: nightRound } });
+  const beat = render('{faculty.beat}', facCtx)?.trim() || '';
+  const glow = render('{faculty.afterglow}', facCtx)?.trim() || '';
   const availableOptions = node.options.filter(opt => {
     if(opt.minAffinity && affinity < opt.minAffinity) return false;
     return true;
@@ -92,6 +92,7 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, leftoverKit
           fontStyle:"italic",
         }}>
           {text}
+          {beat ? <div style={{ marginTop: 10, opacity: 0.9 }}>{beat}</div> : null}
           {glow ? <div style={{ marginTop: 10, opacity: 0.85 }}>{glow}</div> : null}
         </div>
 

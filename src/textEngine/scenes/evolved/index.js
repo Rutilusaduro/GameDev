@@ -65,7 +65,6 @@ const EVOLVED_BEATS = {
 };
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   const line = typeof text === 'string' ? text.trim() : '';
-  if (!line) return '';
   const ctx = buildTextContext({
     subject: student,
     week,
@@ -73,22 +72,24 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
       featureId: opts.formId || student?.evolvedForm || 'evolved',
       stageIdx: opts.stageIdx ?? null,
       phaseIdx: opts.phaseIdx ?? null,
+      leftoverFed: !!student?.leftoverFedThisWeek,
       ...(opts.globals || {}),
     },
     ...opts,
   });
   const chance = opts.v2DepthChance ?? 0.3;
-  let out = appendV2Depth(line, 'evolved', ctx, chance);
   const formId = opts.formId || student?.evolvedForm;
+  const beatKey = EVOLVED_BEATS[formId] || null;
+  const beat = (!opts.skipBeats && beatKey)
+    ? (render(`{${beatKey}}`, ctx)?.trim() || '')
+    : '';
+  const unique = beat ? '' : line;
+  if (!unique && !beat) return '';
+  let out = appendV2Depth(beat || unique, 'evolved', ctx, chance);
   const formPool = EVOLVED_FORM_POOLS[formId];
   if (formPool && out?.trim() && Math.random() < chance * 0.85) {
     const extra = render(`{${formPool}}`, ctx)?.trim();
     if (extra) out = `${out}\n\n${extra}`;
-  }
-  const beatKey = EVOLVED_BEATS[formId] || null;
-  if (beatKey && out?.trim() && !opts.skipBeats) {
-    const beat = render(`{${beatKey}}`, ctx)?.trim();
-    if (beat) out = `${out}\n\n${beat}`;
   }
   const glowKey = EVOLVED_AFTERGLOW[formId];
   if (glowKey && opts.ending && out?.trim()) {

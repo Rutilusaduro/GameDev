@@ -143,6 +143,21 @@ oncePool('stream.linger', [
   ] },
 ]);
 
+oncePool('faculty.beat', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley leftover still on the floor. She talks like the kitchen is a second syllabus.',
+    'Pastry plate gone. She files your hall under appetite and does not pretend otherwise.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'After-hours knocks reached staff. She keeps her voice low and her plate closer.',
+  ] },
+  { when: {}, text: [
+    'Crumbs on the notes. She does not brush them off until you leave.',
+    'Staff lounge light finds the extra inch on everyone who sits too long.',
+    'She talks housing. The pastry plate talks first.',
+  ] },
+]);
+
 oncePool('faculty.afterglow', [
   { when: { leftoverFed: true }, weight: 3, text: [
     'Galley leftover still on your floor. Staff can smell the second course from here.',

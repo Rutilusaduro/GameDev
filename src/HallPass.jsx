@@ -1774,7 +1774,7 @@ export default function HallPass(){
       }
       if(s.oppositionBlockedGain) return {...s,oppositionBlockedGain:false};
       if(!studentReceivesPassiveGain(s)) return s;
-      if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,LILITH_PASSIVE_GAIN,0);
+      if(s.id===LILITH_ID&&lilithUnlocked) return processStudentGain(s,depthGainLbs(s,LILITH_PASSIVE_GAIN,week,{}),0);
       if(s.id===10&&cultivatorState?.digestWeeksLeft>0) return s; // Reneé digesting — no passive gain
       const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{});
       let nsHab=habTick.student;
@@ -1804,6 +1804,7 @@ export default function HallPass(){
         const evPassive=evTree.filter(sk=>(s.evolvedSkills||[]).includes(sk.id)&&sk.passiveBonus).reduce((a,b)=>a+(b.passiveBonus||0),0);
         gain+=evPassive;
       }
+      if(gain>0) gain=depthGainLbs(nsHab,gain,week,{});
       let ns=processStudentGain(nsHab,gain,0);
       ns=tickOutfitWeek(ns,dormState||createInitialDormState());
       ns=tickPhysicalTraits(ns,ownedSkills);
@@ -1831,7 +1832,7 @@ export default function HallPass(){
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
         const extra=rollCampusPassiveLbs(pharmacistState,rnd)+(pharmYield?1:0)+(leftoverKitchen?1:0);
-        return extra>0?processStudentGain(s,extra,0):s;
+        return extra>0?processStudentGain(s,depthGainLbs(s,extra,week,{skipNight:true}),0):s;
       });
     }
     let nextPharmacistState=pharmacistState?tickPharmacistWeek(pharmacistState):null;
@@ -1841,7 +1842,7 @@ export default function HallPass(){
       if(cultTick?.passiveAddictedGain>0){
         updated=updated.map(s=>{
           if(!studentReceivesPassiveGain(s)||(s.addictionLevel??0)<1) return s;
-          return processStudentGain(s,cultTick.passiveAddictedGain,0);
+          return processStudentGain(s,depthGainLbs(s,cultTick.passiveAddictedGain,week,{}),0);
         });
       }
       const { _cultWeekly, ...cleanPs }=nextPharmacistState;
@@ -1865,7 +1866,7 @@ export default function HallPass(){
     if(satPassive>0){
       updated=updated.map(s=>{
         if(!studentReceivesPassiveGain(s)) return s;
-        return processStudentGain(s,satPassive,0);
+        return processStudentGain(s,depthGainLbs(s,satPassive,week,{}),0);
       });
     }
 
@@ -1898,12 +1899,12 @@ export default function HallPass(){
       });
       ns=tick.student;
       if(deviceTickHabitatMult(ns,dormState||createInitialDormState())>1){
-        ns=processStudentGain(ns,1,0);
+        ns=processStudentGain(ns,depthGainLbs(ns,1,week,{}),0);
       }
       if(ns._pendingGainLbs){
         const g=ns._pendingGainLbs;
         const{ _pendingGainLbs,...rest}=ns;
-        ns=processStudentGain(rest,g,0);
+        ns=processStudentGain(rest,g>0?depthGainLbs(rest,g,week,{}):0,0);
       }
       if(tick.tickEvents?.length){
         for(const ev of tick.tickEvents){
@@ -1970,13 +1971,21 @@ export default function HallPass(){
         setTimeout(()=>{
           if(campusEv.target==='hall'){
             push(`🌿 ${campusEv.text()}`);
-            setStudents(prev=>prev.map(s=>studentReceivesPassiveGain(s)?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
+            setStudents(prev=>prev.map(s=>{
+              if(!studentReceivesPassiveGain(s)) return s;
+              const g=scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0);
+              return g>0?processStudentGain(s,depthGainLbs(s,g,week,{}),0):s;
+            }));
           }else{
             const gainTargets=updated.filter(s=>studentReceivesPassiveGain(s)&&!campusStayHome(s,dormState||createInitialDormState(),Math.random,week));
             const target=gainTargets.length?gainTargets[rnd(0,gainTargets.length-1)]:null;
             if(target){
               push(`🌿 ${campusEv.text(target)}`);
-              setStudents(prev=>prev.map(s=>s.id===target.id?processStudentGain(s,scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0),0):s));
+              setStudents(prev=>prev.map(s=>{
+                if(s.id!==target.id) return s;
+                const g=scaleCampusEventGain(campusEv.gain,pharmacistState,rnd,nextSaturation?.tier??0);
+                return g>0?processStudentGain(s,depthGainLbs(s,g,week,{}),0):s;
+              }));
             }
           }
         },180);
