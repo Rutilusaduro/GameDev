@@ -14,6 +14,8 @@ const POOLS = [
   'wl.lesson.aroma',
   'cg.scene.dataObsession',
   'cg.scene.competitionHeat',
+  'evolved.scene.sumoDohyo',
+  'evolution.blurb.threshold',
 ];
 
 for (const key of POOLS) {

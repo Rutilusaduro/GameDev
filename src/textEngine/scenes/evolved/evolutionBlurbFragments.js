@@ -10,6 +10,7 @@ registerPool('evolution.blurb.threshold', [
       'The next stage waits behind one more yes — appetite sharpened, body ready.',
       'Evolution is not a surprise here; it is a door she already leaned on.',
       'Her reflection and the roster agree: time to grow into the named path.',
+      'Late-semester evolution feels inevitable — appetite sharpened, hallway already cheering the yes.',
     ],
   },
 ]);

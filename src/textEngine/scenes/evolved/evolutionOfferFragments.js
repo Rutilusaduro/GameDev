@@ -10,6 +10,7 @@ registerPool('evolution.offer.hallTone', [
       'The hall feels ready for a new shape — appetite, ambition, and a resident who said yes.',
       'Floor favor and private coaching braid together; evolution starts as permission.',
       'Someone is about to outgrow their old self on purpose — the lounge can feel it.',
+      'Blueprint ink and roster pins agree: the floor is ready for a named transformation.',
     ],
   },
 ]);
