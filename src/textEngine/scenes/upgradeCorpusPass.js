@@ -272,6 +272,111 @@ registerModuleVariants('wi.replyDialogue', [
   ] },
 ]);
 
+registerModuleVariants('stream.betweenRound', [
+  { when: { perf: 'good', stageMin: 6 }, weight: 2, text: [
+    'Look at me trying to look modest while this chair is doing overtime.',
+    'Chat can see all of it. Fine. Watch. I\'m winning anyway.',
+  ] },
+  { when: { perf: 'good', corruption: [2] }, weight: 2, text: [
+    'I\'m not even pretending this is a bit anymore. I like being this full on stream.',
+    'Keep the donations coming. I\'m keeping the bites coming.',
+  ] },
+  { when: { perf: 'average', stageMin: 4, stageMax: 7 }, weight: 2, text: [
+    'This used to be easier when there was less of me to haul through a round.',
+    'I\'m pacing. Polite word. I am very full and still live.',
+  ] },
+  { when: { perf: 'poor', corruption: [0] }, weight: 2, text: [
+    'Don\'t clip this. I look like I bit off more than I can chew. Because I did.',
+    'Chat, if you could not screenshot the struggle… thanks. I\'m going anyway.',
+  ] },
+  { when: { challengeType: 'sensual', stageMin: 5 }, weight: 2, text: [
+    'Slow is harder when there\'s this much of me to keep in frame.',
+    'I\'m making them wait. The belly is not waiting. It\'s just… existing. Loudly.',
+  ] },
+]);
+
+registerModuleVariants('stream.roundStart', [
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'Okay. Getting settled is half the round now. Chat, be patient with the physics.',
+    'Round start. Yes, the chair already knows me. Yes, we\'re still doing this.',
+  ] },
+  { when: { hungerTierMin: 3 }, weight: 2, text: [
+    'I was hungry before we went live. That was twenty minutes ago. Send help. Or fries.',
+    'Hunger check: catastrophic. Round check: starting anyway.',
+  ] },
+]);
+
+registerModuleVariants('enc.deflect', [
+  { when: { archetype: 'bookworm', corruption: [0] }, weight: 3, text: [
+    `"That's a leading question," {subject.name} says, already looking at the plate.`,
+    `"I should control for confounding variables," she says. The variable is hunger.`,
+  ] },
+  { when: { archetype: 'quiet', corruption: [0] }, weight: 3, text: [
+    `{subject.name} shakes her head once. The no does not reach her hands.`,
+    `"Don't," she says, and stays.`,
+  ] },
+  { when: { archetype: 'sorority', corruption: [0] }, weight: 3, text: [
+    `"Babe, you cannot just say that," {subject.name} laughs, already closer to the food.`,
+    `"That's so bad," she says, delighted, reaching.`,
+  ] },
+  { when: { stageMin: 6, corruption: [0] }, weight: 2, text: [
+    `"Look at me and tell me I need encouragement," she says, then takes it anyway.`,
+    `"This is how I got here," she mutters, and does not stop.`,
+  ] },
+]);
+
+registerModuleVariants('enc.giveIn', [
+  { when: { gainStance: 'secret' }, weight: 3, text: [
+    `"Just this," she says, too carefully, like the lie needs good lighting.`,
+    `She eats like someone who has been waiting for an excuse with your name on it.`,
+  ] },
+  { when: { gainStance: 'opposed' }, weight: 2, text: [
+    `"I hate that this works," she says, and keeps eating.`,
+    `"Don't look so pleased," she mutters, mouth full.`,
+  ] },
+  { when: { relationship: [3] }, weight: 2, text: [
+    `"You always know when I want to be told," she says, and lets you.`,
+    `She eats like the permission is part of the flavor.`,
+  ] },
+]);
+
+registerModuleVariants('enc.accept', [
+  { when: { archetype: 'overachiever' }, weight: 3, text: [
+    `"Fine. New KPI: stop pretending the old one was working."`,
+    `"You've been right. I hate that. I'm eating anyway."`,
+  ] },
+  { when: { archetype: 'athlete' }, weight: 3, text: [
+    `"New event," she says. "No weight class. Coach isn't here."`,
+    `"I'm done training against this. I'm training into it."`,
+  ] },
+]);
+
+registerModuleVariants('enc.owned', [
+  { when: { archetype: 'influencer' }, weight: 3, text: [
+    `"Encourage me on stream next time. The comments write themselves."`,
+    `"I don't need permission. I do need you saying it like a caption."`,
+  ] },
+  { when: { archetype: 'predator' }, weight: 3, text: [
+    `{subject.name} smiles without showing much. "Say it. I like the sound."`,
+    `"You feed. I grow. Keep narrating."`,
+  ] },
+]);
+
+registerModuleVariants('enc.bodyAside', [
+  { when: { bodyType: ['pear', 'fertility_goddess'], stageMin: 4 }, weight: 2, text: [
+    'The encouragement lands in her hips first — a warm, widening yes she can feel through the chair.',
+    'Her thighs answer before her mouth does, spreading, settling, staying.',
+  ] },
+  { when: { bodyType: ['apple', 'rotund'], stageMin: 4 }, weight: 2, text: [
+    'Her belly takes the compliment personally, rounding forward as if it heard you.',
+    'The middle of her is already nodding. The rest of her is catching up.',
+  ] },
+  { when: { fullnessMin: 0.8 }, weight: 2, text: [
+    'She is already full, and the encouragement still finds a place to sit.',
+    'Fullness and permission occupy the same warm estate under her shirt.',
+  ] },
+]);
+
 registerModuleVariants('wi.numberLine', [
   { when: { isGaining: true, stageMin: 2 }, weight: 2, text: [
     'The number is higher than last week. The body already knew.',
