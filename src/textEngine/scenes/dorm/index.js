@@ -9,6 +9,10 @@ registerDimension('floorIntimacy', (ctx) => ctx.globals?.floorIntimacy ?? 0);
 
 // Shape: FULL SENTENCE. Door / hall approach.
 registerPool('night.knock', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The hall still smells like the galley. Her door is the one that kept eating after lights.',
+    'Foil heat under the door. You knock anyway. She was not done.',
+  ] },
   { when: {}, text: [
     'The hall is dim. Your master key is a quiet weight in your pocket.',
     'After hours, the carpet swallows footsteps. Her door is the one that still has a light under it.',
@@ -18,6 +22,19 @@ registerPool('night.knock', [
 
 // Shape: FULL SENTENCE. What the room is doing at this size.
 registerPool('night.room', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    'Wrappers from the kitchen tray plus the ones she meant to throw out. The lamp keeps both.',
+    'Move-in clutter, then foil. The snack shelf is winning twice.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    'The chair has her shape and last night\'s heat. The mini-fridge hums like it already knew.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'Fridge light, foil, a body that used the second sitting as furniture.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The room holds two sittings. Lamp light finds crumbs from both.',
+  ] },
   { when: { stageMax: 2 }, text: [
     'The room still looks like move-in — except the snack shelf is winning.',
     'A desk lamp, a narrow bed, wrappers she meant to throw out.',
@@ -43,6 +60,23 @@ registerPool('night.room', [
 
 // Shape: FULL SENTENCE. Kind-keyed opening.
 registerPool('night.kindBeat', [
+  { when: { leftoverFed: true, nightKind: 'craving' }, weight: 5, text: [
+    'She is already eating the tray you thought was finished. Relief. Not surprise.',
+    'Leftover was supposed to close the night. Hunger made a second mess. She lets you see it.',
+  ] },
+  { when: { leftoverFed: true, nightKind: 'secret' }, weight: 5, text: [
+    'Frosting on her thumb and foil on the desk. Caught twice.',
+    'She startles at leftover evidence, then laughs too fast.',
+  ] },
+  { when: { leftoverFed: true, nightKind: 'raid' }, weight: 5, text: [
+    'The snack drawer is open on a kitchen that already ran. She does not close either.',
+  ] },
+  { when: { leftoverFed: true, nightKind: 'stuffed' }, weight: 5, text: [
+    'She is parked on the bed, leftover still rounding. Breathing like both meals are still happening.',
+  ] },
+  { when: { leftoverFed: true, nightKind: 'checkin' }, weight: 5, text: [
+    'She is awake with foil still in the room. Willing to talk if you stay for the second sitting.',
+  ] },
   { when: { nightKind: 'craving' }, weight: 4, text: [
     'She is already eating. The look she gives you is relief, not surprise.',
     'Hunger made a mess of the night. She lets you see it.',
@@ -125,6 +159,18 @@ registerPool('night.line', [
 
 // Shape: FULL SENTENCE. Body beat keyed on stage.
 registerPool('night.body', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The sleep shirt shows leftover work she keeps touching like it might recede. It will not.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'Sleep shirt given up across a middle the kitchen already opened. Warmth radiates off both sittings.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'She is leftover heat in lamplight — belly first, the second sitting still arriving.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You feel kitchen heat on her before you fully step in.',
+  ] },
   { when: { stageMax: 3 }, text: [
     'She is still easy in the doorway, a softness starting under the sleep shirt.',
     'The sleep shirt shows a belly she keeps touching like it might recede. It will not.',
@@ -145,6 +191,16 @@ registerPool('night.body', [
 ]);
 
 registerPool('night.afterglow', [
+  { when: { leftoverFed: true, nightKind: 'craving' }, weight: 4, text: [
+    'She swallows leftover and this visit in the same breath. The night has a plan.',
+  ] },
+  { when: { leftoverFed: true, nightKind: 'secret' }, weight: 4, text: [
+    'The wrappers stay. The foil stays. So does the understanding.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You leave the light how she likes it. Kitchen heat stays in the room on purpose.',
+    'The knock is over. The second sitting keeps happening in her for a while.',
+  ] },
   { when: { nightKind: 'craving' }, weight: 3, text: [
     'She swallows. The night has a plan now, and it includes you.',
     'Hunger made the visit simple. She lets you see the simple part.',

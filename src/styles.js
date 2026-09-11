@@ -16,7 +16,7 @@ export const C={
   grid2:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(185px,1fr))",gap:8},
   grid3:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))",gap:7},
   logE:{fontSize:12,padding:"3px 0",borderBottom:"1px solid rgba(80,18,140,0.12)",lineHeight:1.65,color:"#c0a888"},
-  overlay:{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(2,0,6,0.9)",backdropFilter:"saturate(1.05) blur(8px)",WebkitBackdropFilter:"saturate(1.05) blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:300},
+  overlay:{position:"fixed",top:0,left:0,right:0,bottom:0,background:"#070510",display:"flex",alignItems:"center",justifyContent:"center",zIndex:4000},
   modal:{background:"#0e0820",border:"1px solid #5a18c8",borderRadius:12,padding:24,maxWidth:540,width:"93%",maxHeight:"88vh",overflow:"auto",boxShadow:"0 0 60px rgba(100,30,200,0.3)"},
   tag:(bg,color="#fff")=>({background:bg,color,borderRadius:10,padding:"2px 8px",fontSize:10,fontWeight:700,letterSpacing:1,whiteSpace:"nowrap"}),
   infoBox:(bg)=>({background:bg,border:"1px solid rgba(255,255,255,0.07)",borderRadius:8,padding:10,marginBottom:9,lineHeight:1.75}),

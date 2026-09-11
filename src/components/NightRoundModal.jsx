@@ -45,8 +45,8 @@ export function NightRoundModal({
   if (!student) return null;
 
   return (
-    <ModalOverlay onClose={onClose}>
-      <div style={{ ...C.modal, maxWidth: 560 }} role="dialog" aria-labelledby="night-round-title">
+    <ModalOverlay onClose={onClose} soundEnabled={soundEnabled} style={{ zIndex: 4000, background: '#070510' }}>
+      <div style={{ ...C.modal, maxWidth: 560, background: '#0e0820', isolation: 'isolate' }} role="dialog" aria-labelledby="night-round-title">
         <div style={{ fontSize: 10, letterSpacing: 2, color: '#8a70b8', marginBottom: 6 }}>NIGHT ROUNDS</div>
         <h2 id="night-round-title" style={{ margin: '0 0 8px', fontSize: 18, color: '#e8d8c0' }}>
           Room {String(100 + student.id)} · {student.name}

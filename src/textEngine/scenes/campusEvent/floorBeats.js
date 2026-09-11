@@ -91,25 +91,68 @@ registerPool('floor.scene', [
   ] },
 ]);
 
-// Shape: FULL SENTENCE. Choice aftermath wrap.
-registerPool('floor.choice.wrap', [
+// Shape: FULL SENTENCE. Choice aftermath — leftover/night setup.
+registerPool('floor.choice.setup', [
   { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
-    'Foil still under a nail. The choice sits on a waistband that already lost once.',
-    'She files the extra sitting as weather and eats anyway.',
+    'She sits like the kitchen already asked a follow-up.',
+    'Foil still under a nail. Check-in pretends that is weather.',
   ] },
   { when: { leftoverFed: true }, weight: 3, text: [
-    'The midnight dough takes this plate without asking.',
-    'Crumbs from earlier, then this. The lounge is a second kitchen.',
+    'Crumbs from the midnight sitting. The choice lands on them.',
+    'Two sittings in one lounge hour. She claims the cushion anyway.',
   ] },
   { when: { nightVisit: true }, weight: 3, text: [
-    'Night-round heat still in the middle. She eats like the door never closed.',
-  ] },
-  { when: { stageMax: 4, corruption: [0] }, weight: 2, text: [
-    'She tugs cloth that almost still works and files the warmth as weather.',
+    'Night-round knock still in the wood. This choice uses the same open door.',
   ] },
   { when: {}, text: [
     'The box on the side table does not last the hour.',
     'She sits a minute longer than the check-in required.',
     'You write nothing down. Her middle is the log.',
+  ] },
+]);
+
+// Shape: FULL SENTENCE. Growth-as-event after the choice.
+registerPool('floor.choice.growth', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'The extra sitting takes this plate without a fight.',
+    'Waistband already lost once. This bite files the appeal.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Midnight dough plus this. The lounge reports both in the same sway.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'After-hours heat still in the middle. Daylight food uses it.',
+  ] },
+  { when: { stageMax: 4, corruption: [0] }, weight: 2, text: [
+    'She tugs cloth that almost still works and files the warmth as weather.',
+  ] },
+  { when: {}, text: [
+    'Growth happens between topics. She finishes what the lounge put down.',
+    'The hour leaves her heavier. Nobody names the lesson.',
+    'A hand stays on the new weight like a note she intends to keep.',
+  ] },
+]);
+
+// Shape: DIALOGUE BEAT.
+registerPool('floor.choice.line', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '"If that box is for the floor," she says, "it already found me."',
+    'She eyes the side table. "Seconds count. I already started."',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    '"You were up late," she does not have to say. She already has a plate.',
+  ] },
+  { when: {}, text: [
+    '"Thanks, RA," she says, already reaching.',
+    'Someone changes the subject. Nobody changes the box.',
+    'She looks at you, then at the food. The looking is the rest of the choice.',
+  ] },
+]);
+
+registerPool('floor.choice.wrap', [
+  { when: {}, text: [
+    '{floor.choice.setup} {floor.choice.growth} {floor.choice.line}',
+    '{floor.choice.setup} {floor.choice.line} {floor.choice.growth}',
+    '{floor.choice.growth} {floor.choice.setup} {floor.choice.line}',
   ] },
 ]);

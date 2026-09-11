@@ -51,6 +51,11 @@ registerPool('scene.hungerInterrupt.starter', [
 ]);
 
 registerPool('scene.hungerInterrupt.appearance', [
+  { when: { leftoverFed: true }, priority: 2, weight: 3, text: [
+    'Foil still on her sleeve. Hunger brought her anyway.',
+    'She looks like leftover was a rumor her stomach refused.',
+    'Kitchen heat still in the clothes. The doorway gets the rest of the wanting.',
+  ] },
   { when: { stage: [11] }, priority: 3,
     text: [
       'She completely fills the doorway with her sheer mass.',

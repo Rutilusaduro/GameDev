@@ -79,6 +79,18 @@ registerPool('wi.afterglow', [
 
 // ── feed.afterglow
 registerPool('feed.afterglow', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She covers a small sound. Last night\'s tray plus this bite made more of her than she planned.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'Fullness sits in her like a second person. The kitchen already sent the first.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'The meal keeps happening on leftover heat. A slow settling, a deeper second sitting.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She sits back. Kitchen tray and this plate keep a hand on her.',
+  ] },
   { when: { stageMax: 3 }, text: [
     'She covers a small sound with a laugh. The last bite made more of her than she planned.',
   ] },
@@ -97,6 +109,18 @@ registerPool('feed.afterglow', [
 
 // ── session.afterglow
 registerPool('session.afterglow', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'She stays in the chair because leftover and this session made standing a confession.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 5, stageMax: 8 }, weight: 3, text: [
+    'Encouragement has a residue. Kitchen heat plus the private plates. She keeps eating.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 9 }, weight: 3, text: [
+    'The session ends when you stop bringing plates. Leftover already parked her. She has not moved.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Private hours leave a dent and a rounder outline. The galley started the dent.',
+  ] },
   { when: { stageMax: 4 }, text: [
     'She stays in the chair because standing would make the fullness obvious, and it already is.',
   ] },
