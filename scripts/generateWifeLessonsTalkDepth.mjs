@@ -151,6 +151,7 @@ const lines = [
   '// Auto-generated — run: node scripts/generateWifeLessonsTalkDepth.mjs',
   '// Wildcard depth for wifeLessons.talk.* pools (mom/daughter 1-on-1 dialogue).',
   "import { registerModuleVariants } from '../../engine.js';",
+  "import { legacyBridgeWhen } from '../legacyPoolPolicy.js';",
   '',
 ];
 
@@ -161,7 +162,7 @@ for (const { key, existing } of thin) {
   const extras = [a, b].filter((t) => t && !exclude.has(t));
   if (extras.length < 2) continue;
   lines.push(
-    `registerModuleVariants(${esc(key)}, [{ when: {}, weight: 3, text: [${extras.map(esc).join(', ')}] }]);`,
+    `registerModuleVariants(${esc(key)}, [{ when: legacyBridgeWhen(), weight: 3, text: [${extras.map(esc).join(', ')}] }]);`,
   );
 }
 
