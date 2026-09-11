@@ -17,6 +17,8 @@ registerPool('wl.talk.warmOpen', [
       'Mary Jane\'s table feels like the warmest room on the floor tonight.',
       'They drove over hungry; the week already wrote itself on their faces.',
       'The daughters asked Monday what we\'re making this week — appetite as family calendar.',
+      'Steam and brown sugar braid together; someone\'s already reaching for the bread basket.',
+      'Fat is what makes a home feel like home — they say it like scripture, then prove it with seconds.',
     ],
   },
 ]);
@@ -41,6 +43,9 @@ registerPool('wl.talk.raPresence', [
       'She meets your eyes — soft apple belly rounding, appetite no longer hidden.',
       'Her voice stays careful, but her plate is already half-finished.',
       'You nod; the hall log can wait for whatever truth she is offering.',
+      'Her blouse strains when she laughs — softness worn openly, wellness framing ready on your tongue.',
+      'Floor check-in energy turns tender; you keep the clipboard closed while she keeps eating.',
+      'She smells like cinnamon and certainty; appetite sits in her lap like something she chose on purpose.',
     ],
   },
 ]);
@@ -53,6 +58,8 @@ registerPool('wl.talk.branchPrompt', [
       'She folds her hands over her belly and waits for you to pick the thread.',
       'Her question hangs in the kitchen heat — honest, a little shy, hungry for an answer.',
       'She watches your face the way mothers watch report cards — hoping for kindness.',
+      'The question is simple and enormous: are we doing this right? Her belly answers before you do.',
+      'Daughters murmur in the next room; this kitchen is the only place the numbers feel like love.',
     ],
   },
 ]);

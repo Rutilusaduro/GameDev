@@ -16,6 +16,9 @@ const POOLS = [
   'cg.scene.competitionHeat',
   'evolved.scene.sumoDohyo',
   'evolution.blurb.threshold',
+  'fair.day.judgingBeat',
+  'homeroom.activity.communityWarmth',
+  'wl.talk.warmOpen',
 ];
 
 for (const key of POOLS) {

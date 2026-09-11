@@ -9,7 +9,7 @@ const week = 24;
 assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
 const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
 
-const FP = /Cotton candy|Crowd noise|Phones rise|announcer|Mary Jane stands|co-conspirator|funnel-cake|Hay-scent/i;
+const FP = /Cotton candy|Crowd noise|Phones rise|announcer|Mary Jane stands|co-conspirator|funnel[- ]cake|Hay-scent|Judges lean|ribbon categories/i;
 
 const keys = ['fair.day.weighIn.open', 'fair.day.judging', 'fair.day.afterparty.open'];
 for (const key of keys) {

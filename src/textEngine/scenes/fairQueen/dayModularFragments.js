@@ -42,7 +42,22 @@ registerPool('fair.day.mjPride', [
   },
 ]);
 
+registerPool('fair.day.judgingBeat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Judges lean in with clipboards; ribbon categories blur into one question — who grew the most, proudly.',
+      'Mary Jane stands taller on the platform; pride sits on her hips while the announcer sells the number.',
+      'Cotton candy haze and hay-scent braid around the scale — the fair queen season never really ends.',
+      'Phones rise when the official reads her weight; co-conspirator laughter follows every public pound.',
+      'Crowd noise swells like applause for softness; she smiles like policy and appetite are the same thing.',
+    ],
+  },
+]);
+
 const DAY_SKELETON = '{fair.day.carnivalAir|prefix:} {fair.day.crowdBeat|prefix: } {fair.day.mjPride|prefix: }';
+const JUDGING_SKELETON = '{fair.day.judgingBeat|prefix:} {fair.day.crowdBeat|prefix: } {fair.day.mjPride|prefix: }';
 
 const DAY_POOLS = [
   'fair.day.weighIn.open',
@@ -58,24 +73,25 @@ const DAY_POOLS = [
 ];
 
 for (const key of DAY_POOLS) {
+  const skeleton = key === 'fair.day.judging' ? JUDGING_SKELETON : DAY_SKELETON;
   registerModuleVariants(key, [
     {
       when: { weekMin: 20 },
       weight: 6,
       priority: 5,
-      text: [DAY_SKELETON],
+      text: [skeleton],
     },
     {
       when: { weekMin: 16 },
       weight: 4,
       priority: 3,
-      text: [DAY_SKELETON],
+      text: [skeleton],
     },
     {
       when: { weekMin: 7 },
       weight: 3,
       priority: 2,
-      text: [DAY_SKELETON],
+      text: [skeleton],
     },
   ]);
 }
