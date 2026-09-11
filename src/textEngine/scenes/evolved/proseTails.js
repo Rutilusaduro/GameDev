@@ -82,3 +82,21 @@ const CG_SCENE_TAIL = [
 export function cgSceneTailBeat(seed, slot = 0) {
   return pickTail(CG_SCENE_TAIL, seed, slot);
 }
+
+const HOMEROOM_TAIL = [
+  'Tuesday steam fogs the common-room windows — suspicion stays outside for one more hour.',
+  (ctx) => {
+    const n = ctx.subject?.name || 'Daisy';
+    return `${n} notes who ate seconds before she writes it down — habit dressed as hospitality.`;
+  },
+  'Mothers leave with containers; residents leave heavier; the RA log calls it enrichment.',
+  'Flour dusts the counter like snowfall nobody plans to sweep yet.',
+  (ctx) => {
+    const w = ctx.week ?? 1;
+    return `Week ${w} on the floor — tradition thickening faster than wellness paperwork.`;
+  },
+];
+
+export function homeroomTailBeat(seed, slot = 0) {
+  return pickTail(HOMEROOM_TAIL, seed, slot);
+}

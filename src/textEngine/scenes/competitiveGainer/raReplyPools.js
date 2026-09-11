@@ -1,6 +1,7 @@
 // Priya group-chat RA replies — pools from CG_RA_REPLY_TEXT + variants.
 import { registerDimension, registerPool } from '../../engine.js';
 import { CG_RA_REPLY_TEXT, CG_STAGE_KEYS } from '../../../gameData/competitiveGainerText.js';
+import { cgSceneTailBeat } from '../evolved/proseTails.js';
 
 export function fillCgTemplate(str, g = {}) {
   if (!str) return '';
@@ -28,18 +29,32 @@ for (const [optId, def] of Object.entries(CG_RA_REPLY_TEXT)) {
     entries.push({
       when: { cgRaStage: [stage], cgRaHasComparison: ['yes'] },
       weight: 2,
-      text: [fn, fn, (ctx) => `${fn(ctx)} Priya types back immediately.`],
+      text: [
+        fn,
+        cgSceneTailBeat(`ra:${optId}:${stage}`, 0),
+        (ctx) => {
+          const base = fn(ctx);
+          return base ? `${base} Priya types back immediately.` : base;
+        },
+      ],
     });
   }
   const fallback = def.fallback || '';
   const fb = (ctx) => fillCgTemplate(fallback, ctx.globals);
   entries.push({
     when: { cgRaHasComparison: ['no'] },
-    text: [fb, fb, (ctx) => `${fb(ctx)} The corkboard pings in the background.`],
+    text: [
+      fb,
+      (ctx) => {
+        const base = fb(ctx);
+        return base ? `${base} The corkboard pings in the background.` : base;
+      },
+      cgSceneTailBeat(`ra:${optId}:solo`, 1),
+    ],
   });
   entries.push({
     when: {},
-    text: [fb, fb, fb],
+    text: [fb, cgSceneTailBeat(`ra:${optId}`, 0), cgSceneTailBeat(`ra:${optId}`, 1)],
   });
   registerPool(`cg.raReply.${optId}`, entries);
 }

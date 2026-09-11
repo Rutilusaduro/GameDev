@@ -4,14 +4,36 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { registerDecomposedPool } from '../decomposePools.js';
+import { registerPool } from '../../engine.js';
+import { homeroomTailBeat } from '../evolved/proseTails.js';
 import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/evolvedForms.js';
 import './batchBakerPools.js';
 
+function registerHomeroomBeat(poolKey, prose) {
+  if (!prose?.trim()) return;
+  const bodyKey = `${poolKey}.body`;
+  registerDecomposedPool(bodyKey, prose);
+  registerPool(poolKey, [
+    {
+      when: {},
+      weight: 3,
+      text: [
+        (ctx) => {
+          const line = render(`{${bodyKey}}`, ctx)?.trim();
+          return line && !line.includes('{unresolved}') ? line : prose.trim();
+        },
+        homeroomTailBeat(poolKey, 0),
+        homeroomTailBeat(poolKey, 1),
+      ],
+    },
+  ]);
+}
+
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
-  if (ev.text) registerDecomposedPool(`homeroom.conference.${key}.intro`, ev.text);
+  if (ev.text) registerHomeroomBeat(`homeroom.conference.${key}.intro`, ev.text);
   for (const ch of ev.choices || []) {
     if (typeof ch.result === 'string' && ch.result) {
-      registerDecomposedPool(`homeroom.conference.${key}.${ch.id}`, ch.result);
+      registerHomeroomBeat(`homeroom.conference.${key}.${ch.id}`, ch.result);
     }
   }
 }
@@ -19,10 +41,10 @@ for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
 for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
   const phases = act.phases || [{ text: act.text, choices: act.choices || [] }];
   phases.forEach((phase, pi) => {
-    if (phase.text) registerDecomposedPool(`homeroom.activity.${actKey}.p${pi}`, phase.text);
+    if (phase.text) registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}`, phase.text);
     for (const ch of phase.choices || []) {
       if (typeof ch.result === 'string' && ch.result) {
-        registerDecomposedPool(`homeroom.activity.${actKey}.p${pi}.${ch.id}`, ch.result);
+        registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}.${ch.id}`, ch.result);
       }
     }
   });
