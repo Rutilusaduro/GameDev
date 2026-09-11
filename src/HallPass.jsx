@@ -58,7 +58,7 @@ import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFe
 import { LILITH_ID, HUNT_NODES, HUNT_MEN, physicalMovesForOwned, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, extraCultivatorReneeLbs, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
-import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderHuntTravel, renderHuntDormOpen } from './textEngine/scenes/hunt/index.js';
+import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro, renderHuntTravel, renderHuntDormOpen, renderHuntClueFeast } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from './textEngine/scenes/campusEvent/index.js';
 import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES, extraHaveAChatChoices } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
@@ -3886,7 +3886,8 @@ export default function HallPass(){
     if(!chapterHostessState) return;
     const{stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille}=chapterHostessState;
     const{log,tiffanyGain,sisterGainMap,camilleGain,relGain}=generateFeastLog(stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille);
-    const finalLog=(stageIdx>=1&&!lilithClueFound)?[...log,{text:CLUE_FEAST_LINE,type:'scene'}]:log;
+    const clueLine=renderHuntClueFeast(students.find(s=>s.evolvedForm==='chapter_hostess'), week)||CLUE_FEAST_LINE;
+    const finalLog=(stageIdx>=1&&!lilithClueFound)?[...log,{text:clueLine,type:'scene'}]:log;
     setChapterHostessState(prev=>({...prev,feastPrepOpen:false,feastLogOpen:true,feastLog:finalLog,feastGainTotal:tiffanyGain,feastRelTotal:relGain,feastDone:false,pendingSisterGains:sisterGainMap,pendingCamilleGain:camilleGain}));
   };
   const completeFeast=()=>{
@@ -9644,7 +9645,7 @@ export default function HallPass(){
           />
         );
       })()}
-      {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation} soundEnabled={soundEnabled}/>}
+      {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}
       {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
@@ -9659,10 +9660,10 @@ export default function HallPass(){
       {researchSubjectPicker&&<ResearchSubjectPicker researchSubjectPicker={researchSubjectPicker} setAp={setAp} setEvolvedEventState={setEvolvedEventState} setResearchSubjectPicker={setResearchSubjectPicker} setStudents={setStudents} students={students} soundEnabled={soundEnabled}/>}
 
       {/* ── PSYCH RESEARCHER: RESIDENT JOURNAL ── */}
-      {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState} soundEnabled={soundEnabled}/>}
+      {subjectJournalState&&<SubjectJournalModal setSubjectJournalState={setSubjectJournalState} students={students} subjectJournalState={subjectJournalState} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── NADIA'S RESEARCH NOTES ── */}
-      {nadiaNotesState&&<NadiaSubjectNotesModal nadiaNotesState={nadiaNotesState} setNadiaNotesState={setNadiaNotesState} students={students} soundEnabled={soundEnabled}/>}
+      {nadiaNotesState&&<NadiaSubjectNotesModal nadiaNotesState={nadiaNotesState} setNadiaNotesState={setNadiaNotesState} students={students} soundEnabled={soundEnabled} week={week}/>}
 
       {/* ── COLLAB STREAM MINI-GAME MODAL ── */}
       {collabStreamState&&<CollabStreamModal collabStreamState={collabStreamState} students={students} doCollabAction={doCollabAction} closeCollabStream={closeCollabStream} dismissCollabPopup={dismissCollabPopup} soundEnabled={soundEnabled}/>}

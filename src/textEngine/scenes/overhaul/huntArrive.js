@@ -190,6 +190,78 @@ registerPool('hunt.target.body', [
   ]},
 ]);
 
+registerPool('hunt.clue.feast', [
+  { when: {}, text: [
+    '{hunt.clue.feast.setup} {hunt.clue.feast.body}',
+    '{hunt.clue.feast.body} {hunt.clue.feast.setup}',
+    '{hunt.clue.feast.setup}',
+  ]},
+]);
+
+registerPool('hunt.clue.feast.setup', [
+  { when: {}, text: [
+    'Madison glances at the door, then her plate. The feast keeps eating around the silence.',
+    'Someone mentions a name that does not come back to the house. Forks pause.',
+    'Savannah sets her fork down like the gravy suddenly had a rumor in it.',
+  ]},
+]);
+
+registerPool('hunt.clue.feast.body', [
+  { when: {}, text: [
+    `"Tyler Banks from Sig Ep. Roommate says he left a party and did not come back."`,
+    `"Third disappearance this semester," Savannah says, quiet. Nobody knows where to put that.`,
+    'East dorms. Late hours. A missing list that keeps getting longer than the menu.',
+  ]},
+]);
+
+registerPool('hunt.clue.investigate', [
+  { when: {}, text: [
+    '{hunt.clue.investigate.setup} {hunt.clue.investigate.body}',
+    '{hunt.clue.investigate.body} {hunt.clue.investigate.setup}',
+    '{hunt.clue.investigate.setup}',
+  ]},
+]);
+
+registerPool('hunt.clue.investigate.setup', [
+  { when: {}, text: [
+    'The feast comment stays. You pull the incident report after the plates are gone.',
+    'Three missing. All late. All last seen near the east dormitories.',
+    'Blackout curtains at the end of the block. A hallway scent your brain keeps misnaming.',
+  ]},
+]);
+
+registerPool('hunt.clue.investigate.body', [
+  { when: {}, text: [
+    'Room 312 is the building you never filed. You file it now.',
+    'You walk east. The curtains do not leak light. Something warm lives behind them.',
+    'One AP. One door. You already know you are going to knock.',
+  ]},
+]);
+
+registerPool('hunt.clue.result', [
+  { when: {}, text: [
+    '{hunt.clue.result.setup} {hunt.clue.result.body}',
+    '{hunt.clue.result.body} {hunt.clue.result.setup}',
+    '{hunt.clue.result.setup}',
+  ]},
+]);
+
+registerPool('hunt.clue.result.setup', [
+  { when: {}, text: [
+    'Knock. Pause. Room 312 opens like it was waiting.',
+    'Dark clothes. Dark eyes. She was not surprised by the knock.',
+    `"Come in," she says. "I'll make tea. You are going to have questions."`,
+  ]},
+]);
+
+registerPool('hunt.clue.result.body', [
+  { when: {}, text: [
+    'Her name is Lilith. The room smells like incense and a second thing you do not name yet.',
+    'She explains herself like someone who already made peace with the hunger.',
+    'You leave with more questions and one fewer ordinary campus.',
+  ]},
+]);
+
 function prefer(poolKey, ctx) {
   const line = render(`{${poolKey}}`, ctx)?.trim();
   if (line && !line.includes('{unresolved}')) return line;
@@ -234,4 +306,24 @@ export function renderHuntMan(manId, student, week = 1) {
     globals: { huntMan: manId || '', featureId: 'hunt' },
   });
   return prefer('hunt.target.scene', ctx);
+}
+
+function huntCtx(student, week, extras = {}) {
+  return buildTextContext({
+    subject: student || { id: 15, name: 'Lilith', lbs: 180, startLbs: 128, archetype: 'predator' },
+    week,
+    globals: { featureId: 'hunt', ...extras },
+  });
+}
+
+export function renderHuntClueFeast(student, week = 1) {
+  return prefer('hunt.clue.feast', huntCtx(student, week));
+}
+
+export function renderHuntClueInvestigate(student, week = 1) {
+  return prefer('hunt.clue.investigate', huntCtx(student, week));
+}
+
+export function renderHuntClueResult(student, week = 1) {
+  return prefer('hunt.clue.result', huntCtx(student, week));
 }

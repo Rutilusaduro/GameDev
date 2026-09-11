@@ -3,6 +3,7 @@ import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { FEEDER_SUBJECT_JOURNALS, NADIA_SUBJECT_JOURNALS } from '../../../gameData/evolvedForms.js';
+import { renderFeederJournalPool, renderNadiaJournalPool } from '../overhaul/journals.js';
 
 for (const [archetype, entries] of Object.entries(FEEDER_SUBJECT_JOURNALS)) {
   if (!Array.isArray(entries)) continue;
@@ -37,6 +38,8 @@ for (const [archetype, journal] of Object.entries(NADIA_SUBJECT_JOURNALS)) {
 
 export function renderFeederJournalEntry(archetype, page, student, week = 1, opts = {}) {
   if (!archetype || page == null) return '';
+  const composed = renderFeederJournalPool(archetype, page, student, week);
+  if (composed) return composed;
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const base = render(`{journal.feeder.${archetype}.s${page}}`, ctx, { trace: opts.trace || null })?.trim() || '';
   return appendV2Depth(base, 'journal', ctx, opts.v2DepthChance ?? 0.22);
@@ -44,6 +47,8 @@ export function renderFeederJournalEntry(archetype, page, student, week = 1, opt
 
 export function renderNadiaJournalEntry(archetype, page, nadiaLevel, student, week = 1, opts = {}) {
   if (!archetype) return '';
+  const composed = renderNadiaJournalPool(archetype, page, nadiaLevel, student, week);
+  if (composed) return composed;
   const ctx = buildTextContext({
     subject: student,
     week,

@@ -18,9 +18,9 @@ export const REMOVAL_HEARING = {
     {
       pool: 'opposition.hearing.removal.phase1',
       choices: [
-        { id: 'hold_firm', label: 'Hold firm — abundance is the hall program', resultPool: 'opposition.hearing.removal.result.hold_firm', flag: 'firm' },
-        { id: 'negotiate', label: 'Negotiate — private indulgence, public discretion', resultPool: 'opposition.hearing.removal.result.negotiate', flag: 'negotiate' },
-        { id: 'floor_pressure', label: 'Floor pressure — mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.floor_pressure', flag: 'floor_pressure' },
+        { id: 'hold_firm', label: 'Hold firm. Abundance is the hall program', resultPool: 'opposition.hearing.removal.result.hold_firm', flag: 'firm' },
+        { id: 'negotiate', label: 'Negotiate. Private indulgence, public discretion', resultPool: 'opposition.hearing.removal.result.negotiate', flag: 'negotiate' },
+        { id: 'floor_pressure', label: 'Floor pressure. Mandatory tasting for the Board', resultPool: 'opposition.hearing.removal.result.floor_pressure', flag: 'floor_pressure' },
       ],
     },
   ],
@@ -67,9 +67,9 @@ export const EMERGENCY_HEARING = {
     {
       pool: 'opposition.hearing.emergency.phase1',
       choices: [
-        { id: 'double_down', label: 'Double down — this is the future of the floor', resultPool: 'opposition.hearing.emergency.result.double_down', flag: 'double' },
-        { id: 'absorb', label: 'Absorb blame — protect the hall', resultPool: 'opposition.hearing.emergency.result.absorb', flag: 'absorb' },
-        { id: 'hive', label: 'Maya hive misdirect — wrong building, wrong records', resultPool: 'opposition.hearing.emergency.result.hive', flag: 'misdirect' },
+        { id: 'double_down', label: 'Double down. This is the future of the floor', resultPool: 'opposition.hearing.emergency.result.double_down', flag: 'double' },
+        { id: 'absorb', label: 'Absorb blame. Protect the hall', resultPool: 'opposition.hearing.emergency.result.absorb', flag: 'absorb' },
+        { id: 'hive', label: 'Maya hive misdirect. Wrong building, wrong records', resultPool: 'opposition.hearing.emergency.result.hive', flag: 'misdirect' },
       ],
     },
   ],

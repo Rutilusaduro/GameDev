@@ -14,7 +14,7 @@ import { EVOLVED_MINIGAMES, computeMinigameOutcome, minigameChoicesForPhase, min
 import { renderMinigamePhase, renderMinigameLog, renderMinigameWrap } from '../textEngine/scenes/overhaul/minigame.js';
 
 
-export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true }){
+export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, students, soundEnabled = true, week = 1 }){
         const{nadiaId,subjectId,currentPage}=nadiaNotesState;
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, subjectId, currentPage]);
         const nadia=students.find(st=>st.id===nadiaId);
@@ -28,8 +28,8 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
         const NADIA_LEVEL_LABELS=["Heavy–Very Fat","Enormous–Colossal","Blob"];
         const isIntro=currentPage===-1;
-        const introText=renderNadiaJournalEntry(subj.archetype, -1, nadiaLevel, subj, 1);
-        const entryText=isIntro?introText:renderNadiaJournalEntry(subj.archetype, currentPage, nadiaLevel, subj, 1);
+        const introText=renderNadiaJournalEntry(subj.archetype, -1, nadiaLevel, subj, week);
+        const entryText=isIntro?introText:renderNadiaJournalEntry(subj.archetype, currentPage, nadiaLevel, subj, week);
         const purple="#6b5b95";
 
         const canPrev=!isIntro;
@@ -71,13 +71,13 @@ export function NadiaSubjectNotesModal({ nadiaNotesState, setNadiaNotesState, st
         );
 }
 
-export function SubjectJournalModal({ setSubjectJournalState, students, subjectJournalState, soundEnabled = true }){
+export function SubjectJournalModal({ setSubjectJournalState, students, subjectJournalState, soundEnabled = true, week = 1 }){
         const{subjectId,currentPage}=subjectJournalState;
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, subjectId, currentPage]);
         const subj=students.find(st=>st.id===subjectId);
         if(!subj) return null;
         const maxPage=getStage(subj.lbs).id;
-        const entry=renderFeederJournalEntry(subj.archetype, currentPage, subj, 1) || "No entry for this stage yet.";
+        const entry=renderFeederJournalEntry(subj.archetype, currentPage, subj, week) || "No entry for this stage yet.";
         const STAGE_LABELS=["Slight","Slim","Soft","Chubby","Plump","Heavy","Fat","Very Fat","Enormous","Colossal","Blob"];
         const minPage=0;
         const canPrev=currentPage>Math.max(0,minPage);
@@ -96,7 +96,7 @@ export function SubjectJournalModal({ setSubjectJournalState, students, subjectJ
               </div>
               {/* Page */}
               <div style={{flex:1,overflowY:"auto",padding:"20px 24px",background:pageColor,margin:12,borderRadius:2,boxShadow:"inset 0 1px 4px rgba(0,0,0,0.4)"}}>
-                <div style={{fontSize:10,letterSpacing:2,color:"#6b5b40",marginBottom:6,textTransform:"uppercase"}}>Entry {currentPage+1} — {STAGE_LABELS[currentPage]}</div>
+                <div style={{fontSize:10,letterSpacing:2,color:"#6b5b40",marginBottom:6,textTransform:"uppercase"}}>Entry {currentPage+1} · {STAGE_LABELS[currentPage]}</div>
                 <div style={{width:40,height:1,background:`${borderColor}80`,marginBottom:14}}/>
                 <div style={{fontSize:13,color:inkColor,lineHeight:1.9,fontFamily:"Georgia,serif"}}>{entry}</div>
               </div>

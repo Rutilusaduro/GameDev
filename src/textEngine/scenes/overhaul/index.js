@@ -21,6 +21,7 @@ import './huntArrive.js';
 import './floorCheckin.js';
 import './campusEventBeat.js';
 import './researcherChat.js';
+import './journals.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

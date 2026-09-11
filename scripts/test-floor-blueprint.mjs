@@ -40,7 +40,9 @@ import '../src/textEngine/modules.js';
 import '../src/textEngine/scenes/overhaul/index.js';
 import { renderPharmacistAcquire, renderPharmacistCompound, renderPharmacistCult } from '../src/textEngine/scenes/overhaul/pharmacist.js';
 import { renderMinigamePhase, renderMinigameLog, renderMinigameWrap } from '../src/textEngine/scenes/overhaul/minigame.js';
-import { renderHuntArrive, renderHuntTravel, renderHuntDormOpen } from '../src/textEngine/scenes/overhaul/huntArrive.js';
+import { renderHuntArrive, renderHuntTravel, renderHuntDormOpen, renderHuntClueFeast, renderHuntClueInvestigate, renderHuntClueResult } from '../src/textEngine/scenes/overhaul/huntArrive.js';
+import { renderFeederJournalEntry, renderNadiaJournalEntry } from '../src/textEngine/scenes/researchJournal/index.js';
+import { INTIMACY_SCENES } from '../src/gameData/intimacy.js';
 import { renderHuntNode, renderHuntTarget } from '../src/textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
@@ -437,7 +439,7 @@ const destStudent = {
 const sessionPay = renderSessionPayoff(destStudent, 3, 0, 'food_coma');
 assert.ok(sessionPay && !sessionPay.includes('{unresolved}'));
 assert.equal(/Session complete\./i.test(sessionPay), false, 'ranked payoff should not be SESSION_PAYOFF_TEXT');
-assert.ok(/coma|chair|ranked|session|bags|game over/i.test(sessionPay), `session payoff should be composed, got: ${String(sessionPay).slice(0, 160)}`);
+assert.ok(/coma|chair|ranked|session|bags|game over|desk|receipt|Rae/i.test(sessionPay), `session payoff should be composed, got: ${String(sessionPay).slice(0, 160)}`);
 
 const destSpend = renderDestinySpend(destStudent, 3);
 assert.ok(destSpend && !destSpend.includes('{unresolved}'));
@@ -556,6 +558,30 @@ assert.equal(/You follow the main path out to the open quad/i.test(huntTravel), 
 const huntOpen = renderHuntDormOpen(lilith, 3);
 assert.ok(huntOpen && !huntOpen.includes('{unresolved}'));
 assert.equal(/The door clicks shut behind you/i.test(huntOpen), false, 'hunt dorm open should not dump leftover LILITH_DORM_TEXT');
+const huntClue = renderHuntClueFeast(lilith, 3);
+assert.ok(huntClue && !huntClue.includes('{unresolved}'));
+assert.equal(/went to a party two weeks ago and never came back/i.test(huntClue), false, 'feast clue should prefer composed pools');
+const huntInv = renderHuntClueInvestigate(lilith, 3);
+assert.ok(huntInv && !huntInv.includes('{unresolved}'));
+assert.equal(/a resident's offhand comment stays with you/i.test(huntInv), false);
+const huntRes = renderHuntClueResult(lilith, 3);
+assert.ok(huntRes && !huntRes.includes('{unresolved}'));
+assert.equal(/You knock on room 312/i.test(huntRes), false);
+
+const brit = {
+  id: 0, name: 'Brittany', lbs: 210, startLbs: 118, archetype: 'cheerleader',
+  relationship: 20, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const feederJ = renderFeederJournalEntry('cheerleader', 2, brit, 3);
+assert.ok(feederJ && !feederJ.includes('{unresolved}'));
+assert.equal(/I can't believe I actually agreed/i.test(feederJ), false, 'feeder journal should prefer composed pools');
+const nadiaJ = renderNadiaJournalEntry('cheerleader', -1, 0, brit, 3);
+assert.ok(nadiaJ && !nadiaJ.includes('{unresolved}'));
+assert.equal(/I've officially started my private hall log/i.test(nadiaJ), false, 'nadia journal should prefer composed pools');
+
+const holdLabel = INTIMACY_SCENES[0].phases[0].choices.find((c) => c.id === 'stay_still')?.label || '';
+assert.equal(holdLabel.includes('—'), false, 'intimacy labels should not use em-dashes');
+assert.equal(REMOVAL_HEARING.phases[1].choices[0].label.includes('—'), false, 'hearing labels should not use em-dashes');
 const huntMan = renderHuntTarget('chad_w', lilith, 3, { v2DepthChance: 0 });
 assert.ok(huntMan && !huntMan.includes('{unresolved}'));
 assert.equal(/polo shirt half-tucked/i.test(huntMan), false, 'hunt target should not dump leftover man.desc');

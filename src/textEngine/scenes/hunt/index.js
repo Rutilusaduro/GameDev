@@ -61,4 +61,4 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   return appendV2Depth([base, linger].filter(Boolean).join(' '), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
 
-export { renderHuntArrive, renderHuntTravel, renderHuntDormOpen, renderHuntMan } from '../overhaul/huntArrive.js';
+export { renderHuntArrive, renderHuntTravel, renderHuntDormOpen, renderHuntMan, renderHuntClueFeast, renderHuntClueInvestigate, renderHuntClueResult } from '../overhaul/huntArrive.js';
