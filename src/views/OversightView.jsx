@@ -2,7 +2,7 @@ import { C } from '../styles.js';
 import { AIB_AGENDA_CARDS, getAvailableCounters, getCounterGateHints, getOversightTelegraph, getAgendaCounterHint } from '../gameData/opposition.js';
 import { getOppositionActSummary, isBoardDormant } from '../gameData/oppositionActs.js';
 import { canArchivistFreeDiscredit } from '../gameData/supernaturalForms.js';
-import { renderOversightCounterDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
+import { renderOversightCounterDesc, renderOversightActDesc, renderOversightActRole, renderOversightDormant } from '../textEngine/scenes/overhaul/leftoverSystems.js';
 
 export function OversightView({
   opposition,
@@ -29,7 +29,7 @@ export function OversightView({
           ACT {actSummary.act.id} — {actSummary.act.label}
         </div>
         <p style={{ fontSize: 13, color: '#bbb', lineHeight: 1.7 }}>
-          {actSummary.act.antagonist}. The Board is still dormant — scrutiny whispers, not agendas.
+          {renderOversightActDesc(actSummary.act.id, students?.[0], week) || actSummary.act.antagonist}. {renderOversightDormant(students?.[0], week) || 'The Board is still asleep. Scrutiny is a whisper, not a docket.'}
           Hall transformation pressure: {actSummary.classPressure}/100.
         </p>
         {(opposition?.meta?.rumorCount ?? 0) > 0 && (
@@ -48,7 +48,7 @@ export function OversightView({
   if (!aib?.unlocked) {
     return (
       <div style={{ padding: 24, color: '#888' }}>
-        <p>Administrative oversight is quiet — for now. Scrutiny must reach 25 before the Residence Review Board takes notice.</p>
+        <p>Administrative oversight is quiet for now. Scrutiny must reach 25 before the Residence Review Board takes notice.</p>
         <button type="button" style={{ ...C.btn('#555'), marginTop: 12 }} onClick={onClose}>← Back</button>
       </div>
     );
@@ -71,8 +71,8 @@ export function OversightView({
     <div style={{ padding: 20, maxWidth: 720, margin: '0 auto' }}>
       <div style={{ fontSize: 10, letterSpacing: 4, color: '#c44', marginBottom: 8 }}>👁 OVERSIGHT — RESIDENCE REVIEW BOARD</div>
       <div style={{ fontSize: 11, color: '#a88', padding: '8px 10px', background: '#1a1018', borderRadius: 6, marginBottom: 10, lineHeight: 1.6 }}>
-        <strong>Act {actSummary.act.id}</strong> — {actSummary.act.label} · {actSummary.act.antagonist}<br />
-        Hall pressure {actSummary.classPressure}/100 · {actSummary.act.scrutinyRole}
+        <strong>Act {actSummary.act.id}</strong> — {actSummary.act.label} · {renderOversightActDesc(actSummary.act.id, students?.[0], week) || actSummary.act.antagonist}<br />
+        Hall pressure {actSummary.classPressure}/100 · {renderOversightActRole(actSummary.act.id, students?.[0], week) || actSummary.act.scrutinyRole}
         {opposition.supernatural?.actTriggered && opposition.supernatural.curseQueue?.length > 0 && (
           <span> · {opposition.supernatural.curseQueue.length} active curse(s)</span>
         )}

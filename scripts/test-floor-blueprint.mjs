@@ -84,7 +84,8 @@ import {
   renderCustomBodyDesc, renderFacultyDesc, renderLabStageDesc, renderNetworkNodeDesc,
   renderOversightCounterDesc, renderLabTechDesc, renderDestinyItemDesc, renderEmbodimentActDesc,
   renderRitualCardDesc, renderResonanceTierDesc, renderPsycheTierDesc, renderHiveVpPassive,
-  renderHiveRoomBonus, renderEvolutionPathDesc, renderCircuitNodeDesc,
+  renderHiveRoomBonus, renderEvolutionPathDesc, renderEvolutionIntro, renderCircuitNodeDesc,
+  renderOversightActDesc, renderOversightDormant,
 } from '../src/textEngine/scenes/overhaul/leftoverSystems.js';
 import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
@@ -905,6 +906,15 @@ assert.equal(/The ring awaits. So does the crowd/i.test(evoLine), false, 'evolut
 const circuitLine = renderCircuitNodeDesc('ff_main_1', students[0], 2);
 assert.ok(circuitLine && !circuitLine.includes('{unresolved}'));
 assert.equal(/Smoother pump handoff between pulses/i.test(circuitLine), false, 'circuit node should not dump leftover inventionUpgrades.desc');
+const evoIntro = renderEvolutionIntro('athlete', students[0], 2);
+assert.ok(evoIntro && !evoIntro.includes('{unresolved}'));
+assert.equal(/the old sport doesn't fit anymore/i.test(evoIntro), false, 'evolution intro should not dump leftover EVOLUTION_OFFER.intro');
+const actLine = renderOversightActDesc('I', students[0], 2);
+assert.ok(actLine && !actLine.includes('{unresolved}'));
+assert.equal(/Rumor \+ passive scrutiny/i.test(actLine), false, 'oversight act should not dump leftover OPPOSITION_ACTS.antagonist');
+const dormantLine = renderOversightDormant(students[0], 2);
+assert.ok(dormantLine && !dormantLine.includes('{unresolved}'));
+assert.equal(/scrutiny whispers, not agendas/i.test(dormantLine), false, 'oversight dormant should not dump leftover view copy');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,

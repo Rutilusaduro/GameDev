@@ -18,6 +18,7 @@ import { RESONANCE_TIERS } from '../../../gameData/v2/cravingResonance.js';
 import { CORRUPTION_TIERS } from '../../../gameData/corruption.js';
 import { HIVE_VPS, HIVE_ROOM_BONUSES } from '../../../gameData/mayaHive.js';
 import { EVOLUTION_OFFER } from '../../../gameData/evolvedForms.js';
+import { OPPOSITION_ACTS } from '../../../gameData/oppositionActs.js';
 
 const BODY = {
   straight: ['Even gain. The silhouette stays technical while the extra arrives.', 'Straight frame. Mass lands evenly. Clothes tell first.', 'No favorite zone. The extra fills her like a brief.'],
@@ -192,6 +193,114 @@ const EVO = {
   machine_goddess: ['Devices that bloat, feed, inject, reshape. Workshop extra until she is the campus inventor.', 'Machine goddess. External machines. Internal extra.', 'Talia builds. Bodies keep the output.'],
 };
 
+const INTRO = {
+  athlete: [
+    '{subject.name} finds you after check-in. The extra is public. She is still competitive. She wants a sport that wants her this size.',
+    'She waits in the lounge, heavier than the season plan. "I need a direction for this body."',
+    'Practice clothes strain. {subject.name} wants work that uses the weight instead of apologizing for it.',
+  ],
+  influencer: [
+    '{subject.name} puts the phone down. Fitness is not landing. She has two pitches and wants you to pick.',
+    'The camera already knows. She wants a new angle built around the extra.',
+    'She shows you drafts. Feedee channel or mainstream cover. She will not go back to pretending.',
+  ],
+  cheerleader: [
+    '{subject.name} still has the sash. The squad has a future. Her body has a future. She wants them connected.',
+    'Captain energy, heavier now. She wants a new way to lead that does not require shrinking.',
+    'She is breathless from thinking, not from laps. The squad can eat. She wants you to say how.',
+  ],
+  swimmer: [
+    '{subject.name} is still damp from laps. Meal containers lined up like assignments. She wants a captain who lives on this floor.',
+    'A folder of schedules and names. She wants training tables that count as the program.',
+    'Coach wants culture. She wants appetite as part of the plan, and you as the RA who signs it.',
+  ],
+  bookworm: [
+    '{subject.name} brings a stapled proposal. Hall observation. Real name on the title page. She wants RA sign-off.',
+    'Tabs, protocol, a list of people she has already been watching. She looks at you like you already know.',
+    'The season panel approved it. She needs access, and she needs you to authorize living the plan.',
+  ],
+  gamer: [
+    '{subject.name} swivels mid-session. Game still running. She wants the eating and the queue to be the same sitting.',
+    'Controller in one hand. She talks about sessions, food, the way they already work together. She wants to lean in.',
+    'Ranked extra. Stream extra. She will not pause the match to pretend she is not hungry.',
+  ],
+  sorority: [
+    '{subject.name} closes the meeting and waits. She thinks the chapter is a table she sets, and she wants to build it properly.',
+    'One glass. Empty room. She wants Wednesday as a feast with a guest list you help her keep.',
+    'The chapter can transform around plates. She is done treating that as an accident.',
+  ],
+  overachiever: [
+    '{subject.name} bought a corkboard. Current numbers on the left. Blank space for everyone else. She wants to win at extra.',
+    'Tape measure. Marker. She has been the smartest person in the room. She wants to be the biggest and know it.',
+    'Data, comparisons, a ranking she intends to top. She looks at you like a research partner.',
+  ],
+  artsy: [
+    '{subject.name}\'s walls are contact sheets of abundance. She wants a gallery that documents the feeding and the proof.',
+    'An empty board labeled for work in progress. She wants living bodies beside their timelines, and you helping her shoot.',
+    'She fattens, she photographs. She wants the exhibition to be the point, not a hobby.',
+  ],
+  quiet: [
+    '{subject.name} is in the RA chair when you arrive. She has mostly stayed in. Food comes. She wants that named as a choice.',
+    'She does not explain the door. Home is the plan. She wants someone to help her make the nest properly.',
+    'Delivery, a room arranged around need. Outside is optional. She wants you to know she means it.',
+  ],
+  transfer: [
+    'Chloé\'s room already smells of wine and butter. She hosted polite salons once. She wants this country\'s version, with plates that stay.',
+    'Candles, cheese, silk on the chairs. She wants the room filled, then the plates, then her.',
+    'She pours when you arrive. Help her fill the salon until nobody pretends it is still Paris-polite.',
+  ],
+  eced: [
+    '{subject.name} wraps her hands around a mug. Tuesdays on the floor. Moms started coming. Everyone keeps eating. She wants it intentional.',
+    'A small notebook. Butter in the air still. She wants someone to know what the Tuesdays are becoming.',
+    'She calls it care. The extra keeps arriving. She wants the tradition grown on purpose.',
+  ],
+  farm_girl: [
+    '{subject.name} sits with a skillet and preserves. She knows food, feeding, a soft home. She wants to do something with that knowledge.',
+    'Cast iron. A look that has been waiting. She wants a direction that uses appetite as skill, not accident.',
+    'She starts with you, not the food. She is certain. She wants the extra named as work she is good at.',
+  ],
+  psych: [
+    '{subject.name} opens a notebook of names, dates, implied weights. Informal so far. She wants a focus resident and a proper log.',
+    'Columned data between you. She has been observing. She wants to study feeder and feedee with trial rigor.',
+    'She does not explain the notebook. She wants access, a subject, and you as the RA who understands the study.',
+  ],
+  culinary: [
+    '{subject.name} sets a recipe book and a short list of names. Informal trials. Testers gained. She gained. She wants one resident at a time, done properly.',
+    'Willing testers, controlled portions, notes. She says completion like a word she chose. She wants authorization.',
+    'Kitchen data across six sessions. She wants recruitment through harvest, with you knowing what you are signing.',
+  ],
+  pharmacy_grad: [
+    '{subject.name} is still in the lab after hours. Badge on. She wants appetite compounds, delivered through food, and a partner who will not play innocent.',
+    'Ethanol and vanilla. A vial across the bench. Metabolic support as the cover. Extra as the work.',
+    'Hands steady. Eyes not. She can build tools. She needs someone who authorizes what the tools do.',
+  ],
+  inventor: [
+    '{subject.name} locks the workshop like protocol. Blueprints of belts, arms, injectors. She models growth as a control problem and wants a partner.',
+    'Harness sketches, servo specs. She spends mass to make mass. She wants deployment. The bench is already past hobby.',
+    'Midnight light still on. She talks like a paper and looks hungry in the same breath. She wants you in the build.',
+  ],
+};
+
+const ACT = {
+  I: ['Rumors. A quiet file. The Board has not sat yet.', 'Semester normalcy. Whispers until the Board sits.', 'A file that is still only gossip.'],
+  II: ['Residence Review Board. Agendas. Your floor has a folder.', 'Institutional. The Board drives the meter now.', 'Hearings become possible. Cover has to work.'],
+  III: ['Board plus proxies. Wellness, accreditation, the Circle.', 'Proxy war. More than one enemy eating the calendar.', 'Layered agendas. The extra has to outrun the paperwork.'],
+  IV: ['Voice of Restraint. Hunger with a new physics.', 'Supernatural act. Scarcity pressure in the mix.', 'The Board is still there. Something hungrier joined.'],
+};
+
+const ACTROLE = {
+  I: ['Meter only. The Board sleeps.', 'Scrutiny as a number. No agenda cards yet.', 'Dormant oversight. Rumors do the work.'],
+  II: ['Board drives agenda and meter.', 'Cards come. The file gets teeth.', 'Institutional scrutiny. Counterplay starts.'],
+  III: ['Layered agendas. Proxies on the same week.', 'More than the Board. The calendar stacks.', 'Proxy pressure on top of hearings.'],
+  IV: ['Scarcity pressure hybrid. Appetite with rules.', 'The Act. Hunger as an opponent and a tool.', 'Supernatural scrutiny. Plates that should not exist, do.'],
+};
+
+const DORMANT = [
+  'The Board is still asleep. Scrutiny is a whisper, not a docket.',
+  'Rumors only. Agendas wait for week eight or a louder file.',
+  'Oversight has not sat. The kitchen is still louder than the memo.',
+];
+
 function three(arr) {
   const list = (arr || []).filter(Boolean);
   const pad = [
@@ -235,6 +344,12 @@ export function applySystemsOverhaul() {
       pool(`evo.path.${id}`, EVO[id]);
     }
   }
+  for (const id of Object.keys(EVOLUTION_OFFER)) pool(`evo.intro.${id}`, INTRO[id]);
+  for (const act of Object.values(OPPOSITION_ACTS)) {
+    pool(`oversight.act.${act.id}`, ACT[act.id]);
+    pool(`oversight.actrole.${act.id}`, ACTROLE[act.id]);
+  }
+  pool('oversight.dormant', DORMANT);
   for (const boardId of Object.keys(CIRCUIT_BOARDS)) {
     for (const node of allCircuitNodes(boardId)) {
       pool(`circuit.node.${node.id}`, [
@@ -347,6 +462,25 @@ export function renderHiveRoomBonus(bonusId, student, week = 1) {
 export function renderEvolutionPathDesc(pathId, student, week = 1) {
   if (!pathId) return '';
   return prefer(`evo.path.${pathId}`, ctxFor(student, week, { featureId: 'evolved', evoPath: pathId }));
+}
+
+export function renderEvolutionIntro(archetype, student, week = 1) {
+  if (!archetype) return '';
+  return prefer(`evo.intro.${archetype}`, ctxFor(student, week, { featureId: 'evolved', evoArch: archetype }));
+}
+
+export function renderOversightActDesc(actId, student, week = 1) {
+  if (!actId) return '';
+  return prefer(`oversight.act.${actId}`, ctxFor(student, week, { featureId: 'oversight', actId }));
+}
+
+export function renderOversightActRole(actId, student, week = 1) {
+  if (!actId) return '';
+  return prefer(`oversight.actrole.${actId}`, ctxFor(student, week, { featureId: 'oversight', actId }));
+}
+
+export function renderOversightDormant(student, week = 1) {
+  return prefer('oversight.dormant', ctxFor(student, week, { featureId: 'oversight' }));
 }
 
 export function renderCircuitNodeDesc(nodeId, student, week = 1) {

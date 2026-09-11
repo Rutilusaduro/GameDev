@@ -103,7 +103,7 @@ import { renderSessionEncourage, renderSessionTapout, renderImmobileRedirect } f
 import { renderHallSkillDesc } from './textEngine/scenes/overhaul/leftoverSkills.js';
 import { renderSessionPaceDesc } from './textEngine/scenes/overhaul/leftoverUiBeats.js';
 import { renderAchievementDesc, renderSaturationDesc } from './textEngine/scenes/overhaul/leftoverMoreUi.js';
-import { renderEvolutionPathDesc, renderHiveVpPassive } from './textEngine/scenes/overhaul/leftoverSystems.js';
+import { renderEvolutionPathDesc, renderEvolutionIntro, renderHiveVpPassive } from './textEngine/scenes/overhaul/leftoverSystems.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
 import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
@@ -2403,7 +2403,7 @@ export default function HallPass(){
     const pathKeys=Object.keys(archPaths);
     setEvolutionModal({
       student:s,
-      intro:offer.intro(s),
+      intro:renderEvolutionIntro(s.archetype, s, week)||offer.intro(s),
       paths: pathKeys.map(k=>({id:k, label:archPaths[k].label, desc:renderEvolutionPathDesc(k, s, week)||archPaths[k].desc})),
     });
   };
