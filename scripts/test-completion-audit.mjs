@@ -1290,7 +1290,7 @@ check('dev-comment-resident-framing', () => {
   assert.match(hallPass, /HALL KITCHEN QUEEN MINI-INTERFACE/);
   assert.doesNotMatch(hallPass, /Spirit Favor meter|CLASSROOM MINI-INTERFACE/i);
   const lounge = read('src/views/HallLoungeView.jsx');
-  assert.match(lounge, /HallLoungeSkillsPanel/);
+  assert.match(lounge, /Hall Blueprint|dorm-bp/);
   assert.doesNotMatch(lounge, /ClassroomSkillsPanel/);
   const gain = read('src/gameData/gainSystem.js');
   assert.match(gain, /Reach level helps/);
