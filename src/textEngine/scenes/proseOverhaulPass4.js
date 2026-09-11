@@ -110,6 +110,10 @@ oncePool('session.linger', [
 ]);
 
 oncePool('intimacy.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'After, leftover heat and attended softness share the same slow breathing.',
+    'She stays undressed a minute longer. Last night\'s tray plus this hour, more of her to cover.',
+  ] },
   { when: {}, text: [
     'After, she is warmer and slower, a body that has been attended.',
     'The room keeps the shape of her against you for a while.',
@@ -118,6 +122,10 @@ oncePool('intimacy.linger', [
 ]);
 
 oncePool('hive.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Surplus trays still humming in a room that used to be a closet.',
+    'Maya does not clock out. Galley surplus is already a Hive shift.',
+  ] },
   { when: {}, text: [
     'The Nest hums. Someone is still eating in a room that used to be a closet.',
     'Maya does not check the clock. The Hive does not either.',
@@ -126,6 +134,10 @@ oncePool('hive.afterglow', [
 ]);
 
 oncePool('pharmacist.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Union leftover still in the hood. She recaps the beaker as a second reagent.',
+    'Sophia files leftover yield next to the batch. Waistbands will agree by evening.',
+  ] },
   { when: {}, text: [
     'Samples migrate. So do waistbands. Sophia files both as yield.',
     'The union table is empty by noon. The effects are not.',
@@ -136,6 +148,10 @@ oncePool('pharmacist.linger', [
 ]);
 
 oncePool('stream.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Headset off. Kitchen sitting still in her. She thanks chat from a chair that already knew.',
+    'Subscriber perk is a hand on leftover heat plus the broadcast gain.',
+  ] },
   { when: {}, text: [
     'Chat keeps scrolling. She keeps a hand on the new weight like a subscriber perk.',
     'The overlay goes dark. Her belly does not. She sits in the leftover glow.',
@@ -315,6 +331,22 @@ oncePool('contest.linger', [
     'She shifts, and the shift is a whole extra person arriving.',
     'Maya writes a number. She writes a swallow.',
     'Fullness climbs. She treats it like a ranking she intends to keep.',
+  ] },
+]);
+
+oncePool('stream.destiny.spend', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Destiny dumps the cut into a third delivery while leftover heat still has her ordering.',
+    'She feeds the share back into snack apps because the leftover sitting never quite closed.',
+    'Destiny tips the money at foil still on the desk and hits reorder.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Destiny blows the share on a midnight order like the knock is still happening.',
+  ] },
+  { when: {}, text: [
+    'Destiny burns the cut on a mic arm she already owned and a cart she did not.',
+    'She vanishes the share into a snack-subscription she will unbox on camera.',
+    'Destiny treats chat to a spontaneous drop because the vibe asked and her stomach answered.',
   ] },
 ]);
 

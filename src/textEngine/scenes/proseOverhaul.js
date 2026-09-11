@@ -248,6 +248,10 @@ registerPool('hunger.afterglow', [
 ]);
 
 registerPool('campus.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Campus air, leftover heat still in her clothes. The kiosk smells like seconds.',
+    'She stands and the tray from last night stands with her. Quad noise does not drown it.',
+  ] },
   { when: {}, text: [
     'The hour keeps a taste of her in the room after she stands.',
     'Campus noise returns. Her appetite does not clock out with the meeting.',
@@ -259,6 +263,19 @@ registerPool('campus.afterglow', [
 ]);
 
 registerPool('intimacy.afterglow', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'She stays close. Leftover warmth and a new softness share the same inch of air.',
+    'Last night\'s tray still in her. The quiet after is the part she will replay.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 5, stageMax: 8 }, weight: 3, text: [
+    'You hold leftover heat plus the new of her. She knows both arrived on purpose.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 9 }, weight: 3, text: [
+    'She stays put. Leftover and this hour both live in the furniture she has become.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'A palm on her middle finds leftover work still warm. She lets you keep it there.',
+  ] },
   { when: { stageMax: 4 }, text: [
     'She stays close. Heat and a new softness share the same inch of air.',
     'The quiet after is the part she will replay. The body is already replaying it.',
@@ -285,6 +302,10 @@ registerPool('opposition.afterglow', [
 ]);
 
 registerPool('stream.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Chat types. Leftover heat plus the broadcast still occupy the same chair.',
+    'Headset off. Kitchen sitting still in her. Fullness is the encore twice.',
+  ] },
   { when: {}, text: [
     'Chat keeps typing after she stops. Her belly answers by staying.',
     'The light goes off. She does not. Fullness is the encore.',
@@ -293,6 +314,10 @@ registerPool('stream.afterglow', [
 ]);
 
 registerPool('device.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Hardware ticks on a middle the galley already opened. Softness arrives faster.',
+    'She palms leftover work and device work in the same warm place.',
+  ] },
   { when: {}, text: [
     'The device ticks. She breathes around a change that has already started.',
     'Hardware is patient. Softness arrives on the schedule it prefers.',

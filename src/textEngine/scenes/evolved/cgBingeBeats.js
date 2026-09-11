@@ -625,3 +625,146 @@ export function renderCgChatFollowup(priya, week, driveLabel, threatened) {
   });
   return render('{cg.chat.follow.scene}', ctx)?.trim() || '';
 }
+
+registerDimension('cgReply', (ctx) => ctx.globals?.cgReply ?? 'observe');
+registerDimension('cgRivalSet', (ctx) => {
+  const name = ctx.globals?.cgRival;
+  return name && name !== 'the hall' ? 'named' : 'none';
+});
+
+registerPool('cg.rival', [
+  { when: {}, text: [
+    (ctx) => String(ctx.globals?.cgRival ?? 'the hall'),
+    (ctx) => String(ctx.globals?.cgRival ?? 'the hall'),
+    (ctx) => String(ctx.globals?.cgRival ?? 'the hall'),
+  ] },
+]);
+
+const CG_PART_ALIAS = {
+  hips: 'hip', thighs: 'thigh', arms: 'arm', chest: 'bust', middle: 'waist',
+  waist: 'waist', bust: 'bust', hip: 'hip', thigh: 'thigh', arm: 'arm',
+};
+
+// Shape: FULL SENTENCE. RA setup before the reply lands.
+registerPool('cg.chat.ra.setup', [
+  { when: { leftoverFed: true, cgReply: 'encourage', cgRivalSet: 'named' }, weight: 4, text: [
+    'Priya, second sitting still rounding you, and {cg.rival} already thin on {cg.partWord}.',
+    'Kitchen heat under the blazer. {cg.rival} loses {cg.partWord} to a body that already ate.',
+  ] },
+  { when: { leftoverFed: true, cgReply: 'taunt', cgRivalSet: 'named' }, weight: 4, text: [
+    '{cg.rival} crowding {cg.partWord}. Leftover already opened you. Push.',
+    'Close on {cg.partWord}. Last night\'s tray is the first answer. {cg.rival} is the rest.',
+  ] },
+  { when: { leftoverFed: true, cgReply: 'observe', cgRivalSet: 'named' }, weight: 4, text: [
+    'Board math: leftover in you, {cg.rival} trailing on {cg.partWord}.',
+    'Galley still on the thread. {cg.rival}\'s {cg.partWord} is the quiet column.',
+  ] },
+  { when: { leftoverFed: true, cgReply: 'challenge', cgRivalSet: 'named' }, weight: 4, text: [
+    '{cg.rival} owns a slice of {cg.partWord}. Leftover started the catch-up. Finish the sitting.',
+    'Gap on {cg.partWord} versus {cg.rival}. Second sitting already in you. Make it count.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Priya, leftover still rounding you. The corkboard will log both sittings.',
+    'Kitchen heat still in the thread. Type after you swallow.',
+  ] },
+  { when: { cgReply: 'encourage', cgRivalSet: 'named' }, weight: 3, text: [
+    '{cg.rival}\'s {cg.partWord} is already the smaller column. Keep the lead honest.',
+    'You sit ahead of {cg.rival} on {cg.partWord}. Eat like the pin asked.',
+  ] },
+  { when: { cgReply: 'taunt', cgRivalSet: 'named' }, weight: 3, text: [
+    '{cg.rival} is close enough on {cg.partWord} to irritate you. Good.',
+    'Watch {cg.rival}\'s {cg.partWord}. Irritation is a meal plan.',
+  ] },
+  { when: { cgReply: 'observe', cgRivalSet: 'named' }, weight: 3, text: [
+    '{cg.rival} sits under you on {cg.partWord}. The pin already knows.',
+    'Numbers: you, then {cg.rival}\'s {cg.partWord}, then the rest of the floor.',
+  ] },
+  { when: { cgReply: 'challenge', cgRivalSet: 'named' }, weight: 3, text: [
+    '{cg.rival} still bites {cg.partWord}. Close it on purpose.',
+    'Pick {cg.partWord}. Pass {cg.rival}. Update the board like a dare.',
+  ] },
+  { when: { cgReply: 'taunt', cgRivalSet: 'none' }, weight: 3, text: [
+    'No clean rival. Complacency is the ugly column, Priya.',
+    'Board is yours. The threat is you slowing down.',
+  ] },
+  { when: { cgReply: 'challenge', cgRivalSet: 'none' }, weight: 3, text: [
+    'No measured gap. Invent one. Overfeed a category until the pin looks rude.',
+    'Create a margin. The corkboard is bored when it is this clean.',
+  ] },
+  { when: { cgReply: 'encourage', cgRivalSet: 'none' }, weight: 3, text: [
+    'Nobody has a clean lead over you. Widen the margins while they are kind.',
+    'The board bends around you. Use the quiet.',
+  ] },
+  { when: { cgReply: 'observe', cgRivalSet: 'none' }, weight: 3, text: [
+    'Trends favor you. More tape would only make it louder.',
+    'Clean board. Every current pin is yours.',
+  ] },
+  { when: {}, text: [
+    'You type as RA. The corkboard is listening.',
+    'A reply from the desk. Priya will treat it as a schedule.',
+    'Hall chat, RA voice, the numbers waiting.',
+  ] },
+]);
+
+// Shape: DIALOGUE / CLOSE. RA voice, unquoted (chat prefixes [You]).
+registerPool('cg.chat.ra.line', [
+  { when: { leftoverFed: true, cgDrive: 'Ruthless', cgRivalSet: 'named' }, weight: 4, text: [
+    'Leftovers count. Log both sittings and make {cg.rival} watch.',
+  ] },
+  { when: { leftoverFed: true, cgReply: 'encourage' }, weight: 4, text: [
+    'Keep going. The leftover already voted.',
+  ] },
+  { when: { leftoverFed: true, cgReply: 'taunt' }, weight: 4, text: [
+    'Push harder. Foil from the galley is not a rest day.',
+  ] },
+  { when: { leftoverFed: true, cgReply: 'challenge' }, weight: 4, text: [
+    'Close the gap on a stomach that already ate. Be greedy about it.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Second sitting still in you. Use it.',
+  ] },
+  { when: { cgReply: 'encourage', stageMax: 4 }, weight: 3, text: [
+    'Early lead. Feed it before it looks modest.',
+  ] },
+  { when: { cgReply: 'encourage', stageMin: 8 }, weight: 3, text: [
+    'That middle is the argument. Keep feeding the argument.',
+  ] },
+  { when: { cgReply: 'taunt' }, weight: 3, text: [
+    'Irritation is calories. Spend them.',
+  ] },
+  { when: { cgReply: 'challenge' }, weight: 3, text: [
+    'Pick a category. Overfeed it. Make the next pin humiliatingly clear.',
+  ] },
+  { when: { cgReply: 'observe' }, weight: 3, text: [
+    'The tape is already telling on everybody else.',
+  ] },
+  { when: {}, text: [
+    'The desk is watching the board with you.',
+    'Reply sent. Appetite is the rest of the thread.',
+    'Priya will read it twice. Then she will eat.',
+  ] },
+]);
+
+registerPool('cg.chat.ra.scene', [
+  { when: {}, text: [
+    '{cg.chat.ra.setup} {cg.chat.ra.line}',
+    '{cg.chat.ra.line} {cg.chat.ra.setup}',
+    '{cg.chat.ra.setup}',
+  ] },
+]);
+
+export function renderCgRaReply(priya, week, driveLabel, optId, comparison) {
+  const rawPart = comparison?.category || comparison?.bodypart || '';
+  const cgPart = CG_PART_ALIAS[rawPart] || 'waist';
+  const ctx = buildTextContext({
+    subject: priya || { lbs: 180, leftoverFedThisWeek: false },
+    week,
+    globals: {
+      cgDrive: driveLabel || 'Invested',
+      cgReply: optId || 'observe',
+      cgPart,
+      cgRival: comparison?.residentName || comparison?.girlName || 'the hall',
+    },
+  });
+  return render('{cg.chat.ra.scene}', ctx)?.trim() || '';
+}

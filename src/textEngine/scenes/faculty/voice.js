@@ -36,6 +36,30 @@ registerPool('faculty.voice', [
     'Registrar, pastry, gossip as sacred as enrollment. She files both with sugar on the keys.',
     'The good chair appears when she likes you. Éclair box. Fresh intel. Usual arrangement.',
   ] },
+  { when: { leftoverFed: true, facultyId: 'hartley' }, weight: 4, text: [
+    'Hartley smells your galley on you. She marks the page anyway and pulls the pastry closer.',
+    'Marzipan first, citation second. She treats leftover trays as primary sources.',
+  ] },
+  { when: { leftoverFed: true, facultyId: 'brooks' }, weight: 4, text: [
+    'Brooks clocks leftover heat on your residents. She toasts it with the Goliath and tells you to keep feeding them.',
+    'Stadium grin for a tray that never quite emptied. She drinks anyway.',
+  ] },
+  { when: { leftoverFed: true, facultyId: 'mori' }, weight: 4, text: [
+    'Mori already labeled your leftover as a delayed-satiety trial. The custard is sample two.',
+    'Twin puddings, a pen tapping because your kitchen ran overnight data.',
+  ] },
+  { when: { leftoverFed: true, facultyId: 'abara' }, weight: 4, text: [
+    'Abara treats leftover trays as a vector. Two coffees if she likes you, pastry if the floor already ate.',
+    'Coffee cup circling. She calls your galley a successful intervention. Fond. Hungry.',
+  ] },
+  { when: { leftoverFed: true, facultyId: 'delgado' }, weight: 4, text: [
+    'Rosa heard the foil. Sit. Eat. She takes an unfinished tray personally even when it was yours.',
+    'Plantains already plated. She knows your kitchen started them before you walked in.',
+  ] },
+  { when: { leftoverFed: true, facultyId: 'lockwood' }, weight: 4, text: [
+    'Penny files your leftover night next to enrollment. Danish first. Gossip second. Same folder.',
+    'Door closed on crumbs. She wants the names of who finished the tray.',
+  ] },
   { when: { leftoverFed: true }, weight: 3, text: [
     'Your kitchen still scents the lounge. She treats that as a briefing.',
   ] },

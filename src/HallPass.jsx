@@ -146,7 +146,7 @@ import {
   renderFairDayAfterpartyResult,
 } from './textEngine/scenes/fairTraining/index.js';
 import { renderEvolvedEventProse, renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
-import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene, renderCgReaction, renderCgChatPost, renderCgChatFollowup } from './textEngine/scenes/evolved/cgBingeBeats.js';
+import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene, renderCgReaction, renderCgChatPost, renderCgChatFollowup, renderCgRaReply } from './textEngine/scenes/evolved/cgBingeBeats.js';
 import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
@@ -3722,8 +3722,10 @@ export default function HallPass(){
       const priya=students.find(s=>s.id===prev.priyaStudentId);
       const stageKey=priya?getCGStageKey(priya.lbs):"Heavy";
       const comparison=pickCGComparison(prev,optId);
+      const tier=getCGDriveTier(cgDrive(prev));
+      const beat=renderCgRaReply(priya,week,tier.label,optId,comparison);
       const template=comparison?(opt.byStage?.[stageKey]||opt.fallback):opt.fallback;
-      const text=formatCGText(template,{
+      const text=beat||formatCGText(template,{
         residentName:comparison?.residentName||comparison?.girlName||"the hall",
         bodypart:comparison?.bodypart||"measurements",
         priyaValue:comparison?.priyaValue,
@@ -5726,7 +5728,7 @@ export default function HallPass(){
     const prep=evolvedPrepFx(s,history);
     const {move,telegraph}=pickOppMove(0,100);
     if(prep.lbsBonus){
-      setStudents(prev=>prev.map(x=>x.id===studentId?processStudentGain(x,depthGainLbs(s,prep.lbsBonus,week,{}),0):x));
+      setStudents(prev=>prev.map(x=>x.id===studentId?bumpOriginChain(processStudentGain(x,depthGainLbs(s,prep.lbsBonus,week,{}),0)):x));
     }
     setSumoMatchState({studentId,stageIdx,oppLbs,ringPos:prep.confident?8:0,yourBalance:100+prep.balanceBonus,oppBalance:100,yourBouts:0,oppBouts:0,gainAccum:prep.lbsBonus,oppMove:move,telegraph,exchangeLine:renderSumoOpening(stageIdx,s,oppLbs,week),phase:'match',popupText:null,phaseAfterPopup:null,fillRingUsed:false,prepLoaded:prep.loaded,prepPaced:prep.paced,prepConfident:prep.confident,wfBump:prep.wfBump});
     setEvolvedEventState(null);
@@ -6478,7 +6480,8 @@ export default function HallPass(){
       const glow=renderStreamBeat('{stream.afterglow}',ctx);
       const linger=renderStreamBeat('{stream.linger}',ctx);
       const endingText=[tapLine,...specialLines,...milestoneLines,streamGrowth?.prose,endLine,glow,linger].filter(Boolean).join('\n\n');
-      const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
+      const flavorBeat=renderStreamBeat('{stream.destiny.spend}',ctx,{v2DepthChance:0});
+      const flavor=flavorBeat||DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
       fired.forEach((key,i)=>{
         const{label,emoji}=getStreamMilestoneLabel(key);
         setTimeout(()=>push(`📡 ${emoji} Milestone: ${label}`),80+i*120);
@@ -6504,7 +6507,7 @@ export default function HallPass(){
       if(ok){
         push(`📡 Destiny bought ${item.emoji} ${item.label}.`);
         if(item.id==='chat_feast'||item.id==='delivery_stash'){
-          return processStudentGain(student,depthGainLbs(student,item.id==='chat_feast'?2:1,week,{}),0);
+          return bumpOriginChain(processStudentGain(student,depthGainLbs(student,item.id==='chat_feast'?2:1,week,{}),0));
         }
         return student;
       }
