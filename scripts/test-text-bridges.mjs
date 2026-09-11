@@ -30,6 +30,7 @@ const required = [
   'researchJournal/index.js',
   'evolved/eventPools.js',
   'wifeLessons/index.js',
+  'wifeLessons/lessonFragments.js',
   'fairQueen/index.js',
 ];
 

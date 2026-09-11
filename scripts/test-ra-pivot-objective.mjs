@@ -54,6 +54,8 @@ execSync('node scripts/test-text-pool-variety.mjs', { cwd: root, stdio: 'inherit
 
 execSync('node scripts/test-text-spot-render.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-text-modular-pilot.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 
 const evoPath = join(root, 'src/gameData/evolvedForms.js');
