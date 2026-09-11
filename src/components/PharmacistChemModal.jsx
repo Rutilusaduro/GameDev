@@ -95,6 +95,7 @@ function BrewPicker({ session, setSession, pharmacistState }) {
 
 export function PharmacistChemModal({
   student,
+  week = 1,
   chemSession,
   setChemSession,
   pharmacistState,
@@ -224,7 +225,13 @@ export function PharmacistChemModal({
           </div>
         )}
         {(() => {
-          const linger = render('{pharmacist.linger}', createContext({ subject: student, week: 1 }))?.trim();
+          const leftoverFed = !!(chemSession.leftoverBonus || student.leftoverFedThisWeek);
+          const nightVisit = !!(chemSession.nightBonus || (week && student.lastNightVisitWeek === week));
+          const linger = render('{pharmacist.linger}', createContext({
+            subject: student,
+            week,
+            globals: { leftoverFed, nightVisit },
+          }))?.trim();
           return linger ? (
             <div style={{ fontSize: 11, color: '#709888', fontStyle: 'italic', lineHeight: 1.65, marginBottom: 12 }}>{linger}</div>
           ) : null;

@@ -1126,11 +1126,12 @@ export default function HallPass(){
       let ns={...st,relationship:Math.min(100,(st.relationship||0)+(choice.rel||0)),corruption:(st.corruption||0)+(choice.corruption||0)};
       if(choice.hunger) ns=adjustHunger(ns,choice.hunger);
       if(choice.full&&choice.full<0) ns={...ns,fullness:Math.max(0,(ns.fullness||0)+choice.full)};
-      if(choice.cals){
-        const fed=feedStudentCalories(ns,choice.cals,choice.full>0?choice.full:0,0,'Night round');
-        if(fed) ns=fed;
-      }
       ns={...ns,lastNightVisitWeek:week,memories:appendMemory(ns.memories,'night',week,choice.id)};
+      if(choice.cals){
+        const extraCals=choice.lbs?0:leftoverNightGainBump(ns,week)*GAIN_CONFIG.calsPerLb;
+        const fed=feedStudentCalories(ns,choice.cals+extraCals,choice.full>0?choice.full:0,0,'Night round');
+        if(fed) ns={...fed,lastNightVisitWeek:week};
+      }
       if(choice.lbs) ns=processStudentGain(ns,depthGainLbs(ns,choice.lbs,week,{}),0);
       ns=bumpOriginChain(ns);
       return ns;
@@ -4225,12 +4226,14 @@ export default function HallPass(){
     const newFat=session.sessionFatAccum+choice.fatGain;
     const newSusp=session.sessionSuspAccum+choice.suspChange;
     const newChoices=[...session.choices,choice.id];
-    const choiceLine=renderCultivatorChoice(session.foodType,choice.id,cs.testerName,week)||choice.desc;
+    const renee=students.find(st=>st.id===10);
+    const cultOpts={ leftoverFed:!!renee?.leftoverFedThisWeek, nightVisit:!!(week&&renee?.lastNightVisitWeek===week) };
+    const choiceLine=renderCultivatorChoice(session.foodType,choice.id,cs.testerName,week,cultOpts)||choice.desc;
     const newLog=[...session.log,choiceLine];
     const nextIdx=session.junctionIdx+1;
     const isDone=nextIdx>=recipe.junctions.length;
     if(isDone){
-      const reaction=renderCultivatorReaction(cs.testerName,Math.max(0,cs.suspicion+newSusp),week);
+      const reaction=renderCultivatorReaction(cs.testerName,Math.max(0,cs.suspicion+newSusp),week,cultOpts);
       setCultivatorState(prev=>({...prev,session:{...prev.session,choices:newChoices,log:newLog,sessionFatAccum:newFat,sessionSuspAccum:newSusp,complete:true,eatingReaction:reaction}}));
     } else {
       setCultivatorState(prev=>({...prev,session:{...prev.session,choices:newChoices,log:newLog,sessionFatAccum:newFat,sessionSuspAccum:newSusp,junctionIdx:nextIdx}}));
@@ -4240,7 +4243,8 @@ export default function HallPass(){
     const cs=cultivatorState; if(!cs||!cs.session||!cs.session.complete) return;
     const{session}=cs;
     // Apply gains: fat bar and suspicion
-    const newFatBar=cs.fatBar+session.sessionFatAccum;
+    const leftoverFat=leftoverNightGainBump(s,week);
+    const newFatBar=cs.fatBar+session.sessionFatAccum+leftoverFat;
     const rawSusp=Math.min(200,Math.max(0,cs.suspicion+session.sessionSuspAccum));
     const stageUp=newFatBar>=FAT_BAR_CAP;
     const nextStageId=Math.min(10,cs.testerStageId+(stageUp?1:0));
@@ -9739,6 +9743,7 @@ export default function HallPass(){
         return(
           <PharmacistChemModal
             student={chemStudent}
+            week={week}
             chemSession={pharmacistChemSession}
             setChemSession={setPharmacistChemSession}
             pharmacistState={pharmacistState}

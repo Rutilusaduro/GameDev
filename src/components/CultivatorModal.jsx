@@ -14,6 +14,9 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, cs?.modalPhase, cs?.session?.foodType, cs?.session?.junctionIdx]);
         const brown="#8B4513"; const amber="#CD853F";
         const renee=students.find(s=>s.id===10);
+        const leftoverFed=!!renee?.leftoverFedThisWeek;
+        const nightVisit=!!(week&&renee?.lastNightVisitWeek===week);
+        const cultOpts={ leftoverFed, nightVisit };
         const canDismiss=cs.modalPhase==='recruit_setup'
           ||(cs.modalPhase==='session'&&cs.session&&!cs.session.foodType)
           ||cs.modalPhase==='harvest'
@@ -75,12 +78,12 @@ export function CultivatorModal({ cultivatorState, students, week = 1, setCultiv
             return wrap(<>
               <div style={{fontSize:9,letterSpacing:4,color:brown,marginBottom:4}}>{recipeIcon} {recipe.label.toUpperCase()} — Decision {session.junctionIdx+1}/{recipe.junctions.length}</div>
               <div style={{fontSize:13,fontWeight:700,color:amber,marginBottom:4}}>{cs.testerName}</div>
-              <div style={{fontSize:11,color:"#8a6030",marginBottom:10,fontStyle:"italic"}}>{session.junctionIdx===0?renderCultivatorIntro(session.foodType,cs.testerName,week):session.log[session.log.length-1]}</div>
+              <div style={{fontSize:11,color:"#8a6030",marginBottom:10,fontStyle:"italic"}}>{session.junctionIdx===0?renderCultivatorIntro(session.foodType,cs.testerName,week,cultOpts):session.log[session.log.length-1]}</div>
               <div style={{fontSize:12,color:"#b08050",marginBottom:12,fontWeight:600}}>{junction.prompt}</div>
               {junction.choices.map(ch=>(
                 <button key={ch.id} type="button" className="cultivator-choice-row" style={{...C.btn("#2a0e04"),width:"100%",marginBottom:8,textAlign:"left",padding:"10px 14px"}} onClick={()=>makeCultivatorChoice(ch)}>
                   <div style={{color:amber,fontWeight:700,fontSize:12,marginBottom:3}}>{ch.label}</div>
-                  <div style={{color:"#8a5030",fontSize:10,lineHeight:1.4}}>{renderCultivatorChoice(session.foodType,ch.id,cs.testerName,week)||ch.desc}</div>
+                  <div style={{color:"#8a5030",fontSize:10,lineHeight:1.4}}>{renderCultivatorChoice(session.foodType,ch.id,cs.testerName,week,cultOpts)||ch.desc}</div>
                   <div style={{color:"#5a3020",fontSize:9,marginTop:4}}>
                     +{ch.fatGain} fat · {ch.suspChange>=0?"+":""}{ch.suspChange} suspicion
                   </div>

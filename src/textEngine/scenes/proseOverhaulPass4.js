@@ -174,6 +174,10 @@ oncePool('pharmacist.linger', [
     'Union leftover still in the hood. She recaps the beaker as a second reagent.',
     'Sophia files leftover yield next to the batch. Waistbands will agree by evening.',
   ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Quiet-hours heat still in the reagents. She treats the knock as a catalyst.',
+    'After-hours corridor still in her posture. The batch uses the same open body.',
+  ] },
   { when: {}, text: [
     'Samples migrate. So do waistbands. Sophia files both as yield.',
     'The union table is empty by noon. The effects are not.',
