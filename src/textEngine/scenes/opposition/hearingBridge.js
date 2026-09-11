@@ -1,8 +1,9 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Opposition hearing — engine bridge for phase, choice, and ending prose.
 import { registerDimension, render } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass4.js';
 
 registerDimension('studentLbs', (ctx) => ctx.globals?.studentLbs ?? 0);
 registerDimension('hearingType', (ctx) => ctx.globals?.hearingType ?? 'removal');
@@ -57,8 +58,9 @@ export function renderHearingPhase(type, phaseIdx, student, week) {
 
 export function renderHearingChoiceResult(type, choiceId, student, week, phaseIdx = 0) {
   const pool = `opposition.hearing.${type}.result.${choiceId}`;
-  return renderHearingPool(pool, student, week, type, phaseIdx, { v2DepthChance: 0.28 })
+  const text = renderHearingPool(pool, student, week, type, phaseIdx, { v2DepthChance: 0.28 })
     || 'The room records your choice.';
+  return wrapLeftoverLinger(text, student, week, 'opposition.linger');
 }
 
 export function renderHearingEnding(type, poolKey, student, week) {

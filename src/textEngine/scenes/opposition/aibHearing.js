@@ -297,6 +297,13 @@ registerPoolAutoDecompose('opposition.hearing.verdict', [
 ]);
 
 registerPoolAutoDecompose('opposition.hearing.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat sat in the witness chair with her.',
+    'The Board filed concern. The kitchen filed foil first.',
+  ]},
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. Daylight testimony uses a quieter story.',
+  ]},
   { when: {}, text: [
     'The folder stays closed. Appetite does not.',
     'You walk {subject.name} out. The hallway is warmer than the hearing.',

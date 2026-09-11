@@ -55,6 +55,12 @@ registerPool('npc.peer', [
 
 registerPool('npc.coach', [
   { when: {}, text: [''] },
+  { when: { leftoverFed: true, archetype: 'athlete' }, weight: 3, text: [
+    `"Coach would clock the leftover sitting," she says, and does not sound sorry.`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `"Training log would hate last night's tray," she says, then eats anyway.`,
+  ] },
   { when: { stageMin: 4, archetype: 'athlete' }, text: [
     `"Coach would lose his mind," she says — but she does not sound worried.`,
   ] },
@@ -65,6 +71,13 @@ registerPool('npc.coach', [
 
 registerPool('npc.staff', [
   { when: {}, text: [''] },
+  { when: { leftoverFed: true, campusLocale: 'cafeteria' }, weight: 3, text: [
+    'Dining staff clock leftover roundness and load the tray like they already knew.',
+    'Staff refill her plate. Last night\'s sitting made the habit honest.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'A worker glances at leftover heat in her middle and keeps the portion generous.',
+  ] },
   { when: { campusLocale: 'cafeteria', stageMin: 5 }, text: [
     'The cafeteria worker loads her tray without comment. They have seen this before.',
     'Staff refills her plate before she asks. Habit, not judgment.',
@@ -78,6 +91,13 @@ registerPool('ra.observation', [
   { when: {}, text: [
     'You note the change without saying it aloud.',
     'The numbers tell one story. Her presence tells another.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'You note leftover heat in the outline before you note the week\'s number.',
+    'She is still eating last night in daylight. You let the observation stay private.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You already saw her after hours. Daylight observation is the public version.',
   ] },
   { when: { relationship: [0, 1], stageMin: 5 }, text: [
     'You observe clinically — data accumulating, relationship still formal.',

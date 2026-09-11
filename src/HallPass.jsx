@@ -1412,7 +1412,7 @@ export default function HallPass(){
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
-    if(inter && !shouldSkipHungerInterrupt(inter, dormState||createInitialDormState(), weeklyArms)){
+    if(inter && !shouldSkipHungerInterrupt(inter, dormState||createInitialDormState(), weeklyArms, Math.random, week)){
       if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
         setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
       }
@@ -1723,7 +1723,7 @@ export default function HallPass(){
     const hungerEff=aggregateSkillEffects(ownedSkills);
     if(!skipHungerCheckRef.current){
       const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
-      if(inter && !shouldSkipHungerInterrupt(inter, dormState||createInitialDormState(), weeklyArms)){
+      if(inter && !shouldSkipHungerInterrupt(inter, dormState||createInitialDormState(), weeklyArms, Math.random, week)){
         if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
           setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
         }
@@ -2414,7 +2414,7 @@ export default function HallPass(){
     if((dormState?.nightRounds?.lastWeek===week)&&((dormState.nightRounds.visitsThisWeek||0)>=2)){
       setAdminScrutiny(prev=>Math.max(0,prev-2));
     }
-    const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition);
+    const scrutinyMsg=weeklyScrutinyNudge(adminScrutiny,scrutinyTier.id,nextOpposition,{leftoverKitchen:leftoverKitchenThisWeek,nightRound:nightRoundThisWeek});
     if(scrutinyMsg) setTimeout(()=>push(scrutinyMsg.message),170);
     push(`📅 Week ${newWeek} begins. ${newAp} AP available.${scrutinyTier.apPenalty?` (Scrutiny: −${scrutinyTier.apPenalty} AP)`:""}`);
     if(evs.length){
@@ -5246,7 +5246,7 @@ export default function HallPass(){
         const fed=feedStudentCalories(ns,portion.calories+extra,portion.fullness,portion.relGain,'Emergency feeding');
         if(fed) ns=bumpOriginChain(fed);
         const eatLine=isSlenderEligible(fed||ns)
-          ?renderSlenderEatBeat(fed||ns,week,{mealType:'binge'})
+          ?renderSlenderEatBeat(fed||ns,week,{mealType:'binge',skipLeftoverLinger:true})
           :renderEatScene(fed||ns,week,{mealType:'binge'});
         if(eatLine) setTimeout(()=>push(`🍽️ ${eatLine}`),70);
         setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'feed',week)}`),100);
@@ -5272,7 +5272,7 @@ export default function HallPass(){
       const fed=feedStudentCalories(ns,Math.round(portion.calories*0.72),Math.round(portion.fullness*0.8),portion.relGain,'Kitchen leftovers');
       if(fed) ns=fed;
       const eatLine=isSlenderEligible(fed||ns)
-        ?renderSlenderEatBeat(fed||ns,week,{mealType:'snack'})
+        ?renderSlenderEatBeat(fed||ns,week,{mealType:'snack',skipLeftoverLinger:true})
         :renderEatScene(fed||ns,week,{mealType:'snack'});
       if(eatLine) setTimeout(()=>push(`🍽️ ${eatLine}`),70);
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'leftover',week)}`),100);

@@ -42,12 +42,25 @@ export function scrutinyBlocksClassFeast(scrutiny, actionId) {
   return PUBLIC_CLASS_FEASTS.has(actionId);
 }
 
-export function weeklyScrutinyNudge(scrutiny, tierId, opposition) {
+export function weeklyScrutinyNudge(scrutiny, tierId, opposition, extras = {}) {
   if (opposition?.aib?.unlocked && opposition.aib.agendaQueue?.length) {
     const next = opposition.aib.agendaQueue[0];
     return { message: `👁 AIB telegraph: ${next.label} resolves week ${next.resolvesWeek}.`, scrutinyDelta: 0 };
   }
-  if (tierId >= 3) return { message: '⚠️ Administration has opened a formal review. Public demonstrations are risky this week.', scrutinyDelta: 0 };
-  if (tierId >= 2) return { message: '📋 Staff whispers about your floor. Keep a lower profile.', scrutinyDelta: 0 };
+  if (tierId >= 3) {
+    let message = '⚠️ Administration has opened a formal review. Public demonstrations are risky this week.';
+    if (extras.leftoverKitchen) message += ' Leftover trays made the file thicker.';
+    else if (extras.nightRound) message += ' Night-round logs did not help.';
+    return { message, scrutinyDelta: 0 };
+  }
+  if (tierId >= 2) {
+    let message = '📋 Staff whispers about your floor. Keep a lower profile.';
+    if (extras.leftoverKitchen) message += ' Leftover trays made the rumor louder.';
+    else if (extras.nightRound) message += ' Night-round logs made the staff lounge.';
+    return { message, scrutinyDelta: 0 };
+  }
+  if (extras.leftoverKitchen && tierId >= 1) {
+    return { message: '📋 Dining noted leftover routing on your floor.', scrutinyDelta: 0 };
+  }
   return null;
 }

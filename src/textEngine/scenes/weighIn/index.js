@@ -74,7 +74,7 @@ export function renderWeighInReaction(student, week, opts = {}) {
     { ...opts, week },
   );
   if (isSlenderEligible(student)) {
-    const mirrorBeat = renderSlenderMirrorBeat(student, week, opts);
+    const mirrorBeat = renderSlenderMirrorBeat(student, week, { ...opts, skipLeftoverLinger: true });
     if (mirrorBeat) reply = `${mirrorBeat}\n\n${reply}`;
   }
   const memBeat = opts.memScope ? renderMemoryCallback(student, week, { ...opts, scene: 'weighIn' }) : '';

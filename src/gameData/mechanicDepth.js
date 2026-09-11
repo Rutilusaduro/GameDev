@@ -278,7 +278,9 @@ export function habitatFx(student, dormState, ownedHallSkills = {}, extras = {})
     hungerInterruptEase:
       (fits.fridge ? 0.22 : 0)
       + (fits.snacks ? 0.12 : 0)
-      + (habit === 'midnight_snack' ? 0.18 : 0),
+      + (habit === 'midnight_snack' ? 0.18 : 0)
+      + (student?.leftoverFedThisWeek ? 0.1 : 0)
+      + (extras.week && student?.lastNightVisitWeek === extras.week ? 0.08 : 0),
     intimacyRel: fits.bed ? 2 : 0,
     intimacyLbs: fits.bed ? 1 : 0,
     streamLbs: fits.lighting ? 1 : 0,
@@ -291,10 +293,10 @@ export function habitatFx(student, dormState, ownedHallSkills = {}, extras = {})
   };
 }
 
-export function shouldSkipHungerInterrupt(student, dormState, weeklyArms = {}, rng = Math.random) {
+export function shouldSkipHungerInterrupt(student, dormState, weeklyArms = {}, rng = Math.random, week = 0) {
   if (!student) return false;
   if (weeklyArms?.devouringStudentId === student.id && !weeklyArms?.devouringConsumed) return false;
-  const fx = habitatFx(student, dormState);
+  const fx = habitatFx(student, dormState, {}, { week });
   return fx.hungerInterruptEase > 0 && rng() < Math.min(0.55, fx.hungerInterruptEase);
 }
 

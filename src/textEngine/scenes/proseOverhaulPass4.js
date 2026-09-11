@@ -517,3 +517,37 @@ oncePool('portrait.linger', [
   ] },
 ]);
 
+oncePool('slender.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Last night\'s foil is still a warmth she has not named.',
+    'She tucks her shirt over leftover sitting like the hallway might see it.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The tray from midnight still occupies the place she keeps calling a feeling.',
+    'She is fuller than this hour has a right to be, leftover-warm and quiet about it.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. Daylight still finds her answering with appetite she will not say.',
+  ] },
+  { when: {}, text: [
+    'She notices the softness and looks away first.',
+    'The wanting stays small, tucked under the shirt.',
+    'She breathes around a fullness she has not admitted yet.',
+  ] },
+]);
+
+oncePool('opposition.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Galley surplus walked into the hearing in her outline.',
+    'Vance wants a thinner file. Leftover heat already filled the chair.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You already saw her after hours. The Board is arguing a quieter girl.',
+  ] },
+  { when: {}, text: [
+    'The gavel waits. Appetite keeps the chair warm.',
+    'You walk her out still carrying last night\'s sitting.',
+    'Vance\'s folder cannot hold the leftover outline.',
+  ] },
+]);
+

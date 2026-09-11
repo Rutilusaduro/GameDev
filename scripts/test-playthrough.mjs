@@ -15,6 +15,7 @@ import { getMysteryTrustPulse } from '../src/gameData/mysteryTrust.js';
 import { computeSurrenderVector } from '../src/gameData/transformationPressure.js';
 import { computePrestigeScore } from '../src/gameData/prestigeLite.js';
 import { labInstabilityEase, leftoverNightGainBump, neighborEcologyPatch, habitatFx } from '../src/gameData/mechanicDepth.js';
+import { weeklyScrutinyNudge } from '../src/gameData/scrutinyConsequences.js';
 import { getInterruptTalkRelGain, getInterruptDenyRelLoss, getInterruptFeedPortion } from '../src/gameData/hungerAddiction.js';
 import { applyFavoritismEcology } from '../src/gameData/relationshipEcology.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
@@ -272,6 +273,26 @@ assert.ok(
   getInterruptFeedPortion({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true }).relGain
     > getInterruptFeedPortion(INIT_STUDENTS[0]).relGain,
   'leftover should bump hunger-interrupt feed rel',
+);
+assert.ok(
+  habitatFx({ leftoverFedThisWeek: true }, {}, {}).hungerInterruptEase
+    > habitatFx({}, {}, {}).hungerInterruptEase,
+  'leftover should ease hunger interrupt chance',
+);
+assert.ok(
+  habitatFx({ lastNightVisitWeek: 3 }, {}, {}, { week: 3 }).hungerInterruptEase
+    > habitatFx({ lastNightVisitWeek: 3 }, {}, {}, { week: 2 }).hungerInterruptEase,
+  'same-week night visit should ease hunger interrupt chance',
+);
+assert.match(
+  weeklyScrutinyNudge(80, 2, {}, { leftoverKitchen: true }).message,
+  /Staff whispers about your floor/,
+  'scrutiny nudge must keep staff-whisper core copy',
+);
+assert.match(
+  weeklyScrutinyNudge(80, 2, {}, { leftoverKitchen: true }).message,
+  /Leftover trays/,
+  'leftover kitchen should thicken scrutiny whisper',
 );
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');

@@ -1,10 +1,11 @@
 // The Squad — Lead: A6 Slender | Support: A4 Architect, A5 Editor
 // Early-game scene library — thin/softening bodies, reluctance, neutrality, secret want.
 import { registerPool, registerDimension, render } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import './fragments.js';
 import './personas.js';
+import '../proseOverhaulPass4.js';
 
 /**
  * Derive early-game attitude toward gaining from psych + corruption.
@@ -50,24 +51,30 @@ registerPool('slender.scene', [
  * @param {number} week
  * @param {object} opts — trace, weekGainLbs, globals, psych overrides via student
  */
+function slenderLine(base, student, week, ctx, opts, chance) {
+  const lined = appendV2Depth(base, 'earlyGain', ctx, chance);
+  if (opts.skipLeftoverLinger) return lined;
+  return wrapLeftoverLinger(lined, student, week, 'slender.linger');
+}
+
 export function renderSlenderScene(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const line = render('{slender.scene}', ctx, { trace: opts.trace || null });
   const base = line?.trim() || '';
-  return appendV2Depth(base, 'earlyGain', ctx, opts.v2DepthChance ?? 0.32);
+  return slenderLine(base, student, week, ctx, opts, opts.v2DepthChance ?? 0.32);
 }
 
 export function renderSlenderMirrorBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const base = render(SLENDER_MIRROR_SCENE, ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'earlyGain', ctx, opts.v2DepthChance ?? 0.3);
+  return slenderLine(base, student, week, ctx, opts, opts.v2DepthChance ?? 0.3);
 }
 
 export function renderSlenderEatBeat(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const base = render(SLENDER_EAT_SCENE, ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'earlyGain', ctx, opts.v2DepthChance ?? 0.3);
+  return slenderLine(base, student, week, ctx, opts, opts.v2DepthChance ?? 0.3);
 }
