@@ -5067,6 +5067,13 @@ export const FAIR_TRAINING_CONFIG = {
   recruitBodyTypes: ['apple','pear','hourglass','straight','mom_bod','voluptuous','athletic'],
 };
 
+/** Depth-scaled fair training lb rolls per role key (MJ / collaborator / recruit). */
+export function fairTrainingGainBounds(role) {
+  const range = FAIR_TRAINING_CONFIG.gainRanges?.[role];
+  if (!range?.length) return [0, 0];
+  return [scaleEvolvedEventLbs(range[0]), scaleEvolvedEventLbs(range[1])];
+}
+
 const _mkTrainingScenes = () => {
   const collabs=['Brittany','Kylie','Serena','Renee','Daisy'];
   const stages=[4,5,6,7,8,9,10];

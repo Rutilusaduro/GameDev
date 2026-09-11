@@ -7,6 +7,19 @@ import { EVOLVED_ACTIVITY_TEXT, EVOLVED_EVENTS } from '../../../gameData/evolved
 import './activityPools.js';
 import './eventPools.js';
 
+function tryAppendLegacyBody(line, bodyKey, ctx, chance = 0.12) {
+  if (!line?.trim() || Math.random() >= chance) return line;
+  try {
+    const extra = render(`{${bodyKey}}`, ctx)?.trim();
+    if (extra && !extra.includes('{unresolved}') && extra !== line) {
+      return `${line}\n\n${extra}`;
+    }
+  } catch {
+    /* optional */
+  }
+  return line;
+}
+
 function resolvePhaseTextLegacy(phase, student, history, eventRef) {
   if (typeof phase.text !== 'function') return (phase.text || '').trim();
   if (eventRef != null) {
@@ -64,17 +77,12 @@ export function renderEvolvedEventPhase(student, week, formId, stageIdx, phaseId
   if (!line || line.includes('{unresolved}')) {
     line = resolvePhaseTextLegacy(phase, student, history, eventRef);
   }
-  if (line && Math.random() < (opts.legacyBodyChance ?? 0.12)) {
-    try {
-      const bodyKey = `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.legacyBody`;
-      const extra = render(`{${bodyKey}}`, ctx)?.trim();
-      if (extra && !extra.includes('{unresolved}') && extra !== line) {
-        line = `${line}\n\n${extra}`;
-      }
-    } catch {
-      /* optional depth */
-    }
-  }
+  line = tryAppendLegacyBody(
+    line,
+    `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.legacyBody`,
+    ctx,
+    opts.legacyBodyChance ?? 0.12,
+  );
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: opts.v2DepthChance ?? 0.28 });
 }
 
@@ -98,6 +106,12 @@ export function renderEvolvedEventChoiceResult(formId, stageIdx, phaseIdx, choic
   if (!line || line.includes('{unresolved}')) {
     line = typeof choice.result === 'function' ? String(choice.result(student)).trim() : (choice.result || '').trim();
   }
+  line = tryAppendLegacyBody(
+    line,
+    `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.${choiceId}.legacyBody`,
+    ctx,
+    0.1,
+  );
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: 0.22 });
 }
 
@@ -125,6 +139,12 @@ export function renderEvolvedEventEnding(student, week, formId, stageIdx, ending
     line = '';
   }
   if (!line || line.includes('{unresolved}')) line = (fallbackRaw || '').trim();
+  line = tryAppendLegacyBody(
+    line,
+    `evolved.event.${formId}.s${stageIdx}.end${endingIdx}.legacyBody`,
+    ctx,
+    0.14,
+  );
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: 0.32 });
 }
 
@@ -156,17 +176,12 @@ export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts 
     const raw = arr?.[stageIdx];
     line = raw ? (typeof raw === 'function' ? raw(student) : raw) : "She's in her element.";
   }
-  if (line && formId && Math.random() < (opts.legacyBodyChance ?? 0.1)) {
-    try {
-      const bodyKey = `evolved.activity.${formId}.s${stageIdx}.legacyBody`;
-      const extra = render(`{${bodyKey}}`, ctx)?.trim();
-      if (extra && !extra.includes('{unresolved}') && extra !== line) {
-        line = `${line}\n\n${extra}`;
-      }
-    } catch {
-      /* optional */
-    }
-  }
+  line = tryAppendLegacyBody(
+    line,
+    `evolved.activity.${formId}.s${stageIdx}.legacyBody`,
+    ctx,
+    opts.legacyBodyChance ?? 0.1,
+  );
   return renderEvolvedEventProse(line, student, week, {
     formId,
     stageIdx,

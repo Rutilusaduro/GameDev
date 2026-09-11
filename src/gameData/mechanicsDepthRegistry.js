@@ -22,6 +22,7 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'oppositionIntegration', file: 'oppositionIntegration.js' },
   { id: 'growthEvents', file: 'growthEvents.js' },
   { id: 'competitiveGainer', file: 'competitiveGainerState.js' },
+  { id: 'competitiveGainerText', file: 'competitiveGainerText.js' },
   { id: 'inventionUpgrades', file: 'inventionUpgrades.js' },
   { id: 'sessions', file: 'sessions.js' },
   { id: 'rosterUnlock', file: 'rosterUnlock.js' },

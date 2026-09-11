@@ -1,3 +1,12 @@
+import { depthCgDriveGain } from './mechanicsDepthLayer.js';
+
+/** Depth-scaled competitive drive roll bounds (HallPass CG handlers). */
+export function scaleCgDriveRange(range = [0, 0]) {
+  const lo = range[0] ?? 0;
+  const hi = range[1] ?? lo;
+  return [depthCgDriveGain(lo), depthCgDriveGain(Math.max(lo, hi))];
+}
+
 export const CG_STAGE_KEYS = ["Heavy","Fat","VeryFat","Enormous","Colossal","Blob"];
 
 export const CG_FILLED_REACTIONS = [

@@ -13,7 +13,9 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, scaleWlLessonLbs, scaleWlLessonRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, scaleWlLessonLbs, scaleWlLessonRel, fairTrainingGainBounds, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { scaleCgDriveRange } from './gameData/competitiveGainerText.js';
+import { renderFairBoostSummary } from './textEngine/scenes/fairQueen/index.js';
 import { CG_FILLED_SELF_REVIEW, CG_RA_REPLY_TEXT } from './gameData/competitiveGainerText.js';
 import { renderSessionRaeArrival, renderSessionRaeExtra, renderSessionPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
@@ -3455,7 +3457,8 @@ export default function HallPass(){
         : 'She studies the corkboard.';
       // Drive gain: check if any visible student is within threat range
       const priya=students.find(st=>st.id===prev.priyaStudentId);
-      let driveGain=depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
+      const [neutralLo,neutralHi]=scaleCgDriveRange(CG_CONFIG.driveGainNeutral);
+      let driveGain=rnd(neutralLo,neutralHi);
       if(priya){
         const priyaM=getMeasurements(priya.lbs,priya.bodyType);
         const visible=students.filter(s=>s.id!==priya.id&&(!s.hidden||lilithUnlocked));
@@ -3463,7 +3466,8 @@ export default function HallPass(){
           const sM=getMeasurements(s.lbs,s.bodyType);
           CG_CONFIG.categories.forEach(cat=>{
             if(sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){
-              driveGain+=depthCgDriveGain(rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]));
+              const [threatLo,threatHi]=scaleCgDriveRange(CG_CONFIG.driveGainThreat);
+              driveGain+=rnd(threatLo,threatHi);
             }
           });
         });
@@ -3519,9 +3523,11 @@ export default function HallPass(){
           ||`Priya notes ${target.name}'s ${bodypartLabel(cat)}.`;
         reactions[cat]={rel,text:rxText};
       });
+      const [measThreatLo,measThreatHi]=scaleCgDriveRange(CG_CONFIG.driveGainThreat);
+      const [measNeutralLo,measNeutralHi]=scaleCgDriveRange(CG_CONFIG.driveGainNeutral);
       const driveGain=threats.length>0
-        ? depthCgDriveGain(threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]))
-        : depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
+        ? threats.length*rnd(measThreatLo,measThreatHi)
+        : rnd(measNeutralLo,measNeutralHi);
       const sceneText=renderCGMeasurementScene(target,priya,week,tier.label)
         ||`Tape and numbers — ${target.name} under Priya's focus.`;
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
@@ -6344,8 +6350,8 @@ export default function HallPass(){
     prideBoost=depthFairPrideGrant(Math.round(prideBoost));
     const boostTier=cStage<=5?'Low':cStage<=8?'Mid':'High';
     // gains
-    const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
-    const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
+    const [mjLo,mjHi]=fairTrainingGainBounds('MJ');
+    const [cLo,cHi]=fairTrainingGainBounds('collaborator');
     const mjGain=scaleEvolvedEventLbs(rnd(mjLo,mjHi)), cGain=scaleEvolvedEventLbs(rnd(cLo,cHi));
     processStudentGain(mj,mjGain,scaleEvolvedEventRel(3));
     if(collab.id!==mj.id) processStudentGain(collab,cGain,scaleEvolvedEventRel(2));
@@ -6359,7 +6365,7 @@ export default function HallPass(){
       trophyPhotos:[...prev.trophyPhotos,{tag:photoTag,collab:collabKey,cycle:prev.cycleNum}],
       pendingCollab:collabKey, pendingRecruits:recruits,
       sessionSceneTag:sceneTag, sessionPhotoTag:photoTag,
-      sessionBoostSummary:FAIR_BOOST_SUMMARIES[collabKey][boostTier],
+      sessionBoostSummary:renderFairBoostSummary(collabKey,boostTier,mj,week,{partnerName:collab.name,fairCollab:collabKey})||FAIR_BOOST_SUMMARIES[collabKey][boostTier],
       sessionLog:{mjGain,cGain,prideBoost,collabName:collab.name},
       view:'session',
     }));
