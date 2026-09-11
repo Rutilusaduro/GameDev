@@ -18,18 +18,22 @@ const CHAPTERS = ['c1', 'c2', 'c3', 'c4'];
 const COR0 = [
   'Appetite still surprises me — I write it down before I can talk myself out of honesty.',
   'The week added softness I keep touching to believe. Curiosity wins over denial, barely.',
+  'I note the hunger without translating it into virtue. The page stays honest.',
 ];
 const COR1 = [
   'I stopped translating hunger into something respectable. It tastes like relief now.',
   'Fullness feels like completion. I schedule my life around it without apology.',
+  'Want arrives like weather — I dress for it, feed it, sleep heavier afterward.',
 ];
 const COR2 = [
   'Want is policy. I eat like someone who decided — calm, open, pleased.',
   'Mass is momentum. I do not brake for shame anymore.',
+  'Appetite leads; I follow with a pen in one hand and a fork in the other.',
 ];
 const STAGE_HIGH = [
   'Scale and chair negotiate on my terms now. Appetite leads; I follow, grateful.',
   'Another week of honest growth — body and hunger sharing the same long breath.',
+  'Immobility or not, the entry ends full — belly, mood, identity aligned.',
 ];
 
 EVOLVED_FORMS.forEach((form) => {

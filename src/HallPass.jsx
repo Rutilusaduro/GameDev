@@ -1861,7 +1861,16 @@ export default function HallPass(){
         let netTick=tickNetworkWeek(nextLab,updated,newWeek,Math.random,hallNetMods);
         netTick=depthNetworkTickAdjust(netTick,hallNetMods,Math.random);
         nextLab=netTick.labState;
+        const prevProposalCount=(labState.network?.proposals||[]).length;
+        const nextProposalCount=(nextLab.network?.proposals||[]).length;
         netTick.lines.forEach((line,idx)=>setTimeout(()=>push(line),80+idx*50));
+        if(nextProposalCount>prevProposalCount){
+          const talia=updated.find(s=>s.id===18);
+          if(talia){
+            const hook=render('{network.proposal.hook}',createContext({subject:talia,week:newWeek}));
+            if(hook) setTimeout(()=>push(`🌐 ${hook}`),120+netTick.lines.length*50);
+          }
+        }
         if(netTick.studentDeltas?.length){
           updated=updated.map(s=>{
             const d=netTick.studentDeltas.find(x=>x.studentId===s.id);
@@ -6907,6 +6916,10 @@ export default function HallPass(){
       famineWeek: !!opposition?.supernatural?.famineWeek,
     });
     const compoundLabel=compoundId?COMPOUNDS[compoundId]?.label:null;
+    const hallCtxStudent=students.find(s=>s.id===selectedId&&!s.hidden)||students.find(s=>!s.hidden);
+    const hallCtx=hallCtxStudent?createContext({subject:hallCtxStudent,week}):null;
+    const hallOpening=hallCtx?render('{hallAction.opening}',hallCtx):null;
+    const hallAfter=hallCtx?render('{hallAction.aftermath}',hallCtx):null;
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
@@ -6916,7 +6929,9 @@ export default function HallPass(){
       fedCount++;totalCals+=cals;
       return fed;
     });
-    push(`🎉 ${action.label}: ${fedCount} residents dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}${compoundLabel?` · laced with ${compoundLabel}`:""}.`);
+    const statsLine=`${fedCount} residents dug in (~${Math.round(totalCals/Math.max(1,fedCount)).toLocaleString()} cal each)${refusals?` · ${refusals} too full to join`:""}${compoundLabel?` · laced with ${compoundLabel}`:""}.`;
+    const hallLines=[hallOpening,`${action.label}: ${statsLine}`,hallAfter].filter(Boolean);
+    push(hallLines.length>1?`🎉 ${hallLines.join('\n\n')}`:`🎉 ${action.label}: ${statsLine}`);
     const evs=collectEvents(updated);
     setStudents(updated);
     if(evs.length){

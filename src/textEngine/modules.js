@@ -7,7 +7,7 @@
 // clothing.desc  — clothing + fit (season × stage)
 // group.desc     — short descriptor for ctx.group
 // ═══════════════════════════════════════════════════════════════
-import { registerModule, stageBucket } from './engine.js';
+import { registerModule, registerPool, stageBucket } from './engine.js';
 import { getStage } from '../gameData/stages.js';
 import './lexicon.js'; // ensure word.* modules are registered
 
@@ -172,10 +172,14 @@ registerModule("group.desc", [
 
 // ── device.label — equipped device display name from globals ──
 
-registerModule('device.label', [
+registerPool('device.label', [
   { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'the device'] },
+  { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'the equipped device'] },
+  { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'what she is wearing'] },
 ]);
 
-registerModule('ra.name', [
+registerPool('ra.name', [
   { when: {}, text: [(ctx) => ctx.globals?.raName || 'RA'] },
+  { when: {}, text: [(ctx) => ctx.globals?.raName || 'your RA'] },
+  { when: {}, text: [(ctx) => ctx.globals?.raName || 'Resident Advisor'] },
 ]);

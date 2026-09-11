@@ -179,4 +179,5 @@ import './salonGallerySceneDepth.js';
 import './monolithFragmentDepth.js';
 import './namedPoolDepth.js';
 import './v2WildcardDepth.js';
+import './registryPoolModeFix.js';
 import '../modules.js';

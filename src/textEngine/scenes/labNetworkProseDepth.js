@@ -19,6 +19,7 @@ registerModuleVariants('network.proposal.hook', [
   { when: {}, text: [
     'Talia slides a proposal across the bench — vents, relays, the quiet theft of surplus heat from cafeteria lines.',
     'A new routing plan glows on her tablet: calories as infrastructure, appetite as load-bearing design.',
+    'She taps a schematic where pipes and pleasure overlap — "Approve this and the campus gets hungrier on schedule."',
   ]},
   { when: { stageMin: 3 }, weight: 2, text: [
     'Architect-phase schematics — nexus upgrades that treat the campus like a single stomach to fill.',
