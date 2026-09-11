@@ -8,6 +8,20 @@ function oncePool(key, variants) {
 }
 
 oncePool('hunger.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She tugs her shirt down on a middle the kitchen already opened.',
+    'The knock already happened. Foil did not finish her. She still looks hungry.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'She leaves heavier than the tray left her, and does not hide the walk.',
+    'The doorframe keeps kitchen heat and this visit in the same warm print.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'Getting her turned around is the rest of the visit. Overnight dough takes the corridor at her pace.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She goes. Second sitting stays in the doorway a beat longer.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She tugs her shirt down on the way back like the hallway might have seen the wanting.',
     'The knock already happened. She still looks like she might apologize for being hungry.',
@@ -52,6 +66,10 @@ oncePool('campus.linger', [
 ]);
 
 oncePool('device.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Foil from the kitchen still answers under the cuff. The machine keeps overtime anyway.',
+    'Overnight sitting plus the overnight device. Morning will find both.',
+  ] },
   { when: {}, text: [
     'The hardware goes quiet. She does not. Softness keeps the overtime.',
     'She rests a hand where the device worked and leaves it there.',
@@ -60,6 +78,16 @@ oncePool('device.linger', [
 ]);
 
 oncePool('wi.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She steps off like the number might change. Foil in the clothes already answered.',
+    'The scale is honest. Last night\'s sitting is the rest of the honesty.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'Getting her off the platform is a ceremony. Kitchen heat enjoys the audience of one.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The readout fades. Midnight dough does not.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She steps off like the number might change if she looks away fast enough.',
     'The scale is honest. She is still negotiating with the honesty.',
@@ -76,6 +104,10 @@ oncePool('wi.linger', [
 ]);
 
 oncePool('gossip.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The rumor smells like a second sitting. Someone already knew.',
+    'Hall glances include the midnight sitting. Nobody needs a name for it.',
+  ] },
   { when: {}, text: [
     'Someone changes the subject. Nobody changes what they saw.',
     'The lounge keeps the story in glances. Glances are enough.',
@@ -84,6 +116,10 @@ oncePool('gossip.linger', [
 ]);
 
 oncePool('confront.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She blocks the door with a middle the kitchen already filled.',
+    'Anger borrowed last night\'s appetite. She did not give it back.',
+  ] },
   { when: {}, text: [
     'She is still standing in your way. The argument has a body now.',
     'The line she drew stays on the floor between you. So does the heat.',

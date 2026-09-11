@@ -57,6 +57,17 @@ oncePool('weekly.afterglow', [
 ]);
 
 oncePool('milestone.afterglow', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Foil from the kitchen still in the clothes. The crossing sits on a second sitting.',
+    'She tries the old posture. Overnight dough refuses to go back in.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'The ceremony is her standing there, bigger, still carrying last night\'s heat.',
+    'A hand finds the new curve and the midnight sitting in the same pass.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Crossing was easy. Occupying the new size with kitchen heat still in it is the rest.',
+  ] },
   { when: { stageMax: 3 }, weight: 2, text: [
     'She tries the old posture. The new softness refuses to go back in.',
   ] },

@@ -10,6 +10,10 @@ import './beat.js';
 import './talkBeats.js';
 
 registerModuleVariants('wife.linger', [
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 4, text: [
+    'Daughters take kitchen heat home in their clothes. Mary Jane keeps the rest and the foil.',
+    'The lesson table is wreckage. Last night\'s sitting is the homework.',
+  ] },
   { when: { leftoverFed: true }, weight: 3, text: [
     'Galley leftover still in Mary Jane. She treats the next greeting like a second rise.',
     'Last night\'s tray plus this talk. The kitchen smells like both.',

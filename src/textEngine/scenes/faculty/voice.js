@@ -63,6 +63,30 @@ registerPool('faculty.voice', [
   { when: { leftoverFed: true }, weight: 3, text: [
     'Your kitchen still scents the lounge. She treats that as a briefing.',
   ] },
+  { when: { nightVisit: true, facultyId: 'hartley' }, weight: 4, text: [
+    'Hartley keeps Roman hours after lights. She marks the page and pulls pastry as if the corridor knock were a citation.',
+    'Classics, tweed, a plate that waited up. She treats your late round as a source.',
+  ] },
+  { when: { nightVisit: true, facultyId: 'brooks' }, weight: 4, text: [
+    'Brooks toasts the late round with the Goliath. Mass after midnight still counts, she says, and drinks.',
+    'Stadium grin for a corridor hour. She clocks the knock on you and tells you to keep feeding them.',
+  ] },
+  { when: { nightVisit: true, facultyId: 'mori' }, weight: 4, text: [
+    'Mori timestamps the knock. Sample three is whatever you sat down with.',
+    'Pen already moving. After-hours data. Custard waiting like a control group.',
+  ] },
+  { when: { nightVisit: true, facultyId: 'abara' }, weight: 4, text: [
+    'Abara calls the late round a longitudinal visit. Two coffees. One more pastry.',
+    'She stirs. Night corridor as intervention. Fond. Still hungry.',
+  ] },
+  { when: { nightVisit: true, facultyId: 'delgado' }, weight: 4, text: [
+    'Rosa heard the knock. Sit. The plantains do not care what hour it is.',
+    'Spoon pointed at the chair. After hours is still a kitchen in her mouth.',
+  ] },
+  { when: { nightVisit: true, facultyId: 'lockwood' }, weight: 4, text: [
+    'Penny files the corridor hour under unofficial. Danish. Door closed.',
+    'The good chair appears because you were on the floor after lights. Éclair. Names.',
+  ] },
   { when: { nightVisit: true }, weight: 3, text: [
     'After-hours corridor light reached this table. She orders like it is still on.',
   ] },

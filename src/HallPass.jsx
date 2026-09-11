@@ -5483,11 +5483,11 @@ export default function HallPass(){
     if(stageIdx<3 && yourFullness+food.fullness>effectiveMax) return;
     // Consume food, apply real lbs gain
     const chain=lastFoodId===food.id?2:0;
-    const bite=contestBiteLbs(s,food.lbs,week,{chain,taunted:!!actions.taunted});
+    const bite=contestBiteLbs(s,food.lbs,week,{chain,taunted:!!actions.taunted,skipNight:yourGain>0});
     const newYF=yourFoods.map((f,i)=>i===idx?{...f,consumed:true,selected:false}:f);
     const newYourFull=yourFullness+food.fullness;
     const newYourGain=yourGain+bite;
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,bite,0):st));
+    setStudents(prev=>prev.map(st=>st.id===studentId?(yourGain===0?bumpOriginChain(processStudentGain(st,bite,0)):processStudentGain(st,bite,0)):st));
     // Maya eats one random unconsumed item
     let newMF=[...mayaFoods];
     let newMayaFull=mayaFullness;
@@ -5543,10 +5543,10 @@ export default function HallPass(){
     const totalFullness=toEat.reduce((a,f)=>a+(f.fullness||0),0);
     const totalLbs=toEat.reduce((a,f)=>a+(f.lbs||0),0);
     const chain=toEat.every(f=>f.id===lastFoodId)?2:0;
-    const bite=contestBiteLbs(s,totalLbs,week,{chain,taunted:!!actions.taunted});
+    const bite=contestBiteLbs(s,totalLbs,week,{chain,taunted:!!actions.taunted,skipNight:yourGain>0});
     const newYourFull=yourFullness+totalFullness;
     const newYourGain=yourGain+bite;
-    setStudents(prev=>prev.map(st=>st.id===studentId?processStudentGain(st,bite,0):st));
+    setStudents(prev=>prev.map(st=>st.id===studentId?(yourGain===0?bumpOriginChain(processStudentGain(st,bite,0)):processStudentGain(st,bite,0)):st));
     const selectedYourKeys=new Set(selectedYour.map(f=>f.key));
     const selectedMayaKeys=new Set(selectedMaya.map(f=>f.key));
     const newYF=yourFoods.map(f=>selectedYourKeys.has(f.key)?{...f,consumed:true,selected:false}:f);
@@ -7036,8 +7036,9 @@ export default function HallPass(){
       if(s){
         gainAmt=rnd(choice.effect.gain[0],choice.effect.gain[1]);
         const ns=processStudentGain(s,gainAmt>0?depthGainLbs(s,gainAmt,week,{}):0,0);
+        const grown=gainAmt>0?bumpOriginChain(ns):ns;
         newStudents=newStudents.map(st=>st.id===s.id?{
-          ...ns,
+          ...grown,
           ...(choice.effect.mood?{mood:choice.effect.mood}:{}),
           relationship:Math.min(100,ns.relationship+(choice.effect.rel||0)),
         }:st);
@@ -7570,7 +7571,7 @@ export default function HallPass(){
       return;
     }
     const { fed, payload, cap, prevFullness, newFullness, sessionCals, overfillEnd }=result;
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:(!(dinnerEvent.dishes||[]).length?bumpOriginChain(fed):fed)));
     const newDishes=opts.forcePush?[...(dinnerEvent.dishes||[])]:[...(dinnerEvent.dishes||[]),dish.id];
     const eatOpts={
       mealType:'campus_meal',
@@ -7641,7 +7642,7 @@ export default function HallPass(){
     }
     setInventory(prev=>({...prev,[itemId]:Math.max(0,(prev[itemId]||0)-1)}));
     const { fed, cap, newFullness, sessionCals, prevFullness, overfillEnd }=result;
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:(!(dinnerEvent.dishes||[]).length?bumpOriginChain(fed):fed)));
     const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
     push(`🎒 ${item.label} shared at dinner.`);
     if(overfillEnd){
@@ -7768,7 +7769,7 @@ export default function HallPass(){
       return;
     }
     const { fed, payload, cap, prevFullness, newFullness, sessionCals, overfillEnd }=result;
-    setStudents(prev=>prev.map(s=>s.id!==targetId?s:fed));
+    setStudents(prev=>prev.map(s=>s.id!==targetId?s:(!(evtStudent.dishes||[]).length?bumpOriginChain(fed):fed)));
     const newDishes=opts.forcePush?[...evtStudent.dishes]:[...evtStudent.dishes,dish.id];
     push(`🍴 ${live.name}: ${payload.label} (+${payload.calories.toLocaleString()} cal)`);
 
@@ -7883,7 +7884,7 @@ export default function HallPass(){
     }
     setInventory(prev=>({...prev,[itemId]:Math.max(0,(prev[itemId]||0)-1)}));
     const { fed, sessionCals }=result;
-    setStudents(prev=>prev.map(s=>s.id!==targetId?s:fed));
+    setStudents(prev=>prev.map(s=>s.id!==targetId?s:(!(evtStudent.dishes||[]).length?bumpOriginChain(fed):fed)));
     push(`🎒 ${item.label} shared for ${live.name.split(' ')[0]}.`);
     setGroupDinnerEvent(prev=>({
       ...prev,
@@ -8024,7 +8025,7 @@ export default function HallPass(){
       return;
     }
     const { fed, payload, sessionCals, capOpts: usedCap }=result;
-    setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:(!(privateSession.foods||[]).length?bumpOriginChain(fed):fed)));
     const fPct=getFullnessPercent(fed,usedCap);
     const fsStage=getFullnessStage(fPct);
     const desc=renderSessionFullness(fed, Math.min(fsStage.id, 5), week);
@@ -9514,7 +9515,7 @@ export default function HallPass(){
             onTap={()=>setRefeedSurgeState(prev=>prev?{...prev,taps:Math.min(prev.tapsNeeded,prev.taps+1)}:null)}
             onComplete={()=>{
               const bonus=depthGainLbs(surgeStudent,rnd(4,8),week,{});
-              setStudents(prev=>prev.map(st=>st.id!==surgeStudent.id?st:processStudentGain(st,bonus,0)));
+              setStudents(prev=>prev.map(st=>st.id!==surgeStudent.id?st:bumpOriginChain(processStudentGain(st,bonus,0))));
               push(`✨ ${surgeStudent.name} surges — memory floods back (+${bonus} lbs).`);
               setRefeedSurgeState(null);
             }}

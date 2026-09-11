@@ -122,7 +122,7 @@ export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts 
   });
   const scene = render('{evolved.activity.scene}', ctx)?.trim();
   if (!scene) return '';
-  return renderEvolvedEventProse(scene, student, week, {
+  let out = renderEvolvedEventProse(scene, student, week, {
     formId: opts.formId || student.evolvedForm,
     stageIdx,
     ending: true,
@@ -130,4 +130,9 @@ export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts 
     v2DepthChance: opts.v2DepthChance ?? 0.35,
     globals: opts.globals,
   });
+  if (student.leftoverFedThisWeek || (week && student.lastNightVisitWeek === week)) {
+    const wrap = render('{evolved.activity.wrap}', ctx)?.trim();
+    if (wrap) out = out ? `${out}\n\n${wrap}` : wrap;
+  }
+  return out;
 }

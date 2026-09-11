@@ -8,6 +8,20 @@ function oncePool(key, variants) {
 }
 
 oncePool('ge.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Foil crumbs in the cuff. She walks like the sitting never quite ended.',
+    'The change is small enough to deny and too warm because the kitchen started it.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 4, stageMax: 7 }, weight: 3, text: [
+    'Midnight dough still rounding. The incident sits on top of it.',
+    'She rests both hands on the new of her and on last night at once.',
+  ] },
+  { when: { leftoverFed: true, stageMin: 8 }, weight: 3, text: [
+    'Settling takes minutes. Overnight heat takes the minutes like rent she is happy to pay.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Second sitting from the kitchen keeps arriving after the cause is gone.',
+  ] },
   { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
     'She tugs cloth that almost still works and files the warmth as weather.',
     'The change is small enough to deny and too warm to forget on the walk back.',
@@ -29,6 +43,10 @@ oncePool('ge.linger', [
 ]);
 
 oncePool('weekly.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Foil in the wastebasket, extra in her waistband. Sunday will mention both.',
+    'Overnight crumbs, then this. The minutes are in the middle.',
+  ] },
   { when: {}, text: [
     'The floor will retell this by Sunday, rounder in the telling.',
     'She carries the incident in her clothes. The clothes are already losing.',
@@ -37,6 +55,10 @@ oncePool('weekly.linger', [
 ]);
 
 oncePool('hunt.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'A kiosk smells like seconds because the kitchen already started her.',
+    'Campus buys her another plate. The first sitting was in-house.',
+  ] },
   { when: {}, text: [
     'Hunger walks the path with her. The path makes room without being asked.',
     'Campus keeps its lights. She keeps her appetite and a slower gait.',
@@ -61,6 +83,10 @@ oncePool('recording.afterglow', [
 ]);
 
 oncePool('contest.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Bib on a middle the kitchen already opened. The heat plate is a sequel.',
+    'Crowd noise, then foil memory. She treats both like ranking.',
+  ] },
   { when: {}, text: [
     'The table is wreckage. She is the rest of the event, sitting in it.',
     'Crowd noise fades. Fullness does not. She keeps a hand on the new weight.',
@@ -105,6 +131,10 @@ oncePool('gallery.afterglow', [
 ]);
 
 oncePool('wife.afterglow', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Lesson over. Foil from your galley still in the tasting. She grades both.',
+    'Moms pack containers. The midnight sitting packed itself into her waistband.',
+  ] },
   { when: {}, text: [
     'The lesson ends. The kitchen does not. Someone is still tasting.',
     'Moms leave with containers. Daughters leave with more of themselves.',
@@ -152,6 +182,12 @@ oncePool('homeroom.linger', [
 ]);
 
 oncePool('origin.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The backstory chews foil. Tonight is still the picture.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'She names where she came from with a second sitting already in her.',
+  ] },
   { when: { stageMax: 3 }, weight: 2, text: [
     'The old story still fits in her mouth. The new softness is the revision.',
   ] },

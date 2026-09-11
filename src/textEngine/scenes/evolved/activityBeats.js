@@ -221,3 +221,23 @@ registerPool('evolved.activity.scene', [
     '{evolved.activity.growth} {evolved.activity.lead} {evolved.activity.line}',
   ] },
 ]);
+
+// Shape: FULL SENTENCE. Leftover/night wrap — appended, does not compete with form lead.
+registerPool('evolved.activity.wrap', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'The calling works on a middle the kitchen already started.',
+    'Foil under the vocation. She treats them as one shift.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Overnight dough still rounding while she does the work of her form.',
+    'Second sitting, then vocation. She does not split them.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Corridor knock still in the wood. The form uses the same open door.',
+  ] },
+  { when: {}, text: [
+    'The calling keeps a last warmth after the work names itself over.',
+    'She looks at the plate the vocation left. Then she keeps going.',
+    'The form is a job. The job is still hungry.',
+  ] },
+]);

@@ -93,9 +93,13 @@ registerPool('floor.scene', [
 
 // Shape: FULL SENTENCE. Choice aftermath wrap.
 registerPool('floor.choice.wrap', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    'Foil still under a nail. The choice sits on a waistband that already lost once.',
+    'She files the extra sitting as weather and eats anyway.',
+  ] },
   { when: { leftoverFed: true }, weight: 3, text: [
-    'Galley leftover still in her. The choice lands on warm dough.',
-    'Last night\'s tray plus this plate. The lounge reports both.',
+    'The midnight dough takes this plate without asking.',
+    'Crumbs from earlier, then this. The lounge is a second kitchen.',
   ] },
   { when: { nightVisit: true }, weight: 3, text: [
     'Night-round heat still in the middle. She eats like the door never closed.',
