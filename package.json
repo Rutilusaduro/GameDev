@@ -19,6 +19,7 @@
     "test:dorm-unlock-ui": "node scripts/test-dorm-unlock-ui.mjs",
     "test:hall-blueprint": "node scripts/test-hall-blueprint.mjs",
     "test:mechanics-depth": "node scripts/test-mechanics-depth.mjs",
+    "test:mechanics-depth-coverage": "node scripts/test-mechanics-depth-coverage.mjs",
     "generate:ra-prose-bulk": "node scripts/generateRaPivotBulkProse.mjs",
     "test:playthrough": "node scripts/test-playthrough.mjs",
     "test:semester-audit": "node scripts/test-semester-audit.mjs",

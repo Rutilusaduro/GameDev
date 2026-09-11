@@ -51,4 +51,5 @@ export const MECHANICS_DEPTH_SYSTEMS = [
   { id: 'deviceEffects', file: 'deviceEffects.js' },
   { id: 'campusDeviceEncounters', file: 'campusDeviceEncounters.js' },
   { id: 'oppositionActs', file: 'oppositionActs.js' },
+  { id: 'dorms', file: 'dorms.js' },
 ];

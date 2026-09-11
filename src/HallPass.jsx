@@ -12,7 +12,7 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { EVOLVED_ACTIVITY_TEXT, getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
@@ -2515,14 +2515,15 @@ export default function HallPass(){
     const choice=phase.choices.find(c=>c.id===choiceId); if(!choice) return;
     const newHistory=[...history,choiceId,...(choice.flag?[choice.flag]:[])];
     const newLog=[...logLines,(typeof choice.result==='function'?choice.result(s):choice.result)];
-    const newGain=gainAccum+(choice.lbs||0);
-    const newRel=relAccum+(choice.rel||0);
+    const newGain=gainAccum+scaleEvolvedEventLbs(choice.lbs||0);
+    const newRel=relAccum+scaleEvolvedEventRel(choice.rel||0);
     // Handle feedOther — feed residents of matching archetype
     if(choice.feedOther){
       const{archetype:targetArch,lbs:otherLbs,text:foText}=choice.feedOther;
+      const fedLbs=scaleEvolvedEventLbs(otherLbs);
       setStudents(prev=>prev.map(st=>{
         if(st.archetype===targetArch&&st.id!==studentId){
-          return processStudentGain(st,otherLbs,2);
+          return processStudentGain(st,fedLbs,scaleEvolvedEventRel(2));
         }
         return st;
       }));
@@ -2536,8 +2537,8 @@ export default function HallPass(){
     if(nextPhase>=evDef.phases.length){
       // Find best matching ending
       const ending=evDef.endings.find(e=>e.condition(newHistory))||evDef.endings[evDef.endings.length-1];
-      const totalGain=newGain+(ending.gainBonus||0);
-      const totalRel=newRel+(ending.relBonus||0);
+      const totalGain=newGain+scaleEvolvedEventLbs(ending.gainBonus||0);
+      const totalRel=newRel+scaleEvolvedEventRel(ending.relBonus||0);
       // Apply pre-contest / pre-close gains to student
       setStudents(prev=>prev.map(st=>{
         if(st.id!==studentId) return st;

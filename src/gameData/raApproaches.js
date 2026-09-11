@@ -4,7 +4,7 @@
 // how this RA runs her hall.
 // ═══════════════════════════════════════════════════════════════
 
-import { getDorm } from './dorms.js';
+import { getDorm, getDormGainMult } from './dorms.js';
 import { depthGainMult, depthSaturationBonus } from './mechanicsDepthLayer.js';
 
 export const FAVOR_MAX = 10;
@@ -114,9 +114,9 @@ export function favorFill(approachId, tag) {
 
 export function profileGainMult(profile) {
   if (!profile) return 1;
-  const dorm = getDorm(profile.dormId || profile.subject);
+  const dormId = profile.dormId || profile.subject;
   const approach = RA_APPROACHES[getProfileApproachId(profile)];
-  const mult = (dorm?.gainMult ?? 1) * (approach?.gainMult ?? 1);
+  const mult = getDormGainMult(dormId) * (approach?.gainMult ?? 1);
   return depthGainMult(mult);
 }
 

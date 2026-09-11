@@ -1,5 +1,5 @@
 import { getStage } from './stages.js';
-import { depthActivityGainBonus, depthRelBonus } from './mechanicsDepthLayer.js';
+import { depthActivityGainBonus, depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
 import { SALON_EVOLVED_EVENTS } from './chloeSalon.js';
 import { GALLERY_EVOLVED_EVENTS } from './fionaGallery.js';
 import {
@@ -782,6 +782,17 @@ export function getEvolvedActivityMeta(formId) {
   }
   if (meta.relBonus) meta.relBonus = depthRelBonus(meta.relBonus);
   return meta;
+}
+
+export function scaleEvolvedEventLbs(lbs = 0) {
+  if (!lbs || lbs <= 0) return lbs || 0;
+  return depthLbsGrant(lbs);
+}
+
+export function scaleEvolvedEventRel(rel = 0) {
+  if (!rel) return 0;
+  if (rel < 0) return rel;
+  return depthRelBonus(rel);
 }
 
 export const EVOLVED_EVENTS = {
