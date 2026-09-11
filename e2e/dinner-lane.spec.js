@@ -12,6 +12,8 @@ test('1-on-1 dinner lane: venue pick, dish order, leave early', async ({ page })
   await expect(dinnerModal.getByText('DINNER OUT')).toBeVisible();
   await expect(dinnerModal.getByText(/Where would you like to take/i)).toBeVisible();
   await expect(page.getByText(/professor|spirit|classroom/i)).toHaveCount(0);
+  await expect(dinnerModal).not.toContainText(/Cosy neighbourhood bistro/i);
+  await dinnerModal.locator('.dinner-venue-choice-row').filter({ hasText: 'Campus Bistro' }).screenshot({ path: '/opt/cursor/artifacts/screenshots/dinner_venue_composed.png' });
 
   await dinnerModal.locator('.dinner-venue-choice-row').filter({ hasText: 'Campus Bistro' }).click();
 
