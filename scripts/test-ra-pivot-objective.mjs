@@ -72,6 +72,10 @@ execSync('node scripts/test-talk-checkin-modular-late.mjs', { cwd: root, stdio: 
 
 execSync('node scripts/test-wife-lessons-lesson-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
 
+execSync('node scripts/test-wife-lessons-dialogue-stub-debt.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-wl-talk-modular-late.mjs', { cwd: root, stdio: 'inherit' });
+
 execSync('node scripts/test-text-fragment-load-order.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-modular-namespace-coverage.mjs', { cwd: root, stdio: 'inherit' });
