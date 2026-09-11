@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Livestock scale groans — Darcy reads your number like weather she did not order.',
@@ -15,7 +15,7 @@ registerModuleVariants('evolved.event.state_fair_queen.s0.p1', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.end0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'First Tuesday closes warm — Daisy’s notebook already plans next week’s butter budget.',
@@ -25,7 +25,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s0.end0', [
 
 registerModuleVariants('evolved.activity.eating_streamer', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Ring light, delivery bags, chat scrolling — appetite becomes content before the first bite lands.',
@@ -35,7 +35,7 @@ registerModuleVariants('evolved.activity.eating_streamer', [
 
 registerModuleVariants('fair.training.Lilith', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Lilith’s recruits chant while MJ swallows — fair pride spikes like kettle corn in the dark.',
@@ -45,7 +45,7 @@ registerModuleVariants('fair.training.Lilith', [
 
 registerModuleVariants('fair.training.Renee', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Renee starts shy at the corn-dog line and ends loud — pride grows wherever she finally lets herself eat.',
@@ -55,7 +55,7 @@ registerModuleVariants('fair.training.Renee', [
 
 registerModuleVariants('cg.chat.priyaPost.Heavy.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Priya posts mid-tier numbers like a teaser — the thread holds its breath before the next meal.',
@@ -65,7 +65,7 @@ registerModuleVariants('cg.chat.priyaPost.Heavy.Driven', [
 
 registerModuleVariants('cg.scene.binge.Heavy.Invested', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Delivery stacks while the corkboard watches — invested hunger does not pause for dignity.',

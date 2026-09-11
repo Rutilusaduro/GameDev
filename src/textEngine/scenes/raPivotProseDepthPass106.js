@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('weekly.overachiever_pivot', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Season plan pivots — spreadsheets yield to appetite, coach nods anyway.',
@@ -15,7 +15,7 @@ registerModuleVariants('weekly.overachiever_pivot', [
 
 registerModuleVariants('weekly.custom_clothing', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Shopping trip — elastic declared victory before the receipt printed.',
@@ -25,7 +25,7 @@ registerModuleVariants('weekly.custom_clothing', [
 
 registerModuleVariants('weekly.immobility_peace', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Comfortable at last — the room rearranges itself around her stillness.',
@@ -35,7 +35,7 @@ registerModuleVariants('weekly.immobility_peace', [
 
 registerModuleVariants('weekly.blob_ending', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Final form — the floor accepts her shape like a custom mattress.',
@@ -45,7 +45,7 @@ registerModuleVariants('weekly.blob_ending', [
 
 registerModuleVariants('weekly.team_weigh_in', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Team weigh-in — numbers become gossip, gossip becomes appetite.',
@@ -55,7 +55,7 @@ registerModuleVariants('weekly.team_weigh_in', [
 
 registerModuleVariants('homeroom.activity.health_unit.p1.weigh_moms', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Moms on the scale — Kayla’s secret safe until laughter betrays it.',

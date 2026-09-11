@@ -15,7 +15,7 @@ registerModuleVariants('item.use.open', [
 
 registerModuleVariants('session.rae.arrival.s1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Rae corrects the count with a smile — extras are policy when appetite is the customer.',
@@ -25,7 +25,7 @@ registerModuleVariants('session.rae.arrival.s1', [
 
 registerModuleVariants('session.rae.exit.s4', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'She pauses at the door — more waiting in the car, unspoken, already paid for.',
@@ -55,7 +55,7 @@ registerModuleVariants('wifeLessons.talk.Darlene.s1.greeting', [
 
 registerModuleVariants('homeroom.conference.Kayla.progress_review', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Kayla spreads charts — appetite metrics trend up and nobody in the room looks sorry.',
@@ -75,7 +75,7 @@ registerModuleVariants('hall.ambiance.pulse.appetite', [
 
 registerModuleVariants('campus.find.wild_mint', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mint bruises sweet on your palm — a small theft the planter forgives.',

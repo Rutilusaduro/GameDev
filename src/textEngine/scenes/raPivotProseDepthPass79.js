@@ -1,9 +1,10 @@
 // Evolved homestead / wife-lessons activity depth (Pass 79).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.activity.homestead_queen', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {
@@ -17,7 +18,7 @@ registerModuleVariants('evolved.activity.homestead_queen', [
 
 registerModuleVariants('evolved.activity.wife_lessons', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {

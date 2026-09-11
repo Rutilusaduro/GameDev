@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Bri.brought_something', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Bri’s drawer ritual — Tupperware like scripture, appetite like homework.',
@@ -15,7 +15,7 @@ registerModuleVariants('homeroom.conference.Bri.brought_something', [
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0.curriculum', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Wellness agenda holds until snacks rewrite the minutes.',

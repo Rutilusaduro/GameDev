@@ -4,7 +4,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Kayla.tuesday', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Cinnamon rolls ranked like strategy — Kayla has already won the argument before Daisy opens the notebook.',
@@ -14,7 +14,7 @@ registerModuleVariants('homeroom.conference.Kayla.tuesday', [
 
 registerModuleVariants('homeroom.conference.Mrs_Monroe.taste_now', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Agenda dies in the container — Mrs. Monroe eats like the meeting was always just foreplay for dessert.',
@@ -24,7 +24,7 @@ registerModuleVariants('homeroom.conference.Mrs_Monroe.taste_now', [
 
 registerModuleVariants('cg.chat.priyaPost.Heavy.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The thread updates before anyone finishes chewing — Priya posts numbers like dare cards.',
@@ -34,7 +34,7 @@ registerModuleVariants('cg.chat.priyaPost.Heavy.Driven', [
 
 registerModuleVariants('cg.chat.priyaFollowup.threatened.Frenzied', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {

@@ -1,5 +1,6 @@
 // Roster unlock + pharmacist + collab + homeroom (Pass 113).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('roster.unlock.s0', [
   {
@@ -23,7 +24,7 @@ registerModuleVariants('roster.unlock.s2', [
 
 registerModuleVariants('homeroom.conference.Mrs_Reyes.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Reyes talks over everyone — voice warm, portions already multiplying in her bag.',

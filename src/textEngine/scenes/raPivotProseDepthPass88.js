@@ -55,7 +55,7 @@ registerModuleVariants('fair.boost.Lilith', [
 
 registerModuleVariants('fair.photo.Brittany', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Brittany’s grin outshines the fryer glow — the corkboard gains another greasy saint.',
@@ -65,7 +65,7 @@ registerModuleVariants('fair.photo.Brittany', [
 
 registerModuleVariants('homeroom.conference.Mrs_Calloway.offer_tasting', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Wrapped slice steams on laminate — Mrs. Calloway takes it like policy finally admitted appetite counts.',
@@ -75,7 +75,7 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.offer_tasting', [
 
 registerModuleVariants('homeroom.conference.Mrs_Reyes.honest_talk', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Coffee cools while truth warms — Mrs. Reyes and Daisy trade stress for permission without a single wellness slide.',
@@ -85,7 +85,7 @@ registerModuleVariants('homeroom.conference.Mrs_Reyes.honest_talk', [
 
 registerModuleVariants('homeroom.conference.Sofia.portfolio', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Sofia grades art with the same focus she’ll use on cake — portfolio closed, container already waiting.',
@@ -115,7 +115,7 @@ registerModuleVariants('wifeLessons.lesson.s3.bread_pudding', [
 
 registerModuleVariants('cg.chat.resident.Brittany.close', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Brittany’s first message is all caps and hunger — the corkboard was never enough, she needs a witness.',
@@ -125,7 +125,7 @@ registerModuleVariants('cg.chat.resident.Brittany.close', [
 
 registerModuleVariants('cg.scene.reaction.priya_larger.Driven.belly', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -138,7 +138,7 @@ registerModuleVariants('cg.scene.reaction.priya_larger.Driven.belly', [
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Midway lights blur — MJ tastes county fame and decides the crown is edible.',
@@ -148,7 +148,7 @@ registerModuleVariants('evolved.event.state_fair_queen.s0.p1', [
 
 registerModuleVariants('evolved.activity.competitive_gainer', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Scale rivalry hums under dorm quiet — every RA ping is another dare to grow louder.',
@@ -158,7 +158,7 @@ registerModuleVariants('evolved.activity.competitive_gainer', [
 
 registerModuleVariants('hall.ambiance.pulse.appetite', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Hall air thickens with fried memory — residents sniff toward the lounge before their feet agree.',

@@ -31,7 +31,7 @@ registerModuleVariants('campus.find', [
 
 registerModuleVariants('evolved.event.feedee_creator.s2.p0.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The ring light hums — appetite becomes content before the first bite lands on camera.',
@@ -41,7 +41,7 @@ registerModuleVariants('evolved.event.feedee_creator.s2.p0.legacyBody', [
 
 registerModuleVariants('evolved.event.state_fair_queen.s3.p1.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'County fair heat presses in — ribbon politics and pie steam share the same breath.',
@@ -51,7 +51,7 @@ registerModuleVariants('evolved.event.state_fair_queen.s3.p1.legacyBody', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s2.p0.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Homeroom queens measure loyalty in shared plates — the table is already set.',

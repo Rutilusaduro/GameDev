@@ -1,5 +1,6 @@
 // Hall blueprint ambiance + wing blurbs depth (Pass 77).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('hall.ambiance.summary', [
   {
@@ -22,7 +23,7 @@ registerModuleVariants('hall.ambiance.summary', [
 
 registerModuleVariants('hall.blueprint.purchase', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Contractors leave sawdust and a new appetite in the air — both settle by morning.',

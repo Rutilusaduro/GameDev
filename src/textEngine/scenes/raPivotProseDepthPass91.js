@@ -29,7 +29,7 @@ const cgMaya = {
 for (const [replyType, lines] of Object.entries(cgMaya)) {
   for (const line of lines) {
     registerModuleVariants(`cg.chat.resident.Maya.${replyType}`, [
-      { when: {}, weight: 1, text: [line] },
+      { when: legacyBridgeWhen(), weight: 1, text: [line] },
     ]);
   }
 }
@@ -52,14 +52,14 @@ const cgTiffany = {
 for (const [replyType, lines] of Object.entries(cgTiffany)) {
   for (const line of lines) {
     registerModuleVariants(`cg.chat.resident.Tiffany.${replyType}`, [
-      { when: {}, weight: 1, text: [line] },
+      { when: legacyBridgeWhen(), weight: 1, text: [line] },
     ]);
   }
 }
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0.refreshments_first', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Container opens before the agenda — Mrs. Calloway eats three pieces while pretending she is still skeptical.',
@@ -69,7 +69,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0.refreshments_first',
 
 registerModuleVariants('homeroom.activity.health_unit.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Pickup looms — Mrs. Monroe watches the scale like it is a cooking show finale.',
@@ -79,7 +79,7 @@ registerModuleVariants('homeroom.activity.health_unit.p1', [
 
 registerModuleVariants('fair.day.weighIn.choice1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'MJ plants on the livestock scale — the crowd treats the number like weather: loud, inevitable, shared.',
@@ -89,7 +89,7 @@ registerModuleVariants('fair.day.weighIn.choice1', [
 
 registerModuleVariants('fair.day.afterparty.ending', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Fair night ends sticky — pride and grease share the same napkin.',
@@ -99,7 +99,7 @@ registerModuleVariants('fair.day.afterparty.ending', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s1.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Tuesday smells different now — parents notice before students admit it.',
@@ -109,7 +109,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s1.p0', [
 
 registerModuleVariants('evolved.event.sumo.s0.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Darcy reads your number like policy — you read her shrug like a dare.',
@@ -119,7 +119,7 @@ registerModuleVariants('evolved.event.sumo.s0.p1', [
 
 registerModuleVariants('cg.chat.priyaFollowup.threatened.Frenzied', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Priya types with one hand — the other is already reaching for seconds.',

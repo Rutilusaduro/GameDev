@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Bri.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Bri arrives efficient and already eating — conference is a snack break with grades attached.',
@@ -15,7 +15,7 @@ registerModuleVariants('homeroom.conference.Bri.intro', [
 
 registerModuleVariants('homeroom.conference.Sofia.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Sofia sits precise, eyes on the container — art critique and appetite share the same notebook.',
@@ -25,7 +25,7 @@ registerModuleVariants('homeroom.conference.Sofia.intro', [
 
 registerModuleVariants('homeroom.conference.Mrs_Reyes.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Reyes exhales like she carried the week in — Daisy slides warm food before questions land.',
@@ -35,7 +35,7 @@ registerModuleVariants('homeroom.conference.Mrs_Reyes.intro', [
 
 registerModuleVariants('evolved.event.wife_lessons.s1.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Patrice brought store cookies as backup — MJ’s kitchen makes them obsolete before the oven dings.',
@@ -45,7 +45,7 @@ registerModuleVariants('evolved.event.wife_lessons.s1.p0', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s1.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Kayla takes first helpings without waiting — habit learned faster than policy updates.',
@@ -55,7 +55,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s1.p1', [
 
 registerModuleVariants('evolved.activity.homeroom_queen', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Tuesday steam fills the lounge — Daisy measures success in empty platters.',
@@ -65,7 +65,7 @@ registerModuleVariants('evolved.activity.homeroom_queen', [
 
 registerModuleVariants('evolved.activity.competitive_gainer', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Corkboard rivalry hums under dorm quiet — every ping is another dare to grow louder.',
@@ -75,7 +75,7 @@ registerModuleVariants('evolved.activity.competitive_gainer', [
 
 registerModuleVariants('fair.day.judging', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Judges squint through grease-glow — MJ’s smile says the kitchen trained for this spotlight.',
@@ -85,7 +85,7 @@ registerModuleVariants('fair.day.judging', [
 
 registerModuleVariants('hall.blueprint.purchase', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Blueprint line fills in — the floor exhales like a body getting room to spread.',
@@ -95,7 +95,7 @@ registerModuleVariants('hall.blueprint.purchase', [
 
 registerModuleVariants('cg.raReply.challenge', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'You type the dare — Priya’s drive meter spikes before she finishes reading.',

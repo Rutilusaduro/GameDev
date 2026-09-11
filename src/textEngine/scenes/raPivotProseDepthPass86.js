@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('fair.training.Brittany', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -18,7 +18,7 @@ registerModuleVariants('fair.training.Brittany', [
 
 registerModuleVariants('fair.day.weighIn.open', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The scale groans before anyone steps on — the crowd already knows this is the main event.',
@@ -38,7 +38,7 @@ registerModuleVariants('wifeLessons.lesson.s2.peach_cobbler', [
 
 registerModuleVariants('evolved.fairQueen.v2.depth', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Blue ribbon hunger — the fair teaches appetite in public where the dorm only whispers it.',

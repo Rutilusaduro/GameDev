@@ -1,9 +1,10 @@
 // Campus find ids + homeroom + evolved activity (Pass 100).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('campus.find.wild_mint', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Wild mint bruises sweet on your palm — the quad smells like dessert before dinner.',
@@ -13,7 +14,7 @@ registerModuleVariants('campus.find.wild_mint', [
 
 registerModuleVariants('campus.find.cult_tithe_jar', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The tithe jar sticks — devotion and sugar cured together under a candle stub.',
@@ -23,7 +24,7 @@ registerModuleVariants('campus.find.cult_tithe_jar', [
 
 registerModuleVariants('campus.find.find_honey_tart', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Honey tart still warm — greenhouse bench remembers who left it and who took it.',
@@ -33,7 +34,7 @@ registerModuleVariants('campus.find.find_honey_tart', [
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Oven heat rolls down the homeroom hall — every desk learns the smell of yes.',
@@ -63,7 +64,7 @@ registerModuleVariants('evolved.activity.state_fair_queen', [
 
 registerModuleVariants('weekly.uniform_split', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The uniform gives up at the seam — the squad cheers before shame can arrive.',

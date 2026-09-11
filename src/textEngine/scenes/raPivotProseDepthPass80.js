@@ -1,5 +1,6 @@
 // CG measurement + homeroom queen depth (Pass 80).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('cg.measurement.session', [
   {
@@ -17,7 +18,7 @@ registerModuleVariants('cg.measurement.session', [
 
 registerModuleVariants('evolved.gainer.v2.depth', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       'Pins migrate upward on the corkboard — the floor learns to read her handwriting.',
@@ -31,7 +32,7 @@ registerModuleVariants('evolved.gainer.v2.depth', [
 
 registerModuleVariants('evolved.homeroomQueen.v2.depth', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Tuesday steam fogs the common-room windows — mothers smell success before they knock.',
@@ -41,7 +42,7 @@ registerModuleVariants('evolved.homeroomQueen.v2.depth', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.p2', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {

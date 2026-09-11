@@ -1,5 +1,6 @@
 // Lab + network + opposition + stream (Pass 112).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('device.campus.beat', [
   {
@@ -13,7 +14,7 @@ registerModuleVariants('device.campus.beat', [
 
 registerModuleVariants('opposition.hearing.emergency.result.feast_bribe', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Hearing catered — board members eat before they vote, and appetite wins the agenda.',
@@ -43,7 +44,7 @@ registerModuleVariants('weekly.thesis_rewrite', [
 
 registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Calloway arrives buttoned — jacket already losing the fight with her middle.',
@@ -63,7 +64,7 @@ registerModuleVariants('evolved.activity.sumo.s3', [
 
 registerModuleVariants('opposition.endgame.synthesis', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Scarcity folds — the hall exhales abundance and the board stops pretending famine is policy.',

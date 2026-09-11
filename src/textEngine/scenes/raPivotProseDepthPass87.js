@@ -1,9 +1,10 @@
 // Homeroom conference matrix + fair boost depth (Pass 87).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Bri.brought_something', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Bri opens the drawer like a vending machine that only sells permission — efficient, full, inevitable.',
@@ -13,7 +14,7 @@ registerModuleVariants('homeroom.conference.Bri.brought_something', [
 
 registerModuleVariants('homeroom.conference.Mrs_Calloway.curriculum_frame', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Wellness slides until arms uncross — Mrs. Calloway hears happiness before she hears policy.',
@@ -23,7 +24,7 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.curriculum_frame', [
 
 registerModuleVariants('homeroom.conference.Kayla.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -46,7 +47,7 @@ registerModuleVariants('fair.boost.Kylie', [
 
 registerModuleVariants('fair.photo.Daisy', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Gold tack bends; photo curls — Daisy’s smile says the kitchen won again.',

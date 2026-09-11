@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('fair.day.weighIn.endingA', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Ground holds — MJ owns the number while the crowd learns her name.',
@@ -15,7 +15,7 @@ registerModuleVariants('fair.day.weighIn.endingA', [
 
 registerModuleVariants('fair.day.weighIn.endingB', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Crowd roars — MJ feeds the moment until pride outweighs modesty.',
@@ -25,7 +25,7 @@ registerModuleVariants('fair.day.weighIn.endingB', [
 
 registerModuleVariants('fair.day.afterparty.open', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Fair night air tastes like sugar — afterparty is where winners keep winning.',
@@ -35,7 +35,7 @@ registerModuleVariants('fair.day.afterparty.open', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.end1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Tuesday ends with empty platters — Daisy’s notebook already sketches next week.',
@@ -45,7 +45,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s0.end1', [
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.end1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Warm and ready — Darcy waits while MJ decides the table is hers.',
@@ -55,7 +55,7 @@ registerModuleVariants('evolved.event.state_fair_queen.s0.end1', [
 
 registerModuleVariants('evolved.activity.feedee_creator', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Ring light on, plates staged — appetite becomes the script.',
@@ -85,7 +85,7 @@ registerModuleVariants('wifeLessons.talk.Wanda.s1.opt1', [
 
 registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Calloway arrives buttoned tight — wellness policy versus butter smell, round one.',
@@ -95,7 +95,7 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
 
 registerModuleVariants('hall.blueprint.purchase', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Work order signed — the wing changes smell before the paint dries.',
@@ -105,7 +105,7 @@ registerModuleVariants('hall.blueprint.purchase', [
 
 registerModuleVariants('hall.ambiance.pulse.socialHeat', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Doorways stay open — gossip and snacks trade places in the hallway.',
@@ -115,7 +115,7 @@ registerModuleVariants('hall.ambiance.pulse.socialHeat', [
 
 registerModuleVariants('cg.raReply.taunt', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Your needle lands — Priya answers with calories, not courtesy.',

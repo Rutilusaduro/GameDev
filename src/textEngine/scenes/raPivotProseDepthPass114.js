@@ -25,7 +25,7 @@ registerModuleVariants('roster.unlock.s10', [
 
 registerModuleVariants('opposition.hearing.removal.result.hold_firm', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'You hold the line — abundance named as policy, board members too full to argue.',

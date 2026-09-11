@@ -66,7 +66,7 @@ registerModuleVariants('fair.day.afterparty.choice2', [
 
 registerModuleVariants('evolved.event.sumo.s0.p0.load_hard', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Chanko bowls disappear — belly settles lower, dohyo feels closer.',
@@ -76,7 +76,7 @@ registerModuleVariants('evolved.event.sumo.s0.p0.load_hard', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s1.p1.watched', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Kayla’s jeans gap — Bri’s belly meets the table edge; Daisy says only “yes.”',
@@ -86,7 +86,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s1.p1.watched', [
 
 registerModuleVariants('cg.scene.corkboard.Frenzied', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Pins fly — Priya adjusts numbers while her belly shifts the desk an inch.',
@@ -106,7 +106,7 @@ registerModuleVariants('wifeLessons.lesson.s2.butter_cake', [
 
 registerModuleVariants('hall.ambiance.pulse.intimacy', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Soft questions in the nook — want learns vocabulary without shame.',

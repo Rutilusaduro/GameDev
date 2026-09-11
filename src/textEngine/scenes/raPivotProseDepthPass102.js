@@ -1,9 +1,10 @@
 // CG + evolved activity legacyBody + homeroom (Pass 102).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.activity.competitive_gainer.s3.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Corkboard pins gleam — every category a scoreboard, every score a dare to eat louder.',
@@ -13,7 +14,7 @@ registerModuleVariants('evolved.activity.competitive_gainer.s3.legacyBody', [
 
 registerModuleVariants('evolved.activity.homeroom_queen.s2.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Tuesday steam owns the homeroom hall — moms, daughters, and measured permission.',
@@ -23,7 +24,7 @@ registerModuleVariants('evolved.activity.homeroom_queen.s2.legacyBody', [
 
 registerModuleVariants('evolved.activity.cultivator.s1.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Tasting spoons multiply — Reneé’s kitchen turns appetite into curriculum.',
@@ -33,7 +34,7 @@ registerModuleVariants('evolved.activity.cultivator.s1.legacyBody', [
 
 registerModuleVariants('cg.scene.corkboard.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Driven tier: Priya updates the board before the ink dries — competition as foreplay.',
@@ -43,7 +44,7 @@ registerModuleVariants('cg.scene.corkboard.Driven', [
 
 registerModuleVariants('homeroom.conference.Sofia.next_tuesday', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Sofia ranks cakes like legislation — cardamom non-negotiable, peach the backup law.',
@@ -63,7 +64,7 @@ registerModuleVariants('fair.photo.Kylie', [
 
 registerModuleVariants('weekly.art_exhibition', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The gallery hangs her body as installation — patrons pretend it is only art.',

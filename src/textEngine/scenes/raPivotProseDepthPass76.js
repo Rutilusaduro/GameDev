@@ -1,9 +1,10 @@
 // Evolved event endings + CG chat depth (Pass 76).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.event.sumo.s0.end0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {

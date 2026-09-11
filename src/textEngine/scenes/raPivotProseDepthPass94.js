@@ -5,7 +5,7 @@ import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.event.sumo.s0.end0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Chanko-heavy and locked in — the dohyo waits for belly-first argument.',
@@ -15,7 +15,7 @@ registerModuleVariants('evolved.event.sumo.s0.end0', [
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.end0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Pies on the table, horn in three minutes — county hunger becomes sport.',
@@ -25,7 +25,7 @@ registerModuleVariants('evolved.event.state_fair_queen.s0.end0', [
 
 registerModuleVariants('fair.photo.Kylie', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Fryer glow on Kylie’s grin — another greasy saint for the trophy wall.',
@@ -35,7 +35,7 @@ registerModuleVariants('fair.photo.Kylie', [
 
 registerModuleVariants('fair.photo.Serena', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Serena poses between funnel cakes — flash adds legend before MJ claims ribbon.',
@@ -58,7 +58,7 @@ registerModuleVariants('campus.sighting', [
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0.curriculum', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Wellness slides until arms uncross — snacks do the persuasion slides cannot.',
@@ -88,7 +88,7 @@ registerModuleVariants('wifeLessons.lesson.s8.final_spread', [
 
 registerModuleVariants('cg.scene.corkboard.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Pins bite new numbers — Priya leans in until the desk creaks with her belly.',
@@ -98,7 +98,7 @@ registerModuleVariants('cg.scene.corkboard.Driven', [
 
 registerModuleVariants('hall.ambiance.pulse.prestige', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Marble echoes prestige — residents loosen belts in unison without a word.',

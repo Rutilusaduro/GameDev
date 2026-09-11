@@ -1,9 +1,10 @@
 // Homeroom + fair + campus + CG (Pass 105).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Bri.brought_something', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Bri opens the drawer like ritual — container always there, appetite always practical.',
@@ -13,7 +14,7 @@ registerModuleVariants('homeroom.conference.Bri.brought_something', [
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0.refreshments_first', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Refreshments before agenda — Mrs. Calloway eats three pieces before item one.',
@@ -43,7 +44,7 @@ registerModuleVariants('campus.travel', [
 
 registerModuleVariants('cg.scene.binge.Enormous.Ruthless', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Ruthless binge — containers empty, corkboard already updated in her head.',
@@ -53,7 +54,7 @@ registerModuleVariants('cg.scene.binge.Enormous.Ruthless', [
 
 registerModuleVariants('weekly.chair_breaks', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The chair gives — the room laughs before pity can arrive.',
@@ -63,7 +64,7 @@ registerModuleVariants('weekly.chair_breaks', [
 
 registerModuleVariants('weekly.thesis_rewrite', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Hall log pivot — footnotes swell with appetite, argument follows belly.',

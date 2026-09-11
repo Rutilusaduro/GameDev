@@ -12,7 +12,7 @@ registerModuleVariants('campus.find', [
     ],
   },
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'You follow a smell to a forgotten snack stash — still warm, still generous, still unclaimed.',
@@ -22,7 +22,7 @@ registerModuleVariants('campus.find', [
 
 registerModuleVariants('campus.travel', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Crossing campus, every flyer competes with the dining hall — hunger wins the billboard war.',
@@ -32,7 +32,7 @@ registerModuleVariants('campus.travel', [
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Midway lights hit MJ first — she tastes county fame and decides the crown is edible.',
@@ -42,7 +42,7 @@ registerModuleVariants('evolved.event.state_fair_queen.s0.p0', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Kayla eats before questions; Bri never stops; Sofia counts cinnamon rolls like homework.',
@@ -52,7 +52,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s0.p1', [
 
 registerModuleVariants('evolved.event.wife_lessons.s0.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Flour dust and gingham — Darlene diets out loud while Wanda eats the basket before the lesson starts.',
@@ -62,7 +62,7 @@ registerModuleVariants('evolved.event.wife_lessons.s0.p0', [
 
 registerModuleVariants('evolved.activity.wife_lessons', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Kitchen steam carries recipes home — daughters learn appetite the way other kids learn piano.',
@@ -72,7 +72,7 @@ registerModuleVariants('evolved.activity.wife_lessons', [
 
 registerModuleVariants('evolved.activity.state_fair_queen', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Fair grease on MJ’s smile — pride and portions climb the same leaderboard.',
@@ -82,7 +82,7 @@ registerModuleVariants('evolved.activity.state_fair_queen', [
 
 registerModuleVariants('homeroom.conference.Mrs_Monroe.taste_now', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Monroe tastes on principle — one bite becomes two, and Tuesday earns another checkmark.',
@@ -92,7 +92,7 @@ registerModuleVariants('homeroom.conference.Mrs_Monroe.taste_now', [
 
 registerModuleVariants('homeroom.conference.Kayla.progress_review', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Grades up, appetite up — Kayla asks if Tuesday still counts. The container answers first.',
@@ -102,7 +102,7 @@ registerModuleVariants('homeroom.conference.Kayla.progress_review', [
 
 registerModuleVariants('cg.chat.priyaFollowup.leading.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Priya follows her own post with a smirk — the board updates before anyone finishes chewing.',
@@ -112,7 +112,7 @@ registerModuleVariants('cg.chat.priyaFollowup.leading.Driven', [
 
 registerModuleVariants('cg.raReply.observe', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'You watch without typing — silence on the thread still feeds the rivalry.',
@@ -122,7 +122,7 @@ registerModuleVariants('cg.raReply.observe', [
 
 registerModuleVariants('hall.ambiance.pulse.comfort', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Radiators hum soft — residents sink into furniture like the hall trained them to.',
@@ -132,7 +132,7 @@ registerModuleVariants('hall.ambiance.pulse.comfort', [
 
 registerModuleVariants('hall.blueprint.synergy', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Two wings share one appetite now — lounge warmth walks to the stove without asking.',

@@ -1,5 +1,6 @@
 // Session Rae + weekly fragments + blueprint room labels (Pass 107).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('session.rae.arrival.s4', [
   {
@@ -13,7 +14,7 @@ registerModuleVariants('session.rae.arrival.s4', [
 
 registerModuleVariants('session.rae.extra.s5', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Backup crates appear like she predicted the first course would lose.',

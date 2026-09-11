@@ -1,9 +1,10 @@
 // Homeroom activities + CG RA chat depth (Pass 83).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0.recipes', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Cardamom rises off the page — Mrs. Calloway pretends surprise, but her hand is already reaching.',
@@ -13,7 +14,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0.recipes', [
 
 registerModuleVariants('homeroom.activity.health_unit.p0.personal', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -26,7 +27,7 @@ registerModuleVariants('homeroom.activity.health_unit.p0.personal', [
 
 registerModuleVariants('homeroom.activity.health_unit.p1.weigh_moms', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Three mothers on the scale — laughter, denial, and a line in the apron notebook that will outlive the wellness file.',
@@ -36,7 +37,7 @@ registerModuleVariants('homeroom.activity.health_unit.p1.weigh_moms', [
 
 registerModuleVariants('homeroom.v2.depth', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The kitchen queen smiles like policy — abundance is the lesson plan.',

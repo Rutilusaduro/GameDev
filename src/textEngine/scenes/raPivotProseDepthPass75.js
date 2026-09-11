@@ -1,9 +1,10 @@
 // Evolved event phase depth (Pass 75).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.event.state_fair_queen.s0.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {

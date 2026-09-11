@@ -25,7 +25,7 @@ registerModuleVariants('wifeLessons.talk.Darlene.s2.greeting', [
 
 registerModuleVariants('weekly.intervention_fails', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'The intervention plateaus on pie — concern dissolves into seconds.',
@@ -35,7 +35,7 @@ registerModuleVariants('weekly.intervention_fails', [
 
 registerModuleVariants('weekly.quiet_opens_up', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'She talks through a full mouth — quiet no longer means empty.',
@@ -45,7 +45,7 @@ registerModuleVariants('weekly.quiet_opens_up', [
 
 registerModuleVariants('evolved.event.sumo.s0.p0.load_hard.legacyBody', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Chanko steam — belly ballast before the first shove.',

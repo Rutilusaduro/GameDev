@@ -1,9 +1,10 @@
 // CG measurement + evolved depth (Pass 95).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('cg.measurement.session', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -16,7 +17,7 @@ registerModuleVariants('cg.measurement.session', [
 
 registerModuleVariants('cg.scene.selfReview.Fat.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mirror, tape, appetite — Priya logs gains the way others log grades.',
@@ -26,7 +27,7 @@ registerModuleVariants('cg.scene.selfReview.Fat.Driven', [
 
 registerModuleVariants('evolved.event.wife_lessons.s0.end1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'First bake night ends sticky — Darlene asks for recipes; MJ already plans next week.',
@@ -36,7 +37,7 @@ registerModuleVariants('evolved.event.wife_lessons.s0.end1', [
 
 registerModuleVariants('evolved.activity.eating_streamer', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Chat scrolls while she chews — every bite is content, every burp a milestone.',
@@ -46,7 +47,7 @@ registerModuleVariants('evolved.activity.eating_streamer', [
 
 registerModuleVariants('fair.day.afterparty.choice2', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Crowd presses close — fair grease and pride share the same sticky napkin.',
@@ -56,7 +57,7 @@ registerModuleVariants('fair.day.afterparty.choice2', [
 
 registerModuleVariants('homeroom.conference.Mrs_Monroe.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Mrs. Monroe arrives early, claims the good chair — conference is snack diplomacy.',
@@ -66,7 +67,7 @@ registerModuleVariants('homeroom.conference.Mrs_Monroe.intro', [
 
 registerModuleVariants('hall.ambiance.pulse.logistics', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Schedules loosen — the hall runs on appetite o’clock now.',

@@ -29,13 +29,13 @@ const cgResidentExtras = [
 
 for (const [name, replyType, line] of cgResidentExtras) {
   registerModuleVariants(`cg.chat.resident.${name}.${replyType}`, [
-    { when: {}, weight: 1, text: [line] },
+    { when: legacyBridgeWhen(), weight: 1, text: [line] },
   ]);
 }
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.p2', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Conference voices soften when containers open — policy learns appetite by smell before it learns by memo.',
@@ -45,7 +45,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s0.p2', [
 
 registerModuleVariants('evolved.event.sumo.s0.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Chanko steam and liniment — the warm-up room learns your cheerleader shoulders before the dohyo does.',
@@ -55,7 +55,7 @@ registerModuleVariants('evolved.event.sumo.s0.p0', [
 
 registerModuleVariants('evolved.event.wife_lessons.s0.end0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Flour on every cheek — mothers leave heavier than they arrived, hearts included.',
@@ -65,7 +65,7 @@ registerModuleVariants('evolved.event.wife_lessons.s0.end0', [
 
 registerModuleVariants('evolved.activity.homestead_queen', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Porch light, porch portions — homestead hunger outgrows the property line.',
@@ -119,7 +119,7 @@ registerModuleVariants('wifeLessons.lesson.s4.lasagna', [
 
 registerModuleVariants('cg.chat.priyaPost.Heavy.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Priya posts the numbers like a dare — every resident thumb hovers over react before they reach for a snack.',
@@ -129,7 +129,7 @@ registerModuleVariants('cg.chat.priyaPost.Heavy.Driven', [
 
 registerModuleVariants('fair.training.Serena', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Serena treats funnel-cake lines like choreography — MJ follows the rhythm straight into fair pride.',

@@ -1,9 +1,10 @@
 // Homeroom conference + CG scene tails (Pass 81).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -16,7 +17,7 @@ registerModuleVariants('homeroom.conference.Mrs_Calloway.intro', [
 
 registerModuleVariants('homeroom.activity.parent_meeting.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Three mothers, one agenda, and a snack bowl that empties faster than the wellness notes.',
@@ -26,7 +27,7 @@ registerModuleVariants('homeroom.activity.parent_meeting.p0', [
 
 registerModuleVariants('cg.scene.corkboard.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -39,7 +40,7 @@ registerModuleVariants('cg.scene.corkboard.Driven', [
 
 registerModuleVariants('cg.scene.binge.Fat.Driven', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {

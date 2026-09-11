@@ -29,7 +29,7 @@ registerModuleVariants('wifeLessons.v2.depth', [
 
 registerModuleVariants('cg.scene.reaction.priya_smaller.Frenzied.waist', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {
@@ -42,7 +42,7 @@ registerModuleVariants('cg.scene.reaction.priya_smaller.Frenzied.waist', [
 
 registerModuleVariants('cg.scene.selfReview.Heavy.Invested', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       (ctx) => {

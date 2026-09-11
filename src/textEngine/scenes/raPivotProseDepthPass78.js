@@ -1,9 +1,10 @@
 // Evolved activity + homeroom event prose (Pass 78).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('evolved.activity.state_fair_queen', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {
@@ -17,7 +18,7 @@ registerModuleVariants('evolved.activity.state_fair_queen', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.p0', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 2,
     text: [
       (ctx) => {
@@ -31,7 +32,7 @@ registerModuleVariants('evolved.event.homeroom_queen.s0.p0', [
 
 registerModuleVariants('evolved.event.homeroom_queen.s0.p1', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Kayla eats like the session was always hers. Bri follows. Sofia pretends she is only here for cinnamon.',

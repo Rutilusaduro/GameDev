@@ -1,5 +1,6 @@
 // Weekly + opposition + evolved activity tails (Pass 109).
 import { registerModuleVariants } from '../engine.js';
+import { legacyBridgeWhen } from './legacyPoolPolicy.js';
 
 registerModuleVariants('weekly.thesis_rewrite', [
   {
@@ -40,7 +41,7 @@ registerModuleVariants('opposition.hearing.removal.result.testify', [
 
 registerModuleVariants('homeroom.conference.Sofia.portfolio', [
   {
-    when: {},
+    when: legacyBridgeWhen(),
     weight: 1,
     text: [
       'Sofia spreads sketches — every figure thicker, every line more honest than the last portfolio.',
