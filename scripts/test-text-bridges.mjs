@@ -20,6 +20,8 @@ const required = [
   'rankedSession/legacyPools.js',
   'homeroom/batchBakerPools.js',
   'competitiveGainer/cgChatPools.js',
+  'competitiveGainer/cgScenePools.js',
+  'cultivator/index.js',
   'hallBlueprint/index.js',
   'researchJournal/index.js',
   'evolved/eventPools.js',

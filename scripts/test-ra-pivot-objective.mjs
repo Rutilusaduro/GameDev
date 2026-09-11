@@ -32,12 +32,16 @@ const hallLounge = readFileSync(join(root, 'src/views/HallLoungeView.jsx'), 'utf
 assert.match(hallLounge, /HallBlueprint/, 'Hall lounge view should render blueprint UI');
 
 execSync('npm run test:hall-blueprint', { cwd: root, stdio: 'inherit' });
+const depthOut = execSync('npm run test:mechanics-depth', { cwd: root, encoding: 'utf8' });
+assert.match(depthOut, /systems wired/, depthOut);
 const cov = execSync('npm run test:mechanics-depth-coverage', { cwd: root, encoding: 'utf8' });
 assert.match(cov, /unwired-payout=0/, cov);
 
 execSync('npm run test:text-bridges', { cwd: root, stdio: 'inherit' });
 
 execSync('node scripts/test-text-pool-variety.mjs', { cwd: root, stdio: 'inherit' });
+
+execSync('node scripts/test-text-spot-render.mjs', { cwd: root, stdio: 'inherit' });
 
 execSync('npm run text:lint', { cwd: root, stdio: 'pipe' });
 

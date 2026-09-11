@@ -32,6 +32,7 @@
     "text:lint": "node scripts/textLint.mjs",
     "test:text-bridges": "node scripts/test-text-bridges.mjs",
     "test:text-pool-variety": "node scripts/test-text-pool-variety.mjs",
+    "test:text-spot-render": "node scripts/test-text-spot-render.mjs",
     "test:ra-pivot-objective": "node scripts/test-ra-pivot-objective.mjs"
   },
   "dependencies": {
