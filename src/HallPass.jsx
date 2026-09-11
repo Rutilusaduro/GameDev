@@ -182,6 +182,7 @@ import { SettlingListView, SettlingDetailView } from './views/SettlingView.jsx';
 import {
   corruptionStudentPatch, clearWeeklyTextFlags, dinnerVenueToLocale, clothingStateForStage,
   createSessionUsed, weekUsedFromStudent, weekUsedToPatch, isSlenderEligible,
+  wrapLeftoverLinger,
 } from './gameData/textContext.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
@@ -1849,7 +1850,7 @@ export default function HallPass(){
     }
     let nextPharmacistState=pharmacistState?tickPharmacistWeek(pharmacistState):null;
     if(nextPharmacistState?.cultActive){
-      nextPharmacistState=tickCultWeek(nextPharmacistState,updated,rnd);
+      nextPharmacistState=tickCultWeek(nextPharmacistState,updated,rnd,{leftoverKitchen:leftoverKitchenThisWeek,nightRound:nightRoundThisWeek});
       const cultTick=nextPharmacistState._cultWeekly;
       if(cultTick?.passiveAddictedGain>0){
         updated=updated.map(s=>{
@@ -2781,7 +2782,9 @@ export default function HallPass(){
 
   const salonCloseEvening=()=>{
     setSalonState(prev=>{
-      const result=salonFinishDigestif(prev);
+      const leftoverKitchen=students.some(st=>st.leftoverFedThisWeek);
+      const nightRound=students.some(st=>week&&st.lastNightVisitWeek===week);
+      const result=salonFinishDigestif(prev,{leftoverKitchen,nightRound});
       if(!result?.done) return prev;
       const chloeId=prev.chloeStudentId;
       if(chloeId!=null){
@@ -2974,7 +2977,9 @@ export default function HallPass(){
       const history=[...(prev.history||[]),ch.flag||choiceId];
       const nextPhase=prev.phaseIdx+1;
       if(nextPhase>=def.phases.length){
-        const ending=pickHearingEnding(def,history);
+        const leftoverKitchen=students.some(st=>st.leftoverFedThisWeek);
+        const nightRound=students.some(st=>week&&st.lastNightVisitWeek===week);
+        const ending=pickHearingEnding(def,history,{leftoverKitchen,nightRound});
         const endingText=ending.poolKey
           ?renderHearingEnding(hearingType,ending.poolKey,student,week)
           :'';
@@ -3824,7 +3829,7 @@ export default function HallPass(){
             bodyType:["pear","apple","hourglass","athletic","straight"][rnd(0,4)],
             corruption:0,relationship:0,
           }));
-          const sceneText=renderHiveIntake(lilith,victims,week);
+          const sceneText=renderHiveIntake(lilith,victims,week,{maya});
           const sceneTag=makeHiveTag("IntakeScene",{mayaStage:getStage(maya.lbs).label.replace(/\s+/g,""),vpId:next.vpId||"none",bmiTier:getHiveBmiTier(next.avgBmi),rooms:getHiveControl(next.rooms),task:"intake",roomId:next.selectedRoomId});
           withScene={...next,log:[{tag:sceneTag,text:sceneText,type:"scene"},...next.log].slice(0,40)};
         }
@@ -3852,7 +3857,7 @@ export default function HallPass(){
         hiveBiomass:prev.hiveBiomass+biomass,
         floorResonance:getHiveFloorResonance(prev)+3+hiveFx.resonanceBump,
         view:"visit",
-        subState:{tag,gain,biomass,text:`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`},
+        subState:{tag,gain,biomass,text:wrapLeftoverLinger(`${tag} You bring tribute directly to the Central Nest. Maya's quiet gravity accepts it, and the Hive records the warmth.`,maya,week,'hive.afterglow')},
         log:[{tag,text:"RA-directed feeding at the Central Nest.",type:"scene"},...prev.log].slice(0,40),
       };
     });
@@ -3870,7 +3875,7 @@ export default function HallPass(){
         ...prev,
         floorResonance:getHiveFloorResonance(prev)+1,
         view:"photo",
-        subState:{tag,text:`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint hive resonance pressure visible in every lavender-lit corner.`},
+        subState:{tag,text:wrapLeftoverLinger(`${tag} Maya documents the Hive: conquered rooms, delivery routes, soft bodies, and the faint hive resonance pressure visible in every lavender-lit corner.`,maya,week,'hive.afterglow')},
         log:[{tag,text:"Hive State observation archived.",type:"photo"},...prev.log].slice(0,40),
       };
     });
@@ -3894,7 +3899,7 @@ export default function HallPass(){
         members:prev.members-1,
         hiveBiomass:prev.hiveBiomass+gain+hiveFx.biomassBump,
         floorResonance:getHiveFloorResonance(prev)+6+hiveFx.resonanceBump,
-        log:[{tag,text:"Lilith guides one devotee into Maya's stored biomass.",type:"absorb"},...prev.log].slice(0,40),
+        log:[{tag,text:wrapLeftoverLinger("Lilith guides one devotee into Maya's stored biomass.",maya,week,'hive.afterglow'),type:"absorb"},...prev.log].slice(0,40),
       };
     });
   };
@@ -5200,7 +5205,9 @@ export default function HallPass(){
     const route=CULT_DISTRIBUTION_ROUTES.find(r=>r.id===routeId);
     if(!route||ap<route.apCost){push(`⚠️ Need ${route?.apCost||1} AP.`);return;}
     setAp(a=>a-route.apCost);
-    const { state: nextPs, outcome }=applyCultDistribution(pharmacistState,routeId,rnd);
+    const leftoverKitchen=students.some(st=>st.leftoverFedThisWeek);
+    const nightRound=students.some(st=>week&&st.lastNightVisitWeek===week);
+    const { state: nextPs, outcome }=applyCultDistribution(pharmacistState,routeId,rnd,{leftoverKitchen,nightRound});
     if(!outcome) return;
     let classGainApplied=0;
     let addictedGainApplied=0;
@@ -5360,13 +5367,14 @@ export default function HallPass(){
     const [gMin,gMax]=pair?.gainRange||[3,8];
     setAp(a=>a-1);
     const gain=depthGainLbs(s,rnd(gMin,gMax),week,{});
+    const leftoverEase=leftoverNightGainBump(s,week);
     setStudents(prev=>prev.map(st=>st.id===s.id?bumpOriginChain({...processStudentGain(st,gain,10)}):st));
     setCommunityResearcherState(prev=>prev?{
       ...prev,
       caseStudyStage:prev.caseStudyStage+1,
       lastPairId:prev.activePairId,
       pairsUsed:[...prev.pairsUsed,prev.activePairId],
-      totalSuspicion:(prev.totalSuspicion||0)+(pair?.suspicion||0),
+      totalSuspicion:Math.max(0,(prev.totalSuspicion||0)+Math.max(0,(pair?.suspicion||0)-leftoverEase)),
       boardReactionPairId:prev.activePairId,
       activePairId:null, eventText:null, modalPhase:'board_reaction',
     }:null);

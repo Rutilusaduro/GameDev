@@ -142,6 +142,7 @@ export function buildExplorationContext({
 }) {
   const campusTier = getCampusNarrativeTier(pharmacistState);
   const leftoverKitchen = (students || []).some((s) => s.leftoverFedThisWeek);
+  const nightRound = (students || []).some((s) => week && s.lastNightVisitWeek === week);
   const avgLbs = students.length
     ? students.filter(s => !s.hidden).reduce((a, s) => a + s.lbs, 0) / students.filter(s => !s.hidden).length
     : 130;
@@ -153,6 +154,7 @@ export function buildExplorationContext({
     campusTier,
     saturationTier,
     leftoverKitchen,
+    nightRound,
     sophiaStage: pharmacistState?.stage ?? 1,
     avgLbs,
     elaraDiscovered: !!exploration?.elaraDiscovered,
@@ -220,7 +222,10 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     effects.asceticShame = true;
   }
 
-  const vanceLine = rollVanceCampusEvent(nodeId, ctx.opposition, rng);
+  const vanceLine = rollVanceCampusEvent(nodeId, ctx.opposition, rng, {
+    leftoverKitchen: !!ctx.leftoverKitchen,
+    nightRound: !!ctx.nightRound,
+  });
   if (vanceLine) lines.push(vanceLine);
 
   const observerLine = rollAccreditationObserverEvent(nodeId, ctx.opposition, rng);

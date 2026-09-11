@@ -115,12 +115,23 @@ export const EMERGENCY_HEARING = {
   ],
 };
 
-export function pickHearingEnding(hearingDef, history) {
+export function pickHearingEnding(hearingDef, history, extras = {}) {
   const ending = hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
   const flagCount = (history || []).filter(Boolean).length;
-  if (flagCount < 2) return ending;
+  const leftover = !!extras.leftoverKitchen;
+  const night = !!extras.nightRound;
+  if (flagCount < 2 && !leftover && !night) return ending;
   const next = { ...ending };
-  if ((next.scrutinyDelta ?? 0) < 0) next.scrutinyDelta = next.scrutinyDelta - Math.min(4, flagCount);
-  if (next.resolveHitAll) next.resolveHitAll += Math.min(4, flagCount);
+  if (flagCount >= 2) {
+    if ((next.scrutinyDelta ?? 0) < 0) next.scrutinyDelta = next.scrutinyDelta - Math.min(4, flagCount);
+    if (next.resolveHitAll) next.resolveHitAll += Math.min(4, flagCount);
+  }
+  if (leftover) {
+    next.scrutinyDelta = (next.scrutinyDelta ?? 0) - 2;
+    if (next.resolveHitAll) next.resolveHitAll += 1;
+  }
+  if (night) {
+    next.scrutinyDelta = (next.scrutinyDelta ?? 0) - 1;
+  }
   return next;
 }

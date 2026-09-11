@@ -162,6 +162,10 @@ oncePool('hive.afterglow', [
     'Surplus trays still humming in a room that used to be a closet.',
     'Maya does not clock out. Galley surplus is already a Hive shift.',
   ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. The Nest treats that knock as the first delivery.',
+    'Quiet-hours heat still in her. Intake uses the same open door.',
+  ] },
   { when: {}, text: [
     'The Nest hums. Someone is still eating in a room that used to be a closet.',
     'Maya does not check the clock. The Hive does not either.',

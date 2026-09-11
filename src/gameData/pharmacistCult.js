@@ -86,7 +86,7 @@ export function initCultOnUnlock(prevCult) {
   };
 }
 
-export function applyCultDistribution(state, routeId, rndFn) {
+export function applyCultDistribution(state, routeId, rndFn, extras = {}) {
   const route = CULT_DISTRIBUTION_ROUTES.find(r => r.id === routeId);
   if (!route || !state?.cultActive) return { state, outcome: null };
   const cult = { ...(state.cult || defaultCultState()) };
@@ -96,6 +96,8 @@ export function applyCultDistribution(state, routeId, rndFn) {
   };
   const repeat = cult.lastRouteId === routeId;
   const switching = !!(cult.lastRouteId && !repeat);
+  const leftover = !!extras.leftoverKitchen;
+  const night = !!extras.nightRound;
   const outcome = {
     routeId,
     circleDelta: roll(route.circleGrowth),
@@ -123,6 +125,14 @@ export function applyCultDistribution(state, routeId, rndFn) {
     outcome.devotionDelta += 2;
     outcome.flavor = `${outcome.flavor} New route. The circle tests it with their mouths first.`;
   }
+  if (leftover) {
+    outcome.supplyDelta += 1;
+    outcome.devotionDelta += 1;
+    outcome.flavor = `${outcome.flavor} Galley leftover still in the circle. They take the drop like seconds.`;
+  }
+  if (night) {
+    outcome.devotionDelta += 1;
+  }
   cult.circleSize = Math.min(40, cult.circleSize + outcome.circleDelta);
   cult.devotion = Math.min(100, cult.devotion + outcome.devotionDelta);
   cult.supplyReservoir = cult.supplyReservoir + outcome.supplyDelta;
@@ -138,7 +148,7 @@ export function applyCultDistribution(state, routeId, rndFn) {
 }
 
 /** Weekly passive: cult circle fattens addicted students & expands supply. */
-export function tickCultWeek(state, students, rndFn) {
+export function tickCultWeek(state, students, rndFn, extras = {}) {
   if (!state?.cultActive) return state;
   const cult = { ...(state.cult || defaultCultState()) };
   if (cult.circleSize < 4 && cult.distributionsRun > 0) {
@@ -149,6 +159,13 @@ export function tickCultWeek(state, students, rndFn) {
   }
   if (cult.supplyReservoir > 0 && rndFn(0, 100) < 35) {
     cult.supplyReservoir = Math.max(0, cult.supplyReservoir - 1);
+  }
+  if (extras.leftoverKitchen) {
+    cult.supplyReservoir += 1;
+    if ((cult.devotion ?? 0) >= 40) cult.devotion = Math.min(100, cult.devotion + 1);
+  }
+  if (extras.nightRound && rndFn(0, 100) < 20) {
+    cult.circleSize = Math.min(40, cult.circleSize + 1);
   }
   const addictedCount = students.filter(s => !s.hidden && (s.addictionLevel ?? 0) >= 1).length;
   const areaBonus = Math.floor(cult.circleSize / 8);

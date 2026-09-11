@@ -23,11 +23,16 @@ import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { render } from '../src/textEngine/engine.js';
-import { buildTextContext } from '../src/gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../src/gameData/textContext.js';
 import { RA_APPROACH_LIST, profileGainMult, profileScrutinyMult } from '../src/gameData/raApproaches.js';
 import { getSwimmerTier } from '../src/gameData/communityResearcher.js';
 import { weeklyDiscontentDecayAmount } from '../src/gameData/discontent.js';
 import { generateFeastLog, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../src/gameData/chapterHostess.js';
+import { pickHearingEnding, REMOVAL_HEARING } from '../src/gameData/oppositionHearings.js';
+import { applyCultDistribution, tickCultWeek, initCultOnUnlock, defaultCultState } from '../src/gameData/pharmacistCult.js';
+import { salonFinishDigestif } from '../src/gameData/chloeSalon.js';
+import { rollVanceCampusEvent } from '../src/gameData/oppositionCampus.js';
+import '../src/textEngine/scenes/proseOverhaulPass4.js';
 
 function sportyResidents() {
   return Object.entries(STUDENT_HOME_DORM)
@@ -305,6 +310,43 @@ assert.ok(
   !feastBase.log.some((line) => /leftover trays/i.test(line.text)),
   'plain feast log should not mention leftover trays',
 );
+
+const hearBase = pickHearingEnding(REMOVAL_HEARING, ['testify', 'firm']);
+const hearLeftover = pickHearingEnding(REMOVAL_HEARING, ['testify', 'firm'], { leftoverKitchen: true });
+assert.ok(hearLeftover.scrutinyDelta < hearBase.scrutinyDelta, 'leftover kitchen should ease hearing scrutiny');
+const hearNight = pickHearingEnding(REMOVAL_HEARING, ['testify', 'firm'], { nightRound: true });
+assert.ok(hearNight.scrutinyDelta < hearBase.scrutinyDelta, 'night rounds should ease hearing scrutiny');
+
+const cultState = { cultActive: true, cult: initCultOnUnlock(defaultCultState()), exposureRisk: 0 };
+const cultRnd = (lo) => lo;
+const distBase = applyCultDistribution(cultState, 'circle_pickup', cultRnd);
+const distLeftover = applyCultDistribution(cultState, 'circle_pickup', cultRnd, { leftoverKitchen: true });
+assert.ok(distLeftover.outcome.supplyDelta > distBase.outcome.supplyDelta, 'leftover kitchen should bump cult supply');
+assert.match(distLeftover.outcome.flavor, /Galley leftover/, 'cult leftover flavor');
+const tickBase = tickCultWeek(cultState, [], cultRnd);
+const tickLeftover = tickCultWeek(cultState, [], cultRnd, { leftoverKitchen: true });
+assert.ok(tickLeftover.cult.supplyReservoir > tickBase.cult.supplyReservoir, 'leftover kitchen should restock cult supply');
+
+const digestifSession = {
+  prestige: 0, indulgence: 0, eveningsHosted: 0, guestBook: [],
+  session: { phase: 'digestif', serviceLog: [], guests: [], chloeGain: 10, prestigeGain: 4, indulgenceGain: 0 },
+};
+const salonBase = salonFinishDigestif(digestifSession);
+const salonLeftover = salonFinishDigestif(digestifSession, { leftoverKitchen: true });
+assert.ok(salonLeftover.state.prestige > salonBase.state.prestige, 'leftover kitchen should bump salon prestige');
+
+const oppAib = { aib: { unlocked: true } };
+assert.equal(rollVanceCampusEvent('health_center', oppAib, () => 0.33), null, 'Vance miss without leftover');
+assert.ok(rollVanceCampusEvent('health_center', oppAib, () => 0.33, { leftoverKitchen: true }), 'leftover kitchen should thicken Vance campus chance');
+assert.match(
+  rollVanceCampusEvent('health_center', oppAib, () => 0, { leftoverKitchen: true }),
+  /leftover|galley|second sittings/i,
+  'Vance leftover campus line',
+);
+
+const hiveLinger = wrapLeftoverLinger('Nest intake.', { leftoverFedThisWeek: true, lbs: 180, name: 'Maya' }, 3, 'hive.afterglow');
+assert.ok(hiveLinger.length > 'Nest intake.'.length, 'hive leftover linger should append');
+assert.match(hiveLinger, /surplus|galley|Hive/i, 'hive leftover linger voice');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

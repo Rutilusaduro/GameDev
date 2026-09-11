@@ -28,11 +28,27 @@ const LEDGER_WIGHT_LINES = [
   '📒 Compliance made flesh tallies trays. Discredit and machine fattening are its counters.',
 ];
 
-export function rollVanceCampusEvent(nodeId, opposition, rng = Math.random) {
+const VANCE_LEFTOVER_LINES = {
+  health_center: [
+    '👁 Vance notes leftover routing on the wellness chart. She underlines the galley twice.',
+    '👁 Vance asks a nurse about second sittings after hours. Your hall is already in the margin.',
+  ],
+  faculty_lounge: [
+    '👁 Vance and Orr compare catering invoices against leftover trays. The conversation stops when you enter.',
+    '👁 Vance sips tea over a folder labeled SURPLUS. Your floor made the cover note.',
+  ],
+};
+
+export function rollVanceCampusEvent(nodeId, opposition, rng = Math.random, extras = {}) {
   if (!opposition?.aib?.unlocked) return null;
   if (nodeId !== 'health_center' && nodeId !== 'faculty_lounge') return null;
-  if (rng() > 0.32) return null;
-  const pool = VANCE_LINES[nodeId];
+  let chance = 0.32;
+  if (extras.leftoverKitchen) chance += 0.08;
+  if (extras.nightRound) chance += 0.05;
+  if (rng() > chance) return null;
+  const pool = extras.leftoverKitchen
+    ? (VANCE_LEFTOVER_LINES[nodeId] || VANCE_LINES[nodeId])
+    : VANCE_LINES[nodeId];
   return pool[Math.floor(rng() * pool.length)];
 }
 

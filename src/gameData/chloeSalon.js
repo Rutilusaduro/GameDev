@@ -129,7 +129,7 @@ export function salonServiceChoice(state, choiceId) {
   };
 }
 
-export function salonFinishDigestif(state) {
+export function salonFinishDigestif(state, extras = {}) {
   const session = state.session;
   if (!session || session.phase !== 'digestif') return { state, done: false };
   const log = session.serviceLog || [];
@@ -137,11 +137,14 @@ export function salonFinishDigestif(state) {
   const lingers = log.filter((id) => id === 'linger').length;
   const charms = log.filter((id) => id === 'charm').length;
   const surge = 8 + Math.floor(session.indulgenceGain / 10) + feeds * 2 + (lingers ? 3 : 0);
-  const extraPrestige = lingers * 2 + charms;
+  const leftoverPrestige = extras.leftoverKitchen ? 2 : 0;
+  const nightPrestige = extras.nightRound ? 1 : 0;
+  const extraPrestige = lingers * 2 + charms + leftoverPrestige + nightPrestige;
   const finalGain = session.chloeGain + surge;
+  const prestigeTotal = session.prestigeGain + 5 + extraPrestige;
   const next = {
     ...state,
-    prestige: Math.min(100, state.prestige + session.prestigeGain + 5 + extraPrestige),
+    prestige: Math.min(100, state.prestige + prestigeTotal),
     indulgence: Math.min(100, state.indulgence + session.indulgenceGain),
     eveningsHosted: state.eveningsHosted + 1,
     guestBook: [...new Set([...state.guestBook, ...session.guests])],
@@ -153,7 +156,7 @@ export function salonFinishDigestif(state) {
     chloeLbs: finalGain,
     prestige: session.prestigeGain,
     scrutiny: session.scrutinyHit,
-    log: `La soirée closes. Chloé gained ${finalGain} lbs. Prestige +${session.prestigeGain + 5 + extraPrestige}.`,
+    log: `La soirée closes. Chloé gained ${finalGain} lbs. Prestige +${prestigeTotal}.`,
   };
 }
 
