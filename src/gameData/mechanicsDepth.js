@@ -6,6 +6,7 @@ import { GAIN_CONFIG } from './gainSystem.js';
 import { getHungerTier } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
+import { getActiveBlueprintSynergies, skillsForRoom } from './hallBlueprint.js';
 
 /** Extra session paces beyond the base three. */
 export const EXTENDED_SESSION_PACES = [
@@ -58,4 +59,18 @@ export function depthFloorChoiceGainMult({ loungeGainMult = 0, relBonus = 0 } = 
 /** Talk relationship bonus from blueprint synergies. */
 export function depthTalkRelBonus(baseRel, { relTalkBonus = 0 } = {}) {
   return baseRel + (relTalkBonus || 0);
+}
+
+/** Opposition / scrutiny ease from blueprint institutional pressure. */
+export function oppositionScrutinyEaseFromHall(ownedHallSkills = {}) {
+  const syn = getActiveBlueprintSynergies(ownedHallSkills).length;
+  const hasCover = !!ownedHallSkills?.institutional_cover || !!ownedHallSkills?.deep_cover;
+  return Math.min(0.14, syn * 0.025 + (hasCover ? 0.04 : 0));
+}
+
+/** Counter attempt bonus when hall has social + crown synergy active. */
+export function oppositionCounterRelBonus(ownedHallSkills = {}) {
+  const syn = getActiveBlueprintSynergies(ownedHallSkills);
+  const hasLegend = syn.some((s) => s.id === 'legendary_flow');
+  return hasLegend ? 2 : syn.length >= 2 ? 1 : 0;
 }

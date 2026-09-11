@@ -220,3 +220,27 @@ export function getRoomDisplayMeta(roomId, ownedHallSkills = {}) {
   const purchasable = skills.filter((sk) => !ownedHallSkills[sk.id]);
   return { room, owned, purchasable, tierMax: Math.max(0, ...owned.map((s) => s.tier)) };
 }
+
+/** Snapshot for hunger tick / interrupt (hall investment → craving ecology). */
+export function summarizeHallEnvironment(ownedHallSkills = {}) {
+  const synergies = getActiveBlueprintSynergies(ownedHallSkills);
+  const sanctumOwned = skillsForRoom('sanctum').filter((sk) => ownedHallSkills[sk.id]).length;
+  const kitchenOwned = skillsForRoom('kitchen').filter((sk) => ownedHallSkills[sk.id]).length;
+  return {
+    synergyCount: synergies.length,
+    sanctumTier: sanctumOwned,
+    kitchenTier: kitchenOwned,
+  };
+}
+
+export function applyHallEnvironmentToHungerMod(mod, env = null) {
+  if (!env) return mod;
+  mod.interruptBonus += (env.synergyCount || 0) * 0.028;
+  if (env.sanctumTier >= 2) {
+    mod.talkDropBonus += 1;
+    mod.feedDropMult *= 0.88;
+  }
+  if (env.kitchenTier >= 3) mod.feedAddictionChance = (mod.feedAddictionChance || 0) + 0.04;
+  if (env.synergyCount >= 3) mod.passiveRiseMult *= 1.07;
+  return mod;
+}

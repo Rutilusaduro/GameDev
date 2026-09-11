@@ -10,6 +10,7 @@ import { getStage } from './stages.js';
 import { TALK_CONFIG } from './talkSystem.js';
 import { pickWeightedInterruptStudent } from './relationshipEcology.js';
 import { getTier } from './sessions.js';
+import { applyHallEnvironmentToHungerMod } from './hallBlueprint.js';
 
 export const ADDICTION_LEVELS = [
   { id: 0, label: "None",       color: null },
@@ -41,7 +42,7 @@ export const HUNGER_CONFIG = {
 };
 
 /** Per-student hunger modifiers from owned skills, weekly arms, physical traits, and devices. */
-export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) {
+export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}, hallEnvironment = null) {
   const eff = skillEffects || {};
   const traits = student?.physicalTraits || [];
   const mod = {
@@ -115,6 +116,8 @@ export function getHungerModifiers(student, skillEffects = {}, weeklyArms = {}) 
   if (traits.includes('feeding_aura')) mod.passiveRiseMult *= 1.22;
   if (traits.includes('hungry_awakening')) mod.addictionDriftChance += 0.14;
 
+  applyHallEnvironmentToHungerMod(mod, hallEnvironment);
+
   return mod;
 }
 
@@ -173,8 +176,8 @@ export function primeDevouringHunger(student) {
   return s;
 }
 
-export function feedResolvesHunger(student, usedCompound = false, skillEffects = {}, weeklyArms = {}) {
-  const mod = getHungerModifiers(student, skillEffects, weeklyArms);
+export function feedResolvesHunger(student, usedCompound = false, skillEffects = {}, weeklyArms = {}, hallEnvironment = null) {
+  const mod = getHungerModifiers(student, skillEffects, weeklyArms, hallEnvironment);
   const baseDrop = usedCompound
     ? HUNGER_CONFIG.compoundHungerDrop[getHungerTier(student)]
     : HUNGER_CONFIG.feedHungerDrop[getHungerTier(student)];
@@ -310,8 +313,8 @@ export function tickWithdrawalAggression(student) {
   return s;
 }
 
-export function talkCalmsHunger(student, skillEffects = {}, weeklyArms = {}) {
-  const mod = getHungerModifiers(student, skillEffects, weeklyArms);
+export function talkCalmsHunger(student, skillEffects = {}, weeklyArms = {}, hallEnvironment = null) {
+  const mod = getHungerModifiers(student, skillEffects, weeklyArms, hallEnvironment);
   let drop = HUNGER_CONFIG.talkHungerDrop + mod.talkDropBonus;
   if (weeklyArms.devouringStudentId === student?.id && skillEffects?.devouringPresence) {
     drop += Math.ceil(TALK_CONFIG.devouringBonus * 3);
@@ -330,9 +333,9 @@ export function applyTraitHungerWeekly(student) {
   return s;
 }
 
-export function tickHungerAddiction(student, playerFedThisWeek = false, skillEffects = {}, weeklyArms = {}) {
+export function tickHungerAddiction(student, playerFedThisWeek = false, skillEffects = {}, weeklyArms = {}, hallEnvironment = null) {
   let s = { ...student };
-  const mod = getHungerModifiers(s, skillEffects, weeklyArms);
+  const mod = getHungerModifiers(s, skillEffects, weeklyArms, hallEnvironment);
 
   if (!playerFedThisWeek && getAddictionLevel(s) >= 1) {
     s.weeksWithoutPlayerFeed = (s.weeksWithoutPlayerFeed ?? 0) + 1;
@@ -353,8 +356,8 @@ export function tickHungerAddiction(student, playerFedThisWeek = false, skillEff
   return s;
 }
 
-export function needsHungerInterrupt(student, skillEffects = {}, weeklyArms = {}) {
-  const mod = getHungerModifiers(student, skillEffects, weeklyArms);
+export function needsHungerInterrupt(student, skillEffects = {}, weeklyArms = {}, hallEnvironment = null) {
+  const mod = getHungerModifiers(student, skillEffects, weeklyArms, hallEnvironment);
   if (mod.forceInterrupt) return true;
 
   const tier = getHungerTier(student);
@@ -369,7 +372,7 @@ export function needsHungerInterrupt(student, skillEffects = {}, weeklyArms = {}
   return false;
 }
 
-export function pickInterruptStudent(students, skillEffects = {}, weeklyArms = {}) {
+export function pickInterruptStudent(students, skillEffects = {}, weeklyArms = {}, hallEnvironment = null) {
   const candidates = students.filter(s => !s.hidden);
 
   if (skillEffects?.devouringPresence && weeklyArms.devouringStudentId != null && !weeklyArms.devouringConsumed) {
@@ -378,14 +381,14 @@ export function pickInterruptStudent(students, skillEffects = {}, weeklyArms = {
   }
 
   const urgent = candidates.filter(s => {
-    const mod = getHungerModifiers(s, skillEffects, weeklyArms);
+    const mod = getHungerModifiers(s, skillEffects, weeklyArms, hallEnvironment);
     const t = getHungerTier(s);
     const a = getAddictionLevel(s);
     return isInWithdrawal(s) || (t >= 3 && a >= mod.addictionFloorForCraving);
   });
   if (!urgent.length) return null;
 
-  const triggered = urgent.filter(s => needsHungerInterrupt(s, skillEffects, weeklyArms));
+  const triggered = urgent.filter(s => needsHungerInterrupt(s, skillEffects, weeklyArms, hallEnvironment));
   if (!triggered.length) return null;
   return pickWeightedInterruptStudent(triggered);
 }

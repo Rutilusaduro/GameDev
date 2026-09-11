@@ -378,9 +378,10 @@ import {
   computeHallLoungeSkillCurrency, buyHallLoungeSkill, aggregateHallLoungeSkillEffects, listPurchasableHallLoungeSkills,
   hasHallLoungeUnlock, getHallActionCost, isDinnerVenueUnlocked,
 } from './gameData/hallLoungeSkills.js';
-import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave } from './gameData/hallBlueprint.js';
+import { weaveOnHallPurchase, consumeWeavePulseIfReady, WEAVE_CONFIG, initAtmosphereWeave, summarizeHallEnvironment } from './gameData/hallBlueprint.js';
 import {
   hallActionCalMultiplier, depthDigestMultiplier, depthForceFeedAdjustments, depthFloorChoiceGainMult,
+  oppositionScrutinyEaseFromHall, oppositionCounterRelBonus,
 } from './gameData/mechanicsDepth.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
@@ -965,7 +966,8 @@ export default function HallPass(){
     const mult=profileScrutinyMult(raProfile)
               *(1-(raProfile?.traits?.includes("discreet")?0.35:0))
               *skillScrutinyReduce
-              *(1-(loungeFx.scrutinyReduce||0));
+              *(1-(loungeFx.scrutinyReduce||0))
+              *(1-oppositionScrutinyEaseFromHall(ownedHallSkills||{}));
     const actual=Math.max(0,Math.round(n*mult));
     if(actual>0) setAdminScrutiny(prev=>Math.min(100,prev+actual));
   };
@@ -1297,7 +1299,7 @@ export default function HallPass(){
       return;
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
-    const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
+    const inter=pickInterruptStudent(students,hungerEff,weeklyArms,summarizeHallEnvironment(ownedHallSkills||{}));
     if(inter){
       if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
         setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
@@ -1535,7 +1537,8 @@ export default function HallPass(){
       result={...result,discontent:Math.max(0,(result.discontent||0)-DISCONTENT_EASE_FEED)};
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
-    const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms);
+    const hallEnv=summarizeHallEnvironment(ownedHallSkills||{});
+    const fedStudent=feedResolvesHunger(result,Boolean(opts.compoundId),hungerEff,weeklyArms,hallEnv);
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
     gainFavor((forced||fullnessCost>=40)?'stuff':'feed');
     if((ownedSkills.hunger_web||0)>=1&&scaledCals>=400){
@@ -1608,7 +1611,7 @@ export default function HallPass(){
     }
     const hungerEff=aggregateSkillEffects(ownedSkills);
     if(!skipHungerCheckRef.current){
-      const inter=pickInterruptStudent(students,hungerEff,weeklyArms);
+      const inter=pickInterruptStudent(students,hungerEff,weeklyArms,summarizeHallEnvironment(ownedHallSkills||{}));
       if(inter){
         if(weeklyArms.devouringStudentId===inter.id&&!weeklyArms.devouringConsumed){
           setWeeklyArms(prev=>({...prev,devouringConsumed:true}));
@@ -1700,7 +1703,7 @@ export default function HallPass(){
       }
       let ns=processStudentGain(s,gain,0);
       ns=tickPhysicalTraits(ns,ownedSkills);
-      ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
+      ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms,summarizeHallEnvironment(ownedHallSkills||{}));
       ns=tickRelationshipDecay(ns);
       if(hungerEff.gluttonsInstinct){
         const cap=ns.stomachCapacity||GAIN_CONFIG.baseCapacity;
@@ -4992,7 +4995,7 @@ export default function HallPass(){
       const feedCtx=pendingFeedContextRef.current;
       const hungerEff=aggregateSkillEffects(ownedSkills);
       if(feedCtx?.type==='dinner'&&feedCtx.studentId===studentId){
-        ns=feedResolvesHunger(ns,false,hungerEff,weeklyArms);
+        ns=feedResolvesHunger(ns,false,hungerEff,weeklyArms,summarizeHallEnvironment(ownedHallSkills||{}));
         pendingDinnerHungerResolveRef.current=studentId;
         setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'feed',week)} — you'll feed her properly at dinner.`),100);
       }else{
@@ -5016,7 +5019,7 @@ export default function HallPass(){
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'deny',week)}`),100);
     }else if(action==='talk'){
       const hungerEff=aggregateSkillEffects(ownedSkills);
-      ns=talkCalmsHunger(ns,hungerEff,weeklyArms);
+      ns=talkCalmsHunger(ns,hungerEff,weeklyArms,summarizeHallEnvironment(ownedHallSkills||{}));
       const relGain=getInterruptTalkRelGain(ns);
       ns={...ns,relationship:Math.min(100,ns.relationship+relGain)};
       setTimeout(()=>push(`🚪 ${renderHungerOutcome(ns,'talk',week)}`),100);
