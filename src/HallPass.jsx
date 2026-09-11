@@ -359,7 +359,7 @@ import { supernaturalActLine } from './gameData/oppositionText.js';
 import { renderWifeLessonBeat, renderWifeLessonTalkLine } from './textEngine/scenes/wifeLessons/index.js';
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { renderCGMeasurementScene, renderCGRaReply } from './textEngine/scenes/competitiveGainer/index.js';
-import { depthCgDriveGain } from './gameData/mechanicsDepthLayer.js';
+import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -3051,10 +3051,10 @@ export default function HallPass(){
     const renderedResult=daisy&&poolKey?renderHomeroomPool(poolKey,daisy,week,{globals:{homeroomKey:key,homeroomChoice:choiceId}}):resultText;
     setHomeroomSessionState(prev=>({
       ...prev,
-      daisyGain:prev.daisyGain+(choice.lbs||0),
-      relAccum:prev.relAccum+(choice.rel||0),
-      classGainAccum:prev.classGainAccum+(choice.classGain||0),
-      momGainAccum:prev.momGainAccum+(choice.momGain||0),
+      daisyGain:prev.daisyGain+scaleEvolvedEventLbs(choice.lbs||0),
+      relAccum:prev.relAccum+scaleEvolvedEventRel(choice.rel||0),
+      classGainAccum:prev.classGainAccum+depthMetaProgressBonus(choice.classGain||0),
+      momGainAccum:prev.momGainAccum+depthMetaProgressBonus(choice.momGain||0),
       suspDeltaAccum:prev.suspDeltaAccum+(choice.suspDelta||0),
       activeActivity:{...prev.activeActivity,phaseIdx:hasNextPhase?phaseIdx+1:phaseIdx,history:[...prev.activeActivity.history,choiceId],resultText:renderedResult,done:!hasNextPhase,revealsWeights:prevRevW||!!choice.revealsWeights,revealsParentWeights:prevRevPW||!!choice.revealsParentWeights},
     }));
@@ -9212,7 +9212,7 @@ export default function HallPass(){
       {hearingState&&<OppositionHearingModal hearingState={hearingState} students={students} opposition={opposition} week={week} onChoice={makeHearingChoice} onClose={closeHearing} soundEnabled={soundEnabled}/>}
 
       {/* ── HALL KITCHEN QUEEN MINI-INTERFACE ── */}
-      {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession} soundEnabled={soundEnabled}/>}
+      {homeroomSessionState&&<HomeroomQueenModal homeroomSessionState={homeroomSessionState} students={students} week={week} batchBakerState={batchBakerState} makeHomeroomActivityChoice={makeHomeroomActivityChoice} advanceHomeroomActivityPhase={advanceHomeroomActivityPhase} dismissHomeroomActivity={dismissHomeroomActivity} openHomeroomConference={openHomeroomConference} startHomeroomGroupActivity={startHomeroomGroupActivity} closeHomeroomSession={closeHomeroomSession} soundEnabled={soundEnabled}/>}
 
       {/* ── WIFE LESSONS MINI-GAME ── */}
       {wifeLessonsState?.session&&<WifeLessonsModal wifeLessonsState={wifeLessonsState} makeWifeLessonsConversationChoice={makeWifeLessonsConversationChoice} makeWifeLessonsSubChoice={makeWifeLessonsSubChoice} dismissWifeLessonsConversation={dismissWifeLessonsConversation} chooseWifeLessonsLesson={chooseWifeLessonsLesson} startWifeLessonsConversation={startWifeLessonsConversation} closeWifeLessonsSession={closeWifeLessonsSession} soundEnabled={soundEnabled}/>}

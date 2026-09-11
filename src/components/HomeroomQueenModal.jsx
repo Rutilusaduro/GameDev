@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../gameData/evolvedForms.js';
+import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../gameData/evolvedForms.js';
+import { renderHomeroomNpcDesc } from '../textEngine/scenes/homeroom/index.js';
 import { FlaggedProse } from './TextFlagToolbar.jsx';
 import { SceneBackdrop } from './v2/SceneBackdrop.jsx';
 
@@ -16,9 +17,8 @@ function displayName(key) {
   return key.replace(/_/g, " ");
 }
 
-function ParticipantCard({ name, descIdx, npcKey, canAfford, onSelect, accent, dim }) {
-  const desc = BATCH_BAKER_NPCS[npcKey]?.[descIdx] || "";
-  const snippet = desc ? desc.split(".")[0] : "";
+function ParticipantCard({ name, descIdx, npcKey, daisy, week, canAfford, onSelect, accent, dim }) {
+  const snippet = daisy ? renderHomeroomNpcDesc(npcKey, descIdx, daisy, week, { snippetOnly: true }) : "";
   const hasEvent = !!HOMEROOM_CONFERENCE_EVENTS[npcKey];
   const enabled = canAfford && hasEvent;
   return (
@@ -67,7 +67,7 @@ function ParticipantCard({ name, descIdx, npcKey, canAfford, onSelect, accent, d
   );
 }
 
-export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession, soundEnabled = true }){
+export function HomeroomQueenModal({ homeroomSessionState, students, week = 1, batchBakerState, makeHomeroomActivityChoice, advanceHomeroomActivityPhase, dismissHomeroomActivity, openHomeroomConference, startHomeroomGroupActivity, closeHomeroomSession, soundEnabled = true }){
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, homeroomSessionState?.daisyStudentId]);
         const{daisyStudentId,ap:classAp,log,activeActivity,daisyGain,classGainAccum,momGainAccum,suspDeltaAccum}=homeroomSessionState;
         const daisy=students.find(st=>st.id===daisyStudentId);
@@ -114,7 +114,7 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                   section={`homeroom.${type}.${key}`}
                   text={resultText || phaseProse || phaseText || ''}
                   student={daisy}
-                  week={1}
+                  week={week}
                   style={{fontSize:12,color:"#d4b898",lineHeight:1.9,marginBottom:14,fontStyle:"italic",whiteSpace:"pre-line"}}
                 />
                 {revealsWeights&&(
@@ -122,11 +122,11 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                     <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>MEASUREMENTS RECORDED</div>
                     <div style={{display:"flex",gap:10}}>
                       {["Kayla","Bri","Sofia"].map(name=>{
-                        const desc=BATCH_BAKER_NPCS[name]?.[npcDescIdx]||"";
+                        const desc=renderHomeroomNpcDesc(name,npcDescIdx,daisy,week,{snippetOnly:true});
                         return(
                           <div key={name} style={{flex:1}}>
                             <div style={{fontSize:10,fontWeight:700,color:warmText,marginBottom:2}}>{name}</div>
-                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc?desc.split(".")[0]+".":""}</div>
+                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc}{desc&&!desc.endsWith(".")?".":""}</div>
                           </div>
                         );
                       })}
@@ -138,11 +138,11 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                     <div style={{fontSize:9,letterSpacing:2,color:warmAccent,marginBottom:6}}>PARENT MEASUREMENTS</div>
                     <div style={{display:"flex",gap:10}}>
                       {["Mrs_Calloway","Mrs_Reyes","Mrs_Monroe"].map(name=>{
-                        const desc=BATCH_BAKER_NPCS[name]?.[momDescIdx]||"";
+                        const desc=renderHomeroomNpcDesc(name,momDescIdx,daisy,week,{snippetOnly:true});
                         return(
                           <div key={name} style={{flex:1}}>
                             <div style={{fontSize:10,fontWeight:700,color:warmText,marginBottom:2}}>{name.replace("_"," ")}</div>
-                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc?desc.split(".")[0]+".":""}</div>
+                            <div style={{fontSize:9,color:warmSubtle,lineHeight:1.5}}>{desc}{desc&&!desc.endsWith(".")?".":""}</div>
                           </div>
                         );
                       })}
@@ -219,6 +219,8 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                     name={name}
                     npcKey={name}
                     descIdx={npcDescIdx}
+                    daisy={daisy}
+                    week={week}
                     canAfford={classAp>=1}
                     onSelect={openHomeroomConference}
                     accent={warmAccent}
@@ -235,6 +237,8 @@ export function HomeroomQueenModal({ homeroomSessionState, students, batchBakerS
                     name={displayName(key)}
                     npcKey={key}
                     descIdx={momDescIdx}
+                    daisy={daisy}
+                    week={week}
                     canAfford={classAp>=1}
                     onSelect={openHomeroomConference}
                     accent="#8a7dba"

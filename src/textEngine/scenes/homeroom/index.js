@@ -4,7 +4,8 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { registerDecomposedPool } from '../decomposePools.js';
-import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../../../gameData/evolvedForms.js';
+import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/evolvedForms.js';
+import './batchBakerPools.js';
 
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   if (ev.text) registerDecomposedPool(`homeroom.conference.${key}.intro`, ev.text);
@@ -71,4 +72,29 @@ export function homeroomActivityPoolKey(actKey, phaseIdx = 0, choiceId = null) {
   return choiceId
     ? `homeroom.activity.${actKey}.p${phaseIdx}.${choiceId}`
     : `homeroom.activity.${actKey}.p${phaseIdx}`;
+}
+
+/** Batch-baker NPC stage blurb (card snippet or full measurement reveal). */
+export function renderHomeroomNpcDesc(npcKey, stageIdx, daisyStudent, week = 1, opts = {}) {
+  if (!npcKey || !daisyStudent) return '';
+  const stageMap = BATCH_BAKER_NPCS[npcKey];
+  if (!stageMap) return '';
+  const maxStage = Math.max(0, ...Object.keys(stageMap).map((k) => Number(k)));
+  const si = Math.min(Math.max(0, stageIdx), maxStage);
+  const legacy = stageMap[si] || '';
+  const ctx = buildHomeroomCtx(daisyStudent, week, {
+    globals: { npcKey, npcStage: si, snippetOnly: !!opts.snippetOnly },
+  });
+  try {
+    const line = render(`{homeroom.npc.${npcKey}.s${si}}`, ctx)?.trim();
+    const base = line && !line.includes('{unresolved}') ? line : legacy;
+    if (!base) return '';
+    const out = appendV2Depth(base, 'homeroom', ctx, opts.v2DepthChance ?? 0.18);
+    if (opts.snippetOnly) {
+      return (out.split(/(?<=[.!?])\s+/)[0] || out).trim();
+    }
+    return out;
+  } catch {
+    return legacy;
+  }
 }
