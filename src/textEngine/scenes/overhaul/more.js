@@ -258,7 +258,11 @@ registerModuleVariants('feed.react', [
 
 // Shape: WORD. Pantry item name from globals.itemLabel.
 registerPool('item.label', [
-  { when: {}, text: [(ctx) => ctx.globals?.itemLabel || 'snack'] },
+  { when: {}, text: [
+    (ctx) => ctx.globals?.itemLabel || 'snack',
+    (ctx) => ctx.globals?.itemLabel || 'treat',
+    (ctx) => ctx.globals?.itemLabel || 'bite',
+  ]},
 ]);
 
 // Shape: FULL SENTENCE. Pantry item landing.

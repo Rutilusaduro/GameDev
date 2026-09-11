@@ -264,9 +264,14 @@ const sumoStudent = {
 };
 const sumoOpen = renderSumoOpening(0, sumoStudent, 340, 4);
 assert.ok(sumoOpen && !sumoOpen.includes('{unresolved}'), `sumo open pool should resolve, got: ${String(sumoOpen).slice(0, 160)}`);
-const sumoEx = renderSumoExchangeLine('you_drive', 0, sumoStudent, 4);
-assert.ok(sumoEx && !sumoEx.includes('{unresolved}'));
-assert.ok(/drive|belly|tawara|mass/i.test(sumoEx), `sumo exchange should key on bucket, got: ${String(sumoEx).slice(0, 160)}`);
+assert.equal(/The first tachi-ai/i.test(sumoOpen), false, 'sumo open should not be the leftover monolith');
+let sawDrive = false;
+for (let i = 0; i < 40; i++) {
+  const sumoEx = renderSumoExchangeLine('you_drive', 0, sumoStudent, 4);
+  assert.ok(sumoEx && !sumoEx.includes('{unresolved}'));
+  if (/You drive|belly first/i.test(sumoEx)) sawDrive = true;
+}
+assert.ok(sawDrive, 'you_drive bucket should surface across pooled renders');
 
 const eventText = renderEvolvedEventProse('LEGACY MONOLITH SHOULD NOT APPEAR', {
   id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
