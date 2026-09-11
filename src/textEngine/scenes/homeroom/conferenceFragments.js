@@ -29,7 +29,22 @@ registerPool('homeroom.scene.raStance', [
   },
 ]);
 
+registerPool('homeroom.scene.choiceWarmth', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She answers with oven heat still on her hands — appetite honest, paperwork waiting.',
+      'The choice lands soft; co-conspirator smile, wider hips, no performance of reluctance.',
+      'Late-semester kitchen politics: seconds implied, wellness framing ready on your tongue.',
+      'Counters disappear under flour while she agrees like the hall already voted yes.',
+      'Hall Ambiance hums in the hallway; inside, every choice tastes like permission.',
+    ],
+  },
+]);
+
 const INTRO_SKELETON = '{homeroom.scene.floorTone|prefix:} {homeroom.scene.raStance|prefix: }';
+const CHOICE_SKELETON = '{homeroom.scene.choiceWarmth|prefix:} {homeroom.scene.raStance|prefix: }';
 
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
   registerModuleVariants(`homeroom.conference.${key}.intro`, [
@@ -59,19 +74,19 @@ for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
         when: { weekMin: 20 },
         weight: 5,
         priority: 5,
-        text: [INTRO_SKELETON],
+        text: [CHOICE_SKELETON],
       },
       {
         when: { weekMin: 14 },
         weight: 3,
         priority: 3,
-        text: [INTRO_SKELETON],
+        text: [CHOICE_SKELETON],
       },
       {
         when: { weekMin: 7 },
         weight: 2,
         priority: 2,
-        text: [INTRO_SKELETON],
+        text: [CHOICE_SKELETON],
       },
     ]);
   }

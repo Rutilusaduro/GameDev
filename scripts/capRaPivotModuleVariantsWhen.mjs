@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const scenesDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../src/textEngine/scenes');
-const skip = new Set(['raPivotProseDepthPass54.js', 'raPivotProseDepthPass55.js', 'raPivotProseDepthPass56.js', 'raPivotProseDepthPass57.js']);
+const skip = new Set(['raPivotProseDepthPass57.js']);
 
 let changedFiles = 0;
 let changedWhen = 0;

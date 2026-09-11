@@ -18,6 +18,7 @@ const POOLS = [
   'evolution.blurb.threshold',
   'fair.day.judgingBeat',
   'homeroom.activity.communityWarmth',
+  'homeroom.scene.choiceWarmth',
   'wl.talk.warmOpen',
   'fair.training.coachBeat',
   'fair.training.collabVoice',

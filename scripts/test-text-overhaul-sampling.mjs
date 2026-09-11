@@ -32,6 +32,7 @@ const MODULAR_MARKERS = [
   /wellness framing ready|Every choice tonight will show up on the scale/i,
   /Midway grease|Pageant lights|indulgence feels tender|Hall Ambiance thins|Training tent canvas|partnerHype|collabFrame/i,
   /growthAmbition|growthPraise|momentum|Scale numbers|You frame it as|permission dressed|moment stretches — hall-quiet|indulgenceInvite|Warmth pools in the room the way fullness/i,
+  /choiceWarmth|oven heat still on her hands|kitchen politics/i,
 ];
 
 function isModular(line) {

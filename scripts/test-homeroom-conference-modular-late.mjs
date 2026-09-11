@@ -25,4 +25,19 @@ for (let s = 0; s < 16; s += 1) {
   if (FP.test(line)) hit = true;
 }
 assert.ok(hit, 'expected modular homeroom conference @ week 24');
+
+let choiceHit = false;
+for (let s = 0; s < 16; s += 1) {
+  const line = render('{homeroom.conference.Kayla.progress_review}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 42100 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(line.length > 24, 'short homeroom conference choice');
+  assert.ok(!line.includes('{unresolved}'), 'unresolved homeroom choice');
+  if (/choiceWarmth|oven heat still|co-conspirator smile|Counters disappear/i.test(line)) choiceHit = true;
+}
+assert.ok(choiceHit, 'expected modular homeroom conference choice @ week 24');
+
 console.log('test-homeroom-conference-modular-late: ok');
