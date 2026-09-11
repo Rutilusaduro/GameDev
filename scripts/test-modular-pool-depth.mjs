@@ -12,6 +12,8 @@ const POOLS = [
   'journal.scene.fieldNotes',
   'homeroom.scene.floorTone',
   'wl.lesson.aroma',
+  'cg.scene.dataObsession',
+  'cg.scene.competitionHeat',
 ];
 
 for (const key of POOLS) {

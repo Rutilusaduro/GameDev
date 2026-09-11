@@ -15,6 +15,8 @@ registerPool('cg.scene.dataObsession', [
       'Priya treats the corkboard like scripture — numbers, photos, deadlines.',
       'Every measurement is a dare; every column is a throat she wants to win by.',
       'Ink and appetite share the same calendar on her wall.',
+      'Late-semester numbers dominate the margins; nobody pretends this is casual.',
+      'She color-codes threats in red — appetite as policy, competition as care.',
     ],
   },
 ]);
@@ -27,6 +29,8 @@ registerPool('cg.scene.competitionHeat', [
       'Residents orbit the board — envy, hunger, and spreadsheet pride.',
       'The floor learns competition the way it learns seconds: collectively.',
       'Someone always threatens a binge tonight; someone else already started.',
+      'Replies stack up under Priya\'s post — weekly numbers as foreplay.',
+      'The corkboard squeaks when she pins another photo; the hall listens.',
     ],
   },
 ]);
@@ -35,6 +39,12 @@ const SCENE_SKELETON = '{cg.scene.dataObsession|prefix:} {cg.scene.competitionHe
 
 for (const tier of Object.keys(CG_FILLED_CORKBOARD_SCENES)) {
   registerModuleVariants(`cg.scene.corkboard.${tier}`, [
+    {
+      when: { weekMin: 20 },
+      weight: 6,
+      priority: 5,
+      text: [SCENE_SKELETON],
+    },
     {
       when: { weekMin: 10 },
       weight: 3,
@@ -49,6 +59,12 @@ for (const stageKey of Object.keys(CG_FILLED_BINGE_SCENES)) {
   for (const tier of Object.keys(tierMap)) {
     registerModuleVariants(`cg.scene.binge.${stageKey}.${tier}`, [
       {
+        when: { weekMin: 20 },
+        weight: 6,
+        priority: 5,
+        text: [SCENE_SKELETON],
+      },
+      {
         when: { weekMin: 10 },
         weight: 3,
         priority: 2,
@@ -62,6 +78,12 @@ for (const stageKey of Object.keys(CG_FILLED_SELF_REVIEW)) {
   const tierMap = CG_FILLED_SELF_REVIEW[stageKey] || {};
   for (const tier of Object.keys(tierMap)) {
     registerModuleVariants(`cg.scene.selfReview.${stageKey}.${tier}`, [
+      {
+        when: { weekMin: 20 },
+        weight: 6,
+        priority: 5,
+        text: [SCENE_SKELETON],
+      },
       {
         when: { weekMin: 10 },
         weight: 3,
@@ -78,6 +100,12 @@ for (const rel of Object.keys(CG_FILLED_MEASUREMENT_REACTIONS)) {
     const catMap = tierMap[tier] || {};
     for (const cat of Object.keys(catMap)) {
       registerModuleVariants(`cg.scene.reaction.${rel}.${tier}.${cat}`, [
+        {
+          when: { weekMin: 20 },
+          weight: 5,
+          priority: 5,
+          text: [SCENE_SKELETON],
+        },
         {
           when: { weekMin: 8 },
           weight: 2,
