@@ -64,6 +64,17 @@ export function renderEvolvedEventPhase(student, week, formId, stageIdx, phaseId
   if (!line || line.includes('{unresolved}')) {
     line = resolvePhaseTextLegacy(phase, student, history, eventRef);
   }
+  if (line && Math.random() < (opts.legacyBodyChance ?? 0.12)) {
+    try {
+      const bodyKey = `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}.legacyBody`;
+      const extra = render(`{${bodyKey}}`, ctx)?.trim();
+      if (extra && !extra.includes('{unresolved}') && extra !== line) {
+        line = `${line}\n\n${extra}`;
+      }
+    } catch {
+      /* optional depth */
+    }
+  }
   return renderEvolvedEventProse(line, student, week, { formId, stageIdx, v2DepthChance: opts.v2DepthChance ?? 0.28 });
 }
 
@@ -144,6 +155,17 @@ export function renderEvolvedActivityBeat(student, week = 1, stageIdx = 0, opts 
     const arr = EVOLVED_ACTIVITY_TEXT[formId];
     const raw = arr?.[stageIdx];
     line = raw ? (typeof raw === 'function' ? raw(student) : raw) : "She's in her element.";
+  }
+  if (line && formId && Math.random() < (opts.legacyBodyChance ?? 0.1)) {
+    try {
+      const bodyKey = `evolved.activity.${formId}.s${stageIdx}.legacyBody`;
+      const extra = render(`{${bodyKey}}`, ctx)?.trim();
+      if (extra && !extra.includes('{unresolved}') && extra !== line) {
+        line = `${line}\n\n${extra}`;
+      }
+    } catch {
+      /* optional */
+    }
   }
   return renderEvolvedEventProse(line, student, week, {
     formId,

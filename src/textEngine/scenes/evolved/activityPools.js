@@ -1,6 +1,7 @@
 // Evolved form — passive activity beats (EVOLVED_ACTIVITY_TEXT → pools).
 import { registerDimension, registerPool } from '../../engine.js';
 import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedForms.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 import { atmosphereBeat } from './proseTails.js';
 
 registerDimension('evolvedFormId', (ctx) => ctx.globals?.evolvedFormId ?? ctx.globals?.formId ?? ctx.d?.evolvedForm ?? 'evolved');
@@ -19,6 +20,9 @@ for (const [formId, arr] of Object.entries(EVOLVED_ACTIVITY_TEXT)) {
   for (let si = 0; si < arr.length; si++) {
     const entry = arr[si];
     if (entry == null) continue;
+    if (typeof entry === 'string' && entry.trim()) {
+      registerDecomposedPool(`evolved.activity.${formId}.s${si}.legacyBody`, entry.trim());
+    }
     const core = beatFn(entry);
     entries.push({
       when: { evolvedFormId: [formId], evolvedStageIdx: [si] },
