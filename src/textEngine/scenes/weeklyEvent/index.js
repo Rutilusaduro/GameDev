@@ -5,10 +5,13 @@
 import { createContext, render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { getStage } from '../../../gameData/stages.js';
+import '../../../gameData/textContext.js';
 import '../../modules.js';
 import './chairIncident.js';
 import './teamWeighIn.js';
 import './narrativeEvents.js';
+import './depth.js';
+import './weeklyEventSceneDepth.js';
 import '../proseOverhaulPass2.js';
 import '../proseOverhaulPass3.js';
 

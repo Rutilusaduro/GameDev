@@ -282,6 +282,18 @@ export function renderItemUseLine(student, item, week = 1, opts = {}) {
   return `${student.name} takes the ${label}.`;
 }
 
+export function renderFeedRefusal(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{feed.refusal.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
+export function renderFeedForceSuccess(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{feed.force.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
 const itemLabelText = (ctx) => String(ctx.globals?.itemLabel ?? 'snack').toLowerCase();
 registerPool('itemLabel', [
   { when: {}, text: [itemLabelText, itemLabelText, itemLabelText] },
@@ -301,6 +313,48 @@ registerPool('item.use.line', [
     `You produce the {itemLabel}. {subject.name}'s attention arrives before her objections do.`,
     `"Is that for me?" {subject.name} asks, already reaching. The {itemLabel} does not survive the hour.`,
     `You leave the {itemLabel} where {subject.name} will find it. She finds it.`,
+  ] },
+]);
+
+// Shape: FULL SENTENCE. Force-feed refusal toast.
+registerPool('feed.refusal.line', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    `{subject.name} presses a hand to a middle that already ate. "I can't. Extra help spent the room."`,
+    `{subject.name} leans back around the seconds. "Give me a minute. Not another bite."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} looks at the food, then at extra help still in her. "Look at me. There's no room."`,
+    `{subject.name} pushes the plate an inch. Seconds already voted. She means it.`,
+    `{subject.name} shakes her head over a middle that already ate. "Real limit. The extra sitting used it."`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `{subject.name} presses a hand flat. Night-round knock still in her. "I can't. Not again yet."`,
+  ] },
+  { when: {}, text: [
+    `{subject.name} presses a hand flat against her stomach and shakes her head. "I can't. I physically can't."`,
+    `{subject.name} leans back, breathing carefully around the fullness. "Give me a minute. Or a week."`,
+    `{subject.name} looks at the food, looks at you, and laughs — a short sound. "You're joking. Look at me. There's no room."`,
+  ] },
+]);
+
+// Shape: FULL SENTENCE. Force-feed success toast.
+registerPool('feed.force.line', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    `{subject.name} hesitates around the extra help, then opens anyway. Seconds plus this. Eyes closed. Gone.`,
+    `{subject.name} says she shouldn't and keeps eating. Extra sitting already taught her the rest.`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} takes it down slow, both hands on a middle that already ate. When it's gone she just breathes.`,
+    `{subject.name} whimpers, "I shouldn't," and keeps going. Seconds plus this. She lives there.`,
+    `{subject.name} hesitates — extra help still in her — then opens anyway. Past full. Past sense.`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `{subject.name} hesitates, night-round heat still in her, then opens anyway. She finishes with her eyes closed.`,
+  ] },
+  { when: {}, text: [
+    `{subject.name} hesitates — visibly — and then opens her mouth anyway. Past full. She finishes it with her eyes closed.`,
+    `{subject.name} whimpers, "I shouldn't," and keeps eating. Fullness has become a place she lives.`,
+    `{subject.name} takes it down slowly, both hands braced on the table. When it's gone she just breathes.`,
   ] },
 ]);
 

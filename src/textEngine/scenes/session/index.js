@@ -62,3 +62,11 @@ export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
   const withLinger = [composed, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(withLinger, 'session', ctx, opts.v2DepthChance ?? 0.28);
 }
+
+/** Leftover/night wrap under unique tap-out dialogue. Empty when neither flag is set. */
+export function renderTapOutWrap(student, week = 1, opts = {}) {
+  if (!student) return '';
+  if (!student.leftoverFedThisWeek && !(week && student.lastNightVisitWeek === week)) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{session.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+}

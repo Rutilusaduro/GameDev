@@ -81,3 +81,20 @@ registerModuleVariants('talk.refusal.command_devour._f4', [
   { when: { studentId: 15 }, weight: 4, text: [`. Lilith's eyes stay dark. "Soon," she promises. "Let me digest what you've already given me."`] },
   { when: { studentId: 18 }, weight: 4, text: [`. "Queue next experiment," Talia breathes. "Current vessel at max load."`] },
 ]);
+
+// leftoverFed only (one key) so studentId weight 4 still wins named voices.
+registerModuleVariants('talk.refusal.command_finish._f1', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} wants the command. Extra help already spent the room. "I can't," she whispers.`,
+    `The order lands on a middle that already ate. {subject.name} shakes her head. "Not another bite."`,
+    `"I want to," {subject.name} says. Seconds still in her. "There's no room left."`,
+  ]},
+]);
+
+registerModuleVariants('talk.refusal.command_devour._f3', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Something in {subject.name} rises to the command and stops on extra help. "Not tonight."`,
+    `The word hits a middle that already ate. {subject.name} gasps, hands on her belly, shaking her head.`,
+    `She wants to obey. Extra help already voted. Belly tight. Body saying no.`,
+  ]},
+]);

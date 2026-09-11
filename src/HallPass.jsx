@@ -95,7 +95,7 @@ import './textEngine/scenes/hungerInterruptPersonal.js';
 import { renderJealousyReaction } from './textEngine/scenes/jealousyReaction.js';
 import { renderDinnerEnding, renderDinnerDepth, renderDinnerConversation, renderGroupDinnerConversation, renderGroupDinnerReaction, renderDinnerUnbutton, renderDinnerWaiter, renderDinnerOverfill, renderDinnerDishDesc } from './textEngine/scenes/dinner/index.js';
 import { renderFeedVoice } from './textEngine/scenes/feedVoice/index.js';
-import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness, renderItemUseLine } from './textEngine/scenes/feedReaction/index.js';
+import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness, renderItemUseLine, renderFeedRefusal, renderFeedForceSuccess } from './textEngine/scenes/feedReaction/index.js';
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
@@ -111,7 +111,7 @@ import { renderDiscontentRefusal } from './textEngine/scenes/discontent/index.js
 import { renderConfront } from './textEngine/scenes/confront/index.js';
 import { ConfrontationModal } from './components/ConfrontationModal.jsx';
 import { renderMemorySelf, renderMemoryHall } from './textEngine/scenes/memory/index.js';
-import { renderSessionFullness, renderSessionAftermath } from './textEngine/scenes/session/index.js';
+import { renderSessionFullness, renderSessionAftermath, renderTapOutWrap } from './textEngine/scenes/session/index.js';
 import { renderIntimacyChoice, renderIntimacyEnding, renderIntimacyPassout } from './textEngine/scenes/intimacy/index.js';
 import { renderPreStreamVignette } from './textEngine/scenes/streamPreStream/index.js';
 import { renderStreamBeat } from './textEngine/scenes/stream/liveBridge.js';
@@ -1523,13 +1523,13 @@ export default function HallPass(){
         if(weeklyArms.mesmerizingStudentId===s.id&&eff.mesmerizingAura) chance+=TALK_CONFIG.auraBonus;
         if(s.suggestDebuffWeek===week) chance+=TALK_CONFIG.suggestResistReduction;
         if(Math.random()>=chance){
-          const line=REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
+          const line=renderFeedRefusal(s,week)||REFUSAL_LINES[rnd(0,REFUSAL_LINES.length-1)](s);
           push(`🚫 ${line}`);
           return null;
         }
         forced=true;
       }
-      const line=FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
+      const line=renderFeedForceSuccess(s,week)||FORCE_SUCCESS_LINES[rnd(0,FORCE_SUCCESS_LINES.length-1)](s);
       setTimeout(()=>push(`🔥 ${line}`),60);
     }
     let calMult=1+(eff.calorieBonus||0)+(eff.conversionBonus||0);
@@ -8053,6 +8053,8 @@ export default function HallPass(){
         const dialogueSet=TAP_OUT_DIALOGUE[s.id]||TAP_OUT_DIALOGUE.default;
         tapLine=dialogueSet[tapStage](liveS);
       }
+      const tapWrap=renderTapOutWrap(liveS,week);
+      if(tapWrap) tapLine=`${tapLine}\n\n${tapWrap}`;
       const currentTotalGain=sessionCals;
       const hist2=sessionHistory[s.id]||{count:0,totalGain:0,capacityBonus:0};
       const newCapBonus2=hist2.capacityBonus+8;

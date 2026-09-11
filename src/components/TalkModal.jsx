@@ -22,6 +22,7 @@ import '../textEngine/scenes/talkCheckIn.js'; // registers talk.check_in
 import '../textEngine/scenes/talkCompliment.js'; // registers talk.compliment
 import '../textEngine/scenes/talkSuggest.js'; // registers talk.suggest_*
 import '../textEngine/scenes/talkRefusal.js'; // registers talk.refusal.*
+import '../textEngine/scenes/talkRefusalDepth.js';
 import '../textEngine/scenes/talkDiscontent.js'; // registers talk.discontentCoda
 import '../textEngine/scenes/talkCommandFinish.js'; // registers talk.command_finish
 import '../textEngine/scenes/talkLinger.js';

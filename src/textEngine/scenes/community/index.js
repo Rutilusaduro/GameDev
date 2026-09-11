@@ -7,6 +7,27 @@ registerDimension('thesisPhase', (ctx) => ctx.globals?.thesisPhase ?? 0);
 registerDimension('chatMember', (ctx) => ctx.globals?.chatMember ?? '');
 
 registerPool('community.wrap.setup', [
+  { when: { leftoverFed: true, thesisPhase: [0] }, weight: 4, text: [
+    'Pool-deck conference. Extra help still in the team jacket. Cassidy treats appetite like training load.',
+    'Whistle on the table. Seconds still rounding her. The season plan starts there.',
+  ] },
+  { when: { leftoverFed: true, thesisPhase: [1] }, weight: 4, text: [
+    'Meal logs, color tabs. Extra help already in the conflict she refuses to flatten.',
+    'Tabs, split columns. Last sitting made the intake log honest before she sat.',
+  ] },
+  { when: { leftoverFed: true, thesisPhase: [2] }, weight: 4, text: [
+    'Panel nods. Extra help still in her when she writes it in the training log.',
+    'She hits the stairs heavier. Seconds plus the panel. Both get filed.',
+  ] },
+  { when: { leftoverFed: true, chatMember: 'ward' }, weight: 4, text: [
+    'Off the record. Extra help still in Cassidy. Ward already followed the floor closer than the file.',
+  ] },
+  { when: { leftoverFed: true, chatMember: 'harmon' }, weight: 4, text: [
+    'Plants, tea. Extra help still showing. Rivera wanted something she could point to. Harmon already saw it.',
+  ] },
+  { when: { leftoverFed: true, chatMember: 'rivera' }, weight: 4, text: [
+    'No plants. One sheet. Extra help in the jacket. Six items. Cassidy does not flinch first.',
+  ] },
   { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
     'Galley foil still on Cassidy\'s fingers when the panel folder opens. Appetite under the protocol.',
     'Last night\'s tray plus this review. She stands like the lounge already voted.',
@@ -62,6 +83,9 @@ registerPool('community.wrap.growth', [
 ]);
 
 registerPool('community.wrap.line', [
+  { when: { leftoverFed: true, chatMember: 'ward' }, weight: 4, text: [
+    '"Full log," Ward wants. Extra help already ate the honest version.',
+  ] },
   { when: { leftoverFed: true }, weight: 3, text: [
     '"The galley sent leftovers," she does not have to say. The jacket already did.',
   ] },

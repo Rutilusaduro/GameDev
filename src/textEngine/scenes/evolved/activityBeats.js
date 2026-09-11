@@ -1,6 +1,6 @@
 // The Squad — Lead: A1 Mobile | Support: A2 Psych, A5 Editor
 // Evolved one-shot activities — slot skeleton replacing EVOLVED_ACTIVITY_TEXT.
-import { registerPool } from '../../engine.js';
+import { registerPool, registerModuleVariants } from '../../engine.js';
 import '../proseOverhaulPass4.js';
 
 // Shape: FULL SENTENCE. Setup at the vocation.
@@ -149,6 +149,115 @@ registerPool('evolved.activity.lead', [
     '{subject.name} is in her element at {subject.lbs} lbs, vocation already warm in the room.',
     'The calling found her middle first. {subject.lbs} lbs. You are here to watch it work.',
     'She does the work of her form and lets the pounds keep arriving.',
+  ] },
+]);
+
+// leftoverFed+evolvedForm so leftover weeks keep form voice (weight 4, two keys).
+registerModuleVariants('evolved.activity.lead', [
+  { when: { leftoverFed: true, evolvedForm: 'sumo', stageIdx: [0, 1] }, weight: 4, text: [
+    'Warm-ups over a middle already rounded from seconds. {subject.lbs} lbs. Dana will feel the extra help in the shove.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'sumo', stageIdx: [2, 3, 4, 5] }, weight: 4, text: [
+    'Conference clay, already fed. {subject.lbs} lbs. The board added the extra help without asking.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'eating_competitor' }, weight: 4, text: [
+    'Bib on. Still warm from seconds. {subject.lbs} lbs. The ranking starts heavier.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'eating_captain' }, weight: 4, text: [
+    'Number pinned. Extra help still showing. {subject.lbs} lbs. You come because she already ate and wants more.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'speed_eater' }, weight: 4, text: [
+    'Timer up. Extra help still in her split. {subject.lbs} lbs certified and climbing.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'feedee_creator' }, weight: 4, text: [
+    'Ring light. Chat climbing. She is {subject.lbs} lbs with seconds still rounding the thumbnail.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'eating_streamer' }, weight: 4, text: [
+    'Stream live. Extra help still pressing the desk. {subject.lbs} lbs and both halves hungry.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'asmr_creator' }, weight: 4, text: [
+    'Mic set. Extra help still rounding the chair before the first recorded bite.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'body_positive_creator' }, weight: 4, text: [
+    'Camera roll. {subject.lbs} lbs, extra help honest in the shot.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'anonymous_blogger' }, weight: 4, text: [
+    'Archive open. {subject.lbs} lbs. Seconds already posted themselves in her middle.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'eating_diarist' }, weight: 4, text: [
+    'Draft open. She wrote {subject.lbs} lbs after seconds and did not flinch.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'ff_author' }, weight: 4, text: [
+    'Chapter open. {subject.lbs} lbs. Extra help is the research sitting in her lap.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'food_photographer' }, weight: 4, text: [
+    'Contact sheet warm. {subject.lbs} lbs. Extra help made the subject honest.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'installation_artist' }, weight: 4, text: [
+    'Gallery hush. Extra help still in the scale the work was measured against.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'salon_appetit' }, weight: 4, text: [
+    'Butter in the air. Extra help already in Chloé before the guests arrive.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'artisan_gallery' }, weight: 4, text: [
+    'Pins and twine. Fiona at {subject.lbs} lbs, extra help honest in the frame.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'chapter_hostess' }, weight: 4, text: [
+    'Hours in. {subject.lbs} lbs. Seconds from last sitting still circulating.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'body_positive_greek' }, weight: 4, text: [
+    'Chapter colors. Extra help already in the largest sister pouring.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'big_squad_captain' }, weight: 4, text: [
+    'Jacket open. {subject.lbs} lbs. Extra help still in the speech about dinner.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'campus_legend' }, weight: 4, text: [
+    'Booth ready. {subject.lbs} lbs. Extra help already ordered her the usual.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'food_tourist' }, weight: 4, text: [
+    'Bag packed. {subject.lbs} lbs. Extra help packed itself first.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'food_researcher' }, weight: 4, text: [
+    'Log open. {subject.lbs} lbs. Extra help is the first data point she did not write.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'community_researcher' }, weight: 4, text: [
+    'Lane jacket. Cassidy at {subject.lbs} lbs. Extra help still in the case notes.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'wife_lessons' }, weight: 4, text: [
+    'Gingham, stove hot. Mary Jane is {subject.lbs} lbs. Extra help raided the basket first.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'homestead_queen' }, weight: 4, text: [
+    'Harvest light. Extra help already plated from a house that stopped pretending.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'state_fair_queen' }, weight: 4, text: [
+    'Fairground heat. {subject.lbs} lbs. Extra help already walking toward the scale.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'homeroom_queen' }, weight: 4, text: [
+    'Corkboard. Daisy at {subject.lbs} lbs. Extra help already assumed Tuesday.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'cultivator' }, weight: 4, text: [
+    'Spoons lined. Reneé at {subject.lbs} lbs. Extra help graded itself in her lap.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'pharmacist' }, weight: 4, text: [
+    'Labels polite. Sophia at {subject.lbs} lbs. Extra help already logged the appetite.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'machine_goddess' }, weight: 4, text: [
+    'Lab hum. {subject.lbs} lbs. Extra help climbing with the readout.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'competitive_gainer' }, weight: 4, text: [
+    'Thread open. Priya at {subject.lbs} lbs. Extra help is the number she is beating.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'ranked_feedee' }, weight: 4, text: [
+    'Queue pop. {subject.lbs} lbs. Extra help never needed a ticket.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'home_nest' }, weight: 4, text: [
+    'Deliveries stacked. Extra help nested her before the couch did.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'delivery_hive' }, weight: 4, text: [
+    'Routes up. {subject.lbs} lbs. Extra help fed through her first.',
+  ] },
+  { when: { leftoverFed: true, evolvedForm: 'psych_researcher' }, weight: 4, text: [
+    'Hall log open. {subject.lbs} lbs. Extra help filed itself as a finding.',
   ] },
 ]);
 

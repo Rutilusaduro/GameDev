@@ -79,3 +79,90 @@ registerModuleVariants('weekly.immobilityPeace.line', [
     `Maya breathes slow inside immensity. "I'm still here," she whispers. "Still yours."`,
   ]},
 ]);
+
+// Leftover weeks: extra sitting in the body of the incident.
+// No priority, max two keys — named studentId (priority 1 or 2-key weight 4) still wins.
+registerModuleVariants('weekly.chairBreaks.buildup', [
+  { when: { leftoverFed: true, endStageMax: 4 }, weight: 3, text: [
+    'The chair under {subject.name} complains earlier. Seconds still in the seat. She leans anyway.',
+    '{subject.name}\'s chair talks all hall session — extra help making the wood honest.',
+  ]},
+  { when: { leftoverFed: true, endStageMin: 5 }, weight: 3, text: [
+    'A lounge chair meets already-fed mass and starts the argument early.',
+    'The chair under {subject.name} lists sooner. Last sitting still rounding her into the frame.',
+  ]},
+  { when: { leftoverFed: true, endStageMin: 7 }, weight: 3, text: [
+    '{subject.name}\'s chair does not groan. Extra help, then a snap. She was already lower in it.',
+    'Quiet stretch of floor meeting. Seconds still in her. Then the seat is gone.',
+  ]},
+]);
+
+registerModuleVariants('weekly.chairBreaks.break', [
+  { when: { leftoverFed: true, endStageMax: 4 }, weight: 3, text: [
+    'She laughs once, surprised the extra help counted.',
+    'She grabs the desk. Seconds still in her middle. She goes still.',
+  ]},
+  { when: { leftoverFed: true, endStageMin: 5 }, weight: 3, text: [
+    'She goes bright red. The extra sitting was already in the wood.',
+    'The room is quiet. She knows the chair met last night first.',
+  ]},
+  { when: { leftoverFed: true, endStageMin: 7 }, weight: 3, text: [
+    'She laughs before she can stop. Extra help, then gravity.',
+    'She sighs like someone who ate twice and still sat down.',
+  ]},
+]);
+
+registerModuleVariants('weekly.chairBreaks.afterDialogue', [
+  { when: { leftoverFed: true, endStageMax: 4 }, weight: 3, text: [
+    'After floor rounds she presses the extra sitting. "I felt this coming. The seconds didn\'t help."',
+    'After rounds: "Thank you for not making it weird." She pats a middle that already ate.',
+  ]},
+  { when: { leftoverFed: true, endStageMin: 5 }, weight: 3, text: [
+    'Afterwards: "Furniture can\'t handle the seconds either." She sounds pleased.',
+    'After rounds she hangs back. Extra help, then the crack. She pats it fondly.',
+  ]},
+  { when: { leftoverFed: true, endStageMin: 7 }, weight: 3, text: [
+    'After rounds she presses the extra sitting: "Borrowed time, then seconds. Anyway."',
+    'After rounds: "{subject.semesterGain} pounds this semester, plus last night." She pats it. "Anyway."',
+  ]},
+]);
+
+registerModuleVariants('weekly.uniformSplit.incident', [
+  { when: { leftoverFed: true, archetype: 'cheerleader' }, weight: 4, text: [
+    'Mid-routine the costume meets extra help and splits at the hip.',
+    'Showcase count. Seconds still in the fabric. Then the seam tells on her.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name}\'s uniform gives during practice — extra help, then an audible pop.',
+    'Fabric loses to {subject.name}\'s middle. Last sitting made the argument shorter.',
+  ]},
+]);
+
+registerModuleVariants('weekly.viralPost.hook', [
+  { when: { leftoverFed: true, archetype: 'influencer' }, weight: 4, text: [
+    '{subject.name} posts trying old jeans over extra help. The thumbnail is already rounder.',
+    '{subject.name} films last semester\'s clothes. Seconds still in the shot.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} posts something that blows up. Extra help made the clip honest.',
+    'A post from {subject.name} climbs before breakfast. Last sitting is in the frame.',
+  ]},
+]);
+
+registerModuleVariants('weekly.customClothing.announce', [
+  { when: { leftoverFed: true, endStageMin: 6 }, weight: 3, text: [
+    '{subject.name} says store racks gave up. Extra help finished what the sizes started.',
+    'She reports four new sizes. Seconds still in the measurements.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    '{subject.name} has gone up sizes. Last sitting made the tape honest.',
+    'Off-the-rack ran out. Extra help did not fit in the old number.',
+  ]},
+]);
+
+registerModuleVariants('weekly.teamWeighIn.verdict', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The number is past the program. Extra help is in it. She says it like weather.',
+    'She reports the overage. Last sitting made the scale less of a surprise.',
+  ]},
+]);
