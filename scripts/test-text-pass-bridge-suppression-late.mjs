@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+/**
+ * Pass 111/112 bridge one-liners must not win alone @ week 24 when fragment overlays exist.
+ */
+import assert from 'node:assert/strict';
+import '../src/textEngine/scenes/index.js';
+import { render } from '../src/textEngine/engine.js';
+import { buildTextContext } from '../src/gameData/textContext.js';
+import { renderEvolvedActivityBeat } from '../src/textEngine/scenes/evolved/index.js';
+import { LEGACY_BRIDGE_WEEK_MAX } from '../src/textEngine/scenes/legacyPoolPolicy.js';
+
+const week = 24;
+assert.ok(week > LEGACY_BRIDGE_WEEK_MAX);
+const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
+
+const INTRO_FP = /floorTone|butter and suspicion|recipe cards|Calloway posters|Floor check-in energy|Residents linger/i;
+let callowayOk = false;
+for (let s = 0; s < 12; s += 1) {
+  const calloway = render('{homeroom.conference.Mrs_Calloway.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72001 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  if (INTRO_FP.test(calloway)) callowayOk = true;
+  assert.ok(!/^Mrs\. Calloway arrives buttoned — jacket already losing the fight with her middle\.$/.test(calloway), 'pass-112 Calloway bridge alone @ w24');
+}
+assert.ok(callowayOk, 'Mrs_Calloway intro modular');
+
+let briOk = false;
+for (let s = 0; s < 12; s += 1) {
+  const bri = render('{homeroom.conference.Bri.brought_something}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72002 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  if (/Counters disappear|hall already voted|oven heat|wellness framing ready/i.test(bri)) briOk = true;
+  assert.ok(!/^Bri's drawer ritual — Tupperware like scripture, appetite like homework\.$/.test(bri), 'pass-111 Bri bridge alone @ w24');
+}
+assert.ok(briOk, 'Bri brought_something modular');
+
+for (let s = 0; s < 12; s += 1) {
+  const curriculum = render('{homeroom.activity.parent_meeting.p0.curriculum}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72003 + s,
+    globals: { featureId: 'homeroom_queen' },
+  }))?.trim() || '';
+  assert.ok(curriculum.length > 40, 'short parent_meeting curriculum');
+  assert.ok(!/^Wellness agenda holds until snacks rewrite the minutes\.$/.test(curriculum), 'pass-111 curriculum bridge alone @ w24');
+}
+
+let wlOk = false;
+for (let s = 0; s < 12; s += 1) {
+  const wl = render('{wifeLessons.lesson.s3.peach_cobbler}', buildTextContext({
+    subject: mj,
+    week,
+    seed: 72004 + s,
+  }))?.trim() || '';
+  assert.ok(wl.length > 60, 'short WL lesson');
+  assert.ok(!/^Potluck theology — every dish a sermon, every second helping amen\.$/.test(wl), 'pass-111 WL bridge alone @ w24');
+  if (/yeasty|Fat is what makes|lateFeast|flour dust|table groans/i.test(wl)) wlOk = true;
+}
+assert.ok(wlOk, 'WL lesson modular');
+
+const sumo = { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 320, evolvedForm: 'sumo' };
+let sumoHit = false;
+for (let s = 0; s < 12; s += 1) {
+  const line = renderEvolvedActivityBeat(sumo, week, 3, { seed: 72010 + s })?.trim() || '';
+  assert.ok(line.length > 40, 'short sumo activity');
+  if (/evolved\.scene|atmosphere|stakes|hungerCue|witnessed/i.test(line)) sumoHit = true;
+  assert.ok(!/^National qualifier — press watches her belly argue with the sport's weight classes\.$/.test(line), 'pass-112 sumo bridge alone @ w24');
+}
+assert.ok(sumoHit, 'sumo activity modular @ w24');
+
+console.log('test-text-pass-bridge-suppression-late: ok');

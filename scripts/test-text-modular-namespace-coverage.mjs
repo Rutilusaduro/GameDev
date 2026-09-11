@@ -51,6 +51,7 @@ const requiredFragments = [
   'talkRefusalCommandFinishModularFragments.js',
   'opposition/oppositionAgendaModularFragments.js',
   'talkRefusalCommandDevourModularFragments.js',
+  'raPivotPassPeelFragments.js',
   'fairQueen/trainingModularFragments.js',
   'fairQueen/photoBoostModularFragments.js',
   'weeklyEvent/weeklyEventLateModularFragments.js',

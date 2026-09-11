@@ -59,6 +59,7 @@ const pairs = [
   ['talkEncourage.js', 'talkEncourageModularFragments.js'],
   ['talkCommandFinishDepth.js', 'talkCommandFinishModularFragments.js'],
   ['raPivotProseDepthPass112.js', 'streamEndStreamModularFragments.js'],
+  ['raPivotProseDepthPass112.js', 'raPivotPassPeelFragments.js'],
   ['opposition/depth.js', 'opposition/oppositionLateModularFragments.js'],
   ['opposition/oppositionLateModularFragments.js', 'opposition/oppositionAgendaModularFragments.js'],
   ['talkRefusalDepth.js', 'talkRefusalCommandFinishModularFragments.js'],

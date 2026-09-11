@@ -170,6 +170,7 @@ import './raPivotProseDepthPass111.js';
 import './raPivotProseDepthPass112.js';
 import './talkEncourageModularFragments.js';
 import './streamEndStreamModularFragments.js';
+import './raPivotPassPeelFragments.js';
 import './raPivotProseDepthPass113.js';
 import './raPivotProseDepthPass114.js';
 import './raPivotProseDepthPass115.js';

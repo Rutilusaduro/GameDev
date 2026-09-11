@@ -88,7 +88,7 @@ for (let s = 0; s < 8; s += 1) {
 }
 assert.ok(agenda2Hit, `expected modular shame_vigil agenda @ week ${week}`);
 
-const FEAST_REM_FP = /removalFeastPlay|cateredVote|hearing becomes dinner/i;
+const FEAST_REM_FP = /removalFeastPlay|cateredVote|hearing becomes dinner|Floor pressure via hospitality|feed the hearing itself/i;
 let feastRemHit = false;
 for (let s = 0; s < 12; s += 1) {
   const line = renderHearingChoiceResult('removal', 'feast', destiny, week, 1)?.trim() || '';

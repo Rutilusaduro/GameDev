@@ -3001,6 +3001,8 @@ check('ra-dorm-pivot-text-engine-bridges', () => {
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/opposition/oppositionAgendaModularFragments.js')));
   assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkRefusalCommandDevourModularFragments.js')));
   assert.ok(existsSync(join(root, 'scripts/test-talk-refusal-command-devour-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/raPivotPassPeelFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-pass-bridge-suppression-late.mjs')));
   const barrel = read('src/gameData/evolvedForms.js');
   assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
 });
