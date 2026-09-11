@@ -120,4 +120,21 @@ assert.ok(reactLine.length > 30, 'evolved reaction modular render');
 assert.ok(!reactLine.includes('{unresolved}'), 'evolved reaction unresolved');
 assert.match(reactLine, /Residents notice|hall reads|eats without apology/i, 'evolved reaction slots');
 
+const outfitLine = render('{evolved.outfit.eating_streamer.s0}', buildTextContext({
+  subject: { ...destiny, evolvedForm: 'eating_streamer', lbs: 260 },
+  week: 16,
+  seed: 801,
+}))?.trim() || '';
+assert.ok(outfitLine.length > 25, 'evolved outfit modular render');
+assert.match(outfitLine, /Seams whisper|wear the strain|Stretch panels/i, 'evolved outfit slots');
+
+const blurbLine = render('{evolution.blurb.gamer}', buildTextContext({
+  subject: destiny,
+  week: 14,
+  globals: { archetype: 'gamer' },
+  seed: 802,
+}))?.trim() || '';
+assert.ok(blurbLine.length > 25, 'evolution blurb modular render');
+assert.match(blurbLine, /threshold|next stage|Floor favor/i, 'evolution blurb slots');
+
 console.log(`test-text-modular-pilot: ok (${lessonKeys} lessons + talk + homeroom + evolved phase/choice/ending)`);

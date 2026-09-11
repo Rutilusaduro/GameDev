@@ -26,9 +26,12 @@ const pairs = [
   ['rankedSession/index.js', 'rankedSession/sessionFragments.js'],
   ['wifeLessons/index.js', 'wifeLessons/lessonFragments.js'],
   ['wifeLessons/index.js', 'wifeLessons/talkFragments.js'],
+  ['evolved/index.js', 'evolved/eventPhaseFragments.js'],
   ['evolved/index.js', 'evolved/reactionFragments.js'],
   ['evolved/index.js', 'evolved/activityModularFragments.js'],
   ['evolved/index.js', 'evolved/evolutionOfferFragments.js'],
+  ['evolved/index.js', 'evolved/outfitFragments.js'],
+  ['evolved/index.js', 'evolved/evolutionBlurbFragments.js'],
   ['competitiveGainer/index.js', 'competitiveGainer/cgChatFragments.js'],
 ];
 

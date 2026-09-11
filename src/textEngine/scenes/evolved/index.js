@@ -7,7 +7,6 @@ import { EVOLVED_ACTIVITY_TEXT } from '../../../gameData/evolvedActivityData.js'
 import { EVOLVED_EVENTS } from '../../../gameData/evolvedEvents.js';
 import './activityPools.js';
 import './eventPools.js';
-import './eventPhaseFragments.js';
 import './reactionPools.js';
 import './outfitPools.js';
 import './evolutionOfferPools.js';

@@ -43,6 +43,10 @@ const SLOT_KEYS = [
   'evolved.reaction.appetite',
   'evolution.offer.hallTone',
   'evolution.offer.transformation',
+  'evolved.outfit.fabricStrain',
+  'evolved.outfit.pride',
+  'evolution.blurb.threshold',
+  'evolution.blurb.raStakes',
 ];
 
 for (const key of SLOT_KEYS) {
