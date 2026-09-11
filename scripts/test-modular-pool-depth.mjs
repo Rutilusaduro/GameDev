@@ -36,6 +36,8 @@ const POOLS = [
   'weekly.scene.floorEcho',
   'session.aftermath.glow',
   'roster.unlock.hallArrival',
+  'session.fullness.pressure',
+  'homeroom.npc.momHeat',
 ];
 
 for (const key of POOLS) {
