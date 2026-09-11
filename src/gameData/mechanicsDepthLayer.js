@@ -223,3 +223,9 @@ export function depthStreamReward(base = 0) {
   if (base <= 0) return base;
   return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.32)));
 }
+
+/** Fair training pride ticks — secondary loop on evolved fair queen arc. */
+export function depthFairPrideGrant(base = 0) {
+  if (base <= 0) return base;
+  return Math.max(base, Math.round(base * (1 + BONUS_FRAC * 0.34)));
+}

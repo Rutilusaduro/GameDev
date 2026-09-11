@@ -301,6 +301,13 @@ export function resolveFairPlaceholder(tagOrText, mjStudent, week = 1, extraGlob
   return line || s;
 }
 
+/** Pride boost summary line (replaces raw `[FBS_*]` tag). */
+export function renderFairBoostSummary(collabKey, tier, mjStudent, week = 1, extraGlobals = {}) {
+  const collab = collabKey || 'Brittany';
+  const t = tier || 'Mid';
+  return resolveFairPlaceholder(`[FBS_${collab}_${t}]`, mjStudent, week, extraGlobals);
+}
+
 /** Multi-line fair day result (choice + ending tags joined). */
 export function resolveFairDayBlock(text, mjStudent, week, extraGlobals = {}) {
   if (!text?.trim()) return '';

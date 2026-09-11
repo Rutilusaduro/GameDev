@@ -360,7 +360,7 @@ import { renderWifeLessonBeat, renderWifeLessonTalk, wlTalkPoolKey } from './tex
 import { renderHomeroomPool, homeroomConferencePoolKey, homeroomActivityPoolKey } from './textEngine/scenes/homeroom/index.js';
 import { renderCGMeasurementScene, renderCGRaReply, renderCGSceneBeat, renderCGCorkboardScene, renderCGBingeScene, renderCGSelfReviewScene, renderCGMeasureReaction, renderCGPriyaPost, renderCGPriyaFollowup, renderCGResidentReply } from './textEngine/scenes/competitiveGainer/index.js';
 import { renderEvolvedActivityBeat, renderEvolvedEventChoiceResult, renderEvolvedEventEnding } from './textEngine/scenes/evolved/index.js';
-import { depthCgDriveGain, depthMetaProgressBonus } from './gameData/mechanicsDepthLayer.js';
+import { depthCgDriveGain, depthMetaProgressBonus, depthFairPrideGrant } from './gameData/mechanicsDepthLayer.js';
 import { buildOppositionContext, getEvolvedOpMessage, counterGateReason, normalizeCounterId } from './gameData/oppositionIntegration.js';
 import { consumePortionSaint, applyAsceticGardenProtest, ledgerWightRepelled, applyMirrorFastEncounter, applyLedgerWightEncounter } from './gameData/oppositionCampus.js';
 import { aibMemberToHuntTarget, removeConsumedAibMember } from './gameData/lilithAibHunt.js';
@@ -6331,7 +6331,7 @@ export default function HallPass(){
     const boostCfg=FAIR_TRAINING_CONFIG.fairPrideBoosts[collabKey];
     let prideBoost=boostCfg.base+boostCfg.perStageBonus*cStage+(boostCfg.perRecruit?boostCfg.perRecruit*3:0);
     if(ft.lastCollaborator===collabKey) prideBoost=Math.round(prideBoost*0.5);
-    prideBoost=Math.round(prideBoost);
+    prideBoost=depthFairPrideGrant(Math.round(prideBoost));
     const boostTier=cStage<=5?'Low':cStage<=8?'Mid':'High';
     // gains
     const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
