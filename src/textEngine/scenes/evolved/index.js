@@ -16,23 +16,31 @@ const EVOLVED_FORM_POOLS = {
   homeroom_queen: 'evolved.homeroomQueen.v2.depth',
 };
 
-/** Evolved event prose beat — V2 depth on legacy phase/choice/ending text. */
+/** Evolved event prose beat — prefers slot-composed scene, leftover phase text as fallback. */
 export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
-  const line = typeof text === 'string' ? text.trim() : '';
-  if (!line) return '';
+  const formId = opts.formId || student?.evolvedForm || 'evolved';
   const ctx = buildTextContext({
     subject: student,
     week,
     globals: {
-      featureId: opts.formId || student?.evolvedForm || 'evolved',
+      featureId: formId,
       stageIdx: opts.stageIdx ?? null,
+      phaseIdx: opts.phaseIdx ?? 0,
+      evolvedForm: formId,
       ...(opts.globals || {}),
     },
     ...opts,
   });
   const chance = opts.v2DepthChance ?? 0.3;
+  if (opts.preferComposed && student) {
+    const scene = render('{evolved.event.scene}', ctx)?.trim();
+    if (scene && !scene.includes('{unresolved}')) {
+      return appendV2Depth(scene, 'evolved', ctx, chance);
+    }
+  }
+  const line = typeof text === 'string' ? text.trim() : '';
+  if (!line) return '';
   let out = appendV2Depth(line, 'evolved', ctx, chance);
-  const formId = opts.formId || student?.evolvedForm;
   const formPool = EVOLVED_FORM_POOLS[formId];
   if (formPool && out?.trim() && Math.random() < chance * 0.85) {
     const extra = render(`{${formPool}}`, ctx)?.trim();

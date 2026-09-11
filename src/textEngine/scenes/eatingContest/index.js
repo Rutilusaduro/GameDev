@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Eating contest — engine bridge for competitive_circuit evolved form.
-import { registerDimension } from '../../engine.js';
+import { registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import {
@@ -41,17 +41,41 @@ export function renderContestLegacy(text, student, week, stageIdx = 0, opts = {}
   return appendV2Depth(line, 'eatingContest', ctx, opts.v2DepthChance ?? 0.28);
 }
 
+function preferContestPool(poolKey, student, week, stageIdx, opts = {}) {
+  if (!student) return '';
+  const ctx = buildContestCtx(student, week, stageIdx, opts);
+  const composed = render(`{${poolKey}}`, ctx)?.trim();
+  if (composed && !composed.includes('{unresolved}')) {
+    return appendV2Depth(composed, 'eatingContest', ctx, opts.v2DepthChance ?? 0.26);
+  }
+  return '';
+}
+
 export function renderContestFoodPopup(foodId, stageIdx, student, week) {
+  const composed = preferContestPool('contest.food.scene', student, week, stageIdx, {
+    globals: { contestFood: foodId },
+    v2DepthChance: 0.26,
+  });
+  if (composed) return composed;
   const raw = stageText(CONTEST_FOOD_POPUPS[foodId], stageIdx);
   return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
 }
 
 export function renderContestActionPopup(actionKey, stageIdx, student, week) {
+  const composed = preferContestPool('contest.action.scene', student, week, stageIdx, {
+    globals: { contestAction: actionKey },
+    v2DepthChance: 0.24,
+  });
+  if (composed) return composed;
   const raw = stageText(CONTEST_ACTION_POPUPS[actionKey], stageIdx);
   return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.24 });
 }
 
 export function renderContestDevourPopup(stageIdx, student, week) {
+  const composed = preferContestPool('contest.devour.scene', student, week, stageIdx, {
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   const raw = stageText(CONTEST_DEVOUR_POPUPS, stageIdx);
   return renderContestLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
 }
@@ -66,6 +90,11 @@ export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, may
 }
 
 export function renderContestPayoff(stageIdx, student, yourGain, week) {
+  const composed = preferContestPool('contest.payoff.scene', student, week, stageIdx, {
+    globals: { yourGain },
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   const fn = CONTEST_PAYOFF_TEXT[stageIdx];
   const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
   return renderContestLegacy(raw, student, week, stageIdx, {

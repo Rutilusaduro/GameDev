@@ -106,9 +106,11 @@ for (const [id, node] of Object.entries(CAMPUS_NODES)) {
     'Someone walks past slower than last week, softer, still smiling.',
   ];
   const flavor = (node.flavor || []).map(lintSafe);
+  const heavy = extras.map(lintSafe);
+  const padded = heavy.length >= 3 ? heavy : [...heavy, ...flavor];
   registerPool(`campus.look.${id}`, [
-    { when: {}, text: flavor.length ? flavor : extras },
-    { when: { stageMin: 5 }, weight: 2, text: extras },
+    { when: {}, text: padded },
+    { when: { stageMin: 5 }, weight: 2, text: heavy },
   ]);
 }
 

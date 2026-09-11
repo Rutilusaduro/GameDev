@@ -41,7 +41,11 @@ import '../src/textEngine/scenes/overhaul/index.js';
 import { renderFloorSceneText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
 import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
 import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
-import { renderEvolvedActivity } from '../src/textEngine/scenes/evolved/index.js';
+import { renderEvolvedActivity, renderEvolvedEventProse } from '../src/textEngine/scenes/evolved/index.js';
+import { renderContestFoodPopup, renderContestActionPopup } from '../src/textEngine/scenes/eatingContest/index.js';
+import { renderSumoOpening, renderSumoExchangeLine } from '../src/textEngine/scenes/sumoMatch/index.js';
+import { renderCampusLook } from '../src/textEngine/scenes/overhaul/campusHunt.js';
+import { render, createContext } from '../src/textEngine/engine.js';
 
 const missing = assertSkillRoomCoverage();
 assert.equal(missing.length, 0, `unmapped skills: ${missing.join(', ')}`);
@@ -242,6 +246,42 @@ const activityText = renderEvolvedActivity({
 }, 3, { formId: 'sumo', stageIdx: 0, v2DepthChance: 0 });
 assert.ok(activityText && !activityText.includes('{unresolved}'), `evolved activity pool should resolve, got: ${String(activityText).slice(0, 160)}`);
 assert.ok(activityText.length > 40, 'evolved activity scene should be longer than a stub');
+
+const contestStudent = {
+  id: 8, name: 'Maya', lbs: 330, startLbs: 130, evolvedForm: 'eating_competitor',
+  relationship: 20, corruption: 1, fullness: 20, stomachCapacity: 120,
+};
+const contestFood = renderContestFoodPopup('hotdogs', 0, contestStudent, 3);
+assert.ok(contestFood && !contestFood.includes('{unresolved}'), `contest food pool should resolve, got: ${String(contestFood).slice(0, 160)}`);
+assert.equal(/Three go down before you've thought/i.test(contestFood), false, 'contest food should not be the old popup monolith');
+const contestAction = renderContestActionPopup('taunt', 0, contestStudent, 3);
+assert.ok(contestAction && !contestAction.includes('{unresolved}'), `contest action pool should resolve, got: ${String(contestAction).slice(0, 160)}`);
+assert.equal(/That is the whole conversation/i.test(contestAction), false);
+
+const sumoStudent = {
+  id: 0, name: 'Brittany', lbs: 400, startLbs: 118, evolvedForm: 'sumo',
+  relationship: 40, corruption: 1, fullness: 10, stomachCapacity: 120,
+};
+const sumoOpen = renderSumoOpening(0, sumoStudent, 340, 4);
+assert.ok(sumoOpen && !sumoOpen.includes('{unresolved}'), `sumo open pool should resolve, got: ${String(sumoOpen).slice(0, 160)}`);
+const sumoEx = renderSumoExchangeLine('you_drive', 0, sumoStudent, 4);
+assert.ok(sumoEx && !sumoEx.includes('{unresolved}'));
+assert.ok(/drive|belly|tawara|mass/i.test(sumoEx), `sumo exchange should key on bucket, got: ${String(sumoEx).slice(0, 160)}`);
+
+const eventText = renderEvolvedEventProse('LEGACY MONOLITH SHOULD NOT APPEAR', {
+  id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
+}, 3, { formId: 'sumo', stageIdx: 0, phaseIdx: 0, preferComposed: true, v2DepthChance: 0 });
+assert.ok(eventText && !eventText.includes('{unresolved}'), `evolved event pool should resolve, got: ${String(eventText).slice(0, 160)}`);
+assert.equal(eventText.includes('LEGACY MONOLITH SHOULD NOT APPEAR'), false, 'composed event should replace leftover phase text');
+assert.ok(eventText.length > 60, 'evolved event scene should be longer than a stub');
+
+const officeLook = renderCampusLook('office', 1);
+assert.ok(/couch remembers|snack wrapper|RA inbox/i.test(officeLook), `LOOK_HEAVY should be campus look primary, got: ${String(officeLook).slice(0, 180)}`);
+
+const pantryCtx = createContext({ subject: students[0], week: 2, globals: { itemLabel: 'cookie dough' } });
+const pantryLine = render('{pantry.use}', pantryCtx);
+assert.ok(pantryLine && !pantryLine.includes('{unresolved}'), `pantry.use should resolve, got: ${String(pantryLine).slice(0, 160)}`);
+assert.ok(/cookie dough/i.test(pantryLine), `item.label should land in pantry.use, got: ${String(pantryLine).slice(0, 160)}`);
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

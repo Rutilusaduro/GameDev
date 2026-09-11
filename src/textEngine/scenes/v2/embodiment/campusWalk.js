@@ -5,6 +5,7 @@ import { appendV2Depth } from '../depthRenderer.js';
 import { CAMPUS_NODES } from '../../../../gameData/campus.js';
 import { campusNodeToLocale } from '../../../../gameData/textContext.js';
 import { normalizeEmbodiedEventId } from '../../../../gameData/v2/embodiedCampus.js';
+import { renderCampusLook } from '../../overhaul/campusHunt.js';
 
 registerPool('emb.walk.arrive', [
   { when: { stageMin: 8 }, text: [
@@ -225,9 +226,8 @@ function embCtx(student, week, nodeId, opts = {}) {
 export function renderEmbodiedArrive(student, nodeId, week = 1, opts = {}) {
   const ctx = embCtx(student, week, nodeId, opts);
   const base = render('{emb.walk.arrive}', ctx, { trace: opts.trace || null })?.trim() || '';
-  const node = CAMPUS_NODES[nodeId];
-  const flavor = node?.flavor?.[week % (node.flavor?.length || 1)] || '';
-  const composed = flavor ? `${base} ${flavor}` : base;
+  const look = renderCampusLook(nodeId, week);
+  const composed = look ? `${base} ${look}` : base;
   return appendV2Depth(composed, 'embodiment', ctx, opts.v2DepthChance ?? 0.35);
 }
 

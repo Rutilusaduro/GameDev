@@ -16,8 +16,8 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
         const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
         const researchSubject=(formId==='psych_researcher'&&s?.researchSubjectId!=null)?students.find(st=>st.id===s.researchSubjectId):null;
         const rawPhaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner||researchSubject):phase.text):null;
-        const depthOpts={formId,stageIdx,v2DepthChance:0.28};
-        const phaseText=rawPhaseText?renderEvolvedEventProse(rawPhaseText,s,week,depthOpts):null;
+        const depthOpts={formId,stageIdx,phaseIdx,v2DepthChance:0.28};
+        const phaseText=!done?renderEvolvedEventProse(rawPhaseText,s,week,{...depthOpts,preferComposed:true}):null;
         const endingRendered=endingText?renderEvolvedEventProse(endingText,s,week,{...depthOpts,v2DepthChance:0.32}):null;
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";

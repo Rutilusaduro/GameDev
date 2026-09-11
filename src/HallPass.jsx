@@ -1387,7 +1387,7 @@ export default function HallPass(){
     if(!fed) return;
     setInventory(prev=>({...prev,[item.id]:prev[item.id]-1}));
     setStudents(prev=>prev.map(st=>st.id===studentId?fed:st));
-    const ctx=createContext({subject:target,week});
+    const ctx=createContext({subject:target,week,globals:{itemLabel:item.label.toLowerCase()}});
     const pantryKey=modeId==='share'?'{pantry.use.share}':modeId==='binge'?'{pantry.use.binge}':'{pantry.use}';
     const pantryLine=render(pantryKey,ctx)?.trim();
     const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](target,item);
@@ -7516,7 +7516,9 @@ export default function HallPass(){
     setInventory(prev=>({...prev,[itemId]:Math.max(0,(prev[itemId]||0)-1)}));
     const { fed, cap, newFullness, sessionCals, prevFullness, overfillEnd }=result;
     setStudents(prev=>prev.map(st=>st.id!==s.id?st:fed));
-    const line=ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
+    const ctx=createContext({subject:fed,week,globals:{itemLabel:item.label.toLowerCase()}});
+    const pantryLine=render('{pantry.use}',ctx)?.trim();
+    const line=(pantryLine&&!pantryLine.includes('{unresolved}'))?pantryLine:ITEM_USE_LINES[rnd(0,ITEM_USE_LINES.length-1)](fed,item);
     push(`🎒 ${item.label} shared at dinner.`);
     if(overfillEnd){
       setDinnerLog(dl=>[...dl,`🎒 ${line}`,`😵 ${renderDinnerOverfill(fed, week)}`]);

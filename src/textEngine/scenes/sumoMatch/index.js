@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Sumo match — engine bridge for competitive_circuit evolved form.
-import { registerDimension } from '../../engine.js';
+import { registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import {
@@ -44,7 +44,22 @@ export function renderSumoLegacy(text, student, week, stageIdx = 0, opts = {}) {
   return appendV2Depth(line, 'sumoMatch', ctx, opts.v2DepthChance ?? 0.28);
 }
 
+function preferSumoPool(poolKey, student, week, stageIdx, opts = {}) {
+  if (!student) return '';
+  const ctx = buildSumoCtx(student, week, stageIdx, opts);
+  const composed = render(`{${poolKey}}`, ctx)?.trim();
+  if (composed && !composed.includes('{unresolved}')) {
+    return appendV2Depth(composed, 'sumoMatch', ctx, opts.v2DepthChance ?? 0.28);
+  }
+  return '';
+}
+
 export function renderSumoOpening(stageIdx, student, oppLbs, week) {
+  const composed = preferSumoPool('sumo.open.scene', student, week, stageIdx, {
+    globals: { oppLbs },
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   const raw = `The first tachi-ai. You square up against ${SUMO_RIVAL_NAME} — ${oppLbs} pounds of veteran across the line from you. The crowd settles. Choose your opening.`;
   return renderSumoLegacy(raw, student, week, stageIdx, {
     globals: { oppLbs },
@@ -53,16 +68,25 @@ export function renderSumoOpening(stageIdx, student, oppLbs, week) {
 }
 
 export function renderSumoExchangeLine(bucket, stageIdx, student, week, oppStumbleNote = '') {
+  const composed = preferSumoPool('sumo.exchange.scene', student, week, stageIdx, {
+    globals: { sumoBucket: bucket },
+    v2DepthChance: 0.24,
+  });
+  if (composed) return composed + (oppStumbleNote || '');
   const raw = (stageText(SUMO_EXCHANGE_LINES[bucket] || SUMO_EXCHANGE_LINES.clash, stageIdx)) + oppStumbleNote;
   return renderSumoLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.24 });
 }
 
 export function renderSumoBoutWon(stageIdx, student, week) {
+  const composed = preferSumoPool('sumo.bout.won', student, week, stageIdx, { v2DepthChance: 0.3 });
+  if (composed) return composed;
   const raw = stageText(SUMO_BOUT_WON, stageIdx);
   return renderSumoLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.3 });
 }
 
 export function renderSumoBoutLost(stageIdx, student, week) {
+  const composed = preferSumoPool('sumo.bout.lost', student, week, stageIdx, { v2DepthChance: 0.28 });
+  if (composed) return composed;
   const raw = stageText(SUMO_BOUT_LOST, stageIdx);
   return renderSumoLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.28 });
 }
@@ -75,6 +99,11 @@ export function renderSumoFillRing(stageIdx, student, week) {
 
 export function renderSumoCornerFeed(stageIdx, student, week) {
   const feed = SUMO_CORNER_FEED[stageIdx] || SUMO_CORNER_FEED[0];
+  const composed = preferSumoPool('sumo.corner.scene', student, week, stageIdx, {
+    globals: { gainAccum: feed.lbs },
+    v2DepthChance: 0.3,
+  });
+  if (composed) return composed;
   return renderSumoLegacy(feed.text, student, week, stageIdx, {
     globals: { gainAccum: feed.lbs },
     v2DepthChance: 0.3,

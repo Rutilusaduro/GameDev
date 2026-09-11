@@ -5,6 +5,8 @@ import { registerPool, registerModuleVariants } from '../../engine.js';
 import './more.js';
 import './campusHunt.js';
 import './evolvedActivity.js';
+import './contestSumo.js';
+import './evolvedEvent.js';
 
 // ── talk.floor.atmosphere — FULL SENTENCE. The room around the talk.
 registerPool('talk.floor.atmosphere', [

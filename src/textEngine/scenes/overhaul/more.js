@@ -256,18 +256,23 @@ registerModuleVariants('feed.react', [
   ]},
 ]);
 
+// Shape: WORD. Pantry item name from globals.itemLabel.
+registerPool('item.label', [
+  { when: {}, text: [(ctx) => ctx.globals?.itemLabel || 'snack'] },
+]);
+
 // Shape: FULL SENTENCE. Pantry item landing.
 registerPool('pantry.use', [
   { when: {}, text: [
-    'You produce the offering. Her attention arrives before any objection does.',
-    'She asks if it is for her, already reaching. It does not survive the hour.',
-    'You leave it where she will find it. She finds it. She finishes it.',
+    'You produce the {item.label}. Her attention arrives before any objection does.',
+    'She asks if the {item.label} is for her, already reaching. It does not survive the hour.',
+    'You leave the {item.label} where she will find it. She finds it. She finishes it.',
   ]},
   { when: { stageMin: 5 }, weight: 2, text: [
-    'The wrap is already open. Her belly takes the rest as if the pantry were a course on the hall menu.',
+    'The {item.label} wrap is already open. Her belly takes the rest as if the pantry were a course on the hall menu.',
   ]},
   { when: { corruption: [2] }, weight: 2, text: [
-    'She does not pretend this was accidental. She eats it in front of you and waits to be watched.',
+    'She does not pretend the {item.label} was accidental. She eats it in front of you and waits to be watched.',
   ]},
 ]);
 
