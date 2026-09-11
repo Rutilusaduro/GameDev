@@ -148,6 +148,7 @@ import './monolithFragmentDepth.js';
 import './namedPoolDepth.js';
 import './v2WildcardDepth.js';
 import './proseOverhaul.js';
+import './proseOverhaulPass2.js';
 import './talkLinger.js';
 import './dorm/index.js';
 import '../modules.js';

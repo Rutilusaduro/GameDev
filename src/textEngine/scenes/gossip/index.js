@@ -11,6 +11,7 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass2.js';
 
 // ── gossip.react.notice ───────────────────────────────────────
 // Neutral, observational. The hall notices someone changed.
@@ -130,7 +131,9 @@ export function renderGossipReact(reactor, week = 1, opts = {}) {
   const notice = render('{gossip.react.notice}', ctx, { trace: opts.trace || null })?.trim() || '';
   const line = render('{gossip.react.line}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = notice && line ? `${notice} ${line}` : notice || line;
-  return appendV2Depth(composed, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
+  const glow = render('{gossip.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const withGlow = [composed, glow].filter(Boolean).join(' ');
+  return appendV2Depth(withGlow, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Render ambient hall-awareness murmur (no specific event). */

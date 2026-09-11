@@ -4,6 +4,7 @@ import { registerPool, render, createContext } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { HUNT_NODES, HUNT_MEN } from '../../../gameData/lilith.js';
 import './feastStageUp.js';
+import '../proseOverhaulPass2.js';
 
 export { renderLilithFeast, renderLilithDeliveryIntro } from './feastStageUp.js';
 
@@ -29,7 +30,8 @@ export function renderHuntNode(nodeId, student, week = 1, opts = {}) {
   const key = HUNT_NODES[nodeId] ? `hunt.node.${nodeId}` : 'hunt.node.quad';
   const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
-  return appendV2Depth(base, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  const glow = render('{hunt.afterglow}', ctx)?.trim() || '';
+  return appendV2Depth([base, glow].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
@@ -38,5 +40,6 @@ export function renderHuntTarget(targetId, student, week = 1, opts = {}) {
   const key = man ? `hunt.man.${man.id}` : 'hunt.man.chad_w';
   const ctx = createContext({ subject: student, week, ...opts });
   const base = render(`{${key}}`, ctx)?.trim() || '';
-  return appendV2Depth(base, 'hunt', ctx, opts.v2DepthChance ?? 0.28);
+  const glow = render('{hunt.afterglow}', ctx)?.trim() || '';
+  return appendV2Depth([base, glow].filter(Boolean).join('\n\n'), 'hunt', ctx, opts.v2DepthChance ?? 0.28);
 }

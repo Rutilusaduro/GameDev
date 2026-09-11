@@ -12,6 +12,8 @@ import '../../growthLexicon.js';
 import './fragments.js';
 import '../../modules.js';
 import './deviceTickSceneDepth.js';
+import '../proseOverhaul.js';
+import '../proseOverhaulPass2.js';
 
 registerPool('device.tick.beat', [
   { when: { isMalfunction: true, gainLbsMin: SUDDEN_GROWTH_LBS_MIN }, text: [
@@ -98,5 +100,6 @@ export function renderDeviceTickLine({
     },
   });
   const base = render('{device.tick.beat}', ctx, { trace });
-  return appendV2Depth(base, 'device', ctx, 0.3);
+  const glow = render('{device.afterglow}', ctx, { trace })?.trim() || '';
+  return appendV2Depth([base, glow].filter(Boolean).join(' '), 'device', ctx, 0.3);
 }

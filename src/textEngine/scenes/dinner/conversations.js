@@ -246,3 +246,11 @@ registerPool('dinner.conv.room_upgrade_brag', [
     `{subject.name} pats the booth. "If my room sat like this, I'd never leave." You file that as a work order.`,
   ] },
 ]);
+
+registerPool('dinner.conv.dining_nook', [
+  { when: {}, text: [
+    `You describe the hall dining nook. {subject.name} leans in. "Then why are we paying for this table?" She orders anyway.`,
+    `"The nook holds more of me now," {subject.name} says. She demonstrates by filling this booth too.`,
+    `Talk of the nook becomes a second dessert. {subject.name} calls it floor research.`,
+  ] },
+]);

@@ -112,6 +112,12 @@ export const PHARMACIST_CAMPUS_EVENTS = [
     requires: (ctx) => ctx.hasMayaHive,
     text: () => `Maya's delivery network is pulling heavier recruits from Lilith's routes this week — softer bodies, fuller appetites, already primed when they reach the dorms. The Nest hums with fresh biomass.`,
   },
+  {
+    id: 'late_kitchen',
+    target: 'hall',
+    gain: [3, 6],
+    text: () => `The hall kitchen stays warm past quiet hours. Sophia's samples migrated from the union table into your fridge without anyone filing a form. Residents find them. Residents finish them.`,
+  },
 ];
 
 export function pickPharmacistCampusEvent(students, ctx = {}) {

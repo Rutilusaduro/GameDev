@@ -25,6 +25,7 @@ export const SALON_SERVICE_CHOICES = [
   { id: 'charm', label: 'Charm le salon', prestige: 8, chloeLbs: 3, rel: 4 },
   { id: 'feed', label: 'Nourrir Chloé', prestige: 3, chloeLbs: 9, indulgence: 10 },
   { id: 'tandem', label: 'Toast & tandem', prestige: 6, chloeLbs: 6, indulgence: 6, rel: 2 },
+  { id: 'linger', label: 'Linger after dessert', prestige: 5, chloeLbs: 5, indulgence: 8, rel: 3 },
 ];
 
 export function defaultSalonState(chloeStudentId = 9) {
@@ -91,7 +92,9 @@ export function salonServiceChoice(state, choiceId) {
     ? `Chloé eats with theatrical pleasure. "*Encore,*" she murmurs.`
     : choice.id === 'charm'
       ? 'She charms the room — wine, wit, and a smile that promises dessert.'
-      : 'A toast, then she eats beside her guests without apology.';
+      : choice.id === 'linger'
+        ? 'Dessert ends. Chloé does not. Guests stay for one more plate they did not order.'
+        : 'A toast, then she eats beside her guests without apology.';
   if (round >= 4) {
     return {
       ...state,

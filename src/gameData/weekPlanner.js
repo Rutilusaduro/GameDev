@@ -2,6 +2,7 @@
 import { getAddictionLevel, getHungerTier } from './hungerAddiction.js';
 import { PSYCH_TIERS } from './psychState.js';
 import { getStage } from './stages.js';
+import { roomCompletion } from './dormBlueprint.js';
 import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
 
 export const WEEK_PLAN_SLOT_COUNT = 5;
@@ -12,14 +13,47 @@ export const PLANNER_VENUES = [
   { id: 'dorm', label: 'Dorm visit', glyph: '🛏' },
   { id: 'lab', label: 'Hall kitchen', glyph: '🍳' },
   { id: 'private', label: 'Private table', glyph: '🥂' },
+  { id: 'night_wing', label: 'Night wing', glyph: '🌙' },
 ];
 
-export function emptyWeekPlan() {
+export function emptyWeekPlan(slotCount = WEEK_PLAN_SLOT_COUNT) {
+  const n = Math.max(1, slotCount || WEEK_PLAN_SLOT_COUNT);
   return {
-    slots: Array.from({ length: WEEK_PLAN_SLOT_COUNT }, (_, i) => ({
+    slots: Array.from({ length: n }, (_, i) => ({
       studentId: null,
       venueId: PLANNER_VENUES[i % PLANNER_VENUES.length].id,
     })),
+  };
+}
+
+export function padWeekPlan(plan, slotCount = WEEK_PLAN_SLOT_COUNT) {
+  const n = Math.max(WEEK_PLAN_SLOT_COUNT, slotCount || WEEK_PLAN_SLOT_COUNT);
+  const slots = [...(plan?.slots || [])];
+  while (slots.length < n) {
+    slots.push({
+      studentId: null,
+      venueId: PLANNER_VENUES[slots.length % PLANNER_VENUES.length].id,
+    });
+  }
+  return { slots };
+}
+
+/** Extra slot once RA Desk has two prestige installs. Default stays 5. */
+export function weekPlanSlotCount(ownedHallSkills = {}) {
+  const desk = roomCompletion('ra_desk', ownedHallSkills);
+  return WEEK_PLAN_SLOT_COUNT + (desk.owned >= 2 ? 1 : 0);
+}
+
+/** Standing plan pays off in the week tick: attention, hunger, night-wing lbs. */
+export function weekPlanBonusesFor(student, weekPlan) {
+  const slots = (weekPlan?.slots || []).filter((s) => s.studentId === student?.id);
+  if (!slots.length) return { rel: 0, extraLbs: 0, hungerEase: 0, discontentEase: 0 };
+  const night = slots.some((s) => s.venueId === 'night_wing');
+  return {
+    rel: Math.min(6, 2 * slots.length),
+    extraLbs: night ? 1 : 0,
+    hungerEase: 1,
+    discontentEase: 1,
   };
 }
 

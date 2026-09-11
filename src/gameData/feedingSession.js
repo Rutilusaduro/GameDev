@@ -53,6 +53,7 @@ export const DISH_ITEM_LINKS = {
   home_main: 'family_lasagna',
   home_second: 'feast_platter',
   midnight: 'donut_box',
+  pr_night_tray: 'snack_crate',
   eggs_bene: 'butter_coffee',
   atelier_main: 'feast_platter',
   atelier_cheese: 'cake_whole',
@@ -66,6 +67,7 @@ export const SESSION_PACE_ACTIONS = [
   { id: 'savor', label: 'Savor pace', refusalBonus: -0.03, tapOutMult: 0.9, desc: 'Slow bites. More talk. She lasts longer and notices more.' },
   { id: 'push', label: 'Push harder', refusalBonus: 0.14, tapOutMult: 1.22, desc: 'Higher force-feed odds when she\'s stuffed.' },
   { id: 'fill', label: 'Fill the silence', refusalBonus: 0.08, tapOutMult: 1.1, desc: 'Keep plates moving so she never has a clean stopping point.' },
+  { id: 'linger', label: 'Linger course', refusalBonus: -0.02, tapOutMult: 0.95, desc: 'Let the last plate sit. She usually starts it anyway.' },
 ];
 
 export function getSessionPaceModifiers(paceId = 'steady') {

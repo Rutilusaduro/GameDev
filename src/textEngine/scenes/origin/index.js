@@ -2,6 +2,7 @@
 import { registerModuleVariants, registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass2.js';
 
 const W = 4;
 const EARLY = { corruption: [0], stageMax: 3 };
@@ -101,5 +102,6 @@ export function renderOriginStirring(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
   const base = render('{origin.stirring.line}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'origin', ctx, opts.v2DepthChance ?? 0.3);
+  const glow = render('{origin.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth([base, glow].filter(Boolean).join(' '), 'origin', ctx, opts.v2DepthChance ?? 0.3);
 }

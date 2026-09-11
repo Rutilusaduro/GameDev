@@ -136,3 +136,91 @@ registerPool('talk.midnight_habit', [
     '{talk.midnight_habit.line}\n\n{talk.linger.body}',
   ] },
 ]);
+
+registerPool('talk.weigh_together.open', [
+  { when: {}, text: [
+    'The scale in her room is no longer furniture. You nod at it. She already knows.',
+    'You offer a private number, no log, no lounge. She sits before she answers.',
+    'The curtain over the scale is a joke you both stopped telling.',
+  ] },
+]);
+
+registerPool('talk.weigh_together.line', [
+  { when: { corruption: [0] }, weight: 2, text: [
+    `"Don't put it in the file," {subject.name} says. She steps on anyway.`,
+  ] },
+  { when: { corruption: [2] }, weight: 2, text: [
+    `"Say it out loud," {subject.name} says. "I like hearing it from you."`,
+  ] },
+  { when: {}, text: [
+    `"Fine," {subject.name} says. "But you stay."`,
+    `{subject.name} peels the curtain back. "You wanted this. Watch."`,
+    `"The number's been climbing," {subject.name} says. "That's why you're here."`,
+  ] },
+]);
+
+registerPool('talk.weigh_together.body', [
+  { when: { stageMax: 3 }, text: [
+    'The platform takes a softness she still tries to stand smaller than. The display does not cooperate.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, text: [
+    'She has to settle her belly before the readout steadies. She does not apologize for the wait.',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'The scale complains in a language she now finds funny. She laughs with her whole weight.',
+  ] },
+  { when: {}, text: [
+    'Warmth, plastic, a number that belongs in this room now.',
+    'She watches your face instead of the digits. The digits still arrive.',
+    'The private weigh-in is the most honest conversation on the floor.',
+  ] },
+]);
+
+registerPool('talk.weigh_together', [
+  { when: {}, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.weigh_together.open} {talk.weigh_together.body}\n\n{talk.weigh_together.line}',
+    '{talk.weigh_together.open}\n\n{talk.weigh_together.line} {talk.weigh_together.body}',
+    '{talk.weigh_together.line}\n\n{talk.weigh_together.body}',
+  ] },
+]);
+
+registerPool('talk.raid_stash.open', [
+  { when: {}, text: [
+    'The snack drawer has a personality. Tonight it is generous.',
+    'You both pretend this is inventory. It is not inventory.',
+    'Wrappers already in the bin. The rest of the stash still waiting.',
+  ] },
+]);
+
+registerPool('talk.raid_stash.line', [
+  { when: {}, text: [
+    `"Take one," {subject.name} says, already taking three.`,
+    `"I bought these for emergencies," {subject.name} says. "This counts."`,
+    `{subject.name} tosses you a bar and keeps the bigger bag.`,
+  ] },
+]);
+
+registerPool('talk.raid_stash.body', [
+  { when: { stageMax: 3 }, text: [
+    'She eats standing, quick, like someone who still thinks this is a snack.',
+  ] },
+  { when: { stageMin: 4, stageMax: 7 }, text: [
+    'She sits to eat. The drawer stays open. So does her appetite.',
+  ] },
+  { when: { stageMin: 8 }, text: [
+    'The stash was sized for a smaller resident. She finishes it like a footnote.',
+  ] },
+  { when: {}, text: [
+    'Sugar and salt and the quiet of a room that has decided food lives here.',
+    'She licks a finger. The drawer does not close.',
+    'Sharing was the excuse. Eating is the event.',
+  ] },
+]);
+
+registerPool('talk.raid_stash', [
+  { when: {}, text: [
+    '{talk.moodOpener|suffix:\n\n}{talk.raid_stash.open} {talk.raid_stash.body}\n\n{talk.raid_stash.line}',
+    '{talk.raid_stash.open}\n\n{talk.raid_stash.line} {talk.raid_stash.body}',
+    '{talk.raid_stash.line}\n\n{talk.raid_stash.body}',
+  ] },
+]);

@@ -17,6 +17,7 @@ import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../clothing/index.js'; // ensures {cloth.scene} is registered
+import '../proseOverhaulPass2.js';
 
 // ── milestone.body ────────────────────────────────────────────
 // Shape: FULL SENTENCE — present-tense, observational, appreciative.
@@ -187,6 +188,8 @@ registerPool('milestone', [
 export function renderMilestone(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, ...opts });
-  const base = render('{milestone}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const body = render('{milestone}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const glow = render('{milestone.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const base = [body, glow].filter(Boolean).join('\n\n');
   return appendV2Depth(base, 'milestone', ctx, opts.v2DepthChance ?? 0.4);
 }

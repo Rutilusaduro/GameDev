@@ -8,6 +8,7 @@ import { habitatForStudent, neighborStudentIds, roomCompletion, studentFits } fr
 import { getStage } from './stages.js';
 import { adjustHunger } from './hungerAddiction.js';
 import { applyPsychDelta } from './psychState.js';
+import { garmentFitState, outfitFor } from './outfits.js';
 
 export const DEPTH_TALK_TOPICS = [
   {
@@ -36,6 +37,24 @@ export const DEPTH_TALK_TOPICS = [
     engineTemplate: '{talk.midnight_habit}',
     dormGate: 'habit',
   },
+  {
+    id: 'weigh_together',
+    label: 'Offer a private weigh-in',
+    icon: '⚖',
+    group: 'floor',
+    effect: { rel: 3, corruption: 1 },
+    engineTemplate: '{talk.weigh_together}',
+    dormGate: 'scale',
+  },
+  {
+    id: 'raid_stash',
+    label: 'Share the snack stash',
+    icon: '🍪',
+    group: 'floor',
+    effect: { rel: 2, cals: 1800, full: 8 },
+    engineTemplate: '{talk.raid_stash}',
+    dormGate: 'snacks',
+  },
 ];
 
 export function talkTopicAvailable(topic, student, dormState) {
@@ -43,6 +62,8 @@ export function talkTopicAvailable(topic, student, dormState) {
   const fits = dormState?.roomFits?.[student?.id] || {};
   if (topic.dormGate === 'anyFit') return Object.values(fits).some(Boolean);
   if (topic.dormGate === 'habit') return !!dormState?.nightRounds?.habits?.[student?.id];
+  if (topic.dormGate === 'scale') return !!fits.scale;
+  if (topic.dormGate === 'snacks') return !!fits.snacks;
   return true;
 }
 
@@ -155,4 +176,43 @@ export function sessionCapHabitatBonus(student, dormState, ownedHallSkills) {
 
 export function deviceTickHabitatMult(student, dormState) {
   return 1 + (habitatForStudent(student, dormState).deviceTickMult || 0);
+}
+
+export function oppositionRumorChance(dormState, ownedHallSkills = {}) {
+  const annex = roomCompletion('annex', ownedHallSkills);
+  const intimacy = dormState?.nightRounds?.floorIntimacy || 0;
+  return Math.max(0.12, 0.4 - annex.owned * 0.05 - (intimacy >= 40 ? 0.08 : 0));
+}
+
+export function labInstabilityEase(dormState, ownedHallSkills = {}) {
+  const desk = roomCompletion('ra_desk', ownedHallSkills);
+  const outletCount = Object.values(dormState?.roomFits || {}).filter((f) => f.outlets).length;
+  return (desk.owned >= 1 ? 1 : 0) + (outletCount >= 2 ? 1 : 0);
+}
+
+/** Weekly garment strain. Wider doorway eases fabric catching on the frame. */
+export function tickOutfitWeek(student, dormState) {
+  if (!student) return student;
+  const base = outfitFor(student);
+  if (!student.outfit) return { ...student, outfit: base };
+  const fits = studentFits(dormState, student.id);
+  const doorwayEase = fits.doorway ? 0.45 : 1;
+  const outfit = { ...base };
+  let changed = false;
+  for (const slot of ['top', 'bottom', 'waist']) {
+    const g = outfit[slot];
+    if (!g) continue;
+    const state = garmentFitState(g, student.lbs);
+    let loss = 0;
+    if (state === 'straining') loss = 0.06;
+    else if (state === 'failing') loss = 0.12;
+    else if (state === 'burst') loss = 0.2;
+    if (!loss) continue;
+    const nextInt = Math.max(0, Math.round(((g.integrity ?? 1) - loss * doorwayEase) * 100) / 100);
+    if (nextInt !== (g.integrity ?? 1)) {
+      outfit[slot] = { ...g, integrity: nextInt };
+      changed = true;
+    }
+  }
+  return changed ? { ...student, outfit } : student;
 }

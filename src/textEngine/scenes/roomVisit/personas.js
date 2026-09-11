@@ -112,5 +112,7 @@ registerPool('room.visit.stage.beat.persona', [
   ] },
   { when: {}, text: [
     `{subject.name} catches your eye and smiles — no words needed, the room says enough.`,
+    `{subject.name} makes a space on the bed with her hip. "You're here. Good."`,
+    `She looks at you like the visit is the snack she had been waiting on.`,
   ] },
 ]);

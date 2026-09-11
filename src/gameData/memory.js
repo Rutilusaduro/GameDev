@@ -33,7 +33,7 @@ function rpick(arr) {
 export function pickStudentMemory(student, week) {
   const mems = student?.memories || [];
   const sameWeek = mems.filter((m) => m.w === week && (m.t === 'feast' || m.t === 'forced'));
-  const longArc = mems.filter((m) => m.w < week && (m.t === 'stageUp' || m.t === 'scaleBreak' || m.t === 'stuffed' || m.t === 'bondShift'));
+  const longArc = mems.filter((m) => m.w < week && (m.t === 'stageUp' || m.t === 'scaleBreak' || m.t === 'stuffed' || m.t === 'bondShift' || m.t === 'night'));
   const pools = [];
   if (sameWeek.length) pools.push({ scope: 'sameWeek', m: sameWeek[sameWeek.length - 1] });
   if (longArc.length) pools.push({ scope: 'longArc', m: rpick(longArc) });

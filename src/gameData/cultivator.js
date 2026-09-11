@@ -50,6 +50,7 @@ export const RECIPES = {
           { id:"std_base",   label:"Whole milk — standard blend",         desc:"Three scoops, whole milk, a reasonable result. She'll drink it and feel fine.",                    fatGain:8,  suspChange:0  },
           { id:"cream_base", label:"Heavy cream — 'richer recipe today'", desc:"Replace the milk with cream. Same visual. Double the density. She'll comment on the taste.",      fatGain:15, suspChange:6  },
           { id:"malt_base",  label:"Double malt — 'old-school method'",   desc:"Malt extract, extra scoop, a proprietary syrup. She won't identify the sweetness. She will drink all of it.", fatGain:11, suspChange:2 },
+          { id:"melted_ice", label:"Melted ice cream — 'texture test'",   desc:"She thinks it is a method. It is a method. The glass comes back empty.",                           fatGain:22, suspChange:8 },
         ]
       },
       {

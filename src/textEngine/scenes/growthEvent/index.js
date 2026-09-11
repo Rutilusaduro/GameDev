@@ -13,6 +13,7 @@ import './environment.js';
 import './stageCrossings.js';
 import './garments.js';
 import './personas.js';
+import '../proseOverhaulPass2.js';
 import '../../modules.js';
 import './growthEventSceneDepth.js';
 
@@ -91,6 +92,7 @@ function assembleDigestBeats(ctx, trace = null) {
   }
   beats.push(r('{ge.digestReaction}'));
   beats.push(r('{ge.digestSettle}'));
+  beats.push(r('{ge.afterglow}'));
   return beats.filter(b => b && b.trim());
 }
 
@@ -114,6 +116,7 @@ function assembleBeats(ctx, magnitude, trace = null) {
   const settle = r('{ge.settle}');
   const talia = r('{ge.taliaCameo}');
   beats.push([settle, talia].filter(Boolean).join('\n'));
+  beats.push(r('{ge.afterglow}'));
   return beats.filter(b => b && b.trim());
 }
 

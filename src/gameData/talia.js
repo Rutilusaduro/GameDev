@@ -153,13 +153,14 @@ export function completeLabSession(state, session, builtDeviceId = null, rng = M
   return next;
 }
 
-export function tickLabWeek(state) {
+export function tickLabWeek(state, opts = {}) {
   if (!state) return state;
   const next = { ...state };
   if ((next.maintenanceDebt ?? 0) > 0) {
     next.maintenanceDebt = Math.max(0, next.maintenanceDebt - 1);
   }
-  next.instability = Math.max(0, (next.instability ?? 0) - 2);
+  const ease = 2 + (opts.extraEase || 0);
+  next.instability = Math.max(0, (next.instability ?? 0) - ease);
   next.builtThisSession = [];
   return next;
 }

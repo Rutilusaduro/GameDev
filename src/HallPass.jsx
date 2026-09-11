@@ -99,7 +99,7 @@ import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness } from './te
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
-import { buildWeekReviewExtras, emptyWeekPlan } from './gameData/weekPlanner.js';
+import { buildWeekReviewExtras, emptyWeekPlan, padWeekPlan, weekPlanBonusesFor, weekPlanSlotCount } from './gameData/weekPlanner.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -381,14 +381,16 @@ import {
 } from './gameData/hallLoungeSkills.js';
 import {
   createInitialDormState, buyRoomFit, canStartNightRound, applyNightVisit,
-  nightEncounterKind, nightRoundVisitCap, habitatForStudent,
+  nightEncounterKind, nightRoundVisitCap, habitatForStudent, roomCompletion,
 } from './gameData/dormBlueprint.js';
 import {
   tickHabitatWeek, applyTalkHabitatBonus, pantryDropBonus, neighborEcologyPatch,
   sessionCapHabitatBonus, deviceTickHabitatMult, campusStayHome,
-  habitatFx, shouldSkipHungerInterrupt,
+  habitatFx, shouldSkipHungerInterrupt, oppositionRumorChance, labInstabilityEase,
+  tickOutfitWeek,
 } from './gameData/mechanicDepth.js';
 import './textEngine/scenes/proseOverhaul.js';
+import './textEngine/scenes/proseOverhaulPass2.js';
 import {
   devourScarcityDamage, echoedWillReverseCurse, checkSynthesisEndgame, applySynthesisAlly,
 } from './gameData/scarcityTools.js';
@@ -1090,6 +1092,7 @@ export default function HallPass(){
         if(fed) ns=fed;
       }
       if(choice.lbs) ns=processStudentGain(ns,choice.lbs,0);
+      ns={...ns,memories:appendMemory(ns.memories,'night',week,choice.id)};
       return ns;
     }));
     const remaining=(nightRoundVisitCap(ownedHallSkills||{})-((hallDorm.nightRounds?.lastWeek===week?hallDorm.nightRounds.visitsThisWeek||0:0)+1));
@@ -1681,6 +1684,7 @@ export default function HallPass(){
     setWeeklyArms({devouringStudentId:null,mesmerizingStudentId:null,devouringConsumed:false});
     setNightMode(false);
     setNightTargetId(null);
+    setWeekPlan((p)=>padWeekPlan(p,weekPlanSlotCount(ownedHallSkills||{})));
     const newWeek=week+1;
     setWeek(newWeek);
     setWeekPulse((p) => p + 1);
@@ -1731,7 +1735,11 @@ export default function HallPass(){
       const habTick=tickHabitatWeek(s,dormState||createInitialDormState(),ownedHallSkills||{});
       let nsHab=habTick.student;
       const hallHab=habitatFx(s,dormState||createInitialDormState(),ownedHallSkills||{});
-      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0)+(habTick.extraLbs||0)+(hallHab.evolvedLbs||0);
+      const planFx=weekPlanBonusesFor(s,weekPlan);
+      if(planFx.rel) nsHab={...nsHab,relationship:Math.min(100,(nsHab.relationship||0)+planFx.rel)};
+      if(planFx.hungerEase) nsHab=adjustHunger(nsHab,-planFx.hungerEase);
+      if(planFx.discontentEase) nsHab={...nsHab,discontent:Math.max(0,(nsHab.discontent||0)-planFx.discontentEase)};
+      let gain=rnd(1,3)+skillPassiveBonus+(loungeSkillFx.passiveBonus||0)+(habTick.extraLbs||0)+(hallHab.evolvedLbs||0)+(planFx.extraLbs||0);
       const asceticMult=campusState?.asceticProtestWeek?0.88:1;
       const mirrorMult=campusState?.mirrorFastWeek?0.9:1;
       const habGain=1+(habTick.gainMult||0);
@@ -1753,6 +1761,7 @@ export default function HallPass(){
         gain+=evPassive;
       }
       let ns=processStudentGain(nsHab,gain,0);
+      ns=tickOutfitWeek(ns,dormState||createInitialDormState());
       ns=tickPhysicalTraits(ns,ownedSkills);
       ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms);
       ns=tickRelationshipDecay(ns);
@@ -1887,7 +1896,7 @@ export default function HallPass(){
       setDeviceTickQueue({ events: deviceTickEvents, index: 0 });
     }
     if(labState){
-      let nextLab=tickLabWeek(ensureNetwork(labState));
+      let nextLab=tickLabWeek(ensureNetwork(labState),{extraEase:labInstabilityEase(dormState||createInitialDormState(),ownedHallSkills||{})});
       if((nextLab.stage??1)>=2&&nextLab.network){
         const netTick=tickNetworkWeek(nextLab,updated,newWeek,Math.random);
         nextLab=netTick.labState;
@@ -2158,6 +2167,7 @@ export default function HallPass(){
       weeksAtRegionalExcess:weeksAtRegional,
       pharmacistCultStage:cultStage,
       facultyInformantRisk:informantRisk,
+      rumorChance:oppositionRumorChance(dormState||createInitialDormState(),ownedHallSkills||{}),
     });
     nextOpposition=oppResult.opposition;
     updated=applyOppositionStudentPatches(updated,oppResult.studentPatches);
@@ -6283,7 +6293,8 @@ export default function HallPass(){
         gainLbs:Math.round(r.weightGain),
         week,
       }):null;
-      const endingText=[tapLine,...specialLines,...milestoneLines,streamGrowth?.prose,endLine].filter(Boolean).join('\n\n');
+      const glow=renderStreamBeat('{stream.afterglow}',ctx);
+      const endingText=[tapLine,...specialLines,...milestoneLines,streamGrowth?.prose,endLine,glow].filter(Boolean).join('\n\n');
       const flavor=DESTINY_MONEY_FLAVOR[Math.floor(Math.random()*DESTINY_MONEY_FLAVOR.length)];
       fired.forEach((key,i)=>{
         const{label,emoji}=getStreamMilestoneLabel(key);
@@ -7942,6 +7953,10 @@ export default function HallPass(){
     if(a.supernaturalOnly&&!opposition?.supernatural?.actTriggered) return false;
     if(a.requiresUnlock&&!hasHallLoungeUnlock(ownedHall,a.requiresUnlock)) return false;
     if(a.requiresHallSkill&&!ownedHall[a.requiresHallSkill]) return false;
+    if(a.requiresRoomMin){
+      const need=a.requiresRoomMin;
+      if(roomCompletion(need.room,ownedHall).owned<(need.min||1)) return false;
+    }
     return true;
   });
 
@@ -8366,7 +8381,11 @@ export default function HallPass(){
                   <div style={{...C.secT,marginBottom:7}}>Conversation</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:12}}>
                     {DINNER_CONVERSATION
-                      .filter(conv=>!conv.requires||hasSkill(conv.requires))
+                      .filter(conv=>{
+                        if(conv.requires&&!hasSkill(conv.requires)) return false;
+                        if(conv.requiresDining&&!habitatFx(null,dormState||createInitialDormState(),ownedHall).diningConvBonus) return false;
+                        return true;
+                      })
                       .map(conv=>{
                         const used=dinnerEvent.conversationUsed.includes(conv.id);
                         return(
@@ -9181,6 +9200,7 @@ export default function HallPass(){
           students={students}
           week={week}
           initialPlan={weekPlan}
+          slotCount={weekPlanSlotCount(ownedHallSkills||{})}
           soundEnabled={soundEnabled}
           onCommit={(plan)=>{ setWeekPlan(plan); setWeekPlannerOpen(false); push('📋 Week plan locked — your slots are set.'); }}
           onClose={()=>setWeekPlannerOpen(false)}

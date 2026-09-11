@@ -152,3 +152,32 @@ registerPool('dinner.groupConv.floor_secret.l3', [
     `{ref.name} asks if you will knock tonight. {subject.name} answers by ordering dessert.`,
   ] },
 ]);
+
+registerPool('dinner.groupConv.terrace_dare', [
+  { when: {}, text: [
+    '{dinner.groupConv.terrace_dare.l1}\n{dinner.groupConv.terrace_dare.l2}\n{dinner.groupConv.terrace_dare.l3}',
+    '{dinner.groupConv.terrace_dare.l2}\n{dinner.groupConv.terrace_dare.l1}\n{dinner.groupConv.terrace_dare.l3}',
+    '{dinner.groupConv.terrace_dare.l1} {dinner.groupConv.terrace_dare.l3}\n{dinner.groupConv.terrace_dare.l2}',
+  ] },
+]);
+registerPool('dinner.groupConv.terrace_dare.l1', [
+  { when: {}, text: [
+    `You mention the terrace. {subject.name} and {ref.name} look at each other like a dare just got plated.`,
+    `"Roof next," you say. {subject.name} is already calculating portions for wind.`,
+    `The terrace comes up. Both of them want the view and the trays.`,
+  ] },
+]);
+registerPool('dinner.groupConv.terrace_dare.l2', [
+  { when: {}, text: [
+    `{ref.name}: "I want the wide chair."\n{subject.name}: "I want the extra tray."`,
+    `They bargain over who sits closer to the kitchen door. Appetite is the map.`,
+    `{subject.name} grins. "If we eat up there, Housing can't pretend they didn't see."`,
+  ] },
+]);
+registerPool('dinner.groupConv.terrace_dare.l3', [
+  { when: {}, text: [
+    `Dessert arrives. The terrace is already happening in their heads.`,
+    `They toast the roof. The toast is really about who gets softer in public.`,
+    `{ref.name} asks you to bring the leftover run upstairs next time. You do not say no.`,
+  ] },
+]);

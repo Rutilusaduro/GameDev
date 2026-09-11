@@ -17,6 +17,7 @@ export const FACULTY = [
         options:[
           {label:"Ask about her research", next:"research"},
           {label:"Mention the catering budget", next:"catering", affinity:2},
+          {label:"Mention night rounds", next:"nights", affinity:2},
           {label:"Ask about the marzipan drawer", next:"marzipan", minAffinity:30},
           {label:"Take your leave", end:true},
         ]},
@@ -40,6 +41,13 @@ export const FACULTY = [
           {label:"Back", next:"hub"},
         ]},
       yours:{ text:()=>`Hartley accepts your marzipan peach with the gravity of a state gift, and eats it with none. "You are a corrupting influence, RA," she says, dabbing her lips, eyes bright. "Do continue."`,
+        options:[ {label:"Back", next:"hub"} ]},
+      nights:{ text:()=>`"After hours," Hartley says, as if citing a source. "Your floor keeps Roman hours. I have walked past. The kitchen light is a kind of scholarship." She takes a marzipan she has not admitted to holding. "Continue the research."`,
+        options:[
+          {label:"\"The sources are hungry.\"", next:"nights2", affinity:4},
+          {label:"Back", next:"hub"},
+        ]},
+      nights2:{ text:()=>`She almost smiles. "Feed them. The floor already voted."`,
         options:[ {label:"Back", next:"hub"} ]},
     },
   },

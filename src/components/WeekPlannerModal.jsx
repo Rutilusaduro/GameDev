@@ -7,6 +7,7 @@ import {
   WEEK_PLAN_SLOT_COUNT,
   emptyWeekPlan,
   mealCostPreview,
+  padWeekPlan,
   planConflicts,
   previewPlannedSlot,
   defaultSlotLabel,
@@ -14,19 +15,35 @@ import {
 import { getStage } from '../gameData/stages.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
-export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true }) {
+export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClose, soundEnabled = true, slotCount = WEEK_PLAN_SLOT_COUNT }) {
   useEffect(() => { playHallPassSound('week', soundEnabled); }, [soundEnabled, week]);
   const visible = useMemo(
     () => (students || []).filter((s) => !s.hidden && s.lockState !== 'locked'),
     [students],
   );
-  const [plan, setPlan] = useState(() => initialPlan || emptyWeekPlan());
+  const [plan, setPlan] = useState(() => padWeekPlan(initialPlan || emptyWeekPlan(slotCount), slotCount));
   const [pickStudent, setPickStudent] = useState(null);
   const conflicts = useMemo(() => planConflicts(plan, students), [plan, students]);
+
+  useEffect(() => {
+    setPlan((prev) => padWeekPlan(prev, slotCount));
+  }, [slotCount]);
 
   const assignSlot = (slotIndex, studentId) => {
     setPlan((prev) => {
       const slots = prev.slots.map((s, i) => (i === slotIndex ? { ...s, studentId } : s));
+      return { ...prev, slots };
+    });
+  };
+
+  const cycleVenue = (slotIndex) => {
+    setPlan((prev) => {
+      const slots = prev.slots.map((s, i) => {
+        if (i !== slotIndex) return s;
+        const idx = PLANNER_VENUES.findIndex((v) => v.id === s.venueId);
+        const next = PLANNER_VENUES[(Math.max(0, idx) + 1) % PLANNER_VENUES.length];
+        return { ...s, venueId: next.id };
+      });
       return { ...prev, slots };
     });
   };
@@ -37,7 +54,7 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
         <div style={{ fontSize: 9, letterSpacing: 3, color: '#9050c8', marginBottom: 4 }}>WEEK PLANNER</div>
         <div style={{ fontSize: 15, fontWeight: 700, color: '#c090e8', marginBottom: 4 }}>Week {week} — place your attention</div>
         <div style={{ fontSize: 11, color: '#5a3888', marginBottom: 12 }}>
-          Each slot previews cost and interrupt risk. Unfilled slots show what you skip.
+          Each slot previews cost and interrupt risk. Unfilled slots show what you skip. Change Place to pick the venue.
         </div>
 
         {conflicts.length > 0 && (
@@ -55,13 +72,23 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
             const preview = previewPlannedSlot(student, { ...slot, slotIndex: i }, week);
             return (
               <div key={i} className="week-planner-slot-card" style={{ ...C.card, cursor: 'default', marginBottom: 0 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, gap: 8 }}>
                   <div style={{ fontWeight: 700, color: '#c090e8' }}>
                     Slot {i + 1} · {venue.glyph} {venue.label}
                   </div>
-                  <button type="button" style={{ ...C.smBtn, margin: 0, fontSize: 9 }} onClick={() => assignSlot(i, null)}>
-                    Clear
-                  </button>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button
+                      type="button"
+                      aria-label={`Change venue for slot ${i + 1}`}
+                      style={{ ...C.smBtn, margin: 0, fontSize: 9 }}
+                      onClick={() => cycleVenue(i)}
+                    >
+                      Place
+                    </button>
+                    <button type="button" style={{ ...C.smBtn, margin: 0, fontSize: 9 }} onClick={() => assignSlot(i, null)}>
+                      Clear
+                    </button>
+                  </div>
                 </div>
                 {student ? (
                   <>

@@ -585,6 +585,7 @@ export function processOppositionWeek(opposition, {
   weeksAtRegionalExcess = 0,
   pharmacistCultStage = 0,
   facultyInformantRisk = false,
+  rumorChance = 0.4,
 }) {
   let next = {
     ...opposition,
@@ -612,7 +613,7 @@ export function processOppositionWeek(opposition, {
 
   // Act I — rumors only while board dormant (§29.2)
   if (isBoardDormant(week, scrutiny, next)) {
-    if (rnd() < 0.4) {
+    if (rnd() < rumorChance) {
       logs.push(pickActIRumor(week, rnd));
       next = { ...next, meta: { ...next.meta, rumorCount: (next.meta.rumorCount || 0) + 1 } };
     }

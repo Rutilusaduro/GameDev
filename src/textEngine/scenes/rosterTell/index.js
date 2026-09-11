@@ -6,7 +6,7 @@
 // her size) rather than a number or bar — so scanning the roster reads
 // like reading a room. Steady-state, not event-reactive.
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 
@@ -16,6 +16,7 @@ registerPool('roster.tell', [
   { when: {}, text: [
     'settling into more of herself by the week',
     'softer than she was, and still going',
+    'taking up her chair like she means to keep it',
   ]},
 
   // ── corruption arc, expressed as behavior ──────────────────
@@ -50,6 +51,15 @@ registerPool('roster.tell', [
   { when: { stageMin: 9 }, weight: 2, text: [
     'a slow, monumental presence the room bends around',
   ]},
+]);
+
+registerModuleVariants('roster.tell', [
+  { when: { habitId: 'midnight_snack' }, weight: 3, text: [
+    'keeping a drawer that never quite stays shut',
+  ] },
+  { when: { habitId: 'scale_private' }, weight: 3, text: [
+    'checking a number she no longer pretends is private',
+  ] },
 ]);
 
 /** Terse at-a-glance tell for a roster tile. */

@@ -24,7 +24,7 @@ import { getMysteryTrustPulse } from '../gameData/mysteryTrust.js';
 // One roster tile. Extracted so the at-a-glance "tell" can be memoized —
 // it only re-rolls when her meaningful state (size/psyche/appetite/week)
 // changes, so it doesn't flicker on every parent re-render.
-function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled = true, tileIndex = 0 }) {
+function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled = true, tileIndex = 0, habitId = '' }) {
   const st = getStage(s.lbs);
   const evMeta = s.evolvedForm ? EVOLVED_FORM_META[s.evolvedForm] : null;
   const ascForm = getAscensionFormForStudent(s);
@@ -47,9 +47,9 @@ function RosterTile({ s, week, onOpen, onAmends, residentWithdrawn, soundEnabled
           if (m) return m;
         }
       }
-      return renderRosterTell(s, week, { globals: { discontentTier: discTier, residentWithdrawn: !!residentWithdrawn } });
+      return renderRosterTell(s, week, { globals: { discontentTier: discTier, residentWithdrawn: !!residentWithdrawn, habitId } });
     },
-    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, residentWithdrawn, (s.memories || []).length, week],
+    [s.id, st.id, s.corruption, s.hungerTier, s.addictionLevel, s.discontent, residentWithdrawn, habitId, (s.memories || []).length, week],
   );
   return (
     <div
@@ -175,7 +175,7 @@ export function RosterView({
           <p style={C.secT}>Residents — {visibleResidents.length} on your floor · avg {avgLbs} lbs</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(195px,1fr))', gridAutoRows: 'minmax(140px,auto)', gap: 8 }}>
             {visibleResidents.sort((a, b) => a.id - b.id).map((s, tileIndex) => (
-              <RosterTile key={s.id} s={s} week={week} tileIndex={tileIndex} soundEnabled={soundEnabled} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} residentWithdrawn={residentWithdrawn && !s.withdrawn} />
+              <RosterTile key={s.id} s={s} week={week} tileIndex={tileIndex} soundEnabled={soundEnabled} habitId={dormState?.nightRounds?.habits?.[s.id] || ''} onOpen={() => (onOpenStudent ? onOpenStudent(s.id) : (setSelectedId(s.id), setView('student')))} onAmends={onAmends} residentWithdrawn={residentWithdrawn && !s.withdrawn} />
             ))}
           </div>
         </div>

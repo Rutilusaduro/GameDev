@@ -155,6 +155,8 @@ export const CHALLENGES = [
     baseLbs: 9, staminaDrain: 13, speedDelta: 0.06, gainMult: 1.2, payoutMult: 1.18, roundCount: [5, 6], roundSeconds: 15 },
   { id: 'greedy_destroy', category: 'greedy', label: 'Table Destroyer', intensity: 'extreme',
     baseLbs: 11, staminaDrain: 16, speedDelta: 0.08, gainMult: 1.25, payoutMult: 1.4, roundCount: [6, 7], roundSeconds: 16 },
+  { id: 'late_nosh', category: 'sensual', label: 'Late-Night Nosh', intensity: 'normal',
+    baseLbs: 8, staminaDrain: 10, speedDelta: -0.1, gainMult: 1.08, payoutMult: 1.16, roundCount: [5, 6], roundSeconds: 19 },
 ];
 
 export const DESTINY_MONEY_FLAVOR = [

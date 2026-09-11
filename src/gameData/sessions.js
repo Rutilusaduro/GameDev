@@ -8,6 +8,7 @@ export const GROUP_CONVERSATIONS=[
   { id:"order_for_table", label:"Order another round", relBonus:3, fullnessEffect:8 },
   { id:"compare_rooms", label:"Let them compare rooms", relBonus:3, fullnessEffect:4 },
   { id:"floor_secret", label:"Share a floor secret", relBonus:5, fullnessEffect:-2 },
+  { id:"terrace_dare", label:"Dare them onto the terrace next", relBonus:4, fullnessEffect:6 },
 ];
 
 // RA CHARACTER CREATION (legacy exports — unused by Hall Pass setup; kept for tooling snapshots)
@@ -123,6 +124,9 @@ export const PRIVATE_VENUES=[
   {id:"her_space", label:"🛋️ Her Place",             minTier:3,
    desc:"Her territory. She is fully comfortable, there are snacks everywhere, and she never has to hold back.",
    intro:s=>`You bring the food to ${s.name} this time. She opens the door in her most comfortable clothes — the ones she only wears when she doesn't care. Which, increasingly, is most of the time.`},
+  {id:"night_wing", label:"🌙 Night Wing",           minTier:2,
+   desc:"The corridor after hours. Fridge light, unlatched doors, no witnesses but the two of you.",
+   intro:s=>`You meet ${s.name} in the night wing. She is already eating something she will not name. "You're on rounds," she says. "Good."`},
 ];
 
 export const PRIVATE_FOODS=[
@@ -143,6 +147,7 @@ export const PRIVATE_FOODS=[
   {id:"pr_snack_tray", label:"Late-Night Snack Tray",    course:"extra",   gain:[2,5], fullness:16, desc:"More food, no explanation needed. She's stopped asking questions."},
   {id:"pr_wine_cheese",label:"Wine & Cheese",            course:"extra",   gain:[2,4], fullness:12, desc:"It pairs well with everything she's already eaten. She agrees."},
   {id:"pr_chocolates", label:"Box of Chocolates",        course:"extra",   gain:[1,4], fullness:10, desc:"She doesn't even pick them up one at a time anymore."},
+  {id:"pr_night_tray", label:"Night-Wing Tray",          course:"extra",   gain:[3,6], fullness:18, desc:"Whatever the fridge was hiding, now on a plate, now in her lap."},
 ];
 
 export const SESSION_FULLNESS_STAGES=[
@@ -190,6 +195,9 @@ export const ENCOURAGEMENT_ACTIONS=[
   {id:"enc_habit", label:"Remind her what you saw after hours",
    line:(s)=>`"I remember last night," you say. ${s.name} colors, then reaches anyway. The secret is already spent; the food is not.`,
    toleranceBoost:16, relBonus:4, lbsBonus:[1,2]},
+  {id:"enc_scale", label:"Ask what the scale said",
+   line:(s)=>`You ask about the number. ${s.name} names it once, then eats like the number was an appetizer.`,
+   toleranceBoost:15, relBonus:3, lbsBonus:[1,2]},
 ];
 
 export const DINNER_VENUES = [
@@ -299,6 +307,7 @@ export const DINNER_CONVERSATION = [
   { id:"dorm_gossip", label:"Ask what the floor is eating", requires:null, gainBonus:[2,4], relBonus:4 },
   { id:"night_round_hint", label:"Mention you walk the hall after hours", requires:null, gainBonus:[1,3], relBonus:5 },
   { id:"room_upgrade_brag", label:"Promise her room a better chair", requires:null, gainBonus:[2,4], relBonus:4 },
+  { id:"dining_nook", label:"Talk about the hall dining nook", requiresDining:true, gainBonus:[2,5], relBonus:5 },
 ];
 
 

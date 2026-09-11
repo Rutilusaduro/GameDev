@@ -12,6 +12,7 @@ export const ACTIONS_HALL = [
   { id:"refeast_ritual", label:"👻 Refeast Ritual", cost:4, cal:[8000,16000], full:50, supernaturalOnly:true, desc:"Supernatural Act only — clears hunger curses, bites scarcity pressure, refeeds ascended residents." },
   { id:"leftover_run", label:"🍪 Midnight Leftover Run", cost:1, cal:[6000,11000], full:22, requiresUnlock:"snacks_free", desc:"Kitchen still warm. You walk trays door to door. Nobody pretends they were asleep." },
   { id:"movie_night", label:"🎞 Lounge Movie Night", cost:2, cal:[8000,15000], full:28, requiresHallSkill:"comfy_chairs", desc:"Blankets, a double feature, and a table that never quite empties. Residents sink and stay." },
+  { id:"terrace_spread", label:"🌇 Terrace Spread", cost:2, cal:[7000,13000], full:24, requiresRoomMin:{ room:'terrace', min:1 }, desc:"Roof air, warm trays, and nowhere to hide how much she takes. The terrace was built for this." },
 ];
 
 /** @deprecated use ACTIONS_HALL */
@@ -66,6 +67,7 @@ export const FLOOR_SCENES = [
       { label:"Bring something warm to eat",    effect:{gain:[4,7],mood:"content",rel:5}, result:s=>`You produce a warm pastry box and set one in front of her. She accepts it without breaking her peaceful expression and eats it slowly, savoring every bite.` },
       { label:"Give her a comfortable solo task",effect:{gain:[0,0],mood:"content",rel:3}, result:s=>`A quiet reading assignment, just for her. She settles into it completely. She's still there twenty minutes after floor check-in ends.` },
       { label:"Sit and chat",                   effect:{gain:[1,3],mood:"content",rel:8}, result:s=>`You sit on the edge of the desk and just talk. She opens up — what she's thinking about, where she wants to be. Easy, unhurried.` },
+      { label:"Walk her back with leftovers",   effect:{gain:[3,6],mood:"content",rel:6}, result:s=>`You send ${s.name} home with a box. She eats walking. The corridor gets the leftovers.` },
     ] },
   // ── ARCHETYPE-SPECIFIC ───────────────────────────────────────
   { id:"arch_cheerleader", target:"student", filter:s=>s.archetype==="cheerleader",
@@ -189,6 +191,7 @@ export const FLOOR_SCENES = [
       { label:"Basic spread — quick and filling",      effect:{gain:[3,6]},  result:"The floor descends on it efficiently. Gone in four minutes. The check-in resumes with noticeably better energy." },
       { label:"Premium spread — variety and excess",   effect:{gain:[5,10]}, result:"You went all out. Three kinds of pastries, imported chocolates, something local. The floor takes their time. The check-in ends fifteen minutes late." },
       { label:"Tasting exercise — they rate each one", effect:{gain:[4,8]},  result:"You frame it as a sensory evaluation exercise. They review each item with comically serious panel rigor. Everybody eats a lot." },
+      { label:"Keep the kitchen open after",           effect:{gain:[6,11]}, result:"You don't pack up. The kitchen stays lit. Residents return in waves until the trays look theoretical." },
     ] },
   { id:"hall_group_project", target:"hall",
     title:"Group Project Day",
@@ -245,5 +248,14 @@ export const FLOOR_SCENES = [
       { label:"Host a sit-and-eat christening", effect:{gain:[4,9]},  result:"You bring pastries 'to test the seats.' The test lasts an hour. The chairs pass. So do the pastries." },
       { label:"Let them claim spots",           effect:{gain:[2,6]},  result:"Territory is established by sitting. Snack bags appear as flags. The lounge has a new map." },
       { label:"File the work order as complete",effect:{gain:[1,3]},  result:"You sign. They sit. The floor feels finished in a way the old plastic never did." },
+    ] },
+  { id:"hall_terrace", target:"hall",
+    title:"Roof Weather",
+    text:"The terrace is warm enough to eat outside. Someone brought a blanket. Someone else brought three trays. Housing would call it occupancy. The floor calls it dinner.",
+    choices:[
+      { label:"Make it official picnic hours", effect:{gain:[5,10]}, result:"You declare the roof open. Plates travel. The view is campus; the subject is seconds." },
+      { label:"Keep it a quiet RA treat",      effect:{gain:[3,7]},  result:"You pick two residents and a loaded tray. The rest of the floor hears about it by morning." },
+      { label:"Leave the door propped",        effect:{gain:[4,8]},  result:"People find the terrace the way heat finds a window. The trays do not come back full." },
+      { label:"Log it as wellness air",        effect:{gain:[2,5]},  result:"You write 'outdoor programming.' They eat. The paperwork smiles again." },
     ] },
 ];
