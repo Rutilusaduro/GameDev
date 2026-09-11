@@ -15,75 +15,6 @@ registerModuleVariants('ff.setup', [
     'She drops into the chair like a raid seat. "Queue me."',
   ] },
 ]);
-registerModuleVariants('ff.harness', [
-  { when: { studentId: 18 }, weight: 6, text: [
-    'She buckles herself in with lab-hand certainty, already flushed',
-  ] },
-  { when: { studentId: 8 }, weight: 6, text: [
-    'She leans back and lets the straps finish the sentence',
-  ] },
-  { when: { studentId: 0 }, weight: 6, text: [
-    'She sits like a starter in new gear, straps clicking home',
-  ] },
-]);
-registerModuleVariants('ff.openDialogue', [
-  { when: { studentId: 18 }, weight: 6, text: [
-    `"Calibration first. Then we exceed it."`,
-  ] },
-  { when: { studentId: 8 }, weight: 6, text: [
-    `"Do it."`,
-  ] },
-  { when: { studentId: 2 }, weight: 6, text: [
-    `"If this is a take, make it count."`,
-  ] },
-  { when: { studentId: 16 }, weight: 6, text: [
-    `"For the record, this is still a study."`,
-  ] },
-]);
-registerModuleVariants('ff.machineBeat', [
-  { when: { studentId: 18 }, weight: 5, text: [
-    'She watches the pump the way she watches a graph. Then she stops watching and just takes it.',
-  ] },
-  { when: { studentId: 8 }, weight: 5, text: [
-    'The pump finds her rhythm. She goes still and lets it work.',
-  ] },
-  { when: { studentId: 5 }, weight: 5, text: [
-    'She rides the pulses like a buff she queued on purpose.',
-  ] },
-]);
-registerModuleVariants('ff.intakeClause', [
-  { when: { studentId: 8 }, weight: 6, text: [
-    'each pulse disappearing into her without commentary',
-  ] },
-  { when: { studentId: 10 }, weight: 6, text: [
-    'paste landing like a sauce she already rated and accepted',
-  ] },
-  { when: { studentId: 15 }, weight: 6, text: [
-    'tribute sliding down as if the machine finally learned manners',
-  ] },
-]);
-registerModuleVariants('ff.swellBeat', [
-  { when: { studentId: 8 }, weight: 6, text: [
-    'Her middle arrives in visible waves. She keeps her hands in her lap and lets it.',
-  ] },
-  { when: { studentId: 0 }, weight: 6, text: [
-    'Her belly rounds like a scoreboard ticking up. She watches it win.',
-  ] },
-  { when: { studentId: 2 }, weight: 6, text: [
-    'Her stomach posts in real time. She does not crop the swell.',
-  ] },
-]);
-registerModuleVariants('ff.closeBeat', [
-  { when: { studentId: 18 }, weight: 6, text: [
-    'When it stops, she is heavier and already thinking about the next trial.',
-  ] },
-  { when: { studentId: 8 }, weight: 6, text: [
-    'The harness loosens on more of her. She stays seated. Warm. Kept.',
-  ] },
-  { when: { studentId: 13 }, weight: 6, text: [
-    'She blesses the extra when the straps open. "Look at you," she tells herself.',
-  ] },
-]);
 registerModuleVariants('ff.closeDialogue', [
   { when: { studentId: 18 }, weight: 6, text: [
     `"Exceeds the model." Palm on the new swell. "Again. Soon."`,
@@ -128,28 +59,6 @@ registerModuleVariants('session.relWarmth', [
   ] },
   { when: { studentId: 11, relationship: [3] }, weight: 6, text: [
     'She feeds you care and takes it back as dinner. Mutual self-care.',
-  ] },
-]);
-
-// ── leftover campus locale ────────────────────────────────────
-registerModuleVariants('campus.localeIntro', [
-  { when: { studentId: 8, campusLocale: 'hallway' }, weight: 6, text: [
-    'The hallway goes quiet around her before she asks it to.',
-  ] },
-  { when: { studentId: 0, campusLocale: 'gym' }, weight: 6, text: [
-    'The gym still looks like her scoreboard, even with the extra softness.',
-  ] },
-  { when: { studentId: 10, campusLocale: 'cafeteria' }, weight: 6, text: [
-    'The dining hall smells like a kitchen that remembered her name.',
-  ] },
-  { when: { studentId: 5, campusLocale: 'dorm_room' }, weight: 6, text: [
-    'Her dorm: hoodies, empty bags, the chair already claimed.',
-  ] },
-  { when: { studentId: 1, campusLocale: 'lecture_hall' }, weight: 6, text: [
-    'Lecture rows wait like footnotes. Her seat already knows her hips.',
-  ] },
-  { when: { studentId: 15, campusLocale: 'stairwell' }, weight: 6, text: [
-    'The stairwell feels like a hunting blind. Concrete, echo, snack potential.',
   ] },
 ]);
 
