@@ -20,17 +20,17 @@ import { aggregateHallLoungeSkillEffects, buyHallLoungeSkill } from '../src/game
 import { createInitialPlayer } from '../src/gameData/player.js';
 import { clothingStateForStage } from '../src/gameData/textContext.js';
 import { pickHearingEnding, REMOVAL_HEARING, extraHearingChoices, hearingChoicesForPhase } from '../src/gameData/oppositionHearings.js';
-import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraCgActions, extraHiveActions } from '../src/gameData/mechanicDepth.js';
+import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraCgActions, extraHiveActions, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs } from '../src/gameData/mechanicDepth.js';
 import { extraSalonServiceChoices, salonChoicesForOwned, startSalonSession, salonPickMenu, salonServiceChoice } from '../src/gameData/chloeSalon.js';
 import { extraStudioActions, extraFieldLocations, studioActionsForOwned, fieldLocationsForOwned } from '../src/gameData/fionaGallery.js';
 import { extraMinigameChoices, minigameChoicesForPhase, computeMinigameOutcome } from '../src/gameData/evolvedMinigames.js';
 import { extraAcquisitionChoices, acquisitionChoicesForOwned, startChemSession } from '../src/gameData/pharmacistIngredients.js';
 import { extraCultRoutes, cultRoutesForOwned, applyCultDistribution } from '../src/gameData/pharmacistCult.js';
-import { extraContestActions, extraSumoCornerFeeds, contestActionsForOwned, sumoCornerFeedsForOwned } from '../src/gameData/miniGames.js';
-import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned, extraEvolvedChoices, evolvedChoicesForPhase, extraFairAfterparty } from '../src/gameData/evolvedFloorExtras.js';
+import { extraContestActions, extraSumoCornerFeeds, contestActionsForOwned, sumoCornerFeedsForOwned, extraCollabFoods, collabFoodsForOwned, extraRecordingFoods, recordingFoodsForOwned, COLLAB_STREAM_FOODS } from '../src/gameData/miniGames.js';
+import { extraHomeroomChoices, homeroomChoicesForPhase, extraWifeLessons, wifeLessonsForOwned, extraEvolvedChoices, evolvedChoicesForPhase, extraFairAfterparty, extraActivityFollowups, sessionFoodsForOwned } from '../src/gameData/evolvedFloorExtras.js';
 import { extraCultivatorChoices, cultivatorChoicesForJunction, extraCultivatorReneeLbs, RECIPES } from '../src/gameData/cultivator.js';
 import { extraItemUseModes, itemUseModesForOwned } from '../src/gameData/items.js';
-import { HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/evolvedForms.js';
+import { HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS } from '../src/gameData/evolvedForms.js';
 import { extraIntimacyChoices, intimacyChoicesForPhase } from '../src/gameData/intimacy.js';
 import { extraStreamRounds, pickRoundCount } from '../src/gameData/streaming.js';
 import { resolveWeekPlan, plannerSlotCount, venuePayoffHint } from '../src/gameData/weekPlanner.js';
@@ -39,6 +39,9 @@ import { FLOOR_SCENES } from '../src/gameData/floorEvents.js';
 import '../src/textEngine/modules.js';
 import '../src/textEngine/scenes/overhaul/index.js';
 import { renderFloorSceneText } from '../src/textEngine/scenes/campusEvent/floorCheckInIntegration.js';
+import { extraHaveAChatChoices, haveAChatChoicesForPhase, HAVE_A_CHAT_SCENES } from '../src/gameData/communityResearcher.js';
+import { extraHuntMoves, physicalMovesForOwned } from '../src/gameData/lilith.js';
+import { renderEvolvedActivity } from '../src/textEngine/scenes/evolved/index.js';
 
 const missing = assertSkillRoomCoverage();
 assert.equal(missing.length, 0, `unmapped skills: ${missing.join(', ')}`);
@@ -121,7 +124,7 @@ const rawEnd = pickHearingEnding(REMOVAL_HEARING, ['feast']);
 const covered = pickHearingEnding(REMOVAL_HEARING, ['feast'], 2);
 assert.ok(covered.scrutinyDelta < rawEnd.scrutinyDelta, 'hearing cover lowers scrutiny');
 
-assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 37, 'depth inventory covers live systems');
+assert.ok(MECHANIC_DEPTH_INVENTORY.length >= 41, 'depth inventory covers live systems');
 for (const row of MECHANIC_DEPTH_INVENTORY) {
   assert.ok(row.after > row.before, `${row.id} after (${row.after}) must beat before (${row.before})`);
   assert.ok(row.hook, `${row.id} missing hook`);
@@ -214,6 +217,31 @@ assert.ok(extraCultivatorChoices('milkshake', 0, { snack_station: true }).some((
 assert.ok(cultivatorChoicesForJunction('milkshake', 0, { snack_station: true }).length > RECIPES.milkshake.junctions[0].choices.length);
 assert.equal(extraCultivatorChoices('milkshake', 1, { snack_station: true }).length, 0);
 assert.ok(extraCultivatorReneeLbs({ artisan_bakery: true }) >= 2);
+
+assert.ok(extraActivityFollowups({ snack_station: true }).some((e) => e.id === 'kitchen_seconds'));
+assert.ok(extraActivityFollowups({ comfy_chairs: true }).some((e) => e.id === 'lounge_linger'));
+assert.ok(sessionFoodsForOwned({ dinner_basic: true }).some((f) => f.id === 'dining_plate'));
+assert.ok(sessionFoodsForOwned({ snack_station: true }).length > SESSION_FOOD_ITEMS.length);
+assert.ok(extraHaveAChatChoices(0, 0, { snack_station: true }).some((c) => c.id === 'kitchen_brief'));
+assert.equal(extraHaveAChatChoices(0, 1, { snack_station: true }).length, 0, 'have-a-chat extras stay on phase 0');
+assert.ok(haveAChatChoicesForPhase(0, 0, { snack_station: true }).length > HAVE_A_CHAT_SCENES[0].phases[0].choices.length);
+assert.ok(extraFeastKitchenLbs(allOwned) > 0, 'feast kitchen fill pays');
+assert.ok(extraFairTrainingLbs({ snack_station: true }) >= 3);
+assert.ok(extraLabKitchenLbs({ device_bay: true }) >= 3);
+assert.ok(extraCaseStudyLbs({ snack_station: true }) >= 3);
+assert.ok(extraHuntMoves({ snack_station: true }).kitchen_scent);
+assert.ok(Object.keys(physicalMovesForOwned({ comfy_chairs: true })).length > Object.keys(physicalMovesForOwned({})).length);
+assert.ok(extraCollabFoods(0, { snack_station: true }).some((f) => f.id === 'kitchen_leftovers'));
+assert.ok(collabFoodsForOwned(0, { artisan_bakery: true }).length > COLLAB_STREAM_FOODS[0].length);
+assert.ok(extraRecordingFoods({ luxury_pantry: true }).includes('food_kitchen'));
+assert.ok(recordingFoodsForOwned({ snack_station: true }).includes('food_kitchen'));
+assert.equal(recordingFoodsForOwned({}).includes('food_kitchen'), false);
+
+const activityText = renderEvolvedActivity({
+  id: 0, name: 'Brittany', lbs: 258, startLbs: 118, evolvedForm: 'sumo', relationship: 40, corruption: 1,
+}, 3, { formId: 'sumo', stageIdx: 0, v2DepthChance: 0 });
+assert.ok(activityText && !activityText.includes('{unresolved}'), `evolved activity pool should resolve, got: ${String(activityText).slice(0, 160)}`);
+assert.ok(activityText.length > 40, 'evolved activity scene should be longer than a stub');
 
 const extras = extraFloorChoices({ snack_station: true, comfy_chairs: true, dinner_basic: true });
 assert.equal(extras.length, 2, 'extra check-in choices cap at 2');

@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
+import { recordingFoodsForOwned } from '../gameData/miniGames.js';
 import { renderRecordingOpening, renderRecordingTakeIntro } from '../textEngine/scenes/recordingSession/index.js';
 
-export function RecordingSessionModal({ recordingSessionState, students, week = 1, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup, soundEnabled = true }){
+export function RecordingSessionModal({ recordingSessionState, students, week = 1, setRecordingSessionState, makeRecordingChoice, wrapRecordingSession, oneMoreTake, closeRecordingSession, dismissRecordingChoicePopup, soundEnabled = true, owned = {} }){
         const rs=recordingSessionState;
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, rs?.studentId, rs?.phase, rs?.takeNum]);
         const kylie=students.find(st=>st.id===rs.studentId);
@@ -23,13 +24,14 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
           food_heavy:'🍖 Heavy food — dense and filling',
           food_build:'🥗 Start light, build to heavier',
           food_hers:'💜 Let her choose what she wants',
+          food_kitchen:'🍳 Hall kitchen leftovers — still warm from the floor',
           pace_push:'⚡ Push her — more, faster',
           pace_settle:'🌊 Let her set the pace',
           pace_surge:'🌀 Pause — let it land — then surge',
         };
         const stepLabels=['📷 Camera angle','🍽️ Food','⏱️ Pacing'];
         const angleChoices=['angle_low','angle_wide','angle_close'];
-        const foodChoices=['food_heavy','food_build','food_hers'];
+        const foodChoices=recordingFoodsForOwned(owned);
         const paceChoices=['pace_push','pace_settle','pace_surge'];
         const stepChoices=[angleChoices,foodChoices,paceChoices];
         const timeBar='█'.repeat(rs.timeLeft)+'░'.repeat(3-rs.timeLeft);

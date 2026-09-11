@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { C } from '../styles.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
-import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, PHYSICAL_MOVES, getEffectiveDifficulty, CLUE_INVESTIGATION } from '../gameData/lilith.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MAP, HUNT_NODE_ACCESS, HUNT_MEN, physicalMovesForOwned, getEffectiveDifficulty, CLUE_INVESTIGATION } from '../gameData/lilith.js';
 import { aibMemberToHuntTarget } from '../gameData/lilithAibHunt.js';
 import { getStage } from '../gameData/stages.js';
 
@@ -42,7 +42,7 @@ export function LilithClueModal({ lilithClueModal, investigateClue, setLilithClu
         );
 }
 
-export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState, navigateHunt, deliveryScene, closeHunt, approachMan, consumeMan, encounterSetMode, makeReply, makeSeduction, soundEnabled = true }){
+export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState, navigateHunt, deliveryScene, closeHunt, approachMan, consumeMan, encounterSetMode, makeReply, makeSeduction, soundEnabled = true, owned = {} }){
         const{textLog,currentNode,encounter,deliveryMode,deliveryDone,aibTarget}=lilithHuntState;
         useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, currentNode, !!encounter]);
         const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return null;
@@ -113,7 +113,7 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
           }
         }
 
-        const hasSeduce=Object.values(PHYSICAL_MOVES).some(m=>lilith.lbs>=m.unlockLbs);
+        const hasSeduce=Object.values(physicalMovesForOwned(owned)).some(m=>lilith.lbs>=m.unlockLbs);
         const btnBase={borderRadius:5,cursor:"pointer",textAlign:"left",lineHeight:1.4,fontFamily:"inherit",width:"100%",fontSize:12};
 
         return(
@@ -238,7 +238,7 @@ export function LilithHuntModal({ lilithHuntState, students, setLilithHuntState,
                 </>)}
                 {/* Seducing — physical moves (unlocked only) */}
                 {encounter&&encounter.mode==='seducing'&&(<>
-                  {Object.entries(PHYSICAL_MOVES).filter(([,m])=>lilith.lbs>=m.unlockLbs).map(([id,m])=>(
+                  {Object.entries(physicalMovesForOwned(owned)).filter(([,m])=>lilith.lbs>=m.unlockLbs).map(([id,m])=>(
                     <button key={id} type="button" className="lilith-choice-row" onClick={()=>makeSeduction(id)} style={{...btnBase,background:"#200040",border:`1px solid ${accent}60`,color:"#e080e0",padding:"9px 14px",fontWeight:600}}>
                       {m.label}
                     </button>

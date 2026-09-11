@@ -44,3 +44,21 @@ export function renderEvolvedEventProse(text, student, week = 1, opts = {}) {
   }
   return out;
 }
+
+/** Leftover evolved-activity path: slot-composed scene, form-keyed. */
+export function renderEvolvedActivity(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: {
+      featureId: opts.formId || student?.evolvedForm || 'evolved',
+      stageIdx: opts.stageIdx ?? null,
+      ...(opts.globals || {}),
+    },
+    ...opts,
+  });
+  const scene = render('{evolved.activity.scene}', ctx)?.trim();
+  if (!scene || scene.includes('{unresolved}')) return '';
+  return appendV2Depth(scene, 'evolved', ctx, opts.v2DepthChance ?? 0.35);
+}

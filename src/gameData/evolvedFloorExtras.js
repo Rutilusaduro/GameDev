@@ -1,5 +1,5 @@
 // Floor-skill extras for hall kitchen (Daisy), wife lessons (MJ), evolved events, fair day.
-import { EVOLVED_EVENTS, WL_LESSONS } from './evolvedForms.js';
+import { EVOLVED_EVENTS, WL_LESSONS, SESSION_FOOD_ITEMS } from './evolvedForms.js';
 
 export function extraHomeroomChoices(actKey, phaseIdx = 0, owned = {}) {
   const extras = [];
@@ -118,4 +118,56 @@ export function extraFairAfterparty(owned = {}) {
     });
   }
   return extras.slice(0, 2);
+}
+
+export function extraActivityFollowups(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({
+      id: 'kitchen_seconds',
+      label: 'Hall kitchen seconds',
+      result: `She follows you to the floor kitchen and eats standing. The extra goes down warm. She checks her middle like a scoreboard.`,
+      lbs: 4,
+      rel: 2,
+    });
+  }
+  if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
+    extras.push({
+      id: 'lounge_linger',
+      label: 'Linger in the lounge',
+      result: `She takes the wide chair after. Softness spreads. The lounge keeps the heat of her a little longer than the activity required.`,
+      lbs: 1,
+      rel: 5,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function extraSessionFoods(owned = {}) {
+  const extras = [];
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.push({
+      id: 'kitchen_ramen',
+      label: 'Hall kitchen ramen',
+      icon: '🍲',
+      gain: 12,
+      focusRestore: 18,
+      fullnessCost: 24,
+    });
+  }
+  if (owned.dinner_basic || owned.legendary_host || owned.dinner_casual) {
+    extras.push({
+      id: 'dining_plate',
+      label: 'Dining leftover plate',
+      icon: '🍽️',
+      gain: 16,
+      focusRestore: 8,
+      fullnessCost: 36,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function sessionFoodsForOwned(owned = {}) {
+  return [...SESSION_FOOD_ITEMS, ...extraSessionFoods(owned)];
 }

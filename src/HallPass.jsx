@@ -14,8 +14,8 @@ import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
 import { EVOLVED_ACTIVITY_TEXT, EVOLVED_ACTIVITY_META, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, SESSION_NPC_LINES, SESSION_PAYOFF_TEXT, WL_CONFIG, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
-import { homeroomChoicesForPhase, wifeLessonsForOwned, extraEvolvedChoices, extraFairAfterparty } from './gameData/evolvedFloorExtras.js';
-import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, extraContestActions, extraSumoCornerFeeds, COLLAB_STREAM_FOODS, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
+import { homeroomChoicesForPhase, wifeLessonsForOwned, extraEvolvedChoices, extraFairAfterparty, extraActivityFollowups, sessionFoodsForOwned } from './gameData/evolvedFloorExtras.js';
+import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, extraContestActions, extraSumoCornerFeeds, collabFoodsForOwned, COLLAB_BLOB_ANNOUNCEMENT, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS } from './gameData/miniGames.js';
 import { CG_STAGE_KEYS } from './gameData/competitiveGainerText.js';
 import { cgDrive, cgDriveDelta, migrateCompetitiveGainerState } from './gameData/competitiveGainerState.js';
 import { subscribeOpenFieldNotes } from './gameData/hallPassEvents.js';
@@ -55,12 +55,12 @@ import { ELARA_ID, availableElaraQuests, startElaraQuest, advanceElaraQuestAtNod
 import { getExplorationFind } from './gameData/campusIngredients.js';
 import { availableSecretsAtNode } from './gameData/campusSecrets.js';
 import { HOSTESS_HANGOUTS, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS, generateFeastLog } from './gameData/chapterHostess.js';
-import { LILITH_ID, HUNT_NODES, HUNT_MEN, PHYSICAL_MOVES, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
+import { LILITH_ID, HUNT_NODES, HUNT_MEN, physicalMovesForOwned, drawReplies, getGuyLine, seduceSuccessChance, WILLPOWER_START, MAX_APPREHENSION, getEffectiveDifficulty, getConsumeText, DELIVERY_SCENE, CLUE_FEAST_LINE, LILITH_PASSIVE_GAIN } from './gameData/lilith.js';
 import { TESTER_NAMES, TESTER_START_LBS, TESTER_STAGE_LBS, HARVEST_GAIN, FAT_BAR_CAP, DIGEST_WEEKS, SUSPICION_CARRY_FRACTION, RECIPES, extraCultivatorReneeLbs, getStageUpText, getPlannedVignette, getEmergencyVignette, getGrowthVignette } from './gameData/cultivator.js';
 import { renderCultivatorIntro, renderCultivatorChoice, renderCultivatorReaction } from './textEngine/scenes/cultivator/index.js';
 import { renderHuntNode, renderHuntTarget, renderLilithFeast, renderLilithDeliveryIntro } from './textEngine/scenes/hunt/index.js';
 import { renderFloorSceneText, renderFloorChoiceResult, renderFloorHallText } from './textEngine/scenes/campusEvent/index.js';
-import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES } from './gameData/communityResearcher.js';
+import { getSwimmerTier, CASE_STUDY_PAIRS, getSuspicionBracket, getFinalReviewText, HAVE_A_CHAT_SCENES, extraHaveAChatChoices } from './gameData/communityResearcher.js';
 import { getAttitude, getEvolvedActivityStageIdx, rnd, generateFloorCheckIn, pharmacistTextOpts } from './utils/gameHelpers.js';
 import {
   pickInterruptStudent, feedResolvesHunger, talkCalmsHunger,
@@ -101,7 +101,7 @@ import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
 import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan } from './gameData/weekPlanner.js';
-import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs } from './gameData/mechanicDepth.js';
+import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs } from './gameData/mechanicDepth.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -202,6 +202,7 @@ import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
 import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { EvolvedActivityModal } from './components/EvolvedActivityModal.jsx';
+import { renderEvolvedActivity } from './textEngine/scenes/evolved/index.js';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
@@ -2541,6 +2542,8 @@ export default function HallPass(){
     const actArr=EVOLVED_ACTIVITY_TEXT[s.evolvedForm];
     const rawText=actArr?actArr[stageIdx]:null;
     let text=rawText?(typeof rawText==='function'?rawText(s):rawText):"She's in her element.";
+    const modular=renderEvolvedActivity(s,week,{formId:s.evolvedForm,stageIdx});
+    if(modular) text=modular;
     if(s.evolvedForm==='eating_streamer'){
       const offCtx=createContext({subject:s,week});
       offCtx.d.brand=s.brand;
@@ -2571,7 +2574,18 @@ export default function HallPass(){
       if(pressureFx.scrutinyDelta) addScrutiny(pressureFx.scrutinyDelta);
     }
     push(`✦ ${s.name} — ${meta.label}: +${gain} lbs · +${relGain} rel`);
-    setEvolvedActivityModal({student:s,stageIdx,text});
+    setEvolvedActivityModal({student:s,stageIdx,text,floorFollowups:true});
+  };
+
+  const applyActivityFollowup=(id)=>{
+    const modal=evolvedActivityModal;
+    if(!modal?.floorFollowups||modal.followupUsed) return;
+    const extra=extraActivityFollowups(ownedHallSkills||{}).find(e=>e.id===id);
+    if(!extra) return;
+    const s=modal.student; if(!s) return;
+    setStudents(prev=>prev.map(st=>st.id!==s.id?st:processStudentGain(st,extra.lbs||0,extra.rel||0)));
+    setEvolvedActivityModal(prev=>({...prev,followupUsed:id,text:`${prev.text}\n\n${extra.result}`}));
+    push(`✦ ${s.name} — ${extra.label}: +${extra.lbs||0} lbs · +${extra.rel||0} rel`);
   };
 
   const makeEvolvedEventChoice=(choiceId)=>{
@@ -3829,8 +3843,10 @@ export default function HallPass(){
     const{stageIdx,feastGainTotal,feastRelTotal,pendingSisterGains,pendingCamilleGain,sisters,camille}=chapterHostessState;
     const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
     if(tiffany){
-      setStudents(prev=>prev.map(s=>s.id===tiffany.id?{...s,lbs:s.lbs+feastGainTotal,relationship:Math.min(100,s.relationship+feastRelTotal)}:s));
-      push(`✦ ${tiffany.name} — Wednesday Feast: +${feastGainTotal} lbs · +${feastRelTotal} rel`);
+      const extra=extraFeastKitchenLbs(ownedHallSkills||{});
+      const tiffanyLbs=(feastGainTotal||0)+extra;
+      setStudents(prev=>prev.map(s=>s.id===tiffany.id?{...s,lbs:s.lbs+tiffanyLbs,relationship:Math.min(100,s.relationship+feastRelTotal)}:s));
+      push(`✦ ${tiffany.name} — Wednesday Feast: +${tiffanyLbs} lbs · +${feastRelTotal} rel`);
     }
     const newStageIdx=Math.min(5,stageIdx+1);
     const newPrepDays=newStageIdx<6?3:0;
@@ -3976,7 +3992,7 @@ export default function HallPass(){
   const makeSeduction=(moveId)=>{
     if(!lilithHuntState?.encounter) return;
     const lilith=students.find(s=>s.id===LILITH_ID); if(!lilith) return;
-    const move=PHYSICAL_MOVES[moveId]; if(!move) return;
+    const move=physicalMovesForOwned(ownedHallSkills||{})[moveId]; if(!move) return;
     const{encounter}=lilithHuntState;
     if(encounter.won||encounter.failed||encounter.consumed) return;
     const stageId=getStage(lilith.lbs).id;
@@ -4598,7 +4614,8 @@ export default function HallPass(){
     const act=LAB_SESSION_ACTIVITY;
     if(ap<act.apCost){ push(`⚠️ Need ${act.apCost} AP.`); return; }
     setAp(a=>a-act.apCost);
-    const gain=rnd(...act.taliaGain);
+    const extra=extraLabKitchenLbs(ownedHallSkills||{});
+    const gain=rnd(...act.taliaGain)+extra;
     const ns=processStudentGain(s,gain,8);
     setStudents(prev=>prev.map(st=>st.id===s.id?ns:st));
     const prevStage=labState.stage??1;
@@ -5191,7 +5208,8 @@ export default function HallPass(){
     const pair=CASE_STUDY_PAIRS.find(p=>p.id===crs.activePairId);
     const [gMin,gMax]=pair?.gainRange||[3,8];
     setAp(a=>a-1);
-    const gain=rnd(gMin,gMax);
+    const extra=extraCaseStudyLbs(ownedHallSkills||{});
+    const gain=rnd(gMin,gMax)+extra;
     setStudents(prev=>prev.map(st=>st.id===s.id?{...processStudentGain(st,gain,10)}:st));
     setCommunityResearcherState(prev=>prev?{
       ...prev,
@@ -5226,7 +5244,12 @@ export default function HallPass(){
   const makeHaveAChatChoice=(choiceId)=>{
     const crs=communityResearcherState; if(!crs) return;
     const scene=HAVE_A_CHAT_SCENES[crs.chatMemberIdx]; if(!scene) return;
-    const newHist=[...crs.chatHistory,choiceId];
+    const phase=scene.phases?.[crs.chatPhaseIdx];
+    const extra=extraHaveAChatChoices(crs.chatMemberIdx,crs.chatPhaseIdx,ownedHallSkills||{}).find(c=>c.id===choiceId);
+    const choice=extra||phase?.choices?.find(c=>c.id===choiceId);
+    if(!choice) return;
+    const recorded=choice.winFlag||choiceId;
+    const newHist=[...crs.chatHistory,recorded];
     if(crs.chatPhaseIdx<scene.phases.length-1){
       setCommunityResearcherState(prev=>prev?{...prev,chatHistory:newHist,chatPhaseIdx:prev.chatPhaseIdx+1}:null);
       return;
@@ -5264,7 +5287,7 @@ export default function HallPass(){
   const pickSessionFood=(foodId)=>{
     if(!rankedFeedeeState||rankedFeedeeState.done) return;
     playHallPassSound('click', soundEnabled);
-    const food=SESSION_FOOD_ITEMS.find(f=>f.id===foodId); if(!food) return;
+    const food=sessionFoodsForOwned(ownedHallSkills||{}).find(f=>f.id===foodId); if(!food) return;
     const{studentId,stageIdx,focus,maxFocus,fullness,maxFullness,gain,turn,log,raeDelivered}=rankedFeedeeState;
     const s=students.find(st=>st.id===studentId); if(!s) return;
     // Decay focus first, then apply food
@@ -5726,7 +5749,7 @@ export default function HallPass(){
   const startCollabStream=(kylieId,partnerId,stageIdx,history)=>{
     const kylie=students.find(st=>st.id===kylieId); if(!kylie) return;
     const partner=students.find(st=>st.id===partnerId); if(!partner) return;
-    const tierFoods=(COLLAB_STREAM_FOODS[stageIdx]||COLLAB_STREAM_FOODS[0]).map((f,i)=>({...f,consumed:false,key:i,tierUnlocked:i===0}));
+    const tierFoods=(collabFoodsForOwned(stageIdx,ownedHallSkills||{})).map((f,i)=>({...f,consumed:false,key:i,tierUnlocked:i===0}));
     const partnerStageAtStart=getStage(partner.lbs).id;
     const initQual=history&&history.includes("both_loaded")?65:50;
     const initKylieGain=history&&history.includes("both_loaded")?8:0;
@@ -6423,9 +6446,13 @@ export default function HallPass(){
     // gains
     const [mjLo,mjHi]=FAIR_TRAINING_CONFIG.gainRanges.MJ;
     const [cLo,cHi]=FAIR_TRAINING_CONFIG.gainRanges.collaborator;
-    const mjGain=rnd(mjLo,mjHi), cGain=rnd(cLo,cHi);
-    processStudentGain(mj,mjGain,3);
-    if(collab.id!==mj.id) processStudentGain(collab,cGain,2);
+    const extra=extraFairTrainingLbs(ownedHallSkills||{});
+    const mjGain=rnd(mjLo,mjHi)+extra, cGain=rnd(cLo,cHi)+extra;
+    setStudents(prev=>prev.map(st=>{
+      if(st.id===mj.id) return processStudentGain(st,mjGain,3);
+      if(collab.id!==mj.id&&st.id===collab.id) return processStudentGain(st,cGain,2);
+      return st;
+    }));
     push(`🎡 Fair training — ${mj.name} × ${collabKey}: MJ +${mjGain} lbs, ${collabKey} +${cGain} lbs, Fair Pride +${prideBoost}`);
     setFairTrainingState(prev=>({...prev,
       sessionsThisCycle:prev.sessionsThisCycle+1,
@@ -9444,7 +9471,7 @@ export default function HallPass(){
                   </div>
                   {/* Food menu */}
                   <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
-                    {SESSION_FOOD_ITEMS.map(food=>{
+                    {sessionFoodsForOwned(ownedHallSkills||{}).map(food=>{
                       const wouldOverfill=fullness+food.fullnessCost>maxFullness;
                       const netFocus=food.focusRestore-15;
                       return(
@@ -9549,7 +9576,7 @@ export default function HallPass(){
       {lilithClueModal&&<LilithClueModal lilithClueModal={lilithClueModal} investigateClue={investigateClue} setLilithClueModal={setLilithClueModal} confirmInvestigation={confirmInvestigation} soundEnabled={soundEnabled}/>}
 
       {/* ── LILITH — FEASTING BEAUTY (TEXT ADVENTURE) ── */}
-      {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction} soundEnabled={soundEnabled}/>}
+      {lilithHuntState&&<LilithHuntModal lilithHuntState={lilithHuntState} students={students} setLilithHuntState={setLilithHuntState} navigateHunt={navigateHunt} deliveryScene={deliveryScene} closeHunt={closeHunt} approachMan={approachMan} consumeMan={consumeMan} encounterSetMode={encounterSetMode} makeReply={makeReply} makeSeduction={makeSeduction} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── SUMO MATCH MINI-GAME MODAL ── */}
       {sumoMatchState&&<SumoMatchModal sumoMatchState={sumoMatchState} students={students} week={week} sumoPlayMove={sumoPlayMove} sumoCornerFeed={sumoCornerFeed} sumoStartNextBout={sumoStartNextBout} setSumoMatchState={setSumoMatchState} closeSumoMatch={closeSumoMatch} dismissSumoPopup={dismissSumoPopup} owned={ownedHallSkills||{}} soundEnabled={soundEnabled}/>}
@@ -9570,7 +9597,7 @@ export default function HallPass(){
       {collabStreamState&&<CollabStreamModal collabStreamState={collabStreamState} students={students} doCollabAction={doCollabAction} closeCollabStream={closeCollabStream} dismissCollabPopup={dismissCollabPopup} soundEnabled={soundEnabled}/>}
 
       {/* ── RECORDING SESSION MODAL ── */}
-      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} week={week} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup} soundEnabled={soundEnabled}/>}
+      {recordingSessionState&&<RecordingSessionModal recordingSessionState={recordingSessionState} students={students} week={week} setRecordingSessionState={setRecordingSessionState} makeRecordingChoice={makeRecordingChoice} wrapRecordingSession={wrapRecordingSession} oneMoreTake={oneMoreTake} closeRecordingSession={closeRecordingSession} dismissRecordingChoicePopup={dismissRecordingChoicePopup} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
       {streamSessionState&&<StreamSessionModal streamSessionState={streamSessionState} students={students} week={week} preStreamAction={preStreamAction} selectChallenge={selectStreamChallenge} beginActiveRound={beginActiveRound} finishActiveRound={finishActiveRound} continueAfterBetweenRound={continueAfterBetweenRound} tapOutStream={tapOutStream} wrapStream={wrapStream} closeStream={closeStream} appendStreamChat={appendStreamChat} updateRoundPerf={updateRoundPerf} tickRoundStamina={tickRoundStamina} soundEnabled={soundEnabled}/>}
       {streamBrandPickState&&<StreamBrandSelectModal student={students.find(st=>st.id===streamBrandPickState.studentId)} required={streamBrandPickState.required} onSelect={selectStreamBrand} onClose={streamBrandPickState.required?null:()=>setStreamBrandPickState(null)} soundEnabled={soundEnabled}/>}
       {destinySpendState&&<DestinySpendModal student={students.find(st=>st.id===destinySpendState.studentId)} onPurchase={purchaseDestinyItem} onClose={()=>setDestinySpendState(null)} onGiftFromPlayer={giftDestinyFunds} playerMoney={money} soundEnabled={soundEnabled}/>}
@@ -9582,10 +9609,10 @@ export default function HallPass(){
       {fairDayState&&<FairDayModal fd={fairDayState} students={students} fairPride={fairTrainingState.fairPride} getFairPrideTier={getFairPrideTier} chooseFairWeighIn={chooseFairWeighIn} advanceFairDayPhase={advanceFairDayPhase} chooseFairAfterparty={chooseFairAfterparty} closeFairDay={closeFairDay} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── EP2: EVOLVED ACTIVITY MODAL ── */}
-      {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} soundEnabled={soundEnabled}/>}
+      {evolvedActivityModal&&<EvolvedActivityModal modal={evolvedActivityModal} onClose={()=>setEvolvedActivityModal(null)} onFollowup={applyActivityFollowup} owned={ownedHallSkills||{}} soundEnabled={soundEnabled}/>}
 
       {/* ── LANE CAPTAIN MODAL ── */}
-      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome} soundEnabled={soundEnabled}/>}
+      {communityResearcherState?.modalPhase&&<CommunityResearcherModal communityResearcherState={communityResearcherState} students={students} lilithUnlocked={lilithUnlocked} lilithKillCount={lilithKillCount} advanceThesisBoard={advanceThesisBoard} completeThesisDefense={completeThesisDefense} selectCasePair={selectCasePair} setCommunityResearcherState={setCommunityResearcherState} completeCaseStudy={completeCaseStudy} dismissBoardReaction={dismissBoardReaction} proceedFromFinalReview={proceedFromFinalReview} makeHaveAChatChoice={makeHaveAChatChoice} closeThesisOutcome={closeThesisOutcome} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {/* ── CULTIVATOR MODAL ── */}
       {cultivatorState?.modalPhase&&<CultivatorModal cultivatorState={cultivatorState} students={students} week={week} setCultivatorState={setCultivatorState} confirmCultivatorRecruit={confirmCultivatorRecruit} pickCultivatorFood={pickCultivatorFood} makeCultivatorChoice={makeCultivatorChoice} confirmCultivatorSession={confirmCultivatorSession} dismissCultivatorStageUp={dismissCultivatorStageUp} confirmCultivatorHarvest={confirmCultivatorHarvest} closeCultivatorGrowth={closeCultivatorGrowth} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}

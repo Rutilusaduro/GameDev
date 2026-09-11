@@ -252,6 +252,33 @@ export const PHYSICAL_MOVES = {
   },
 };
 
+export function extraHuntMoves(owned = {}) {
+  const extras = {};
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) {
+    extras.kitchen_scent = {
+      label: 'Kitchen-warm scent',
+      unlockLbs: 0,
+      power: 0.12,
+      extra: true,
+      vignette: () => 'She arrives still warm from the floor kitchen. Leftover heat on her is a scent he follows before he knows he is following it.',
+    };
+  }
+  if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
+    extras.lounge_settle = {
+      label: 'Lounge settle against him',
+      unlockLbs: 0,
+      power: 0.08,
+      extra: true,
+      vignette: () => 'She takes the wide-chair posture even standing: all of her, unhurried, pressing him into the fact of her.',
+    };
+  }
+  return extras;
+}
+
+export function physicalMovesForOwned(owned = {}) {
+  return { ...PHYSICAL_MOVES, ...extraHuntMoves(owned) };
+}
+
 // Draw 3 reply options: 1 good + 1 bad + 1 neutral, shuffled
 export function drawReplies(usedIds = []) {
   const pick = (type) => {

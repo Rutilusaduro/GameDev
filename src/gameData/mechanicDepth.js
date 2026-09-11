@@ -21,14 +21,16 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'opposition', before: 1, after: 3, hook: 'oppositionCover+extraHearingChoice' },
   { id: 'clothing', before: 1, after: 2, hook: 'clothingEase' },
   { id: 'streaming', before: 1, after: 3, hook: 'streamRelBonus+extraRound' },
+  { id: 'recording', before: 1, after: 2, hook: 'extraRecordingFood' },
+  { id: 'collab', before: 1, after: 2, hook: 'extraCollabFood' },
   { id: 'sessions', before: 1, after: 2, hook: 'sessionCapNextWeek' },
   { id: 'circuit', before: 0, after: 3, hook: 'walkAfterHours' },
   { id: 'planner', before: 1, after: 3, hook: 'resolveWeekPlan+venuePick' },
   { id: 'floorCheckIn', before: 1, after: 3, hook: 'kitchenChoice+loungeGainMult' },
-  { id: 'hunt', before: 1, after: 2, hook: 'kitchenHuntBonus' },
+  { id: 'hunt', before: 1, after: 3, hook: 'kitchenHuntBonus+extraMove' },
   { id: 'trust', before: 1, after: 2, hook: 'socialTrustDrip' },
   { id: 'discontent', before: 1, after: 2, hook: 'comfortFramingDecay' },
-  { id: 'evolved', before: 1, after: 4, hook: 'minigameExtras+floorBonus+extraEventChoice' },
+  { id: 'evolved', before: 1, after: 5, hook: 'minigameExtras+floorBonus+extraEventChoice+followup' },
   { id: 'influence', before: 1, after: 2, hook: 'pairGainFromSocial' },
   { id: 'narrativeEvents', before: 1, after: 2, hook: 'echoRelBonus' },
   { id: 'salon', before: 1, after: 3, hook: 'salonFloorLbs+extraService' },
@@ -41,8 +43,12 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'cult', before: 1, after: 2, hook: 'extraCultRoute' },
   { id: 'cg', before: 1, after: 2, hook: 'extraCgBingeLbs+kitchenPush' },
   { id: 'hive', before: 1, after: 2, hook: 'extraHiveVisitLbs+shiftLbs' },
-  { id: 'fairDay', before: 1, after: 2, hook: 'extraFairAfterparty' },
+  { id: 'fairDay', before: 1, after: 3, hook: 'extraFairAfterparty+trainingLbs' },
   { id: 'cultivator', before: 1, after: 2, hook: 'extraCultivatorChoice+reneeLbs' },
+  { id: 'ranked', before: 1, after: 2, hook: 'extraSessionFood' },
+  { id: 'laneCaptain', before: 1, after: 2, hook: 'extraHaveAChat+caseStudyLbs' },
+  { id: 'hostess', before: 1, after: 2, hook: 'extraFeastKitchen' },
+  { id: 'lab', before: 1, after: 2, hook: 'extraLabKitchen' },
 ];
 
 export function kitchenHuntBonus(baseGain, owned = {}) {
@@ -155,6 +161,26 @@ export function extraActivityKitchenLbs(owned = {}) {
   if (owned.snack_station || owned.artisan_bakery) n += 3;
   if (owned.comfy_chairs) n += 1;
   return n;
+}
+
+export function extraFeastKitchenLbs(owned = {}) {
+  return Math.round(roomFill('kitchen', owned) * 6 + roomFill('dining', owned) * 3);
+}
+
+export function extraFairTrainingLbs(owned = {}) {
+  let n = 0;
+  if (owned.snack_station || owned.artisan_bakery) n += 3;
+  if (owned.dinner_basic || owned.legendary_host) n += 2;
+  return n;
+}
+
+export function extraLabKitchenLbs(owned = {}) {
+  if (owned.snack_station || owned.device_bay || owned.artisan_bakery) return 3;
+  return 0;
+}
+
+export function extraCaseStudyLbs(owned = {}) {
+  return extraActivityKitchenLbs(owned);
 }
 
 export function assertMechanicDepthCoverage() {

@@ -3,12 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 import { useEffect } from 'react';
 import { C } from '../styles.js';
-import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, HAVE_A_CHAT_SCENES } from '../gameData/communityResearcher.js';
+import { THESIS_BOARD, CASE_STUDY_PAIRS, BOARD_REACTIONS, getSuspicionBracket, HAVE_A_CHAT_SCENES, haveAChatChoicesForPhase } from '../gameData/communityResearcher.js';
 import { getStage } from '../gameData/stages.js';
 import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 
-export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true }){
+export function CommunityResearcherModal({ communityResearcherState, students, lilithUnlocked, lilithKillCount, advanceThesisBoard, completeThesisDefense, selectCasePair, setCommunityResearcherState, completeCaseStudy, dismissBoardReaction, proceedFromFinalReview, makeHaveAChatChoice, closeThesisOutcome, soundEnabled = true, owned = {} }){
         const crs=communityResearcherState;
         useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, crs?.modalPhase]);
         const blue="#4a6fa5"; const lblue="#8fa8e0";
@@ -163,7 +163,7 @@ export function CommunityResearcherModal({ communityResearcherState, students, l
               {phaseText||''}
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {(phase?.choices||[]).map(ch=>(
+              {(haveAChatChoicesForPhase(crs.chatMemberIdx, crs.chatPhaseIdx, owned)).map(ch=>(
                 <button key={ch.id} type="button" className="community-researcher-choice" style={{...C.btn("#0e1a30"),textAlign:"left",fontSize:11,padding:"10px 14px",border:`1px solid ${blue}50`}}
                   onClick={()=>{ playHallPassSound('click', soundEnabled); makeHaveAChatChoice(ch.id); }}>
                   {ch.label}

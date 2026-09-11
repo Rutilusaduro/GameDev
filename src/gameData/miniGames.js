@@ -645,6 +645,25 @@ export const COLLAB_STREAM_FOODS=[
   ],
 ];
 
+export function extraCollabFoods(stageIdx = 0, owned = {}) {
+  if (!(owned.snack_station || owned.artisan_bakery || owned.dinner_basic)) return [];
+  const lbs = 4 + Math.floor(Number(stageIdx) * 1.5);
+  return [{
+    id: 'kitchen_leftovers',
+    name: 'Hall kitchen leftovers',
+    emoji: '🍳',
+    lbsKylie: lbs + 2,
+    lbsPartner: lbs,
+    qualBoost: 8,
+    side: 'both',
+    extra: true,
+  }];
+}
+
+export function collabFoodsForOwned(stageIdx, owned = {}) {
+  return [...(COLLAB_STREAM_FOODS[stageIdx] || COLLAB_STREAM_FOODS[0]), ...extraCollabFoods(stageIdx, owned)];
+}
+
 // Stage-up popup — fires when partner crosses a weight stage threshold mid-stream
 // newLbs = partner's new weight in lbs (number)
 export const COLLAB_STAGEUP_TEXT=[
@@ -795,7 +814,14 @@ export const RECORDING_PERFECT_COMBOS = [
 ];
 
 // Lbs gained per food choice per take
-export const RECORDING_FOOD_LBS = { food_heavy:[10,15], food_build:[6,10], food_hers:[7,12] };
+export const RECORDING_FOOD_LBS = { food_heavy:[10,15], food_build:[6,10], food_hers:[7,12], food_kitchen:[12,18] };
+export function extraRecordingFoods(owned = {}) {
+  if (owned.snack_station || owned.artisan_bakery || owned.luxury_pantry) return ['food_kitchen'];
+  return [];
+}
+export function recordingFoodsForOwned(owned = {}) {
+  return ['food_heavy', 'food_build', 'food_hers', ...extraRecordingFoods(owned)];
+}
 // Pace modifier to lbs
 export const RECORDING_PACE_LBS = { pace_push:4, pace_settle:1, pace_surge:5 };
 // Quality bonus lbs
@@ -867,6 +893,14 @@ export const RECORDING_DIRECTION_POPUPS = {
     (lbs)=>`You let enormous Kylie decide. At ${Math.round(lbs)} pounds she slowly reaches for the richest food, her massive belly shifting between her thighs. Her choices reflect total surrender to the feedee path.`, // stage 3
     (lbs)=>`Colossal at ${Math.round(lbs)} pounds, she weakly points to what she desires most. You bring it to her, watching her vast body accept the calories, every roll quivering with warm satisfaction.`, // stage 4
     (lbs)=>`Your ${Math.round(lbs)}-pound blob chooses with a soft whisper. You feed her exactly what she wants, watching it disappear into her immense, immobile form—proof of how completely she has given herself to you.`, // stage 5
+  ],
+  food_kitchen: [
+    (lbs)=>`You bring the hall kitchen leftovers. At ${Math.round(lbs)} pounds she takes the warm tray like it was waiting for her. Belly fills. She wants another pass.`,
+    (lbs)=>`Floor leftovers, still hot. At ${Math.round(lbs)} pounds she eats standing then sitting. The extra settles forward. She looks pleased.`,
+    (lbs)=>`Kitchen cart food. At ${Math.round(lbs)} pounds she finishes it without ceremony. Softness answers. She asks if there is more downstairs.`,
+    (lbs)=>`Hall kitchen seconds on camera. At ${Math.round(lbs)} pounds the tray looks small against her. She empties it and rests a hand on the extra.`,
+    (lbs)=>`You wheel in the floor leftovers. At ${Math.round(lbs)} pounds she barely lifts. The food goes in. She is bigger for it and she knows.`,
+    (lbs)=>`Kitchen tribute for your ${Math.round(lbs)}-pound blob. She opens. The leftovers vanish into all of her. The next clip will need a wider frame.`,
   ],
   pace_push: [
     (lbs)=>`You push her firmly — more, faster, don't stop. At ${Math.round(lbs)} pounds Kylie obeys with flushed cheeks, eating rapidly as her noticeably fat belly jiggles and swells quicker with each swallow. Her heavy breasts bounce rhythmically while her plush thighs quiver from the effort. She moans around the food, eyes locked on you with eager devotion.`, // stage 0

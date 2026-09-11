@@ -558,3 +558,33 @@ export const HAVE_A_CHAT_SCENES = [
     winCondition: (h) => h.includes('concede_framework') || h.includes('no_didnt_know') || h.includes('yes_corroborates'),
   },
 ];
+
+export function extraHaveAChatChoices(memberIdx, phaseIdx, owned = {}) {
+  if (phaseIdx !== 0) return [];
+  const scene = HAVE_A_CHAT_SCENES[memberIdx];
+  if (!scene) return [];
+  const probe = ['acknowledge', 'own_change', 'share_notes', 'concede_framework', 'no_didnt_know', 'yes_corroborates'];
+  const winFlag = probe.find((f) => scene.winCondition([f])) || 'acknowledge';
+  const extras = [];
+  if (owned.snack_station || owned.legendary_host || owned.dinner_basic) {
+    extras.push({
+      id: 'kitchen_brief',
+      label: 'Walk her through it over floor-kitchen leftovers',
+      winFlag,
+    });
+  }
+  if (owned.comfy_chairs || owned.dedicated_suite || owned.institutional_cover) {
+    extras.push({
+      id: 'lounge_offrecord',
+      label: 'Move this off-record into the lounge',
+      winFlag,
+    });
+  }
+  return extras.slice(0, 2);
+}
+
+export function haveAChatChoicesForPhase(memberIdx, phaseIdx, owned = {}) {
+  const phase = HAVE_A_CHAT_SCENES[memberIdx]?.phases?.[phaseIdx];
+  if (!phase) return [];
+  return [...(phase.choices || []), ...extraHaveAChatChoices(memberIdx, phaseIdx, owned)];
+}
