@@ -12,7 +12,8 @@ import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playe
 import { playHallPassSound, warmupHallPassAudio } from './gameData/hallPassAudio.js';
 import { ModalOverlay } from './components/ModalOverlay.jsx';
 import { SceneStage } from './components/SceneStage.jsx';
-import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, CG_CORKBOARD_SCENES, CG_MEASUREMENT_SCENES, CG_BINGE_SCENES, CG_CHAT_TEMPLATES, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { getEvolvedActivityMeta, scaleEvolvedEventLbs, scaleEvolvedEventRel, EVOLVED_EVENTS, EVOLUTION_OFFER, HOMEROOM_SUSPICION_DELTAS, HOMEROOM_THRESHOLDS, HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, SESSION_FOOD_ITEMS, WL_CONFIG, WL_LESSONS, WL_DIALOGUES, CG_CONFIG, FAIR_TRAINING_CONFIG, FAIR_TRAINING_SCENES, FAIR_TRAINING_PHOTOS, FAIR_DAY_SCENES, FAIR_BOOST_SUMMARIES } from './gameData/evolvedForms.js';
+import { CG_FILLED_SELF_REVIEW, CG_RA_REPLY_TEXT } from './gameData/competitiveGainerText.js';
 import { renderSessionRaeArrival, renderSessionRaeExtra, renderSessionPayoff } from './textEngine/scenes/rankedSession/index.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from './gameData/wlMomDialogueDepth.js';
 import { CONTEST_FOODS, CONTEST_STAGE_FOODS, CONTEST_MAYA_WEIGHTS, SUMO_RIVAL_NAME, SUMO_RIVAL_WEIGHTS, SUMO_TELEGRAPH, SUMO_CORNER_FEED, COLLAB_STREAM_FOODS, RECORDING_PERFECT_COMBOS, RECORDING_FOOD_LBS, RECORDING_PACE_LBS, RECORDING_QUALITY_BONUS, scaleCollabStreamLbsGain, scaleCollabQualBoost, scaleRecordingSessionLbsGain, scaleEatingContestLbsGain, scaleSumoMatchLbsGain } from './gameData/miniGames.js';
@@ -3401,7 +3402,6 @@ export default function HallPass(){
       .map(x=>x.s);
     let threatDetected=false;
     candidates.forEach(s=>{
-      const templates=CG_CHAT_TEMPLATES.residents[s.name]||CG_CHAT_TEMPLATES.residents.Brittany;
       const measured=cgState.measuredStudentIds.includes(s.id);
       const sM=getMeasurements(s.lbs,s.bodyType);
       let replyType;
@@ -3410,8 +3410,7 @@ export default function HallPass(){
       else if(CG_CONFIG.categories.some(cat=>sM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction))||s.lbs>priya.lbs*0.95) { replyType='close'; threatDetected=true; }
       else if(s.lbs>priya.lbs*0.80)  replyType='proud';
       else replyType='behind';
-      const replyText=renderCGResidentReply(s.name,replyType,priya,currentWeek,tier.label)
-        ||templates[replyType]||templates.behind||'...';
+      const replyText=renderCGResidentReply(s.name,replyType,priya,currentWeek,tier.label)||'...';
       msgs.push({text:`[${s.name}] ${replyText}`,isRa:false,wk:currentWeek});
     });
     // Priya follow-up
@@ -3437,12 +3436,11 @@ export default function HallPass(){
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
       const tier=getCGDriveTier(cgDrive(prev));
-      const scenes=CG_CORKBOARD_SCENES[tier.label]||CG_CORKBOARD_SCENES.Invested;
-      const idx=(prev.corkboardVisitCount||0)%scenes.length;
+      const idx=(prev.corkboardVisitCount||0)%4;
       const priyaForScene=students.find(st=>st.id===prev.priyaStudentId);
       const sceneText=priyaForScene
-        ? renderCGCorkboardScene(priyaForScene,week,tier.label,idx)
-        : scenes[idx];
+        ? (renderCGCorkboardScene(priyaForScene,week,tier.label,idx)||'She studies the corkboard, pins gleaming.')
+        : 'She studies the corkboard.';
       // Drive gain: check if any visible student is within threat range
       const priya=students.find(st=>st.id===prev.priyaStudentId);
       let driveGain=depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
@@ -3472,12 +3470,13 @@ export default function HallPass(){
       if(!priya) return prev;
       const tier=getCGDriveTier(cgDrive(prev));
       const stageKey=getCGStageKey(priya.lbs);
-      const entry=CG_MEASUREMENT_SCENES.selfReview[stageKey]?.[tier.label]||CG_MEASUREMENT_SCENES.selfReview.Heavy.Invested;
+      const entry=CG_FILLED_SELF_REVIEW[stageKey]?.[tier.label]||CG_FILLED_SELF_REVIEW.Heavy?.Invested;
       const priyaM=getMeasurements(priya.lbs,priya.bodyType);
       const focus=entry.focus||"waist";
       const measureVars={measurement:priyaM[focus]??Math.round(priya.lbs), measurementCategory:bodypartLabel(focus), priyaWeight:Math.round(priya.lbs)};
       const sceneText=renderCGSelfReviewScene(priya,week,stageKey,tier.label,measureVars)
-        ||formatCGText(entry.text||entry,measureVars);
+        ||formatCGText(entry?.text||'',measureVars)
+        ||'She measures herself, unblinking.';
       const driveGain=depthCgDriveGain(rnd(2,5));
       return{...prev,drive:cgDrive(prev)+driveGain,view:'self_review',subState:{sceneText,driveGain}};
     });
@@ -3503,17 +3502,16 @@ export default function HallPass(){
         let rel='priya_larger';
         if(targetM[cat]>priyaM[cat]*(1+CG_CONFIG.threatFraction)){rel='priya_smaller';threats.push(cat);}
         else if(targetM[cat]>=priyaM[cat]*(1-CG_CONFIG.threatFraction)){rel='priya_equal';threats.push(cat);}
-        const template=CG_MEASUREMENT_SCENES.reactions?.[rel]?.[tier.label]?.[cat]||`[MeasureReaction_${rel}_${cat}_${tier.label}]`;
         const rxVars={targetName:target.name, residentName:target.name, bodypart:bodypartLabel(cat)};
         const rxText=renderCGMeasureReaction(rel,tier.label,cat,rxVars,priya,week)
-          ||formatCGText(template,rxVars);
+          ||`Priya notes ${target.name}'s ${bodypartLabel(cat)}.`;
         reactions[cat]={rel,text:rxText};
       });
       const driveGain=threats.length>0
         ? depthCgDriveGain(threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1]))
         : depthCgDriveGain(rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
       const sceneText=renderCGMeasurementScene(target,priya,week,tier.label)
-        ||`[MeasurementScene_${target.name}_S${getStage(target.lbs).id}]`;
+        ||`Tape and numbers — ${target.name} under Priya's focus.`;
       const newMeasured=prev.measuredStudentIds.includes(targetStudentId)
         ? prev.measuredStudentIds
         : [...prev.measuredStudentIds,targetStudentId];
@@ -3538,7 +3536,7 @@ export default function HallPass(){
       const gain=scaleEvolvedEventLbs(Math.round(baseGain*mult*(0.85+Math.random()*0.30)));
       const stageKey=getCGStageKey(priya.lbs);
       const sceneText=renderCGBingeScene(priya,week,stageKey,tier.label)
-        ||CG_BINGE_SCENES[stageKey]?.[tier.label]||CG_BINGE_SCENES.Heavy.Invested;
+        ||'She eats with focused hunger until the containers are empty.';
       return{...prev,view:'binge',subState:{gain,sceneText,done:false}};
     });
   };
@@ -3557,7 +3555,7 @@ export default function HallPass(){
   };
 
   const cgRaReply=(optId)=>{
-    const opt=CG_CHAT_TEMPLATES.raReplies?.find(r=>r.id===optId);
+    const opt=CG_RA_REPLY_TEXT[optId];
     if(!opt) return;
     setCompetitiveGainerState(prev=>{
       if(!prev) return prev;
@@ -3571,7 +3569,7 @@ export default function HallPass(){
         targetValue:comparison?.targetValue,
       },!!comparison);
       const msg={text:`[You] ${text}`,isRa:true,wk:week};
-      const delta=cgDriveDelta(opt);
+      const delta=cgDriveDelta({driveDelta:opt.driveDelta});
       return{...prev,drive:cgDrive(prev)+delta,chatLog:[...prev.chatLog,msg]};
     });
   };
