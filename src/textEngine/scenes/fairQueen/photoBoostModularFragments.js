@@ -97,6 +97,15 @@ registerModuleVariants('fair.boost.Brittany', [
     weight: 2,
     text: [
       'Brittany rides the boost — numbers climb and the crowd treats appetite like sport.',
+      BOOST_SKELETON,
+    ],
+  },
+  {
+    when: { fairBoostTier: ['Mid'] },
+    weight: 1,
+    text: [
+      'Brittany treats the midway like a gym — reps are bites, rest is optional, pride is the scoreboard.',
+      BOOST_SKELETON,
     ],
   },
 ]);
@@ -118,6 +127,18 @@ registerModuleVariants('fair.boost.Renee', [
     weight: 2,
     text: [
       'Renee rides the boost — hall pride and appetite share the same scoreboard.',
+      BOOST_SKELETON,
+    ],
+  },
+]);
+
+registerModuleVariants('fair.boost.Serena', [
+  {
+    when: { fairBoostTier: ['High'] },
+    weight: 2,
+    text: [
+      'High-tier Serena training — dohyo drills and chanko until pride steams off MJ’s shoulders.',
+      'Serena poses between funnel cakes — every flash adds a pound of legend before MJ claims the ribbon.',
       BOOST_SKELETON,
     ],
   },

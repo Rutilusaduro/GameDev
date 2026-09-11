@@ -54,6 +54,27 @@ registerModuleVariants('campus.sighting', [
 
 const TRAVEL_LATE = '{campus.explore.lateFrame|prefix:} {campusEvent.scene.hallTone|prefix: }';
 
+registerModuleVariants('campus.find', [
+  {
+    when: { weekMin: 18 },
+    weight: 6,
+    priority: 6,
+    text: [FIND_LATE],
+  },
+  {
+    when: { weekMin: 14, campusTierMin: [2] },
+    weight: 5,
+    priority: 5,
+    text: [FIND_LATE],
+  },
+  {
+    when: { weekMin: 14 },
+    weight: 4,
+    priority: 4,
+    text: [FIND_LATE],
+  },
+]);
+
 registerModuleVariants('campus.exploration.reward', [
   {
     when: { hallAmbiancePeakMin: [40], weekMin: 20 },

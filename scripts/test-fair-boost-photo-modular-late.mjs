@@ -15,7 +15,7 @@ const PHOTO_FP = /Pageant lights|pageantGlow|collabFrame|carnivalAir|Ring-light/
 for (const collab of ['Brittany', 'Renee', 'Lilith']) {
   let boostHit = false;
   let photoHit = false;
-  for (let s = 0; s < 12; s += 1) {
+  for (let s = 0; s < 24; s += 1) {
     const boostLine = render(`{fair.boost.${collab}}`, buildTextContext({
       subject: mj,
       week,

@@ -34,7 +34,7 @@ function registerTalkLine(poolKey, line) {
         wlTalkTailBeat(poolKey, 1),
       ],
     },
-    lintWildcardVariant('{wl.lesson.aroma|prefix:} {wl.lesson.circleEat|prefix: }'),
+    lintWildcardVariant('{wl.talk.warmOpen|prefix:} {wl.talk.raPresence|prefix: }'),
   ]);
 }
 
@@ -70,7 +70,7 @@ function registerLessonBeat(poolKey, prose) {
         wlTalkTailBeat(poolKey, 1),
       ],
     },
-    lintWildcardVariant('{wl.talk.warmOpen|prefix:} {wl.talk.raPresence|prefix: }'),
+    lintWildcardVariant('{wl.lesson.aroma|prefix:} {wl.lesson.mjDoctrine|prefix: } {wl.lesson.circleEat|prefix: }'),
   ]);
 }
 
