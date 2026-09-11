@@ -17,6 +17,7 @@ import {
 } from './appetiteDreams.js';
 import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index.js';
 import { createContext } from '../../textEngine/engine.js';
+import { depthResonanceHallMods, depthRitualCalMult } from '../mechanicsDepth.js';
 import {
   canEmbodiedMove,
   isEmbodiedImmobile,
@@ -109,15 +110,16 @@ export function captureCorruptionTierEcho(v2State, studentId, week, stageId, tie
 export function runWeeklyV2Events(v2State, students, ownedSkills, ownedHallSkills, week) {
   let next = resetV2Weekly(v2State);
   const messages = [];
+  const hallMods = depthResonanceHallMods(ownedHallSkills || {});
 
   // Resonance passive bonus — hall-wide appetite calories before digest
-  const passive = applyResonancePassiveBonus(students, next.resonance);
+  const passive = applyResonancePassiveBonus(students, next.resonance, hallMods);
   if (passive.tier.passiveBonus > 0) {
     messages.push({ type: 'passive', tier: passive.tier.label, bonus: passive.tier.passiveBonus });
   }
 
   // Resonance surge — requires resonance_bells hall lounge upgrade
-  if (shouldResonanceSurge(next.resonance, week, students, ownedHallSkills || {})) {
+  if (shouldResonanceSurge(next.resonance, week, students, ownedHallSkills || {}, hallMods)) {
     next = {
       ...next,
       resonance: { ...next.resonance, lastSurgeWeek: week },
@@ -220,9 +222,10 @@ export function handleRitual(ritualId, studentIds, ctx) {
   const check = canRunRitual(ritualId, studentIds, ctx);
   if (!check.ok) return { ok: false, reason: check.reason };
   const ritual = check.ritual;
+  const calMult = depthRitualCalMult(ctx.ownedHallSkills || {});
   const effects = studentIds.map((id) => ({
     studentId: id,
-    calories: ritual.caloriesEach,
+    calories: Math.round(ritual.caloriesEach * calMult),
     rel: ritual.relEach,
     corruption: ritual.corruptionEach,
   }));
@@ -270,8 +273,9 @@ export function handleEchoResonate(echoId, v2State, ownedSkills, ownedHallSkills
 
 export { applyResonanceSurgeBonus, getCombinedHallLbs, getResonanceTier } from './cravingResonance.js';
 
-export function handleFeedResonancePulse(fedStudentId, calories, students, v2State) {
-  const { pulses } = pulseResonance(fedStudentId, calories, students, v2State.resonance);
+export function handleFeedResonancePulse(fedStudentId, calories, students, v2State, ownedHallSkills = {}) {
+  const hallMods = depthResonanceHallMods(ownedHallSkills || {});
+  const { pulses } = pulseResonance(fedStudentId, calories, students, v2State.resonance, hallMods);
   if (!pulses.length) return { pulses: [], v2State };
   const totalPulses = (v2State.resonance.totalPulses || 0) + pulses.length;
   const hallLbs = getCombinedHallLbs(students);

@@ -174,6 +174,7 @@ import {
 } from './gameData/textContext.js';
 import {
   aggregateSkillEffects, computeSpentSkillPoints, isTreeTierUnlocked, tickPhysicalTraits,
+  applyPhysicalTraitWeekly,
   RANK_COSTS, softStartBonus,
 } from './gameData/skillTrees.js';
 import { renderHiveIntake } from './textEngine/scenes/hiveIntake.js';
@@ -1557,7 +1558,7 @@ export default function HallPass(){
     setWeeklyFeedCounts(prev=>({...prev,[s.id]:(prev[s.id]||0)+1}));
     gainFavor((forced||fullnessCost>=40)?'stuff':'feed');
     if((ownedSkills.hunger_web||0)>=1&&scaledCals>=400){
-      const pulseResult=handleFeedResonancePulse(s.id,scaledCals,students,v2);
+      const pulseResult=handleFeedResonancePulse(s.id,scaledCals,students,v2,ownedHallSkills||{});
       if(pulseResult.pulses?.length){
         setV2State(pulseResult.v2State);
         pulseResult.pulses.forEach((p)=>{
@@ -1722,6 +1723,11 @@ export default function HallPass(){
       }
       let ns=processStudentGain(s,gain,0);
       ns=tickPhysicalTraits(ns,ownedSkills);
+      const traitWeek=applyPhysicalTraitWeekly(ns);
+      ns=traitWeek.student;
+      if(traitWeek.passiveLbs>0) ns=processStudentGain(ns,traitWeek.passiveLbs,traitWeek.rel||0);
+      else if(traitWeek.rel>0) ns={...ns,relationship:Math.min(100,(ns.relationship||0)+traitWeek.rel)};
+      if(traitWeek.corruption>0) ns={...ns,corruption:addCorruption(ns,traitWeek.corruption)};
       ns=tickHungerAddiction(ns,!!ns.playerFedThisWeek,hungerEff,weeklyArms,summarizeHallEnvironment(ownedHallSkills||{}));
       ns=tickRelationshipDecay(ns);
       if(hungerEff.gluttonsInstinct){

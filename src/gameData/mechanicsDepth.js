@@ -110,3 +110,23 @@ export function depthSaturationPassiveBonus(tierPassive, ownedHallSkills = {}) {
   const synCount = getActiveBlueprintSynergies(ownedHallSkills).length;
   return (tierPassive || 0) + (synCount >= 3 ? 1 : synCount >= 1 ? 0.5 : 0);
 }
+
+/** Hall blueprint → Craving Resonance pulse / passive / surge. */
+export function depthResonanceHallMods(ownedHallSkills = {}) {
+  const active = getActiveBlueprintSynergies(ownedHallSkills);
+  const ids = new Set(active.map((s) => s.id));
+  const sanctumOwned = skillsForRoom('sanctum').filter((sk) => ownedHallSkills[sk.id]).length;
+  return {
+    pulseMultBonus: active.length * 0.04 + (ids.has('soft_permission') ? 0.07 : 0),
+    passiveTierExtra: sanctumOwned >= 2 ? 1 : sanctumOwned >= 1 ? 0.5 : 0,
+    surgeChanceBonus: (ownedHallSkills?.resonance_bells ? 0.05 : 0) + active.length * 0.018,
+    pulseRelBonus: ids.has('legendary_flow') ? 1 : 0,
+  };
+}
+
+/** Ritual ceremony calories from kitchen + feast corridor investment. */
+export function depthRitualCalMult(ownedHallSkills = {}) {
+  const kitchenOwned = skillsForRoom('kitchen').filter((sk) => ownedHallSkills[sk.id]).length;
+  const feastSyn = getActiveBlueprintSynergies(ownedHallSkills).some((s) => s.id === 'feast_corridor');
+  return 1 + kitchenOwned * 0.045 + (feastSyn ? 0.12 : 0);
+}

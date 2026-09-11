@@ -360,3 +360,23 @@ export function tickPhysicalTraits(student, owned = {}) {
   }
   return changed ? { ...student, physicalTraits: traits } : student;
 }
+
+/** Weekly passive from Body's Surrender physical traits (was hunger-only for selfFeed). */
+export function applyPhysicalTraitWeekly(student, rng = Math.random) {
+  let s = student;
+  let passiveLbs = 0;
+  let rel = 0;
+  let corruption = 0;
+  for (const tid of s.physicalTraits || []) {
+    const trait = PHYSICAL_TRAITS.find((t) => t.id === tid);
+    const w = trait?.weekly;
+    if (!w) continue;
+    if (w.passiveLbs) passiveLbs += w.passiveLbs;
+    if (w.relationship && rng() < 0.62) rel += w.relationship;
+    if (w.corruption && rng() < 0.48) corruption += w.corruption;
+    if (w.selfFeedCals && rng() < 0.52) {
+      s = { ...s, consumedCalories: (s.consumedCalories || 0) + w.selfFeedCals };
+    }
+  }
+  return { student: s, passiveLbs, rel, corruption };
+}

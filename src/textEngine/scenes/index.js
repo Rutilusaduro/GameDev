@@ -121,6 +121,8 @@ import './milestoneOverhaulPass.js';
 import './dinnerOverhaulPass.js';
 import './deviceTickOverhaulPass.js';
 import './weeklyEventOverhaulPass.js';
+import './v2ResonanceDreamOverhaul.js';
+import './diaryEvolvedMidOverhaul.js';
 import './weeklyEvent/index.js';
 import './weeklyEvent/depth.js';
 import './weeklyEvent/weeklyEventSceneDepth.js';
