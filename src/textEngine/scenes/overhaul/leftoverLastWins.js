@@ -16,7 +16,8 @@ import { applyUiBeatsOverhaul } from './leftoverUiBeats.js';
 import { applyMoreUiOverhaul } from './leftoverMoreUi.js'
 import { applySystemsOverhaul } from './leftoverSystems.js';
 import { applyFacultyOverhaul } from './leftoverFaculty.js';
-import { applyHostessOverhaul } from './leftoverHostess.js';
+import { applyHostessOverhaul } from './leftoverHostess.js'
+import { applyFeastLogOverhaul, overlayFeastLog } from './leftoverFeastLog.js';
 
 applyCultivatorOverhaul();
 applyDishOverhaul();
@@ -29,3 +30,6 @@ applyMoreUiOverhaul();
 applySystemsOverhaul();
 applyFacultyOverhaul();
 applyHostessOverhaul();
+applyFeastLogOverhaul();
+
+export { overlayFeastLog };

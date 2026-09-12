@@ -322,7 +322,8 @@ export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, 
   const atmoIdx = Math.min(aTier, ATMOSPHERE_OPENINGS.length - 1);
 
   // Opening
-  log.push({ text: ATMOSPHERE_OPENINGS[atmoIdx](sisters), type: "scene" });
+  const atmoSis = [0, 1, 2, 0, 1, 0][atmoIdx] ?? 0;
+  log.push({ text: ATMOSPHERE_OPENINGS[atmoIdx](sisters), type: "scene", beat: "feast.log.atmo", idx: atmoIdx, sisIdx: atmoSis });
 
   // Sister arrivals
   const arriveSentences = sisters.map((sis, i) => {
@@ -333,21 +334,22 @@ export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, 
     ];
     return arr[i % arr.length];
   });
-  log.push({ text: arriveSentences.join(" "), type: "scene" });
+  log.push({ text: arriveSentences.join(" "), type: "scene", beat: "feast.log.arrive" });
 
   // Camille (from stage 1)
   if (stageIdx >= 1 && CAMILLE_ARRIVALS[Math.min(stageIdx, CAMILLE_ARRIVALS.length - 1)]) {
-    log.push({ text: CAMILLE_ARRIVALS[Math.min(stageIdx, CAMILLE_ARRIVALS.length - 1)](camille), type: "scene" });
+    const camilleIdx = Math.min(stageIdx, CAMILLE_ARRIVALS.length - 1);
+    log.push({ text: CAMILLE_ARRIVALS[camilleIdx](camille), type: "scene", beat: "feast.log.camille", idx: camilleIdx });
   }
 
   // Reneé intro if she caters (tier 5+)
   if (mTier >= 5) {
-    log.push({ text: `Reneé appears from the kitchen long enough to say, "First course in five minutes," and immediately disappears again. She won't come out until the end.`, type: "scene" });
+    log.push({ text: `Reneé appears from the kitchen long enough to say, "First course in five minutes," and immediately disappears again. She won't come out until the end.`, type: "scene", beat: "feast.log.renee" });
   }
 
   // Kylie intro if open blast (guest tier 5+)
   if (gTier >= 5) {
-    log.push({ text: `Kylie is at the entrance greeting people she's never met, making them feel like they've been expected. This is her natural state.`, type: "scene" });
+    log.push({ text: `Kylie is at the entrance greeting people she's never met, making them feel like they've been expected. This is her natural state.`, type: "scene", beat: "feast.log.kylie" });
   }
 
   // Courses
@@ -364,16 +366,17 @@ export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, 
     const courseGain  = gainPerCourse + (ci === numCourses - 1 ? MENU_BASE_GAIN[mTier] % numCourses : 0);
 
     log.push({ text: `— ${courseName} —`, type: "header" });
-    log.push({ text: `${food.charAt(0).toUpperCase() + food.slice(1)}.`, type: "food" });
+    log.push({ text: `${food.charAt(0).toUpperCase() + food.slice(1)}.`, type: "food", beat: "feast.log.food", idx: mTier, ci });
 
     // Sister reactions — rotate through them
     const sister = sisters[ci % sisters.length];
     const linePool = SISTER_LINES[ci % SISTER_LINES.length];
-    log.push({ text: linePool[Math.floor(Math.random() * linePool.length)](sister.name, sister.lbs), type: "sister" });
+    log.push({ text: linePool[Math.floor(Math.random() * linePool.length)](sister.name, sister.lbs), type: "sister", beat: "feast.log.sister", idx: ci % SISTER_LINES.length, sisName: sister.name });
 
     // Camille eating (from stage 1, every other course)
     if (stageIdx >= 1 && ci % 2 === 1 && CAMILLE_EATING_LINES[Math.min(stageIdx, CAMILLE_EATING_LINES.length - 1)]) {
-      log.push({ text: CAMILLE_EATING_LINES[Math.min(stageIdx, CAMILLE_EATING_LINES.length - 1)](camille), type: "camille" });
+      const eatIdx = Math.min(stageIdx, CAMILLE_EATING_LINES.length - 1);
+      log.push({ text: CAMILLE_EATING_LINES[eatIdx](camille), type: "camille", beat: "feast.log.camilleEat", idx: eatIdx });
     }
 
     tiffanyGain += courseGain;
@@ -383,19 +386,19 @@ export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, 
   // Atmospheric bonus
   const atmoBonusGain = ATMO_BONUS_GAIN[aTier];
   if (atmoBonusGain > 0) {
-    log.push({ text: `The setting holds you at the table longer than expected. +${atmoBonusGain} lbs`, type: "gain", gain: atmoBonusGain });
+    log.push({ text: `The setting holds you at the table longer than expected. +${atmoBonusGain} lbs`, type: "gain", gain: atmoBonusGain, beat: "feast.log.atmoHold" });
     tiffanyGain += atmoBonusGain;
   }
 
   // Guest pressure bonus
   const guestBonusGain = GUEST_BONUS_GAIN[gTier];
   if (guestBonusGain > 0) {
-    log.push({ text: `The company makes it impossible to stop. +${guestBonusGain} lbs`, type: "gain", gain: guestBonusGain });
+    log.push({ text: `The company makes it impossible to stop. +${guestBonusGain} lbs`, type: "gain", gain: guestBonusGain, beat: "feast.log.guestHold" });
     tiffanyGain += guestBonusGain;
   }
 
   // Closing
-  log.push({ text: FEAST_CLOSINGS[clampStage], type: "scene" });
+  log.push({ text: FEAST_CLOSINGS[clampStage], type: "scene", beat: "feast.log.close", idx: clampStage });
 
   // Calculate NPC gains
   const sisterGainMap = {};

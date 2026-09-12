@@ -8,7 +8,7 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from '../components/ModalOverlay.jsx';
 import { C } from '../styles.js';
 import { renderFacultyDesc } from '../textEngine/scenes/overhaul/leftoverSystems.js';
-import { renderFacultyTalk } from '../textEngine/scenes/overhaul/leftoverFaculty.js';
+import { renderFacultyTalk, renderFacultyOpt } from '../textEngine/scenes/overhaul/leftoverFaculty.js';
 
 // ── affinity bar ──────────────────────────────────────────────
 
@@ -108,7 +108,7 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnable
               }}
               onClick={()=>handleOption(opt)}
             >
-              {opt.label}
+              {renderFacultyOpt(teacher.id, nodeId, i, affinity) || opt.label}
               {opt.affinity > 0 && (
                 <span style={{float:"right",fontSize:10,opacity:0.7,color:"#d0f0c0"}}>+{opt.affinity} affinity</span>
               )}

@@ -87,9 +87,10 @@ import {
   renderHiveRoomBonus, renderEvolutionPathDesc, renderEvolutionIntro, renderCircuitNodeDesc,
   renderOversightActDesc, renderOversightDormant,
 } from '../src/textEngine/scenes/overhaul/leftoverSystems.js';
-import { renderFacultyTalk } from '../src/textEngine/scenes/overhaul/leftoverFaculty.js';
+import { renderFacultyTalk, renderFacultyOpt } from '../src/textEngine/scenes/overhaul/leftoverFaculty.js';
 import { renderHostessHangIntro, renderHostessHangResult, renderHostessTierDesc } from '../src/textEngine/scenes/overhaul/leftoverHostess.js';
-import '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
+import { generateFeastLog, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../src/gameData/chapterHostess.js';
+import { overlayFeastLog } from '../src/textEngine/scenes/overhaul/leftoverLastWins.js';
 
 const missing = assertSkillRoomCoverage();
 assert.equal(missing.length, 0, `unmapped skills: ${missing.join(', ')}`);
@@ -923,6 +924,12 @@ assert.equal(/To what do I owe the interruption/i.test(facultyTalk), false, 'fac
 const facultyWarm = renderFacultyTalk('hartley', 'hub', 60, 2);
 assert.ok(facultyWarm && !facultyWarm.includes('{unresolved}'));
 assert.equal(/defending your floor program at meetings again/i.test(facultyWarm), false, 'warm faculty hub should not dump leftover FACULTY.tree text');
+const facultyOpt = renderFacultyOpt('hartley', 'hub', 0, 0, 2);
+assert.ok(facultyOpt && !facultyOpt.includes('{unresolved}'));
+assert.equal(/Ask about her research/i.test(facultyOpt), false, 'faculty opt should not dump leftover FACULTY.tree label');
+const facultyLeave = renderFacultyOpt('hartley', 'hub', 3, 0, 2);
+assert.ok(facultyLeave && !facultyLeave.includes('{unresolved}'));
+assert.equal(/^Take your leave$/i.test(facultyLeave), false, 'faculty leave should not dump leftover end label');
 const hostessIntro = renderHostessHangIntro('kylie', 0, students[0], 2);
 assert.ok(hostessIntro && !hostessIntro.includes('{unresolved}'));
 assert.equal(/she found out somehow/i.test(hostessIntro), false, 'hostess intro should not dump leftover HOSTESS_HANGOUTS.intro');
@@ -932,6 +939,33 @@ assert.equal(/She opens Notes before you finish agreeing/i.test(hostessResult), 
 const hostessTier = renderHostessTierDesc('menu', 0, students[0], 2);
 assert.ok(hostessTier && !hostessTier.includes('{unresolved}'));
 assert.equal(/Chips, dip, box wine on the counter/i.test(hostessTier), false, 'hostess tier should not dump leftover MENU_TIERS.desc');
+
+const feastSisters = SISTER_INITIAL_STATE;
+const feastCamille = { name: 'Camille', lbs: CAMILLE_INITIAL_LBS };
+const feastHostess = { id: 2, name: 'Tiffany', first: 'Tiffany', lbs: 180, startLbs: 118, evolvedForm: 'chapter_hostess' };
+const feastLowBlob = overlayFeastLog(
+  generateFeastLog(0, 0, 0, 0, feastSisters, feastCamille).log,
+  { student: feastHostess, week: 2, sisters: feastSisters, camille: feastCamille },
+).map((e) => e.text).join('\n');
+assert.ok(feastLowBlob);
+assert.equal(/The chapter house living room has been cleared/i.test(feastLowBlob), false, 'feast atmo should not dump leftover ATMOSPHERE_OPENINGS');
+assert.equal(/which you've come to recognize means she was looking forward to this/i.test(feastLowBlob), false, 'feast arrive should not dump leftover sister sentences');
+assert.equal(/Nobody leaves quickly\. This is the clearest possible outcome/i.test(feastLowBlob), false, 'feast close should not dump leftover FEAST_CLOSINGS');
+assert.equal(/chips, dip, whatever was in the cabinet/i.test(feastLowBlob), false, 'feast food should not dump leftover COURSE_FOODS');
+assert.equal(/reaches for a second serving before the first plate has moved/i.test(feastLowBlob), false, 'feast sister should not dump leftover SISTER_LINES');
+assert.equal(feastLowBlob.includes('SISNAME'), false, 'feast overlay should replace SISNAME');
+assert.ok(/Courtney|Madison|Savannah/i.test(feastLowBlob), 'feast arrive should name a sister');
+const feastHighBlob = overlayFeastLog(
+  generateFeastLog(3, 5, 4, 5, feastSisters, feastCamille).log,
+  { student: feastHostess, week: 2, sisters: feastSisters, camille: feastCamille },
+).map((e) => e.text).join('\n');
+assert.ok(feastHighBlob);
+assert.equal(/First course in five minutes/i.test(feastHighBlob), false, 'feast renee should not dump leftover catering intro');
+assert.equal(/greeting people she's never met/i.test(feastHighBlob), false, 'feast kylie should not dump leftover blast intro');
+assert.equal(/Camille comes in quietly/i.test(feastHighBlob), false, 'feast camille should not dump leftover CAMILLE_ARRIVALS');
+assert.equal(/The setting holds you at the table longer than expected/i.test(feastHighBlob), false, 'feast atmo hold should not dump leftover bonus copy');
+assert.equal(/The company makes it impossible to stop/i.test(feastHighBlob), false, 'feast guest hold should not dump leftover bonus copy');
+assert.ok(/\+\d+ lbs/.test(feastHighBlob), 'feast overlay should keep gain numbers');
 
 console.log('floor-blueprint: ok', {
   rooms: FLOOR_ROOMS.length,

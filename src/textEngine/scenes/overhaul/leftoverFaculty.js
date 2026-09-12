@@ -292,6 +292,153 @@ const TALK = {
   },
 };
 
+const BACK = [
+  'Back to the start of this.',
+  'Return to the lounge beat.',
+  'Circle back. Keep the extra.',
+];
+
+const OPT = {
+  hartley: {
+    hub: [
+      ['Ask what she is actually reading.', 'Steer her to the banquet notes.', 'Ask after the banquet notes.'],
+      ['Bring up catering money.', 'Mention how the dining hall spends.', 'Talk budget like a feast.'],
+      ['Ask after the locked drawer.', 'Mention marzipan like a password.', 'Ask if the brass key still works.'],
+      ['Take your leave with manners.', 'Bow out before the hour eats you.', 'Excuse yourself from the stack.'],
+    ],
+    research: [
+      ['"They sat like extra was the point of the room."', '"Small plates were never the assignment."', '"Rome knew how to finish a table."'],
+      BACK,
+    ],
+    agree: [BACK],
+    catering: [
+      ['"Come eat with the floor. I will hold a chair."', '"The next sitting has your name."', '"Save a seat. Bring the notes."'],
+      BACK,
+    ],
+    seat: [BACK],
+    marzipan: [
+      ['"I can keep a drawer. Take this."', '"Tenure should taste like this. Share."', '"The peach is a pact. Eat."'],
+      BACK,
+    ],
+    yours: [BACK],
+  },
+  brooks: {
+    hub: [
+      ['Ask how the roster is eating.', 'Ask who got huge this week.', 'Ask how the lifts are landing.'],
+      ['Ask what the Goliath is doing to people.', 'Ask after the new shakes.', 'Ask what the bar is pouring now.'],
+      ['"Confirm the bulk. I already know."', '"Tell me cutting is a myth."', '"Always bulking. Say it for the board."'],
+      ['Head out before she orders for you.', 'Leave while you can still walk.', 'Exit the bench. Keep the extra.'],
+    ],
+    team: [
+      ['"Hungry boats row better."', '"Mass moves mass. You said it first."', '"Appetite lifts the roster. Keep pouring."'],
+      BACK,
+    ],
+    tide: [BACK],
+    juicebar: [
+      ['Buy the big ones and watch her grin.', 'Two Goliaths. You pay. She judges the straw.', 'Treat her to two. Watch the straw lose.'],
+      BACK,
+    ],
+    goliath: [BACK],
+    bulk: [
+      ['"I tell them. I tell everyone."', '"Padding is the program. I preach it."', '"Always bulk. I already run that sermon."'],
+      BACK,
+    ],
+    constantly: [BACK],
+  },
+  mori: {
+    hub: [
+      ['Ask what is on the tray.', 'Ask which trial you walked into.', 'Ask what the custards are hiding.'],
+      ['Offer your mouth to the protocol.', 'Sit for spoons. You already know.', 'Volunteer a palate. She will take notes.'],
+      ['Propose a joint study.', 'Offer your floor as instrumentation.', 'Ask to share the curves.'],
+      ['Leave her to the data.', 'Step back from the custards.', 'Exit before trial forty-two.'],
+    ],
+    work: [
+      ['"How late does the stop signal arrive?"', '"Quote the numbers. I can take them."', '"How far past intended do they go?"'],
+      BACK,
+    ],
+    rate: [BACK],
+    taste: [
+      ['"Twelve weeks. Write my name."', '"I understood the terms. Smile for the file."', '"Put me on the clipboard. Full run."'],
+      BACK,
+    ],
+    protocol: [BACK],
+    study: [
+      ['Partners. Desserts for data.', 'Take the hand. Keep a few secrets.', 'Shake. Share the curves, not the whole floor.'],
+      BACK,
+    ],
+    shake: [BACK],
+  },
+  abara: {
+    hub: [
+      ['"Name the shift. I can hear it coming."', '"Ask her what the semester is doing."', '"Tell me why the campus feels softer."'],
+      ['Ask about her workshop.', 'Ask why enrollment tripled.', 'Ask after the eating-behavior room.'],
+      ['"Tell me what you have noticed."', '"Say the vector out loud."', '"Tell me what you are not reporting."'],
+      ['Excuse yourself from the coffee.', 'Step out of the pattern match.', 'Leave the lounge chessboard.'],
+    ],
+    fascinating: [
+      ['"Call it happiness. Watch her sip."', '"Maybe contentment is the finding."', '"People got warmer. The chart agrees."'],
+      BACK,
+    ],
+    happier: [BACK],
+    students: [
+      ['"Bring a notebook. We cater."', '"Sit with the gravity. See it work."', '"Come watch a hall session eat."'],
+      BACK,
+    ],
+    sitIn: [BACK],
+    noticed: [
+      ['"Watching makes you hungry. Say it."', '"Mutual observation. Raise your cup."', '"The effect runs both ways, Doctor."'],
+      BACK,
+    ],
+    observer: [BACK],
+  },
+  delgado: {
+    hub: [
+      ['Sit. Let the plates arrive.', 'Give her the elbow and the extra.', 'Put your fork in her jurisdiction.'],
+      ['Ask who stopped cooking scared.', 'Ask after the artists and animals.', 'Ask how the kitchen crew got brave.'],
+      ['Ask if the notebook ever leaves the apron.', 'Ask for abuela\'s card like an honor.', 'Ask whether the pozole has a successor.'],
+      ['Escape with your waistline.', 'Flee before thirds.', 'Leave while the spoon is still pointing.'],
+    ],
+    fed: [
+      ['"This kitchen is a proposal."', '"Flattery for thirds. Eat."', '"I would marry the mole. Rhetorically."'],
+      BACK,
+    ],
+    marry: [BACK],
+    students: [
+      ['"A practicum. Real eaters."', '"Your crew cooks. My floor grows. Deal."', '"Pipeline the best plates to the lounge."'],
+      BACK,
+    ],
+    pipeline: [BACK],
+    recipe: [
+      ['Close your fingers on the card.', 'Take the pozole like a vow.', 'Receive the handwriting like a key.'],
+      BACK,
+    ],
+    honor: [BACK],
+  },
+  lockwood: {
+    hub: [
+      ['Pay in sugar. Collect the intel.', 'Offer crumbs for budget lines.', 'Buy the rumor with pastry.'],
+      ['Ask about the waitlist.', 'Ask who is citing campus culture.', 'Ask how full the incoming class is.'],
+      ['Ask for the office version of the rumor.', 'Ask which faculty named you.', 'Ask what the pastry circuit says.'],
+      ['Leave the spreadsheets.', 'Exit before the danish is gone.', 'Step back into the hallway.'],
+    ],
+    gossip: [
+      ['"Show me the durability line."', '"Swivel the monitor. I can take it."', '"What else did the board fund?"'],
+      BACK,
+    ],
+    budget: [BACK],
+    enrollment: [
+      ['"Cater the rumor. I will keep cooking."', '"Let the essays stay hungry."', '"Keep the waitlist well fed."'],
+      BACK,
+    ],
+    rumors: [BACK],
+    aboutYou: [
+      ['"Say the full house. I am listening."', '"Tell me what the invoices already told you."', '"What does the office know that I do not?"'],
+      BACK,
+    ],
+    knows: [BACK],
+  },
+};
+
 export function applyFacultyOverhaul() {
   for (const t of FACULTY) {
     const nodes = TALK[t.id] || {};
@@ -306,6 +453,10 @@ export function applyFacultyOverhaul() {
       } else {
         pool(key, texts);
       }
+      const opts = t.tree[nodeId]?.options || [];
+      opts.forEach((opt, i) => {
+        pool(`faculty.opt.${t.id}.${nodeId}.${i}`, OPT[t.id]?.[nodeId]?.[i] || BACK);
+      });
     }
   }
 }
@@ -331,6 +482,16 @@ function ctxFor(student, week, globals) {
 export function renderFacultyTalk(facultyId, nodeId, affinity = 0, week = 1) {
   if (!facultyId || !nodeId) return '';
   return prefer(`faculty.talk.${facultyId}.${nodeId}`, ctxFor(null, week, {
+    featureId: 'faculty',
+    facultyId,
+    facultyNode: nodeId,
+    facultyWarm: affinity >= 50 ? 'warm' : 'cool',
+  }));
+}
+
+export function renderFacultyOpt(facultyId, nodeId, optIndex, affinity = 0, week = 1) {
+  if (!facultyId || !nodeId || optIndex == null) return '';
+  return prefer(`faculty.opt.${facultyId}.${nodeId}.${optIndex}`, ctxFor(null, week, {
     featureId: 'faculty',
     facultyId,
     facultyNode: nodeId,

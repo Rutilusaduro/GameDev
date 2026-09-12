@@ -421,7 +421,7 @@ import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
-import './textEngine/scenes/overhaul/leftoverLastWins.js';
+import { overlayFeastLog } from './textEngine/scenes/overhaul/leftoverLastWins.js';
 import { renderCampusLook, renderCampusArrive } from './textEngine/scenes/overhaul/campusHunt.js';
 import { renderPharmacistCompound, renderPharmacistCult } from './textEngine/scenes/overhaul/pharmacist.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from './textEngine/scenes/overhaul/cgFair.js';
@@ -3905,8 +3905,10 @@ export default function HallPass(){
     if(!chapterHostessState) return;
     const{stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille}=chapterHostessState;
     const{log,tiffanyGain,sisterGainMap,camilleGain,relGain}=generateFeastLog(stageIdx,menuUnlocks,atmosphereUnlocks,guestUnlocks,sisters,camille);
-    const clueLine=renderHuntClueFeast(students.find(s=>s.evolvedForm==='chapter_hostess'), week)||CLUE_FEAST_LINE;
-    const finalLog=(stageIdx>=1&&!lilithClueFound)?[...log,{text:clueLine,type:'scene'}]:log;
+    const hostess=students.find(s=>s.evolvedForm==='chapter_hostess');
+    const composedLog=overlayFeastLog(log,{student:hostess,week,sisters,camille});
+    const clueLine=renderHuntClueFeast(hostess, week)||CLUE_FEAST_LINE;
+    const finalLog=(stageIdx>=1&&!lilithClueFound)?[...composedLog,{text:clueLine,type:'scene'}]:composedLog;
     setChapterHostessState(prev=>({...prev,feastPrepOpen:false,feastLogOpen:true,feastLog:finalLog,feastGainTotal:tiffanyGain,feastRelTotal:relGain,feastDone:false,pendingSisterGains:sisterGainMap,pendingCamilleGain:camilleGain}));
   };
   const completeFeast=()=>{
