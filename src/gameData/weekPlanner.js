@@ -58,6 +58,9 @@ export function resizeWeekPlan(plan, slotCount = WEEK_PLAN_SLOT_COUNT) {
   return { ...plan, slots: slots.slice(0, n) };
 }
 
+export const padWeekPlan = resizeWeekPlan;
+export const weekPlanSlotCount = plannerSlotCount;
+
 const VENUE_PAYOFF = {
   campus: { cal: 0, full: 0, rel: 3, hunger: -1 },
   dining: { cal: 2200, full: 10, rel: 1, hunger: 0 },

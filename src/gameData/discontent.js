@@ -71,6 +71,8 @@ export function discontentWeeklyDecayAmount() {
   return depthDiscontentWeeklyDecay(DISCONTENT_WEEKLY_DECAY);
 }
 
+export const weeklyDiscontentDecayAmount = discontentWeeklyDecayAmount;
+
 export function getDiscontentTier(student) {
   const v = student?.discontent || 0;
   let t = DISCONTENT_TIERS[0];

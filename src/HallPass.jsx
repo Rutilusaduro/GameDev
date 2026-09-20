@@ -109,7 +109,7 @@ import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness, renderItemU
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
-import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan, weekPlanBonusesFor } from './gameData/weekPlanner.js';
+import { buildWeekReviewExtras, emptyWeekPlan, padWeekPlan, plannerSlotCount, resolveWeekPlan, weekPlanBonusesFor, weekPlanSlotCount } from './gameData/weekPlanner.js';
 import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs, tickHabitatWeek, applyTalkHabitatBonus, habitatFx, shouldSkipHungerInterrupt, neighborEcologyPatch, campusStayHome, sessionCapHabitatBonus, deviceTickHabitatMult, oppositionRumorChance, labInstabilityEase, digestStuffedExtras, tickOutfitWeek } from './gameData/mechanicDepth.js';
 import { createInitialDormState, buyRoomFit, applyNightVisit } from './gameData/dormBlueprint.js';
 import { applyOutfitRefit } from './gameData/outfits.js';
@@ -154,13 +154,11 @@ import {
 import {
   renderFairTrainingScene,
   renderFairTrainingPhoto,
-  renderFairBoost,
   renderFairDayWeighInResult,
   renderFairDayAfterpartyResult,
 } from './textEngine/scenes/fairTraining/index.js';
-import { renderEvolvedEventProse, renderEvolvedActivityBeat } from './textEngine/scenes/evolved/index.js';
-import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene, renderCgReaction, renderCgChatPost, renderCgChatFollowup, renderCgRaReply } from './textEngine/scenes/evolved/cgBingeBeats.js';
-import { renderRankedNpcArrival, renderRankedNpcDrop, renderRankedPayoff } from './textEngine/scenes/rankedSession/index.js';
+import { renderEvolvedEventProse, renderEvolvedActivityBeat, renderEvolvedActivity, renderEvolvedFollowup } from './textEngine/scenes/evolved/index.js';
+import { renderCgBingeScene, renderCgCorkboardScene, renderCgSelfScene, renderCgMeasureScene, renderCgReaction, renderCgChatPost, renderCgRaReply } from './textEngine/scenes/evolved/cgBingeBeats.js';
 import { choiceCanPin, pinBlackoutChance, PIN_PASSOUT_REL_BONUS } from './gameData/intimacyGating.js';
 import './textEngine/scenes/intimacy/scenes.js';
 import './textEngine/scenes/dinner/endingScene.js';
@@ -226,7 +224,6 @@ import { formPassiveGainMultiplier } from './gameData/ascension/gainRules.js';
 import { applyAscensionRebirth, isAscended, isAscensionEligible } from './gameData/ascension/state.js';
 import { FairTrainingHub, FairDayModal } from './components/FairModals.jsx';
 import { EvolvedActivityModal } from './components/EvolvedActivityModal.jsx';
-import { renderEvolvedActivity, renderEvolvedFollowup, renderEvolvedEventProse } from './textEngine/scenes/evolved/index.js';
 import { WifeLessonsModal } from './components/WifeLessonsModal.jsx';
 import { CompetitiveGainerChatModal, CompetitiveGainerMainModal } from './components/CompetitiveGainerModals.jsx';
 import { MayaHiveModal } from './components/MayaHiveModal.jsx';
@@ -3877,7 +3874,7 @@ export default function HallPass(){
       });
       const driveGain=(threats.length>0
         ? threats.length*rnd(CG_CONFIG.driveGainThreat[0],CG_CONFIG.driveGainThreat[1])
-        : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]);
+        : rnd(CG_CONFIG.driveGainNeutral[0],CG_CONFIG.driveGainNeutral[1]));
       let sceneText=renderCgMeasure(priya,week,{targetName:target.name});
       if(!sceneText||sceneText.includes('{unresolved}')){
         sceneText=`Priya measures ${target.name} against the board. The tape keeps score.`;
@@ -10041,7 +10038,6 @@ export default function HallPass(){
             applyAcquisitionChoice={applyAcquisitionChoice}
             skipAcquisition={skipAcquisition}
             soundEnabled={soundEnabled}
-            week={week}
           />
         );
       })()}

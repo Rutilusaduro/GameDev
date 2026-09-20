@@ -106,7 +106,6 @@ export function PharmacistChemModal({
   skipAcquisition,
   soundEnabled = true,
   owned = {},
-  week = 1,
 }) {
   useEffect(() => {
     playHallPassSound('session', soundEnabled);

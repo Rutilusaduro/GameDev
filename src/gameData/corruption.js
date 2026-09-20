@@ -34,6 +34,19 @@ export const CORRUPTION_TIERS = [
 export const getCorruptionTier = (c = 0) =>
   [...CORRUPTION_TIERS].reverse().find(t => c >= t.min) || CORRUPTION_TIERS[0];
 
+// Fallback copy when scene renderers miss. Engine lines win when they return.
+export const CORRUPTION_AUTO_LINES = [
+  (s) => `${s.name} didn't wait for you this week — the delivery receipts speak for themselves.`,
+  (s) => `${s.name} stuffed herself on her own this week, and made sure you'd hear about it.`,
+  (s) => `${s.name} texts you a photo of an emptied table. No caption. None needed.`,
+];
+
+export const CORRUPTION_TIER_UP_LINES = [
+  null,
+  (s) => `Something has shifted in ${s.name}. The guilt is losing. She lingers after eating now, like she's waiting for permission to want more.`,
+  (s) => `${s.name} has stopped pretending entirely. Whatever she was protecting before — modesty, restraint, the person she used to be — she's traded it for appetite. She's proud of the trade.`,
+];
+
 /** Autonomous surplus lbs from corruption tier (weekly passive tick). */
 export function corruptionAutoLbsBonus(tierId, rnd = Math.random) {
   let extra = 0;
