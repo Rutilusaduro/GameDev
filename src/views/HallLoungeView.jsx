@@ -216,7 +216,7 @@ export function HallLoungeView({
           </div>
         </div>
         <div style={{ fontSize: 11, color: '#806070', marginTop: 6, lineHeight: 1.5 }}>
-          Click a room on the plan. Install upgrades there. Pin up to {CIRCUIT_MAX_ROOMS} rooms and walk After-Hours Rounds.
+          Pick a room and feed it. Pin up to {CIRCUIT_MAX_ROOMS}, then walk After-Hours.
         </div>
       </div>
 

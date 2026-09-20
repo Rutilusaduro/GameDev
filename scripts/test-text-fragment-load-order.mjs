@@ -93,4 +93,18 @@ for (const rel of risky) {
   assert.ok(!/import '\.\/.*Fragments\.js'/.test(src), `${rel} should not import fragment files (use scenes/index order)`);
 }
 
+assert.ok(
+  indexOf('overhaul/leftoverLastWins.js') > indexOf('overhaul/index.js'),
+  'leftoverLastWins must import after overhaul/index.js',
+);
+assert.ok(
+  indexOf('overhaul/leftoverLastWins.js') > indexOf('floorCircuit/index.js'),
+  'leftoverLastWins must import after floorCircuit/index.js',
+);
+assert.equal(
+  imports[imports.length - 1],
+  'overhaul/leftoverLastWins.js',
+  'leftoverLastWins must be last ./ import in scenes/index.js',
+);
+
 console.log(`test-text-fragment-load-order: ok (${pairs.length} bridge→fragment pairs)`);

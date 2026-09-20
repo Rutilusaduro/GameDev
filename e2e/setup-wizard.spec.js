@@ -5,7 +5,7 @@ test('RA setup wizard → Victory Hall → RA desk', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Hall Pass' })).toBeVisible();
   await expect(page.getByText('RESIDENCE LIFE SIMULATOR')).toBeVisible();
-  await expect(page.getByText('You are not faculty')).toBeVisible();
+  await expect(page.getByText('You live here')).toBeVisible();
 
   await completeRaSetup(page, { skipGoto: true });
   await expect(page.getByRole('button', { name: '📋 RA Desk' })).toBeVisible();

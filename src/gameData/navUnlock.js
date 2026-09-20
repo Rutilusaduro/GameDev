@@ -77,13 +77,13 @@ export const NAV_TAB_META = [
 ];
 
 export const NAV_UNLOCK_BLURB = {
-  'hall-lounge': 'Hall Lounge — floor blueprint. Click a room, install upgrades, walk After-Hours Rounds.',
-  influence: 'Influence — resonance links and floor rituals.',
-  actions: 'Hall-Wide Actions — feed the whole floor at once.',
-  inventory: 'Pantry — items and gifts for residents.',
-  campus: 'Campus map — explore and run into residents.',
+  'hall-lounge': 'Hall Lounge — floor plan, room upgrades, After-Hours pins.',
+  influence: 'Influence — who leans on whom, and which rituals stick.',
+  actions: 'Hall-Wide Actions — one night, the whole floor.',
+  inventory: 'Pantry — snacks and gifts for the hall.',
+  campus: 'Campus — walk it, run into residents.',
   skills: 'Reach — spend influence on resident skills.',
-  achievements: 'Achievements — milestones you have earned.',
+  achievements: 'Achievements — what your floor already earned.',
   settling: 'The Settling — residents who have moved on.',
   oversight: 'Oversight — scrutiny and opposition.',
   lab: 'The Lab — Talia\'s inventions.',

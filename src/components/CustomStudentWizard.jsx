@@ -90,7 +90,7 @@ export function CustomStudentWizard({
           <div style={C.infoBox('rgba(255,255,255,0.035)')}>
             <b>Archetype: Inventor</b>
             <div style={{ fontSize: 12, color: '#bba8d0', marginTop: 4 }}>
-              v1 keeps the lab/prototype arc intact and lets the player tune the resident who sits there.
+              She already has a bench in the lab. Tonight she gets a bed on your floor.
             </div>
           </div>
         </div>

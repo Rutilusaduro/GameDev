@@ -91,7 +91,7 @@ export function HallBlueprint({ ownedHallSkills = {}, selectedRoomId, onSelectRo
     <div style={{ ...C.card, borderColor: '#1a4060', marginBottom: 14, padding: '12px 14px', background: 'linear-gradient(180deg, rgba(6,18,32,0.9), rgba(4,10,20,0.95))' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8, marginBottom: 8 }}>
         <div style={{ fontSize: 10, color: '#7ec8ff', letterSpacing: 1.5 }}>FLOOR BLUEPRINT</div>
-        <div style={{ fontSize: 9, color: '#5080a0' }}>Click a wing · install upgrades below</div>
+        <div style={{ fontSize: 9, color: '#5080a0' }}>Pick a wing · upgrades below</div>
       </div>
       <p style={{ fontSize: 10, color: '#90b0c8', lineHeight: 1.55, margin: '0 0 10px' }}>
         {renderHallAmbianceSummary(owned, week)}

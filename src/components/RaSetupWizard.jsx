@@ -11,8 +11,8 @@ import { RaPortraitChip } from './RaPortraitChip.jsx';
 
 const RA_INTRO = [
   'Senior year. Third year as RA. Red hair, curves that draw eyes in the dining hall, and a master key that opens more doors than it should.',
-  'The housing office gave you Victory Hall — or Scholar\'s Rest, Rosewood, the Annex — depending on which floor needs someone who can keep secrets. Your residents are brilliant, messy, hungry, and yours to look after.',
-  'You are not faculty. You live on the floor. You sign for their deliveries, break up their parties, and know which room ordered pizza at two in the morning. What happens on your hall this semester is up to you.',
+  'Housing dropped you on a floor that needed someone who could keep a secret. Your residents already know which door is yours.',
+  'You live here. You sign for their deliveries, break up their parties, and know which room ordered pizza at two in the morning.',
 ];
 
 const clickSound = (fn) => () => {
@@ -99,11 +99,8 @@ export function RaSetupWizard({ students, onComplete }) {
 
         {step === 'name' && (
           <div key="name" className="hall-pass-view-in">
-            <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 8, textAlign: 'center' }}>
-              What should residents call you?
-            </div>
-            <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 16, lineHeight: 1.55 }}>
-              Not &quot;RA&quot; every time — your name on the door roster and in their texts.
+            <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 16, textAlign: 'center' }}>
+              Name on the door
             </div>
             <input
               type="text"
@@ -141,11 +138,8 @@ export function RaSetupWizard({ students, onComplete }) {
 
         {step === 'approach' && (
           <div key="approach" className="hall-pass-view-in">
-            <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 8, textAlign: 'center' }}>
+            <div style={{ fontSize: 10, letterSpacing: 3, color: accent, textTransform: 'uppercase', marginBottom: 16, textAlign: 'center' }}>
               How do you run your hall?
-            </div>
-            <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 16 }}>
-              Your style shapes which actions feel natural — and which residents open up fastest.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
               {RA_APPROACH_LIST.map((ap, i) => {
@@ -182,7 +176,7 @@ export function RaSetupWizard({ students, onComplete }) {
               Which hall do you take?
             </div>
             <div style={{ color: '#8a7880', fontSize: 12, textAlign: 'center', marginBottom: 16 }}>
-              Your hall&apos;s residents start on your roster. The other halls unlock as the semester deepens.
+              Housing posted the assignment. The rest of campus waits.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
               {DORM_LIST.map((d, i) => {
@@ -228,7 +222,7 @@ export function RaSetupWizard({ students, onComplete }) {
           <CustomStudentWizard
             accent={accent}
             title="Your Fifth Resident"
-            subtitle="Every hall has a wildcard — build the resident who rounds out your floor."
+            subtitle="One more bed on the floor. Make her yours."
             backLabel="← Pick another hall"
             onBack={() => setStep('dorm')}
             onComplete={(draft) => {

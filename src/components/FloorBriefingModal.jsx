@@ -17,8 +17,7 @@ export function FloorBriefingModal({ raProfile, onContinue, soundEnabled = true 
             Keys are yours, {name}. Housing wants every resident to know who&apos;s on duty before the week gets loud.
           </p>
           <p style={{ margin: '14px 0 0' }}>
-            Walk the hallway from your desk — knock on each door, introduce yourself, and get a read on who lives behind the nameplates.
-            When someone grows into a new size, their room will have something new to show you.
+            Walk the hall from your desk and knock. Learn who lives behind the nameplates.
           </p>
         </div>
         <button
