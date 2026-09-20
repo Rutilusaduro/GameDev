@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Eating contest — engine bridge for competitive_circuit evolved form.
-import { registerDimension, render } from '../../engine.js';
+import { registerDimension, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
@@ -95,23 +95,25 @@ export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, may
   const fn = CONTEST_WEIGH_IN_2_TEXT[stageIdx];
   const raw = fn ? fn(student, yourGain, mayaGain, mayaLbs) : '';
   return renderContestLegacy(raw, student, week, stageIdx, {
-    globals,
+    globals: { yourGain, mayaGain, mayaLbs },
     v2DepthChance: 0.32,
   });
 }
 
 export function renderContestPayoff(stageIdx, student, yourGain, week) {
-  const composed = preferContestPool('contest.payoff.scene', student, week, stageIdx, {
+  const pooled = preferContestPool('contest.payoff.scene', student, week, stageIdx, {
     globals: { yourGain },
     v2DepthChance: 0.3,
   });
-  if (composed) return composed;
+  if (pooled) return pooled;
   const fn = CONTEST_PAYOFF_TEXT[stageIdx];
   const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
+  if (!student) return raw;
+  const ctx = buildContestCtx(student, week, stageIdx, { globals: { yourGain } });
   const glow = render('{contest.afterglow}', ctx)?.trim() || '';
   const linger = render('{contest.linger}', ctx)?.trim() || '';
-  const composed = [raw, glow, linger].filter(Boolean).join('\n\n');
-  return appendV2Depth(composed, 'eatingContest', ctx, 0.3);
+  const assembled = [raw, glow, linger].filter(Boolean).join('\n\n');
+  return appendV2Depth(assembled, 'eatingContest', ctx, 0.3);
 }
 
 registerModuleVariants('contest.afterglow', [

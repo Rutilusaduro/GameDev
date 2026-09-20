@@ -132,7 +132,7 @@ export function cultRoutesForOwned(owned = {}) {
   return [...CULT_DISTRIBUTION_ROUTES, ...extraCultRoutes(owned)];
 }
 
-export function applyCultDistribution(state, routeId, rndFn, owned = {}) {
+export function applyCultDistribution(state, routeId, rndFn, owned = {}, extras = {}) {
   const route = cultRoutesForOwned(owned).find(r => r.id === routeId);
   if (!route || !state?.cultActive) return { state, outcome: null };
   const cult = { ...(state.cult || defaultCultState()) };

@@ -102,7 +102,7 @@ assert.ok(depth.feedCalBonus >= 400, 'snack_station feed cals live');
 assert.ok(depth.interruptReduce > 0, 'late_night interrupt reduce live');
 
 const fx = aggregateHallLoungeSkillEffects(owned);
-assert.equal(fx.talkRelBonus, depth.talkRelBonus);
+assert.ok(fx.talkRelBonus >= depth.talkRelBonus, 'lounge skills keep floor talk rel plus ambiance');
 assert.ok(extraFeedCalories('Pizza Party', owned) >= 400);
 
 const thin = { lbs: 125, startLbs: 125 };

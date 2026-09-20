@@ -32,6 +32,20 @@ export function emptyWeekPlan(slotCount = WEEK_PLAN_SLOT_COUNT) {
   };
 }
 
+export function weekPlanBonusesFor(student, weekPlan, week = 0) {
+  const slots = (weekPlan?.slots || []).filter((s) => s.studentId === student?.id);
+  if (!slots.length) return { rel: 0, extraLbs: 0, hungerEase: 0, discontentEase: 0 };
+  const night = slots.some((s) => s.venueId === 'night_wing');
+  const leftover = !!student?.leftoverFedThisWeek;
+  const nightVisit = !!(week && student?.lastNightVisitWeek === week);
+  return {
+    rel: Math.min(8, 2 * slots.length + (leftover ? 1 : 0) + (nightVisit ? 1 : 0)),
+    extraLbs: night ? 1 : 0,
+    hungerEase: leftover ? 2 : 1,
+    discontentEase: nightVisit ? 2 : 1,
+  };
+}
+
 export function resizeWeekPlan(plan, slotCount = WEEK_PLAN_SLOT_COUNT) {
   const n = Math.max(WEEK_PLAN_SLOT_COUNT, slotCount);
   const slots = [...(plan?.slots || [])];

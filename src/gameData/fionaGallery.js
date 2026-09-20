@@ -125,7 +125,7 @@ export function startStudioSession(state, subjectId, setup = {}) {
   };
 }
 
-export function studioAction(state, actionId, owned = {}) {
+export function studioAction(state, actionId, owned = {}, extras = {}) {
   const session = state.session;
   if (!session || session.type !== 'studio') return state;
   const action = studioActionsForOwned(owned).find((a) => a.id === actionId);

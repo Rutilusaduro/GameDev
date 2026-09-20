@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useEffect, useState } from 'react';
 import { TALK_TOPICS, TALK_CONFIG, resolveTalkTopicEffect } from '../gameData/talkSystem.js';
+import { talkTopicAvailable } from '../gameData/habitatDepth.js';
 import { buildDevourScene } from '../gameData/devourScene.js';
 import { getCorruptionTier } from '../gameData/corruption.js';
 import { getDiscontentTier } from '../gameData/discontent.js';

@@ -3,7 +3,7 @@ import { completeRaSetup } from './helpers/setupGame.js';
 
 test('floor blueprint: click room, see upgrades, pin circuit', async ({ page }) => {
   await completeRaSetup(page);
-  await page.getByRole('button', { name: '🏠 Hall Lounge' }).click();
+  await page.getByRole('button', { name: '🏠 Blueprint' }).click();
   await expect(page.getByText(/HALL LOUNGE PRESTIGE/i).first()).toBeVisible();
   await expect(page.getByRole('group', { name: /Dorm floor blueprint/i })).toBeVisible();
 

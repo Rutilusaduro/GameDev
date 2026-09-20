@@ -292,7 +292,7 @@ export function acquisitionChoicesForOwned(stageId, owned = {}) {
   return [...base, ...extraAcquisitionChoices(owned)];
 }
 
-export function startChemSession(pharmacistState, owned = {}) {
+export function startChemSession(pharmacistState, owned = {}, extras = {}) {
   const stageId = pharmacistState?.stage ?? 1;
   const cultReservoir = pharmacistState?.cult?.supplyReservoir ?? 0;
   const cultBonus = pharmacistState?.cultActive ? cultSupplyToIngredients(pharmacistState) : {};

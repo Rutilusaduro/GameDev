@@ -1,31 +1,21 @@
 import { test, expect } from '@playwright/test';
 import { completeRaSetup } from './helpers/setupGame.js';
 
-test('Blueprint rooms, resident doors, and night rounds', async ({ page }) => {
+test('Blueprint rooms and After-Hours pins', async ({ page }) => {
   await completeRaSetup(page);
 
   await page.getByRole('button', { name: '🏠 Blueprint' }).click();
-  await expect(page.getByText('Hall Blueprint', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Common Lounge/ })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Galley Kitchen/ })).toBeVisible();
+  await expect(page.getByRole('group', { name: /Dorm floor blueprint/i })).toBeVisible();
+  await expect(page.locator('[data-room-id="lounge"]')).toBeVisible();
+  await expect(page.locator('[data-room-id="kitchen"]')).toBeVisible();
 
-  await page.getByRole('button', { name: /Galley Kitchen/ }).click();
-  await expect(page.getByRole('heading', { name: 'Galley Kitchen' })).toBeVisible();
+  await page.locator('[data-room-id="kitchen"]').click();
+  await expect(page.getByRole('heading', { name: 'Floor Kitchen' })).toBeVisible();
 
-  await page.getByRole('button', { name: /Resident Wing/ }).click();
-  await expect(page.getByRole('heading', { name: 'Resident Wing' })).toBeVisible();
-  await expect(page.locator('.dorm-bp-door').first()).toBeVisible();
+  await page.locator('[data-room-id="lounge"]').click();
+  await expect(page.getByRole('heading', { name: 'Hall Lounge' })).toBeVisible();
 
-  const firstDoor = page.locator('.dorm-bp-door').first();
-  await firstDoor.click();
-  await expect(page.getByText('Mini-fridge')).toBeVisible();
-
-  await page.getByRole('button', { name: /Start night rounds/ }).click();
-  await expect(page.getByRole('button', { name: /Night rounds ·/ })).toBeVisible();
-  await firstDoor.click();
-  await expect(page.getByText('NIGHT ROUNDS', { exact: true })).toBeVisible();
-  await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.getByTestId('night-round-choice')).toHaveCount(3);
-  await page.getByTestId('night-round-choice').first().click();
-  await expect(page.getByRole('button', { name: 'Back to the plan' })).toBeVisible();
+  await page.getByRole('button', { name: /Pin for rounds/i }).click();
+  await expect(page.getByRole('button', { name: /Pinned #1/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Walk After-Hours Rounds/i })).toBeVisible();
 });

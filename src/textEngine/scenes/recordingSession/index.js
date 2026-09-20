@@ -89,7 +89,7 @@ export function renderRecordingDirectionPopup(choiceId, stageIdx, student, week)
   const arr = RECORDING_DIRECTION_POPUPS[choiceId];
   const raw = resolveLegacy(arr?.[stageIdx], student.lbs);
   const body = renderRecordingLegacy(raw, student, week, stageIdx, { v2DepthChance: 0.26 });
-  return [body, glow].filter(Boolean).join('\n\n');
+  return body;
 }
 
 export function renderRecordingTakeResult(quality, stageIdx, postGainLbs, student, week) {

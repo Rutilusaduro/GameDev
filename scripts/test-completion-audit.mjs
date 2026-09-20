@@ -2919,8 +2919,8 @@ check('ra-dorm-pivot-blueprint-hall', () => {
   assert.ok(existsSync(join(root, 'src/gameData/hallBlueprint.js')));
   assert.ok(existsSync(join(root, 'src/gameData/hallAmbiance.js')));
   const lounge = read('src/views/HallLoungeView.jsx');
-  assert.match(lounge, /HallBlueprint/);
-  assert.match(lounge, /renderHallRoomBlurb/);
+  assert.match(lounge, /data-blueprint-layout/);
+  assert.match(lounge, /renderRoomBlurb/);
 });
 
 check('ra-dorm-pivot-text-engine-bridges', () => {

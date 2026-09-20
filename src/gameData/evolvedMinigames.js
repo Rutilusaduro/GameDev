@@ -128,19 +128,19 @@ export function minigameChoicesForPhase(gameId, phaseIdx, owned = {}) {
   return [...phase.choices, ...extraMinigameChoices(gameId, owned)];
 }
 
-export function computeMinigameOutcome(gameId, history, stageIdx = 0, owned = {}) {
+export function computeMinigameOutcome(gameId, history, stageIdx = 0, owned = {}, habitat = {}) {
   const def = EVOLVED_MINIGAMES[gameId];
   if (!def) return { gain: 8, rel: 8, tier: 'good' };
   const score = (history || []).reduce((sum, h) => sum + (h.score || 0), 0);
   const stageBonus = Math.floor(stageIdx / 2);
-  const leftoverBonus = extras.leftoverFed ? 2 : 0;
-  const nightRel = extras.nightVisit ? 1 : 0;
+  const leftoverBonus = habitat.leftoverFed ? 2 : 0;
+  const nightRel = habitat.nightVisit ? 1 : 0;
   const baseGain = gameId === 'campus_challenge' ? [8, 20] : gameId === 'delivery_order' ? [7, 17] : [6, 14];
   const baseRel = gameId === 'campus_challenge' ? 9 : gameId === 'delivery_order' ? 7 : 8;
   const gainSpan = baseGain[1] - baseGain[0];
   const floor = evolvedFloorBonus(owned);
-  const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus) + (floor.gain || 0);
-  const rel = baseRel + Math.floor(score / 3) + (floor.rel || 0);
+  const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus) + (floor.gain || 0) + leftoverBonus;
+  const rel = baseRel + Math.floor(score / 3) + (floor.rel || 0) + nightRel;
   const tier = score >= 5 ? 'perfect' : score >= 3 ? 'good' : score >= 1 ? 'messy' : 'soft';
   return { gain: depthLbsGrant(gain), rel: depthRelBonus(rel), tier, score };
 }

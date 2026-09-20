@@ -109,8 +109,10 @@ import { renderFeedReaction, foodKindFromFeed, feedRoomFromFullness, renderItemU
 import { renderWeekRecap, gainBandFromLbs } from './textEngine/scenes/weekRecap/index.js';
 import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
-import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan } from './gameData/weekPlanner.js';
-import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs } from './gameData/mechanicDepth.js';
+import { buildWeekReviewExtras, emptyWeekPlan, plannerSlotCount, resolveWeekPlan, weekPlanBonusesFor } from './gameData/weekPlanner.js';
+import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs, tickHabitatWeek, applyTalkHabitatBonus, habitatFx, shouldSkipHungerInterrupt, neighborEcologyPatch, campusStayHome, sessionCapHabitatBonus, deviceTickHabitatMult, oppositionRumorChance, labInstabilityEase, digestStuffedExtras, tickOutfitWeek } from './gameData/mechanicDepth.js';
+import { createInitialDormState, buyRoomFit, applyNightVisit } from './gameData/dormBlueprint.js';
+import { applyOutfitRefit } from './gameData/outfits.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
 import { renderAscensionAbility, renderAscensionCeremony, renderAscensionDecline, renderAscensionHeld, renderAscensionStirring } from './textEngine/scenes/ascension/index.js';
@@ -7562,7 +7564,6 @@ export default function HallPass(){
     const extraCor=loungeFx.talkCorruptionBonus||0;
     const hungerDrop=loungeFx.hungerTalkDrop||0;
     gainFavor('talk');
-    const loungeFx=aggregateHallLoungeSkillEffects(ownedHallSkills||{});
     const hallTalkRel=depthTalkRelBonus(0,{ relTalkBonus:loungeFx.relTalkBonus||0 });
     const applySuggest=!!effect?.applySuggestDebuff||meta.topicId==='suggest_indulgence';
     const targetForHab=students.find(x=>x.id===talkStudentId);

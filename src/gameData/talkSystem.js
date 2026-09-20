@@ -7,7 +7,7 @@ import { getStage } from './stages.js';
 import { enrichTalkEffect } from './mechanicsDepthLayer.js';
 import { getDevourEffect } from './devourScene.js';
 
-import { DEPTH_TALK_TOPICS } from './mechanicDepth.js';
+import { DEPTH_TALK_TOPICS } from './habitatDepth.js';
 
 export const TALK_TOPICS = [
   // ── always available ───────────────────────────────────────

@@ -58,7 +58,7 @@ export function renderHearingPhase(type, phaseIdx, student, week) {
 
 export function renderHearingChoiceResult(type, choiceId, student, week, phaseIdx = 0, resultPool = null) {
   const pool = resultPool || `opposition.hearing.${type}.result.${choiceId}`;
-  return renderHearingPool(pool, student, week, type, phaseIdx, { v2DepthChance: 0.28 })
+  const text = renderHearingPool(pool, student, week, type, phaseIdx, { v2DepthChance: 0.28 })
     || 'The room records your choice.';
   return wrapLeftoverLinger(text, student, week, 'opposition.linger');
 }

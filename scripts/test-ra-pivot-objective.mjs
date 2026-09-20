@@ -40,7 +40,7 @@ mustExist('src/gameData/evolutionUiData.js');
 mustExist('src/gameData/evolvedScaling.js');
 
 const hallLounge = readFileSync(join(root, 'src/views/HallLoungeView.jsx'), 'utf8');
-assert.match(hallLounge, /HallBlueprint/, 'Hall lounge view should render blueprint UI');
+assert.match(hallLounge, /data-blueprint-layout/, 'Hall lounge view should render labeled floor-plan');
 
 execSync('npm run test:hall-blueprint', { cwd: root, stdio: 'inherit' });
 const depthOut = execSync('npm run test:mechanics-depth', { cwd: root, encoding: 'utf8' });

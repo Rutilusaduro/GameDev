@@ -1,6 +1,6 @@
 // The Squad — Lead: A4 Architect | Support: A1 Mobile
 // Sumo match — engine bridge for competitive_circuit evolved form.
-import { registerDimension, render } from '../../engine.js';
+import { registerDimension, registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import '../proseOverhaulPass3.js';
@@ -305,8 +305,8 @@ export function renderSumoAftermath(stageIdx, student, gainAccum, won, oppLbs, w
   });
   const scene = render('{sumo.aftermath.scene}', ctx)?.trim() || '';
   const glow = render('{sumo.afterglow}', ctx)?.trim() || '';
-  const composed = [scene || unique, glow].filter(Boolean).join('\n\n');
-  return appendV2Depth(composed, 'sumoMatch', ctx, 0.32);
+  const assembled = [scene || unique, glow].filter(Boolean).join('\n\n');
+  return appendV2Depth(assembled, 'sumoMatch', ctx, 0.32);
 }
 
 export function renderSumoPayoff(stageIdx, student, gainAccum, week) {
