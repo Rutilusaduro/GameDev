@@ -246,52 +246,6 @@ export function HallLoungeView({
               <div style={{ fontSize: 16 }}>▲</div>
               <div style={{ fontSize: 8, letterSpacing: 1, color: LINE }}>W  E</div>
             </div>
-            {owned ? (
-              <span className="dorm-bp-owned">Installed</span>
-            ) : (
-              <button
-                type="button"
-                style={{ ...C.smBtn, flexShrink: 0, opacity: check?.ok ? 1 : 0.45 }}
-                disabled={!check?.ok}
-                onClick={() => onBuyFit?.(fit.id, student.id)}
-                title={check?.reason}
-              >
-                {fit.cost} lbs
-              </button>
-            )}
-          </div>
-        );
-      })}
-      {student && (
-        <div className="dorm-bp-upgrade">
-          <div className="dorm-bp-upgrade-copy">
-            <div className="dorm-bp-upgrade-title">Wardrobe {needsRefit(student) ? '· straining' : '· holding'}</div>
-            <div className="dorm-bp-upgrade-desc">
-              {worstFitState(student)
-                ? `Clothes ${worstFitState(student)}. Let them out or cut a new set with prestige.`
-                : 'No garments logged yet. First refit writes her current measurements.'}
-            </div>
-          </div>
-        </div>
-      )}
-      {student && REFIT_OPTIONS.map((opt) => {
-        const affordable = currency >= opt.cost;
-        return (
-          <div key={opt.id} className="dorm-bp-upgrade">
-            <div className="dorm-bp-upgrade-copy">
-              <div className="dorm-bp-upgrade-title">{opt.label}</div>
-              <div className="dorm-bp-upgrade-desc">{opt.desc}</div>
-            </div>
-            <button
-              type="button"
-              style={{ ...C.smBtn, flexShrink: 0, opacity: affordable ? 1 : 0.45 }}
-              disabled={!affordable}
-              onClick={() => onRefitWardrobe?.(opt.id, student.id)}
-              title={affordable ? undefined : `Need ${opt.cost} lbs prestige`}
-              aria-label={`${opt.label} for ${student.name}, ${opt.cost} lbs prestige`}
-            >
-              {opt.cost} lbs
-            </button>
           </div>
           <div
             style={{
