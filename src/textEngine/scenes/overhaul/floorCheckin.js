@@ -21,6 +21,27 @@ registerPool('floor.checkin.setup', [
     'Lounge light. A notebook ignored. {subject.name} keeps a hand on the extra of her without performing it.',
     'The meeting has an agenda. {subject.name} is the warmer item on it.',
   ]},
+  { when: { leftoverFed: true, floorSceneId: 'mood_tired' }, weight: 5, text: [
+    '{subject.name} is half-asleep with foil still in her lap. Chin toward the soft shelf of her chest. Tray won the night.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'mood_nervous' }, weight: 5, text: [
+    '{subject.name} fidgets up front with kitchen foil still crinkling. Phone up, phone down. Appetite doing the talking.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'mood_focused' }, weight: 5, text: [
+    '{subject.name} has barely looked up. Notes immaculate. Last night\'s pastry torn open at the edge of the page.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'mood_excited' }, weight: 5, text: [
+    '{subject.name} can barely stay seated. Kitchen heat still on her. The chair creaks fondly.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'hall_snack_break' }, weight: 5, text: [
+    'The whole floor leans toward leftover trays like the meeting was an excuse.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'stage_heavy' }, weight: 5, text: [
+    'She fills the seat. Foil in reach. The lounge was built for this body and is still catching up.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'stage_early' }, weight: 5, text: [
+    'She sits like she is borrowing the chair. Foil on the table. The waistband is only a little honest tonight.',
+  ]},
   { when: { leftoverFed: true, floorSceneId: 'mood_stressed' }, weight: 5, text: [
     '{subject.name} folds into the lounge couch with last night\'s foil still in reach. Notebook closed. Foil still open.',
   ]},
@@ -67,6 +88,15 @@ registerPool('floor.checkin.setup', [
 ]);
 
 registerPool('floor.checkin.body', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Kitchen heat still rounding her. A softer line at the waist she has not named yet.',
+  ]},
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    'Last night\'s tray is still in the way she sits. Belly first. The chair agrees.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Foil warmth still on her. The extra of her takes the conversation first.',
+  ]},
   { when: {}, text: [
     '{word.size} of her takes the conversation first. Soft mass, heat, the extra the week put on her.',
     'You take her in before the question does. Heat, extra, the week sitting on her.',
@@ -96,6 +126,12 @@ registerPool('floor.checkin.result.setup', [
     'The check-in closes. The closeness does not. She stays seated.',
     'She says your name once more, like a bookmark, then reaches for whatever is left.',
     'Rapport sits in the chair with her. Warm. A little sticky. Not leaving yet.',
+  ]},
+  { when: { leftoverFed: true, floorChoiceKind: 'feed' }, weight: 5, text: [
+    'The swallow finishes traveling leftover and this sitting together. She breathes around both.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The check-in closes. Kitchen heat stays. She stays seated.',
   ]},
   { when: { floorChoiceKind: 'feed' }, weight: 4, text: [
     'The swallow finishes traveling. She breathes around it, pleased with the work.',

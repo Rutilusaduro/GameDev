@@ -17,6 +17,7 @@ test('Night Rounds: start, knock Cassidy, pick a choice', async ({ page }) => {
   const choice = page.getByTestId('night-round-choice').first();
   await expect(choice).toBeVisible();
   await dialog.screenshot({ path: '/opt/cursor/artifacts/screenshots/night_rounds_cassidy.png' });
+  await page.locator('.hall-pass-overlay-in').last().screenshot({ path: '/opt/cursor/artifacts/screenshots/night_rounds_overlay.png' });
   await choice.click();
   await expect(dialog.getByRole('button', { name: /Back to the plan/i })).toBeVisible();
 });

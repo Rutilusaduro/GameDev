@@ -9,6 +9,15 @@ registerPool('campusEvent.observation', [
     '{floor.checkin.body} {floor.checkin.setup}',
     '{floor.checkin.setup}',
   ]},
+  { when: { leftoverFed: true, mood: ['tired'] }, weight: 4, text: [
+    '{subject.name} is half-asleep with foil still in her lap. The check-in is the second sitting.',
+  ]},
+  { when: { leftoverFed: true, mood: ['excited'] }, weight: 4, text: [
+    '{subject.name} can barely stay seated. Kitchen heat still on her. Energy looking for another bite.',
+  ]},
+  { when: { leftoverFed: true, mood: ['content'] }, weight: 4, text: [
+    '{subject.name} is already comfortable, foil still warm. The check-in is an excuse to stay in the good chair.',
+  ]},
   { when: { leftoverFed: true, mood: ['stressed'] }, weight: 4, text: [
     '{subject.name} folds into the lounge couch with foil still in reach. Stress and the tray sat down together.',
   ]},
