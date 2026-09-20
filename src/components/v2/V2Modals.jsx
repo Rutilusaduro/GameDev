@@ -73,17 +73,17 @@ export function FeastRitualModal({ students, ownedSkills, ownedHallSkills, week 
   );
 }
 
-export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice, onClose, soundEnabled = true }) {
+export function DreamModal({ student, week = 1, presetScenarioId, lucidUnlocked, onChoice, onClose, soundEnabled = true }) {
   const [phase, setPhase] = useState(presetScenarioId ? 'dream' : 'open');
   useEffect(() => { playHallPassSound('session', soundEnabled); }, [soundEnabled, student?.id, phase, presetScenarioId]);
   const [scenario, setScenario] = useState(() => {
     if (!presetScenarioId || !student) return null;
     return DREAM_SCENARIOS.find((d) => d.id === presetScenarioId) || null;
   });
-  const ctx = createContext({ subject: student });
+  const ctx = createContext({ subject: student, week });
 
   const startDream = () => {
-    const sc = pickDreamScenario(student);
+    const sc = pickDreamScenario(student, week);
     setScenario(sc);
     setPhase('dream');
   };
@@ -127,12 +127,12 @@ export function DreamModal({ student, presetScenarioId, lucidUnlocked, onChoice,
   );
 }
 
-export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedHallSkills, onOpenEcho, onResonate }) {
+export function EchoArchivePanel({ student, echoesState, ownedSkills, ownedHallSkills, onOpenEcho, onResonate, week = 1 }) {
   const echoes = (echoesState?.moments || []).filter((m) => m.studentId === student?.id);
   if (!echoes.length) {
     return <p style={{ fontSize: 11, color: '#607080', fontStyle: 'italic' }}>No echoes captured yet. Milestones will preserve themselves here.</p>;
   }
-  const ctx = createContext({ subject: student });
+  const ctx = createContext({ subject: student, week });
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       {echoes.map((echo) => {

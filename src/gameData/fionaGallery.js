@@ -19,6 +19,7 @@ export const GALLERY_MOTIFS = [
   { id: 'still_life', label: 'Still Life', relBonus: 3, scrutiny: 0 },
   { id: 'portrait', label: 'Portrait', corruption: 2, scrutiny: 1 },
   { id: 'performance', label: 'Performance', lbsMult: 1.15, scrutiny: 4 },
+  { id: 'nocturne', label: 'Nocturne', lbsMult: 1.08, relBonus: 2, scrutiny: 1 },
 ];
 
 export const GALLERY_ZONES = ['belly', 'bust', 'hips', 'full'];
@@ -28,6 +29,7 @@ export const GALLERY_MEDIUMS = [
   { id: 'cream', label: 'Cream' },
   { id: 'chocolate', label: 'Chocolate' },
   { id: 'pastry', label: 'Pastry' },
+  { id: 'night_kitchen', label: 'Night Kitchen Light' },
 ];
 
 export const FIELD_LOCATIONS = [
@@ -36,6 +38,7 @@ export const FIELD_LOCATIONS = [
   { id: 'food_court', label: 'Food Court', tag: 'street', quality: 'Study' },
   { id: 'gym', label: 'Gym Aftermath', tag: 'contrast', quality: 'Print' },
   { id: 'faculty_lounge', label: 'Staff Lounge', tag: 'scandal', quality: 'Masterwork', scrutiny: 5 },
+  { id: 'night_wing', label: 'Night Wing', tag: 'afterhours', quality: 'Print', scrutiny: 2 },
 ];
 
 export const STUDIO_ACTIONS = [
@@ -43,6 +46,7 @@ export const STUDIO_ACTIONS = [
   { id: 'feed_together', label: 'Feed together', subjectLbs: 5, fionaLbs: 4, quality: 'Study' },
   { id: 'shoot_only', label: 'Shoot only', subjectLbs: 0, fionaLbs: 0, quality: 'Masterwork' },
   { id: 'direct_feed', label: 'Direct & feed', subjectLbs: 11, fionaLbs: 3, quality: 'Masterwork' },
+  { id: 'night_still', label: 'Still after hours', subjectLbs: 6, fionaLbs: 2, quality: 'Print' },
 ];
 
 export function extraStudioActions(owned = {}) {
@@ -143,10 +147,18 @@ export function studioAction(state, actionId, owned = {}) {
             : 'Model fed. Shutter clicks.';
   if (round >= 3) {
     const critic = CRITIC_TIERS[Math.floor(Math.random() * CRITIC_TIERS.length)];
+    const motif = GALLERY_MOTIFS.find((m) => m.id === session.setup?.motif);
+    const lbsMult = motif?.lbsMult || 1;
+    const nightStill = action.id === 'night_still' || session.log.some((line) => /After hours/.test(line));
+    const extra = nightStill ? 2 : 0;
+    const subjectLbs = Math.round(subjectGain * lbsMult) + extra;
+    const fionaLbs = Math.round(fionaGain * lbsMult) + (nightStill ? 1 : 0);
+    const leftoverPatrons = extras.leftoverKitchen ? 2 : 0;
+    const nightPatrons = extras.nightRound ? 1 : 0;
     return {
       ...state,
-      patrons: Math.min(100, state.patrons + critic.patrons),
-      scrutinyHeat: state.scrutinyHeat + critic.scrutiny,
+      patrons: Math.min(100, state.patrons + critic.patrons + (motif?.relBonus || 0) + leftoverPatrons + nightPatrons),
+      scrutinyHeat: state.scrutinyHeat + critic.scrutiny + (motif?.scrutiny || 0),
       subjects: state.subjects.map((s) => {
         if (s.studentId !== session.subjectId) return s;
         return {
@@ -158,7 +170,7 @@ export function studioAction(state, actionId, owned = {}) {
       fieldArchive: [...state.fieldArchive, { id: `studio-${Date.now()}`, location: 'studio', tag: 'portrait', quality: action.quality, caption: 'Studio progression' }],
       session: null,
       lastCritic: critic.label,
-      pendingGains: { subjectId: session.subjectId, subjectLbs: subjectGain, fionaLbs: fionaGain, scrutiny: critic.scrutiny },
+      pendingGains: { subjectId: session.subjectId, subjectLbs, fionaLbs, scrutiny: critic.scrutiny + (motif?.scrutiny || 0) },
       sessionLog: [...session.log, logLine, `Critic: ${critic.label}.`],
     };
   }

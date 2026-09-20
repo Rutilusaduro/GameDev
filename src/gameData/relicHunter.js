@@ -75,6 +75,16 @@ export function startElaraQuest(exploration, questId) {
   return { ...exploration, questId, questStep: 0 };
 }
 
+function leftoverQuestSubject(ctx) {
+  const leftover = (ctx?.students || []).find((s) => s.leftoverFedThisWeek);
+  if (leftover) return leftover;
+  if (ctx?.leftoverKitchen) return { leftoverFedThisWeek: true, lbs: 160, name: 'Indiana' };
+  if (ctx?.nightRound && ctx?.week) {
+    return { leftoverFedThisWeek: false, lastNightVisitWeek: ctx.week, lbs: 160, name: 'Indiana' };
+  }
+  return null;
+}
+
 export function advanceElaraQuestAtNode(exploration, nodeId, ctx) {
   if (!exploration?.questId) return { exploration, lines: [] };
   const quest = getElaraQuest(exploration.questId);
@@ -82,7 +92,11 @@ export function advanceElaraQuestAtNode(exploration, nodeId, ctx) {
   const step = quest.steps[exploration.questStep ?? 0];
   if (!step || step.nodeId !== nodeId) return { exploration, lines: [] };
 
-  const lines = [`🗺️ ${step.text}`];
+  const lingerSub = leftoverQuestSubject(ctx);
+  const stepText = lingerSub
+    ? wrapLeftoverLinger(step.text, lingerSub, ctx?.week ?? 1, 'campus.linger')
+    : step.text;
+  const lines = [`🗺️ ${stepText}`];
   const nextStep = (exploration.questStep ?? 0) + 1;
   if (nextStep >= quest.steps.length) {
     const completed = [...(exploration.questsCompleted || []), quest.id];

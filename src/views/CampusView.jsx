@@ -105,6 +105,8 @@ export function CampusView({
   dismissCampusEncounter,
   facultyAffinity,
   setFacultyAffinity,
+  leftoverKitchen = false,
+  nightRound = false,
   portionSaintAvailable,
   onHuntPortionSaint,
   ap,
@@ -240,7 +242,7 @@ export function CampusView({
           )}
           {campusState.at === 'faculty_lounge' && setFacultyAffinity && (
             <div style={{ marginBottom: 10 }}>
-              <FacultyLoungeView facultyAffinity={facultyAffinity} setFacultyAffinity={setFacultyAffinity} />
+              <FacultyLoungeView facultyAffinity={facultyAffinity} setFacultyAffinity={setFacultyAffinity} leftoverKitchen={leftoverKitchen} nightRound={nightRound} />
             </div>
           )}
           {portionSaintAvailable && onHuntPortionSaint && (

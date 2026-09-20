@@ -8,9 +8,11 @@
 // Selectors from pickHallMemory(): memName, memType, memWeeksAgo.
 // Reactor archetype/corruption drawn from subject via engine.
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass4.js';
 
 // ── gossip.react.notice ───────────────────────────────────────
 // Neutral, observational. The hall notices someone changed.
@@ -28,6 +30,17 @@ registerPool('gossip.react.notice', [
     (ctx) => `${ctx.globals?.memName ?? 'She'} crossed a stage this week. It shows.`,
     (ctx) => `The way ${ctx.globals?.memName ?? 'she'}'s been filling out — it registered on the room before it registered on her.`,
     (ctx) => `${ctx.globals?.memName ?? 'She'} is bigger than she was. The hall has updated its read on her.`,
+  ]},
+]);
+
+registerModuleVariants('gossip.react.notice', [
+  { when: { leftoverFed: true, memType: 'scaleBreak' }, weight: 4, text: [
+    (ctx) => `${ctx.globals?.memName ?? 'She'} broke the scale. Leftover sitting was already in the number.`,
+    (ctx) => `The hall clocked ${ctx.globals?.memName ?? 'her'} after the scale. Kitchen heat made the fact travel faster.`,
+  ]},
+  { when: { leftoverFed: true, memType: 'stageUp' }, weight: 4, text: [
+    (ctx) => `${ctx.globals?.memName ?? 'She'} got bigger this week. Leftover heat made it show before anyone said it.`,
+    (ctx) => `The way ${ctx.globals?.memName ?? 'she'}'s filling out — last night's sitting is part of the update.`,
   ]},
 ]);
 
@@ -107,7 +120,7 @@ registerPool('gossip.murmur', [
     `Glances cross the room — at thighs, at waistbands, at who's going back for seconds. A whole conversation without words.`,
     `She knows the room is watching her. They all know. The watching has become the weather.`,
     `The residents have their own accounting. It runs parallel to whatever you think is happening.`,
-    '',
+    `Someone laughs too loud at seconds. The laugh is doing paperwork the RA desk will never see.`,
   ]},
 ]);
 
@@ -130,7 +143,10 @@ export function renderGossipReact(reactor, week = 1, opts = {}) {
   const notice = render('{gossip.react.notice}', ctx, { trace: opts.trace || null })?.trim() || '';
   const line = render('{gossip.react.line}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = notice && line ? `${notice} ${line}` : notice || line;
-  return appendV2Depth(composed, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
+  const glow = render('{gossip.afterglow}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const linger = render('{gossip.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const withGlow = [composed, glow, linger].filter(Boolean).join(' ');
+  return appendV2Depth(withGlow, 'gossip', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 /** Render ambient hall-awareness murmur (no specific event). */
@@ -138,5 +154,6 @@ export function renderGossipMurmur(reactor, week = 1, opts = {}) {
   if (!reactor) return '';
   const ctx = buildTextContext({ subject: reactor, week, ...opts });
   const base = render('{gossip.murmur}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(base, 'gossip', ctx, opts.v2DepthChance ?? 0.22);
+  const linger = render('{gossip.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join(' '), 'gossip', ctx, opts.v2DepthChance ?? 0.22);
 }

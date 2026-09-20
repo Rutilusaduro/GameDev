@@ -1,7 +1,9 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A5 Editor
 // Salon + gallery hub prose and form-specific evolved event depth.
 // Loads after oppositionSalonGallery.js and v2ProseExpansion.js.
-import { registerModuleVariants, registerPool } from '../engine.js';
+import { registerModuleVariants, registerPool, render } from '../engine.js';
+import { buildTextContext } from '../../gameData/textContext.js';
+import './proseOverhaulPass3.js';
 
 const W = 4;
 
@@ -21,6 +23,8 @@ registerPool('evolved.salon.v2.depth', [
   { when: {}, text: [
     `The salon hums — wine, warmth, appetite dressed as civilization.`,
     `Courses arrive. Laughter thickens. Scandal tastes like dessert.`,
+    `Candles pool. Guests stay. Chloé treats leaving as a failed course.`,
+    `Silk, steam, a second pour. The room learns her outline again.`,
   ]},
 ]);
 
@@ -40,6 +44,8 @@ registerPool('evolved.gallery.v2.depth', [
   { when: {}, text: [
     `Prints on twine. Bodies in frame. Growth made exhibition.`,
     `The archive grows — appetite caught mid-bite, mid-laugh, mid-surrender.`,
+    `Shutter rest. Softness does not. The wall keeps the proof warm.`,
+    `Patrons leave slower than they entered. The subject stays seated on purpose.`,
   ]},
 ]);
 
@@ -223,3 +229,15 @@ registerModuleVariants('homeroom.activity.health_unit.p1', [
     `Pickup time. Mrs. Monroe watched from back row. Eyes on scale. "Can I—" she starts.`,
   ]},
 ]);
+
+export function renderSalonDigestif(chloe, week = 1) {
+  if (!chloe) return '';
+  const ctx = buildTextContext({ subject: chloe, week });
+  return render('{salon.afterglow}', ctx)?.trim() || '';
+}
+
+export function renderGalleryClosing(fiona, week = 1) {
+  if (!fiona) return '';
+  const ctx = buildTextContext({ subject: fiona, week });
+  return render('{gallery.afterglow}', ctx)?.trim() || '';
+}

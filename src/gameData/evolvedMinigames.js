@@ -17,6 +17,7 @@ export const EVOLVED_MINIGAMES = {
           { id: 'speed', label: 'Go for speed — inhale before they can blink', score: 2, log: 'She attacks the plate like a dare.' },
           { id: 'show', label: 'Play to the crowd — savor every bite on camera', score: 3, log: 'The room leans in; she makes appetite look like theater.' },
           { id: 'steady', label: 'Steady pace — let fullness build without rushing', score: 1, log: 'She eats with unnerving calm.' },
+          { id: 'share', label: 'Feed her the first bites yourself', score: 2, log: 'The crowd sees the handoff. She does not hide it.' },
         ],
       },
       {
@@ -25,6 +26,8 @@ export const EVOLVED_MINIGAMES = {
           { id: 'push', label: 'Push past comfort — one more wave of plates', score: 3, log: 'She groans, laughs, and keeps going.' },
           { id: 'coach', label: 'Let you coach her pace from the sideline', score: 2, log: 'Your voice steadies her; she trusts the rhythm.' },
           { id: 'tap', label: 'Tap out with grace — still leaves them impressed', score: 0, log: 'She stops just shy of bursting, chin high.' },
+          { id: 'seconds', label: "Ask for the kitchen's secret round", score: 3, log: 'Staff bring a tray that was not on the menu.' },
+          { id: 'leftover_side', label: 'Claim the leftover tray they were going to dump', score: 2, log: 'Kitchen leftovers become the real round two.' },
         ],
       },
     ],
@@ -40,6 +43,7 @@ export const EVOLVED_MINIGAMES = {
           { id: 'feast', label: 'Order from every app at once', score: 3, log: 'Drivers stack up at the door.' },
           { id: 'favorite', label: 'Stick to one favorite — extra sides', score: 2, log: 'She knows exactly what hits.' },
           { id: 'snack', label: 'Just a snack run — test the waters', score: 0, log: 'A modest start that never stays modest.' },
+          { id: 'duplicate', label: 'Reorder the last feast as a double', score: 3, log: 'The apps think it is a glitch. It is not.' },
         ],
       },
       {
@@ -48,6 +52,8 @@ export const EVOLVED_MINIGAMES = {
           { id: 'feed', label: 'Feed her while she picks the next order', score: 3, log: 'Bite, swipe, repeat — the night blurs.' },
           { id: 'solo', label: 'Let her eat solo while you watch', score: 2, log: 'She performs for an audience of one.' },
           { id: 'pause', label: 'Pause after this round — save room', score: 0, log: 'She pats her belly but the apps stay open.' },
+          { id: 'couch', label: 'Move the plates to her lap and keep going', score: 3, log: 'The couch becomes the table. She becomes the event.' },
+          { id: 'leftovers', label: 'Finish leftover trays first, then order', score: 2, log: 'Foil, then apps. Appetite does both.' },
         ],
       },
     ],
@@ -63,6 +69,7 @@ export const EVOLVED_MINIGAMES = {
           { id: 'reframe', label: 'Reframe the data as embodied hall log', score: 3, log: 'The room shifts — curiosity replaces judgment.' },
           { id: 'deflect', label: 'Deflect to methodology — bore them precise', score: 1, log: 'Appendix notes buy time.' },
           { id: 'confess', label: 'Confess appetite as the real season plan', score: 2, log: 'Honesty lands like a thrown gauntlet.' },
+          { id: 'invite', label: 'Invite the panel to the next floor feast', score: 2, log: 'Half of them laugh. Two of them write it down.' },
         ],
       },
       {
@@ -71,6 +78,7 @@ export const EVOLVED_MINIGAMES = {
           { id: 'hold', label: 'Hold the line — abundance is the finding', score: 3, log: 'She does not apologize for the curve.' },
           { id: 'joke', label: 'Disarm with warmth and a self-deprecating joke', score: 1, log: 'Laughter loosens the room.' },
           { id: 'evidence', label: 'Cite peer comparison data — win on numbers', score: 2, log: 'Charts do what charts do.' },
+          { id: 'rest', label: 'Sit for the last questions — let the body answer', score: 3, log: 'The chair takes her. The panel takes notes.' },
         ],
       },
     ],
@@ -125,6 +133,8 @@ export function computeMinigameOutcome(gameId, history, stageIdx = 0, owned = {}
   if (!def) return { gain: 8, rel: 8, tier: 'good' };
   const score = (history || []).reduce((sum, h) => sum + (h.score || 0), 0);
   const stageBonus = Math.floor(stageIdx / 2);
+  const leftoverBonus = extras.leftoverFed ? 2 : 0;
+  const nightRel = extras.nightVisit ? 1 : 0;
   const baseGain = gameId === 'campus_challenge' ? [8, 20] : gameId === 'delivery_order' ? [7, 17] : [6, 14];
   const baseRel = gameId === 'campus_challenge' ? 9 : gameId === 'delivery_order' ? 7 : 8;
   const gainSpan = baseGain[1] - baseGain[0];

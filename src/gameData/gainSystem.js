@@ -61,7 +61,7 @@ export const forceFeedChance = (s, fullnessCost, reachLevel = 1) => {
 // End-of-week digestion for one student. Pure: returns the result and
 // the updated stat fields; the caller applies weight via its own pipeline
 // so stage-up reactions/narratives still fire.
-export const digestStudent = (s, rng = Math.random) => {
+export const digestStudent = (s, rng = Math.random, extras = {}) => {
   const cap = s.stomachCapacity || GAIN_CONFIG.baseCapacity;
   const surplus = s.consumedCalories || 0;
   const metabolicMult = 1 + (s.metabolicSlowdown || 0);

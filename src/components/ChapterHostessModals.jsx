@@ -49,6 +49,9 @@ export function ChapterHostessHangoutModal({ chapterHostessState, students, open
         const tiffany=students.find(s=>s.evolvedForm==='chapter_hostess');
         const chosenId=ch.hangoutHistory?.[0];
         const chosenChoice=chosenId?vignette.choices.find(c=>c.id===chosenId):null;
+        const introRaw=typeof vignette.intro==='function'?vignette.intro(tiffany):vignette.intro;
+        const introText=ch.hangoutPhaseIdx===0?wrapLeftoverLinger(introRaw,tiffany,week,'hostess.linger'):introRaw;
+        const resultText=chosenChoice?wrapLeftoverLinger(chosenChoice.result,tiffany,week,'hostess.linger'):'';
         return(
           <ModalOverlay dismissible={false} soundEnabled={soundEnabled} style={{ zIndex: 1200 }}>
             <div className="hall-pass-modal-in chapter-hostess-modal" style={{...C.modal,maxWidth:480,background:"linear-gradient(160deg,#0e0520,#180830,#0e0520)",border:"1px solid #6c348340",maxHeight:"85vh",overflowY:"auto"}}>

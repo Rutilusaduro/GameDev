@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // TALIA VALE — Inventor path & lab state (device workshop only)
 // ═══════════════════════════════════════════════════════════════
-import { partsAcquisitionByStage } from './labParts.js';
+import { partsAcquisitionByStage, mergeParts } from './labParts.js';
 import { defaultNetworkState, ensureNetwork } from './networkState.js';
 import {
   initialUnlockedTech,
@@ -72,6 +72,7 @@ export const LAB_ACQUISITION_OPTIONS = {
     { id: 'salvage', label: 'Salvage the engineering scrap pile', grant: 'scrap + circuits' },
     { id: 'campus_surplus', label: 'Raid campus surplus lockers', grant: 'servos + scrap' },
     { id: 'reagent_run', label: 'Pick up lab reagents on credit', grant: 'reagents' },
+    { id: 'leftover_galley', label: 'Raid galley leftovers for paste stock', grant: 'reagents + scrap' },
     { id: 'skip', label: 'Skip — use saved stock', grant: 'none' },
   ],
 };
@@ -152,7 +153,7 @@ export function maybeAdvanceInventorStage(state) {
   return ensureNetwork(next);
 }
 
-export function completeLabSession(state, session, builtDeviceId = null, rng = Math.random) {
+export function completeLabSession(state, session, builtDeviceId = null, rng = Math.random, extras = {}) {
   if (!state || !session) return state;
   let next = { ...state };
   next.sessionsRun = (next.sessionsRun ?? 0) + 1;
@@ -165,16 +166,24 @@ export function completeLabSession(state, session, builtDeviceId = null, rng = M
     next.builtThisSession = [...(next.builtThisSession || []), builtDeviceId];
     next.breakthroughs += 1;
   }
+  if (extras.leftoverKitchen) {
+    next.breakthroughs += 1;
+    next.instability = Math.max(0, next.instability - 2);
+  }
+  if (extras.nightRound) {
+    next.parts = mergeParts(next.parts || {}, { scrap: 1 });
+  }
   return next;
 }
 
-export function tickLabWeek(state) {
+export function tickLabWeek(state, opts = {}) {
   if (!state) return state;
   const next = { ...state };
   if ((next.maintenanceDebt ?? 0) > 0) {
     next.maintenanceDebt = Math.max(0, next.maintenanceDebt - 1);
   }
-  next.instability = Math.max(0, (next.instability ?? 0) - 2);
+  const ease = 2 + (opts.extraEase || 0);
+  next.instability = Math.max(0, (next.instability ?? 0) - ease);
   next.builtThisSession = [];
   return next;
 }

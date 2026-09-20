@@ -11,6 +11,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
 import { gatewaySelectorGlobals } from '../../gameData/gatewayMoments.js';
+import { wrapLeftoverLinger } from '../../gameData/textContext.js';
 import './diaryPhaseD.js';
 
 // ── SUMO ──────────────────────────────────────────────────────

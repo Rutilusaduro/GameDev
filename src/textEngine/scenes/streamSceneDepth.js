@@ -16,6 +16,11 @@ registerModuleVariants('stream.endStream.excellent', [
   { when: { brandControl: 'soldOut', stageMin: 7 }, weight: 3, text: [
     `Sold out and still excellent. The brand got their monster. I got paid.`,
   ]},
+  { when: {}, text: [
+    `Clip that ending. I'm logging off fat and smug.`,
+    `That's a wrap. Belly first, chat second, dignity optional.`,
+    `Stream over. I'm going to sit here and enjoy being this size.`,
+  ]},
 ]);
 
 registerModuleVariants('stream.endStream.good', [
@@ -26,12 +31,22 @@ registerModuleVariants('stream.endStream.good', [
   { when: { trend: 'improving', stageMin: 6 }, weight: 3, text: [
     `Started shaky, ended strong. Growth arc on stream and on scale.`,
   ]},
+  { when: {}, text: [
+    `Good stream. Belly honest, chat fed, I am going to sit here a while.`,
+    `Logging off full. Keep the VOD. I earned the slump.`,
+    `Camera down. Appetite still performing. That's a wrap.`,
+  ]},
 ]);
 
 registerModuleVariants('stream.endStream.average', [
   { when: { stageMin: 8 }, weight: 3, text: [
     `Mid stream, mid destruction. Classic me — belly honest, performance mid.`,
     `We made it through. Could've been worse. Could've been more food too.`,
+  ]},
+  { when: {}, text: [
+    `Average stream, honest belly. I'll take the mid and the leftovers.`,
+    `Not a banger. Still ate. Still heavier. Fine.`,
+    `Chat got a show. I got a stomach. Call it even.`,
   ]},
 ]);
 

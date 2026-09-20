@@ -99,6 +99,11 @@ registerModuleVariants('device.tick.growth', [
   { when: { stageMin: 7, gainLbsMin: 5 }, weight: 3, text: [
     `{subject.name} carries the week's swell in stride, seams, and doorway negotiations`,
   ]},
+  { when: {}, text: [
+    `{subject.name} takes the week's inches without ceremony. Seams, chair, appetite all updated.`,
+    `Growth settles overnight on {subject.name}. Warmth first, then the new outline in the morning light.`,
+    `the tick leaves {subject.name} heavier by a quiet measure she will notice at breakfast`,
+  ]},
 ]);
 
 registerModuleVariants('device.tick.malfClause', [

@@ -113,6 +113,8 @@ export function maybeRollDeviceEncounter(nodeId, ctx, rng = Math.random) {
       name: who.name,
       archetype: who.archetype,
       lbs: who.lbs,
+      leftoverFedThisWeek: !!who.leftoverFedThisWeek,
+      lastNightVisitWeek: who.lastNightVisitWeek,
       emoji: '👁',
     };
   }
@@ -152,6 +154,9 @@ export function applyCampusDeviceEncounter({
   exploration,
   labState = null,
   adminScrutiny = 0,
+  leftoverKitchen = false,
+  nightRound = false,
+  nightIntimacy = 0,
   rng = Math.random,
 }) {
   const def = getDevice(deviceId);
@@ -161,9 +166,14 @@ export function applyCampusDeviceEncounter({
   let npcGain = 0;
 
   if (encounter.target.type === 'student') {
-    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, { labState, adminScrutiny });
+    const result = resolveCampusDeviceUse(deviceId, modeId, student, week, rng, {
+      labState,
+      adminScrutiny,
+      leftoverKitchen,
+      nightRound,
+    });
     if (!result.ok) return result;
-    const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student);
+    const line = renderCampusDeviceResult(encounter, deviceId, modeId, result, encounter.nodeId, student, week, { leftoverKitchen, nightIntimacy });
     const scrutinyDelta = result.discovered ? Math.max(2, Math.round(2 * scrutinyDiscoveryMult(adminScrutiny))) : 0;
     return {
       ...result,
@@ -205,7 +215,7 @@ export function applyCampusDeviceEncounter({
     modeId: modeId || mode?.id,
     npcGain,
   };
-  const line = renderCampusDeviceResult(encounter, deviceId, modeId, fakeResult, encounter.nodeId);
+  const line = renderCampusDeviceResult(encounter, deviceId, modeId, fakeResult, encounter.nodeId, null, week, { leftoverKitchen, nightIntimacy, leftoverFed: leftoverKitchen });
   return {
     ok: true,
     logLines: [

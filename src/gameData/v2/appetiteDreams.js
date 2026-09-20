@@ -26,6 +26,7 @@ export const DREAM_SCENARIOS = [
   { id: 'mirror_feast', label: 'Mirror Feast', minStage: 5, minCorruption: 50, archetypes: null },
   { id: 'gravity_well', label: 'Gravity Well', minStage: 6, minCorruption: 55, archetypes: ['athlete', 'gamer', 'overachiever'] },
   { id: 'leviathan_dream', label: 'Leviathan Dream', minStage: 8, minCorruption: 65, archetypes: null },
+  { id: 'night_kitchen', label: 'Night Kitchen', minStage: 1, minCorruption: 15, archetypes: null },
 ];
 
 export const DREAM_CHOICES = {
@@ -59,6 +60,11 @@ export const DREAM_CHOICES = {
     { id: 'witness', label: 'Witness your vastness', calories: 2500, rel: 6, corruption: 8 },
     { id: 'lucid_devour', label: 'Steer: devour the dream whole', calories: 6000, rel: 10, corruption: 14, lucidOnly: true },
   ],
+  night_kitchen: [
+    { id: 'trays', label: 'Finish every leftover tray', calories: 2600, rel: 5, corruption: 5 },
+    { id: 'graze', label: 'Sit on the counter and graze', calories: 1600, rel: 4, corruption: 3 },
+    { id: 'wake', label: 'Wake before the fridge shuts', calories: 700, rel: 1, corruption: 1 },
+  ],
 };
 
 /** Lucid-only steering choices — direct player control over dream outcome. */
@@ -70,6 +76,7 @@ export const LUCID_DREAM_STEER = {
   mirror_feast: { id: 'lucid_feed', label: 'Steer: feed every reflection', calories: 4500, rel: 9, corruption: 10 },
   gravity_well: { id: 'lucid_fall', label: 'Steer: fall without braking', calories: 5000, rel: 8, corruption: 11 },
   leviathan_dream: { id: 'lucid_become', label: 'Steer: become the mountain', calories: 6500, rel: 10, corruption: 15 },
+  night_kitchen: { id: 'lucid_galley', label: 'Steer: keep the galley open till morning', calories: 4200, rel: 7, corruption: 8 },
 };
 
 export function getDreamChoices(scenarioId, lucidUnlocked = false) {
@@ -91,7 +98,7 @@ export function canTriggerDream(student, { ownedSkills = {}, ownedHallSkills = {
   return { ok: true, apCost: manual ? V2_CONFIG.dreamBaseAp : 0 };
 }
 
-export function pickDreamScenario(student) {
+export function pickDreamScenario(student, week = 0) {
   const stage = getStage(student.lbs).id;
   const cor = student.corruption || 0;
   const arch = student.archetype;
@@ -102,7 +109,27 @@ export function pickDreamScenario(student) {
     return true;
   });
   if (!eligible.length) return DREAM_SCENARIOS[0];
+  const kitchen = eligible.find((d) => d.id === 'night_kitchen');
+  if (kitchen) {
+    if (student?.leftoverFedThisWeek && Math.random() < 0.45) return kitchen;
+    if (week && student?.lastNightVisitWeek === week && Math.random() < 0.35) return kitchen;
+  }
   return eligible[Math.floor(Math.random() * eligible.length)];
+}
+
+export function dreamChoiceFx(student, choice, week = 0) {
+  let calories = choice?.calories || 0;
+  let rel = choice?.rel || 0;
+  let corruption = choice?.corruption || 0;
+  if (student?.leftoverFedThisWeek) {
+    calories = Math.round(calories * 1.12);
+    rel += 1;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    calories = Math.round(calories * 1.08);
+    corruption += 1;
+  }
+  return { ...choice, calories, rel, corruption };
 }
 
 export function recordDream(dreamsState, studentId, week, scenarioId) {
@@ -125,7 +152,7 @@ export function rollWeeklyDreams(students, dreamsState, ownedSkills, week) {
     if (s.hidden) continue;
     const check = canTriggerDream(s, { ownedSkills, dreamsState, week, manual: false });
     if (!check.ok) continue;
-    if (Math.random() < 0.12) triggers.push(s.id);
+    if (Math.random() < 0.12 + (s.leftoverFedThisWeek ? 0.08 : 0) + (s.lastNightVisitWeek === week ? 0.06 : 0)) triggers.push(s.id);
   }
   return triggers;
 }

@@ -195,6 +195,7 @@ export function getFeedAttitude(student, labState = null) {
   const cor = getCorruptionTier(student?.corruption ?? 0).id;
   const rel = getTier(student?.relationship ?? 0).id;
   const mods = labState ? getForceFeederBoardMods(labState) : null;
+  if (student?.leftoverFedThisWeek) return 'willing';
   if (mods?.gentleOverride && cor === 0 && rel <= 0) return 'willing';
   if (cor >= 2 || rel >= 2) return 'willing';
   if (cor === 0 && rel <= 0) return 'resistant';
@@ -254,6 +255,7 @@ export function buildForceFeederEffect(target, performanceTier, labState, week, 
   if (mods.intimateCalibration && isHighRelationship(target)) {
     psychDelta.dependence = (psychDelta.dependence ?? 0) + 1;
   }
+  if (target?.leftoverFedThisWeek) psychDelta.dependence = (psychDelta.dependence ?? 0) + 1;
 
   const bloatedBump = performanceTier === 'failure' ? 3 : performanceTier === 'messy' ? 2 : 1;
   const hiPad = performanceTier === 'failure' ? 4 : 2;

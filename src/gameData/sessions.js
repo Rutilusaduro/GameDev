@@ -49,6 +49,9 @@ export const GROUP_CONVERSATIONS=[
   { id:"let_it_settle", label:"Let it settle", relBonus:2, fullnessEffect:5 },
   { id:"toast_together_group", label:"Toast the evening", relBonus:4, fullnessEffect:-3 },
   { id:"order_for_table", label:"Order another round", relBonus:3, fullnessEffect:8 },
+  { id:"compare_rooms", label:"Let them compare rooms", relBonus:3, fullnessEffect:4 },
+  { id:"floor_secret", label:"Share a floor secret", relBonus:5, fullnessEffect:-2 },
+  { id:"terrace_dare", label:"Dare them onto the terrace next", relBonus:4, fullnessEffect:6 },
 ];
 
 // RA CHARACTER CREATION (legacy exports — unused by Hall Pass setup; kept for tooling snapshots)
@@ -164,6 +167,9 @@ export const PRIVATE_VENUES=[
   {id:"her_space", label:"🛋️ Her Place",             minTier:3,
    desc:"Her territory. She is fully comfortable, there are snacks everywhere, and she never has to hold back.",
    intro:s=>`You bring the food to ${s.name} this time. She opens the door in her most comfortable clothes — the ones she only wears when she doesn't care. Which, increasingly, is most of the time.`},
+  {id:"night_wing", label:"🌙 Night Wing",           minTier:2,
+   desc:"The corridor after hours. Fridge light, unlatched doors, no witnesses but the two of you.",
+   intro:s=>`You meet ${s.name} in the night wing. She is already eating something she will not name. "You're on rounds," she says. "Good."`},
 ];
 
 export const PRIVATE_FOODS=[
@@ -184,6 +190,8 @@ export const PRIVATE_FOODS=[
   {id:"pr_snack_tray", label:"Late-Night Snack Tray",    course:"extra",   gain:[2,5], fullness:16, desc:"More food, no explanation needed. She's stopped asking questions."},
   {id:"pr_wine_cheese",label:"Wine & Cheese",            course:"extra",   gain:[2,4], fullness:12, desc:"It pairs well with everything she's already eaten. She agrees."},
   {id:"pr_chocolates", label:"Box of Chocolates",        course:"extra",   gain:[1,4], fullness:10, desc:"She doesn't even pick them up one at a time anymore."},
+  {id:"pr_night_tray", label:"Night-Wing Tray",          course:"extra",   gain:[3,6], fullness:18, desc:"Whatever the fridge was hiding, now on a plate, now in her lap."},
+  {id:"pr_refit_cake", label:"Seam-Letting Cake",        course:"dessert", gain:[3,5], fullness:16, desc:"You timed dessert to the new waistband. She notices. She eats like the clothes already lost."},
 ];
 
 export const SESSION_FULLNESS_STAGES=[
@@ -225,6 +233,18 @@ export const ENCOURAGEMENT_ACTIONS=[
      ?`You describe the soft, gentle swell of her belly — how it's grown through the meal, how warm and round it looks. ${s.name}'s cheeks colour. She doesn't stop eating.`
      :`You describe her belly carefully and specifically — the roundness, the firmness, the way it sits in her lap with real weight. ${s.name} looks down at herself. Then at you. "You really see it," she says. She keeps eating, slower now, like she's savouring both things at once.`,
    toleranceBoost:20, relBonus:5, lbsBonus:[0,2]},
+  {id:"enc_room_quiet", label:"Close the door. Keep going",
+   line:(s)=>`You ease the door shut. ${s.name} exhales like the floor just got smaller and safer. She eats with both hands free.`,
+   toleranceBoost:14, relBonus:3, lbsBonus:[0,2]},
+  {id:"enc_habit", label:"Remind her what you saw after hours",
+   line:(s)=>`"I remember last night," you say. ${s.name} colors, then reaches anyway. The secret is already spent; the food is not.`,
+   toleranceBoost:16, relBonus:4, lbsBonus:[1,2]},
+  {id:"enc_scale", label:"Ask what the scale said",
+   line:(s)=>`You ask about the number. ${s.name} names it once, then eats like the number was an appetizer.`,
+   toleranceBoost:15, relBonus:3, lbsBonus:[1,2]},
+  {id:"enc_refit", label:"Mention the clothes you let out",
+   line:(s)=>`"Those seams were losing," you say. ${s.name} looks down, then eats like the new ease was an invitation.`,
+   toleranceBoost:13, relBonus:4, lbsBonus:[0,2]},
 ];
 
 export const DINNER_VENUES = [
@@ -331,6 +351,11 @@ export const DINNER_CONVERSATION = [
   { id:"suggest_diet", label:"Point out the lighter option", requires:null, gainBonus:[0,0], relBonus:-8, offenseRisk:3, fullnessEffect:0 },
   { id:"ask_about_weight", label:"Ask about the gaining", requires:null, gainBonus:[0,0], relBonus:-6, offenseRisk:2, fullnessEffect:0 },
   { id:"second_table", label:"Move to a more comfortable spot", requires:"dinner_private", gainBonus:[2,4], relBonus:5, fullnessEffect:-6 },
+  { id:"dorm_gossip", label:"Ask what the floor is eating", requires:null, gainBonus:[2,4], relBonus:4 },
+  { id:"night_round_hint", label:"Mention you walk the hall after hours", requires:null, gainBonus:[1,3], relBonus:5 },
+  { id:"room_upgrade_brag", label:"Promise her room a better chair", requires:null, gainBonus:[2,4], relBonus:4 },
+  { id:"dining_nook", label:"Talk about the hall dining nook", requiresDining:true, gainBonus:[2,5], relBonus:5 },
+  { id:"wardrobe_ease", label:"Mention you let her clothes out", requires:null, gainBonus:[1,3], relBonus:4 },
 ];
 
 
@@ -347,7 +372,7 @@ export const ACHIEVEMENT_LIST = [
   { id:"total100",      label:"💯 Century Club",        desc:"Total hall weight gain reaches 100 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=100 },
   { id:"total500",      label:"🎖️ Five Hundred",        desc:"Total hall weight gain reaches 500 lbs.",                  check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=500 },
   { id:"total1000",     label:"🏆 One Thousand",        desc:"Total hall weight gain reaches 1,000 lbs.",                check:(sts)=>sts.reduce((a,s)=>a+(s.lbs-s.startLbs),0)>=1000 },
-  { id:"rel_max",       label:"❤️ Beloved RA",  desc:"Any resident reaches 100% relationship.",                    check:(sts)=>sts.some(s=>s.relationship>=100) },
+  { id: 'rel_max',    label:"❤️ Beloved RA",  desc:"Any resident reaches 100% relationship.",                    check:(sts)=>sts.some(s=>s.relationship>=100) },
   { id:"all_rel50",     label:"💜 Well-Loved",          desc:"All residents at 50%+ relationship.",                        check:(sts)=>sts.every(s=>s.relationship>=50) },
   { id:"narrative5",    label:"📖 Storyteller",         desc:"Trigger 5 narrative events.",                               check:(sts,g)=>g.narrativeCount>=5 },
   { id:"narrative10",   label:"📚 Epic Saga",           desc:"Trigger 10 narrative events.",                              check:(sts,g)=>g.narrativeCount>=10 },

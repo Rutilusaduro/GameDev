@@ -282,12 +282,12 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
 
                 {/* Transformation pressure / surrender readout */}
                 {(() => {
-                  const sv = computeSurrenderVector(s);
+                  const sv = computeSurrenderVector(s, { week });
                   return (
                     <div style={C.infoBox(`${sv.color}18`)}>
                       <div style={{ fontSize: 9, color: sv.color, letterSpacing: 2, marginBottom: 4 }}>SURRENDER · {sv.composite}%</div>
                       <div style={{ fontSize: 12, color: '#d8c8b8', lineHeight: 1.7 }}>
-                        {formatSurrenderSummary(s)}
+                        {formatSurrenderSummary(s, { week })}
                       </div>
                       {sv.favoritism === 'neglected' && (
                         <div style={{ fontSize: 10, color: '#c07050', marginTop: 6, fontStyle: 'italic' }}>
@@ -1017,6 +1017,7 @@ export function StudentDetailView({ openWeighIn, openTalk, openEmbodiment, openD
                           echoesState={v2State?.echoes}
                           ownedSkills={ownedSkills}
                           ownedHallSkills={ownedHallSkills}
+                          week={week}
                           onOpenEcho={(echo)=>openEchoReplay?.(echo)}
                           onResonate={onEchoResonate}
                         />

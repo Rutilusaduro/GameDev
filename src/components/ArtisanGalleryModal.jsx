@@ -110,7 +110,13 @@ export function ArtisanGalleryModal({
         <button type="button" style={{ ...C.btn('#444'), width: '100%' }} onClick={() => { playHallPassSound('click', soundEnabled); onClose(); }}>Close gallery</button>
 
         {galleryState.lastCritic && (
-          <div style={{ marginTop: 10, fontSize: 11, color: '#c9a87c' }}>Last critic: {galleryState.lastCritic}</div>
+          <div style={{ marginTop: 10, fontSize: 11, color: '#c9a87c' }}>
+            Last critic: {galleryState.lastCritic}
+            {(() => {
+              const closeLine = fiona ? renderGalleryClosing(fiona, week) : '';
+              return closeLine ? <div style={{ marginTop: 6, fontStyle: 'italic', color: '#dcc8b0' }}>{closeLine}</div> : null;
+            })()}
+          </div>
         )}
       </div>
     </GalleryOverlay>

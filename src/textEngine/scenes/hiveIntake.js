@@ -4,7 +4,9 @@
 // (proxied by the first of the group), ref = Lilith.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
+import { wrapLeftoverLinger } from '../../gameData/textContext.js';
 import '../modules.js'; // char.desc, sizeCompare, clothing.desc, group.desc
+import './proseOverhaulPass4.js';
 
 export const HIVE_INTAKE_TEMPLATE =
   "Lilith leads {group.desc} into the Central Nest. {char.desc:ref|cap}. " +
@@ -35,5 +37,6 @@ export function renderHiveIntake(lilith, victims, week, opts = {}) {
     group: victims,
     week,
   });
-  return render(HIVE_INTAKE_TEMPLATE, ctx, { trace: opts.trace || null });
+  const base = render(HIVE_INTAKE_TEMPLATE, ctx, { trace: opts.trace || null });
+  return wrapLeftoverLinger(base, opts.maya || proxy, week, 'hive.afterglow');
 }

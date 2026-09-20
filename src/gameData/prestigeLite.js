@@ -10,6 +10,8 @@ export function computePrestigeScore({ week = 1, labState, campusSaturation, glo
   score += Math.max(0, (labState?.stage ?? 1) - 1) * 2;
   score += (campusSaturation?.tier ?? 0) * 2;
   score += Math.floor((globalStats?.narrativeCount ?? 0) / 15);
+  if (leftoverKitchen) score += 1;
+  if (nightRound) score += 1;
   return score;
 }
 

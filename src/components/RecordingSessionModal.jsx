@@ -28,6 +28,7 @@ export function RecordingSessionModal({ recordingSessionState, students, week = 
           pace_push:'⚡ Push her — more, faster',
           pace_settle:'🌊 Let her set the pace',
           pace_surge:'🌀 Pause — let it land — then surge',
+          pace_linger:'🕯 Linger — keep rolling after the last bite',
         };
         const stepLabels=['📷 Camera angle','🍽️ Food','⏱️ Pacing'];
         const angleChoices=['angle_low','angle_wide','angle_close'];

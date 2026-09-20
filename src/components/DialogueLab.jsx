@@ -65,6 +65,7 @@ import '../textEngine/scenes/talkEncourage.js';
 import '../textEngine/scenes/talkCodas.js';
 import '../textEngine/scenes/talkSuggest.js';
 import '../textEngine/scenes/talkRefusal.js';
+import '../textEngine/scenes/talkRefusalDepth.js';
 import '../textEngine/scenes/talkCommandFinish.js';
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';

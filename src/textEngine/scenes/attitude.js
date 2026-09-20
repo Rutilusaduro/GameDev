@@ -3,6 +3,7 @@
 // One first-person sentence from mood, corruption, hunger, devour.
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../engine.js';
+import { wrapLeftoverLinger } from '../../gameData/textContext.js';
 import './campusSoftening.js';
 
 // ── attitude.line — primary emotional sentence ────────────────
@@ -427,5 +428,6 @@ export function renderAttitude(student, week = 1, opts = {}) {
       campusTier: opts.campusTier ?? (opts.campusFattening ? 1 : 0),
     },
   });
-  return render(ATTITUDE_TEMPLATE, ctx, { trace: opts.trace || null }).trim() || "—";
+  const line = render(ATTITUDE_TEMPLATE, ctx, { trace: opts.trace || null }).trim() || "—";
+  return wrapLeftoverLinger(line, student, week, 'attitude.linger') || "—";
 }

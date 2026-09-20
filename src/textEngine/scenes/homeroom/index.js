@@ -1,8 +1,9 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Hall kitchen queen — engine bridge from HOMEROOM_* legacy prose.
-import { render } from '../../engine.js';
-import { buildTextContext } from '../../../gameData/textContext.js';
+import { render, registerModuleVariants } from '../../engine.js';
+import { buildTextContext, wrapLeftoverLinger } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
 import { registerDecomposedPool } from '../decomposePools.js';
 import { registerPool } from '../../engine.js';
 import { homeroomTailBeat } from '../evolved/proseTails.js';
@@ -100,7 +101,10 @@ export function renderHomeroomPool(poolKey, daisyStudent, week = 1, opts = {}) {
     }
     const line = render(`{${poolKey}}`, ctx)?.trim();
     if (!line || line.includes('{unresolved}')) return '';
-    return appendV2Depth(line, 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
+    const intro = /\.intro$/.test(poolKey) || /^homeroom\.activity\.[^.]+\.p\d+$/.test(poolKey);
+    const glow = intro ? (render('{homeroom.afterglow}', ctx)?.trim() || '') : '';
+    const linger = render('{homeroom.linger}', ctx)?.trim() || '';
+    return appendV2Depth([line, glow, linger].filter(Boolean).join('\n\n'), 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
   } catch {
     return '';
   }
@@ -111,7 +115,7 @@ export function renderHomeroomProse(text, daisyStudent, week = 1, opts = {}) {
   if (!text?.trim()) return '';
   const ctx = buildHomeroomCtx(daisyStudent, week, opts);
   const base = text.trim();
-  return appendV2Depth(base, 'homeroom', ctx, opts.v2DepthChance ?? 0.28);
+  return wrapLeftoverLinger(appendV2Depth(base, 'homeroom', ctx, opts.v2DepthChance ?? 0.28), daisyStudent, week, 'homeroom.linger');
 }
 
 /** Pool key for conference intro or choice result. */

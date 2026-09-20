@@ -55,6 +55,8 @@ export const DISH_ITEM_LINKS = {
   home_main: 'family_lasagna',
   home_second: 'feast_platter',
   midnight: 'donut_box',
+  pr_night_tray: 'snack_crate',
+  pr_refit_cake: 'cake_whole',
   eggs_bene: 'butter_coffee',
   atelier_main: 'feast_platter',
   atelier_cheese: 'cake_whole',
@@ -65,17 +67,42 @@ export const DISH_ITEM_LINKS = {
 export const SESSION_PACE_ACTIONS = [
   { id: 'gentle', label: 'Gentle pace', refusalBonus: -0.06, tapOutMult: 0.82, desc: 'Easier refusal, less tap-out pressure.' },
   { id: 'steady', label: 'Steady pace', refusalBonus: 0, tapOutMult: 1, desc: 'Default rhythm.' },
+  { id: 'savor', label: 'Savor pace', refusalBonus: -0.03, tapOutMult: 0.9, desc: 'Slow bites. More talk. She lasts longer and notices more.' },
   { id: 'push', label: 'Push harder', refusalBonus: 0.14, tapOutMult: 1.22, desc: 'Higher force-feed odds when she\'s stuffed.' },
+  { id: 'fill', label: 'Fill the silence', refusalBonus: 0.08, tapOutMult: 1.1, desc: 'Keep plates moving so she never has a clean stopping point.' },
+  { id: 'linger', label: 'Linger course', refusalBonus: -0.02, tapOutMult: 0.95, desc: 'Let the last plate sit. She usually starts it anyway.' },
 ];
 
 export function getSessionPaceModifiers(paceId = 'steady') {
   return SESSION_PACE_ACTIONS.find((p) => p.id === paceId) || SESSION_PACE_ACTIONS[1];
 }
 
+/** Prior course pace changes the next plate — warmed-up push, recovery linger. */
+export function getCourseChainModifiers(lastPaceId, thisPaceId) {
+  if (!lastPaceId) return { refusalBonus: 0, calorieMult: 1, extraRel: 0 };
+  if (lastPaceId === thisPaceId) {
+    if (thisPaceId === 'push' || thisPaceId === 'fill') {
+      return { refusalBonus: 0.04, calorieMult: 1.03, extraRel: 0 };
+    }
+    if (thisPaceId === 'savor' || thisPaceId === 'linger' || thisPaceId === 'gentle') {
+      return { refusalBonus: -0.02, calorieMult: 1.02, extraRel: 1 };
+    }
+    return { refusalBonus: 0, calorieMult: 1, extraRel: 0 };
+  }
+  const lastSoft = lastPaceId === 'savor' || lastPaceId === 'linger' || lastPaceId === 'gentle';
+  const thisHard = thisPaceId === 'push' || thisPaceId === 'fill';
+  if (lastSoft && thisHard) return { refusalBonus: 0.06, calorieMult: 1.05, extraRel: 0 };
+  const lastHard = lastPaceId === 'push' || lastPaceId === 'fill';
+  const thisSoft = thisPaceId === 'gentle' || thisPaceId === 'savor' || thisPaceId === 'linger';
+  if (lastHard && thisSoft) return { refusalBonus: -0.04, calorieMult: 1.04, extraRel: 2 };
+  return { refusalBonus: 0, calorieMult: 1, extraRel: 0 };
+}
+
 /** Hunger/corruption/trait modifiers for feed attempts (DEPTH_PLAN §8). */
 export function getFeedingModifiers(student, {
   generousTrait = false,
   context = 'meal',
+  week = 0,
 } = {}) {
   const hunger = getHungerTier(student);
   const addiction = getAddictionLevel(student);
@@ -94,6 +121,34 @@ export function getFeedingModifiers(student, {
   if (hunger >= 3 && addiction >= 2) calorieMult = 1.12;
   else if (hunger >= 2) calorieMult = 1.05;
   calorieMult += depthFeedPaceBonus(cor, hunger);
+
+  const stance = student?.gainStance;
+  if (stance === 'opposed') refusalBonus -= 0.05;
+  else if (stance === 'reluctant') refusalBonus -= 0.02;
+  else if (stance === 'secret') calorieMult += 0.06;
+  if (student?.originFlags?.galleySeeded) fullnessMult += 0.03;
+  if (student?.originFlags?.nightSeeded) refusalBonus += 0.03;
+  const originFx = originRegisterFx(student);
+  calorieMult *= originFx.calorieMult;
+  refusalBonus += originFx.refusalBonus;
+  fullnessMult += originFx.dinnerFull;
+  if ((student?.fullness || 0) > 40) calorieMult += 0.04;
+  if ((student?.fullness || 0) > 70) refusalBonus += 0.04;
+
+  if (student?.lastCompound) {
+    calorieMult += 0.04;
+    if (student.lastCompound === 'appetite_stimulant' || student.lastCompound === 'strong_appetite' || student.lastCompound === 'cult_appetite') {
+      refusalBonus += 0.04;
+    }
+  }
+  if (student?.leftoverFedThisWeek) {
+    calorieMult += 0.08;
+    fullnessMult += 0.04;
+  }
+  if (week && student?.lastNightVisitWeek === week) {
+    refusalBonus += 0.06;
+    calorieMult += 0.05;
+  }
 
   return { refusalBonus, fullnessMult, calorieMult, hunger, corruption: cor };
 }
@@ -191,20 +246,27 @@ export function runVenueFeedAttempt({
     feedOpts = {},
   } = gameCtx;
 
-  const feedMods = getFeedingModifiers(student, { generousTrait, context });
+  const feedMods = getFeedingModifiers(student, { generousTrait, context, week: sessionCtx.week || 0 });
   const pace = getSessionPaceModifiers(sessionPace);
+  const chain = getCourseChainModifiers(sessionCtx.lastPace, sessionPace);
   const pushBonus = forcePush ? 0.12 : 0;
   const hungerBonus = pendingHungerResolve ? 0.1 : 0;
+  let extraRelOut = extraRel;
+  if (sessionPace === 'savor') extraRelOut += 2;
+  if (sessionPace === 'linger') extraRelOut += 1;
+  extraRelOut += chain.extraRel;
 
   const payload = resolveFeedPayload(source, student, {
     skillGainMult,
-    profGainMult: profGainMult * feedMods.calorieMult,
+    profGainMult: profGainMult * feedMods.calorieMult * chain.calorieMult,
     gainLbs,
   });
 
+  const leftoverCap = student?.leftoverFedThisWeek ? 4 : 0;
+  const nightCap = (sessionCtx.week && student?.lastNightVisitWeek === sessionCtx.week) ? 3 : 0;
   const capOpts = {
     softStartBonus,
-    capacityBonus,
+    capacityBonus: capacityBonus + leftoverCap + nightCap,
     toleranceBuffer,
   };
   const cap = getFeedCapacity(student, capOpts);
@@ -214,7 +276,7 @@ export function runVenueFeedAttempt({
     student,
     payload.calories,
     payload.fullness,
-    extraRel,
+    extraRelOut,
     labelOverride || payload.label,
     {
       ...capOpts,
@@ -222,6 +284,7 @@ export function runVenueFeedAttempt({
       refusalBonus: (feedOpts.refusalBonus ?? 0)
         + feedMods.refusalBonus
         + pace.refusalBonus
+        + chain.refusalBonus
         + pushBonus
         + hungerBonus,
       fullnessMult: feedOpts.fullnessMult ?? feedMods.fullnessMult,
@@ -311,11 +374,16 @@ export function rollOverfillEndChance(fullness, cap) {
 }
 
 /** Private session tap-out probability from fullness %. */
-export function getTapOutProbability(fPct, tapOutResistance = 0) {
+export function getTapOutProbability(fPct, tapOutResistance = 0, extras = {}) {
   if (fPct < 150) return 0;
   if (fPct >= 250) return 1;
   const tapProb = ((fPct - 150) / 100) * 0.9;
-  return Math.max(0, tapProb - tapOutResistance);
+  let p = Math.max(0, tapProb - tapOutResistance);
+  if (extras.leftoverFed) p *= 0.85;
+  if (extras.nightVisit) p *= 0.92;
+  if (extras.lastPace === 'savor' || extras.lastPace === 'linger' || extras.lastPace === 'gentle') p *= 0.9;
+  if (extras.lastPace === 'push' || extras.lastPace === 'fill') p *= 1.08;
+  return p;
 }
 
 /** Calories fed since session start (uses consumedCalories ledger). */

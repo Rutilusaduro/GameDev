@@ -3,6 +3,10 @@
 import { registerDimension, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaulPass3.js';
+import '../proseOverhaulPass4.js';
+import './biteBeats.js';
+import './actionBeats.js';
 import {
   CONTEST_FOOD_POPUPS,
   CONTEST_ACTION_POPUPS,
@@ -38,7 +42,9 @@ export function renderContestLegacy(text, student, week, stageIdx = 0, opts = {}
   const line = typeof text === 'string' ? text.trim() : '';
   if (!line || !student) return line;
   const ctx = buildContestCtx(student, week, stageIdx, opts);
-  return appendV2Depth(line, 'eatingContest', ctx, opts.v2DepthChance ?? 0.28);
+  const linger = render('{contest.linger}', ctx)?.trim() || '';
+  const composed = linger ? `${line}\n\n${linger}` : line;
+  return appendV2Depth(composed, 'eatingContest', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 function preferContestPool(poolKey, student, week, stageIdx, opts = {}) {
@@ -89,7 +95,7 @@ export function renderContestWeighIn2(stageIdx, student, yourGain, mayaGain, may
   const fn = CONTEST_WEIGH_IN_2_TEXT[stageIdx];
   const raw = fn ? fn(student, yourGain, mayaGain, mayaLbs) : '';
   return renderContestLegacy(raw, student, week, stageIdx, {
-    globals: { yourGain, mayaGain, mayaLbs },
+    globals,
     v2DepthChance: 0.32,
   });
 }
@@ -102,8 +108,33 @@ export function renderContestPayoff(stageIdx, student, yourGain, week) {
   if (composed) return composed;
   const fn = CONTEST_PAYOFF_TEXT[stageIdx];
   const raw = fn ? fn(yourGain) : `${Math.round(yourGain)} pounds added to your frame.`;
-  return renderContestLegacy(raw, student, week, stageIdx, {
-    globals: { yourGain },
-    v2DepthChance: 0.3,
-  });
+  const glow = render('{contest.afterglow}', ctx)?.trim() || '';
+  const linger = render('{contest.linger}', ctx)?.trim() || '';
+  const composed = [raw, glow, linger].filter(Boolean).join('\n\n');
+  return appendV2Depth(composed, 'eatingContest', ctx, 0.3);
 }
+
+registerModuleVariants('contest.afterglow', [
+  { when: { leftoverFed: true, contestStage: [0, 1] }, weight: 3, text: [
+    'Galley leftover plus the bib. First-circuit heat is a second sitting Maya can see.',
+    'Last night\'s tray still in her. The table is bones and sauce. She is both sittings.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat under the bib. She sits in leftover like it is a ranking.',
+    'The galley started her. The contest finished the log.',
+  ] },
+  { when: { contestStage: [0, 1] }, weight: 2, text: [
+    'The bib is a wreck. She keeps a palm on the new weight like a trophy Maya can see.',
+    'First-circuit heat still in her. The table is bones and sauce. She is the rest of the scoreboard.',
+  ] },
+  { when: { contestStage: [4, 5] }, weight: 2, text: [
+    'The chair reports her. So does the floor. Maya writes a number and does not look away.',
+    'Crowd noise thins. Fullness does not. She sits in the leftover heat like it is a ranking.',
+  ] },
+  { when: {}, text: [
+    'She breathes around the last plate and lets the belly finish arriving.',
+    'Maya\'s side is emptier than it looks. Hers is honest.',
+    'Someone in the cheap seats says her name like a record. She eats the sound.',
+  ] },
+]);
+

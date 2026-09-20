@@ -773,7 +773,7 @@ check('influence-view-routes', () => {
   assert.match(desk, /computeNavVisibility/);
   assert.match(desk, /navTabs\.map/);
   assert.match(nav, /roster.*📋 RA Desk/);
-  assert.match(nav, /hall-lounge.*🏠 Hall Lounge/);
+  assert.match(nav, /hall-lounge.*🏠 Blueprint/);
   assert.match(nav, /influence.*✨ Influence/);
   assert.doesNotMatch(desk, /SpiritHubView/);
   assert.doesNotMatch(desk, /view==="class"/);
@@ -1308,7 +1308,7 @@ check('dev-comment-resident-framing', () => {
   assert.match(hallPass, /HALL KITCHEN QUEEN MINI-INTERFACE/);
   assert.doesNotMatch(hallPass, /Spirit Favor meter|CLASSROOM MINI-INTERFACE/i);
   const lounge = read('src/views/HallLoungeView.jsx');
-  assert.match(lounge, /HallLoungeSkillsPanel/);
+  assert.match(lounge, /Hall Blueprint|dorm-bp/);
   assert.doesNotMatch(lounge, /ClassroomSkillsPanel/);
   const gain = read('src/gameData/gainSystem.js');
   assert.match(gain, /Reach level helps/);

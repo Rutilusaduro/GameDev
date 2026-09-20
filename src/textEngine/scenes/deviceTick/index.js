@@ -12,6 +12,9 @@ import '../../growthLexicon.js';
 import './fragments.js';
 import '../../modules.js';
 import './deviceTickSceneDepth.js';
+import '../proseOverhaul.js';
+import '../proseOverhaulPass2.js';
+import '../proseOverhaulPass4.js';
 
 registerPool('device.tick.beat', [
   { when: { isMalfunction: true, gainLbsMin: SUDDEN_GROWTH_LBS_MIN }, text: [
@@ -28,6 +31,7 @@ registerPool('device.tick.beat', [
   { when: {}, text: [
     '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.sensation|prefix: — }{join:device.tick.synergy|prefix: }.',
     '{device.tick.action}{device.tick.anchor}{join:device.tick.dependence|prefix: — }; {device.tick.growth}{join:device.tick.gainTag|prefix: }.',
+    '{device.tick.action}{device.tick.anchor}; {device.tick.growth}{join:device.tick.sensation|prefix: — }.',
   ] },
 ]);
 
@@ -98,5 +102,7 @@ export function renderDeviceTickLine({
     },
   });
   const base = render('{device.tick.beat}', ctx, { trace });
-  return appendV2Depth(base, 'device', ctx, 0.3);
+  const glow = render('{device.afterglow}', ctx, { trace })?.trim() || '';
+  const linger = render('{device.linger}', ctx, { trace })?.trim() || '';
+  return appendV2Depth([base, glow, linger].filter(Boolean).join(' '), 'device', ctx, 0.3);
 }

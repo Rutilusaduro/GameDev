@@ -17,6 +17,8 @@ export const RELATIONSHIP_ECOLOGY = {
 
 export function tickRelationshipDecay(student, { decayReduce = 0 } = {}) {
   if (!student || student.hidden) return student;
+  if (week && student.lastNightVisitWeek === week) return student;
+  if (student.leftoverFedThisWeek) return student;
   const weeks = student.weeksWithoutPlayerFeed ?? 0;
   if (weeks < RELATIONSHIP_ECOLOGY.weeksIgnoredBeforeDecay) return student;
   const rel = student.relationship ?? 0;
@@ -66,8 +68,11 @@ export function favoritismSummary(students, weeklyFeedCounts = {}) {
 /** Weekly roster-ecology stamp: rel deltas, mood drift, persisted favoritism flag. */
 export function applyFavoritismEcology(student, flag, week = 1) {
   if (!student || !flag) return student;
+  const leftover = !!student.leftoverFedThisWeek;
+  const night = !!(week && student.lastNightVisitWeek === week);
+  const soothed = leftover || night;
   let s = applyJealousyRelDelta(student, {
-    isNeglected: flag === 'neglected',
+    isNeglected: flag === 'neglected' && !soothed,
     isFavored: flag === 'favored',
   });
   s = {

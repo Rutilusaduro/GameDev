@@ -18,9 +18,10 @@
 //   stagedUp   bool   — crossed a weight stage this week
 //   stuffedWeek bool  — spent the week stuffed to capacity
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
 
 // ── week.recap.beat ───────────────────────────────────────────
 // Shape: FULL SENTENCE — present-tense, observational; reuses {word.*}.
@@ -29,6 +30,7 @@ registerPool('week.recap.beat', [
   { when: {}, text: [
     `A week of steady feeding has settled into her — {word.body}, a little more of her than there was seven days ago.`,
     `The week leaves its mark in the soft, warm way she carries herself now — {word.movement}.`,
+    `Seven days of plates have a temperature. She carries it in her hips.`,
   ]},
 
   // ── gainBand ───────────────────────────────────────────────
@@ -134,12 +136,46 @@ registerPool('week.recap.line', [
   // Mandatory generic fallback.
   { when: {}, text: [
     `{subject.name} takes in the difference a week has made and lets it settle, warm and real.`,
+    `{subject.name} rests a hand where the week landed and leaves it there a moment.`,
+    `{subject.name} looks once, then again, like the extra of her needs a second witness.`,
   ]},
+]);
+
+registerPool('week.recap.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She tugs a hem that still mostly works and files the week as weather.',
+    'The extra is small enough to hide and too warm to forget on the walk back.',
+  ] },
+  { when: { stuffedWeek: true }, weight: 3, text: [
+    'She still sits like the last plate is in her. The chair agrees.',
+    'Fullness stayed overnight. Morning only made it softer.',
+  ] },
+  { when: { stageMin: 8 }, weight: 2, text: [
+    'Getting her turned toward the door is the rest of the recap. She takes her time.',
+  ] },
+  { when: {}, text: [
+    'The week is over. She is not done arriving.',
+    'You log the number. Her body keeps the minutes.',
+    'Sunday quiet. Her waistband still arguing.',
+  ] },
+]);
+
+// leftoverFed one key, weight 2 so stuffedWeek / studentId recap lines still win.
+registerModuleVariants('week.recap.linger', [
+  { when: { leftoverFed: true, gainBand: 'huge' }, weight: 3, text: [
+    'Galley leftover started the week. The number finished it. She sits like both are still digesting.',
+    'Kitchen sitting plus this. Sunday finds her softer than the notes admit.',
+  ] },
+  { when: { leftoverFed: true }, weight: 2, text: [
+    'Last night\'s tray is in the recap whether anyone wrote it down.',
+    'She palms leftover work and the week\'s work in the same warm place.',
+    'Foil from Tuesday. Softness from Sunday. Same middle.',
+  ] },
 ]);
 
 // ── week.recap — composed skeleton ────────────────────────────
 registerPool('week.recap', [
-  { when: {}, text: ['{week.recap.beat} {week.recap.line}'] },
+  { when: {}, text: ['{week.recap.beat} {week.recap.line} {week.recap.afterglow} {week.recap.linger}'] },
 ]);
 
 /** Band a week's lbs gain into a gainBand selector. */

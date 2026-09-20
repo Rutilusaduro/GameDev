@@ -1,6 +1,6 @@
 // The Squad — Lead: A2 Psych | Support: A6 Slender, A5 Editor
 // V2.0 Appetite Dreams prose
-import { registerPool, render } from '../../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../../engine.js';
 import { appendV2Depth } from '../depthRenderer.js';
 import './depth.js';
 
@@ -89,10 +89,78 @@ registerPool('dream.wake', [
   ]},
 ]);
 
+registerPool('dream.night_kitchen', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'The galley is empty except for her and a fridge that knows her name. She takes one tray. Then another.',
+    'Night kitchen light. She eats standing, guilty and warm, like the floor might still be asleep.',
+  ]},
+  { when: { stageMin: 5 }, weight: 2, text: [
+    'Leftovers keep arriving. She sits on the counter and finishes them the way she finishes secrets.',
+    'The fridge hums. She answers it with both hands. Morning is a rumor.',
+  ]},
+  { when: {}, text: [
+    'The hall kitchen at 2 a.m. Trays from dinner still warm. She eats like the building asked her to.',
+    'Night galley. She opens the fridge and the dream opens with it.',
+    'Counters, foil, a chair that already knows her. She stays until the trays are empty.',
+  ]},
+]);
+
+registerPool('dream.linger', [
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'She almost remembers the kitchen on waking. The hunger does the rest.',
+    'The dream leaves a taste. She looks for it in the real fridge first.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'Sleep lets go slowly. Appetite does not. Her hands are already on her middle.',
+  ] },
+  { when: {}, text: [
+    'The dream sticks to her sheets like warmth.',
+    'She wakes still chewing the idea of more.',
+    'Morning finds her softer than the night promised.',
+  ] },
+]);
+
+registerModuleVariants('dream.open', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'Sleep opens on leftover heat. The dream kitchen already knows her name.',
+    'She falls asleep still tasting foil. Appetite walks in without knocking.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover warmth follows her into sleep. The dream only has to continue.',
+    'The galley started it. Sleep finishes the sitting.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You knocked after hours. The dream knocks the same door.',
+  ] },
+]);
+
+registerModuleVariants('dream.night_kitchen', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'The dream galley is last night\'s galley. She finishes trays she already finished.',
+    'Foil, fridge, leftover heat. Sleep just turns the lights lower.',
+    'She eats the same second sitting again, slower, like the building asked twice.',
+  ] },
+]);
+
+registerModuleVariants('dream.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'She wakes looking for the fridge she already raided.',
+    'The dream leaves leftover taste. Morning has the same foil.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Sleep lets go. Leftover does not. Her hands find the same middle.',
+    'She wakes still working last night\'s tray.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'The knock from the round is still in the wood when she wakes hungry.',
+  ] },
+]);
+
 function withDreamDepth(base, depthKey, ctx, chance) {
   const trimmed = base?.trim() || '';
   const local = render(`{${depthKey}}`, ctx)?.trim();
-  const combined = local && trimmed ? `${trimmed}\n\n${local}` : (local || trimmed);
+  const linger = render('{dream.linger}', ctx)?.trim();
+  const combined = [trimmed, local, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(combined, 'dream', ctx, chance);
 }
 

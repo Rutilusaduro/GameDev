@@ -15,6 +15,9 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase0', [
     'Chairwoman Vance opens the hearing. Photos of {subject.name} fill the screen — abundance framed as concern. "The Board must protect institutional wellness," she says. Your resident sits beside you, {studentLbs} lbs and unapologetic.',
     'Vance taps the projector. {subject.name} at {studentLbs} pounds becomes a slide deck. The room performs worry while your resident performs hunger.',
     'The hearing begins with documentation — timestamps, meal photos, a body counted like liability. {subject.name} stays seated, warm and enormous beside you.',
+    'A folder of night-round timestamps lands first. {subject.name} at {studentLbs} pounds sits like the evidence has hips.',
+    'Vance reads the charge as if appetite were a policy error. {subject.name} shifts in the chair and the chair answers first.',
+    'The Board wants a smaller story. {subject.name} is sitting in the larger one, {studentLbs} lbs of it, waiting.',
   ]},
 ]);
 
@@ -23,6 +26,9 @@ registerPoolAutoDecompose('opposition.hearing.removal.phase1', [
     'Vance taps her folder. "{subject.name} may remain enrolled only if this hall demonstrates… restraint." The word hangs wrong in the air.',
     'Second motion: conditional enrollment. Restraint spoken like virtue while {subject.name}\'s belly still remembers lunch.',
     'Vance wants a promise of discretion. The Board wants language that makes appetite sound temporary.',
+    'Someone mentions leftover trays as if they were contraband. {subject.name} smiles without meaning to.',
+    'The gavel waits on a word nobody in this room actually wants to keep. {subject.name} keeps eating in memory.',
+    'Conditional enrollment means: shrink the story, keep the resident. The resident does not shrink.',
   ]},
 ]);
 
@@ -82,6 +88,14 @@ registerPoolAutoDecompose('opposition.hearing.removal.result.floor_pressure', [
   ]},
 ]);
 
+registerPoolAutoDecompose('opposition.hearing.removal.result.night_log', [
+  { when: {}, text: [
+    'You slide the night-round log across the table. Community hours, timestamps, leftovers accounted for.',
+    'After-hours traffic becomes programming on paper. Vance reads. The pen slows.',
+    'Quiet hours, recast as care. The Board cannot unsee the signatures of residents who stayed to eat.',
+  ]},
+]);
+
 registerPoolAutoDecompose('opposition.hearing.removal.ending.advocate_voice', [
   { when: {}, text: [
     'Resident voice carries. Removal denied with the advocate on record.',
@@ -103,6 +117,22 @@ registerPoolAutoDecompose('opposition.hearing.removal.ending.testify_firm', [
     'Testimony lands. You hold the line. Removal denied — narrowly.',
     '{subject.name} stays. The gavel never finds the word suspend.',
     'Devotion spoken plain. Vance closes without the signature she wanted.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.removal.ending.night_paperwork', [
+  { when: {}, text: [
+    'The night log does the work the speech could not. She stays. The kitchen stays open.',
+    'Community hours, signed. Removal tabled. Appetite continues after lights-out.',
+    'Paperwork eats the complaint. {subject.name} walks out still enrolled, still hungry.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.removal.ending.night_testimony', [
+  { when: {}, text: [
+    'A resident speaks, then the night log lands. Vance cannot unhear either. {subject.name} stays.',
+    'Testimony plus timestamps. The Board files community hours and swallows the rest.',
+    'Devotion in the room, leftovers on the record. Removal dies of paperwork and affection.',
   ]},
 ]);
 
@@ -187,11 +217,35 @@ registerPoolAutoDecompose('opposition.hearing.emergency.result.hive', [
   ]},
 ]);
 
+registerPoolAutoDecompose('opposition.hearing.emergency.result.night_hours', [
+  { when: {}, text: [
+    'You rename the noise. Wellness programming. Community hours. The observer writes it down.',
+    'After-hours traffic becomes a program with a budget line. Scandal cools around the paperwork.',
+    'Quiet hours recast as care. The chart still glows. The language does not.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.emergency.result.invite_home', [
+  { when: {}, text: [
+    'You invite them to walk the wing after dark. Two members look interested. One looks hungry.',
+    'A night round offered as evidence. The Board imagines the kitchen light and does not like how much they want it.',
+    'Come see, you say. Come eat, you mean. The observer underlines both.',
+  ]},
+]);
+
 registerPoolAutoDecompose('opposition.hearing.emergency.ending.catered_future', [
   { when: {}, text: [
     'They ate through the emergency. Scandal dissipates like steam.',
     'Full bellies adjourn the crisis. The meter cools around crumbs.',
     'Procedure drowned in hospitality. Crisis deferred, appetites satisfied.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.emergency.ending.night_truce', [
+  { when: {}, text: [
+    'After-hours recast as care. The Board adjourns hungry and slightly convinced.',
+    'Night rounds become a line item. Scandal cools. The kitchen stays lit.',
+    'They accept the programming. They do not accept how much they wanted the invitation.',
   ]},
 ]);
 
@@ -243,5 +297,23 @@ registerPoolAutoDecompose('opposition.hearing.verdict', [
   { when: {}, text: [
     'The board adjourns without clarity — a temporary reprieve.',
     'Ambiguous adjournment. Neither victory nor surrender — yet.',
+  ]},
+]);
+
+registerPoolAutoDecompose('opposition.hearing.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Leftover heat sat in the witness chair with her.',
+    'The Board filed concern. The kitchen filed foil first.',
+  ]},
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Night-round knock still in the wood. Daylight testimony uses a quieter story.',
+  ]},
+  { when: {}, text: [
+    'The folder stays closed. Appetite does not.',
+    'You walk {subject.name} out. The hallway is warmer than the hearing.',
+    'Vance\'s pen stops. The body in the chair did the rest of the arguing.',
+  ]},
+  { when: { stageMin: 6 }, weight: 2, text: [
+    '{subject.name} takes the corridor slowly. The Board watches the space she occupies leave.',
   ]},
 ]);

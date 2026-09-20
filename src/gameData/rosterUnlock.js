@@ -20,7 +20,7 @@ export function countOpenPoolStudents(students = []) {
 }
 
 /** Weekly passive trust for one locked pool resident — scales with hall reach + week. */
-export function weeklyTrustDripAmount({ reachLevel = 1, week = 1, rng = Math.random } = {}) {
+export function weeklyTrustDripAmount({ reachLevel = 1, week = 1, rng = Math.random, leftoverKitchen = false, nightRound = false } = {}) {
   const base = 6 + Math.floor(rng() * 7); // 6–12
   const reachBonus = Math.max(0, reachLevel - 2) * 3;
   const weekBonus = Math.floor(week / 8);

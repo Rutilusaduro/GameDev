@@ -226,7 +226,7 @@ function EvolvedMinigameModal({ gameId, studentId, stageIdx, students, processSt
         delivery_order: 'Home Nest Delivery',
         presentation_defense: 'Hall Log Defense',
       };
-      push(`✦ ${s.name} — ${labels[gameId]}: ${minigameTierLabel(result.tier)} · +${result.gain} lbs · +${result.rel} rel`);
+      push(`✦ ${s.name} — ${labels[gameId]}: ${minigameTierLabel(result.tier)} · +${applied} lbs · +${result.rel} rel`);
       setOutcome(result);
       setLog(nextLog);
       setHistory(nextHistory);

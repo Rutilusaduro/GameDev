@@ -3,6 +3,18 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('dinner.conv.compliment_appetite', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    `You mention her appetite. {subject.name} glances at her middle. "I already ate. Then I came here." She picks up her fork anyway.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    `"I love watching you eat," you say. {subject.name} grins. "You left leftovers. This is the sequel." She takes an enormous bite.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    `"You eat beautifully," you tell her. {subject.name} laughs, leftover heat still in her. "I know. The hall started me. This finishes it."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Praise lands on a middle that already ate. {subject.name} answers with another bite.`,
+  ] },
   { when: { stageMax: 2 }, text: [
     `You mention how much she's enjoying herself. {subject.name} flushes slightly but picks up her fork with renewed purpose.`,
   ] },
@@ -14,10 +26,24 @@ registerPool('dinner.conv.compliment_appetite', [
   ] },
   { when: {}, text: [
     `You mention how much she's enjoying herself. {subject.name} meets your eyes and eats with quiet purpose.`,
+    `{subject.name} hears the compliment and answers with another bite, unhurried.`,
+    `Praise lands. Her fork does the rest of the conversation.`,
   ] },
 ]);
 
 registerPool('dinner.conv.suggest_second', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    `"You should try the other dish," you suggest. {subject.name} hesitates. "I finished the tray already." Then: "Why not."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    `"More?" {subject.name} is already signaling. "Leftovers were the appetizer. Thank you for the permission."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    `You gesture at her plate. "Again?" {subject.name} pats a middle that still holds the galley. "Obviously."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Seconds land easier because the kitchen already opened her. {subject.name} nods before you finish the offer.`,
+  ] },
   { when: { stageMax: 2 }, text: [
     `"You should try the other dish," you suggest. {subject.name} hesitates, then: "You know what, yes. Why not."`,
   ] },
@@ -35,6 +61,10 @@ registerPool('dinner.conv.suggest_second', [
 registerPool('dinner.conv.food_talk_dinner', [
   { when: {}, text: [
     `You and {subject.name} spend ten minutes discussing the dish in detail. She is an enthusiastic critic. She demonstrates her critique by eating more of it.`,
+    `{subject.name} rates the sauce, then the portion, then eats enough to make the rating irrelevant.`,
+    `Food talk turns into a second plate. {subject.name} calls it research. Her fork agrees.`,
+    `She talks with her mouth full and does not apologize. The review is the meal.`,
+    `Critique, then seconds. {subject.name} treats the distinction as academic.`,
   ] },
 ]);
 
@@ -53,6 +83,9 @@ registerPool('dinner.conv.order_for_her', [
 registerPool('dinner.conv.wine_and_cheese', [
   { when: {}, text: [
     `"We're having the cheese course," you say. It is not a question. {subject.name} settles back with a smile. "Obviously we are." The board that arrives is enormous. She works through all of it.`,
+    `The cheese board arrives like a dare. {subject.name} takes the dare personally.`,
+    `"Wine and cheese is not dessert," {subject.name} says, already cutting. "It is a second dinner wearing a nicer name."`,
+    `{subject.name} pairs wine with another wedge and treats the pairing like a dare she intends to win.`,
   ] },
 ]);
 
@@ -72,6 +105,18 @@ registerPool('dinner.conv.overcomes_hesitation', [
 ]);
 
 registerPool('dinner.conv.body_compliment', [
+  { when: { leftoverFed: true, stageMax: 1 }, weight: 3, text: [
+    `You tell {subject.name} she looks wonderful. She glances down at leftover softness. "Thank you." She takes a large bite anyway.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 2, stageMax: 4 }, weight: 3, text: [
+    `You tell {subject.name} she looks incredible. She pats a middle that still holds the galley. "Working on it. Still."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 5 }, weight: 3, text: [
+    `You tell {subject.name} she looks spectacular. She spreads her hands across a middle already fed twice. "I know."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `The compliment finds leftover heat. {subject.name} smiles and takes another bite.`,
+  ] },
   { when: { stageMax: 1 }, text: [
     `You tell {subject.name} she looks wonderful tonight. She blinks, then smiles and takes a large bite of her food. "Thank you." She sounds like she means it.`,
   ] },
@@ -99,6 +144,18 @@ registerPool('dinner.conv.endless_courses', [
 ]);
 
 registerPool('dinner.conv.praise_capacity', [
+  { when: { leftoverFed: true, stageMax: 2 }, weight: 3, text: [
+    `"I'm impressed," you say. {subject.name} grins. "Hall tray, then this. I've always eaten a lot." She orders another.`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 3, stageMax: 5 }, weight: 3, text: [
+    `"I cannot believe how much you've eaten," you say. {subject.name} looks at leftover heat plus empty plates and laughs. "I can."`,
+  ] },
+  { when: { leftoverFed: true, stageMin: 6 }, weight: 3, text: [
+    `You survey the wreckage. "Extraordinary." {subject.name} pats a vast middle that started in the galley. "Just getting started."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `Praise finds a capacity that already had a first sitting. {subject.name} grins and keeps eating.`,
+  ] },
   { when: { stageMax: 2 }, text: [
     `"I'm impressed," you say. {subject.name} grins and finishes the dish. "I've always eaten a lot." She orders another.`,
   ] },
@@ -218,5 +275,54 @@ registerPool('dinner.conv.second_table', [
   ] },
   { when: {}, text: [
     `You suggest a more comfortable spot. {subject.name} settles in and orders again.`,
+  ] },
+]);
+
+registerPool('dinner.conv.dorm_gossip', [
+  { when: {}, text: [
+    `"The floor is eating like this too," you say. {subject.name} leans in, delighted. "I knew it wasn't just me." She orders another plate as proof.`,
+    `{subject.name} wants names. You give her the shape of the hall without names. She eats like gossip is a condiment.`,
+    `You sketch the lounge after hours. {subject.name} nods, already chewing. "So I'm not the only one. Good."`,
+  ] },
+]);
+
+registerPool('dinner.conv.night_round_hint', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `"I walk the hall after hours," you say. {subject.name} glances at her middle. "You left leftovers. I finished them. Then I waited."`,
+    `{subject.name} colors. "You heard me last night, and the galley tray." She takes a bite anyway. "Good."`,
+    `"You knock late," {subject.name} says. Leftover heat still in her voice. She orders dessert while she says it.`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `"I was just there," you say. {subject.name} smiles into her plate. "Then you already know I was hungry."`,
+    `Night-round still between you. {subject.name} orders like the knock was the appetizer.`,
+  ] },
+  { when: {}, text: [
+    `"I walk the hall after hours," you say. {subject.name} goes still, then smiles. "I know. I leave the light on."`,
+    `{subject.name} colors. "You heard me last night." She takes a bite anyway. "Good."`,
+    `"You knock late," {subject.name} says. It is not a complaint. She orders dessert while she says it.`,
+  ] },
+]);
+
+registerPool('dinner.conv.room_upgrade_brag', [
+  { when: {}, text: [
+    `You mention a better chair for her room. {subject.name} looks at the restaurant seat, then at you. "Please." She means it.`,
+    `"Your door deserves better furniture," you say. {subject.name} laughs and eats like the promise already landed.`,
+    `{subject.name} pats the booth. "If my room sat like this, I'd never leave." You file that as a work order.`,
+  ] },
+]);
+
+registerPool('dinner.conv.dining_nook', [
+  { when: {}, text: [
+    `You describe the hall dining nook. {subject.name} leans in. "Then why are we paying for this table?" She orders anyway.`,
+    `"The nook holds more of me now," {subject.name} says. She demonstrates by filling this booth too.`,
+    `Talk of the nook becomes a second dessert. {subject.name} calls it floor research.`,
+  ] },
+]);
+
+registerPool('dinner.conv.wardrobe_ease', [
+  { when: {}, text: [
+    `You mention the seams you let out. {subject.name} looks down, then orders like the extra inch was an invitation.`,
+    `"Those clothes were already losing," {subject.name} says. She eats as if the new ease needs filling.`,
+    `Wardrobe talk becomes another course. {subject.name} tests the waistband with a breath and a bite.`,
   ] },
 ]);

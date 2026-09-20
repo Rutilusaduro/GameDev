@@ -223,6 +223,7 @@ export function getInterruptFeedPortion(student) {
     fullness += 2;
     relGain += 1;
   }
+  if (student?.leftoverFedThisWeek) relGain += 1;
   return { calories, fullness, relGain };
 }
 
@@ -241,7 +242,7 @@ export function getInterruptCompoundPortion(student) {
 }
 
 /** Deny fallout — hunger tier base, scaled by relationship and corruption. */
-export function getInterruptDenyRelLoss(student) {
+export function getInterruptDenyRelLoss(student, week = 0) {
   const tier = getHungerTier(student);
   const withdrawal = isInWithdrawal(student);
   const losses = HUNGER_CONFIG.denyRelLoss;
@@ -257,12 +258,14 @@ export function getInterruptDenyRelLoss(student) {
   else if (relTier <= 1 && tier < 3) relLoss = Math.round(relLoss * 0.82);
   if (cor >= 2) relLoss = Math.round(relLoss * 0.72);
   else if (cor >= 1) relLoss = Math.round(relLoss * 0.9);
+  if (student?.leftoverFedThisWeek) relLoss = Math.max(2, relLoss - 1);
+  if (week && student?.lastNightVisitWeek === week) relLoss = Math.max(2, relLoss - 1);
 
   return Math.max(2, relLoss);
 }
 
 /** Talk calm — devoted residents bond harder; starving residents harder to soothe. */
-export function getInterruptTalkRelGain(student) {
+export function getInterruptTalkRelGain(student, week = 0) {
   const relTier = getTier(student?.relationship ?? 0).id;
   const cor = getCorruptionTier(student?.corruption || 0).id;
   const hunger = getHungerTier(student);
@@ -272,15 +275,17 @@ export function getInterruptTalkRelGain(student) {
   else if (relTier >= 1) gain += 1;
   if (cor >= 2 && hunger >= 3) gain += 1;
   if (hunger >= 4) gain = Math.max(2, gain - 1);
+  if (student?.leftoverFedThisWeek) gain += 1;
+  if (week && student?.lastNightVisitWeek === week) gain += 1;
   return gain;
 }
 
 /** Relationship, mood, and aggression fallout when turning a hungry resident away. */
-export function applyDenialConsequences(student) {
+export function applyDenialConsequences(student, week = 0) {
   let s = denyHunger(student);
   const tier = getHungerTier(s);
   const withdrawal = isInWithdrawal(s);
-  const relLoss = getInterruptDenyRelLoss(s);
+  const relLoss = getInterruptDenyRelLoss(s, week);
   const cor = getCorruptionTier(s?.corruption || 0).id;
 
   s = {
@@ -344,7 +349,8 @@ export function tickHungerAddiction(student, playerFedThisWeek = false, skillEff
   }
 
   const addiction = getAddictionLevel(s);
-  const rise = (HUNGER_CONFIG.passiveHungerRise[addiction] ?? 0) * mod.passiveRiseMult;
+  const leftoverFull = !!s.leftoverFedThisWeek;
+  const rise = leftoverFull ? 0 : (HUNGER_CONFIG.passiveHungerRise[addiction] ?? 0) * mod.passiveRiseMult;
   if (rise > 0 && Math.random() < rise) {
     s = adjustHunger(s, 1);
   }

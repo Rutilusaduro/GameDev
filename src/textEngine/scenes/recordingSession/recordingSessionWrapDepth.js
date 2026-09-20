@@ -78,10 +78,24 @@ for (const clip of CLIPS) {
     { when: { stageMin: 9, recordingStage: [4, 5] }, weight: 3, text: [
       `${clip} footage at immobile scale — crew packing, {subject.name} vast at {subject.lbs}.`,
     ]},
+    { when: { leftoverFed: true, recordingStage: [0, 1, 2] }, weight: 3, text: [
+      `${clip} wrap on a middle that already ate. Galley leftover plus the take. {subject.lbs} pounds, still answering.`,
+      `You cut on ${clip}. Leftover heat and stage food share the chair. {subject.name} does not pack either.`,
+    ]},
+    { when: { leftoverFed: true }, weight: 3, text: [
+      `${clip} session over. Last night\'s tray is still in the playback. {subject.lbs} pounds glow twice.`,
+    ]},
   ]);
 }
 
 registerModuleVariants('recording.payoff', [
+  { when: { leftoverFed: true, recordingStage: [0, 1, 2] }, weight: 3, text: [
+    `Payoff is leftover plus the take. {subject.lbs} pounds sit like two sittings in one outfit.`,
+    `Camera down. Galley heat still in her. {subject.name} treats the wrap as dessert.`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `The clip ends. The kitchen sitting does not. {subject.lbs} pounds keep the lights on.`,
+  ] },
   { when: { studentId: 2 }, weight: W, text: [
     `Kylie checks her phone. Clips uploading. {subject.lbs} pounds trending offline too.`,
   ]},

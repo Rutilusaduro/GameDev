@@ -63,6 +63,7 @@ export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
     ...opts,
   });
   const main = render('{session.aftermath}', ctx, { trace: opts.trace || null })?.trim() || '';
+  const linger = render('{session.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = composeOverlay(main, renderSessionOverlay(student, week, opts));
   return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? privateSessionV2DepthChance(0.28));
 }

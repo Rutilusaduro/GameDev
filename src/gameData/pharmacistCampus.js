@@ -44,11 +44,13 @@ export function rollCampusPassiveLbs(pharmacistState, rndFn) {
 }
 
 /** Weekly campus event roll chance scales with narrative tier and saturation. */
-export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0) {
+export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0, extras = {}) {
   const narrative = getCampusNarrativeTier(pharmacistState);
   const base = { 1: 0.22, 2: 0.3, 3: 0.38 }[narrative] || 0;
   const satBonus = { 0: 0, 1: 0.04, 2: 0.08, 3: 0.12 }[saturationTier] ?? 0;
-  return Math.min(0.55, base + satBonus);
+  const leftoverBonus = extras.leftoverKitchen ? 0.06 : 0;
+  const nightBonus = extras.nightRound ? 0.03 : 0;
+  return Math.min(0.55, base + satBonus + leftoverBonus + nightBonus);
 }
 
 export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturationTier = 0) {
@@ -115,6 +117,24 @@ export const PHARMACIST_CAMPUS_EVENTS = [
     gain: [2, 4],
     requires: (ctx) => ctx.hasMayaHive,
     text: () => `Maya's delivery network is pulling heavier recruits from Lilith's routes this week — softer bodies, fuller appetites, already primed when they reach the dorms. The Nest hums with fresh biomass.`,
+  },
+  {
+    id: 'late_kitchen',
+    target: 'hall',
+    gain: [3, 6],
+    text: () => `The hall kitchen stays warm past quiet hours. Sophia's samples migrated from the union table into your fridge without anyone filing a form. Residents find them. Residents finish them.`,
+  },
+  {
+    id: 'wardrobe_van',
+    target: 'hall',
+    gain: [2, 4],
+    text: () => `A campus tailor van parks by the loading dock. Residents come back with bags that zip for now. By evening the bags look optimistic.`,
+  },
+  {
+    id: 'night_samples',
+    target: 'hall',
+    gain: [3, 5],
+    text: () => `Sophia's samples appear in the hall fridge after lights-out. Nobody files a wellness form. By breakfast the bottles are empty and the waistbands are negotiating.`,
   },
 ];
 

@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 import {
   createContext, createSessionUsed, registerDimension,
-  registerSubjectDeriver, trackStemsFor, relSize,
+  registerSubjectDeriver, trackStemsFor, relSize, render,
 } from '../textEngine/engine.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
@@ -83,6 +83,17 @@ registerDimension('clothingState', (ctx) => ctx.subject?.clothingState ?? ctx.gl
 registerDimension('mealContext', (ctx) => ctx.globals?.mealType ?? 'meal');
 registerDimension('inWater', (ctx) => !!ctx.globals?.inWater);
 registerDimension('origin', (ctx) => ctx.subject?.origin ?? 'default');
+registerDimension('leftoverFed', (ctx) => !!(ctx.subject?.leftoverFedThisWeek || ctx.globals?.leftoverFed));
+registerDimension('itemLabel', (ctx) => String(ctx.globals?.itemLabel ?? 'snack').toLowerCase());
+registerDimension('nightVisit', (ctx) => {
+  const w = ctx.week;
+  return !!(w && ctx.subject?.lastNightVisitWeek === w) || !!ctx.globals?.nightVisit;
+});
+registerDimension('huntSeasoned', (ctx) => {
+  const marks = ctx.subject?.huntMarks;
+  const total = marks ? Object.values(marks).reduce((a, n) => a + (n || 0), 0) : 0;
+  return total >= 3 || !!ctx.globals?.huntSeasoned;
+});
 registerDimension('isGaining', (ctx) => {
   const delta = ctx.globals?.weekGainLbs ?? ctx.subject?.weekGainLbs;
   if (delta != null) return delta > 0;
@@ -101,6 +112,20 @@ registerDimension('fitBottom', fitDim('bottom'));
 registerDimension('fitWaist', fitDim('waist'));
 registerDimension('worstFit', (ctx) => worstFitState(ctx.subject));
 registerDimension('floorRoom', (ctx) => ctx.globals?.floorRoom ?? 'lounge');
+
+/** True when galley leftovers or a night-round visit still mark this resident. */
+export function leftoverOrNight(student, week = 0) {
+  return !!(student?.leftoverFedThisWeek || (week && student?.lastNightVisitWeek === week));
+}
+
+/** Append leftover/night linger. Skips when neither flag is live. */
+export function wrapLeftoverLinger(text, student, week, pool, opts = {}) {
+  if (!text || !student || !leftoverOrNight(student, week)) return text;
+  const ctx = createContext({ subject: student, week: week || 1 });
+  const linger = render(`{${pool}}`, ctx, { noSmooth: opts.noSmooth ?? false })?.trim() || '';
+  if (!linger) return text;
+  return `${text}${opts.sep ?? '\n\n'}${linger}`;
+}
 
 /** Infer clothing strain from stage when no explicit state is stored. */
 export function deriveClothingState(student) {

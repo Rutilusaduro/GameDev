@@ -43,6 +43,7 @@ export const AIB_AGENDA_CARDS = [
   { id: 'shame_vigil', minScrutiny: 45, label: 'Shame Vigil', scrutiny: 7, message: '🕯️ Ascetic Circle vigil — shame ripples through the hall.', effect: 'shame_vigil', proxy: 'asceticCircle' },
   { id: 'faculty_informant', minScrutiny: 55, label: 'Staff Informant', scrutiny: 4, message: '📝 Staff informant briefs the Board on your hall.', effect: 'faculty_informant' },
   { id: 'student_advocacy', minScrutiny: 35, label: 'Resident Advocacy Session', scrutiny: 4, message: '📣 Rotating advocate schedules a resident voice session.', effect: 'student_advocacy' },
+  { id: 'night_inquiry', minScrutiny: 48, label: 'After-Hours Inquiry', scrutiny: 6, message: '🔑 Board asks about night-round traffic on your floor.', effect: 'size_review' },
 ];
 
 export const AIB_COUNTERS = [
@@ -587,6 +588,9 @@ export function processOppositionWeek(opposition, {
   weeksAtRegionalExcess = 0,
   pharmacistCultStage = 0,
   facultyInformantRisk = false,
+  rumorChance = 0.4,
+  nightRounds = false,
+  leftoverKitchen = false,
 }) {
   let next = {
     ...opposition,
@@ -614,8 +618,8 @@ export function processOppositionWeek(opposition, {
 
   // Act I — rumors only while board dormant (§29.2)
   if (isBoardDormant(week, scrutiny, next)) {
-    if (rnd() < 0.4) {
-      logs.push(pickActIRumor(week, rnd));
+    if (rnd() < rumorChance) {
+      logs.push(pickActIRumor(week, rnd, { nightRounds, leftoverKitchen }));
       next = { ...next, meta: { ...next.meta, rumorCount: (next.meta.rumorCount || 0) + 1 } };
     }
     return { opposition: next, scrutinyDelta, moneyDelta, logs, studentPatches, pendingDeviceConfiscation };

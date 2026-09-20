@@ -26,6 +26,7 @@ pad('talk.suggest_indulgence.b00._f3', [
 pad('talk.suggest_indulgence.b00._f4', [
   `Heat rises in her cheeks — not embarrassment, exactly. Anticipation wearing the wrong name.`,
   `She looks at you like you're the first person to say hunger out loud without making it shameful.`,
+  `She glances at her middle like the suggestion already took a seat.`,
 ]);
 pad('talk.suggest_indulgence.b01._f1', [
   `The suggestion lands mid-sentence. {subject.name} loses her thread — words dissolving into a soft, distracted pull toward food.`,
@@ -289,4 +290,7 @@ registerModuleVariants('talk.suggest_growth.b20._f2', [
 registerModuleVariants('talk.suggest_growth.b21._f1', [
   { when: { studentId: 8 }, weight: 4, text: [`Maya puts your hand on her belly. "Talk to it," she says. "I'll listen."`] },
   { when: { studentId: 10 }, weight: 4, text: [`Reneé guides your palm to warm flesh. "This is the recipe," she murmurs. "Tell it there's more coming."`] },
+  { when: { lastCompound: 'loyalty_enhancer' }, weight: 3, text: [
+    `"Grow me," she says, already leaning. The last dose made asking feel like belonging.`,
+  ]},
 ]);

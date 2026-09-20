@@ -107,10 +107,37 @@ registerPool('echo.type.evolution', [
   ]},
 ]);
 
+registerPool('echo.linger', [
+  { when: { leftoverFed: true, stageMax: 3 }, weight: 3, text: [
+    'The memory tastes like foil. She keeps it next to last night\'s sitting.',
+    'Early echo plus leftover heat. She plays both back like a snack she will finish later.',
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The archive holds leftover warmth now. Replaying it finds the kitchen still in her.',
+    'Stored sitting. She will grow into last night\'s tray again.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'The knock from the round is still in the wood when the echo starts.',
+  ] },
+  { when: { stageMax: 3 }, weight: 2, text: [
+    'The memory is small and warm. She keeps it like a snack she will finish later.',
+    'Early echo. Softness still surprising. She plays it back anyway.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The archive holds mass now. Replaying it makes the room feel smaller.',
+  ] },
+  { when: {}, text: [
+    'The echo stays after the scene. Hunger uses it as a bookmark.',
+    'She breathes once. The memory breathes with her.',
+    'Stored warmth. She will grow into it again.',
+  ] },
+]);
+
 function appendEchoDepth(text, depthKey, ctx, chance) {
   const trimmed = text?.trim() || '';
   const local = render(`{${depthKey}}`, ctx)?.trim();
-  const combined = local && trimmed ? `${trimmed}\n\n${local}` : (local || trimmed);
+  const linger = render('{echo.linger}', ctx)?.trim();
+  const combined = [trimmed, local, linger].filter(Boolean).join('\n\n');
   return appendV2Depth(combined, 'echo', ctx, chance);
 }
 

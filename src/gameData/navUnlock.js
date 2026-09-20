@@ -61,7 +61,7 @@ export function computeNavVisibility({
 
 export const NAV_TAB_META = [
   ['roster', '📋 RA Desk'],
-  ['hall-lounge', '🏠 Hall Lounge'],
+  ['hall-lounge', '🏠 Blueprint'],
   ['influence', '✨ Influence'],
   ['student', null],
   ['actions', '🎭 Actions'],

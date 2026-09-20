@@ -314,7 +314,7 @@ function camilleFeastGain(stageIdx, menuTier) {
   return Math.max(3, Math.round(3 + stageIdx * 1.2 + menuTier * 0.8));
 }
 
-export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, sisters, camille) {
+export function generateFeastLog(stageIdx, menuTier, atmosphereTier, guestTier, sisters, camille, extras = {}) {
   const log = [];
   const clampStage = Math.min(5, stageIdx);
   // Clamp tier indices to valid array bounds

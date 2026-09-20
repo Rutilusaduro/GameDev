@@ -8,17 +8,39 @@ import {
 } from '../src/gameData/dorms.js';
 import {
   applyWeeklyTrustDrip, isHallReachable, isRosterNew, openRosterResident,
-  ROSTER_TRUST_GATE, getRosterSlotCount,
+  ROSTER_TRUST_GATE, getRosterSlotCount, weeklyTrustDripAmount,
 } from '../src/gameData/rosterUnlock.js';
-import { SATURATION_TIERS } from '../src/gameData/campusSaturation.js';
+import { SATURATION_TIERS, computeSaturationScore } from '../src/gameData/campusSaturation.js';
+import { getMysteryTrustPulse } from '../src/gameData/mysteryTrust.js';
+import { computeSurrenderVector } from '../src/gameData/transformationPressure.js';
+import { computePrestigeScore } from '../src/gameData/prestigeLite.js';
+import { labInstabilityEase, leftoverNightGainBump, neighborEcologyPatch, habitatFx } from '../src/gameData/mechanicDepth.js';
+import { weeklyScrutinyNudge } from '../src/gameData/scrutinyConsequences.js';
+import { getInterruptTalkRelGain, getInterruptDenyRelLoss, getInterruptFeedPortion } from '../src/gameData/hungerAddiction.js';
+import { applyFavoritismEcology } from '../src/gameData/relationshipEcology.js';
 import { AIB_COUNTERS } from '../src/gameData/opposition.js';
 import { EVOLUTION_OFFER } from '../src/gameData/evolvedForms.js';
 import { NARRATIVE_EVENTS } from '../src/gameData/weeklyEventDefs.js';
 import { renderWeeklyEvent } from '../src/textEngine/scenes/weeklyEvent/index.js';
 import { render } from '../src/textEngine/engine.js';
-import { buildTextContext } from '../src/gameData/textContext.js';
+import { buildTextContext, wrapLeftoverLinger } from '../src/gameData/textContext.js';
 import { RA_APPROACH_LIST, profileGainMult, profileScrutinyMult } from '../src/gameData/raApproaches.js';
 import { getSwimmerTier } from '../src/gameData/communityResearcher.js';
+import { weeklyDiscontentDecayAmount } from '../src/gameData/discontent.js';
+import { generateFeastLog, SISTER_INITIAL_STATE, CAMILLE_INITIAL_LBS } from '../src/gameData/chapterHostess.js';
+import { pickHearingEnding, REMOVAL_HEARING } from '../src/gameData/oppositionHearings.js';
+import { applyCultDistribution, tickCultWeek, initCultOnUnlock, defaultCultState } from '../src/gameData/pharmacistCult.js';
+import { salonFinishDigestif } from '../src/gameData/chloeSalon.js';
+import { rollVanceCampusEvent } from '../src/gameData/oppositionCampus.js';
+import { devourScarcityDamage } from '../src/gameData/scarcityTools.js';
+import { tickScarcityBanishment } from '../src/gameData/oppositionEndgame.js';
+import { getCampusWeeklyEventChance } from '../src/gameData/pharmacistCampus.js';
+import { bumpWeeklyDeviceDependence } from '../src/gameData/deviceDependence.js';
+import { scaleDiscoveryRisk } from '../src/gameData/campusWitness.js';
+import { resolveCampusDeviceUse } from '../src/gameData/deviceEffects.js';
+import { cgLeftoverDriveBump } from '../src/gameData/competitiveGainerState.js';
+import { completeLabSession, defaultLabState } from '../src/gameData/talia.js';
+import '../src/textEngine/scenes/proseOverhaulPass4.js';
 
 function sportyResidents() {
   return Object.entries(STUDENT_HOME_DORM)
@@ -186,6 +208,202 @@ assert.equal(getRosterSlotCount(3), 7, 'spirit level 3 should allow 7 roster slo
 for (const tier of SATURATION_TIERS) {
   assertCleanUi(tier.desc, `saturation tier ${tier.id}`);
 }
+
+const satBase = computeSaturationScore({ students: INIT_STUDENTS.slice(0, 4), week: 3 });
+const satLeftover = computeSaturationScore({
+  students: INIT_STUDENTS.slice(0, 4).map((s) => ({ ...s, leftoverFedThisWeek: true })),
+  week: 3,
+});
+assert.ok(satLeftover > satBase, 'leftover kitchen should bump campus saturation');
+const satNight = computeSaturationScore({
+  students: INIT_STUDENTS.slice(0, 4).map((s) => ({ ...s, lastNightVisitWeek: 3 })),
+  week: 3,
+});
+assert.ok(satNight > satBase, 'night visits should bump campus saturation');
+
+const dripBase = weeklyTrustDripAmount({ reachLevel: 1, week: 3, rng: () => 0 });
+const dripLeftover = weeklyTrustDripAmount({ reachLevel: 1, week: 3, rng: () => 0, leftoverKitchen: true });
+const dripNight = weeklyTrustDripAmount({ reachLevel: 1, week: 3, rng: () => 0, nightRound: true });
+assert.ok(dripLeftover > dripBase, 'leftover kitchen should bump weekly trust drip');
+assert.ok(dripNight > dripBase, 'night rounds should bump weekly trust drip');
+assert.ok(computePrestigeScore({ leftoverKitchen: true }) > computePrestigeScore({}), 'leftover kitchen should bump prestige');
+assert.ok(computePrestigeScore({ nightRound: true }) > computePrestigeScore({}), 'night rounds should bump prestige');
+assert.ok(labInstabilityEase({}, {}, { leftoverKitchen: true }) > labInstabilityEase({}, {}), 'leftover kitchen should ease lab instability');
+
+const surrenderBase = computeSurrenderVector(INIT_STUDENTS[0], { week: 3 });
+const surrenderLeftover = computeSurrenderVector(
+  { ...INIT_STUDENTS[0], leftoverFedThisWeek: true },
+  { week: 3 },
+);
+assert.ok(surrenderLeftover.composite > surrenderBase.composite, 'leftover should bump surrender pressure');
+const surrenderNight = computeSurrenderVector(
+  { ...INIT_STUDENTS[0], lastNightVisitWeek: 3 },
+  { week: 3 },
+);
+assert.ok(surrenderNight.composite > surrenderBase.composite, 'night visit should bump surrender pressure');
+
+const lockedBase = [{ ...INIT_STUDENTS[0], id: 0, lockState: 'locked', passiveTrust: 10 }];
+const pulseBase = getMysteryTrustPulse(lockedBase, { unlockedDorms: ['sporty'], reachLevel: 1, week: 3 });
+const pulseLeftover = getMysteryTrustPulse(
+  [{ ...lockedBase[0], leftoverFedThisWeek: true }],
+  { unlockedDorms: ['sporty'], reachLevel: 1, week: 3 },
+);
+assert.ok(pulseBase && pulseLeftover, 'mystery trust pulse should resolve for locked reachable');
+assert.ok(pulseLeftover.progress > pulseBase.progress, 'leftover kitchen should bump mystery trust');
+assert.match(pulseLeftover.hint, /leftover|trays|kitchen/i, 'leftover mystery hint');
+const pulseNight = getMysteryTrustPulse(
+  [{ ...lockedBase[0], lastNightVisitWeek: 3 }],
+  { unlockedDorms: ['sporty'], reachLevel: 1, week: 3 },
+);
+assert.ok(pulseNight.progress > pulseBase.progress, 'night visit should bump mystery trust');
+assert.match(pulseNight.hint, /knock|Quiet hours|late knock/i, 'night mystery hint');
+
+assert.ok(weeklyDiscontentDecayAmount({ leftover: true }) > weeklyDiscontentDecayAmount({}), 'leftover should ease weekly discontent');
+assert.ok(weeklyDiscontentDecayAmount({ nightVisit: true }) > weeklyDiscontentDecayAmount({}), 'night visit should ease weekly discontent');
+
+const talkBase = getInterruptTalkRelGain(INIT_STUDENTS[0]);
+const talkLeftover = getInterruptTalkRelGain({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true });
+assert.ok(talkLeftover > talkBase, 'leftover should bump hunger-interrupt talk rel');
+const talkNight = getInterruptTalkRelGain({ ...INIT_STUDENTS[0], lastNightVisitWeek: 3 }, 3);
+assert.ok(talkNight > talkBase, 'night visit should bump hunger-interrupt talk rel');
+const denyBase = getInterruptDenyRelLoss(INIT_STUDENTS[0]);
+const denyLeftover = getInterruptDenyRelLoss({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true });
+assert.ok(denyLeftover < denyBase, 'leftover should ease hunger-interrupt deny loss');
+assert.equal(leftoverNightGainBump({ leftoverFedThisWeek: true, lastNightVisitWeek: 3 }, 3), 2, 'leftover + night should bump 2');
+const neglectedSoothed = applyFavoritismEcology({ ...INIT_STUDENTS[0], relationship: 50, leftoverFedThisWeek: true }, 'neglected', 3);
+assert.equal(neglectedSoothed.relationship, 50, 'leftover should soothe neglected jealousy loss');
+const neighPatch = neighborEcologyPatch(
+  [{ ...INIT_STUDENTS[0], id: 0, leftoverFedThisWeek: true, hidden: false }],
+  { roomFits: {} },
+  3,
+);
+assert.equal(neighPatch[0], 1, 'leftover should give neighbor ecology +1');
+assert.ok(
+  habitatFx(null, {}, {}, { leftoverKitchen: true }).scrutinyEase
+    > habitatFx(null, {}, {}).scrutinyEase,
+  'leftover kitchen should ease weekly scrutiny',
+);
+assert.ok(
+  getInterruptFeedPortion({ ...INIT_STUDENTS[0], leftoverFedThisWeek: true }).relGain
+    > getInterruptFeedPortion(INIT_STUDENTS[0]).relGain,
+  'leftover should bump hunger-interrupt feed rel',
+);
+assert.ok(
+  habitatFx({ leftoverFedThisWeek: true }, {}, {}).hungerInterruptEase
+    > habitatFx({}, {}, {}).hungerInterruptEase,
+  'leftover should ease hunger interrupt chance',
+);
+assert.ok(
+  habitatFx({ lastNightVisitWeek: 3 }, {}, {}, { week: 3 }).hungerInterruptEase
+    > habitatFx({ lastNightVisitWeek: 3 }, {}, {}, { week: 2 }).hungerInterruptEase,
+  'same-week night visit should ease hunger interrupt chance',
+);
+assert.match(
+  weeklyScrutinyNudge(80, 2, {}, { leftoverKitchen: true }).message,
+  /Staff whispers about your floor/,
+  'scrutiny nudge must keep staff-whisper core copy',
+);
+assert.match(
+  weeklyScrutinyNudge(80, 2, {}, { leftoverKitchen: true }).message,
+  /Leftover trays/,
+  'leftover kitchen should thicken scrutiny whisper',
+);
+const feastBase = generateFeastLog(0, 0, 0, 0, SISTER_INITIAL_STATE, { lbs: CAMILLE_INITIAL_LBS });
+const feastLeftover = generateFeastLog(0, 0, 0, 0, SISTER_INITIAL_STATE, { lbs: CAMILLE_INITIAL_LBS }, { leftoverKitchen: true });
+assert.ok(
+  feastLeftover.log.some((line) => /leftover trays/i.test(line.text)),
+  'leftover kitchen should land a feast-log leftover scene',
+);
+assert.ok(
+  !feastBase.log.some((line) => /leftover trays/i.test(line.text)),
+  'plain feast log should not mention leftover trays',
+);
+
+const hearBase = pickHearingEnding(REMOVAL_HEARING, ['testify', 'firm']);
+const hearLeftover = pickHearingEnding(REMOVAL_HEARING, ['testify', 'firm'], { leftoverKitchen: true });
+assert.ok(hearLeftover.scrutinyDelta < hearBase.scrutinyDelta, 'leftover kitchen should ease hearing scrutiny');
+const hearNight = pickHearingEnding(REMOVAL_HEARING, ['testify', 'firm'], { nightRound: true });
+assert.ok(hearNight.scrutinyDelta < hearBase.scrutinyDelta, 'night rounds should ease hearing scrutiny');
+
+const cultState = { cultActive: true, cult: initCultOnUnlock(defaultCultState()), exposureRisk: 0 };
+const cultRnd = (lo) => lo;
+const distBase = applyCultDistribution(cultState, 'circle_pickup', cultRnd);
+const distLeftover = applyCultDistribution(cultState, 'circle_pickup', cultRnd, { leftoverKitchen: true });
+assert.ok(distLeftover.outcome.supplyDelta > distBase.outcome.supplyDelta, 'leftover kitchen should bump cult supply');
+assert.match(distLeftover.outcome.flavor, /Galley leftover/, 'cult leftover flavor');
+const tickBase = tickCultWeek(cultState, [], cultRnd);
+const tickLeftover = tickCultWeek(cultState, [], cultRnd, { leftoverKitchen: true });
+assert.ok(tickLeftover.cult.supplyReservoir > tickBase.cult.supplyReservoir, 'leftover kitchen should restock cult supply');
+
+const digestifSession = {
+  prestige: 0, indulgence: 0, eveningsHosted: 0, guestBook: [],
+  session: { phase: 'digestif', serviceLog: [], guests: [], chloeGain: 10, prestigeGain: 4, indulgenceGain: 0 },
+};
+const salonBase = salonFinishDigestif(digestifSession);
+const salonLeftover = salonFinishDigestif(digestifSession, { leftoverKitchen: true });
+assert.ok(salonLeftover.state.prestige > salonBase.state.prestige, 'leftover kitchen should bump salon prestige');
+
+const oppAib = { aib: { unlocked: true } };
+assert.equal(rollVanceCampusEvent('health_center', oppAib, () => 0.33), null, 'Vance miss without leftover');
+assert.ok(rollVanceCampusEvent('health_center', oppAib, () => 0.33, { leftoverKitchen: true }), 'leftover kitchen should thicken Vance campus chance');
+assert.match(
+  rollVanceCampusEvent('health_center', oppAib, () => 0, { leftoverKitchen: true }),
+  /leftover|galley|second sittings/i,
+  'Vance leftover campus line',
+);
+
+const hiveLinger = wrapLeftoverLinger('Nest intake.', { leftoverFedThisWeek: true, lbs: 180, name: 'Maya' }, 3, 'hive.afterglow');
+assert.ok(hiveLinger.length > 'Nest intake.'.length, 'hive leftover linger should append');
+assert.match(hiveLinger, /surplus|galley|Hive/i, 'hive leftover linger voice');
+
+const scarcityOpp = { supernatural: { actTriggered: true, scarcityPressure: 80 } };
+const devourBase = devourScarcityDamage(scarcityOpp, 1);
+const devourLeftover = devourScarcityDamage(scarcityOpp, 1, { leftoverKitchen: true });
+assert.ok(
+  devourLeftover.supernatural.scarcityPressure < devourBase.supernatural.scarcityPressure,
+  'leftover kitchen should deepen devour scarcity drain',
+);
+const ascendedStub = [{ supernaturalForm: 'siren', lbs: 400 }];
+const banBase = tickScarcityBanishment(scarcityOpp, ascendedStub);
+const banLeftover = tickScarcityBanishment(scarcityOpp, ascendedStub, { leftoverKitchen: true });
+assert.ok(
+  banLeftover.supernatural.scarcityPressure < banBase.supernatural.scarcityPressure,
+  'leftover kitchen should deepen weekly scarcity banishment',
+);
+const campusChanceBase = getCampusWeeklyEventChance({ campusFattening: true, stage: 2 }, 1);
+const campusChanceLeftover = getCampusWeeklyEventChance({ campusFattening: true, stage: 2 }, 1, { leftoverKitchen: true });
+assert.ok(campusChanceLeftover > campusChanceBase, 'leftover kitchen should thicken campus weekly event chance');
+const depBase = bumpWeeklyDeviceDependence({ deviceDependence: {} }, 'feeding_mask');
+const depLeftover = bumpWeeklyDeviceDependence({ deviceDependence: {}, leftoverFedThisWeek: true }, 'feeding_mask');
+assert.ok(
+  depLeftover.deviceDependence.feeding_mask > depBase.deviceDependence.feeding_mask,
+  'leftover should bump weekly device dependence',
+);
+assert.ok(
+  scaleDiscoveryRisk(0.15, 0, 1, { leftoverKitchen: true }) > scaleDiscoveryRisk(0.15, 0, 1),
+  'leftover kitchen should thicken campus device discovery risk',
+);
+const unlockLinger = wrapLeftoverLinger('She knocks.', { leftoverFedThisWeek: true, lbs: 140, name: 'Brittany' }, 3, 'unlock.linger');
+assert.ok(unlockLinger.length > 'She knocks.'.length, 'unlock leftover linger should append');
+
+const priyaStub = { leftoverFedThisWeek: true, lastNightVisitWeek: 3, lbs: 180, name: 'Priya' };
+assert.equal(cgLeftoverDriveBump(priyaStub, 3), 3, 'leftover + night should bump competitive drive');
+assert.equal(cgLeftoverDriveBump({ leftoverFedThisWeek: true, lbs: 180 }, 3), 2, 'leftover kitchen should bump competitive drive');
+const labBase = completeLabSession(defaultLabState(), { pool: {}, breakthroughsGained: 1, instabilityGained: 5 });
+const labLeftover = completeLabSession(defaultLabState(), { pool: {}, breakthroughsGained: 1, instabilityGained: 5 }, null, Math.random, { leftoverKitchen: true });
+assert.ok(labLeftover.breakthroughs > labBase.breakthroughs, 'leftover kitchen should add a lab breakthrough');
+assert.ok(labLeftover.instability < labBase.instability, 'leftover kitchen should ease lab instability on session close');
+const campusStub = { ...INIT_STUDENTS[0], leftoverFedThisWeek: true };
+const campusRng = () => 0.99;
+const campusBase = resolveCampusDeviceUse('endless_hunger_engine', 'pulse', campusStub, 3, campusRng, { adminScrutiny: 0 });
+const campusLeftover = resolveCampusDeviceUse('endless_hunger_engine', 'pulse', campusStub, 3, campusRng, { adminScrutiny: 0, leftoverKitchen: true });
+assert.ok(
+  campusLeftover.ok && campusBase.ok && campusLeftover.discoveryRisk > campusBase.discoveryRisk,
+  'campus student device leftoverKitchen should thicken discovery risk',
+);
+const evolvedLinger = wrapLeftoverLinger('Priya measures the hall.', priyaStub, 3, 'evolved.linger');
+assert.ok(evolvedLinger.length > 'Priya measures the hall.'.length, 'evolved leftover linger should append');
+assert.match(evolvedLinger, /surplus|galley|tray|sitting|knock/i, 'evolved leftover linger voice');
 
 const evolvedOp = AIB_COUNTERS.find((c) => c.id === 'evolved_student_op');
 assert(evolvedOp, 'evolved resident counter must exist');

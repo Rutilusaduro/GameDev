@@ -118,7 +118,7 @@ export function SalonAppetitModal({
         <div className="hall-pass-modal-in salon-modal" style={{ ...C.modal, maxWidth: 480, background: '#12080c', border: `1px solid ${GOLD}66` }}>
           <div style={{ fontSize: 9, letterSpacing: 3, color: GOLD }}>LE DIGESTIF</div>
           <p style={{ fontSize: 12, color: '#eed', lineHeight: 1.7 }}>
-            Guests fade. Chloé stays — silk, candlelight, one more plate. "*Encore,*" she breathes. You encourage the final indulgence.
+            {renderSalonDigestif(chloe, week) || 'Guests fade. Chloé stays — silk, candlelight, one more plate. "*Encore,*" she breathes. You encourage the final indulgence.'}
           </p>
           {session.log.slice(-3).map((line, i) => (
             <div key={i} style={{ fontSize: 11, color: '#b8a0a8', marginBottom: 4 }}>{line}</div>

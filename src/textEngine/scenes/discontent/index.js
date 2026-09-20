@@ -45,6 +45,22 @@ registerPool('discontent.refuse', [
   ]},
 ]);
 
+registerModuleVariants('discontent.refuse', [
+  { when: { leftoverFed: true, discontentTier: 3 }, weight: 4, text: [
+    `{subject.name} folds her arms over extra help. "No. Fix what you did first. The tray doesn't count."`,
+  ]},
+  { when: { leftoverFed: true, discontentTier: 2 }, weight: 4, text: [
+    `{subject.name} turns from the plate. Extra help still in her. "Not from you. Not while I'm still angry."`,
+  ]},
+  { when: { leftoverFed: true, discontentTier: 1 }, weight: 4, text: [
+    `{subject.name} pushes the plate back. Seconds still showing. "I'm not hungry. Not for anything from you."`,
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} looks at extra help already in her, then at you. "No. Not from you right now."`,
+    `{subject.name} turns her face away. Last sitting didn't fix the anger. "Keep it."`,
+  ]},
+]);
+
 export function renderDiscontentRefusal(student, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({ subject: student, week, globals: { ...opts } });

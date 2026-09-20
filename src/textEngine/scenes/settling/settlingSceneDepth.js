@@ -202,6 +202,29 @@ registerModuleVariants('set.gather', [
   ]},
 ]);
 
+registerModuleVariants('set.feed.preferred', [
+  { when: { leftoverFed: true, stageMin: 10 }, weight: 3, text: [
+    `You bring what she asked for onto leftover heat. She opens before the plate lands.`,
+    `Last night's tray plus the known taste. She eats like both were scheduled.`,
+    `Preference met on a middle the kitchen already opened. She does not pretend surprise.`,
+  ]},
+]);
+
+registerModuleVariants('set.feed.spread', [
+  { when: { leftoverFed: true, stageMin: 10 }, weight: 3, text: [
+    `You lay the spread where leftover already lives. She works both without sitting up.`,
+    `Galley heat, then this. The afternoon is just more of her.`,
+  ]},
+]);
+
+registerModuleVariants('set.feed.stuffing', [
+  { when: { leftoverFed: true, stageMin: 10 }, weight: 3, text: [
+    `"I'm full," she says, leftover still in her. You offer one more. She takes it.`,
+    `Second sitting, then past comfortable. She finds room the kitchen started.`,
+    `She goes further on leftover dough. The discovery is warm and unsurprised.`,
+  ]},
+]);
+
 registerModuleVariants('set.enorm', [
   { when: { studentId: 15, stageMin: 11 }, weight: W, text: [
     `Lilith's presence arrives before touch — predator mass, room reorganized around appetite.`,

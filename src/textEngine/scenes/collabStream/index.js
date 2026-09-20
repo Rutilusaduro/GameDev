@@ -137,7 +137,10 @@ export function renderCollabStageUp(stageIdx, kylie, partner, newLbs, week) {
   const raw = fn
     ? fn(kylie.name, partner.name, newLbs)
     : `${partner.name} just crossed ${Math.round(newLbs)} pounds on stream!`;
-  return renderCollabStreamLegacy(raw, kylie, partner, week, stageIdx, { v2DepthChance: 0.3 });
+  const body = renderCollabStreamLegacy(raw, kylie, partner, week, stageIdx, { v2DepthChance: 0.3 });
+  const ctx = buildCollabCtx(kylie, partner, week, stageIdx, { globals: { partnerLbs: newLbs } });
+  const wrap = render('{collab.wrap}', ctx)?.trim() || '';
+  return [body, wrap].filter(Boolean).join('\n\n');
 }
 
 export function renderCollabPayoff(stageIdx, kylieGain, partnerGain, partner, kylie, week) {
@@ -149,5 +152,11 @@ export function renderCollabPayoff(stageIdx, kylieGain, partnerGain, partner, ky
   const raw = fn
     ? fn(kylieGain, partnerGain, partner.name)
     : `${Math.round(kylieGain)} pounds on Kylie, ${Math.round(partnerGain)} on ${partner.name}. Stream complete.`;
-  return renderCollabStreamLegacy(raw, kylie, partner, week, stageIdx, { v2DepthChance: 0.32 });
+  const body = renderCollabStreamLegacy(raw, kylie, partner, week, stageIdx, {
+    globals: { kylieGain, partnerGain },
+    v2DepthChance: 0.32,
+  });
+  const ctx = buildCollabCtx(kylie, partner, week, stageIdx, { globals: { kylieGain, partnerGain } });
+  const wrap = render('{collab.wrap}', ctx)?.trim() || '';
+  return [body, wrap].filter(Boolean).join('\n\n');
 }

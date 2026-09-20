@@ -52,16 +52,17 @@ registerModuleVariants('week.recap.line', [
     `{subject.name} takes the week's gain in with a slow breath, neither fighting nor fleeing it.`,
     `{subject.name} runs a hand along the new softness and lets the truth of it settle.`,
     `{subject.name} looks at herself a beat longer than last week — warmer, less afraid of what she sees.`,
+    `{subject.name} keeps a palm on the week's work like a bookmark.`,
   ]},
 ]);
 
 registerModuleVariants('week.recap', [
   { when: { gainBand: 'huge' }, weight: 2, text: [
-    '{week.recap.beat}\n\n{week.recap.line}',
-    '{week.recap.beat} The difference is undeniable now.\n\n{week.recap.line}',
+    '{week.recap.beat}\n\n{week.recap.line} {week.recap.afterglow} {week.recap.linger}',
+    '{week.recap.beat} The difference sits on her like weather.\n\n{week.recap.line} {week.recap.linger}',
   ]},
   { when: {}, text: [
-    '{week.recap.beat}\n\n{week.recap.line}',
-    '{week.recap.beat} The difference is undeniable now. {week.recap.line}',
+    '{week.recap.beat}\n\n{week.recap.line} {week.recap.afterglow} {week.recap.linger}',
+    '{week.recap.beat} {week.recap.line} {week.recap.afterglow} {week.recap.linger}',
   ]},
 ]);

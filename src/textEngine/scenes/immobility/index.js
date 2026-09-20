@@ -8,6 +8,7 @@ import './personas.js';
 import './comfort.js';
 import './hints.js';
 import './visits.js';
+import './leftoverDepth.js';
 export { renderImmobArrival } from './arrival.js';
 
 registerPool('immob.scene', [
@@ -56,6 +57,13 @@ export function renderImmobVisit(immobile, visitor, week = 1, opts = {}) {
   const ctx = buildTextContext({ subject: immobile, ref: visitor, week, ...opts });
   const base = render('{immob.visit}', ctx, { trace: opts.trace || null })?.trim() || '';
   return appendV2Depth(base, 'immobility', ctx, opts.v2DepthChance ?? 0.3);
+}
+
+/** Linger wrap under unique immobile redirect / blob intro. Always appends; leftover/night keys fire when live. */
+export function renderImmobWrap(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{immob.linger}', ctx, { trace: opts.trace || null })?.trim() || '';
 }
 
 export function renderImmobPref(student, pref, boonTier, week = 1, opts = {}) {

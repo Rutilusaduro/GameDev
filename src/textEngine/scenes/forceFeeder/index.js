@@ -51,7 +51,9 @@ export function renderForceFeederFeed(student, week, params = {}, opts = {}) {
 export function renderForceFeederAftermath(student, week, params = {}, opts = {}) {
   const ctx = ffCtx(student, week, params, opts);
   const base = render(FF_AFTERMATH, ctx, { trace: opts.trace });
-  return appendV2Depth(base, 'forceFeed', ctx, opts.v2DepthChance ?? 0.28);
+  const linger = render('{ff.linger}', ctx, { trace: opts.trace })?.trim() || '';
+  const composed = [base, linger].filter(Boolean).join('\n\n');
+  return appendV2Depth(composed, 'forceFeed', ctx, opts.v2DepthChance ?? 0.28);
 }
 
 export function renderForceFeederScene(student, week, params = {}, opts = {}) {

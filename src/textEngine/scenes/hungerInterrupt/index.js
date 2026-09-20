@@ -5,10 +5,32 @@
 // ═══════════════════════════════════════════════════════════════
 import { registerPool, createContext, render } from '../../engine.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
+import '../proseOverhaulPass4.js';
 import './fragments.js';
 import '../hungerArchetypeBehavior.js';
 
 registerPool('scene.hungerInterrupt.starter', [
+  { when: { leftoverFed: true, addictionLevel: [4], hungerTier: [4] }, priority: 2, weight: 3,
+    text: [
+      'A sharp knock — leftover was not enough and she is done pretending it was.',
+      'Someone is knocking like the galley tray was a rumor.',
+    ] },
+  { when: { leftoverFed: true, inWithdrawal: true }, priority: 2, weight: 3,
+    text: [
+      'Harder knock than usual. Last night\'s foil did not close the night.',
+    ] },
+  { when: { leftoverFed: true }, weight: 3,
+    text: [
+      'A knock. She already ate leftover. She is still here.',
+      'Soft knock, impatient anyway. Galley heat did not finish her.',
+      'Someone at the door who had a tray and wants the next one.',
+    ] },
+  { when: { nightVisit: true }, weight: 3,
+    text: [
+      'A knock you already answered after hours. Hunger came back in daylight.',
+      'The same door. Night-round heat still in it. She knocks anyway.',
+    ] },
   { when: { addictionLevel: [4], hungerTier: [4] }, priority: 2,
     text: [
       "There's a sharp, impatient knock at your door.",
@@ -29,6 +51,11 @@ registerPool('scene.hungerInterrupt.starter', [
 ]);
 
 registerPool('scene.hungerInterrupt.appearance', [
+  { when: { leftoverFed: true }, priority: 2, weight: 3, text: [
+    'Foil still on her sleeve. Hunger brought her anyway.',
+    'She looks like leftover was a rumor her stomach refused.',
+    'Kitchen heat still in the clothes. The doorway gets the rest of the wanting.',
+  ] },
   { when: { stage: [11] }, priority: 3,
     text: [
       'She completely fills the doorway with her sheer mass.',
@@ -216,14 +243,22 @@ export function renderHungerInterrupt(student, week = 1, opts = {}) {
 }
 
 export function renderHungerOutcome(student, action, week = 1, opts = {}) {
-  const key = { feed: 'scene.hunger.response.feed', compound: 'scene.hunger.response.compound', deny: 'scene.hunger.response.deny', talk: 'scene.hunger.response.talk' }[action];
+  const key = {
+    feed: 'scene.hunger.response.feed',
+    compound: 'scene.hunger.response.compound',
+    deny: 'scene.hunger.response.deny',
+    talk: 'scene.hunger.response.talk',
+    leftover: 'scene.hunger.response.leftover',
+  }[action];
   if (!key) return '';
   const ctx = createContext({ subject: student, week, facts: opts.facts, sceneStems: opts.sceneStems });
   const trace = opts.trace || null;
   let text = render(`{${key}}`, ctx, { trace }).trim();
-  if (action === 'feed' || action === 'compound') {
+  if (action === 'feed' || action === 'compound' || action === 'leftover') {
     const style = render('{eating.style}', ctx, { trace }).trim();
     if (style) text = `${text} ${style}`;
   }
+  const linger = render('{hunger.linger}', ctx, { trace })?.trim() || '';
+  if (linger) text = `${text} ${linger}`;
   return appendV2Depth(text, 'hunger', ctx, opts.v2DepthChance ?? 0.28);
 }

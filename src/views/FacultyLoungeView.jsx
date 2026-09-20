@@ -27,7 +27,7 @@ function AffinityBar({ value, color }){
 
 // ── dialogue modal ────────────────────────────────────────────
 
-function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnabled = true }){
+function DialogueModal({ teacher, affinity, onClose, onAffinityGain, leftoverKitchen = false, nightRound = false, soundEnabled = true }){
   const [nodeId, setNodeId] = useState("hub");
   const node = teacher.tree[nodeId];
   if(!node) return null;
@@ -89,7 +89,9 @@ function DialogueModal({ teacher, affinity, onClose, onAffinityGain, soundEnable
           lineHeight:1.75,
           fontStyle:"italic",
         }}>
+          {scene ? <div style={{ marginBottom: 10, opacity: 0.95 }}>{scene}</div> : null}
           {text}
+          {glow ? <div style={{ marginTop: 10, opacity: 0.85 }}>{glow}</div> : null}
         </div>
 
         {/* options */}
@@ -202,11 +204,12 @@ function FacultyCard({ teacher, affinity, onClick }){
 
 // ── main view ─────────────────────────────────────────────────
 
-export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity }){
+export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity, leftoverKitchen = false, nightRound = false }){
   const [openTeacher, setOpenTeacher] = useState(null);
   const affinity = facultyAffinity || {};
 
   const handleAffinityGain = (teacherId, amount) => {
+    const extra = (leftoverKitchen ? 1 : 0) + (nightRound ? 1 : 0);
     setFacultyAffinity(prev => ({
       ...prev,
       [teacherId]: Math.min(FACULTY_CONFIG.maxAffinity, (prev[teacherId] || 0) + scaleFacultyAffinityGain(amount)),
@@ -248,6 +251,8 @@ export function FacultyLoungeView({ facultyAffinity, setFacultyAffinity }){
           affinity={affinity[activeTeacher.id] || 0}
           onClose={()=>setOpenTeacher(null)}
           onAffinityGain={(amt)=>handleAffinityGain(activeTeacher.id, amt)}
+          leftoverKitchen={leftoverKitchen}
+          nightRound={nightRound}
         />
       )}
     </div>

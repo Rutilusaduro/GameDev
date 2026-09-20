@@ -7,6 +7,8 @@ import { getStage } from './stages.js';
 import { enrichTalkEffect } from './mechanicsDepthLayer.js';
 import { getDevourEffect } from './devourScene.js';
 
+import { DEPTH_TALK_TOPICS } from './mechanicDepth.js';
+
 export const TALK_TOPICS = [
   // ── always available ───────────────────────────────────────
   { id:"check_in", label:"Check in", icon:"💬", group:"talk",
@@ -48,6 +50,7 @@ export const TALK_TOPICS = [
     effect:{ cals:45000, full:100, corruption:18, rel:3, devourShift:true },
     refusalTemplate:"{talk.refusal.command_devour}",
   },
+  ...DEPTH_TALK_TOPICS,
 ];
 
 // register: 0 normal · 1 submissive (Internalized Role) · 2 broken (Broken Mind)

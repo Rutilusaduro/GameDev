@@ -8,6 +8,7 @@ import {
   emptyWeekPlan,
   resizeWeekPlan,
   mealCostPreview,
+  padWeekPlan,
   planConflicts,
   previewPlannedSlot,
   defaultSlotLabel,
@@ -27,6 +28,10 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
   const conflicts = useMemo(() => planConflicts(plan, students), [plan, students]);
   useEffect(() => { setPlan((p) => resizeWeekPlan(p, n)); }, [n]);
 
+  useEffect(() => {
+    setPlan((prev) => padWeekPlan(prev, slotCount));
+  }, [slotCount]);
+
   const assignSlot = (slotIndex, studentId) => {
     setPlan((prev) => {
       const slots = prev.slots.map((s, i) => (i === slotIndex ? { ...s, studentId } : s));
@@ -36,6 +41,18 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
   const assignVenue = (slotIndex, venueId) => {
     setPlan((prev) => {
       const slots = prev.slots.map((s, i) => (i === slotIndex ? { ...s, venueId } : s));
+      return { ...prev, slots };
+    });
+  };
+
+  const cycleVenue = (slotIndex) => {
+    setPlan((prev) => {
+      const slots = prev.slots.map((s, i) => {
+        if (i !== slotIndex) return s;
+        const idx = PLANNER_VENUES.findIndex((v) => v.id === s.venueId);
+        const next = PLANNER_VENUES[(Math.max(0, idx) + 1) % PLANNER_VENUES.length];
+        return { ...s, venueId: next.id };
+      });
       return { ...prev, slots };
     });
   };
@@ -64,13 +81,23 @@ export function WeekPlannerModal({ students, week, initialPlan, onCommit, onClos
             const preview = previewPlannedSlot(student, { ...slot, slotIndex: i }, week);
             return (
               <div key={i} className="week-planner-slot-card" style={{ ...C.card, cursor: 'default', marginBottom: 0 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, gap: 8 }}>
                   <div style={{ fontWeight: 700, color: '#c090e8' }}>
                     Slot {i + 1} · {venue.glyph} {venue.label}
                   </div>
-                  <button type="button" style={{ ...C.smBtn, margin: 0, fontSize: 9 }} onClick={() => assignSlot(i, null)}>
-                    Clear
-                  </button>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button
+                      type="button"
+                      aria-label={`Change venue for slot ${i + 1}`}
+                      style={{ ...C.smBtn, margin: 0, fontSize: 9 }}
+                      onClick={() => cycleVenue(i)}
+                    >
+                      Place
+                    </button>
+                    <button type="button" style={{ ...C.smBtn, margin: 0, fontSize: 9 }} onClick={() => assignSlot(i, null)}>
+                      Clear
+                    </button>
+                  </div>
                 </div>
                 {student ? (
                   <>

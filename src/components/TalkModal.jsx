@@ -21,8 +21,11 @@ import '../textEngine/scenes/talkCheckIn.js'; // registers talk.check_in
 import '../textEngine/scenes/talkCompliment.js'; // registers talk.compliment
 import '../textEngine/scenes/talkSuggest.js'; // registers talk.suggest_*
 import '../textEngine/scenes/talkRefusal.js'; // registers talk.refusal.*
+import '../textEngine/scenes/talkRefusalDepth.js';
 import '../textEngine/scenes/talkDiscontent.js'; // registers talk.discontentCoda
 import '../textEngine/scenes/talkCommandFinish.js'; // registers talk.command_finish
+import '../textEngine/scenes/talkLinger.js';
+import '../textEngine/scenes/proseOverhaul.js';
 import '../textEngine/scenes/campusSoftening.js';
 import '../textEngine/scenes/hungerLexicon.js';
 import '../textEngine/scenes/destinyOffstream.js';
@@ -36,7 +39,7 @@ import { getRaDisplayName } from '../gameData/raDisplay.js';
 
 // ── response builder ──────────────────────────────────────────
 
-function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0, raProfile = null) {
+function buildResponse(topic, student, skillEffects, week, campusFattening = false, campusTier = 0, raProfile = null, dormState = null) {
   const raName = getRaDisplayName(raProfile);
   const corTier = getCorruptionTier(student.corruption || 0).id;
   const trace = [];
@@ -56,6 +59,9 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
         raName,
         complimentUnwelcome: topic.id === 'compliment' && isBodyComplimentUnwelcome(student),
         discontentTier: getDiscontentTier(student).id,
+        habitId: dormState?.nightRounds?.habits?.[student.id] || '',
+        floorIntimacy: dormState?.nightRounds?.floorIntimacy || 0,
+        dormRoom: 'corridor',
       },
     });
     const renderOpts = { trace };
@@ -71,6 +77,17 @@ function buildResponse(topic, student, skillEffects, week, campusFattening = fal
     if (getHungerTier(student) >= 2 || getAddictionLevel(student) >= 1) {
       text += render('{talk.hungryCoda}', ctx, { ...renderOpts, noSmooth: true });
     }
+    const afterglow = render('{talk.afterglow|prefix:\n\n}', ctx, { ...renderOpts, noSmooth: true });
+    if (afterglow?.trim()) text += afterglow.startsWith('\n') ? afterglow : `\n\n${afterglow}`;
+    const lingerKey = topic.id === 'encourage' ? 'talk.encourage.linger'
+      : topic.id === 'command_finish' ? 'talk.command_finish.linger'
+      : topic.id === 'origin_echo' ? 'talk.origin_echo.linger'
+      : topic.group === 'suggest' ? 'talk.suggest.wrap'
+      : 'talk.checkIn.linger';
+    const linger = render(`{${lingerKey}|prefix:\n\n}`, ctx, { ...renderOpts, noSmooth: true });
+    if (linger?.trim()) text += linger.startsWith('\n') ? linger : `\n\n${linger}`;
+    const fitCoda = render('{talk.roomFitCoda|prefix:\n\n}', ctx, { ...renderOpts, noSmooth: true });
+    if (fitCoda?.trim()) text += fitCoda.startsWith('\n') ? fitCoda : `\n\n${fitCoda}`;
     if (student.evolvedForm === 'eating_streamer') {
       const ds = ensureStreamFields(student);
       ctx.d.brand = ds.brand;
@@ -95,6 +112,7 @@ const GROUP_COLORS = {
   talk:    "#8040c0",
   suggest: "#4080e0",
   command: "#d04040",
+  floor:   "#c09050",
 };
 
 function TopicCard({ topic, student, skillEffects, onSelect, disabled }){
@@ -182,13 +200,14 @@ function ResponseDisplay({ topic, text, student, week, section, traceNodes, onCl
 
 // ── main modal ────────────────────────────────────────────────
 
-export function TalkModal({ student, raProfile, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0, soundEnabled = true }){
+export function TalkModal({ student, raProfile, skillEffects, week, weeklyArms, onArmDevouring, onArmMesmerizing, onClose, onApplyEffect, campusFattening = false, campusTier = 0, soundEnabled = true, dormState = null }){
   useEffect(() => { playHallPassSound('confirm', soundEnabled); }, [soundEnabled, student?.id]);
   const [activeResponse, setActiveResponse] = useState(null); // {topic, text}
   const corTier = getCorruptionTier(student.corruption || 0);
   const eff     = skillEffects || {};
 
   const isTopicAvailable = (t) => {
+    if(!talkTopicAvailable(t, student, dormState)) return false;
     if(!t.requires) return true;
     return !!eff[t.requires];
   };
@@ -226,7 +245,7 @@ export function TalkModal({ student, raProfile, skillEffects, week, weeklyArms, 
       }
     }
 
-    const bundle = buildResponse(topic, student, eff, week, campusFattening, campusTier, raProfile);
+    const bundle = buildResponse(topic, student, eff, week, campusFattening, campusTier, raProfile, dormState);
     setActiveResponse({
       topic,
       text: bundle.text,
@@ -253,6 +272,7 @@ export function TalkModal({ student, raProfile, skillEffects, week, weeklyArms, 
 
   const groupedTopics = [
     { group:"talk",    label:"Conversation",   topics: TALK_TOPICS.filter(t=>t.group==="talk"&&isTopicAvailable(t)) },
+    { group:"floor",   label:"After hours",    topics: TALK_TOPICS.filter(t=>t.group==="floor"&&isTopicAvailable(t)) },
     { group:"suggest", label:"Suggestion",     topics: TALK_TOPICS.filter(t=>t.group==="suggest"&&isTopicAvailable(t)) },
     { group:"command", label:"Command",        topics: TALK_TOPICS.filter(t=>t.group==="command"&&isTopicAvailable(t)) },
   ].filter(g=>g.topics.length>0);

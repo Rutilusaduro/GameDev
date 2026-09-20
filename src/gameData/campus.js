@@ -204,6 +204,8 @@ export const CAMPUS_ENCOUNTERS = [
   (s,sd) => `You spot ${s.name} ${sd.move}. She waves when she sees you${sd.heavy?", the gesture setting off a slow ripple she makes no attempt to hide":""}.`,
   (s,sd) => `${s.name} is here, ${sd.eat}. She catches your eye and, very deliberately, takes another bite.`,
   (s,sd) => `${s.name} passes by${sd.heavy?" — gradually":""}. ${sd.aside}`,
+  (s,sd) => `${s.name} has claimed a bench. ${sd.eat} She pats the empty slat beside her like it was saved.`,
+  (s,sd) => `You hear ${s.name} before you see her${sd.heavy?", the unhurried sound of someone who knows campus will wait":""}. ${sd.aside}`,
 ];
 
 export const stageDescriptor = (stageId) => {

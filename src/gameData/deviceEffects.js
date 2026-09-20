@@ -440,7 +440,7 @@ function resolveWeeklyDevice(student, slot, entry, week, rng, ctx = {}) {
 
   const malf = rollMalfunction(def, next, rng, {
     effectiveStability: modFold.effectiveStability,
-    effectiveRisk: modFold.effectiveRisk,
+    effectiveRisk: (modFold.effectiveRisk ?? def.risk ?? 0.3) * (ctx.malfRiskMult ?? 1),
     dependenceLevel: getDependenceLevel(next, slot),
     labState: ctx.labState,
     deviceDefId: def.id,
@@ -698,6 +698,7 @@ export function resolveCampusDeviceUse(defId, modeId, targetStudent, week, rng =
     mode?.discoveryRisk ?? 0.15,
     ctx.adminScrutiny ?? 0,
     discoveryMult,
+    { leftoverKitchen: !!ctx.leftoverKitchen, nightRound: !!ctx.nightRound },
   );
   const discovered = rng() < discoveryRisk;
   return {

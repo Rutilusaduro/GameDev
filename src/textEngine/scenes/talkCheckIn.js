@@ -17,6 +17,8 @@ registerPool('talk.checkIn.greetQuote', [
     `"Hi, {ra.name}."`,
     `"Good to see you,"`,
     `"Hey, {ra.name}."`,
+    `"You're early. I like that."`,
+    `"Come in. Sit. I already made space."`,
   ] },
 ]);
 
@@ -450,20 +452,40 @@ registerPool('talk.interior.aside', [
   ]},
 ]);
 
+registerPool('talk.checkIn.linger', [
+  { when: { stageMax: 3, corruption: [0] }, weight: 2, text: [
+    'She glances at the snack stash after you sit, then away, then back.',
+    'The check-in is official. Her appetite is already making other plans.',
+  ] },
+  { when: { stageMin: 6 }, weight: 2, text: [
+    'The chair complains once and then learns her. She smiles at the sound.',
+    'She settles heavier as you talk. The conversation has a lap now.',
+  ] },
+  { when: {}, text: [
+    'She does not rush you out. The visit has a second course in it.',
+    'You stay a minute past the script. She lets you.',
+    'The room keeps the warmth of her after the official part ends.',
+    'She glances at the door and does not stand. Check-in becomes lingering.',
+  ] },
+]);
+
 // ── talk.check_in — corruption-tier skeletons
 registerPool('talk.check_in', [
   { when: { corruption: [0] }, priority: 1, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }{talk.interior.aside|prefix:\n\n}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}\n\n{talk.checkIn.dining} {talk.checkIn.diningLine}\n\n{talk.checkIn.earlyWeight}{talk.interior.aside|prefix:\n\n}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat} {talk.checkIn.greetClose}\n\n{talk.checkIn.clothes}{talk.checkIn.clothesNote|prefix: }\n\n{talk.checkIn.earlyWeight}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}\n\n{talk.checkIn.linger}',
   ] },
   { when: { corruption: [1] }, priority: 1, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.acceptClose}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen} {talk.checkIn.acceptBody}{talk.interior.aside|prefix:\n\n}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.acceptOpen}\n\n{origin.stirring.line} {talk.checkIn.acceptClose}',
   ] },
   { when: { corruption: [2] }, priority: 1, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}\n\n{talk.checkIn.ownedClose}',
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen} {talk.checkIn.ownedSpread}{talk.interior.aside|prefix:\n\n}',
+    '{talk.moodOpener|suffix:\n\n}{talk.checkIn.ownedOpen}\n\n{origin.stirring.line}\n\n{talk.checkIn.ownedSpread} {talk.checkIn.ownedClose}',
   ] },
   { when: {}, text: [
     '{talk.moodOpener|suffix:\n\n}{talk.checkIn.greetQuote} {talk.checkIn.greetBeat}',

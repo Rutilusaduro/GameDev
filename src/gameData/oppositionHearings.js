@@ -42,6 +42,16 @@ export const REMOVAL_HEARING = {
       studentHiddenWeeks: 0, scrutinyDelta: -5, resolveHitAll: 8,
     },
     {
+      poolKey: 'night_testimony',
+      condition: (h) => h.includes('night_log') && h.includes('testify'),
+      studentHiddenWeeks: 0, scrutinyDelta: -8, resolveHitAll: 12,
+    },
+    {
+      poolKey: 'night_paperwork',
+      condition: (h) => h.includes('night_log'),
+      studentHiddenWeeks: 0, scrutinyDelta: -4, resolveHitAll: 6,
+    },
+    {
       poolKey: 'messy_victory',
       condition: (h) => h.includes('feast') || h.includes('negotiate'),
       studentHiddenWeeks: 0, scrutinyDelta: 2, resolveHitAll: 5,
@@ -63,6 +73,7 @@ export const EMERGENCY_HEARING = {
         { id: 'deflect', label: 'Deflect to campus culture metrics', resultPool: 'opposition.hearing.emergency.result.deflect', flag: 'deflect' },
         { id: 'feast_bribe', label: 'Cater the hearing itself', resultPool: 'opposition.hearing.emergency.result.feast_bribe', flag: 'catered' },
         { id: 'sacrifice', label: 'Sacrifice a compromised member as scapegoat', resultPool: 'opposition.hearing.emergency.result.sacrifice', flag: 'scapegoat' },
+        { id: 'night_hours', label: 'Recast after-hours traffic as wellness programming', resultPool: 'opposition.hearing.emergency.result.night_hours', flag: 'night_hours' },
       ],
     },
     {
@@ -79,6 +90,11 @@ export const EMERGENCY_HEARING = {
       poolKey: 'catered_future',
       condition: (h) => h.includes('catered') && h.includes('double'),
       scrutinyDelta: -15, scandalDelta: -40, truceWeeks: 1,
+    },
+    {
+      poolKey: 'night_truce',
+      condition: (h) => h.includes('night_hours') || h.includes('invite_home'),
+      scrutinyDelta: -8, scandalDelta: -15, truceWeeks: 1,
     },
     {
       poolKey: 'scapegoat_survive',

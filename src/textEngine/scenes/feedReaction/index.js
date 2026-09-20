@@ -16,9 +16,10 @@
 //   foodKind ∈ sweet | hearty | drink | spread
 //   feedRoom ∈ eager | filling | tight | past   (post-feed fullness)
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, render } from '../../engine.js';
+import { registerPool, registerModuleVariants, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import '../proseOverhaul.js';
 
 // ── feed.react.beat ───────────────────────────────────────────
 // Shape: FULL SENTENCE — the act of eating, shaded by what it is
@@ -73,6 +74,41 @@ registerPool('feed.react.beat', [
   ]},
   { when: { stageMin: 8 }, weight: 2, text: [
     `Eating is a whole-body affair at her size now — {word.body}, her breath working, the chair taking all of her as she settles in to finish.`,
+  ]},
+]);
+
+registerModuleVariants('feed.react.beat', [
+  { when: { leftoverFed: true, foodKind: 'sweet' }, weight: 4, text: [
+    'Sugar on leftover heat. She lets each forkful sit like the kitchen already voted.',
+    'Sweet and dense on a middle last night opened. She does not hurry the melt.',
+  ]},
+  { when: { leftoverFed: true, foodKind: 'hearty' }, weight: 4, text: [
+    'Savory on leftover sitting. She loads the next fork before the last one lands.',
+    'Heavy food, leftover warmth. She leans in like the tray started this meal.',
+  ]},
+  { when: { leftoverFed: true, foodKind: 'drink' }, weight: 4, text: [
+    'It goes down easy on leftover heat. Cream she barely clocks, gone anyway.',
+    'She tips it back. Last night\'s sitting made the swallow quieter.',
+  ]},
+  { when: { leftoverFed: true, foodKind: 'spread' }, weight: 4, text: [
+    'She grazes leftover then the spread without a pause. One rich thing into the next.',
+    'Too much to be polite. Kitchen leftover taught her. She keeps reaching.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'eager' }, weight: 4, text: [
+    'Plenty of room and leftover still hungry. She eats like the meal is a sequel.',
+    'Appetite ahead of stomach. Last night did not close the tab.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'filling' }, weight: 4, text: [
+    'Pleasant heaviness on leftover heat. She sinks deeper as this plate catches up.',
+    'You can watch leftover and this bite share the same warm middle.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'tight' }, weight: 4, text: [
+    `She slows. Waistband and leftover sitting press the same place. {word.fullness}.`,
+    'Last bites take effort. Kitchen heat plus this. Belly snug against everything.',
+  ]},
+  { when: { leftoverFed: true, feedRoom: 'past' }, weight: 4, text: [
+    `She takes it past comfortable on leftover heat and keeps going. {word.fullness}.`,
+    'More than room. Leftover opened her. She finishes anyway, heavy and warm.',
   ]},
 ]);
 
@@ -240,8 +276,99 @@ export function renderFeedReaction(student, week = 1, opts = {}) {
     ...opts,
   });
   const raw = render('{feed.react}', ctx, { trace: opts.trace || null })?.trim() || '';
-  return appendV2Depth(raw, 'feed', ctx, opts.v2DepthChance ?? 0.38);
+  const after = render('{feed.afterglow|prefix:\n\n}', ctx, { trace: opts.trace || null })?.trim() || '';
+  return appendV2Depth(after ? `${raw}\n\n${after}` : raw, 'feed', ctx, opts.v2DepthChance ?? 0.38);
 }
+
+export function renderItemUseLine(student, item, week = 1, opts = {}) {
+  if (!student || !item) return '';
+  const ctx = buildTextContext({
+    subject: student,
+    week,
+    globals: { itemLabel: item.label || 'snack' },
+    ...opts,
+  });
+  const fromPool = render('{item.use.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+  if (fromPool) return fromPool;
+  const label = String(item.label || 'snack').toLowerCase();
+  return `${student.name} takes the ${label}.`;
+}
+
+export function renderFeedRefusal(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{feed.refusal.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
+export function renderFeedForceSuccess(student, week = 1, opts = {}) {
+  if (!student) return '';
+  const ctx = buildTextContext({ subject: student, week, ...opts });
+  return render('{feed.force.line}', ctx, { trace: opts.trace || null })?.trim() || '';
+}
+
+const itemLabelText = (ctx) => String(ctx.globals?.itemLabel ?? 'snack').toLowerCase();
+registerPool('itemLabel', [
+  { when: {}, text: [itemLabelText, itemLabelText, itemLabelText] },
+]);
+
+registerPool('item.use.line', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `You produce the {itemLabel}. {subject.name}'s attention arrives. Last night's sitting already voted.`,
+    `"Is that for me?" {subject.name} asks, already reaching. Leftover heat plus the {itemLabel}.`,
+    `You leave the {itemLabel} where {subject.name} will find it. Kitchen leftover taught her to look.`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `You produce the {itemLabel}. Night-round knock still in the wood. She reaches anyway.`,
+    `"Is that for me?" {subject.name} asks. You saw her after hours. The {itemLabel} is the daylight version.`,
+  ] },
+  { when: {}, text: [
+    `You produce the {itemLabel}. {subject.name}'s attention arrives before her objections do.`,
+    `"Is that for me?" {subject.name} asks, already reaching. The {itemLabel} does not survive the hour.`,
+    `You leave the {itemLabel} where {subject.name} will find it. She finds it.`,
+  ] },
+]);
+
+// Shape: FULL SENTENCE. Force-feed refusal toast.
+registerPool('feed.refusal.line', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    `{subject.name} presses a hand to a middle that already ate. "I can't. Extra help spent the room."`,
+    `{subject.name} leans back around the seconds. "Give me a minute. Not another bite."`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} looks at the food, then at extra help still in her. "Look at me. There's no room."`,
+    `{subject.name} pushes the plate an inch. Seconds already voted. She means it.`,
+    `{subject.name} shakes her head over a middle that already ate. "Real limit. The extra sitting used it."`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `{subject.name} presses a hand flat. Night-round knock still in her. "I can't. Not again yet."`,
+  ] },
+  { when: {}, text: [
+    `{subject.name} presses a hand flat against her stomach and shakes her head. "I can't. I physically can't."`,
+    `{subject.name} leans back, breathing carefully around the fullness. "Give me a minute. Or a week."`,
+    `{subject.name} looks at the food, looks at you, and laughs — a short sound. "You're joking. Look at me. There's no room."`,
+  ] },
+]);
+
+// Shape: FULL SENTENCE. Force-feed success toast.
+registerPool('feed.force.line', [
+  { when: { leftoverFed: true, stageMax: 4 }, weight: 3, text: [
+    `{subject.name} hesitates around the extra help, then opens anyway. Seconds plus this. Eyes closed. Gone.`,
+    `{subject.name} says she shouldn't and keeps eating. Extra sitting already taught her the rest.`,
+  ] },
+  { when: { leftoverFed: true }, weight: 3, text: [
+    `{subject.name} takes it down slow, both hands on a middle that already ate. When it's gone she just breathes.`,
+    `{subject.name} whimpers, "I shouldn't," and keeps going. Seconds plus this. She lives there.`,
+    `{subject.name} hesitates — extra help still in her — then opens anyway. Past full. Past sense.`,
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    `{subject.name} hesitates, night-round heat still in her, then opens anyway. She finishes with her eyes closed.`,
+  ] },
+  { when: {}, text: [
+    `{subject.name} hesitates — visibly — and then opens her mouth anyway. Past full. She finishes it with her eyes closed.`,
+    `{subject.name} whimpers, "I shouldn't," and keeps eating. Fullness has become a place she lives.`,
+    `{subject.name} takes it down slowly, both hands braced on the table. When it's gone she just breathes.`,
+  ] },
+]);
 
 /** Categorize any feed into a foodKind from its label + cal/fullness profile.
  *  Word boundaries (\b) matter: "platter" contains "latte", so naive

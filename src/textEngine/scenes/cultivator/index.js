@@ -84,26 +84,60 @@ registerPool('cultivator.beat', [
   { when: {}, text: ['{cultivator.reaction}'] },
 ]);
 
-export function renderCultivatorIntro(recipeId, testerName, week = 1) {
-  if (!recipeId) return '';
-  const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
-  const base = render(`{cultivator.intro.${recipeId}}`, ctx)?.trim() || '';
-  return appendV2Depth(base, 'cultivator', ctx, 0.3);
-}
+registerPool('cultivator.linger', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen leftover still on Reneé. The tester plate sits easier for it.',
+    'Galley heat in the tasting room. She files the tray as a second reagent.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'Quiet-hours knock still in her posture. The tester eats on that same open hour.',
+    'You were at her door after lights. This tasting uses the leftover heat.',
+  ] },
+  { when: {}, text: [
+    'The tester eats. Reneé watches like a kitchen that already voted.',
+    'Notes stay neat. Appetite does not.',
+    'She logs the plate as data. The middle logs it as yield.',
+  ] },
+]);
 
-export function renderCultivatorChoice(recipeId, choiceId, testerName, week = 1) {
-  if (!recipeId || !choiceId) return '';
-  const ctx = createContext({ subject: testerSubject(testerName), week, globals: { featureId: 'cultivator' } });
-  const base = render(`{cultivator.choice.${recipeId}.${choiceId}}`, ctx)?.trim() || '';
-  return appendV2Depth(base, 'cultivator', ctx, 0.28);
-}
-
-export function renderCultivatorReaction(testerName, suspicion, week = 1) {
-  const ctx = createContext({
+function cultivatorCtx(testerName, week, opts = {}) {
+  return createContext({
     subject: testerSubject(testerName),
     week,
-    globals: { featureId: 'cultivator', suspicionTier: suspicionTier(suspicion) },
+    globals: {
+      featureId: 'cultivator',
+      leftoverFed: !!opts.leftoverFed,
+      nightVisit: !!opts.nightVisit,
+      ...(opts.globals || {}),
+    },
   });
+}
+
+function wrapCultivatorLinger(base, ctx) {
+  if (!base) return base;
+  const leftover = !!(ctx.globals?.leftoverFed || ctx.d?.leftoverFed);
+  const night = !!(ctx.globals?.nightVisit || ctx.d?.nightVisit);
+  if (!leftover && !night) return base;
+  const linger = render('{cultivator.linger}', ctx)?.trim() || '';
+  return linger ? `${base}\n\n${linger}` : base;
+}
+
+export function renderCultivatorIntro(recipeId, testerName, week = 1, opts = {}) {
+  if (!recipeId) return '';
+  const ctx = cultivatorCtx(testerName, week, opts);
+  const base = render(`{cultivator.intro.${recipeId}}`, ctx)?.trim() || '';
+  return appendV2Depth(wrapCultivatorLinger(base, ctx), 'cultivator', ctx, 0.3);
+}
+
+export function renderCultivatorChoice(recipeId, choiceId, testerName, week = 1, opts = {}) {
+  if (!recipeId || !choiceId) return '';
+  const ctx = cultivatorCtx(testerName, week, opts);
+  const base = render(`{cultivator.choice.${recipeId}.${choiceId}}`, ctx)?.trim() || '';
+  return appendV2Depth(wrapCultivatorLinger(base, ctx), 'cultivator', ctx, 0.28);
+}
+
+export function renderCultivatorReaction(testerName, suspicion, week = 1, opts = {}) {
+  const ctx = cultivatorCtx(testerName, week, { ...opts, globals: { suspicionTier: suspicionTier(suspicion), ...(opts.globals || {}) } });
   const base = render('{cultivator.eating}', ctx)?.trim() || '';
-  return appendV2Depth(base, 'cultivator', ctx, 0.3);
+  return appendV2Depth(wrapCultivatorLinger(base, ctx), 'cultivator', ctx, 0.3);
 }

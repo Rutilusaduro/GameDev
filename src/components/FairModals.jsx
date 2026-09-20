@@ -70,7 +70,7 @@ export function FairTrainingHub({ ft, students, ap, getFairPrideTier, startFairT
             <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:10,whiteSpace:"pre-line"}}>{ft.sessionSceneTag}</div>
             {ft.pendingRecruits&&(
               <div style={{...C.infoBox("rgba(20,0,20,0.5)"),marginBottom:10,fontSize:10,color:"#b080b0"}}>
-                Lilith's recruits: {ft.pendingRecruits.map((r)=>`a stage-${r.stage} ${r.bodyType.replace('_',' ')} woman`).join(', ')}
+                Lilith's recruits: {ft.pendingRecruits.map((r)=>`a ${recruitSizeWord(r.stage)} ${r.bodyType.replace('_',' ')} woman`).join(', ')}
               </div>
             )}
             <div style={{...C.infoBox("rgba(20,10,0,0.6)"),marginBottom:10,fontSize:11,color:"#c0a060",fontStyle:"italic"}}>{ft.sessionBoostSummary}</div>
@@ -126,14 +126,15 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
         </div>
 
         {fd.phase==='weighin'&&(()=>{
-          const sc=FAIR_DAY_SCENES.weighIn[key];
+          const sc=FAIR_DAY_SCENES.weighIn[key]||{};
+          const openText=renderFairDayWeighIn(s,week,fd.influenceKey)||wrapLeftoverLinger(sc.open,s,week,'fair.linger');
           return(
             <>
               {!fd.weighInChoice&&<>
                 <div style={{fontSize:12,color:"#e0c898",lineHeight:1.9,fontStyle:"italic",marginBottom:12,whiteSpace:"pre-line"}}>{renderFairBeat('weighin.open',s,week,{influenceKey:fd.influenceKey,stageIdx:fd.stageIdx})||sc.open}</div>
                 <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1.label}</button>
-                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2.label}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn(fairOrange),width:"100%"}} onClick={()=>chooseFairWeighIn(1)}>⚖️ {sc.choice1?.label||'Hold your ground'}</button>
+                  <button type="button" className="fair-choice-row" style={{...C.btn("#3a2a00"),width:"100%"}} onClick={()=>chooseFairWeighIn(2)}>🎪 {sc.choice2?.label||'Play to the crowd'}</button>
                 </div>
               </>}
               {fd.weighInChoice&&<>
@@ -155,7 +156,8 @@ export function FairDayModal({ fd, students, fairPride, getFairPrideTier, choose
         )}
 
         {fd.phase==='afterparty'&&(()=>{
-          const sc=FAIR_DAY_SCENES.afterparty[key];
+          const sc=FAIR_DAY_SCENES.afterparty[key]||{};
+          const openText=renderFairDayAfterparty(s,week,fd.influenceKey)||wrapLeftoverLinger(sc.open,s,week,'fair.linger');
           return(
             <>
               {!fd.afterpartyChoice&&<>

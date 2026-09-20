@@ -45,9 +45,9 @@ registerPool('session.aftermath.packed', [
 ]);
 
 registerPool('session.aftermath', [
-  { when: { aftermathBand: "light" }, text: ['{session.aftermath.light}'] },
-  { when: { aftermathBand: "full" }, text: ['{session.aftermath.full}'] },
-  { when: { aftermathBand: "stuffed" }, text: ['{session.aftermath.stuffed}'] },
-  { when: { aftermathBand: "packed" }, text: ['{session.aftermath.packed}'] },
-  { when: {}, text: ['{subject.name} settles back, full and warm, pleased with the evening.'] },
+  { when: { aftermathBand: "light" }, text: ['{session.aftermath.light} {session.afterglow} {session.linger}'] },
+  { when: { aftermathBand: "full" }, text: ['{session.aftermath.full} {session.afterglow} {session.linger}'] },
+  { when: { aftermathBand: "stuffed" }, text: ['{session.aftermath.stuffed} {session.afterglow} {session.linger}'] },
+  { when: { aftermathBand: "packed" }, text: ['{session.aftermath.packed} {session.afterglow} {session.linger}'] },
+  { when: {}, text: ['{subject.name} settles back, full and warm, pleased with the evening. {session.afterglow} {session.linger}'] },
 ]);

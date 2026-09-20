@@ -308,7 +308,7 @@ export function rollEmbodiedArrivalEvent(
   };
 }
 
-export function applyEmbodiedEvent(student, eventDef, { lockedStudents = [], rng = Math.random } = {}) {
+export function applyEmbodiedEvent(student, eventDef, { lockedStudents = [], rng = Math.random, week = 0 } = {}) {
   if (!eventDef) return { student, trustGrants: [] };
   let next = { ...student };
   if (eventDef.calories) {

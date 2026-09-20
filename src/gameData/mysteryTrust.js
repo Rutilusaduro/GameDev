@@ -26,7 +26,25 @@ const HINTS_HIGH = [
   'Someone is ready to knock on your floor. Make sure you have room.',
 ];
 
-function pickHint(progress, week) {
+const HINTS_LEFTOVER = [
+  'Galley leftover travels farther than names. Another hall is smelling your kitchen.',
+  'Someone heard you send trays after hours. Trust is building on a floor you have not met.',
+  'Word of leftover plates moves between halls like heat. Curiosity is getting a name.',
+];
+
+const HINTS_NIGHT = [
+  'Night-round knock is campus gossip now. Distant halls are listening for the same door.',
+  'Quiet hours on your floor leaked. Someone is deciding you are worth knowing.',
+  'A late knock on your hall got retold. Trust is warming up somewhere you cannot see.',
+];
+
+function pickHint(progress, week, extras = {}) {
+  if (extras.leftoverKitchen) {
+    return HINTS_LEFTOVER[(week + Math.floor(progress * 10)) % HINTS_LEFTOVER.length];
+  }
+  if (extras.nightRound) {
+    return HINTS_NIGHT[(week + Math.floor(progress * 7)) % HINTS_NIGHT.length];
+  }
   const pool = progress >= 0.85 ? HINTS_HIGH : progress >= 0.45 ? HINTS_MID : HINTS_LOW;
   return pool[(week + Math.floor(progress * 10)) % pool.length];
 }
@@ -35,7 +53,7 @@ function pickHint(progress, week) {
  * Anonymous passive-trust readout — no locked resident names.
  * @returns {null | { progress: number, hint: string, hallFlavor: string|null, nearlyReady: boolean, slotsFull: boolean }}
  */
-export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachLevel = 1, week = 1 } = {}) {
+export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachLevel = 1, week = 1, dormState = null } = {}) {
   const slots = getRosterSlotCount(reachLevel);
   const openCount = countOpenPoolStudents(students);
   if (openCount >= slots) {
@@ -62,7 +80,7 @@ export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachL
 
   return {
     progress,
-    hint: pickHint(progress, week),
+    hint: pickHint(progress, week, { leftoverKitchen, nightRound: nightNudge > 0 }),
     hallFlavor,
     nearlyReady,
     slotsFull: false,

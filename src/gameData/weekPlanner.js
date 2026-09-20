@@ -2,6 +2,7 @@
 import { getAddictionLevel, getHungerTier } from './hungerAddiction.js';
 import { PSYCH_TIERS } from './psychState.js';
 import { getStage } from './stages.js';
+import { roomCompletion } from './dormBlueprint.js';
 import { renderWeekRecap } from '../textEngine/scenes/weekRecap/index.js';
 import { completedRoomCount, extraFeedCalories, roomFill } from './floorBlueprint.js';
 import { depthMealCostEstimate } from './mechanicsDepthLayer.js';
@@ -14,6 +15,7 @@ export const PLANNER_VENUES = [
   { id: 'dorm', label: 'Dorm visit', glyph: '🛏' },
   { id: 'lab', label: 'Hall kitchen', glyph: '🍳' },
   { id: 'private', label: 'Private table', glyph: '🥂' },
+  { id: 'night_wing', label: 'Night wing', glyph: '🌙' },
 ];
 
 export function plannerSlotCount(owned = {}) {

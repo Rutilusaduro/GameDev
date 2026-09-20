@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SCENE: CAMPUS EXPLORATION — modular travel & sighting prose
 // ═══════════════════════════════════════════════════════════════
-import { registerPool, createContext, render } from '../engine.js';
+import { registerPool, registerModuleVariants, createContext, render } from '../engine.js';
 import { getStage } from '../../gameData/stages.js';
 import { EXPLORATION_FINDS, getExplorationFind } from '../../gameData/campusIngredients.js';
 import { appendV2Depth } from './v2/depthRenderer.js';
 import '../modules.js'; // subject.name etc.
+import './proseOverhaulPass4.js';
 
 // ── student sightings (weight-band × archetype) ───────────────
 
@@ -240,7 +241,27 @@ registerPool('campus.sighting', [
     '{subject.name} crosses your path with the easy confidence of someone who belongs here.',
     'Campus noise softens for a moment around {subject.name}, then resumes.',
     'You catch {subject.name} in passing — unremarkable, unhurried, part of the day\'s texture.',
+    '{subject.name} has a snack in one hand and a schedule in the other. The snack is winning.',
+    'You see {subject.name} pause at a bench long enough to finish what she was carrying.',
+    '{subject.name} nods at you like the floor followed her off campus.',
+    '{subject.name} walks with a snack she pretends is accidental. The campus does not argue.',
+    'You catch {subject.name} between buildings, slower than last month, warmer for it.',
   ] },
+]);
+
+registerModuleVariants('campus.sighting', [
+  { when: { lastCompound: 'appetite_stimulant' }, weight: 3, text: [
+    '{subject.name} keeps a hand on her middle between buildings. The last dose still has errands.',
+    'Campus air hits her and she thinks about food first. Sophia would call that expected.',
+  ]},
+  { when: { lastCompound: 'cult_appetite' }, weight: 3, text: [
+    '{subject.name} moves like the circle is still feeding her. Quad, then snack, then more snack.',
+  ]},
+  { when: {}, text: [
+    '{subject.name} has foil in her bag and no schedule that accounts for it.',
+    'You see {subject.name} choose the slower path because the faster one skips the trucks.',
+    '{subject.name} eats while walking. The walking is optional. The eating is not.',
+  ]},
 ]);
 
 registerPool('campus.travel', [
@@ -263,13 +284,26 @@ registerPool('campus.travel', [
     ] },
 ]);
 
+registerModuleVariants('campus.travel', [
+  { when: {}, text: [
+    'A resident cuts across the quad with a foil tray and no explanation.',
+    'The dining hall steam follows people out the doors like a rumor.',
+    'Someone sits on a bench to finish a milkshake that was supposed to be portable.',
+  ] },
+]);
+
 registerPool('campus.location', [
   { when: { nodeId: 'quad' }, priority: 2,
     text: ['Food trucks idle in a row like predators that learned parking etiquette.', 'The lawn has more blankets than grass on a weekday afternoon.', 'Someone naps on a bench with a pastry balanced on their stomach like a trophy.'] },
   { when: { nodeId: 'library' }, priority: 2,
     text: ['The third floor smells like coffee and surrender.', 'Someone snores gently between stacks. A textbook rises and falls on their belly.', 'A study carrel holds crumbs, wrappers, and the ghost of a third snack break.'] },
   { when: { nodeId: 'dining_hall' }, priority: 2,
-    text: ['The dessert station has a queue that behaves like a single organism.', 'A staff member plates a fourth serving without being asked.', 'Steam and sugar hang in the air — the whole building smells like seconds.'] },
+    text: [
+      'The dessert station has a queue that behaves like a single organism.',
+      'A staff member plates a fourth serving without being asked.',
+      'Steam and sugar hang in the air — the whole building smells like seconds.',
+      'A night cook scrapes nothing. The leftover tray is already spoken for.',
+    ] },
   { when: { nodeId: 'gym' }, priority: 2,
     text: ['The juice bar blender never stops during peak hours.', 'A poster advertises "recovery" portions the size of small pets.', 'Someone leaves the treadmill for the smoothie line and does not return.'] },
   { when: { nodeId: 'garden' }, priority: 2,
@@ -345,8 +379,14 @@ export function renderCampusSighting(student, explorationCtx, nodeId) {
   const ctx = campusSightingContext(student, explorationCtx, nodeId);
   const line = render('{campus.sighting}', ctx);
   if (!line) return null;
+  const leftoverish = !!student?.leftoverFedThisWeek || !!(explorationCtx.week && student?.lastNightVisitWeek === explorationCtx.week);
+  const leftoverScene = leftoverish
+    ? (render('{campus.leftover.scene}', ctx)?.trim() || '')
+    : '';
   const depth = appendV2Depth(line, 'campusNav', ctx, 0.22);
-  return depth ? `👁 ${depth}` : null;
+  const linger = render('{campus.linger}', ctx)?.trim() || '';
+  const body = [depth, leftoverScene, linger].filter(Boolean).join('\n\n');
+  return body ? `👁 ${body}` : null;
 }
 
 export function renderCampusTravelLine(explorationCtx, nodeId, category = 'travel') {
@@ -356,11 +396,14 @@ export function renderCampusTravelLine(explorationCtx, nodeId, category = 'trave
       campusFattening: explorationCtx.campusFattening,
       campusTier: explorationCtx.campusTier ?? 0,
       nodeId,
+      leftoverFed: !!explorationCtx.leftoverKitchen,
+      nightVisit: (explorationCtx.nightIntimacy || 0) >= 12,
     },
   });
   const key = category === 'location' ? '{campus.location}' : '{campus.travel}';
   const base = render(key, ctx)?.trim() || '';
-  return appendV2Depth(base, 'campusNav', ctx, 0.2);
+  const linger = render('{campus.linger}', ctx)?.trim() || '';
+  return appendV2Depth([base, linger].filter(Boolean).join(' '), 'campusNav', ctx, 0.2);
 }
 
 export function renderCampusFindFlavor(explorationCtx) {

@@ -3,6 +3,13 @@
 import { registerPool } from '../../engine.js';
 
 registerPool('collab.reveal.open', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'You announce {subject.name}\'s weight. Galley leftover still in her. The number is a second sitting.',
+    'The scale goes live. Kitchen heat under the outfit. Chat gets both sittings.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw her after hours. Daylight stream uses the same appetite with a lens.',
+  ] },
   { when: {}, text: [
     'You announce {subject.name}\'s weight on camera — clearly, into the mic.',
     'The number goes live: {subject.name}, {subject.lbs} pounds, no filter.',
@@ -64,6 +71,10 @@ registerPool('collab.reveal.partner.close', [
 ]);
 
 registerPool('collab.zoom.open', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Zoom in. Leftover heat plus partner heat. The frame has to take both.',
+    'Close-up on a middle that already ate. The stream is the logged second course.',
+  ] },
   { when: {}, text: [
     'You zoom in — the camera tightening on both women at the table.',
     'The frame closes on bellies, faces, hands reaching for food.',
@@ -96,6 +107,10 @@ registerPool('collab.zoom.chat', [
 ]);
 
 registerPool('collab.chat.open', [
+  { when: { leftoverFed: true }, weight: 4, text: [
+    'Chat leans in. Leftover heat still in {subject.name}. The comments log both sittings.',
+    'You pull the audience toward a middle that already ate.',
+  ] },
   { when: {}, text: [
     'Chat engagement — the room leans in.',
     'You pull the audience into the moment.',
@@ -174,4 +189,19 @@ registerPool('collab.crash.gain', [
     'Still: +{kylieGain} for {subject.name}, +{partnerGain} for {partnerName}. It happens.',
     'Stream dead. Gains live: +{kylieGain}, +{partnerGain}. The numbers outlast the feed.',
   ]},
+]);
+
+registerPool('collab.wrap', [
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Overlay dark. Kitchen leftover plus the collab still occupy the same chairs.',
+    'Chat keeps typing. Leftover heat and partner heat do not clock out with the feed.',
+  ] },
+  { when: { nightVisit: true }, weight: 3, text: [
+    'You saw her after hours. The collab was the public version of that appetite.',
+  ] },
+  { when: {}, text: [
+    'The feed ends. Fullness does not. Both of them stay in the chairs like the stream is still a course.',
+    'Headset off. Bellies still answering. The clip already happened in them.',
+    'You pack the overlay. They do not pack the weight.',
+  ] },
 ]);

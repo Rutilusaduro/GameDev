@@ -95,6 +95,7 @@ function BrewPicker({ session, setSession, pharmacistState }) {
 
 export function PharmacistChemModal({
   student,
+  week = 1,
   chemSession,
   setChemSession,
   pharmacistState,
@@ -222,7 +223,25 @@ export function PharmacistChemModal({
           )}
         </div>
         <div style={{ fontSize: 9, color: '#406858', marginBottom: 4 }}>Leftover ingredients (saved):</div>
-        <div style={{ marginBottom: 14 }}><IngredientRow bag={chemSession.poolAfter || {}} /></div>
+        <div style={{ marginBottom: 10 }}><IngredientRow bag={chemSession.poolAfter || {}} /></div>
+        {(chemSession.leftoverBonus || chemSession.nightBonus) && (
+          <div style={{ fontSize: 10, color: '#8ad4b0', marginBottom: 8 }}>
+            {chemSession.leftoverBonus ? 'Galley surplus entered the batch. ' : ''}
+            {chemSession.nightBonus ? 'Night-round reagents still warm. ' : ''}
+          </div>
+        )}
+        {(() => {
+          const leftoverFed = !!(chemSession.leftoverBonus || student.leftoverFedThisWeek);
+          const nightVisit = !!(chemSession.nightBonus || (week && student.lastNightVisitWeek === week));
+          const linger = render('{pharmacist.linger}', createContext({
+            subject: student,
+            week,
+            globals: { leftoverFed, nightVisit },
+          }))?.trim();
+          return linger ? (
+            <div style={{ fontSize: 11, color: '#709888', fontStyle: 'italic', lineHeight: 1.65, marginBottom: 12 }}>{linger}</div>
+          ) : null;
+        })()}
         <button type="button" style={{ ...C.btn(chrome.accent), width: '100%' }} onClick={() => { playHallPassSound('confirm', soundEnabled); onConfirm(); }}>Close lab & apply results ✓</button>
       </>,
     );

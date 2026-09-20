@@ -109,6 +109,77 @@ registerModuleVariants('campusEvent.choice.hall_extended.1', [{ when: {}, text: 
 registerModuleVariants('campusEvent.choice.hall_extended.2', [{ when: {}, text: ["Food does what food does best; color returns, shoulders drop, the room exhales.", "She eats without performance — steady, pleased, grateful in the unhurried way of being fed."] }]);
 registerModuleVariants('campusEvent.result', [{ when: {}, text: ['Small kindness, real effect — appetite acknowledged, warmth returned.'] }]);
 registerModuleVariants('campusEvent.beat', [{ when: {}, text: [
-  '{campusEvent.observation}\n\n{campusEvent.result}',
-  '{campusEvent.observation} {campusEvent.result}',
+  '{campusEvent.observation}\n\n{campusEvent.result} {campus.afterglow}',
+  '{campusEvent.observation} {campusEvent.result} {campus.afterglow}',
+  '{campusEvent.observation} {campus.afterglow}',
 ]}]);
+registerModuleVariants('campusEvent.scene.hall_night_noise', [{ when: {}, text: [
+  'The corridor is loud after lights-out — fridge doors, wrappers, someone claiming water.',
+  'Housing would call it a noise complaint. You call it a floor that has learned its hours.',
+  'After hours, appetite walks the wing in socks and does not bother to whisper.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_night_noise.0', [{ when: {}, text: [
+  'You put trays in the lounge and declare the kitchen open. Quiet returns as fullness.',
+  'Official leftover run. The hallway empties because everyone is eating.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_night_noise.1', [{ when: {}, text: [
+  'You knock three doors. Each one opens on a resident who was already eating.',
+  'A walk of the wing. Nobody pretends they were asleep.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_night_noise.2', [{ when: {}, text: [
+  'You write wellness programming in the log. The floor eats. The paperwork smiles.',
+  'The complaint becomes a program. Appetite files itself under community hours.',
+]}]);
+registerModuleVariants('campusEvent.scene.hall_new_chairs', [{ when: {}, text: [
+  'A delivery of wider chairs blocks the lounge door. Someone sits in one and does not get up.',
+  'Furniture arrives that does not argue. Residents gather to watch Housing struggle.',
+  'New chairs, old appetites. The lounge gets a new map made of sitting.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_new_chairs.0', [{ when: {}, text: [
+  'Pastries to test the seats. The test lasts an hour. The chairs pass.',
+  'Sit-and-eat christening. The lounge learns its new gravity.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_new_chairs.1', [{ when: {}, text: [
+  'Territory is established by sitting. Snack bags appear as flags.',
+  'They claim spots. The floor feels finished in a way the old plastic never did.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_new_chairs.2', [{ when: {}, text: [
+  'You sign the work order. They sit. Appetite files the rest.',
+  'Paperwork complete. The chairs do the recruiting.',
+]}]);
+registerModuleVariants('campusEvent.choice.mood_content.3', [{ when: {}, text: [
+  'Leftovers walk her home. The corridor gets the rest.',
+  'She eats on the way back. The box is empty before the door.',
+  'You send her off fed. She does not pretend it is for later.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_snack_break.3', [{ when: {}, text: [
+  'The kitchen stays lit. Residents return in waves.',
+  'You do not pack up. Trays look theoretical by the hour.',
+  'After-hours becomes the actual meal. The lounge agrees.',
+]}]);
+registerModuleVariants('campusEvent.scene.hall_terrace', [{ when: {}, text: [
+  'Roof air, warm trays, nowhere to hide how much she takes.',
+  'The terrace is dinner with a view of campus and seconds.',
+  'Someone brought a blanket. Someone else brought three trays.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.0', [{ when: {}, text: [
+  'Picnic hours. Plates travel. The view is campus; the subject is seconds.',
+  'You declare the roof open. Appetite files outside.',
+  'Official picnic. The trays do not come back full.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.1', [{ when: {}, text: [
+  'A quiet RA treat. Two residents, one loaded tray.',
+  'The rest of the floor hears about it by morning.',
+  'You pick who eats under the sky. They remember.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.2', [{ when: {}, text: [
+  'The door stays propped. Heat finds a window. So do they.',
+  'People find the terrace. The trays empty themselves.',
+  'You leave it open. The floor does the rest.',
+]}]);
+registerModuleVariants('campusEvent.choice.hall_terrace.3', [{ when: {}, text: [
+  'Wellness air, according to the log. They eat.',
+  'You write outdoor programming. The paperwork smiles.',
+  'Logged as air. Practiced as dinner.',
+]}]);
+
