@@ -494,7 +494,7 @@ export default function HallPass(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedHallSkills, facultyAffinity, raProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, floorCircuit, hallAmbiance,
+    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, floorCircuit, hallAmbiance, dormState, atmosphereWeave,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -503,6 +503,10 @@ export default function HallPass(){
   const setOwnedSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedSkills', updater));
   const setOwnedHallSkills = (updater) => setPlayer((p) => updatePlayerField(p, 'ownedHallSkills', updater));
   const setFloorCircuit = (updater) => setPlayer((p) => updatePlayerField(p, 'floorCircuit', updater));
+  const setDormState = (updater) => setPlayer((p) => updatePlayerField(p, 'dormState', (cur) => {
+    const base = cur || createInitialDormState();
+    return typeof updater === 'function' ? updater(base) : updater;
+  }));
   const setFacultyAffinity = (updater) => setPlayer((p) => updatePlayerField(p, 'facultyAffinity', updater));
   const setRaProfile = (updater) => setPlayer((p) => updatePlayerField(p, 'raProfile', (cur) => {
     const next = typeof updater === 'function' ? updater(cur) : updater;

@@ -7,6 +7,7 @@ import { DEFAULT_MOD_INVENTORY } from './deviceMods.js';
 import { createInitialV2State } from './v2/state.js';
 import { createInitialFloorCircuit } from './floorBlueprint.js';
 import { createInitialHallAmbianceState } from './hallAmbiance.js';
+import { createInitialDormState } from './dormBlueprint.js';
 import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 /** Empty player equip slots (RA self-equipped personal devices). */
@@ -28,6 +29,7 @@ export function createInitialPlayer(overrides = {}) {
     ownedSkills: {},
     ownedHallSkills: overrides.ownedHallSkills ?? overrides.ownedClassSkills ?? {},
     floorCircuit: overrides.floorCircuit ?? createInitialFloorCircuit(),
+    dormState: overrides.dormState ?? createInitialDormState(),
     facultyAffinity: {},
     raProfile: null,
     unlockedDorms: [],
