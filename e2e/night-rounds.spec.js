@@ -10,11 +10,13 @@ test('Night Rounds: start, knock Cassidy, pick a choice', async ({ page }) => {
   await expect(page.getByRole('button', { name: /Knock Cassidy/i })).toBeVisible();
 
   await page.getByRole('button', { name: /Knock Cassidy/i }).click();
-  await expect(page.getByText('NIGHT ROUNDS')).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Cassidy/ })).toBeVisible();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByText('NIGHT ROUNDS')).toBeVisible();
+  await expect(dialog.getByRole('heading', { name: /Cassidy/ })).toBeVisible();
 
   const choice = page.getByTestId('night-round-choice').first();
   await expect(choice).toBeVisible();
+  await dialog.screenshot({ path: '/opt/cursor/artifacts/screenshots/night_rounds_cassidy.png' });
   await choice.click();
-  await expect(page.getByRole('button', { name: /Back to the plan/i })).toBeVisible();
+  await expect(dialog.getByRole('button', { name: /Back to the plan/i })).toBeVisible();
 });
