@@ -1,6 +1,7 @@
 // The Squad — Lead: A5 Editor | Support: A6 Slender, A1 Mobile, A2 Psych
 // Pass 4 linger slots for remaining families. New pools only.
 import { registerPool, hasModule } from '../engine.js';
+import './faculty/voice.js';
 
 function oncePool(key, variants) {
   if (hasModule(key)) return;

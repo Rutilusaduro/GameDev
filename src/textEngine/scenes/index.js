@@ -340,6 +340,7 @@ import './v2WildcardDepth.js';
 import './overhaul/index.js';
 import './floorCircuit/index.js';
 import '../modules.js';
+import './faculty/voice.js';
 // Last-wins leftover overwrite. After leftover scene modules + overhaul +
 // floorCircuit. Unique module; never import from overhaul/index.js.
 import './overhaul/leftoverLastWins.js';

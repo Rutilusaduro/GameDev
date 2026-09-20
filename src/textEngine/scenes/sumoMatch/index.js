@@ -17,6 +17,9 @@ import {
 
 registerDimension('sumoStage', (ctx) => ctx.globals?.sumoStage ?? 0);
 registerDimension('oppLbs', (ctx) => ctx.globals?.oppLbs ?? 340);
+registerPool('oppLbs', [
+  { when: {}, text: [(ctx) => String(ctx.globals?.oppLbs ?? 340)] },
+]);
 registerDimension('gainAccum', (ctx) => ctx.globals?.gainAccum ?? 0);
 registerDimension('matchWon', (ctx) => ctx.globals?.matchWon ?? false);
 
