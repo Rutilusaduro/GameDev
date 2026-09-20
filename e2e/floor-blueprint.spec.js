@@ -21,4 +21,5 @@ test('floor blueprint: click room, see upgrades, pin circuit', async ({ page }) 
   await expect(page.getByRole('button', { name: /Pinned #1/i })).toBeVisible();
 
   await expect(page.getByRole('button', { name: /Walk After-Hours Rounds/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Start Night Rounds/i })).toBeVisible();
 });

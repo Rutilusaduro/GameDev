@@ -1,5 +1,6 @@
 // Floor-skill extras for hall kitchen (Daisy), wife lessons (MJ), evolved events, fair day.
 import { EVOLVED_EVENTS, WL_LESSONS, SESSION_FOOD_ITEMS } from './evolvedForms.js';
+import { depthLbsGrant, depthTalkRelGrant } from './mechanicsDepthLayer.js';
 
 export function extraHomeroomChoices(actKey, phaseIdx = 0, owned = {}) {
   const extras = [];
@@ -9,8 +10,8 @@ export function extraHomeroomChoices(actKey, phaseIdx = 0, owned = {}) {
       id: 'floor_potluck',
       label: 'Bring the floor kitchen leftovers, call it enrichment',
       result: `Daisy wheels in a cart still warm from the hall kitchen. Mrs. Monroe has a plate before the lid is fully off. Mrs. Reyes asks for the recipe with her mouth full. Mrs. Calloway takes seconds and writes nothing in her notes. The agenda waits under a napkin.`,
-      momGain: 16,
-      rel: 8,
+      momGain: depthLbsGrant(16),
+      rel: depthTalkRelGrant(8),
       suspDelta: 0,
     });
   }
@@ -19,7 +20,7 @@ export function extraHomeroomChoices(actKey, phaseIdx = 0, owned = {}) {
       id: 'lounge_measure',
       label: 'Measure in the lounge. The chairs already know these bodies',
       result: `Daisy moves the scale to the lounge. The wide chairs accept everyone without comment. Numbers get written. Nobody hurries back to the desks. Sofia sits a little longer after her reading, pleased with the number in a way she will not name.`,
-      rel: 7,
+      rel: depthTalkRelGrant(7),
       suspDelta: 0,
       revealsWeights: true,
     });
@@ -42,10 +43,10 @@ export function extraWifeLessons(stage = 1, owned = {}) {
       id: 'floor_kitchen_swap',
       label: 'Hall Kitchen Swap',
       text: `MJ borrows the floor kitchen for a night. The moms arrive to a counter already warm, dough rising in a room built for this. Daughters eat standing because the chairs are full of more of them. MJ smiles like the hall had been waiting to be a classroom.`,
-      daughterLbs: 2 + s,
-      momLbs: 1 + Math.floor(s / 2),
-      mjLbs: 2 + Math.floor(s / 2),
-      rel: 2 + Math.min(3, Math.floor(s / 3)),
+      daughterLbs: depthLbsGrant(2 + s),
+      momLbs: depthLbsGrant(1 + Math.floor(s / 2)),
+      mjLbs: depthLbsGrant(2 + Math.floor(s / 2)),
+      rel: depthTalkRelGrant(2 + Math.min(3, Math.floor(s / 3))),
     });
   }
   if (owned.dinner_basic || owned.legendary_host || owned.dinner_casual) {
@@ -53,10 +54,10 @@ export function extraWifeLessons(stage = 1, owned = {}) {
       id: 'dining_host_night',
       label: 'Dining Host Night',
       text: `MJ sets the dining table like a lesson and a date. Extra butter on every plate. The host skill shows: nobody leaves hungry, and nobody pretends they meant to. Wanda asks for the recipe twice. MJ writes it bigger the second time.`,
-      daughterLbs: 3 + s,
-      momLbs: 2 + Math.floor(s / 2),
-      mjLbs: 2 + Math.floor(s / 2),
-      rel: 3 + Math.min(3, Math.floor(s / 3)),
+      daughterLbs: depthLbsGrant(3 + s),
+      momLbs: depthLbsGrant(2 + Math.floor(s / 2)),
+      mjLbs: depthLbsGrant(2 + Math.floor(s / 2)),
+      rel: depthTalkRelGrant(3 + Math.min(3, Math.floor(s / 3))),
     });
   }
   return extras.slice(0, 2);
@@ -75,8 +76,8 @@ export function extraEvolvedChoices(formId, stageIdx, phaseIdx, owned = {}) {
       id: 'floor_kitchen_fuel',
       label: 'Hall kitchen fuel first',
       result: `The hall kitchen is already warm. She eats standing at the counter like this extra belongs to the ritual. Belly fills. She goes back heavier on purpose.`,
-      lbs: 9,
-      rel: 4,
+      lbs: depthLbsGrant(9),
+      rel: depthTalkRelGrant(4),
     });
   }
   if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
@@ -84,8 +85,8 @@ export function extraEvolvedChoices(formId, stageIdx, phaseIdx, owned = {}) {
       id: 'lounge_settle',
       label: 'Settle in the lounge first',
       result: `She takes the wide chair like it was built for this body. The lounge keeps her a minute longer. Softness spreads. She leaves warmer and closer.`,
-      lbs: 4,
-      rel: 8,
+      lbs: depthLbsGrant(4),
+      rel: depthTalkRelGrant(8),
     });
   }
   return extras.slice(0, 2);
@@ -104,8 +105,8 @@ export function extraFairAfterparty(owned = {}) {
       id: 'kitchen_spread',
       label: 'Hall kitchen victory spread',
       result: `She skips the fair concessions and hits the floor kitchen. The spread is already warm. She eats standing, still in the ribbon, belly filling like the prize was a second course.`,
-      gain: 8,
-      rel: 5,
+      gain: depthLbsGrant(8),
+      rel: depthTalkRelGrant(5),
     });
   }
   if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
@@ -113,8 +114,8 @@ export function extraFairAfterparty(owned = {}) {
       id: 'lounge_after',
       label: 'Lounge afterglow',
       result: `She takes the wide chair still wearing the number. The lounge keeps her. Soft mass settles. The afterparty comes to her.`,
-      gain: 4,
-      rel: 7,
+      gain: depthLbsGrant(4),
+      rel: depthTalkRelGrant(7),
     });
   }
   return extras.slice(0, 2);
@@ -127,8 +128,8 @@ export function extraActivityFollowups(owned = {}) {
       id: 'kitchen_seconds',
       label: 'Hall kitchen seconds',
       result: `She follows you to the floor kitchen and eats standing. The extra goes down warm. She checks her middle like a scoreboard.`,
-      lbs: 4,
-      rel: 2,
+      lbs: depthLbsGrant(4),
+      rel: depthTalkRelGrant(2),
     });
   }
   if (owned.comfy_chairs || owned.dedicated_suite || owned.reinforced_seating) {
@@ -136,8 +137,8 @@ export function extraActivityFollowups(owned = {}) {
       id: 'lounge_linger',
       label: 'Linger in the lounge',
       result: `She takes the wide chair after. Softness spreads. The lounge keeps the heat of her a little longer than the activity required.`,
-      lbs: 1,
-      rel: 5,
+      lbs: depthLbsGrant(1),
+      rel: depthTalkRelGrant(5),
     });
   }
   return extras.slice(0, 2);
@@ -150,7 +151,7 @@ export function extraSessionFoods(owned = {}) {
       id: 'kitchen_ramen',
       label: 'Hall kitchen ramen',
       icon: '🍲',
-      gain: 12,
+      gain: depthLbsGrant(12),
       focusRestore: 18,
       fullnessCost: 24,
     });
@@ -160,7 +161,7 @@ export function extraSessionFoods(owned = {}) {
       id: 'dining_plate',
       label: 'Dining leftover plate',
       icon: '🍽️',
-      gain: 16,
+      gain: depthLbsGrant(16),
       focusRestore: 8,
       fullnessCost: 36,
     });

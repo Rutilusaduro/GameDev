@@ -15,6 +15,7 @@ export function NightRoundModal({
   week,
   raProfile,
   soundEnabled = true,
+  leftoverKitchen = false,
   onChoose,
   onClose,
 }) {
@@ -22,7 +23,7 @@ export function NightRoundModal({
     () => nightEncounterKind(student, dormState),
     [student, dormState],
   );
-  const choices = nightEncounterChoices(kind);
+  const choices = nightEncounterChoices(kind, { leftoverKitchen });
   const [picked, setPicked] = useState(null);
 
   const { text, traceNodes } = useMemo(() => {
@@ -36,11 +37,12 @@ export function NightRoundModal({
         dormRoom: 'corridor',
         habitId: dormState?.nightRounds?.habits?.[student?.id] || '',
         floorIntimacy: dormState?.nightRounds?.floorIntimacy || 0,
+        leftoverFed: leftoverKitchen || !!student?.leftoverFedThisWeek,
       },
     });
     const body = render('{night.round}', ctx, { trace: t });
     return { text: body, traceNodes: traceToFlagNodes(t) };
-  }, [student, week, raProfile, kind, dormState]);
+  }, [student, week, raProfile, kind, dormState, leftoverKitchen]);
 
   if (!student) return null;
 

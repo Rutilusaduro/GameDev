@@ -6,6 +6,7 @@
 import { SKILL_TREE } from './skills.js';
 import { getStage } from './stages.js';
 import { getHungerTier } from './hungerAddiction.js';
+import { depthMealCostEstimate } from './mechanicsDepthLayer.js';
 
 export const CIRCUIT_MAX_ROOMS = 4;
 export const CIRCUIT_AP_COST = 1;
@@ -265,7 +266,7 @@ export function extraFeedCalories(label, owned) {
   let extra = fx.feedCalBonus;
   if (isDinnerFeedLabel(label)) extra += fx.dinnerCalBonus;
   if (/feast|banquet|potluck|pizza/i.test(label || '')) extra += fx.feastCalBonus;
-  return extra;
+  return depthMealCostEstimate(extra);
 }
 
 export function circuitApCost(owned = {}) {

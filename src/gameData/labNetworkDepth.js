@@ -2,13 +2,14 @@
 // LAB + NETWORK DEPTH — hall blueprint synergies ↔ Talia mesh
 // ═══════════════════════════════════════════════════════════════
 import { getActiveBlueprintSynergies } from './hallBlueprint.js';
+import { scaleDepthBonus } from './mechanicsDepthLayer.js';
 
 export function hallLabNetworkModifiers(ownedHallSkills = {}) {
   const active = getActiveBlueprintSynergies(ownedHallSkills);
   const ids = new Set(active.map((s) => s.id));
   const synergyCount = active.length;
   return {
-    breakthroughBonus: (ids.has('institutional_whisper') ? 1 : 0) + (ids.has('legendary_flow') ? 1 : 0),
+    breakthroughBonus: scaleDepthBonus((ids.has('institutional_whisper') ? 1 : 0) + (ids.has('legendary_flow') ? 1 : 0)),
     meshThresholdReduction: synergyCount >= 2 ? 2 : ids.has('feast_corridor') ? 1 : 0,
     meshDripMult: ids.has('feast_corridor') ? 1.14 : synergyCount >= 1 ? 1.06 : 1,
     detectionRiskMult: ids.has('institutional_whisper') ? 0.82 : 1,

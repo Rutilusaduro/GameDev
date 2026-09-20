@@ -19,6 +19,7 @@ import {
 import { aggregateHallLoungeSkillEffects, buyHallLoungeSkill } from '../src/gameData/hallLoungeSkills.js';
 import { createInitialPlayer } from '../src/gameData/player.js';
 import { clothingStateForStage } from '../src/gameData/textContext.js';
+import { canStartNightRound, nightEncounterChoices, nightEncounterKind, createInitialDormState } from '../src/gameData/dormBlueprint.js';
 import { pickHearingEnding, REMOVAL_HEARING, extraHearingChoices, hearingChoicesForPhase } from '../src/gameData/oppositionHearings.js';
 import { MECHANIC_DEPTH_INVENTORY, kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraCgActions, extraHiveActions, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs } from '../src/gameData/mechanicDepth.js';
 import { extraSalonServiceChoices, salonChoicesForOwned, startSalonSession, salonPickMenu, salonServiceChoice } from '../src/gameData/chloeSalon.js';
@@ -130,6 +131,17 @@ assert.ok(walk.beats.length >= 2);
 assert.ok(walk.studentPatches.length >= 1, 'rounds patch at least one resident');
 assert.equal(walk.nextCircuit.lastWalkWeek, 1);
 assert.equal(canWalkCircuit(owned, walk.nextCircuit, 5, 1).ok, false, 'one walk per week');
+
+const dorm = createInitialDormState();
+assert.equal(canStartNightRound(5, 1, dorm, {}).ok, true, 'night rounds start with AP');
+assert.equal(canStartNightRound(0, 1, dorm, {}).ok, false, 'night rounds need AP');
+assert.equal(nightEncounterKind({ leftoverFedThisWeek: true, fullness: 0, stomachCapacity: 100, corruption: 0, lbs: 140, relationship: 20 }, dorm), 'raid');
+const trayChoices = nightEncounterChoices('checkin', { leftoverKitchen: true });
+assert.ok(trayChoices.some((c) => c.id === 'leftover_tray'), 'leftover tray is a night knock choice');
+assert.equal(trayChoices.length, 4);
+assert.ok(trayChoices.find((c) => c.id === 'leftover_tray').rel >= 6, 'leftover tray rel is depth-scaled');
+assert.ok(!nightEncounterChoices('checkin', {}).some((c) => c.id === 'leftover_tray'));
+assert.ok(MECHANIC_DEPTH_INVENTORY.some((row) => row.id === 'nightRounds' && row.after >= 3));
 
 const ritual = midnightRitualTick({ owned: { ...owned, midnight_ritual: true }, students, rng: () => 0.1 });
 assert.equal(ritual.ok, true);

@@ -1,4 +1,6 @@
 // Intimacy scenes — metadata in intimacyData.js; prose in textEngine/scenes/intimacy/.
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
+
 export {
   INTIMACY_SCENES,
   INTIMACY_CONTEXTUAL,
@@ -15,8 +17,8 @@ export function extraIntimacyChoices(owned = {}) {
     extras.push({
       id: 'linens_nest',
       label: 'Pull the oversized linens around you both',
-      lbs: 2,
-      rel: 3,
+      lbs: depthLbsGrant(2),
+      rel: depthRelBonus(3),
       flag: 'linens_nest',
       result: (s) => `${s.name} drags the big linens over both of you. Warmth. Weight. Nowhere else to be.`,
     });
@@ -25,8 +27,8 @@ export function extraIntimacyChoices(owned = {}) {
     extras.push({
       id: 'curtain_dark',
       label: 'Draw the blackout curtains and stay',
-      lbs: 1,
-      rel: 4,
+      lbs: depthLbsGrant(1),
+      rel: depthRelBonus(4),
       flag: 'curtain_dark',
       result: (s) => `${s.name} lets the dark settle. Her body is the only map left in the room.`,
     });

@@ -191,6 +191,12 @@ registerPool('night.body', [
 ]);
 
 registerPool('night.afterglow', [
+  { when: { leftoverFed: true, nightKind: 'raid' }, weight: 4, text: [
+    'Drawer and tray are one sitting now. She lets you count both.',
+  ] },
+  { when: { leftoverFed: true, nightKind: 'invite' }, weight: 4, text: [
+    'The plate she made and the kitchen tray you walked are the same meal now.',
+  ] },
   { when: { leftoverFed: true, nightKind: 'craving' }, weight: 4, text: [
     'She swallows leftover and this visit in the same breath. The night has a plan.',
   ] },

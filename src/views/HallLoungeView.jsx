@@ -175,6 +175,10 @@ export function HallLoungeView({
   onWalkCircuit,
   ap = 0,
   week = 1,
+  nightMode = false,
+  nightCheck = { ok: false, remaining: 0, cost: 1, reason: '' },
+  onStartNightRound,
+  onNightKnock,
 }) {
   const owned = ownedHallSkills || {};
   const [selected, setSelected] = useState('lounge');
@@ -298,6 +302,47 @@ export function HallLoungeView({
         </button>
         {!walkCheck.ok && walkCheck.reason && (
           <div style={{ fontSize: 10, color: '#a07070', marginTop: 6 }}>{walkCheck.reason}</div>
+        )}
+      </div>
+
+      <div style={{ ...C.card, cursor: 'default', borderColor: nightMode ? '#4a2068' : '#2a1840', marginTop: 12, padding: 12 }}>
+        <div style={{ fontSize: 10, letterSpacing: 1.5, color: '#c080a0', marginBottom: 6 }}>NIGHT ROUNDS</div>
+        <p style={{ fontSize: 12, color: '#b8a898', lineHeight: 1.5, margin: '0 0 8px' }}>
+          {nightMode
+            ? `Doors still answering: ${nightCheck.remaining ?? 0}. Knock. Each visit writes a habit.`
+            : 'After lights-out, knock one door at a time. The room tells you what she did with the leftover heat.'}
+        </p>
+        {!nightMode ? (
+          <>
+            <button
+              type="button"
+              data-action="start-night-round"
+              disabled={!nightCheck.ok}
+              onClick={() => onStartNightRound?.()}
+              title={nightCheck.reason}
+              style={{ ...C.btn('#4a1868'), minHeight: 44, opacity: nightCheck.ok ? 1 : 0.45 }}
+            >
+              Start Night Rounds{(nightCheck.cost || 0) === 0 ? ' (0 AP)' : ` (${nightCheck.cost || 1} AP)`}
+            </button>
+            {!nightCheck.ok && nightCheck.reason && (
+              <div style={{ fontSize: 10, color: '#a07070', marginTop: 6 }}>{nightCheck.reason}</div>
+            )}
+          </>
+        ) : (
+          <div style={{ display: 'grid', gap: 6 }}>
+            {(students || []).filter((s) => !s.hidden && s.lockState !== 'locked').map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                data-action="night-knock"
+                data-student-id={s.id}
+                onClick={() => onNightKnock?.(s.id)}
+                style={{ ...C.btn('#3a1868'), minHeight: 44, textAlign: 'left' }}
+              >
+                Knock {s.name}
+              </button>
+            ))}
+          </div>
         )}
       </div>
     </div>

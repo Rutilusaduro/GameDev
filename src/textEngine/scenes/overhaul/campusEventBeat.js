@@ -9,6 +9,13 @@ registerPool('campusEvent.observation', [
     '{floor.checkin.body} {floor.checkin.setup}',
     '{floor.checkin.setup}',
   ]},
+  { when: { leftoverFed: true, mood: ['stressed'] }, weight: 4, text: [
+    '{subject.name} folds into the lounge couch with foil still in reach. Stress and the tray sat down together.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Foil from the kitchen run still in her lap. The check-in starts mid-bite.',
+    '{subject.name} smells like the galley. Last night did not finish her.',
+  ]},
   { when: { mood: ['stressed'] }, weight: 2, text: [
     '{subject.name} folds into the lounge couch like the week sat down with her. Notebook closed. Appetite waiting.',
     'Stress lives in her shoulders. Food would help and she already knows it.',

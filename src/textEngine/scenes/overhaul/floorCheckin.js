@@ -21,6 +21,16 @@ registerPool('floor.checkin.setup', [
     'Lounge light. A notebook ignored. {subject.name} keeps a hand on the extra of her without performing it.',
     'The meeting has an agenda. {subject.name} is the warmer item on it.',
   ]},
+  { when: { leftoverFed: true, floorSceneId: 'mood_stressed' }, weight: 5, text: [
+    '{subject.name} folds into the lounge couch with last night\'s foil still in reach. Notebook closed. Foil still open.',
+  ]},
+  { when: { leftoverFed: true, floorSceneId: 'mood_content' }, weight: 5, text: [
+    '{subject.name} is already comfortable, foil still warm in her lap. The check-in is the second sitting.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'Kitchen heat still on her. The check-in starts mid-bite.',
+    '{subject.name} smells like the galley. Last night did not finish her.',
+  ]},
   { when: { floorSceneId: 'mood_stressed' }, weight: 4, text: [
     '{subject.name} folds into the lounge couch like the week sat down with her. Energy drink sweating. Notebook closed.',
   ]},
@@ -139,6 +149,12 @@ registerPool('floor.checkin.extra.setup', [
     'You walk her off the agenda. Food does the rest.',
     'The extra stop was the real check-in. She already knows.',
     'A detour with a plate. {subject.name} does not argue.',
+  ]},
+  { when: { leftoverFed: true, extraChoiceId: 'kitchen_walk' }, weight: 6, text: [
+    '{subject.name} follows you to the kitchen again. Last night\'s heat never left. She eats standing.',
+  ]},
+  { when: { leftoverFed: true }, weight: 3, text: [
+    'The extra stop finds leftover foil still in her hands. She does not hide it.',
   ]},
   { when: { extraChoiceId: 'kitchen_walk' }, weight: 5, text: [
     '{subject.name} follows you to the kitchen. Heat does the talking. She eats standing, then sitting.',

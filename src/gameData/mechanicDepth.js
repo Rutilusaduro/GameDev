@@ -25,6 +25,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
   { id: 'collab', before: 1, after: 2, hook: 'extraCollabFood' },
   { id: 'sessions', before: 1, after: 2, hook: 'sessionCapNextWeek' },
   { id: 'circuit', before: 0, after: 3, hook: 'walkAfterHours' },
+  { id: 'nightRounds', before: 0, after: 3, hook: 'knockChoice+leftoverTray+habitatHabit' },
   { id: 'planner', before: 1, after: 3, hook: 'resolveWeekPlan+venuePick' },
   { id: 'floorCheckIn', before: 1, after: 3, hook: 'kitchenChoice+loungeGainMult' },
   { id: 'hunt', before: 1, after: 4, hook: 'kitchenHuntBonus+extraMove+digestGate' },

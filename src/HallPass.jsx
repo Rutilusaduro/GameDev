@@ -112,7 +112,7 @@ import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
 import { buildWeekReviewExtras, emptyWeekPlan, padWeekPlan, plannerSlotCount, resolveWeekPlan, weekPlanBonusesFor, weekPlanSlotCount } from './gameData/weekPlanner.js';
 import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs, tickHabitatWeek, applyTalkHabitatBonus, habitatFx, shouldSkipHungerInterrupt, neighborEcologyPatch, campusStayHome, sessionCapHabitatBonus, deviceTickHabitatMult, oppositionRumorChance, labInstabilityEase, digestStuffedExtras, tickOutfitWeek } from './gameData/mechanicDepth.js';
 import { depthCorruptionGrant } from './gameData/mechanicsDepthLayer.js';
-import { createInitialDormState, buyRoomFit, applyNightVisit, roomCompletion, nightEncounterKind, nightRoundVisitCap } from './gameData/dormBlueprint.js';
+import { createInitialDormState, buyRoomFit, applyNightVisit, roomCompletion, nightEncounterKind, nightRoundVisitCap, canStartNightRound } from './gameData/dormBlueprint.js';
 import { applyOutfitRefit } from './gameData/outfits.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
@@ -9473,7 +9473,7 @@ export default function HallPass(){
           {/* ── THE SETTLING (detail) ── */}
           {(view==="settling-detail"||(view==="student"&&selSettled))&&sel&&<SettlingDetailView sel={sel} students={students} ap={ap} week={week} setView={setView} openWeighIn={openWeighIn} runDeviceAction={runDeviceAction} deviceInventory={deviceInventory} player={player} runSettlingAction={runSettlingAction} runBrokeredVisit={runBrokeredVisit} runGathering={runGathering} chooseLeviathanForm={chooseLeviathanForm}/>}
 
-          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} floorCircuit={floorCircuit||createInitialFloorCircuit()} onToggleCircuitPin={toggleFloorCircuitPin} onWalkCircuit={walkFloorCircuit} ap={ap} week={week}/>}
+          {view==="hall-lounge"&&<HallLoungeView students={students} ownedHallSkills={ownedHallSkills} onPurchaseHallLoungeSkill={purchaseHallLoungeSkill} floorCircuit={floorCircuit||createInitialFloorCircuit()} onToggleCircuitPin={toggleFloorCircuitPin} onWalkCircuit={walkFloorCircuit} ap={ap} week={week} nightMode={nightMode} nightCheck={canStartNightRound(ap,week,dormState||createInitialDormState(),ownedHallSkills||{})} onStartNightRound={startNightRound} onNightKnock={knockNightDoor}/>}
 
           {view==="influence"&&<InfluenceView
             students={students}
@@ -10021,6 +10021,7 @@ export default function HallPass(){
           week={week}
           raProfile={raProfile}
           soundEnabled={soundEnabled}
+          leftoverKitchen={students.some(st=>st.leftoverFedThisWeek)||roomCompletion('kitchen',ownedHallSkills||{}).owned>=1}
           onChoose={resolveNightChoice}
           onClose={()=>setNightTargetId(null)}
         />

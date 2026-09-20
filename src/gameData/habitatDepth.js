@@ -4,7 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { habitatForStudent, neighborStudentIds, roomCompletion, studentFits } from './dormBlueprint.js';
 import { getStage } from './stages.js';
-import { adjustHunger } from './hungerAddiction.js';
+import { adjustHunger, getHungerTier } from './hungerAddiction.js';
+import { depthInterruptChance } from './mechanicsDepthLayer.js';
 import { applyPsychDelta } from './psychState.js';
 import { FIT_STATES, garmentFitState, outfitFor, worstFitState } from './outfits.js';
 import { originRegisterFx } from './origins/index.js';
@@ -295,7 +296,7 @@ export function shouldSkipHungerInterrupt(student, dormState, weeklyArms = {}, r
   if (!student) return false;
   if (weeklyArms?.devouringStudentId === student.id && !weeklyArms?.devouringConsumed) return false;
   const fx = habitatFx(student, dormState, {}, { week });
-  return fx.hungerInterruptEase > 0 && rng() < Math.min(0.55, fx.hungerInterruptEase);
+  return fx.hungerInterruptEase > 0 && rng() < Math.min(0.55, depthInterruptChance(fx.hungerInterruptEase, getHungerTier(student)));
 }
 
 export function neighborEcologyPatch(students, dormState, week = 0) {

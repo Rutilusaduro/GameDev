@@ -18,4 +18,5 @@ test('Blueprint rooms and After-Hours pins', async ({ page }) => {
   await page.getByRole('button', { name: /Pin for rounds/i }).click();
   await expect(page.getByRole('button', { name: /Pinned #1/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Walk After-Hours Rounds/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Start Night Rounds/i })).toBeVisible();
 });

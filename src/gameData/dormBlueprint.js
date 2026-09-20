@@ -9,6 +9,7 @@ import { getStage } from './stages.js';
 import { getHungerTier, getAddictionLevel } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 import { canBuyHallLoungeSkill, computeHallLoungeSkillCurrency } from './hallLoungeSkills.js';
+import { depthTalkRelGrant, depthCorruptionGrant, depthLbsGrant } from './mechanicsDepthLayer.js';
 
 export const CATEGORY_TO_ROOM = {
   environment: 'lounge',
@@ -301,6 +302,7 @@ export function nightEncounterKind(student, dormState) {
 
   if (hunger >= 3 || addiction >= 2) return 'craving';
   if (fullness >= 0.85) return 'stuffed';
+  if (student?.leftoverFedThisWeek) return 'raid';
   if (habit === 'midnight_snack' || fits.snacks) return 'raid';
   if (habit === 'scale_private' || fits.scale) return 'scale';
   if (cor >= 2) return 'invite';
@@ -309,7 +311,16 @@ export function nightEncounterKind(student, dormState) {
   return 'checkin';
 }
 
-export function nightEncounterChoices(kind) {
+function scaleNightChoice(choice) {
+  return {
+    ...choice,
+    rel: depthTalkRelGrant(choice.rel || 0),
+    corruption: depthCorruptionGrant(choice.corruption || 0),
+    lbs: choice.lbs ? depthLbsGrant(choice.lbs) : choice.lbs,
+  };
+}
+
+export function nightEncounterChoices(kind, extras = {}) {
   const table = {
     craving: [
       { id: 'feed', label: 'Bring the leftovers', rel: 3, cals: 4200, full: 18, corruption: 2, hunger: -2 },
@@ -352,7 +363,18 @@ export function nightEncounterChoices(kind) {
       { id: 'observe', label: 'Read the room and go', rel: 2, discover: true },
     ],
   };
-  return table[kind] || table.checkin;
+  const base = (table[kind] || table.checkin).map(scaleNightChoice);
+  if (extras.leftoverKitchen && !base.some((c) => c.id === 'leftover_tray')) {
+    base.push(scaleNightChoice({
+      id: 'leftover_tray',
+      label: 'Walk the warm kitchen tray',
+      rel: 4,
+      cals: 3200,
+      full: 14,
+      hunger: -1,
+    }));
+  }
+  return base.slice(0, 4);
 }
 
 export function applyNightVisit(dormState, week, student, choice, kind) {
