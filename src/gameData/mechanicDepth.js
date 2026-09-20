@@ -3,6 +3,7 @@ import { aggregateFloorDepth, extraFeedCalories, completedRoomCount, roomFill } 
 import { plannerSlotCount, resolveWeekPlan, emptyWeekPlan } from './weekPlanner.js';
 import { clothingStateForStage } from './textContext.js';
 import { pickHearingEnding, REMOVAL_HEARING } from './oppositionHearings.js';
+import { scaleDepthBonus, depthMealCostEstimate } from './mechanicsDepthLayer.js';
 
 /** before = live payoff axes at start of overhaul; after = live axes now. */
 export const MECHANIC_DEPTH_INVENTORY = [
@@ -54,7 +55,7 @@ export const MECHANIC_DEPTH_INVENTORY = [
 
 export function kitchenHuntBonus(baseGain, owned = {}) {
   const fill = aggregateFloorDepth(owned);
-  return Math.round((baseGain || 0) * (0.12 + (fill.synergyGainMult || 0)));
+  return Math.round(scaleDepthBonus((baseGain || 0) * (0.12 + (fill.synergyGainMult || 0))));
 }
 
 export function socialTrustDrip(owned = {}) {
@@ -77,7 +78,7 @@ export function itemCalorieBonus(label, owned = {}) {
 
 /** Kitchen/dining fill extra calories on hall-wide pizza/potluck/feast. */
 export function hallKitchenFillCalories(owned = {}) {
-  return Math.round(roomFill('kitchen', owned) * 2400 + roomFill('dining', owned) * 800);
+  return depthMealCostEstimate(Math.round(roomFill('kitchen', owned) * 2400 + roomFill('dining', owned) * 800));
 }
 
 export function hallDiningFillFullness(owned = {}) {

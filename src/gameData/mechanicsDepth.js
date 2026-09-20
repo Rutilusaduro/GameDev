@@ -7,6 +7,7 @@ import { getHungerTier } from './hungerAddiction.js';
 import { getCorruptionTier } from './corruption.js';
 import { getStage } from './stages.js';
 import { getActiveBlueprintSynergies, skillsForRoom } from './hallBlueprint.js';
+import { depthGainMult, depthRelBonus } from './mechanicsDepthLayer.js';
 
 /** Extra session paces beyond the base three. */
 export const EXTENDED_SESSION_PACES = [
@@ -23,7 +24,7 @@ export function hallActionCalMultiplier({ hallCalMult = 0, week = 1, famineWeek 
   let mult = 1 + (hallCalMult || 0);
   if (week % 4 === 0) mult *= 1.05;
   if (famineWeek) mult *= 0.92;
-  return mult;
+  return depthGainMult(mult);
 }
 
 /** Deeper force-feed context stack. */
@@ -52,7 +53,7 @@ export function depthDigestMultiplier(student, { weavePulse = false, synergyDige
 export function depthFloorChoiceGainMult({ loungeGainMult = 0, relBonus = 0 } = {}) {
   return {
     gainMult: 1 + (loungeGainMult || 0),
-    extraRel: relBonus || 0,
+    extraRel: depthRelBonus(relBonus || 0),
   };
 }
 

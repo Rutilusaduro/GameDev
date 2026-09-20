@@ -1,4 +1,5 @@
 import { getStage } from './stages.js';
+import { depthLbsGrant, depthRelBonus, depthMealCostEstimate } from './mechanicsDepthLayer.js';
 
 export const ACTIONS_SINGLE = [
   { id:"restaurant",  label:"🍷 Take to Dinner",             cost:2, gain:[4,9],   desc:"A proper dinner out at the best restaurant near campus.", requiresUnlock:"dinner_action" },
@@ -18,6 +19,20 @@ export const ACTIONS_HALL = [
 
 /** @deprecated use ACTIONS_HALL */
 export const ACTIONS_CLASS = ACTIONS_HALL;
+
+export function scaleFloorChoiceEffect(effect = {}) {
+  const next = { ...effect };
+  if (Array.isArray(next.gain) && next.gain.length >= 2) {
+    next.gain = [depthLbsGrant(next.gain[0]), depthLbsGrant(next.gain[1])];
+  }
+  if (next.rel) next.rel = depthRelBonus(next.rel);
+  return next;
+}
+
+export function hallActionCalRange(action = {}) {
+  const [lo, hi] = action.cal || [0, 0];
+  return [depthMealCostEstimate(lo), depthMealCostEstimate(hi)];
+}
 
 export const FLOOR_SCENES = [
   // ── MOOD-BASED ───────────────────────────────────────────────

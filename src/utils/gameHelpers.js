@@ -7,7 +7,7 @@ import { OUTFITS } from '../gameData/content.js';
 import { renderEvolvedReaction } from '../textEngine/scenes/evolved/reactionPools.js';
 import { renderEvolvedOutfit } from '../textEngine/scenes/evolved/outfitPools.js';
 import { getStage } from '../gameData/stages.js';
-import { FLOOR_SCENES } from '../gameData/floorEvents.js';
+import { FLOOR_SCENES, scaleFloorChoiceEffect } from '../gameData/floorEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
 import '../textEngine/lexicon.js';
 import '../textEngine/scenes/deviceBody.js';
@@ -69,40 +69,51 @@ export function extraFloorChoices(owned = {}) {
   if (owned.snack_station) extras.push({
     extraId: 'kitchen_walk',
     label: 'Walk her to the floor kitchen',
-    effect: { gain: [5, 9], mood: 'content', rel: 6 },
+    effect: scaleFloorChoiceEffect({ gain: [5, 9], mood: 'content', rel: 6 }),
     result: (st) => `${st.name} follows you to the kitchen. Leftover heat does the talking. She eats standing, then sitting, then smiling.`,
   });
   if (owned.comfy_chairs) extras.push({
     extraId: 'lounge_chair',
     label: 'Park her in the new chairs',
-    effect: { gain: [2, 5], mood: 'content', rel: 5 },
+    effect: scaleFloorChoiceEffect({ gain: [2, 5], mood: 'content', rel: 5 }),
     result: (st) => `${st.name} sinks into the padded chair and does not get up. The seat takes her. She lets it.`,
   });
   if (owned.dinner_basic) extras.push({
     extraId: 'dining_nook',
     label: 'Walk her to the dining nook',
-    effect: { gain: [4, 8], mood: 'content', rel: 5 },
+    effect: scaleFloorChoiceEffect({ gain: [4, 8], mood: 'content', rel: 5 }),
     result: (st) => `Leftovers from the venue book wait in the nook. ${st.name} sits like the table was saved for her and finishes what you plated.`,
   });
   if (owned.laundry_refit) extras.push({
     extraId: 'laundry_snack',
     label: 'Send her through laundry with a snack',
-    effect: { gain: [3, 6], mood: 'content', rel: 4 },
+    effect: scaleFloorChoiceEffect({ gain: [3, 6], mood: 'content', rel: 4 }),
     result: (st) => `Warm machines, bigger towels. ${st.name} eats while the cycle runs and comes back softer in the shoulders.`,
   });
   if (owned.media_nook) extras.push({
     extraId: 'media_couch',
     label: 'Put her on the couch under the ring light',
-    effect: { gain: [3, 7], mood: 'excited', rel: 5 },
+    effect: scaleFloorChoiceEffect({ gain: [3, 7], mood: 'excited', rel: 5 }),
     result: (st) => `The ring light finds her. ${st.name} performs a bite, then a real one. The camera was never the point.`,
   });
   if (owned.floor_scale) extras.push({
     extraId: 'alcove_scale',
     label: 'Stop at the alcove scale',
-    effect: { gain: [1, 3], mood: 'focused', rel: 7 },
+    effect: scaleFloorChoiceEffect({ gain: [1, 3], mood: 'focused', rel: 7 }),
     result: (st) => `The plant almost hides the readout. ${st.name} steps on anyway. The number is a private joke you both keep.`,
   });
   return extras.slice(0, 2);
+}
+
+function withScaledChoices(scene) {
+  if (!scene?.choices) return scene;
+  return {
+    ...scene,
+    choices: scene.choices.map((c) => ({
+      ...c,
+      effect: scaleFloorChoiceEffect(c.effect || {}),
+    })),
+  };
 }
 
 export function generateFloorCheckIn(students,week,owned={}){
@@ -110,10 +121,10 @@ export function generateFloorCheckIn(students,week,owned={}){
   const shuffled=[...students].sort(()=>Math.random()-0.5);
   for(const s of shuffled){
     const matching=FLOOR_SCENES.filter(sc=>sc.target==="student"&&sc.filter&&sc.filter(s));
-    if(matching.length){ scenes.push({type:"student",scene:matching[rnd(0,matching.length-1)],student:{...s}}); break; }
+    if(matching.length){ scenes.push({type:"student",scene:withScaledChoices(matching[rnd(0,matching.length-1)]),student:{...s}}); break; }
   }
   const hallWide=FLOOR_SCENES.filter(sc=>sc.target==="hall");
-  if(hallWide.length) scenes.push({type:"hall",scene:hallWide[rnd(0,hallWide.length-1)],student:null});
+  if(hallWide.length) scenes.push({type:"hall",scene:withScaledChoices(hallWide[rnd(0,hallWide.length-1)]),student:null});
   const extras=extraFloorChoices(owned);
   if(!extras.length) return scenes;
   for(let i=0;i<scenes.length;i+=1){

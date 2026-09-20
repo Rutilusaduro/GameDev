@@ -5,7 +5,7 @@ import { RA_RANKS, INFLUENCE_PAIRS, NARRATIVE_EVENTS } from './gameData/content.
 import { narrativeEventText } from './gameData/weeklyEventText.js';
 import { TextFlagToolbar, FlaggedProse } from './components/TextFlagToolbar.jsx';
 import { buildStateLine, traceToFlagNodes } from './textEngine/textFlagFormat.js';
-import { ACTIONS_SINGLE, ACTIONS_HALL } from './gameData/floorEvents.js';
+import { ACTIONS_SINGLE, ACTIONS_HALL, hallActionCalRange } from './gameData/floorEvents.js';
 import { gatewayFlagPatch, GATEWAY_FLAG_KEYS } from './gameData/gatewayMoments.js';
 import { appendDossierSnapshot, pinPlayerMoment } from './gameData/dossier.js';
 import { getPlayerPrefs, toggleInstantText, toggleSound } from './gameData/playerPrefs.js';
@@ -7400,7 +7400,8 @@ export default function HallPass(){
           const tap=depthGainLbs(ns,1,week,{skipNight:true});
           return {...processStudentGain(ns,tap,0),willpowerTaps:(ns.willpowerTaps||0)+1};
         }
-        const cals=rnd(action.cal[0],action.cal[1])+leftoverNightGainBump(ns,week)*GAIN_CONFIG.calsPerLb;
+        const [calLo,calHi]=hallActionCalRange(action);
+        const cals=rnd(calLo,calHi)+leftoverNightGainBump(ns,week)*GAIN_CONFIG.calsPerLb;
         const fed=feedStudentCalories(ns,cals,action.full,2,'Refeast',{});
         if(!fed){refused++;return ns;}
         fedCount++;
@@ -7429,7 +7430,8 @@ export default function HallPass(){
     const updated=students.map(s=>{
       if(!studentReceivesPassiveGain(s)) return s;
       if(s.lockState==='locked') return {...s,lbs:s.lbs+1,willpowerTaps:(s.willpowerTaps||0)+1};
-      const cals=rnd(action.cal[0],action.cal[1])+extraFill;
+      const [calLo,calHi]=hallActionCalRange(action);
+      const cals=rnd(calLo,calHi)+extraFill;
       const fed=feedStudentCalories(s,cals,action.full+extraFull,1,action.label,compoundId?{compoundId}:{});
       if(!fed){refusals++;return s;}
       fedCount++;totalCals+=cals;
