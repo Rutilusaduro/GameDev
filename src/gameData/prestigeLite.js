@@ -4,7 +4,7 @@
 
 import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
-export function computePrestigeScore({ week = 1, labState, campusSaturation, globalStats } = {}) {
+export function computePrestigeScore({ week = 1, labState, campusSaturation, globalStats, leftoverKitchen = false, nightRound = false } = {}) {
   let score = 0;
   score += Math.floor((week - 1) / 10);
   score += Math.max(0, (labState?.stage ?? 1) - 1) * 2;

@@ -68,7 +68,11 @@ export function getMysteryTrustPulse(students = [], { unlockedDorms = [], reachL
   if (!lockedReachable.length) return null;
 
   const maxTrust = Math.max(...lockedReachable.map((s) => s.passiveTrust || 0));
-  const progress = Math.min(1, depthPassiveTrustDrip(maxTrust) / ROSTER_TRUST_GATE);
+  const floorNudge = Math.min(8, Math.floor((dormState?.nightRounds?.floorIntimacy || 0) / 12));
+  const leftoverKitchen = (students || []).some((s) => s.leftoverFedThisWeek);
+  const leftoverNudge = Math.min(6, (students || []).filter((s) => s.leftoverFedThisWeek).length);
+  const nightNudge = Math.min(4, (students || []).filter((s) => week && s.lastNightVisitWeek === week).length);
+  const progress = Math.min(1, (depthPassiveTrustDrip(maxTrust) + floorNudge + leftoverNudge + nightNudge) / ROSTER_TRUST_GATE);
   const nearlyReady = lockedReachable.some((s) => (s.passiveTrust || 0) >= ROSTER_TRUST_GATE);
 
   const homeIds = [...new Set(lockedReachable.map((s) => getStudentHomeDorm(s.id)).filter(Boolean))];
