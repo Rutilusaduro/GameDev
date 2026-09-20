@@ -19,7 +19,9 @@ export const PLANNER_VENUES = [
 ];
 
 export function plannerSlotCount(owned = {}) {
-  return WEEK_PLAN_SLOT_COUNT + Math.min(2, Math.floor(completedRoomCount(owned) / 4));
+  const fromRooms = Math.min(2, Math.floor(completedRoomCount(owned) / 4));
+  const fromDesk = roomCompletion('ra_desk', owned).owned >= 2 ? 1 : 0;
+  return WEEK_PLAN_SLOT_COUNT + Math.min(2, fromRooms + fromDesk);
 }
 
 export function emptyWeekPlan(slotCount = WEEK_PLAN_SLOT_COUNT) {

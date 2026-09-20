@@ -111,7 +111,8 @@ import { WeekRecapModal } from './components/WeekRecapModal.jsx';
 import { WeekPlannerModal } from './components/WeekPlannerModal.jsx';
 import { buildWeekReviewExtras, emptyWeekPlan, padWeekPlan, plannerSlotCount, resolveWeekPlan, weekPlanBonusesFor, weekPlanSlotCount } from './gameData/weekPlanner.js';
 import { kitchenHuntBonus, socialTrustDrip, comfortFramingDecay, floorCheckInGainMult, itemCalorieBonus, hallKitchenFillCalories, hallDiningFillFullness, salonFloorLbs, galleryFloorLbs, pharmacistFloorCalMult, evolvedFloorBonus, extraDeviceUseLbs, extraCgBingeLbs, extraCgCorkboardDrive, extraHiveVisitLbs, extraHiveShiftLbs, extraForceFeederKitchenLbs, extraActivityKitchenLbs, extraFeastKitchenLbs, extraFairTrainingLbs, extraLabKitchenLbs, extraCaseStudyLbs, tickHabitatWeek, applyTalkHabitatBonus, habitatFx, shouldSkipHungerInterrupt, neighborEcologyPatch, campusStayHome, sessionCapHabitatBonus, deviceTickHabitatMult, oppositionRumorChance, labInstabilityEase, digestStuffedExtras, tickOutfitWeek } from './gameData/mechanicDepth.js';
-import { createInitialDormState, buyRoomFit, applyNightVisit } from './gameData/dormBlueprint.js';
+import { depthCorruptionGrant } from './gameData/mechanicsDepthLayer.js';
+import { createInitialDormState, buyRoomFit, applyNightVisit, roomCompletion, nightEncounterKind, nightRoundVisitCap } from './gameData/dormBlueprint.js';
 import { applyOutfitRefit } from './gameData/outfits.js';
 import { renderMilestone } from './textEngine/scenes/milestone/index.js';
 import { MilestoneCeremonyModal } from './components/MilestoneCeremonyModal.jsx';
@@ -1545,7 +1546,7 @@ export default function HallPass(){
   // ── CORRUPTION: hidden psyche progression (general actions only) ──
   const addCorruption=(s,amount,textOpts={})=>{
     const before=getCorruptionTier(s.corruption||0).id;
-    const scaled=amount>0?amount*raCorruptionMult:amount;
+    const scaled=amount>0?depthCorruptionGrant(amount)*raCorruptionMult:amount;
     const newC=Math.min(CORRUPTION_CONFIG.max,(s.corruption||0)+scaled);
     const after=getCorruptionTier(newC).id;
     if(after>before){
