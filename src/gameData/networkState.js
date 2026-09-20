@@ -106,7 +106,10 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random, ext
     + areaBonus;
   const deployed = areas.length;
   const visible = (students || []).filter((s) => !s.hidden && s.id !== 18);
-  const threshold = automationThreshold(network);
+  let threshold = automationThreshold(network);
+  if (hallMods?.meshThresholdReduction) {
+    threshold = Math.max(8, threshold - hallMods.meshThresholdReduction);
+  }
 
   if (automationTotal >= threshold && visible.length && rng() < 0.55) {
     const target = visible[Math.floor(rng() * visible.length)];

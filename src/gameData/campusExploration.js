@@ -5,6 +5,7 @@ import { getStage } from './stages.js';
 import { getCampusNarrativeTier } from './pharmacistIngredients.js';
 import { CAMPUS_SOFT_FLAVOR } from './pharmacistCampus.js';
 import { saturationSoftFlavorChance, saturationTravelEventBonus } from './campusSaturation.js';
+import { depthExplorationMods } from './mechanicsDepth.js';
 import { availableSecretsAtNode, isSecretSolved, secretsSolvedCount } from './campusSecrets.js';
 import { getExplorationFind, pickExplorationFind, travelFindPool, formatExplorationGrant } from './campusIngredients.js';
 import { ELARA_ID, getElaraQuest, elaraQuestProgressLine } from './relicHunter.js';
@@ -288,7 +289,12 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
   if (rng() < EXPLORATION_CONFIG.studentSightingChance + yieldBonus * 0.08) {
     const { lines: sightingLines, trustGrants } = pickStudentSighting(ctx.students, travelCtx, rng);
     if (sightingLines.length) lines.push(...sightingLines);
-    if (trustGrants.length) effects.trustGrants = trustGrants;
+    if (trustGrants.length) {
+      effects.trustGrants = trustGrants.map((t) => ({
+        ...t,
+        amount: t.amount + (mods?.trustGrantBonus || 0),
+      }));
+    }
   }
 
   const findChance = depthExplorationFindChance(EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04 + yieldBonus * 0.06);

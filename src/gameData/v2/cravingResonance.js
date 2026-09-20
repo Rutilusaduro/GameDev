@@ -83,17 +83,18 @@ export function pulseResonance(fedStudentId, calories, students, resonanceState,
   return { pulses, bonusCalories: bonusCal * pulses.length };
 }
 
-export function shouldResonanceSurge(resonanceState, week, students = [], ownedHallSkills = {}) {
+export function shouldResonanceSurge(resonanceState, week, students = [], ownedHallSkills = {}, hallMods = null) {
   if (!ownedHallSkills.resonance_bells) return false;
   const hallLbs = getCombinedHallLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   if (tier.id < 2) return false;
   if (resonanceState.lastSurgeWeek === week) return false;
-  return Math.random() < 0.25 + tier.id * 0.05;
+  const chance = 0.25 + tier.id * 0.05 + (hallMods?.surgeChanceBonus || 0);
+  return Math.random() < Math.min(0.55, chance);
 }
 
 /** Hall-wide passive appetite bonus — extra calories before weekly digest. */
-export function applyResonancePassiveBonus(students, resonanceState) {
+export function applyResonancePassiveBonus(students, resonanceState, hallMods = null) {
   const hallLbs = getCombinedHallLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   if (tier.passiveBonus <= 0) return { students, tier };
@@ -104,7 +105,7 @@ export function applyResonancePassiveBonus(students, resonanceState) {
     if (s.leftoverFedThisWeek) extra = Math.round(extra * 1.1);
     return { ...s, consumedCalories: (s.consumedCalories || 0) + extra };
   });
-  return { students: next, tier };
+  return { students: next, tier: { ...tier, passiveBonus } };
 }
 
 /** Surge event — linked students receive a craving pulse of calories. */

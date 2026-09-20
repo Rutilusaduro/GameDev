@@ -33,7 +33,7 @@ export function getCampusHiveRecruitLbsBonus(pharmacistState, saturationTier = 0
   return depthActivityGainBonus(campus + saturationNewStudentLbsBonus(saturationTier));
 }
 
-export function rollCampusPassiveLbs(pharmacistState, rndFn) {
+export function rollCampusPassiveLbs(pharmacistState, rndFn, campusMods = null) {
   const tier = getCampusFatteningTier(pharmacistState);
   if (!tier) return 0;
   const [lo, hi] = tier.passiveLbs;
@@ -53,11 +53,12 @@ export function getCampusWeeklyEventChance(pharmacistState, saturationTier = 0, 
   return Math.min(0.55, base + satBonus + leftoverBonus + nightBonus);
 }
 
-export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturationTier = 0) {
+export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturationTier = 0, campusMods = null) {
   const narrative = getCampusNarrativeTier(pharmacistState);
   const narrativeMult = narrative >= 3 ? 1.35 : narrative >= 2 ? 1.15 : 1;
   const satMult = 1 + ({ 0: 0, 1: 0.05, 2: 0.1, 3: 0.18 }[saturationTier] ?? 0);
-  const mult = narrativeMult * satMult;
+  const hallMult = campusMods?.gainMult || 1;
+  const mult = narrativeMult * satMult * hallMult;
   const [lo, hi] = gainRange;
   const loR = depthLbsGrant(Math.round(lo * mult));
   const hiR = depthLbsGrant(Math.round(hi * mult));

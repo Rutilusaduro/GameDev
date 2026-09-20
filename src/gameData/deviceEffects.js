@@ -16,6 +16,7 @@ import { deviceSynergyGainMult, findUniqueInteraction } from './deviceInteractio
 import { renderDeviceUniqueInteraction } from '../textEngine/scenes/deviceUniqueInteraction/index.js';
 import { getDeviceBoardMods, applyBoardModsToWeeklyEffect } from './inventionUpgrades.js';
 import { scaleDiscoveryRisk } from './campusWitness.js';
+import { scaleDeviceGainRange } from './mechanicsDepth.js';
 import {
   bumpWeeklyDeviceDependence,
   bumpEquipDeviceDependence,

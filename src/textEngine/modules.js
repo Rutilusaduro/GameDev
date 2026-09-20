@@ -172,8 +172,10 @@ registerModule("group.desc", [
 
 // ── device.label — equipped device display name from globals ──
 
-registerModule('device.label', [
+registerPool('device.label', [
   { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'the device'] },
+  { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'the equipped device'] },
+  { when: {}, text: [(ctx) => ctx.globals?.deviceLabel || 'what she is wearing'] },
 ]);
 
 registerPool('ra.name', [

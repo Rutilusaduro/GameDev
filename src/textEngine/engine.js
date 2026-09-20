@@ -307,6 +307,16 @@ export function registerPool(key, variants, opts = {}) {
   registerModule(key, variants, { select: 'pool', ...opts });
 }
 
+/** Re-tag an existing registry key as pool mode without replacing variants. */
+export function ensurePoolSelectMode(key) {
+  const variants = REGISTRY.get(key);
+  if (!variants?.length) return false;
+  const opts = MODULE_OPTS.get(key) || {};
+  if (opts.select === 'pool') return true;
+  registerModule(key, variants, { ...opts, select: 'pool' });
+  return true;
+}
+
 /** Prepend higher-priority variants without replacing the base module pool. */
 export function registerModuleVariants(key, variants) {
   const extra = Array.isArray(variants) ? variants : [variants];

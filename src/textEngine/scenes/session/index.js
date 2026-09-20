@@ -6,6 +6,7 @@ import { appendV2Depth } from '../v2/depthRenderer.js';
 import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import './fullness.js';
 import './fullnessDepth.js';
+import '../sessionFullnessOverhaul.js';
 import './aftermath.js';
 import './aftermathDepth.js';
 import './selectors.js';
