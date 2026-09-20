@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from './stages.js';
 import { getCampusNarrativeTier } from './pharmacistIngredients.js';
+import { depthSaturationBonus, depthSaturationRate } from './mechanicsDepthLayer.js';
 
 export const SATURATION_TIERS = [
   { id: 0, min: 0, label: 'Normal Campus', desc: 'Standard college rhythms.' },
@@ -45,21 +46,25 @@ export function tickCampusSaturationState(prev = {}, ctx = {}) {
 }
 
 export function saturationWeeklyPassiveBonus(tierId) {
-  return { 0: 0, 1: 0, 2: 1, 3: 2 }[tierId] ?? 0;
+  const base = { 0: 0, 1: 0, 2: 1, 3: 2 }[tierId] ?? 0;
+  return depthSaturationBonus(base);
 }
 
 export function saturationNewStudentLbsBonus(tierId) {
-  return { 0: 0, 1: 5, 2: 12, 3: 20 }[tierId] ?? 0;
+  const base = { 0: 0, 1: 5, 2: 12, 3: 20 }[tierId] ?? 0;
+  return depthSaturationBonus(base);
 }
 
 /** Extra travel-event weight from campus saturation tier. */
 export function saturationTravelEventBonus(tierId) {
-  return { 0: 0, 1: 0.06, 2: 0.14, 3: 0.22 }[tierId] ?? 0;
+  const base = { 0: 0, 1: 0.06, 2: 0.14, 3: 0.22 }[tierId] ?? 0;
+  return depthSaturationRate(base);
 }
 
 /** Chance to inject soft ambient indulgence lines while exploring. */
 export function saturationSoftFlavorChance(tierId) {
-  return { 0: 0, 1: 0.22, 2: 0.38, 3: 0.52 }[tierId] ?? 0;
+  const base = { 0: 0, 1: 0.22, 2: 0.38, 3: 0.52 }[tierId] ?? 0;
+  return depthSaturationRate(base);
 }
 
 /** Minimum saturation tier to surface certain campus venues in exploration. */

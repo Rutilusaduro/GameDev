@@ -2,11 +2,13 @@
 import { registerPool, render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { DINNER_VENUES, PRIVATE_FOODS } from '../../../gameData/sessions.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 function registerDishDesc(dish) {
   if (!dish?.id || !dish.desc) return;
   registerPool(`dinner.dish.${dish.id}`, [
-    { when: {}, text: [dish.desc] },
+    { when: legacyBridgeWhen(), text: [dish.desc] },
+    lintWildcardVariant('{dinner.dish.savor|prefix:} {dinner.dish.venueMood|prefix: }'),
   ]);
 }
 

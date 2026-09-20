@@ -4,6 +4,7 @@
 
 import { getSuspicionBracket } from './communityResearcher.js';
 import { getStage } from './stages.js';
+import { depthWellnessScrutinyBonus } from './mechanicsDepthLayer.js';
 
 const LEGACY_COUNTER_IDS = {
   spirit_pressure: 'floor_pressure',
@@ -97,7 +98,8 @@ export function counterGateReason(counter, ctx) {
 
 export function wellnessScrutinyBonus(students) {
   const heavy = students.filter((s) => !s.hidden && getStage(s.lbs).id >= 5).length;
-  return heavy > 0 ? Math.ceil(heavy * 0.1) : 0;
+  const base = heavy > 0 ? Math.ceil(heavy * 0.1) : 0;
+  return depthWellnessScrutinyBonus(base);
 }
 
 export function proxyUnlockFlags(week, scrutiny, saturationTier, cultStage) {

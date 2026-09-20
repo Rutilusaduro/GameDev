@@ -1,0 +1,62 @@
+// Batch-baker NPC blurbs — composable kitchen-mom slots.
+import { registerPool, registerModuleVariants } from '../../engine.js';
+import { BATCH_BAKER_NPCS } from '../../../gameData/homeroomEvents.js';
+
+registerPool('homeroom.npc.kitchenGossip', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She measures progress in pans, not pounds — until both disagree.',
+      'Apron dusted white; eyes sharp on every resident who lingers too long at the counter.',
+      'The moms trade recipes like secrets and calories like compliments.',
+      'Late-semester batch nights feel ceremonial — oven heat, co-conspirator grease, wide tables groaning.',
+      'Hall Ambiance climbs when the kitchen door stays open; appetite dressed as hospitality.',
+    ],
+  },
+]);
+
+registerPool('homeroom.npc.momHeat', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Oven warmth follows her into conversation — soft authority, hard portions.',
+      'She smiles like hospitality and feeds like strategy.',
+      'Every hug comes with a container for the walk home.',
+      'Wellness framing stays on the flyer; portions stay honest and unmistakably generous.',
+      'Counters disappear under flour while she narrates growth like county entertainment.',
+    ],
+  },
+]);
+
+const NPC_SKELETON = '{homeroom.npc.kitchenGossip|prefix:} {homeroom.npc.momHeat|prefix: }';
+
+for (const [npcKey, stages] of Object.entries(BATCH_BAKER_NPCS)) {
+  for (const si of Object.keys(stages)) {
+    registerModuleVariants(`homeroom.npc.${npcKey}.s${si}`, [
+      {
+        when: { weekMin: 22 },
+        weight: 6,
+        priority: 6,
+        text: [NPC_SKELETON],
+      },
+      {
+        when: { weekMin: 10 },
+        weight: 3,
+        priority: 2,
+        text: [NPC_SKELETON],
+      },
+    ]);
+  }
+}
+
+registerModuleVariants('homeroom.npc.Kayla.s3', [
+  {
+    when: { hallAmbiancePeakMin: [35] },
+    weight: 1,
+    text: [
+      'Kayla smells the upgraded kitchen before she sees it — appetite already on the syllabus.',
+    ],
+  },
+]);

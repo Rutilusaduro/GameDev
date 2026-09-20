@@ -3,6 +3,9 @@
 // ═══════════════════════════════════════════════════════════════
 import { SKILL_TREE } from './skills.js';
 import { aggregateFloorDepth, extraFeedCalories, loungeGainMultForStudent } from './floorBlueprint.js';
+import { computeHallRoomSynergyBonus } from './hallBlueprint.js';
+import { depthSaturationBonus, depthTalkRelGrant } from './mechanicsDepthLayer.js';
+import { computeHallAmbiancePerks } from './hallAmbiance.js';
 
 export function computeClassSkillTotal(students = []) {
   return Math.round(
@@ -85,6 +88,8 @@ export function aggregateClassSkillEffects(owned = {}) {
     hungerTalkDrop: 0,
     streamRelBonus: 0,
     clothingEase: 0,
+    roomSynergyGain: 0,
+    hallAmbianceGain: 0,
   };
   SKILL_TREE.forEach((sk) => {
     if (!owned[sk.id]) return;
@@ -114,6 +119,18 @@ export function aggregateClassSkillEffects(owned = {}) {
   effects.clothingEase = depth.clothingEase;
   effects.scrutinyReduce += Math.min(0.24, (depth.oppositionCover || 0) * 0.08);
   effects.floorDepth = depth;
+  const synergy = computeHallRoomSynergyBonus(owned);
+  const ambiance = computeHallAmbiancePerks(owned);
+  effects.gainMult += synergy;
+  effects.gainMult += ambiance.gainMult || 0;
+  effects.passiveBonus += ambiance.passiveBonus || 0;
+  effects.scrutinyPassiveReduce += ambiance.scrutinyPassiveReduce || 0;
+  effects.sessionCapBonus += ambiance.sessionCapBonus || 0;
+  effects.talkRelBonus = (effects.talkRelBonus || 0) + (ambiance.talkRelBonus || 0);
+  effects.roomSynergyGain = synergy;
+  effects.hallAmbianceGain = ambiance.gainMult || 0;
+  effects.passiveBonus = depthSaturationBonus(effects.passiveBonus);
+  effects.talkRelBonus = depthTalkRelGrant(effects.talkRelBonus);
   return effects;
 }
 

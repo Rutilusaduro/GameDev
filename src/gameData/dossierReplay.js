@@ -6,6 +6,7 @@ import { renderMilestone } from '../textEngine/scenes/milestone/index.js';
 import { renderAscensionCeremony } from '../textEngine/scenes/ascension/index.js';
 import { renderMemoryCallback } from '../textEngine/scenes/memory/index.js';
 import { pinLabel } from './dossier.js';
+import { depthDossierReplayDepthChance } from './mechanicsDepthLayer.js';
 
 export function replayStudentAtWeek(student, pinWeek) {
   const snap = (student?.dossierSnapshots || []).find((s) => s.week === pinWeek);
@@ -21,6 +22,7 @@ export function resolvePinExcerpt(student, pin, currentWeek = 1) {
   const week = pin.week ?? currentWeek;
   const replay = replayStudentAtWeek(student, week);
   const weeksAgo = Math.max(0, (currentWeek || week) - week);
+  const replayDepth = depthDossierReplayDepthChance(weeksAgo);
 
   switch (pin.kind) {
     case 'stageUp':
@@ -29,14 +31,14 @@ export function resolvePinExcerpt(student, pin, currentWeek = 1) {
     case 'narrative': {
       const ev = NARRATIVE_EVENTS.find((e) => e.id === pin.ref);
       if (!ev) return pin.label || '';
-      return narrativeEventText(ev, replay, { week })?.trim() || pin.label || '';
+      return narrativeEventText(ev, replay, { week, currentWeek, v2DepthChance: replayDepth })?.trim() || pin.label || '';
     }
 
     case 'gateway': {
       const gate = GATEWAY_MOMENTS.find((g) => g.flag === pin.ref);
       if (gate?.eventId) {
         const ev = NARRATIVE_EVENTS.find((e) => e.id === gate.eventId);
-        if (ev) return narrativeEventText(ev, replay, { week })?.trim() || '';
+        if (ev) return narrativeEventText(ev, replay, { week, currentWeek, v2DepthChance: replayDepth })?.trim() || '';
       }
       return `A private threshold — the kind of beat her diary was waiting for. Week ${week}.`;
     }
@@ -51,6 +53,7 @@ export function resolvePinExcerpt(student, pin, currentWeek = 1) {
         memScope: 'sameWeek',
         memType: pin.kind,
         memWeeksAgo: weeksAgo,
+        v2DepthChance: replayDepth,
       })?.trim() || pin.label || '';
 
     case 'stuffed':
@@ -61,6 +64,7 @@ export function resolvePinExcerpt(student, pin, currentWeek = 1) {
         memType: pin.kind,
         memWeeksAgo: weeksAgo,
         memValue: pin.ref,
+        v2DepthChance: replayDepth,
       })?.trim() || pin.label || '';
 
     case 'garment':

@@ -1,4 +1,5 @@
 // Which main nav tabs are visible — tabs appear when their gate clears (no greyed previews).
+import { depthNavWeekThreshold } from './mechanicsDepthLayer.js';
 
 function pantryHasItems(inventory = {}) {
   return Object.values(inventory).some((q) => (q || 0) > 0);
@@ -15,7 +16,8 @@ function anyRoomIntroduced(students = []) {
 function campusEngaged(campusState = {}, week = 1) {
   const exp = campusState.exploration || {};
   const visits = exp.visitCount ?? Object.keys(exp.visited || {}).length;
-  return week >= 2 || visits > 0 || !!exp.elaraDiscovered;
+  const campusWeek = depthNavWeekThreshold(2);
+  return week >= campusWeek || visits > 0 || !!exp.elaraDiscovered;
 }
 
 /** @returns {Record<string, boolean>} */
@@ -37,7 +39,7 @@ export function computeNavVisibility({
 }) {
   const briefingDone = !!raProfile?.floorBriefingDone;
   const actionsReady = anyHallLoungeOwned(ownedHallSkills)
-    || (effectiveHallActions.length > 0 && week >= 2);
+    || (effectiveHallActions.length > 0 && week >= depthNavWeekThreshold(2));
 
   return {
     roster: true,
@@ -45,9 +47,9 @@ export function computeNavVisibility({
     influence: briefingDone && anyRoomIntroduced(students),
     student: !!sel,
     actions: briefingDone && actionsReady,
-    inventory: briefingDone && (pantryHasItems(inventory) || week >= 3),
+    inventory: briefingDone && (pantryHasItems(inventory) || week >= depthNavWeekThreshold(3)),
     campus: briefingDone && campusEngaged(campusState, week),
-    skills: briefingDone && (reachLevel >= 2 || week >= 3),
+    skills: briefingDone && (reachLevel >= 2 || week >= depthNavWeekThreshold(3)),
     achievements: (achievements || []).length > 0,
     settling: settledStudents.length > 0,
     oversight: week >= 8 || !!opposition?.aib?.unlocked || adminScrutiny >= 25,

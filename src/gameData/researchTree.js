@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { getTier } from './sessions.js';
 import { isBlueprintResearched } from './labParts.js';
+import { depthLabInstabilityGain } from './mechanicsDepthLayer.js';
 
 export const RESEARCH_BRANCHES = [
   { id: 'feeding_force', label: 'Feeding & Force', icon: '🍽️', desc: 'Mechanical intake, automated feeding, hunger suppression.' },
@@ -160,14 +161,14 @@ export function spendExperimentMaterials(labState, node) {
   return {
     ...labState,
     parts,
-    instability: Math.min(100, (labState.instability ?? 0) + EXPERIMENT_SESSION_COST.instability),
+    instability: Math.min(100, (labState.instability ?? 0) + depthLabInstabilityGain(EXPERIMENT_SESSION_COST.instability)),
   };
 }
 
 export function rollExperimentOutcome(node, rng = Math.random) {
   const fail = rng() < (node.riskChance ?? 0.1);
   if (fail) {
-    return { ok: false, sideEffect: 'instability_spike', instabilityBonus: 8 };
+    return { ok: false, sideEffect: 'instability_spike', instabilityBonus: depthLabInstabilityGain(8) };
   }
   return { ok: true };
 }

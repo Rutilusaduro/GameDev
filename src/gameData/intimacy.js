@@ -4,6 +4,10 @@ export {
   INTIMACY_CONTEXTUAL,
   evalIntimacyEndingCondition,
 } from './intimacyData.js';
+export {
+  scaleIntimacyChoiceRewards,
+  scaleIntimacyEndingBonuses,
+} from './intimacyEffects.js';
 
 export function extraIntimacyChoices(owned = {}) {
   const extras = [];

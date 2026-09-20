@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // ADMIN SCRUTINY — tiered consequences when attention rises
 // ═══════════════════════════════════════════════════════════════
+import { depthScrutinyDiscoveryMult } from './mechanicsDepthLayer.js';
 
 export const SCRUTINY_TIERS = [
   { id: 0, min: 0, label: 'Quiet', apPenalty: 0, eventBlock: false },
@@ -23,7 +24,8 @@ export function scrutinyBlocksPublicEvents(scrutiny) {
 
 export function scrutinyDiscoveryMult(scrutiny) {
   const tier = getScrutinyTier(scrutiny).id;
-  return 1 + tier * 0.08;
+  const base = 1 + tier * 0.08;
+  return depthScrutinyDiscoveryMult(base, scrutiny);
 }
 
 /** Extra scrutiny when starting a private session under review. */

@@ -2,6 +2,8 @@
 // INDIANA BONES — The Relic Hunter (hidden student + exploration quests)
 // ═══════════════════════════════════════════════════════════════
 
+import { depthRelBonus } from './mechanicsDepthLayer.js';
+
 export const ELARA_ID = 17;
 
 export const ELARA_QUESTS = [
@@ -113,9 +115,16 @@ export function elaraQuestProgressLine(exploration, nodeId, ctx) {
   return `🗺️ Indiana is waiting for you to investigate here (${quest.label}).`;
 }
 
+export function scaleElaraQuestReward(reward) {
+  if (!reward) return reward;
+  const next = { ...reward };
+  if (next.relationship > 0) next.relationship = depthRelBonus(next.relationship);
+  return next;
+}
+
 export function takePendingQuestReward(exploration) {
   if (!exploration?.pendingQuestReward) return { exploration, reward: null };
-  const reward = exploration.pendingQuestReward;
+  const reward = scaleElaraQuestReward(exploration.pendingQuestReward);
   return {
     exploration: { ...exploration, pendingQuestReward: null },
     reward,

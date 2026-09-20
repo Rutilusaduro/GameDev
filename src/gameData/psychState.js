@@ -2,6 +2,7 @@
 // PER-STUDENT PSYCH STATE — fixation, obsession, dependence, shame
 // Light tier ladders for text dims + minor mechanics (pass 1).
 // ═══════════════════════════════════════════════════════════════
+import { depthPsychDelta } from './mechanicsDepthLayer.js';
 
 export const PSYCH_TIERS = [
   { id: 0, min: 0, label: 'Low', color: '#7a8a9a' },
@@ -24,9 +25,10 @@ export function initPsychState() {
 }
 
 export function applyPsychDelta(psych, delta = {}) {
+  const scaled = depthPsychDelta(delta);
   const next = { ...psych };
   for (const k of ['fixation', 'obsession', 'dependence', 'shame']) {
-    if (delta[k]) next[k] = Math.min(100, Math.max(0, (next[k] ?? 0) + delta[k]));
+    if (scaled[k]) next[k] = Math.min(100, Math.max(0, (next[k] ?? 0) + scaled[k]));
   }
   return next;
 }

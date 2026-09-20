@@ -2,6 +2,13 @@
 // Mythic Ascension roster. These ids are selectors; player-facing prose should
 // use display names only when a character names the form in voice.
 
+import { depthMetaProgressBonus } from '../mechanicsDepthLayer.js';
+
+export function ascensionFormDepthWeight(form) {
+  if (!form?.formId) return 0;
+  return depthMetaProgressBonus(1);
+}
+
 export const ASCENSION_STANDARD_REBIRTH_LBS = 100;
 export const ASCENSION_CYCLE = 2;
 

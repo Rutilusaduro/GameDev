@@ -3,7 +3,9 @@
 // Pure functions + balance constants used across the app.
 // Index 0 = weight stage 5 (Heavy), index 5 = weight stage 10 (Blob)
 // ═══════════════════════════════════════════════════════════════
-import { EVOLVED_REACTIONS } from '../gameData/evolvedForms.js';
+import { OUTFITS } from '../gameData/content.js';
+import { renderEvolvedReaction } from '../textEngine/scenes/evolved/reactionPools.js';
+import { renderEvolvedOutfit } from '../textEngine/scenes/evolved/outfitPools.js';
 import { getStage } from '../gameData/stages.js';
 import { FLOOR_SCENES } from '../gameData/floorEvents.js';
 import { createContext, render } from '../textEngine/engine.js';
@@ -31,19 +33,22 @@ export function getBodyDesc(s, week = 1) {
 export function getBodyDescRich(s,week = 1){
   return renderOverhaulRich(s, week) || render("{word.body|cap}, {word.clothingFit}.", createContext({subject:s,week}));
 }
-export function getOutfit(s, week = 1){
-  return renderOutfit(s, week);
+export function getOutfit(s, week = 1, opts = {}){
+  const leftover = renderOutfit(s, week);
+  if (leftover) return leftover;
+  if (s.evolvedForm && getStage(s.lbs).id >= 5) {
+    const evolved = renderEvolvedOutfit(s, week, opts);
+    if (evolved) return evolved;
+  }
+  const o=OUTFITS[s.archetype]||OUTFITS.default; return o[Math.min(getStage(s.lbs).id,o.length-1)];
 }
 export function getDiary(s, week = 1, opts = {}){
   const modular = renderDiary(s, week);
   if (modular) return appendCampusDiary(modular, s, { ...opts, week });
   return null;
 }
-export function getEvolvedReaction(s){
-  if(!s.evolvedForm) return null;
-  const arr=EVOLVED_REACTIONS[s.evolvedForm]; if(!arr) return null;
-  const idx=getStage(s.lbs).id-5; if(idx<0) return null;
-  return arr[Math.min(idx,arr.length-1)];
+export function getEvolvedReaction(s, week = 1, opts = {}){
+  return renderEvolvedReaction(s, week, opts);
 }
 export function getAttitude(s, week = 1, opts = {}){
   const composed=renderEvolvedAttitude(s, week);

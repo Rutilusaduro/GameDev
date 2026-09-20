@@ -1,0 +1,162 @@
+// Hall blueprint UI — composable upgrade + room blurb slots.
+import { registerPool, registerModuleVariants } from '../../engine.js';
+
+registerPool('hall.blueprint.construction', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Dust and drywall; the wing grows on purpose, not by accident.',
+      'Reinforced joists arrive with a wink — the building expects heavier traffic.',
+      'Blueprint ink dries while residents already test the new square footage.',
+      'Late-semester upgrades hum through the wing — drywall dust, fuller chairs, louder kitchens.',
+      'Hall door propped for deliveries; wellness framing ready before anyone asks.',
+    ],
+  },
+]);
+
+registerPool('hall.blueprint.permission', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Every upgrade whispers the same policy: stay, eat, spread out.',
+      'The floor learns appetite as architecture — linger longer, carry more.',
+      'Hall Ambiance climbs with the walls; habit follows the hammer.',
+      'Fullness climbs in the floor plan — linger longer, eat more, spread out on purpose.',
+      'Reinforced joists wink at heavier traffic; the building expects what residents become.',
+    ],
+  },
+]);
+
+const BLUEPRINT_SKELETON = '{hall.blueprint.construction|prefix:} {hall.blueprint.permission|prefix: }';
+
+registerModuleVariants('hall.blueprint.synergy', [
+  {
+    when: { hallAmbiancePeakMin: [50], weekMin: 12 },
+    weight: 4,
+    priority: 4,
+    text: [
+      'Wing resonance hums — lounge warmth and kitchen steam trade favors.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+  {
+    when: { stageMin: [4], weekMin: 10 },
+    weight: 3,
+    priority: 4,
+    text: [
+      'Synergy clicks — lounge appetite and dorm logistics feeding each other.',
+      'Two upgrades rhyme; the floor feels engineered, not accidental.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+]);
+
+for (const key of [
+  'hall.blueprint.purchase',
+  'hall.blueprint.upgrade.confirm',
+  'hall.blueprint.synergy',
+  'hall.room.blurb',
+]) {
+  registerModuleVariants(key, [
+    {
+      when: { weekMin: 12 },
+      weight: 4,
+      priority: 3,
+      text: [BLUEPRINT_SKELETON],
+    },
+    {
+      when: { weekMin: 6 },
+      weight: 2,
+      priority: 2,
+      text: [BLUEPRINT_SKELETON],
+    },
+  ]);
+}
+
+registerModuleVariants('hall.blueprint.purchase', [
+  {
+    when: { hallAmbiancePeakMin: [35], weekMin: 10 },
+    weight: 5,
+    priority: 5,
+    text: [
+      'Room upgrade seals — the wing exhales warmth through every labeled doorway.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+]);
+
+registerModuleVariants('hall.room.blurb', [
+  {
+    when: { hallRoomId: ['ra_office'], weekMin: 12 },
+    weight: 3,
+    priority: 4,
+    text: [
+      'Paperwork thins; the office learns to bless appetite instead of auditing it.',
+      BLUEPRINT_SKELETON,
+    ],
+  },
+  {
+    when: { hallRoomId: ['kitchen_pantry'] },
+    weight: 1,
+    text: [
+      (ctx) => {
+        const label = ctx.globals?.ambianceLabel || 'Pantry';
+        return `${label} wing hums — stock rotation written in butter and permission.`;
+      },
+    ],
+  },
+  {
+    when: { hallRoomId: ['grand_atrium'] },
+    weight: 1,
+    text: [
+      'Grand Atrium: prestige echoes off marble; residents arrive heavier just walking the threshold.',
+    ],
+  },
+]);
+
+registerModuleVariants('hall.blueprint.synergy', [
+  {
+    when: { hallAmbiancePeakMin: [45] },
+    weight: 1,
+    text: [
+      'Every labeled room breathes together — the wing feels like one warm organism.',
+      'Two wings lock in — comfort bleeds into pantry steam until appetite walks the blueprint without a map.',
+    ],
+  },
+]);
+
+registerModuleVariants('hall.lounge.skill.unlock', [
+  {
+    when: { hallRoomId: ['kitchen'] },
+    weight: 1,
+    text: [
+      'The kitchen unlock hums — blueprint labels and stove heat finally agree.',
+    ],
+  },
+]);
+
+registerModuleVariants('hall.blueprint.upgrade.confirm', [
+  {
+    when: { hallAmbiancePeakMin: [40] },
+    weight: 1,
+    text: [
+      'Upgrade confirms — labeled rooms pull warmth through the whole wing like shared breath.',
+    ],
+  },
+  {
+    when: { hallRoomId: ['kitchen_pantry'] },
+    weight: 1,
+    text: [
+      'Kitchen upgrade seals — steam and spice claim the whole wing by morning.',
+    ],
+  },
+  {
+    when: { hallRoomId: ['common_lounge'] },
+    weight: 1,
+    text: [
+      'Lounge deepens — cushions swallow noise; residents linger past curfew without guilt.',
+    ],
+  },
+]);

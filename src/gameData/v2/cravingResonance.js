@@ -2,6 +2,7 @@
 // CRAVING RESONANCE — appetite contagion between residents
 // ═══════════════════════════════════════════════════════════════
 import { V2_CONFIG } from './state.js';
+import { depthResonancePassiveBonus, depthResonancePulseMult } from '../mechanicsDepthLayer.js';
 
 export const RESONANCE_TIERS = [
   { id: 0, label: 'Dormant', minLinks: 0, minHallLbs: 0, passiveBonus: 0, pulseMult: 1.0, desc: 'No resonance web yet.' },
@@ -71,7 +72,7 @@ export function pulseResonance(fedStudentId, calories, students, resonanceState)
   if (!linkedIds.length) return { pulses: [], bonusCalories: 0 };
   const hallLbs = getCombinedHallLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
-  const bonusCal = Math.round(calories * 0.08 * tier.pulseMult);
+  const bonusCal = Math.round(calories * 0.08 * depthResonancePulseMult(tier.pulseMult));
   const pulses = linkedIds.map((id) => {
     const s = students.find((st) => st.id === id);
     if (!s || s.hidden) return null;
@@ -94,7 +95,7 @@ export function applyResonancePassiveBonus(students, resonanceState) {
   const hallLbs = getCombinedHallLbs(students);
   const tier = getResonanceTier((resonanceState.links || []).length, hallLbs);
   if (tier.passiveBonus <= 0) return { students, tier };
-  const bonusCals = tier.passiveBonus * 250;
+  const bonusCals = depthResonancePassiveBonus(tier.passiveBonus) * 250;
   const next = students.map((s) => {
     if (s.hidden) return s;
     return { ...s, consumedCalories: (s.consumedCalories || 0) + bonusCals };
@@ -112,7 +113,7 @@ export function applyResonanceSurgeBonus(students, resonanceState) {
     linkedIds.add(l.b);
   }
   if (!linkedIds.size) return students;
-  const surgeCals = Math.round(450 * tier.pulseMult);
+  const surgeCals = Math.round(450 * depthResonancePulseMult(tier.pulseMult));
   return students.map((s) => {
     if (!linkedIds.has(s.id) || s.hidden) return s;
     return { ...s, consumedCalories: (s.consumedCalories || 0) + surgeCals };

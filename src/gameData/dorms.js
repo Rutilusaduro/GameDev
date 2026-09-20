@@ -2,6 +2,8 @@
 // DORM HALLS — pre-game hall pick + resident roster
 // ═══════════════════════════════════════════════════════════════
 
+import { depthGainMult } from './mechanicsDepthLayer.js';
+
 export const UNLOCK_POOL_IDS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18];
 
 /** One home hall per unlock-pool resident. */
@@ -90,6 +92,11 @@ export const DORM_LIST = Object.values(DORMS);
 
 export function getDorm(id) {
   return DORMS[id] || null;
+}
+
+export function getDormGainMult(id) {
+  const d = getDorm(id);
+  return depthGainMult(d?.gainMult ?? 1);
 }
 
 export function getStudentHomeDorm(studentId) {

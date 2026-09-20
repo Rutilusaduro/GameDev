@@ -13,6 +13,8 @@ import { rollVanceCampusEvent, rollPortionSaintEvent, rollAccreditationObserverE
 import { renderCampusSighting, renderCampusTravelLine, renderCampusFindFlavor } from '../textEngine/scenes/campusExplorationText.js';
 import { renderCampusScene } from '../textEngine/scenes/campus/index.js';
 import { campusNodeToLocale } from './textContext.js';
+import { depthExplorationFindChance, depthPassiveTrustDrip } from './mechanicsDepthLayer.js';
+import { scaleExplorationFindGrants } from './campusIngredients.js';
 import { maybeRollDeviceEncounter, maybeRollDeviceFlavor } from './campusDeviceEncounters.js';
 import { formatSecretDiscoverLine } from '../textEngine/scenes/campus/secrets.js';
 
@@ -122,7 +124,10 @@ function pickStudentSighting(students, ctx, rng) {
 
   const trustGrants = [];
   if (who.lockState === 'locked' && UNLOCK_POOL_IDS.includes(who.id)) {
-    trustGrants.push({ studentId: who.id, amount: 4 + Math.floor(rng() * 4) });
+    trustGrants.push({
+      studentId: who.id,
+      amount: depthPassiveTrustDrip(4 + Math.floor(rng() * 4)),
+    });
   }
   return { lines, trustGrants };
 }
@@ -167,10 +172,20 @@ export function buildExplorationContext({
 /** Roll events when moving between nodes or looking around. */
 function applyFindToEffects(find, effects) {
   if (!find?.grants) return;
-  if (find.grants.foodId) effects.foodGrant = find.grants.foodId;
-  const ing = { ...find.grants };
+  const scaled = scaleExplorationFindGrants(find.grants);
+  if (scaled.foodId) effects.foodGrant = scaled.foodId;
+  const ing = { ...scaled };
   delete ing.foodId;
   if (Object.keys(ing).length) effects.ingredientGrant = ing;
+}
+
+function explorationFindProse(find, travelCtx) {
+  const flavor = renderCampusFindFlavor({
+    ...travelCtx,
+    findTier: find?.tier || null,
+    findId: find?.id || null,
+  })?.trim();
+  return flavor || find?.text || '';
 }
 
 export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
@@ -248,12 +263,14 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
     if (trustGrants.length) effects.trustGrants = trustGrants;
   }
 
-  if (rng() < EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04 + yieldBonus * 0.06) {
+  const findChance = depthExplorationFindChance(EXPLORATION_CONFIG.ingredientFindChance + satTier * 0.04 + yieldBonus * 0.06);
+  if (rng() < findChance) {
     const findId = pickExplorationFind(travelFindPool(nodeId, Math.max(ctx.campusTier, satTier >= 2 ? 2 : 0)), rng);
     const find = getExplorationFind(findId);
     if (find) {
-      lines.push(`🎒 ${find.text}`);
-      lines.push(`   + ${formatExplorationGrant(find.grants)}`);
+      const prose = explorationFindProse(find, travelCtx);
+      if (prose) lines.push(`🎒 ${prose}`);
+      lines.push(`   + ${formatExplorationGrant(scaleExplorationFindGrants(find.grants))}`);
       applyFindToEffects(find, effects);
     }
   }
@@ -277,6 +294,7 @@ export function rollTravelExploration(nodeId, ctx, rng = Math.random) {
 
 /** Active search for secrets and extra finds. */
 export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random) {
+  const travelCtx = { ...ctx, nodeId };
   const lines = [`🔍 You take time to search ${nodeId.replace(/_/g, ' ')} carefully.`];
   const effects = {
     solvedSecret: null,
@@ -309,7 +327,9 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
       if (secret.reward?.findId) {
         const find = getExplorationFind(secret.reward.findId);
         if (find) {
-          lines.push(`   + ${find.label}: ${formatExplorationGrant(find.grants)}`);
+          const prose = explorationFindProse(find, travelCtx);
+          if (prose) lines.push(`🎒 ${prose}`);
+          lines.push(`   + ${find.label}: ${formatExplorationGrant(scaleExplorationFindGrants(find.grants))}`);
           applyFindToEffects(find, effects);
         }
       }
@@ -324,12 +344,13 @@ export function searchCampusLocation(nodeId, exploration, ctx, rng = Math.random
   if (available.length) {
     const hint = available[0];
     lines.push(`…nothing yet. ${hint.hint}`);
-  } else if (rng() < EXPLORATION_CONFIG.ingredientFindChance * 1.4) {
+  } else if (rng() < depthExplorationFindChance(EXPLORATION_CONFIG.ingredientFindChance * 1.4)) {
     const findId = pickExplorationFind(travelFindPool(nodeId, ctx.campusTier), rng);
     const find = getExplorationFind(findId);
     if (find) {
-      lines.push(`🎒 ${find.text}`);
-      lines.push(`   + ${formatExplorationGrant(find.grants)}`);
+      const prose = explorationFindProse(find, travelCtx);
+      if (prose) lines.push(`🎒 ${prose}`);
+      lines.push(`   + ${formatExplorationGrant(scaleExplorationFindGrants(find.grants))}`);
       applyFindToEffects(find, effects);
     }
   } else {

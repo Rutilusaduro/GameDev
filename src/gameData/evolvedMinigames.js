@@ -3,6 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { evolvedFloorBonus } from './mechanicDepth.js';
 
+import { depthLbsGrant, depthRelBonus } from './mechanicsDepthLayer.js';
+
 export const EVOLVED_MINIGAMES = {
   campus_challenge: {
     title: 'Food Challenge',
@@ -130,7 +132,7 @@ export function computeMinigameOutcome(gameId, history, stageIdx = 0, owned = {}
   const gain = Math.round(baseGain[0] + gainSpan * (score / 6) + stageBonus) + (floor.gain || 0);
   const rel = baseRel + Math.floor(score / 3) + (floor.rel || 0);
   const tier = score >= 5 ? 'perfect' : score >= 3 ? 'good' : score >= 1 ? 'messy' : 'soft';
-  return { gain, rel, tier, score };
+  return { gain: depthLbsGrant(gain), rel: depthRelBonus(rel), tier, score };
 }
 
 export function minigameTierLabel(tier) {

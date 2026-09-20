@@ -15,3 +15,13 @@ registerModuleVariants('memory.class', [{ when: {}, text: [
   "Someone else's gain has become lounge furniture — noticed, filed, discussed in glances.",
   "The hall tracks who is changing; nobody pretends otherwise anymore.",
 ] }]);
+
+registerModuleVariants('memory.self', [
+  {
+    when: { memScope: ['longArc'], memType: ['stuffed'] },
+    weight: 1,
+    text: [
+      'That stuffed night still echoes — she reaches for seconds before she reaches for excuses.',
+    ],
+  },
+]);

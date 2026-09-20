@@ -1,4 +1,5 @@
 import { initPsychState } from '../psychState.js';
+import { depthPsychDelta } from '../mechanicsDepthLayer.js';
 
 export const ORIGIN_DEFAULT = 'default';
 
@@ -106,7 +107,7 @@ export function applyOriginPick(student, originId, week = 1) {
     originChosenWeek: week,
     originRegister: card.register,
     gainStance: card.gainStance,
-    psych: { ...initPsychState(), ...card.psych },
+    psych: depthPsychDelta({ ...initPsychState(), ...card.psych }),
     originFlags: { register: card.register, chainBeat: 1 },
     triggeredEvents: [...(student.triggeredEvents || []), `origin_${card.id}`].filter((v, i, a) => a.indexOf(v) === i),
   };

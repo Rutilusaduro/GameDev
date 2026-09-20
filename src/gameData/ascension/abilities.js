@@ -2,6 +2,13 @@
 // V1 ships Serena's pilot abilities. The closed hook set matches the design
 // lock, so future rows can expand without inventing new mechanics.
 
+import {
+  depthLbsGrant,
+  depthMetaProgressBonus,
+  depthPsychDelta,
+  depthRelBonus,
+} from '../mechanicsDepthLayer.js';
+
 export const ASCENSION_ABILITY_HOOKS = [
   'appetiteMod',
   'feedEvent',
@@ -98,8 +105,22 @@ export const ASCENSION_ABILITY_BY_ID = Object.fromEntries(
   ASCENSION_ABILITIES.map((ability) => [ability.id, ability]),
 );
 
+function scaleAbilityParams(params = {}) {
+  if (!params || typeof params !== 'object') return params;
+  const next = { ...params };
+  if (next.lbsGain) next.lbsGain = depthLbsGrant(next.lbsGain);
+  if (next.rel) next.rel = depthRelBonus(next.rel);
+  if (next.moneyDelta) next.moneyDelta = depthMetaProgressBonus(next.moneyDelta);
+  if (next.fixation || next.obsession || next.dependence || next.shame) {
+    return depthPsychDelta(next);
+  }
+  return next;
+}
+
 export function getAscensionAbility(abilityId) {
-  return ASCENSION_ABILITY_BY_ID[abilityId] || null;
+  const ability = ASCENSION_ABILITY_BY_ID[abilityId];
+  if (!ability) return null;
+  return { ...ability, params: scaleAbilityParams(ability.params) };
 }
 
 export function getAbilitiesForForm(formId) {

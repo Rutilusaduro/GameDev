@@ -1,0 +1,151 @@
+#!/usr/bin/env node
+/**
+ * Late-game text overhaul sampling — modular slot prose should dominate week 24 renders.
+ * Does not prove full legacy retirement; proves composable paths fire across namespaces.
+ */
+import assert from 'node:assert/strict';
+import '../src/textEngine/scenes/index.js';
+import { render } from '../src/textEngine/engine.js';
+import { buildTextContext } from '../src/gameData/textContext.js';
+import { HOMEROOM_GROUP_ACTIVITIES } from '../src/gameData/homeroomEvents.js';
+
+const week = 24;
+const destiny = { id: 5, name: 'Destiny', archetype: 'gamer', lbs: 260, evolvedForm: 'eating_streamer' };
+const mj = { id: 0, name: 'Mary Jane', archetype: 'farm_girl', lbs: 300 };
+const brittany = { id: 0, name: 'Brittany', archetype: 'cheerleader', lbs: 240 };
+
+const MODULAR_MARKERS = [
+  /smells like food|Ambient noise|Fabric strains|Every choice tonight|Hunger hums|Floor heat and cooking scent/i,
+  /yeasty warmth|Fat is what makes a home|Steam and sweetness|Table groans under every favorite/i,
+  /Oven heat|Calloway|wide tables groan|clipboard stays closed/i,
+  /Cotton candy|Mary Jane stands taller|Pride sits on her hips|Crowd noise swells|Phones rise|Hay-scent|co-conspirator|funnel[- ]cake/i,
+  /Clipboard margins|Late-semester entries|datapoint|journal stops pretending|every subject trending heavier/i,
+  /cart squeaks|Rae arrives|Clipboard, timer|session clock starts|Hall Ambiance follows the cart/i,
+  /butter and suspicion|wellness framing|Floor check-in energy/i,
+  /corkboard like scripture|treats the corkboard|Flour dust and warm sugar|labAir/i,
+  /Late-semester numbers dominate|Every measurement is a dare|Ink and appetite|Residents orbit the board|threatens a binge tonight/i,
+  /peer-reviewed result|eating on schedule|controlled appetite|Timers, trays/i,
+  /Dust and drywall|hall log neutral|Fullness climbs|Late-semester upgrades|Reinforced joists|Hall Ambiance climbs/i,
+  /hall door|Wellness framing ready|Blueprint ink/i,
+  /Someone whispers|Every bite lands|contagion dressed|growth as lifestyle/i,
+  /Afterparty steam|appetite dressed as celebration|co-conspirator grease/i,
+  /wellness framing ready|Every choice tonight will show up on the scale/i,
+  /Midway grease|Pageant lights|indulgence feels tender|Hall Ambiance thins|Training tent canvas|partnerHype|collabFrame/i,
+  /growthAmbition|growthPraise|momentum|Scale numbers|You frame it as|permission dressed|moment stretches — hall-quiet|indulgenceInvite|Warmth pools in the room the way fullness/i,
+  /choiceWarmth|oven heat still on her hands|kitchen politics/i,
+  /dinner\.dish|venueMood|hallTone|choiceEcho|hungerCall|yieldBeat|crowdHeat|tableStakes/i,
+  /calibrated hunger|mesh flickers|deployEcho|Hall Ambiance muted|peer-reviewed ritual/i,
+  /lateHallAir|latePermission|signoffAir|chatAfterglow|tips still ticking/i,
+  /boardPressure|cateredVote|endgameAbundance|lateHush|lateTremor/i,
+  /betweenRoundGlow|betweenRoundChat|removalDocket|restraintFarce/i,
+  /emergencyExposure|emergencyStake|roundStartPulse|roundStartChat/i,
+  /testifyWarmth|counterMomentum|counterAfterglow/i,
+  /agendaInstitutional|endingRelief|removalFeastPlay/i,
+  /lateBrink|lateAlmost|command_devour/i,
+];
+
+function isModular(line) {
+  return MODULAR_MARKERS.some((re) => re.test(line));
+}
+
+const pulls = [
+  (seed) => render('{evolved.event.eating_streamer.s0.p0}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { formId: 'eating_streamer', stageIdx: 0, phaseIdx: 0, history: [], featureId: 'evolved_event' },
+  })),
+  (seed) => render('{wifeLessons.lesson.s1.honey_butter}', buildTextContext({
+    subject: mj,
+    week,
+    seed,
+  })),
+  (seed) => render('{homeroom.conference.Kayla.intro}', buildTextContext({
+    subject: mj,
+    week,
+    seed,
+    globals: { featureId: 'homeroom_queen' },
+  })),
+  (seed) => render('{fair.day.weighIn.choice1}', buildTextContext({
+    subject: mj,
+    week,
+    seed,
+    globals: { featureId: 'state_fair_queen', fairStageIdx: 2, fairInfluence: 'Brittany' },
+  })),
+  (seed) => render('{journal.feeder.cheerleader.s8}', buildTextContext({
+    subject: brittany,
+    week,
+    seed,
+  })),
+  (seed) => render('{cg.scene.corkboard.Invested}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { featureId: 'competitive_gainer', cgDriveTier: 'Invested', cgSceneVisit: 0 },
+  })),
+  (seed) => render('{cultivator.beat}', buildTextContext({
+    subject: { id: 0, name: 'Tester', archetype: 'swimmer' },
+    week,
+    seed,
+    globals: { featureId: 'cultivator' },
+  })),
+  (seed) => render('{hall.blueprint.purchase}', buildTextContext({
+    subject: null,
+    week,
+    seed,
+    globals: { featureId: 'hall_blueprint', hallRoomId: 'kitchen_pantry' },
+  })),
+  (seed) => render('{session.rae.exit.s2}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { featureId: 'ranked_session', sessionStage: 2 },
+  })),
+  (seed) => render('{talk.suggest_indulgence.b11}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { featureId: 'floor_talk', talkBranch: 'suggest_indulgence' },
+  })),
+  (seed) => render('{talk.suggest_growth.b01}', buildTextContext({
+    subject: destiny,
+    week,
+    seed,
+    globals: { featureId: 'floor_talk', talkBranch: 'suggest_growth' },
+  })),
+];
+
+let modularHits = 0;
+const total = 48;
+for (let i = 0; i < total; i += 1) {
+  const fn = pulls[i % pulls.length];
+  let sampleModular = false;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const line = fn(24000 + i * 37 + attempt * 503)?.trim() || '';
+    assert.ok(line.length > 20, `short line at pull ${i}: "${line}"`);
+    assert.ok(!line.includes('{unresolved}'), `unresolved at pull ${i}`);
+    if (isModular(line)) sampleModular = true;
+  }
+  if (sampleModular) modularHits += 1;
+}
+
+const ratio = modularHits / total;
+assert.ok(modularHits >= 44, `expected >=44/${total} modular slot hits at week ${week}, got ${modularHits}/${total} (${(ratio * 100).toFixed(0)}%)`);
+
+const actKey = Object.keys(HOMEROOM_GROUP_ACTIVITIES).find(
+  (k) => (HOMEROOM_GROUP_ACTIVITIES[k].phases || []).length > 0,
+) || 'health_unit';
+const actPhases = (HOMEROOM_GROUP_ACTIVITIES[actKey].phases || []).length;
+assert.ok(actPhases >= 1, 'homeroom activity phases');
+let actHit = false;
+for (let i = 0; i < 16; i += 1) {
+  const line = render(`{homeroom.activity.${actKey}.p${actPhases - 1}}`, buildTextContext({
+    subject: mj,
+    week,
+    seed: 5000 + i,
+  }))?.trim() || '';
+  if (/Oven heat|Calloway|wide tables groan|Counters disappear under flour/i.test(line)) actHit = true;
+}
+assert.ok(actHit, `homeroom activity late phase should modularize (${actKey})`);
+
+console.log(`test-text-overhaul-sampling: ok (${modularHits}/${total} modular @ week ${week})`);

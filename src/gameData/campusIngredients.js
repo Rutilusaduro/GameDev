@@ -3,6 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 import { INGREDIENTS } from './pharmacistIngredients.js';
 import { ITEMS } from './items.js';
+import { depthExplorationIngredientGrant } from './mechanicsDepthLayer.js';
+
+/** Depth-scaled exploration loot (travel/search apply path). */
+export function scaleExplorationFindGrants(grants) {
+  return depthExplorationIngredientGrant(grants);
+}
 
 export const INGREDIENT_TIERS = {
   common: 'Common',

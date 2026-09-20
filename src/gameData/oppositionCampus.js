@@ -2,6 +2,8 @@
 // OPPOSITION CAMPUS EVENTS — Vance spawns, Portion Saint, proxies (§30.6, §31, §33.3)
 // ═══════════════════════════════════════════════════════════════
 
+import { depthScarcityRelief, depthWellnessScrutinyBonus } from './mechanicsDepthLayer.js';
+
 const VANCE_LINES = {
   health_center: [
     '👁 Dr. Helena Vance reviews wellness charts in the health center — her pen pauses when she sees your hall on the roster.',
@@ -57,11 +59,12 @@ export function rollAsceticGardenProtest(nodeId, opposition, rng = Math.random) 
 
 export function applyAsceticGardenProtest(campusState) {
   const sat = campusState?.saturation || { score: 0, tier: 0, weeksAtTier: 0 };
+  const hit = Math.max(4, 8 - Math.round(depthScarcityRelief(2)));
   return {
     ...campusState,
     saturation: {
       ...sat,
-      score: Math.max(0, (sat.score || 0) - 8),
+      score: Math.max(0, (sat.score || 0) - hit),
       weeksAtTier: 0,
     },
     asceticProtestWeek: true,
@@ -94,12 +97,13 @@ export function rollPortionSaintEvent(nodeId, opposition, lilithUnlocked, rng = 
 }
 
 export function consumePortionSaint(opposition) {
+  const relief = depthScarcityRelief(50);
   return {
     ...opposition,
     supernatural: {
       ...opposition.supernatural,
       portionSaintConsumed: true,
-      scarcityPressure: Math.max(0, (opposition.supernatural.scarcityPressure || 0) - 50),
+      scarcityPressure: Math.max(0, (opposition.supernatural.scarcityPressure || 0) - relief),
       famineWeek: false,
     },
   };
@@ -108,11 +112,12 @@ export function consumePortionSaint(opposition) {
 /** Ledger Wight weakens after public discredit or machine fattening counter. */
 export function ledgerWightRepelled(opposition, amount = 6) {
   if (!opposition?.supernatural?.actTriggered) return opposition;
+  const relief = depthScarcityRelief(amount);
   return {
     ...opposition,
     supernatural: {
       ...opposition.supernatural,
-      scarcityPressure: Math.max(0, (opposition.supernatural.scarcityPressure || 0) - amount),
+      scarcityPressure: Math.max(0, (opposition.supernatural.scarcityPressure || 0) - relief),
     },
   };
 }
@@ -142,7 +147,7 @@ export function applyLedgerWightEncounter(opposition) {
   }
   const repelled = (opposition.meta?.counterTypesUsed || []).includes('public_discredit')
     || (opposition.meta?.counterTypesUsed || []).includes('machine_fatten');
-  const scrutinyDelta = repelled ? 1 : 4;
+  const scrutinyDelta = repelled ? 1 : depthWellnessScrutinyBonus(4);
   return {
     opposition: {
       ...opposition,

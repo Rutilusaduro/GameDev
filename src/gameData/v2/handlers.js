@@ -4,16 +4,17 @@
 import {
   canEmbody, startEmbodiment, endEmbodiment, applyEmbodimentAction,
   EMBODIMENT_ACTIONS,
+  scaleEmbodimentActionEffect,
 } from './residentEmbodiment.js';
 import {
   canCreateLink, createResonanceLink, pulseResonance, shouldResonanceSurge,
   applyResonancePassiveBonus, applyResonanceSurgeBonus, getCombinedHallLbs, getResonanceTier,
 } from './cravingResonance.js';
-import { canRunRitual, FEAST_RITUALS } from './feastRituals.js';
+import { canRunRitual, FEAST_RITUALS, scaleRitualParticipantEffect } from './feastRituals.js';
 import { captureEcho, captureEchoOnce, canResonateEcho, resonateEcho, replayEcho } from './bodyEcho.js';
 import { getStage } from '../stages.js';
 import {
-  canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams,
+  canTriggerDream, pickDreamScenario, recordDream, rollWeeklyDreams, scaleDreamChoiceEffect,
 } from './appetiteDreams.js';
 import { renderResonanceSurge } from '../../textEngine/scenes/v2/resonance/index.js';
 import { createContext } from '../../textEngine/engine.js';
@@ -28,7 +29,12 @@ import {
   embodiedActionsAtNode,
   appendEmbodimentWalkLog,
 } from './embodiedCampus.js';
-import { V2_CONFIG } from './state.js';
+import { V2_CONFIG, embodimentEchoDigestMult } from './state.js';
+import {
+  depthCorruptionGrant,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from '../mechanicsDepthLayer.js'; // embodiment actions
 
 export function resetV2Weekly(v2State) {
   return {
@@ -148,13 +154,12 @@ export function handleEmbodimentStart(student, ctx) {
 export function handleEmbodimentAction(action, student, v2State) {
   const act = EMBODIMENT_ACTIONS.find((a) => a.id === action.id) || action;
   const v2 = applyEmbodimentAction(v2State, act.id);
+  const scaled = scaleEmbodimentActionEffect(act);
   return {
     ok: true,
     v2State: v2,
-    calories: act.calories || 0,
+    ...scaled,
     fullness: act.fullness || 0,
-    rel: act.rel || 0,
-    corruption: act.corruption || 0,
     scrutiny: act.scrutiny || 0,
   };
 }
@@ -166,7 +171,7 @@ export function handleEmbodimentRelease(v2State, week = 1) {
     v2State: endEmbodiment(v2State),
     echoStudentId: studentId,
     echoDigestWeek: week + 1,
-    echoDigestMult: V2_CONFIG.embodimentEchoDigestMult,
+    echoDigestMult: embodimentEchoDigestMult(),
   };
 }
 
@@ -220,11 +225,10 @@ export function handleRitual(ritualId, studentIds, ctx) {
   const check = canRunRitual(ritualId, studentIds, ctx);
   if (!check.ok) return { ok: false, reason: check.reason };
   const ritual = check.ritual;
+  const scaled = scaleRitualParticipantEffect(ritual);
   const effects = studentIds.map((id) => ({
     studentId: id,
-    calories: ritual.caloriesEach,
-    rel: ritual.relEach,
-    corruption: ritual.corruptionEach,
+    ...scaled,
   }));
   const prevCompleted = ctx.v2State.rituals.completed[ritual.id]
     || (ritual.id === 'hall_banquet' ? ctx.v2State.rituals.completed.class_banquet : 0)
@@ -248,11 +252,10 @@ export function handleRitual(ritualId, studentIds, ctx) {
 
 export function handleDreamChoice(scenario, choice, student, v2State, week) {
   const dreams = recordDream(v2State.dreams, student.id, week, scenario.id);
+  const scaled = scaleDreamChoiceEffect(choice);
   return {
     ok: true,
-    calories: choice.calories || 0,
-    rel: choice.rel || 0,
-    corruption: choice.corruption || 0,
+    ...scaled,
     v2State: { ...v2State, dreams },
   };
 }

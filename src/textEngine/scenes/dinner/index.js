@@ -13,6 +13,7 @@ import './depth.js';
 import './selectors.js';
 import './overfill.js';
 import './dishDesc.js';
+import './dinnerDishFragments.js';
 import './wildcardDepth.js';
 import './dinnerConvDepth.js';
 import './dinnerReactionsDepth.js';

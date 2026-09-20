@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // LILITH AIB HUNT — board members on the hunt map (§30.4)
 // ═══════════════════════════════════════════════════════════════
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 const AIB_HUNT_LOCATIONS = {
   vance: 'admin',
@@ -44,7 +45,7 @@ export function removeConsumedAibMember(opposition, memberId) {
     aib: {
       ...opposition.aib,
       members,
-      scandalMeter: Math.max(0, (opposition.aib?.scandalMeter || 0) - 5),
+      scandalMeter: Math.max(0, (opposition.aib?.scandalMeter || 0) - depthMetaProgressBonus(5)),
     },
   };
 }

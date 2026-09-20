@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // MEMORY STORE — a lightweight per-resident event history the prose can
+import { depthExplorationFindChance, depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 // call back to. Engine-free: just records notable events onto
 // student.memories (already persisted with students in saves) and
 // picks a relevant one to reference later — same-week callbacks,
@@ -10,7 +11,11 @@
 //          'bondShift' (v: 'trust+' | 'trust++' | 'trust+++' | 'betrayal')
 // ═══════════════════════════════════════════════════════════════
 
-const MEM_CAP = 24;
+const MEM_CAP_BASE = 24;
+
+export function getMemoryStoreCap() {
+  return Math.min(32, Math.max(MEM_CAP_BASE, depthMetaProgressBonus(MEM_CAP_BASE)));
+}
 
 /** Append an event to a memories array, de-duping same type+week, capped. */
 export function appendMemory(memories, type, week, value) {
@@ -18,7 +23,7 @@ export function appendMemory(memories, type, week, value) {
   // collapse a repeat of the same event within the same week
   const filtered = prev.filter((m) => !(m.t === type && m.w === week));
   const entry = value != null ? { t: type, w: week, v: value } : { t: type, w: week };
-  return [...filtered, entry].slice(-MEM_CAP);
+  return [...filtered, entry].slice(-getMemoryStoreCap());
 }
 
 function rpick(arr) {
@@ -35,6 +40,19 @@ export function pickStudentMemory(student, week) {
   const sameWeek = mems.filter((m) => m.w === week && (m.t === 'feast' || m.t === 'forced'));
   const longArc = mems.filter((m) => m.w < week && (m.t === 'stageUp' || m.t === 'scaleBreak' || m.t === 'stuffed' || m.t === 'bondShift'));
   const pools = [];
+  if (sameWeek.length && longArc.length) {
+    const longBias = depthExplorationFindChance(0.48);
+    const pickLong = Math.random() < longBias;
+    const choice = pickLong
+      ? { scope: 'longArc', m: rpick(longArc) }
+      : { scope: 'sameWeek', m: sameWeek[sameWeek.length - 1] };
+    return {
+      memScope: choice.scope,
+      memType: choice.m.t,
+      memWeeksAgo: Math.max(1, week - choice.m.w),
+      memValue: choice.m.v ?? null,
+    };
+  }
   if (sameWeek.length) pools.push({ scope: 'sameWeek', m: sameWeek[sameWeek.length - 1] });
   if (longArc.length) pools.push({ scope: 'longArc', m: rpick(longArc) });
   if (!pools.length) return null;

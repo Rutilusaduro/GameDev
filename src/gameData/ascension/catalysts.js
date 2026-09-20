@@ -3,6 +3,11 @@
 // event chain grants that resident's ascension catalyst.
 
 import { getAscensionFormForStudent } from './forms.js';
+import { depthMetaProgressBonus } from '../mechanicsDepthLayer.js';
+
+export function scaledCatalystCompletionScore(completedStageIdx = 0) {
+  return depthMetaProgressBonus(completedStageIdx + 1);
+}
 
 export function maybeGrantAscensionCatalyst(student, { completedStageIdx = 0, totalStages = 0 } = {}) {
   const form = getAscensionFormForStudent(student);

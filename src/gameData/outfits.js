@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // OUTFITS — garment slots, fit-state derivation, default wardrobe.
+import { depthOutfitFitEaseMult } from './mechanicsDepthLayer.js';
 // Engine-free game data (WORD_GRANULAR_ENGINE_PLAN §4.4).
 //
 // A garment: { id, name, slot, fitLbs, integrity }
@@ -15,7 +16,7 @@ export const FIT_STATES = ['loose', 'fitted', 'snug', 'straining', 'failing', 'b
 export function garmentFitState(garment, lbs) {
   if (!garment || !lbs) return null;
   if ((garment.integrity ?? 1) <= 0) return 'burst';
-  const r = lbs / garment.fitLbs;
+  const r = lbs / (garment.fitLbs * depthOutfitFitEaseMult());
   if (r < 0.85) return 'loose';
   if (r < 1.05) return 'fitted';
   if (r < 1.15) return 'snug';

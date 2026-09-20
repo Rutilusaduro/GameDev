@@ -421,13 +421,15 @@ import { RefeedSurgeModal } from './components/RefeedSurgeModal.jsx';
 import './textEngine/scenes/customStudent/index.js';
 import './textEngine/scenes/origin/index.js';
 import './textEngine/scenes/overhaul/index.js';
-import { overlayFeastLog } from './textEngine/scenes/overhaul/leftoverLastWins.js';
 import { renderCampusLook, renderCampusArrive } from './textEngine/scenes/overhaul/campusHunt.js';
 import { renderPharmacistCompound, renderPharmacistCult } from './textEngine/scenes/overhaul/pharmacist.js';
 import { renderCgBinge, renderCgCorkboard, renderFairBeat, renderCgSelfReview, renderCgMeasure, renderFairPhoto, renderFairBoost } from './textEngine/scenes/overhaul/cgFair.js';
 import { renderHiveVisit, renderHivePhoto, renderDestinySpend } from './textEngine/scenes/overhaul/leftoverDisplay.js';
 import { renderCgChatPriyaPost, renderCgChatResident, renderCgChatFollowup, renderCgChatRaReply, renderCgMeasureReaction } from './textEngine/scenes/overhaul/cgChat.js';
 import { renderSessionNpc, renderSessionPayoff } from './textEngine/scenes/overhaul/sessionNpc.js';
+import { overlayFeastLog } from './textEngine/scenes/overhaul/leftoverLastWins.js';
+import { computeHallAmbianceMeters, rollWeeklyAmbiancePulse } from './gameData/hallAmbiance.js';
+import { scaleEvolvedEventLbs } from './gameData/evolvedScaling.js';
 import { tickScarcityBanishment, checkOppositionEndgame } from './gameData/oppositionEndgame.js';
 import { DormUnlockModal, EvolutionOfferModal, SessionResultModal, TapOutPopup, TierUpModal } from './components/MiscModals.jsx';
 import { NadiaSubjectNotesModal, SubjectJournalModal, ResearchSubjectPicker, CollabPartnerPicker, CampusChallengeModal, DeliveryOrderModal, PresentationDefenseModal, ActiveIntimacyScene, IntimacySceneSelector } from './components/PickerModals.jsx';
@@ -469,7 +471,7 @@ export default function HallPass(){
   const [player, setPlayer] = useState(() => createInitialPlayer());
   const {
     money, ap, week, ownedSkills, ownedHallSkills, facultyAffinity, raProfile, adminScrutiny,
-    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, floorCircuit,
+    globalStats, achievements, bigScaleUnlocked, hallCred, unlockedDorms, v2State, floorCircuit, hallAmbiance,
   } = player;
   const patchPlayer = (patch) => setPlayer((p) => ({ ...p, ...patch }));
   const setMoney = (updater) => setPlayer((p) => updatePlayerField(p, 'money', updater));
@@ -2260,6 +2262,18 @@ export default function HallPass(){
 
     // ── ROSTER UNLOCK ─ hall reach (slots) + passive trust (queue) ──
     updated = applyWeeklyTrustDrip(updated, { reachLevel, week: newWeek, unlockedDorms: effectiveUnlockedDorms, rng: Math.random, extraDrip: socialTrustDrip(ownedHallSkills||{}) });
+    const ambiancePulse=rollWeeklyAmbiancePulse(ownedHallSkills||{},newWeek,hallAmbiance||{});
+    if(ambiancePulse){
+      patchPlayer({ hallAmbiance: ambiancePulse.nextState });
+      const pulseLine=render(`{hall.ambiance.pulse.${ambiancePulse.axis}}`,{week:newWeek});
+      if(pulseLine) setTimeout(()=>push(`🌡️ ${ambiancePulse.axisLabel} pulse — ${pulseLine}`),180);
+      if(ambiancePulse.passiveDrip>0){
+        updated=updated.map((s)=>{
+          if(s.hidden||s.lockState==='locked') return s;
+          return processStudentGain(s,scaleEvolvedEventLbs(ambiancePulse.passiveDrip),0);
+        });
+      }
+    }
     const ripe = pickRipeUnlock(updated, reachLevel, effectiveUnlockedDorms);
     if (ripe) {
       updated = updated.map((s) => (s.id === ripe.id ? openRosterResident(s, newWeek) : s));
@@ -9409,7 +9423,7 @@ export default function HallPass(){
       {evolutionModal&&<EvolutionOfferModal chooseEvolution={chooseEvolution} evolutionModal={evolutionModal} setEvolutionModal={setEvolutionModal} soundEnabled={soundEnabled}/>}
 
       {/* ── EP2: INTERACTIVE EVOLVED EVENT MODAL ── */}
-      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
+      {evolvedEventState&&<EvolvedEventModal batchBakerState={batchBakerState} closeEvolvedEvent={closeEvolvedEvent} collabPartnerId={collabPartnerId} evolvedEventState={evolvedEventState} hallAmbiancePeak={computeHallAmbianceMeters(ownedHallSkills||{}).peak??0} makeEvolvedEventChoice={makeEvolvedEventChoice} openSalonHub={openSalonHub} openGalleryHub={openGalleryHub} push={push} setChallengeState={setChallengeState} setDeliveryState={setDeliveryState} setEvolvedEventState={setEvolvedEventState} setPresentationState={setPresentationState} startCollabStream={startCollabStream} startEatingContest={startEatingContest} startFairDay={startFairDay} startRankedSession={startRankedSession} startSumoMatch={startSumoMatch} startStream={startStream} students={students} week={week} soundEnabled={soundEnabled} owned={ownedHallSkills||{}}/>}
 
       {salonOpen&&salonState&&<SalonAppetitModal salonState={salonState} students={students} owned={ownedHallSkills||{}} onClose={closeSalonHub} onStartSession={startSalonEvening} onPickMenu={salonPickCourse} onService={salonMakeServiceChoice} onDigestif={salonCloseEvening} soundEnabled={soundEnabled}/>}
 

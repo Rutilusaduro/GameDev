@@ -2,6 +2,7 @@
 // V2.0 — shared state factory
 // ═══════════════════════════════════════════════════════════════
 import { migrateEmbodimentState } from './embodiedCampus.js';
+import { depthV2EchoDigestMult } from '../mechanicsDepthLayer.js';
 
 export const V2_CONFIG = {
   version: '2.0.0',
@@ -28,6 +29,10 @@ export function normalizeV2State(v2State) {
   const embodiment = migrateEmbodimentState(v2State.embodiment || {});
   if (embodiment === v2State.embodiment) return v2State;
   return { ...v2State, embodiment };
+}
+
+export function embodimentEchoDigestMult() {
+  return depthV2EchoDigestMult(V2_CONFIG.embodimentEchoDigestMult);
 }
 
 export function createInitialV2State() {

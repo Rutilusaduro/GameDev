@@ -2,9 +2,11 @@
 // SCARCITY PLAYER TOOLS — Devour, Echoed Will (§33.5)
 // ═══════════════════════════════════════════════════════════════
 
+import { depthScarcityRelief } from './mechanicsDepthLayer.js';
+
 export function devourScarcityDamage(opposition, reachLevel = 1) {
   if (!opposition?.supernatural?.actTriggered) return opposition;
-  const base = 8 + Math.min(6, reachLevel);
+  const base = depthScarcityRelief(8 + Math.min(6, reachLevel));
   const pressure = Math.max(0, (opposition.supernatural.scarcityPressure || 0) - base);
   return {
     ...opposition,
@@ -28,7 +30,7 @@ export function echoedWillReverseCurse(opposition, studentId, scrutiny = 0) {
   } else {
     return { opposition, ok: false, scrutinyDelta: 0 };
   }
-  const pressure = Math.max(0, (opposition.supernatural.scarcityPressure || 0) - 5);
+  const pressure = Math.max(0, (opposition.supernatural.scarcityPressure || 0) - depthScarcityRelief(5));
   return {
     opposition: {
       ...opposition,

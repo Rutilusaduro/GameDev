@@ -5,6 +5,12 @@ import { CAMPUS_NODES } from '../campus.js';
 import { getStage } from '../stages.js';
 import { getAvailableEmbodimentActions } from './residentEmbodiment.js';
 import { grantPassiveTrust } from '../rosterUnlock.js';
+import {
+  depthCorruptionGrant,
+  depthPassiveTrustDrip,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from '../mechanicsDepthLayer.js';
 
 export const EMBODIED_START_NODE = 'dorms';
 export const EMBODIED_EVENT_BASE_CHANCE = 0.44;
@@ -305,24 +311,36 @@ export function rollEmbodiedArrivalEvent(
 export function applyEmbodiedEvent(student, eventDef, { lockedStudents = [], rng = Math.random } = {}) {
   if (!eventDef) return { student, trustGrants: [] };
   let next = { ...student };
-  if (eventDef.calories) next.consumedCalories = (next.consumedCalories || 0) + eventDef.calories;
+  if (eventDef.calories) {
+    next.consumedCalories = (next.consumedCalories || 0)
+      + depthResonancePassiveBonus(eventDef.calories);
+  }
   if (eventDef.fullness) {
     next.fullness = Math.min(
       next.stomachCapacity || 100,
       (next.fullness || 0) + eventDef.fullness,
     );
   }
-  if (eventDef.corruption) next.corruption = Math.min(100, (next.corruption || 0) + eventDef.corruption);
-  if (eventDef.rel) next.relationship = Math.min(100, Math.max(0, (next.relationship || 0) + eventDef.rel));
+  if (eventDef.corruption) {
+    next.corruption = Math.min(100, (next.corruption || 0) + depthCorruptionGrant(eventDef.corruption));
+  }
+  if (eventDef.rel) {
+    next.relationship = Math.min(100, Math.max(0, (next.relationship || 0) + depthRelBonus(eventDef.rel)));
+  }
 
   const trustGrants = [];
   if (eventDef.trustNearby && lockedStudents.length) {
     const target = lockedStudents[Math.floor(rng() * lockedStudents.length)];
-    if (target) trustGrants.push({ studentId: target.id, amount: eventDef.trustNearby });
+    if (target) {
+      trustGrants.push({
+        studentId: target.id,
+        amount: depthPassiveTrustDrip(eventDef.trustNearby),
+      });
+    }
   }
   if (normalizeEmbodiedEventId(eventDef.id) === 'resident_sighting' && lockedStudents.length) {
     const target = lockedStudents[Math.floor(rng() * lockedStudents.length)];
-    if (target) trustGrants.push({ studentId: target.id, amount: 5 });
+    if (target) trustGrants.push({ studentId: target.id, amount: depthPassiveTrustDrip(5) });
   }
   return { student: next, trustGrants, scrutiny: eventDef.scrutiny || 0 };
 }

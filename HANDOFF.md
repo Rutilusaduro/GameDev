@@ -101,3 +101,17 @@ npm run build
 ## Suggested next passes
 
 All core objective gates green. Optional: human playtest for subjective feel tuning.
+
+---
+
+## Goal in progress (Pass 253+) — mechanics + prose overhaul
+
+| Deliverable | Status |
+|-------------|--------|
+| Blueprint hall upgrade UI | ✅ `HallBlueprint.jsx`, `hallBlueprint.js`, `HallLoungeView` |
+| New mechanic: Hall Ambiance | ✅ `hallAmbiance.js`, weekly pulse in `HallPass.jsx` |
+| Mechanics depth layer (~50% wired) | 🟡 `test:mechanics-depth` — **80** systems; coverage **80/125** layer-import (~45 unwired) |
+| Full text overhaul | 🟡 Collab interpolators → `registerPool`; stageup/payoff pooled; passes 53–**60**; `MIGRATION.md` still open |
+| Full depth on every mechanical file | 🔴 ~45 unwired (mostly non-gain helpers / text data) |
+
+Verify: `npm run test:hall-blueprint`, `npm run text:lint`, `npm run test:smoke` (full).

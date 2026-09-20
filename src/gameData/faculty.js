@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // STAFF LOUNGE — fellow RAs and campus staff, each with a unique dialogue tree
+import { depthRelBonus } from './mechanicsDepthLayer.js';
 // Tree shape: nodes keyed by id; node = { text:(t)=>str, options:[
 //   { label, next:"nodeId" | end:true, affinity:+n, minAffinity? } ] }
 // Affinity (0-100) persists per teacher and gates deeper branches.
@@ -235,6 +236,12 @@ export const FACULTY_CONFIG = {
   affinityPerCampusMeet: 1, // bumping into a teacher while exploring
   maxAffinity: 100,
 };
+
+/** Depth-scaled staff-lounge affinity bumps (dialogue options + campus meets). */
+export function scaleFacultyAffinityGain(amount = 0) {
+  if (!amount || amount <= 0) return amount || 0;
+  return depthRelBonus(amount);
+}
 
 export const FACULTY_AFFINITY_TIERS = [
   { min:0,  label:"Colleague",     color:"#8a8a7a" },

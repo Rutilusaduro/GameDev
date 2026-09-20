@@ -56,6 +56,7 @@ registerPool('campusEvent.beat', [
 ]);
 
 import './floorCheckInIntegration.js';
+import './campusEventFragments.js';
 
 /** Floor check-in observation beat keyed on student mood/archetype/campus state. */
 export function renderCampusEventBeat(student, week = 1, opts = {}) {

@@ -4,6 +4,7 @@
 import { getCorruptionTier } from './corruption.js';
 import { getAddictionLevel, getHungerTier, HUNGER_TIERS, ADDICTION_LEVELS } from './hungerAddiction.js';
 import { getStage } from './stages.js';
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 import { getTier } from './sessions.js';
 import { EVOLVED_FORM_META } from './evolvedForms.js';
 
@@ -47,7 +48,7 @@ export function computeSurrenderVector(student) {
   else if (composite >= 0.32) band = 'rising';
 
   return {
-    composite: Math.round(composite * 100),
+    composite: depthMetaProgressBonus(Math.round(composite * 100)),
     band,
     color: SURRENDER_COLORS[band],
     stage: { id: stage.id, label: stage.label },

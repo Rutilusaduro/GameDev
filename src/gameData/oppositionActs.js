@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { computeSurrenderVector } from './transformationPressure.js';
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 export const OPPOSITION_ACTS = {
   I: {
@@ -40,7 +41,7 @@ export function computeClassTransformationPressure(students) {
   const visible = (students || []).filter((s) => !s.hidden);
   if (!visible.length) return 0;
   const sum = visible.reduce((a, s) => a + computeSurrenderVector(s).composite, 0);
-  return Math.round(sum / visible.length);
+  return depthMetaProgressBonus(Math.round(sum / visible.length));
 }
 
 /** Board dormant in Act I until week 8 or scrutiny early-unlock (§29.2 / §30.1). */

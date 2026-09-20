@@ -91,6 +91,7 @@ registerPool("talk.encourage", [
     "{talk.moodOpener|suffix:\n\n}{enc.deflect} {enc.reach}",
     "{talk.moodOpener|suffix:\n\n}{enc.deflect}\n\n{enc.giveIn}{enc.flush|prefix: }",
     "{talk.moodOpener|suffix:\n\n}{enc.reach} {enc.giveIn}",
+    "{talk.moodOpener|suffix:\n\n}{enc.reach}\n\n{enc.giveIn} {enc.bodyAside|prefix: }",
   ]},
 ]);
 

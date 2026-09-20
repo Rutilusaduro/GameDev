@@ -4,25 +4,64 @@ import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
 import { registerDecomposedPool } from '../decomposePools.js';
-import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES } from '../../../gameData/evolvedForms.js';
+import { registerPool } from '../../engine.js';
+import { homeroomTailBeat } from '../evolved/proseTails.js';
+import { legacyBridgeWhen, lintWildcardVariant } from '../legacyPoolPolicy.js';
+import { HOMEROOM_CONFERENCE_EVENTS, HOMEROOM_GROUP_ACTIVITIES, BATCH_BAKER_NPCS } from '../../../gameData/homeroomEvents.js';
+import './batchBakerPools.js';
+
+const SAMPLE_HOMEROOM_DAISY = { id: 13, name: 'Daisy', lbs: 210, archetype: 'homeroom_queen' };
+
+function resolveHomeroomProse(prose) {
+  if (typeof prose === 'function') {
+    try {
+      return String(prose(SAMPLE_HOMEROOM_DAISY)).trim();
+    } catch {
+      try {
+        return String(prose()).trim();
+      } catch {
+        return '';
+      }
+    }
+  }
+  return (prose || '').trim();
+}
+
+function registerHomeroomBeat(poolKey, prose) {
+  const text = resolveHomeroomProse(prose);
+  if (!text) return;
+  const bodyKey = `${poolKey}.body`;
+  registerDecomposedPool(bodyKey, text);
+  registerPool(poolKey, [
+    {
+      when: legacyBridgeWhen(),
+      weight: 3,
+      text: [
+        (ctx) => {
+          const line = render(`{${bodyKey}}`, ctx)?.trim();
+          return line && !line.includes('{unresolved}') ? line : text;
+        },
+        homeroomTailBeat(poolKey, 0),
+        homeroomTailBeat(poolKey, 1),
+      ],
+    },
+    lintWildcardVariant('{homeroom.scene.floorTone|prefix:} {homeroom.scene.raStance|prefix: }'),
+  ]);
+}
 
 for (const [key, ev] of Object.entries(HOMEROOM_CONFERENCE_EVENTS)) {
-  if (ev.text) registerDecomposedPool(`homeroom.conference.${key}.intro`, ev.text);
+  if (ev.text) registerHomeroomBeat(`homeroom.conference.${key}.intro`, ev.text);
   for (const ch of ev.choices || []) {
-    if (typeof ch.result === 'string' && ch.result) {
-      registerDecomposedPool(`homeroom.conference.${key}.${ch.id}`, ch.result);
-    }
+    if (ch.result) registerHomeroomBeat(`homeroom.conference.${key}.${ch.id}`, ch.result);
   }
 }
 
 for (const [actKey, act] of Object.entries(HOMEROOM_GROUP_ACTIVITIES)) {
   const phases = act.phases || [{ text: act.text, choices: act.choices || [] }];
   phases.forEach((phase, pi) => {
-    if (phase.text) registerDecomposedPool(`homeroom.activity.${actKey}.p${pi}`, phase.text);
+    if (phase.text) registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}`, phase.text);
     for (const ch of phase.choices || []) {
-      if (typeof ch.result === 'string' && ch.result) {
-        registerDecomposedPool(`homeroom.activity.${actKey}.p${pi}.${ch.id}`, ch.result);
-      }
+      if (ch.result) registerHomeroomBeat(`homeroom.activity.${actKey}.p${pi}.${ch.id}`, ch.result);
     }
   });
 }
@@ -89,4 +128,29 @@ export function homeroomActivityPoolKey(actKey, phaseIdx = 0, choiceId = null) {
   return choiceId
     ? `homeroom.activity.${actKey}.p${phaseIdx}.${choiceId}`
     : `homeroom.activity.${actKey}.p${phaseIdx}`;
+}
+
+/** Batch-baker NPC stage blurb (card snippet or full measurement reveal). */
+export function renderHomeroomNpcDesc(npcKey, stageIdx, daisyStudent, week = 1, opts = {}) {
+  if (!npcKey || !daisyStudent) return '';
+  const stageMap = BATCH_BAKER_NPCS[npcKey];
+  if (!stageMap) return '';
+  const maxStage = Math.max(0, ...Object.keys(stageMap).map((k) => Number(k)));
+  const si = Math.min(Math.max(0, stageIdx), maxStage);
+  const legacy = stageMap[si] || '';
+  const ctx = buildHomeroomCtx(daisyStudent, week, {
+    globals: { npcKey, npcStage: si, snippetOnly: !!opts.snippetOnly },
+  });
+  try {
+    const line = render(`{homeroom.npc.${npcKey}.s${si}}`, ctx)?.trim();
+    const base = line && !line.includes('{unresolved}') ? line : legacy;
+    if (!base) return '';
+    const out = appendV2Depth(base, 'homeroom', ctx, opts.v2DepthChance ?? 0.18);
+    if (opts.snippetOnly) {
+      return (out.split(/(?<=[.!?])\s+/)[0] || out).trim();
+    }
+    return out;
+  } catch {
+    return legacy;
+  }
 }

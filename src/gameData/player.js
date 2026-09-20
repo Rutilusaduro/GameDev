@@ -6,6 +6,8 @@ import { WALLET_CONFIG } from './wallet.js';
 import { DEFAULT_MOD_INVENTORY } from './deviceMods.js';
 import { createInitialV2State } from './v2/state.js';
 import { createInitialFloorCircuit } from './floorBlueprint.js';
+import { createInitialHallAmbianceState } from './hallAmbiance.js';
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 /** Empty player equip slots (RA self-equipped personal devices). */
 export const PLAYER_EQUIP_SLOTS = ['head', 'neck', 'torso', 'arms', 'waist', 'legs', 'fullBody', 'special'];
@@ -20,7 +22,7 @@ export function createEmptyPlayerEquip() {
  */
 export function createInitialPlayer(overrides = {}) {
   return {
-    money: WALLET_CONFIG.startingBalance,
+    money: depthMetaProgressBonus(WALLET_CONFIG.startingBalance),
     ap: 5,
     week: 1,
     ownedSkills: {},
@@ -42,6 +44,7 @@ export function createInitialPlayer(overrides = {}) {
     modUnlocks: {},
     modInventory: { ...DEFAULT_MOD_INVENTORY },
     v2State: createInitialV2State(),
+    hallAmbiance: createInitialHallAmbianceState(),
     ...overrides,
   };
 }

@@ -6,6 +6,7 @@
 import { TESTER_START_LBS } from './cultivator.js';
 import { saturationNewStudentLbsBonus } from './campusSaturation.js';
 import { getCampusNarrativeTier, CAMPUS_NARRATIVE_LABELS } from './pharmacistIngredients.js';
+import { depthActivityGainBonus, depthLbsGrant } from './mechanicsDepthLayer.js';
 
 export { CAMPUS_NARRATIVE_LABELS, getCampusNarrativeTier };
 
@@ -29,7 +30,7 @@ export function getCampusTesterStartLbs(pharmacistState, saturationTier = 0) {
 
 export function getCampusHiveRecruitLbsBonus(pharmacistState, saturationTier = 0) {
   const campus = getCampusFatteningTier(pharmacistState)?.hiveRecruitBonus ?? 0;
-  return campus + saturationNewStudentLbsBonus(saturationTier);
+  return depthActivityGainBonus(campus + saturationNewStudentLbsBonus(saturationTier));
 }
 
 export function rollCampusPassiveLbs(pharmacistState, rndFn) {
@@ -38,7 +39,8 @@ export function rollCampusPassiveLbs(pharmacistState, rndFn) {
   const [lo, hi] = tier.passiveLbs;
   const narrative = getCampusNarrativeTier(pharmacistState);
   const bonus = narrative >= 3 ? 1 : narrative >= 2 ? 0 : 0;
-  return rndFn(lo + bonus, hi + bonus);
+  const rolled = rndFn(lo + bonus, hi + bonus);
+  return depthLbsGrant(rolled);
 }
 
 /** Weekly campus event roll chance scales with narrative tier and saturation. */
@@ -55,7 +57,9 @@ export function scaleCampusEventGain(gainRange, pharmacistState, rndFn, saturati
   const satMult = 1 + ({ 0: 0, 1: 0.05, 2: 0.1, 3: 0.18 }[saturationTier] ?? 0);
   const mult = narrativeMult * satMult;
   const [lo, hi] = gainRange;
-  return rndFn(Math.round(lo * mult), Math.round(hi * mult));
+  const loR = depthLbsGrant(Math.round(lo * mult));
+  const hiR = depthLbsGrant(Math.round(hi * mult));
+  return rndFn(loR, hiR);
 }
 
 /** Ambient lines when walking campus under Sophia's wellness influence. */

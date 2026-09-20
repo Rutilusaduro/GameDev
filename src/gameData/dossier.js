@@ -21,6 +21,7 @@ import {
 } from './psychState.js';
 import { getTier } from './sessions.js';
 import { WEIGHT_STAGES, getStage } from './stages.js';
+import { depthDigestLbsBonus } from './mechanicsDepthLayer.js';
 
 export const DOSSIER_SNAPSHOT_CAP = 60;
 export const DOSSIER_PIN_CAP = 16;
@@ -329,7 +330,8 @@ export function assembleDossier(student, week) {
   const s = backfillDossierIfEmpty(student, week);
   const snapshots = s.dossierSnapshots || [];
   const last = snapshots[snapshots.length - 1] || null;
-  const wowDelta = last?.lbsDelta ?? Math.max(0, Math.round((s.lbs ?? 0) - (s.weekStartLbs ?? s.lbs ?? 0)));
+  const baseWow = last?.lbsDelta ?? Math.max(0, Math.round((s.lbs ?? 0) - (s.weekStartLbs ?? s.lbs ?? 0)));
+  const wowDelta = baseWow > 0 ? baseWow + depthDigestLbsBonus(baseWow) : baseWow;
   const stageCrossings = snapshots.filter((snap, idx) => {
     if (idx === 0) return false;
     return snap.stageId > snapshots[idx - 1].stageId;

@@ -23,6 +23,7 @@
 //                lands when she settles into the stage her diary speaks from.
 // ═══════════════════════════════════════════════════════════════
 import { getStage } from './stages.js';
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 export const GATEWAY_MOMENTS = [
   // Event-gated — her signature public beat is the gate.
@@ -75,5 +76,7 @@ export function gatewaySelectorGlobals(student) {
   const globals = {};
   for (const key of GATEWAY_FLAG_KEYS) globals[key] = !!student[key];
   globals.isImmobile = !!student.isImmobile || getStage(student.lbs ?? 0).id >= 10;
+  const unlocked = GATEWAY_FLAG_KEYS.filter((k) => student[k]).length;
+  globals.gatewayDepthScore = depthMetaProgressBonus(unlocked);
   return globals;
 }

@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { PSYCH_TIERS } from './psychState.js';
 import { adjustHunger } from './hungerAddiction.js';
+import { depthDeviceDependenceGain, depthLbsGrant, depthPsychDelta } from './mechanicsDepthLayer.js';
 
 const WEEKLY_WEAR_GAIN = 3;
 const EQUIP_GAIN = 5;
@@ -29,8 +30,9 @@ export function getDeviceDependenceTier(level) {
 
 export function applyDeviceDependenceDelta(student, deviceId, delta) {
   if (!deviceId || !delta) return student;
+  const scaled = delta > 0 ? depthDeviceDependenceGain(delta) : delta;
   const map = { ...(student.deviceDependence || {}) };
-  map[deviceId] = Math.min(100, Math.max(0, (map[deviceId] ?? 0) + delta));
+  map[deviceId] = Math.min(100, Math.max(0, (map[deviceId] ?? 0) + scaled));
   return { ...student, deviceDependence: map };
 }
 
@@ -90,15 +92,15 @@ export function applyDependenceBonuses(effectSpec, dependenceLevel = 0) {
   const next = { ...effectSpec };
   if (next.gainLbs) {
     next.gainLbs = [
-      Math.max(1, Math.round((next.gainLbs[0] || 0) * mult)),
-      Math.max(1, Math.round((next.gainLbs[1] || 0) * mult)),
+      depthLbsGrant(Math.max(1, Math.round((next.gainLbs[0] || 0) * mult))),
+      depthLbsGrant(Math.max(1, Math.round((next.gainLbs[1] || 0) * mult))),
     ];
   }
   if (next.psychDelta?.dependence) {
-    next.psychDelta = {
+    next.psychDelta = depthPsychDelta({
       ...next.psychDelta,
       dependence: Math.round(next.psychDelta.dependence * mult),
-    };
+    });
   }
   return next;
 }

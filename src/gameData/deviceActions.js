@@ -3,6 +3,26 @@
 // ═══════════════════════════════════════════════════════════════
 import { getEquippedDeviceIds } from './deviceEffects.js';
 import { canStudentUseDevice } from './deviceGating.js';
+import { depthPsychDelta } from './mechanicsDepthLayer.js';
+
+const INLINE_ACTION_EFFECTS = {
+  sleep_feed_gentle: { gainLbs: [2, 4], psychDelta: { dependence: 2 } },
+  sleep_feed_aggressive: {
+    gainLbs: [5, 9],
+    bodyOverride: { stateType: 'bloated', stageBump: 2, durationWeeks: 1 },
+    psychDelta: { dependence: 4 },
+  },
+};
+
+/** Inline device-session effects (HallPass sleep-feed paths). Lbs scaled in applyDeviceEffect. */
+export function buildDeviceActionEffect(actionId) {
+  const raw = INLINE_ACTION_EFFECTS[actionId];
+  if (!raw) return null;
+  return {
+    ...raw,
+    psychDelta: raw.psychDelta ? depthPsychDelta(raw.psychDelta) : undefined,
+  };
+}
 
 export const DEVICE_ACTIONS = [
   {

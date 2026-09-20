@@ -2,6 +2,7 @@
 // OPPOSITION HEARINGS — removal & emergency (§30.6)
 // Text resolved via text engine pools in opposition/aibHearing.js
 // ═══════════════════════════════════════════════════════════════
+import { depthHearingResolveHit, depthHearingSignedDelta } from './mechanicsDepthLayer.js';
 
 export const REMOVAL_HEARING = {
   title: 'Resident Removal Hearing',
@@ -132,11 +133,22 @@ export function hearingChoicesForPhase(def, phaseIdx, owned = {}, type = 'remova
 
 export function pickHearingEnding(hearingDef, history, cover = 0) {
   const ending = hearingDef.endings.find((e) => e.condition(history)) || hearingDef.endings[hearingDef.endings.length - 1];
-  if (!ending) return ending;
+  const scaled = scaleHearingEnding(ending);
+  if (!scaled) return scaled;
   const shield = Math.max(0, cover || 0);
-  if (!shield) return ending;
+  if (!shield) return scaled;
   return {
-    ...ending,
-    scrutinyDelta: (ending.scrutinyDelta || 0) - shield * 4,
+    ...scaled,
+    scrutinyDelta: (scaled.scrutinyDelta || 0) - shield * 4,
   };
+}
+
+export function scaleHearingEnding(ending) {
+  if (!ending) return ending;
+  const out = { ...ending };
+  if (out.scrutinyDelta != null) out.scrutinyDelta = depthHearingSignedDelta(out.scrutinyDelta);
+  if (out.scandalDelta != null) out.scandalDelta = depthHearingSignedDelta(out.scandalDelta);
+  if (out.resolveHitAll) out.resolveHitAll = depthHearingResolveHit(out.resolveHitAll);
+  if (out.memberResolveHit) out.memberResolveHit = depthHearingResolveHit(out.memberResolveHit);
+  return out;
 }

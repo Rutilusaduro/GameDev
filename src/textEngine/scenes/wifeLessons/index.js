@@ -1,10 +1,13 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect, A7 Artisan
 // Wife Lessons (Flabwife) — engine bridge from legacy WL_LESSONS / WL_DIALOGUES.
 import { registerPool, render } from '../../engine.js';
+import { registerDecomposedPool } from '../decomposePools.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
-import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/evolvedForms.js';
+import { wifeLessonsV2DepthChance } from '../../../gameData/sessionTextDepth.js';
+import { WL_LESSONS, WL_DIALOGUES, WL_CONFIG } from '../../../gameData/wifeLessonsData.js';
 import { getWlMomDialogueDepth, mergeWlDialogueEntry } from '../../../gameData/wlMomDialogueDepth.js';
+import { lintWildcardVariant } from '../legacyPoolPolicy.js';
 
 const DAUGHTERS = new Set(['Emma', 'Chloe', 'Kezia', 'Lila']);
 
@@ -12,33 +15,45 @@ function wlStageNum(person, stageIdx) {
   return DAUGHTERS.has(person) ? stageIdx + WL_CONFIG.daughtersFrom : stageIdx + 1;
 }
 
+function registerTalkLine(poolKey, line) {
+  const prose = (line || '').trim();
+  if (!prose) return;
+  const bodyKey = `${poolKey}.body`;
+  registerDecomposedPool(bodyKey, prose);
+  registerPool(poolKey, [
+    lintWildcardVariant('{wl.talk.warmOpen|prefix:} {wl.talk.raPresence|prefix: }'),
+  ]);
+}
+
 function registerDialogueEntry(person, stageIdx, entry) {
   const stage = wlStageNum(person, stageIdx);
   const prefix = `wifeLessons.talk.${person}.s${stage}`;
-  if (entry.greeting) {
-    registerPool(`${prefix}.greeting`, [{ when: {}, text: [entry.greeting] }]);
-  }
-  if (entry.cappedGreeting) {
-    registerPool(`${prefix}.capped`, [{ when: {}, text: [entry.cappedGreeting] }]);
-  }
-  if (entry.overtookGreeting) {
-    registerPool(`${prefix}.overtook`, [{ when: {}, text: [entry.overtookGreeting] }]);
-  }
+  if (entry.greeting) registerTalkLine(`${prefix}.greeting`, entry.greeting);
+  if (entry.cappedGreeting) registerTalkLine(`${prefix}.capped`, entry.cappedGreeting);
+  if (entry.overtookGreeting) registerTalkLine(`${prefix}.overtook`, entry.overtookGreeting);
   entry.options?.forEach((opt, oi) => {
-    if (opt.text) registerPool(`${prefix}.opt${oi}`, [{ when: {}, text: [opt.text] }]);
+    if (opt.text) registerTalkLine(`${prefix}.opt${oi}`, opt.text);
     opt.subs?.forEach((sub, si) => {
-      if (sub.text) registerPool(`${prefix}.opt${oi}.sub${si}`, [{ when: {}, text: [sub.text] }]);
+      if (sub.text) registerTalkLine(`${prefix}.opt${oi}.sub${si}`, sub.text);
     });
   });
+}
+
+function registerLessonBeat(poolKey, prose) {
+  const text = (prose || '').trim();
+  if (!text) return;
+  const bodyKey = `${poolKey}.body`;
+  registerDecomposedPool(bodyKey, text);
+  registerPool(poolKey, [
+    lintWildcardVariant('{wl.lesson.aroma|prefix:} {wl.lesson.mjDoctrine|prefix: } {wl.lesson.circleEat|prefix: }'),
+  ]);
 }
 
 for (const [stage, lessons] of Object.entries(WL_LESSONS)) {
   if (!Array.isArray(lessons)) continue;
   for (const lesson of lessons) {
     if (!lesson?.text) continue;
-    registerPool(`wifeLessons.lesson.s${stage}.${lesson.id}`, [
-      { when: {}, text: [lesson.text] },
-    ]);
+    registerLessonBeat(`wifeLessons.lesson.s${stage}.${lesson.id}`, lesson.text);
   }
 }
 
@@ -67,24 +82,54 @@ export function renderWifeLessonBeat(stage, lesson, mjStudent, week = 1, opts = 
     return appendV2Depth(composed, 'wifeLessons', ctx, v2DepthChance ?? 0.32);
   }
   const key = `wifeLessons.lesson.s${stage}.${lesson.id}`;
-  const base = render(`{${key}}`, ctx, { trace: trace || null })?.trim() || legacy;
-  return appendV2Depth(base, 'wifeLessons', ctx, v2DepthChance ?? 0.32);
+  const base = render(`{${key}}`, ctx, { trace: (trace || opts.trace) || null })?.trim() || legacy;
+  return appendV2Depth(base, 'wifeLessons', ctx, opts.v2DepthChance ?? wifeLessonsV2DepthChance(v2DepthChance ?? 0.32));
 }
 
-/** 1-on-1 talk line — composed pool first, leftover line only if unresolved. */
-export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 1, opts = {}) {
+/** Engine pool key for a talk beat (wlStage = game stage 1–8). */
+export function wlTalkPoolKey(person, wlStage, { greetingKind = 'greeting', optionIdx, subIdx } = {}) {
+  const isDaughter = DAUGHTERS.has(person);
+  const arrIdx = isDaughter ? wlStage - WL_CONFIG.daughtersFrom : wlStage - 1;
+  const s = wlStageNum(person, Math.max(0, arrIdx));
+  const prefix = `wifeLessons.talk.${person}.s${s}`;
+  if (subIdx != null && optionIdx != null) return `${prefix}.opt${optionIdx}.sub${subIdx}`;
+  if (optionIdx != null) return `${prefix}.opt${optionIdx}`;
+  if (greetingKind === 'capped') return `${prefix}.capped`;
+  if (greetingKind === 'overtook') return `${prefix}.overtook`;
+  return `${prefix}.greeting`;
+}
+
+/** Talk line from leftover composed pool, then named pool, then legacy. */
+export function renderWifeLessonTalk(poolKey, legacyLine, person, wlStage, mjStudent, week = 1, opts = {}) {
+  if (!poolKey && !legacyLine?.trim()) return '';
   const ctx = buildTextContext({
     subject: mjStudent,
     week,
-    globals: { wlStage: stage, wlPerson: person, ...(opts.globals || {}) },
+    globals: { wlStage, wlPerson: person, wlTalkPool: poolKey, ...(opts.globals || {}) },
+    ...opts,
   });
-  const slot = opts.slot === 'greeting' ? 'wl.talk.greeting' : 'wl.talk.reply';
-  const composed = render(`{${slot}}`, ctx)?.trim();
-  if (composed && !composed.includes('{unresolved}')) {
-    return appendV2Depth(composed, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
+  const leftoverSlot = opts.slot === 'greeting' ? 'wl.talk.greeting' : 'wl.talk.reply';
+  const leftover = render(`{${leftoverSlot}}`, ctx)?.trim();
+  if (leftover && !leftover.includes('{unresolved}')) {
+    return appendV2Depth(leftover, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? wifeLessonsV2DepthChance(0.26));
   }
-  if (!line?.trim()) return '';
-  return appendV2Depth(line.trim(), 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? 0.26);
+  let base = (legacyLine || '').trim();
+  if (poolKey) {
+    try {
+      const rendered = render(`{${poolKey}}`, ctx)?.trim();
+      if (rendered && !rendered.includes('{unresolved}')) base = rendered;
+    } catch {
+      /* legacy */
+    }
+  }
+  if (!base) return '';
+  return appendV2Depth(base, 'wifeLessonsTalk', ctx, opts.v2DepthChance ?? wifeLessonsV2DepthChance(0.28));
+}
+
+/** @deprecated prefer renderWifeLessonTalk with wlTalkPoolKey */
+export function renderWifeLessonTalkLine(line, person, stage, mjStudent, week = 1, opts = {}) {
+  const poolKey = opts.poolKey || null;
+  return renderWifeLessonTalk(poolKey, line, person, stage, mjStudent, week, opts);
 }
 
 export const WIFE_LESSONS_MIGRATION = {

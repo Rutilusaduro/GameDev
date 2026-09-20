@@ -4,9 +4,9 @@ import { playHallPassSound } from '../gameData/hallPassAudio.js';
 import { ModalOverlay } from './ModalOverlay.jsx';
 import { EVOLVED_EVENTS, EVOLVED_FORM_META, HOMEROOM_SUSPICION_DELTAS } from '../gameData/evolvedForms.js';
 import { evolvedChoicesForPhase } from '../gameData/evolvedFloorExtras.js';
-import { renderEvolvedEventProse } from '../textEngine/scenes/evolved/index.js';
+import { renderEvolvedEventProse, renderEvolvedEventPhase } from '../textEngine/scenes/evolved/index.js';
 
-export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true, owned = {} }){
+export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPartnerId, evolvedEventState, hallAmbiancePeak = 0, makeEvolvedEventChoice, openSalonHub, openGalleryHub, push, setChallengeState, setDeliveryState, setEvolvedEventState, setPresentationState, startCollabStream, startEatingContest, startFairDay, startRankedSession, startSumoMatch, startStream, students, week = 1, soundEnabled = true, owned = {} }){
         const{studentId,formId,stageIdx,phaseIdx,history,logLines,done,endingText,startsContest,startsMatch,startsStream,startsFairDay,startsSession,startsPresentation,startsDelivery,startsChallenge,startsSalon,startsGallery}=evolvedEventState;
   useEffect(() => { playHallPassSound('tier', soundEnabled); }, [soundEnabled, studentId, formId, stageIdx, phaseIdx]);
         const s=students.find(st=>st.id===studentId);
@@ -15,10 +15,11 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
         const phase=!done?evDef.phases[phaseIdx]:null;
         const collabPartner=collabPartnerId?students.find(st=>st.id===collabPartnerId):null;
         const researchSubject=(formId==='psych_researcher'&&s?.researchSubjectId!=null)?students.find(st=>st.id===s.researchSubjectId):null;
-        const rawPhaseText=phase?(typeof phase.text==="function"?phase.text(history,s,collabPartner||researchSubject):phase.text):null;
-        const depthOpts={formId,stageIdx,phaseIdx,v2DepthChance:0.28};
-        const phaseText=!done?renderEvolvedEventProse(rawPhaseText,s,week,{...depthOpts,preferComposed:true}):null;
-        const endingRendered=endingText?renderEvolvedEventProse(endingText,s,week,{...depthOpts,preferEnding:true,v2DepthChance:0.32}):null;
+        const eventRef=collabPartner||researchSubject||null;
+        const depthOpts={formId,stageIdx,phaseIdx,v2DepthChance:0.28,globals:{hallAmbiancePeak}};
+        const composedPhase=phase?renderEvolvedEventProse(null,s,week,{...depthOpts,preferComposed:true}):null;
+        const phaseText=!done?(composedPhase||renderEvolvedEventPhase(s,week,formId,stageIdx,phaseIdx,history,eventRef,depthOpts)):null;
+        const endingRendered=endingText?(renderEvolvedEventProse(endingText,s,week,{...depthOpts,preferEnding:true,v2DepthChance:0.32})||endingText):null;
         const evMeta=EVOLVED_FORM_META[formId];
         const accentColor=evMeta?.color||"#7030c0";
         return(
@@ -64,7 +65,7 @@ export function EvolvedEventModal({ batchBakerState, closeEvolvedEvent, collabPa
               {logLines.length>0&&(
                 <div style={{marginBottom:12}}>
                   {logLines.map((line,i)=>(
-                    <div key={i} style={{fontSize:11,color:"#7060a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}30`}}>{renderEvolvedEventProse(line,s,week,{...depthOpts,preferResult:true,v2DepthChance:0.18})}</div>
+                    <div key={i} style={{fontSize:11,color:"#7060a0",lineHeight:1.75,marginBottom:6,fontStyle:"italic",paddingLeft:10,borderLeft:`2px solid ${accentColor}30`}}>{renderEvolvedEventProse(line,s,week,{...depthOpts,preferResult:true,v2DepthChance:0.18})||line}</div>
                   ))}
                 </div>
               )}

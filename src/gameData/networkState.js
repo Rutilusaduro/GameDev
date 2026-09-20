@@ -2,6 +2,7 @@
 // TALIA NETWORK — stage 2+ automation mesh
 // ═══════════════════════════════════════════════════════════════
 import { getCircuitBoard } from './inventionUpgrades.js';
+import { depthLbsGrant, depthPsychDelta } from './mechanicsDepthLayer.js';
 
 export const NETWORK_NODE_TYPES = [
   { id: 'relay', label: 'Calorie Relay', desc: 'Routes passive drip to the roster each week.' },
@@ -93,8 +94,12 @@ export function tickNetworkWeek(labState, students, week, rng = Math.random) {
 
   if (automationTotal >= threshold && visible.length && rng() < 0.55) {
     const target = visible[Math.floor(rng() * visible.length)];
-    const gainLbs = Math.max(1, Math.floor(automationTotal / 35) + rndBand(rng, 1, 2));
-    studentDeltas.push({ studentId: target.id, gainLbs, psychDelta: { dependence: 1 } });
+    const gainLbs = depthLbsGrant(Math.max(1, Math.floor(automationTotal / 35) + rndBand(rng, 1, 2)));
+    studentDeltas.push({
+      studentId: target.id,
+      gainLbs,
+      psychDelta: depthPsychDelta({ dependence: 1 }),
+    });
     lines.push(`🌐 Mesh drip — ${target.name} absorbs ${gainLbs} lbs from automated routing.`);
   }
 

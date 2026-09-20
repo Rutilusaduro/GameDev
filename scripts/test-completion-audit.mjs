@@ -3,12 +3,29 @@
 import assert from 'assert';
 import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { execSync } from 'child_process';
 import { DORMS, DORM_LIST, dormUnlocksForWeek, STUDENT_HOME_DORM } from '../src/gameData/dorms.js';
 import { INIT_STUDENTS } from '../src/gameData/students.js';
 import { RA_RANKS } from '../src/gameData/content.js';
 
 const root = join(import.meta.dirname, '..');
 const read = (rel) => readFileSync(join(root, rel), 'utf8');
+
+/** Monolith + MIGRATION.md extracts — prose gates that span extracted gameData files. */
+function gameDataCorpus() {
+  return [
+    'src/gameData/evolvedForms.js',
+    'src/gameData/feederSubjectJournals.js',
+    'src/gameData/homeroomEvents.js',
+    'src/gameData/nadiaSubjectJournals.js',
+    'src/gameData/evolvedEvents.js',
+    'src/gameData/competitiveGainerData.js',
+    'src/gameData/fairQueenData.js',
+    'src/gameData/evolvedReactionsOutfits.js',
+    'src/gameData/evolvedActivityData.js',
+    'src/gameData/evolutionUiData.js',
+  ].map(read).join('\n');
+}
 
 function walkSrcFiles(dir = join(root, 'src')) {
   const out = [];
@@ -99,7 +116,7 @@ check('community-researcher-cassidy', () => {
 });
 
 check('community-researcher-activity-prose', () => {
-  const src = read('src/gameData/evolvedForms.js');
+  const src = read('src/gameData/evolvedActivityData.js');
   const activityBlock = src.slice(src.indexOf('export const EVOLVED_ACTIVITY_TEXT'));
   assert.match(activityBlock, /community_researcher:\[\s*\n\s*\(s\)=>`She stops by your RA desk/);
   assert.match(activityBlock, /intake record on floor immersion/);
@@ -868,13 +885,14 @@ check('cg-chat-ra-framing', () => {
   assert.match(desk, /isRa:false/);
   assert.match(desk, /isRa:true/);
   assert.doesNotMatch(desk, /isProf:/);
-  assert.match(desk, /CG_CHAT_TEMPLATES\.residents/);
+  assert.match(desk, /renderCGResidentReply/);
+  assert.match(desk, /renderCGPriyaPost/);
   assert.doesNotMatch(desk, /CG_CHAT_TEMPLATES\.girls/);
   assert.match(read('src/gameData/competitiveGainerState.js'), /cgIsRaMessage/);
-  const evolved = read('src/gameData/evolvedForms.js');
-  assert.match(evolved, /residents:\{/);
-  assert.match(evolved, /per category where any resident is ahead/);
-  assert.doesNotMatch(evolved, /CG_CHAT_TEMPLATES\.girls|Per-girl reply templates|any girl is ahead/i);
+  const cgData = read('src/gameData/competitiveGainerData.js');
+  assert.match(cgData, /residents:\{/);
+  assert.match(cgData, /per category where any resident is ahead/);
+  assert.doesNotMatch(cgData, /CG_CHAT_TEMPLATES\.girls|Per-girl reply templates|any girl is ahead/i);
   const cgText = read('src/gameData/competitiveGainerText.js');
   assert.match(cgText, /\{residentName\}/);
   assert.doesNotMatch(cgText, /\{girlName\}/);
@@ -1181,7 +1199,7 @@ check('floor-events-module', () => {
 });
 
 check('chapter-hostess-resident-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(evolved, /Your hall residents are here/);
   assert.doesNotMatch(evolved, /sorority students|Your sorority students/i);
 });
@@ -1348,7 +1366,7 @@ check('dorm-diary-stream-resident-framing', () => {
   const diary = read('src/textEngine/scenes/diaryPhaseD.js');
   assert.match(diary, /Chloé's dinners/);
   assert.doesNotMatch(diary, /French girl's dinners/i);
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(evolved, /Chloé's dinners/);
   assert.doesNotMatch(evolved, /French girl's dinners/i);
   const feast = read('src/textEngine/scenes/hunt/feastStageUp.js');
@@ -1407,7 +1425,7 @@ check('nadia-journal-framing', () => {
 });
 
 check('psych-researcher-resident-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const content = read('src/gameData/content.js');
   const diary = read('src/textEngine/scenes/diary.js');
   assert.match(evolved, /It involves a focus resident/);
@@ -1445,7 +1463,7 @@ check('fiona-artsy-model-framing', () => {
 check('fiona-gallery-model-ui', () => {
   const modal = read('src/components/ArtisanGalleryModal.jsx');
   const gallery = read('src/gameData/fionaGallery.js');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const phaseD = read('src/textEngine/scenes/diaryPhaseD.js');
   const salon = read('src/textEngine/scenes/salonGallerySceneDepth.js');
   const depth = read('src/textEngine/scenes/diaryPhaseDSceneDepth.js');
@@ -1538,7 +1556,7 @@ check('narrative-residents-not-students', () => {
   const squad = read('src/textEngine/scenes/squadStageCoverage.js');
   const hunt = read('src/textEngine/scenes/hunt/depth.js');
   const lilith = read('src/gameData/lilith.js');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const growth = read('src/textEngine/scenes/growthEvent/fragments.js');
   const diary = read('src/textEngine/scenes/diary.js');
   assert.match(narrative, /Residents orbit her/);
@@ -1564,7 +1582,7 @@ check('narrative-residents-not-students', () => {
 });
 
 check('nadia-feedee-blob-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const diary = read('src/textEngine/scenes/diary.js');
   const content = read('src/gameData/content.js');
   assert.match(evolved, /Resident Recruitment Failure/);
@@ -1579,7 +1597,7 @@ check('nadia-feedee-blob-framing', () => {
 });
 
 check('arc-subject-resident-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   const diary = read('src/textEngine/scenes/diary.js');
   const growth = read('src/textEngine/scenes/growthEvent/personas.js');
   const growthFr = read('src/textEngine/scenes/growthEvent/fragments.js');
@@ -1604,24 +1622,26 @@ check('arc-subject-resident-framing', () => {
 });
 
 check('wife-lessons-hunt-framing', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
-  assert.match(evolved, /as the daughters led the lesson/);
-  assert.match(evolved, /their daughters proudly serving/);
-  assert.match(evolved, /my daughters seemed to enjoy/);
-  assert.match(evolved, /finally grew a stomach worth feeding/);
-  assert.doesNotMatch(evolved, /as the girls led the lesson|the girls proudly serving|like a real girl|the girls seemed to enjoy them/i);
-  assert.doesNotMatch(evolved, /Both girls have reached|Both girls hit|Both girls have hit/i);
-  const wlNpcs = evolved.match(/export const WIFE_LESSONS_NPCS = \{[\s\S]*?\n\};/)?.[0] ?? '';
-  assert.ok(wlNpcs, 'evolvedForms.js must contain WIFE_LESSONS_NPCS block');
+  const wlData = read('src/gameData/wifeLessonsData.js');
+  const wlProse = gameDataCorpus() + '\n' + wlData;
+  assert.match(wlProse, /as the daughters led the lesson/);
+  assert.match(wlProse, /their daughters proudly serving/);
+  assert.match(wlProse, /my daughters seemed to enjoy/);
+  assert.match(wlProse, /finally grew a stomach worth feeding/);
+  assert.doesNotMatch(wlProse, /as the girls led the lesson|the girls proudly serving|like a real girl|the girls seemed to enjoy them/i);
+  assert.doesNotMatch(wlProse, /Both girls have reached|Both girls hit|Both girls have hit/i);
+  const wlNpcs = wlData.match(/export const WIFE_LESSONS_NPCS = \{[\s\S]*?\n\};/)?.[0] ?? '';
+  assert.ok(wlNpcs, 'wifeLessonsData.js must contain WIFE_LESSONS_NPCS block');
   assert.match(wlNpcs, /Emma is 19/);
   assert.match(wlNpcs, /Claire is 18/);
   assert.match(wlNpcs, /packed lunches/);
   assert.match(wlNpcs, /reinforced chairs at the dining table/);
   assert.doesNotMatch(wlNpcs, /school skirt|school desk|school lunches|school uniform|school clothes|Emma is 16|Claire is 14|Kezia is 17|Taylor is 16|Madison is 17|Sofia is 16/i);
-  assert.match(evolved, /How's the semester/);
-  assert.doesNotMatch(evolved, /How's school\./);
-  assert.match(evolved, /belongs to the hall anymore/);
-  assert.doesNotMatch(evolved, /belongs to the school anymore/i);
+  const evolvedCorpus = gameDataCorpus();
+  assert.match(evolvedCorpus, /How's the semester/);
+  assert.doesNotMatch(evolvedCorpus, /How's school\./);
+  assert.match(evolvedCorpus, /belongs to the hall anymore/);
+  assert.doesNotMatch(evolvedCorpus, /belongs to the school anymore/i);
   const feast = read('src/textEngine/scenes/hunt/feastStageUp.js');
   assert.match(feast, /delivery driver/);
   assert.match(feast, /deliciously fat Mia/);
@@ -1639,7 +1659,7 @@ check('content-stage-journal-framing', () => {
   assert.match(content, /the fastest on this track/);
   assert.match(content, /wider than some teammates' whole bodies/);
   assert.doesNotMatch(content, /skinny for a girl who grew up|the girl with jam for every mood|intervention girls came|the fastest girl on this track|the fastest girl on the track|wider than some girls' whole bodies/);
-  const journals = read('src/gameData/evolvedForms.js');
+  const journals = read('src/gameData/feederSubjectJournals.js');
   assert.match(journals, /ultimate hall appetite case study/);
   assert.match(journals, /letting the RA stuff me like this/);
   assert.doesNotMatch(journals, /appetite psychology|letting a resident stuff me like this/);
@@ -1656,7 +1676,7 @@ check('early-portrait-journal-framing', () => {
   const dreams = read('src/textEngine/scenes/v2/dreams/depth.js');
   assert.match(dreams, /feeds her reflection in the glass/);
   assert.doesNotMatch(dreams, /feeds the girl in the glass/);
-  const journals = read('src/gameData/evolvedForms.js');
+  const journals = read('src/gameData/feederSubjectJournals.js');
   assert.match(journals, /floor program sounded harmless/);
   assert.match(journals, /hall meal season/);
   assert.match(journals, /Straight-bodied frames like mine adapt quickly/);
@@ -1679,7 +1699,7 @@ check('campus-system-resident-framing', () => {
   const opp = read('src/textEngine/scenes/opposition/oppositionMonolithFragmentDepth.js');
   assert.match(opp, /your resident performs hunger/);
   assert.doesNotMatch(opp, /your girl performs hunger/);
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(evolved, /competitor from State/);
   assert.match(evolved, /Two squadmates cried/);
   assert.doesNotMatch(evolved, /The girl from State|Two girls cried\. One said she'd been waiting years/i);
@@ -1742,11 +1762,7 @@ check('campus-no-possession-framing', () => {
 });
 
 check('feeder-journal-no-placeholders', () => {
-  const evolved = read('src/gameData/evolvedForms.js');
-  const journals = evolved.slice(
-    evolved.indexOf('export const FEEDER_SUBJECT_JOURNALS = {'),
-    evolved.indexOf('export const NADIA_SUBJECT_JOURNALS'),
-  );
+  const journals = read('src/gameData/feederSubjectJournals.js');
   assert.doesNotMatch(journals, /\[Name\]/);
   assert.match(journals, /my RA|My RA/);
 });
@@ -1780,7 +1796,7 @@ check('picker-resident-framing-ui', () => {
   const picker = read('src/components/PickerModals.jsx');
   const detail = read('src/views/StudentDetailView.jsx');
   const cultivator = read('src/components/CultivatorModal.jsx');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(picker, /HALL LOG FOCUS/);
   assert.match(picker, /Select a Resident/);
   assert.match(picker, /No eligible residents/);
@@ -1850,7 +1866,7 @@ check('nadia-sophia-baseline-framing', () => {
   assert.doesNotMatch(early, /Subject error|She is the subject|Control group contamination/i);
   const attitude = read('src/textEngine/scenes/attitude.js');
   const dinnerDepth = read('src/textEngine/scenes/dinner/dinnerReactionsDepth.js');
-  const evolved = read('src/gameData/evolvedForms.js');
+  const evolved = gameDataCorpus();
   assert.match(attitude, /resident increasingly comfortable with the resident being herself/);
   assert.match(dinnerDepth, /Resident demonstrates optimal satiety response/);
   assert.match(evolved, /Resident demonstrates continued voluntary intake increase/);
@@ -1903,7 +1919,7 @@ check('homeroom-resident-framing', () => {
   const activity = read('src/textEngine/scenes/homeroom/homeroomActivityDepth.js');
   assert.match(activity, /the residents have been waiting/);
   assert.doesNotMatch(activity, /the girls have been waiting/i);
-  const homeroom = read('src/gameData/evolvedForms.js');
+  const homeroom = gameDataCorpus();
   assert.match(homeroom, /The residents know what this is/);
   assert.match(homeroom, /Keep it to the residents/);
   assert.match(homeroom, /wellness-program aligned/);
@@ -2029,7 +2045,6 @@ check('cassidy-swimmer-voice', () => {
     'src/textEngine/scenes/v2/echo/echoSceneDepth.js',
     'src/textEngine/scenes/recordingSession/recordingSessionWrapDepth.js',
     'src/gameData/skills.js',
-    'src/gameData/evolvedForms.js',
   ];
 
   for (const file of CASSIDY_NAMED_FILES) {
@@ -2071,11 +2086,11 @@ check('cassidy-swimmer-voice', () => {
     }
   }
 
-  const evolvedSrc = read('src/gameData/evolvedForms.js');
+  const evolvedSrc = gameDataCorpus();
   const crJournal = evolvedSrc.match(/community_researcher:\[\s*\n\s*"First floor session[\s\S]*?\],\s*\n\};/);
-  assert.ok(crJournal, 'evolvedForms.js must contain community_researcher journal block');
+  assert.ok(crJournal, 'evolved gameData must contain community_researcher journal block');
   const crEvents = evolvedSrc.match(/community_researcher:\[\s*\n\s*\/\/ stageIdx 0[\s\S]*?\n  \],\n\n  \/\/ ── QUIET/);
-  assert.ok(crEvents, 'evolvedForms.js must contain community_researcher EVOLVED_EVENTS block');
+  assert.ok(crEvents, 'evolvedEvents.js must contain community_researcher EVOLVED_EVENTS block');
   const crOutfits = evolvedSrc.match(/community_researcher:\[\s*\n\s*"Team jacket[\s\S]*?\],\s*\n\};/);
   assert.ok(crOutfits, 'evolvedForms.js must contain community_researcher outfit block');
   for (const block of [crJournal[0], crEvents[0], crOutfits[0]]) {
@@ -2886,6 +2901,137 @@ check('resident-framing-ui', () => {
   const content = read('src/gameData/content.js');
   assert.match(content, /published hall log, a defended season report chapter/);
   assert.doesNotMatch(content, /published field notes, a defended season report/i);
+});
+
+check('ra-dorm-pivot-mechanics-ambiance', () => {
+  const layer = read('src/gameData/mechanicsDepthLayer.js');
+  assert.match(layer, /MECHANICS_DEPTH_SCALE\s*=\s*1\.5/);
+  const reg = read('src/gameData/mechanicsDepthRegistry.js');
+  assert.match(reg, /id:\s*'hallBlueprint'/);
+  assert.match(reg, /id:\s*'hallAmbiance'/);
+  const hallPass = read('src/HallPass.jsx');
+  assert.match(hallPass, /rollWeeklyAmbiancePulse/);
+  assert.match(hallPass, /hall\.ambiance\.pulse\./);
+});
+
+check('ra-dorm-pivot-blueprint-hall', () => {
+  assert.ok(existsSync(join(root, 'src/components/HallBlueprint.jsx')));
+  assert.ok(existsSync(join(root, 'src/gameData/hallBlueprint.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/hallAmbiance.js')));
+  const lounge = read('src/views/HallLoungeView.jsx');
+  assert.match(lounge, /HallBlueprint/);
+  assert.match(lounge, /renderHallRoomBlurb/);
+});
+
+check('ra-dorm-pivot-text-engine-bridges', () => {
+  const bridgeScript = read('scripts/test-text-bridges.mjs');
+  assert.match(bridgeScript, /hallBlueprint\/index\.js/);
+  assert.match(bridgeScript, /evolved\/eventPools\.js/);
+  assert.match(bridgeScript, /competitiveGainer\/cgScenePools\.js/);
+  const sceneDir = join(root, 'src/textEngine/scenes');
+  const passes = readdirSync(sceneDir).filter((f) => /^raPivotProseDepthPass\d+\.js$/.test(f));
+  const passNums = passes.map((f) => Number(f.match(/Pass(\d+)/)[1]));
+  const maxPass = Math.max(...passNums, 0);
+  assert.ok(maxPass >= 120, `expected prose pass index >=120, max=${maxPass} (n=${passes.length} files)`);
+  assert.ok(existsSync(join(root, 'scripts/test-ra-pivot-objective.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-spot-render.mjs')));
+  assert.ok(existsSync(join(root, 'src/gameData/homeroomEvents.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/feederSubjectJournals.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/evolvedEvents.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/evolvedReactionsOutfits.js')));
+  assert.ok(existsSync(join(root, 'src/gameData/evolvedActivityData.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/lessonFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/eventPhaseFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/talkFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/conferenceFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/activityFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/dayModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgChatFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/researchJournal/journalFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/rankedSession/sessionFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/reactionFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/activityModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-modular-pilot.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-modular-coverage.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-modular-late-game.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-overhaul-sampling.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-fragment-load-order.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-modular-namespace-coverage.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgSceneFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/cultivator/cultivatorFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgRaReplyFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/fullnessFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/aftermathFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/rankedSession/sessionPayoffFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/legacyPoolPolicy.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-legacy-suppression-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-migration-bridge-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusEvent/campusEventFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/dinner/dinnerDishFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/hunt/huntFeastFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionOfferFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/outfitFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/evolved/evolutionBlurbFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/tapOutFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/unlockScene/unlockFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/hallBlueprint/blueprintModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/hallBlueprint/hallAmbianceModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgMeasurementModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusExplorationModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/session/blobIntroFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/batchBakerFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/trainingModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/photoBoostModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkSuggestIndulgenceModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkSuggestGrowthModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/weeklyEvent/weeklyEventLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/campusEvent/campusEventLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/growthEvent/growthEventLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-weekly-events-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-social-scenes-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-growth-event-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/deviceUse/deviceLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-device-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkEncourageModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/streamEndStreamModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-talk-encourage-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-stream-end-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkCommandFinishModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-talk-command-finish-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/opposition/oppositionLateModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkRefusalCommandFinishModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-opposition-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-talk-refusal-command-finish-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/opposition/oppositionAgendaModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/talkRefusalCommandDevourModularFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-talk-refusal-command-devour-modular-late.mjs')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/raPivotPassPeelFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/raPivotLateSlotReinforcementFragments.js')));
+  assert.ok(existsSync(join(root, 'scripts/test-pass-retire-inventory.mjs')));
+  for (const f of passes) {
+    const src = readFileSync(join(sceneDir, f), 'utf8');
+    assert.ok(!src.includes('registerModuleVariants'), `${f} should be hollow (fragment migration)`);
+    assert.ok(!src.includes('legacyBridgeWhen'), `${f} should not use legacyBridgeWhen`);
+  }
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/itemUse/itemUseModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/homeroom/homeroomV2ModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/competitiveGainer/cgResidentEarlyFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/wifeLessons/wlTalkV2ModularFragments.js')));
+  assert.ok(existsSync(join(root, 'src/textEngine/scenes/fairQueen/photoBoostModularFragments.js')));
+  const photoBoost = read('src/textEngine/scenes/fairQueen/photoBoostModularFragments.js');
+  assert.match(photoBoost, /fair\.photo\.Brittany/, 'fair photo vignettes live in photoBoostModularFragments');
+  assert.match(photoBoost, /fairBoostTier/, 'fair boost tier vignettes live in photoBoostModularFragments');
+  const campusFind = read('src/textEngine/scenes/campusExplorationModularFragments.js');
+  assert.match(campusFind, /campusTierMin/, 'campus find tier overlays live in campusExplorationModularFragments');
+  const itemOpen = read('src/textEngine/scenes/itemUse/itemUseModularFragments.js');
+  assert.match(itemOpen, /item\.use\.open/, 'item use open overlays live in itemUseModularFragments');
+  const hallBp = read('src/textEngine/scenes/hallBlueprint/index.js');
+  assert.match(hallBp, /wellness_nook/, 'hall wellness nook room copy in blueprint index');
+  assert.ok(existsSync(join(root, 'scripts/test-wl-index-bridge-retired.mjs')));
+  assert.ok(existsSync(join(root, 'scripts/test-text-pass-bridge-suppression-late.mjs')));
+  execSync('node scripts/test-pass-retire-inventory.mjs', { cwd: root, stdio: 'pipe' });
+  const barrel = read('src/gameData/evolvedForms.js');
+  assert.ok(barrel.split('\n').length < 120, 'evolvedForms should be a thin re-export barrel');
 });
 
 // ── Report ─────────────────────────────────────────────────────

@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // CAMPUS SECRETS — progressive puzzle chain → Relic Hunter
 // ═══════════════════════════════════════════════════════════════
+import { getExplorationFind } from './campusIngredients.js';
+import { depthExplorationIngredientGrant } from './mechanicsDepthLayer.js';
 
 export const CAMPUS_SECRETS = [
   {
@@ -169,4 +171,13 @@ export function nextSecretHint(exploration, ctx) {
     return done > 0 && done < reqs.length;
   });
   return almost || unsolved[0] || null;
+}
+
+/** Depth-scaled loot when a secret pays out an exploration find. */
+export function resolveSecretFindReward(secret) {
+  const findId = secret?.reward?.findId;
+  if (!findId) return null;
+  const find = getExplorationFind(findId);
+  if (!find) return null;
+  return { find, grants: depthExplorationIngredientGrant(find.grants) };
 }

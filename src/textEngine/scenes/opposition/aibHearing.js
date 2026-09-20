@@ -1,9 +1,13 @@
 // The Squad — Lead: A2 Psych | Support: A4 Architect
 // Opposition hearing pools — removal & emergency phases, choice results, endings.
-import { registerModule } from '../../engine.js';
+import { registerPool } from '../../engine.js';
 import { registerPoolAutoDecompose } from '../decomposePools.js';
 
-registerModule('studentLbs', [{ when: {}, text: (ctx) => String(ctx.globals?.studentLbs ?? 0) }]);
+registerPool('studentLbs', [
+  { when: {}, text: [(ctx) => String(Math.round(ctx.globals?.studentLbs ?? 0))] },
+  { when: {}, text: [(ctx) => `${Math.round(ctx.globals?.studentLbs ?? 0)}`] },
+  { when: {}, text: [(ctx) => Math.round(ctx.globals?.studentLbs ?? 0).toLocaleString()] },
+]);
 
 // ── Removal hearing ───────────────────────────────────────────
 registerPoolAutoDecompose('opposition.hearing.removal.phase0', [

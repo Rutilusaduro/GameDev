@@ -3,6 +3,7 @@
 // Merged with former researchTree.js nodes (single currency path).
 // ═══════════════════════════════════════════════════════════════
 import { getTier } from './sessions.js';
+import { depthMetaProgressBonus } from './mechanicsDepthLayer.js';
 
 /** Insight Talia earns from lab sessions; spent to unlock blueprint nodes. */
 export const BREAKTHROUGH_LABEL = 'Breakthroughs';
@@ -305,7 +306,8 @@ export function applyStageTechUnlocks(state, stage) {
 }
 
 export function rollSessionBreakthroughs(rng = Math.random) {
-  return 2 + Math.floor(rng() * 3);
+  const base = 2 + Math.floor(rng() * 3);
+  return depthMetaProgressBonus(base);
 }
 
 export function nodesByCategory(category) {

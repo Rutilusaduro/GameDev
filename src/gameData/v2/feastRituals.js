@@ -2,6 +2,21 @@
 // FEAST RITUALS — ceremonial multi-resident feeding
 // ═══════════════════════════════════════════════════════════════
 
+import {
+  depthCorruptionGrant,
+  depthRelBonus,
+  depthResonancePassiveBonus,
+} from '../mechanicsDepthLayer.js';
+
+export function scaleRitualParticipantEffect(ritual) {
+  if (!ritual) return { calories: 0, rel: 0, corruption: 0 };
+  return {
+    calories: depthResonancePassiveBonus(ritual.caloriesEach),
+    rel: depthRelBonus(ritual.relEach),
+    corruption: depthCorruptionGrant(ritual.corruptionEach),
+  };
+}
+
 export const FEAST_RITUALS = [
   {
     id: 'communion_snack',

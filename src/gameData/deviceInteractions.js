@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { getEquippedDeviceIds } from './deviceEquip.js';
 import { getStage } from './stages.js';
+import { depthGainMult } from './mechanicsDepthLayer.js';
 
 const INTERACTION_RULES = [
   {
@@ -31,4 +32,11 @@ export function findUniqueInteraction(student, _player, _slot, _ctx = {}) {
     return rule.tag;
   }
   return null;
+}
+
+/** Synergy tags stack a small gain multiplier when multiple rigs interact. */
+export function deviceSynergyGainMult(student) {
+  const tag = findUniqueInteraction(student);
+  if (!tag) return 1;
+  return depthGainMult(1.04);
 }

@@ -3,12 +3,16 @@
 import { render } from '../../engine.js';
 import { buildTextContext } from '../../../gameData/textContext.js';
 import { appendV2Depth } from '../v2/depthRenderer.js';
+import { privateSessionV2DepthChance } from '../../../gameData/sessionTextDepth.js';
 import './fullness.js';
 import './fullnessDepth.js';
 import './aftermath.js';
 import './aftermathDepth.js';
 import './selectors.js';
 import './selectorDepth.js';
+import './tapOutPools.js';
+import './blobIntroPools.js';
+import './immobileRedirectPools.js';
 
 function composeOverlay(main, overlay) {
   const a = main?.trim() || '';
@@ -42,10 +46,14 @@ export function renderSessionFullness(student, fullnessStageId, week = 1, opts =
   });
   const main = render('{session.fullness}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = composeOverlay(main, renderSessionOverlay(student, week, opts));
-  return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? 0.3);
+  return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? privateSessionV2DepthChance(0.3));
 }
 
 /** Closing beat when a private session ends (keyed by fullness percent band). */
+export { renderTapOutLine } from './tapOutPools.js';
+export { renderBlobPrivateIntro } from './blobIntroPools.js';
+export { renderImmobileRedirect } from './immobileRedirectPools.js';
+
 export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
   if (!student) return '';
   const ctx = buildTextContext({
@@ -56,5 +64,5 @@ export function renderSessionAftermath(student, fPct, week = 1, opts = {}) {
   });
   const main = render('{session.aftermath}', ctx, { trace: opts.trace || null })?.trim() || '';
   const composed = composeOverlay(main, renderSessionOverlay(student, week, opts));
-  return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? 0.28);
+  return appendV2Depth(composed, 'session', ctx, opts.v2DepthChance ?? privateSessionV2DepthChance(0.28));
 }

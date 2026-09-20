@@ -1,0 +1,264 @@
+// Evolved branching events — composable slots on every phase/choice/ending pool.
+import { registerPool, registerModuleVariants } from '../../engine.js';
+import { EVOLVED_EVENTS } from '../../../gameData/evolvedEvents.js';
+
+registerPool('evolved.scene.atmosphere', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'The room smells like food and ambition — warm light, heavier bodies, nobody pretending.',
+      'Ambient noise drops when plates arrive; appetite becomes the only agenda.',
+      'Fabric strains, chairs creak, and the mood stays tender instead of tense.',
+      'Floor heat and cooking scent braid together — the hall feels complicit tonight.',
+      'Someone whispers that the floor smells like food; nobody disagrees, and plates keep arriving.',
+    ],
+  },
+]);
+
+registerPool('evolved.scene.stakes', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'Every choice tonight will show up on the scale and in the retelling.',
+      'The next bite is not casual — it is a direction.',
+      'Winning here means growing into something the old self could not hold.',
+      'Whatever she picks, the RA log will remember the appetite behind it.',
+      'Late-semester evolved beats feel tender and absolute — growth on purpose, appetite public, nobody pretending restraint is policy.',
+    ],
+  },
+]);
+
+registerPool('evolved.scene.hungerCue', [
+  {
+    when: { stageMin: [4] },
+    weight: 2,
+    text: [
+      'Her belly leads when she moves — soft, forward, impossible to ignore.',
+      'Fullness sits in her lap like a trophy she is still earning.',
+    ],
+  },
+  {
+    when: {},
+    text: [
+      'Hunger hums under her ribs, polite but persistent.',
+      'She eats like someone who already knows the ending and wants it sooner.',
+    ],
+  },
+]);
+
+registerPool('evolved.choice.chatReact', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'The room reacts — laughter, envy, hunger mirrored back at her.',
+      'Someone nearby exhales like they might start eating too; she does not discourage it.',
+      'Approval lands soft and heavy, the way praise always feeds.',
+    ],
+  },
+]);
+
+registerPool('evolved.choice.bodyResult', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She leans into the bite and the moment feels warmer, heavier, more real.',
+      'Her belly shifts; fabric whispers; appetite wins the argument.',
+      'Fullness spreads slow and sweet — she looks pleased, not surprised.',
+    ],
+  },
+]);
+
+registerPool('evolved.ending.streamCoda', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'The next beat waits — plates, cameras, or confession, depending on the path.',
+      'She exhales; the hall feels ready for whatever she does next.',
+      'Appetite and momentum braid together; there is no pretending this is small.',
+    ],
+  },
+]);
+
+registerPool('evolved.ending.relGain', [
+  {
+    when: {},
+    weight: 2,
+    text: [
+      'She feels seen in the way that makes eating easier — not judged, just witnessed.',
+      'Trust settles in her shoulders; the next meal already feels allowed.',
+    ],
+  },
+]);
+
+const EVENT_SKELETON = '{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: } {evolved.scene.hungerCue|prefix: }';
+const CHOICE_SKELETON = '{evolved.choice.chatReact|prefix:} {evolved.choice.bodyResult|prefix: }';
+const ENDING_SKELETON = '{evolved.ending.streamCoda|prefix:} {evolved.ending.relGain|prefix: }';
+
+let phasePools = 0;
+let choicePools = 0;
+let endingPools = 0;
+
+for (const [formId, stages] of Object.entries(EVOLVED_EVENTS)) {
+  if (!Array.isArray(stages)) continue;
+  stages.forEach((evDef, stageIdx) => {
+    if (!evDef?.phases) return;
+    evDef.phases.forEach((phase, phaseIdx) => {
+      const phaseKey = `evolved.event.${formId}.s${stageIdx}.p${phaseIdx}`;
+      phasePools += 1;
+      registerModuleVariants(phaseKey, [
+        {
+          when: { weekMin: 18 },
+          weight: 5,
+          priority: 4,
+          text: [EVENT_SKELETON],
+        },
+        {
+          when: { weekMin: 10 },
+          weight: 3,
+          priority: 2,
+          text: [EVENT_SKELETON],
+        },
+        {
+          when: { weekMin: 5 },
+          weight: 2,
+          priority: 1,
+          text: ['{evolved.scene.atmosphere|prefix:} {evolved.scene.stakes|prefix: }'],
+        },
+      ]);
+      registerModuleVariants(`${phaseKey}.legacyBody`, [
+        {
+          when: { weekMin: 20, evolvedFormId: [formId] },
+          weight: 6,
+          priority: 6,
+          text: [EVENT_SKELETON],
+        },
+        {
+          when: { weekMin: 14, evolvedFormId: [formId] },
+          weight: 4,
+          priority: 4,
+          text: [EVENT_SKELETON],
+        },
+      ]);
+      for (const ch of phase.choices || []) {
+        if (!ch?.id) continue;
+        const choiceKey = `${phaseKey}.${ch.id}`;
+        choicePools += 1;
+        registerModuleVariants(choiceKey, [
+          {
+            when: { weekMin: 16 },
+            weight: 4,
+            priority: 3,
+            text: [CHOICE_SKELETON],
+          },
+          {
+            when: { weekMin: 6 },
+            weight: 3,
+            priority: 2,
+            text: [CHOICE_SKELETON],
+          },
+        ]);
+        registerModuleVariants(`${choiceKey}.legacyBody`, [
+          {
+            when: { weekMin: 20, evolvedFormId: [formId] },
+            weight: 6,
+            priority: 6,
+            text: [CHOICE_SKELETON],
+          },
+        ]);
+      }
+    });
+    (evDef.endings || []).forEach((_, endingIdx) => {
+      const endKey = `evolved.event.${formId}.s${stageIdx}.end${endingIdx}`;
+      endingPools += 1;
+      registerModuleVariants(endKey, [
+        {
+          when: { weekMin: 16 },
+          weight: 4,
+          priority: 3,
+          text: [ENDING_SKELETON],
+        },
+        {
+          when: { weekMin: 7 },
+          weight: 3,
+          priority: 2,
+          text: [ENDING_SKELETON],
+        },
+      ]);
+      registerModuleVariants(`${endKey}.legacyBody`, [
+        {
+          when: { weekMin: 20, evolvedFormId: [formId] },
+          weight: 6,
+          priority: 6,
+          text: [ENDING_SKELETON],
+        },
+      ]);
+    });
+  });
+}
+
+registerModuleVariants('evolved.event.state_fair_queen.s0.p0', [
+  {
+    when: { evolvedFormId: ['state_fair_queen'] },
+    weight: 1,
+    text: [
+      'Fair queen arc opens on sawdust and sugar — MJ already tastes the crown before the weigh-in.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.event.eating_streamer.s0.p0', [
+  {
+    when: { evolvedFormId: ['eating_streamer'] },
+    weight: 1,
+    text: [
+      'Stream overlay loads — chat already donating snacks before she finishes hello.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.scene.stakes', [
+  {
+    when: { weekMin: [20] },
+    weight: 1,
+    text: [
+      'The hall remembers every pound you logged here — tonight adds another verse.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.choice.bodyResult', [
+  {
+    when: { stageMin: [5] },
+    weight: 2,
+    text: [
+      'Her belly presses the desk edge; every bite makes the stream feel more inevitable.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.ending.streamCoda', [
+  {
+    when: { weekMin: [18] },
+    weight: 1,
+    text: [
+      'The hall ambiance meter ticks up — stream night counts as floor culture now.',
+    ],
+  },
+]);
+
+registerModuleVariants('evolved.sumo.s5.phase0.body', [
+  {
+    when: { stageMin: [5] },
+    weight: 1,
+    text: [
+      'Chanko steam and liniment — the dohyo warm-up room knows you started as a cheerleader and stopped apologizing for it.',
+    ],
+  },
+]);
+
+export const EVOLVED_MODULAR_STATS = { phasePools, choicePools, endingPools };

@@ -2,6 +2,8 @@
 // SUPERNATURAL ASCENSION — thin-form templates (§32)
 // ═══════════════════════════════════════════════════════════════
 
+import { depthGainMult, depthActivityGainBonus } from './mechanicsDepthLayer.js';
+
 export const SUPERNATURAL_FORMS = {
   athlete: { id: 'sumo_wraith', label: 'Sumo Wraith', gainMult: 1.5, scrutinyDrain: 3, activityScarcityDrain: 5, activityGainBonus: 2 },
   influencer: { id: 'hollow_icon', label: 'Hollow Icon', gainMult: 1.4, scrutinyDrain: 2, activityScrutinyDrain: 3 },
@@ -35,7 +37,7 @@ export function getSupernaturalFormForStudent(student) {
 export function getSupernaturalGainMult(student) {
   if (!student?.supernaturalForm) return 1;
   const form = SUPERNATURAL_FORMS[student.archetype];
-  return form?.gainMult ?? 1;
+  return depthGainMult(form?.gainMult ?? 1);
 }
 
 export function getSupernaturalActivityBonus(student) {
@@ -44,7 +46,7 @@ export function getSupernaturalActivityBonus(student) {
   }
   const form = SUPERNATURAL_FORMS[student.archetype];
   return {
-    gainBonus: form?.activityGainBonus ?? 0,
+    gainBonus: depthActivityGainBonus(form?.activityGainBonus ?? 0),
     scarcityDrain: form?.activityScarcityDrain ?? 0,
     scrutinyDrain: form?.activityScrutinyDrain ?? 0,
   };

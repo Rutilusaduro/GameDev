@@ -1,4 +1,47 @@
 import { getStage } from './stages.js';
+import {
+  depthRelBonus,
+  depthActivityGainBonus,
+  depthSessionToleranceBoost,
+} from './mechanicsDepthLayer.js';
+
+export function scaleSessionRelBonus(amount = 0) {
+  return depthRelBonus(amount);
+}
+
+export function scalePrivateFoodGain(food = {}) {
+  const g = food.gain;
+  if (!Array.isArray(g) || g.length < 2) return g;
+  return [depthActivityGainBonus(g[0]), depthActivityGainBonus(g[1])];
+}
+
+export function scaleEncouragementAction(enc = {}) {
+  const lbsBonus = enc.lbsBonus?.length === 2
+    ? [depthActivityGainBonus(enc.lbsBonus[0]), depthActivityGainBonus(enc.lbsBonus[1])]
+    : enc.lbsBonus;
+  return {
+    ...enc,
+    relBonus: depthRelBonus(enc.relBonus ?? 0),
+    toleranceBoost: depthSessionToleranceBoost(enc.toleranceBoost ?? 0),
+    lbsBonus,
+  };
+}
+
+export function getGroupConversation(convId) {
+  const c = GROUP_CONVERSATIONS.find((x) => x.id === convId);
+  if (!c) return null;
+  return { ...c, relBonus: depthRelBonus(c.relBonus) };
+}
+
+export function getDinnerConversation(convId) {
+  const c = DINNER_CONVERSATION.find((x) => x.id === convId);
+  if (!c) return null;
+  const relBonus = c.relBonus > 0 ? depthRelBonus(c.relBonus) : c.relBonus;
+  const gainBonus = c.gainBonus?.length === 2
+    ? [depthActivityGainBonus(c.gainBonus[0]), depthActivityGainBonus(c.gainBonus[1])]
+    : c.gainBonus;
+  return { ...c, relBonus, gainBonus };
+}
 
 export const GROUP_CONVERSATIONS=[
   { id:"get_them_talking", label:"Get them talking", relBonus:4, fullnessEffect:-4 },

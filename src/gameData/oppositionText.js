@@ -4,13 +4,14 @@
 
 import { render, createContext } from '../textEngine/engine.js';
 import { appendV2Depth } from '../textEngine/scenes/v2/depthRenderer.js';
+import { depthNarrativeAppendChance } from './mechanicsDepthLayer.js';
 
 export function renderOppositionLine(pool, ctx = {}, opts = {}) {
   try {
     const engineCtx = createContext(ctx);
     const line = render(`{${pool}}`, engineCtx);
     if (!line || line.includes('{unresolved}')) return null;
-    const chance = opts.v2DepthChance ?? 0.34;
+    const chance = opts.v2DepthChance ?? depthNarrativeAppendChance(0.34);
     return appendV2Depth(line, 'opposition', engineCtx, chance);
   } catch {
     return null;
@@ -50,6 +51,10 @@ export function agendaResolveLine(cardId, week) {
   }
 }
 
-export function counterSuccessLine(counterId) {
-  return renderOppositionLine('opposition.counter.success', { counter: counterId, globals: { counter: counterId } });
+export function counterSuccessLine(counterId, week = 1) {
+  return renderOppositionLine('opposition.counter.success', {
+    week,
+    counter: counterId,
+    globals: { counter: counterId },
+  });
 }
